@@ -1,3 +1,9 @@
 version: "2.5"
-agents: []
-# Runtime file. Orchestrator records agent_id, role, task_id, branch, worktree, state, resolved_model, effort, task_id, branch, worktree, VTQS, gate result and heartbeat/last_commit here.
+# Runtime registry. Wave M01-W1 dispatched 3 Oct 2026 10:40 UTC on the owner's go. Builders run in
+# plan mode first; no implementation until the orchestrator approves each plan.
+agents:
+  - {task_id: SF-M01-001, role: component_builder, agent: serviceform-foundation-builder, resolved_model: opus, effort: high, branch: agent/M01-cmp-002-tenant-organisation-SF-M01-001, worktree: /var/tmp/wt-SF-M01-001, base_commit: d1d0965, state: CLAIMED, phase: PLAN}
+  - {task_id: SF-M01-002, role: component_builder, agent: serviceform-foundation-builder, resolved_model: opus, effort: high, branch: agent/M01-cmp-048-security-platform-SF-M01-002, worktree: /var/tmp/wt-SF-M01-002, base_commit: d1d0965, state: CLAIMED, phase: PLAN}
+  - {task_id: SF-M01-003, role: component_builder, agent: serviceform-foundation-builder, resolved_model: opus, effort: high, branch: agent/M01-cmp-031-audit-ledger-SF-M01-003, worktree: /var/tmp/wt-SF-M01-003, base_commit: d1d0965, state: CLAIMED, phase: PLAN}
+  - {task_id: SF-M01-004, role: component_builder, agent: serviceform-foundation-builder, resolved_model: opus, effort: high, branch: agent/M01-cmp-038-event-bus-SF-M01-004, worktree: /var/tmp/wt-SF-M01-004, base_commit: d1d0965, state: CLAIMED, phase: PLAN}
+  - {task_id: SF-M01-005, role: component_builder, agent: serviceform-integration-builder, resolved_model: sonnet, effort: high, branch: agent/M01-cmp-037-integration-hub-SF-M01-005, worktree: /var/tmp/wt-SF-M01-005, base_commit: d1d0965, state: CLAIMED, phase: PLAN}
