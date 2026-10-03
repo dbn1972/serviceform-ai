@@ -474,6 +474,7 @@ D-05 on 3 October 2026, and all 13 shared contracts are FROZEN (`d1d0965`). The 
 READY with base commit `d1d0965`. On the owner's "dispatch", the orchestrator creates the worktrees,
 spawns the builders in plan mode and follows section 5. Merge policy until the first CI run: builders
 work and verify locally, and nothing merges to main until the repository is pushed and CI is green
-(recommended default, gap G-01).
+(confirmed by the owner on 3 October 2026, 10:34 UTC; gap G-01). The owner also re-confirmed the
+contract freeze at the same time.
 
 READY_TO_DISPATCH
