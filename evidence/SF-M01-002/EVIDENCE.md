@@ -8,7 +8,7 @@
 | Branch | `agent/M01-cmp-048-security-platform-SF-M01-002` |
 | PR | https://github.com/dbn1972/serviceform-ai/pull/17 |
 | Base | `origin/main` `8a4695d62a065fd3e8047b0c49085bfebbb0c513` |
-| Result commit | `1cf3d995347d0a32f9fe69bcae62d7869bbefc0b` |
+| Result commit | (implementation `1cf3d995`; history rewritten to drop gitleaks test-key blob — see HEAD) |
 | Model / effort | claude-opus-5-5, high (as routed) |
 | Builder | serviceform-foundation-builder |
 | Self-certified | **no** |
@@ -18,7 +18,7 @@
 
 | Command | Result |
 |---|---|
-| `pnpm exec vitest run packages/security/test services/cmp-048-security-platform/test --exclude '**/*.int.test.ts'` | 14 files, **42 passed** |
+| `pnpm exec vitest run packages/security/test services/cmp-048-security-platform/test --exclude '**/*.int.test.ts'` | 15 files, **45 passed** (includes PEP 429 + plugin hooks after `@fastify/rate-limit`) |
 | `pnpm --filter @serviceform/cmp-048-security-platform test:integration` (DATABASE_URL local PG16, SF_ENVIRONMENT=CI) | 6 files, **18 passed** |
 | `opa test -v policy/opa` (OPA 1.21.1) | **48/48 PASS** |
 | `scripts/opa-test.sh` (check --strict, fmt --fail, coverage, bundle build, tenant.rego mutation) | pass; coverage **94.73%** lines |
@@ -32,7 +32,8 @@
 | `pnpm gates` | **7/7 passed** (`gates.log`) |
 | `pnpm deps:graph` | no violations (124 modules) |
 | `python scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M01-002.yaml --base origin/main` | see `scope-check.log` |
-| gitleaks / semgrep | **not installed** in this environment (residual) |
+| gitleaks detect (working tree `packages/security/test`) | **no leaks found** (`SYNTHETIC_WRAP_KEY = 'x'.repeat(32)`) |
+| gitleaks git (branch after history rewrite) | must be clean of `abcdefghijabcdefghijabcdefghij12`; sibling cmp-002 helper hit is out of write scope |
 
 ## ADR-0006 / Wave-1 role correction
 
@@ -58,7 +59,7 @@ See `codeql-triage.md`. In-process PEP rate limit (`SF-RATE-001`) and fd-based s
 
 - Frozen outbox/inbox grants still target `sf_app` (ADR-0006 #9).
 - Compose OPA remains unauthenticated until infra owners change it.
-- Lockfile not committed; orchestrator must reconcile workspace packages.
+- Lockfile not committed; orchestrator must reconcile workspace packages (`@serviceform/security` + `@fastify/rate-limit@10.3.0`). Quality / migrations / web-smoke / dependency-audit stay red on `pnpm install --frozen-lockfile` until that reconcile.
 - Verifier gaps in `deny-matrix.md` (002-10, 002-26, some variants).
 - `sf_migrator` IF-missing from this migration (shared Wave-1 name).
 

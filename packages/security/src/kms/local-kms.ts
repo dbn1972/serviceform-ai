@@ -67,7 +67,7 @@ export class LocalKms implements KmsProvider {
     const wrapIv = packed.subarray(0, 12);
     const wrapTag = packed.subarray(12, 28);
     const wrapped = packed.subarray(28);
-    const wrapDec = createDecipheriv('aes-256-gcm', wrap, wrapIv);
+    const wrapDec = createDecipheriv('aes-256-gcm', wrap, wrapIv, { authTagLength: 16 });
     wrapDec.setAuthTag(wrapTag);
     let dek: Buffer;
     try {
@@ -79,7 +79,7 @@ export class LocalKms implements KmsProvider {
     wrap.fill(0);
     const iv = Buffer.from(envelope.iv, 'base64');
     const tag = Buffer.from(envelope.tag, 'base64');
-    const dec = createDecipheriv('aes-256-gcm', dek, iv);
+    const dec = createDecipheriv('aes-256-gcm', dek, iv, { authTagLength: 16 });
     dec.setAAD(canonicalAad(context));
     dec.setAuthTag(tag);
     try {

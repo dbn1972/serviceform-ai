@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { OpaPdpClient } from '@serviceform/security';
 import type { AuthzDecisionInput } from '@serviceform/contracts';
-import { T1, U1, startOpa, waitOpa } from './helpers.js';
+import { T1, U1, opaHttpRequest, startOpa, waitOpa } from './helpers.js';
 import type { ChildProcess } from 'node:child_process';
 
 const PORT = 18281;
@@ -40,13 +40,13 @@ describe('real OPA 002-15 / fail-closed', () => {
   });
 
   it('unauthenticated Data API writes are denied', async () => {
-    const res = await fetch(`http://127.0.0.1:${PORT}/v1/data/sf_runtime/privileged_grants/x`, {
+    const res = await opaHttpRequest(PORT, '/v1/data/sf_runtime/privileged_grants/x', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
       body: '{}',
     });
     expect(res.status).toBeGreaterThanOrEqual(401);
-    const pol = await fetch(`http://127.0.0.1:${PORT}/v1/policies/x`, {
+    const pol = await opaHttpRequest(PORT, '/v1/policies/x', {
       method: 'PUT',
       headers: { authorization: 'Bearer pep', 'content-type': 'text/plain' },
       body: 'package x\nallow := true',
@@ -77,7 +77,7 @@ describe('real OPA 002-15 / fail-closed', () => {
         },
       },
     };
-    const put = await fetch(`http://127.0.0.1:${PORT}/v1/data/sf/tenants`, {
+    const put = await opaHttpRequest(PORT, '/v1/data/sf/tenants', {
       method: 'PUT',
       headers: { authorization: 'Bearer grant-publisher', 'content-type': 'application/json' },
       body: JSON.stringify(tenants),

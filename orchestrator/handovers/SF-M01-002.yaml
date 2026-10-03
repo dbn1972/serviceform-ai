@@ -12,7 +12,7 @@ branch: agent/M01-cmp-048-security-platform-SF-M01-002
 pr: https://github.com/dbn1972/serviceform-ai/pull/17
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
 # result_commit filled after the implementation commit is created
-result_commit: 1cf3d995347d0a32f9fe69bcae62d7869bbefc0b
+result_commit: (rewritten; see branch HEAD — gitleaks history scrub of 1cf3d995 test-key blob)
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
@@ -33,9 +33,9 @@ completed_work:
 
 unresolved_work:
   - 'Verifier cases marked gap/partial in evidence/SF-M01-002/deny-matrix.md (002-10 race, 002-26 verifier faults, several variant expansions)'
-  - 'Lockfile not updated (orchestrator reconciliation); new workspace packages exist without pnpm-lock.yaml importers'
+  - 'Lockfile not updated (orchestrator reconciliation); @serviceform/security plus @fastify/rate-limit@10.3.0 have no pnpm-lock.yaml importers'
   - 'CI may lack opa test / cmp-048 integration jobs (PLAN-REVIEW X-14)'
-  - 'gitleaks binary not installed in this environment; semgrep not run on this pass'
+  - 'Gitleaks test-key blob removed from HEAD and rewritten out of branch history; sibling cmp-002 helper hit is out of write scope'
   - 'Multi-pod grant distribution consistency is an M02 gap'
   - 'Platform-wide HTTP rate limiting remains an API-edge / CMP-036 concern. CMP-048 added an in-process PEP limiter (SF-RATE-001) so CodeQL-flagged authz hooks are not unbounded; it is not a gateway quota.'
 

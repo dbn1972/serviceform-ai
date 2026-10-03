@@ -6,6 +6,7 @@ import type {
 import { validate } from '@serviceform/contracts';
 import type { Logger } from '@serviceform/observability';
 import { trace } from '@opentelemetry/api';
+import fastifyRateLimit from '@fastify/rate-limit';
 import type { FastifyInstance, FastifyReply, FastifyRequest, RouteOptions } from 'fastify';
 import fp from 'fastify-plugin';
 import { randomUUID } from 'node:crypto';
@@ -94,7 +95,33 @@ export const sfSecurity = fp(
       throw new Error('sfSecurity requires verifier, resolver and pdp');
     }
     if (opts.opaUrl !== undefined) assertOpaUrl(opts.opaUrl);
-    const limiter = new AuthzRateLimiter(opts.authzRateLimit ?? defaultAuthzRateLimit);
+    const rl = opts.authzRateLimit ?? defaultAuthzRateLimit;
+    const limiter = new AuthzRateLimiter(rl);
+
+    await app.register(fastifyRateLimit, {
+      global: true,
+      hook: 'onRequest',
+      max: rl.max,
+      timeWindow: rl.windowMs,
+      addHeaders: {
+        'x-ratelimit-limit': false,
+        'x-ratelimit-remaining': false,
+        'x-ratelimit-reset': false,
+        'retry-after': false,
+      },
+      addHeadersOnExceeding: {
+        'x-ratelimit-limit': false,
+        'x-ratelimit-remaining': false,
+        'x-ratelimit-reset': false,
+      },
+      allowList: (req) => Boolean(req.routeOptions.config.sfPublic),
+      errorResponseBuilder: () => ({
+        statusCode: 429,
+        error: 'Too Many Requests',
+        error_code: 'SF-RATE-001',
+        message: 'authorization rate limit exceeded',
+      }),
+    });
 
     app.decorateRequest('authorize', async function denyUntilReady() {
       throw new SecurityError('SF-TEN-001', { statusCode: 401 });
@@ -109,10 +136,12 @@ export const sfSecurity = fp(
       }
     });
 
-    app.addHook('onRequest', async (req: FastifyRequest, _reply: FastifyReply) => {
-      if (!req.routeOptions.config.sfPublic) {
-        rateLimitAuthorization(req, limiter);
-      }
+    async function rateLimit(req: FastifyRequest, _reply: FastifyReply): Promise<void> {
+      if (req.routeOptions.config.sfPublic) return;
+      rateLimitAuthorization(req, limiter);
+    }
+
+    async function resolvePrincipal(req: FastifyRequest, _reply: FastifyReply): Promise<void> {
       req.authorize = async (action, resource, workflow) => {
         const ctx = req.sfContext;
         if (!ctx) throw new SecurityError('SF-TEN-001', { statusCode: 401 });
@@ -156,12 +185,11 @@ export const sfSecurity = fp(
       const check = validate('request-context', ctx);
       if (!check.valid) throw new SecurityError('SF-TEN-001', { statusCode: 401 });
       req.sfContext = deepFreeze(ctx);
-    });
+    }
 
-    app.addHook('preHandler', async (req: FastifyRequest) => {
+    async function enforceRouteAuthz(req: FastifyRequest): Promise<void> {
       const authz = req.routeOptions.config.sfAuthz;
       if (!authz) return;
-      rateLimitAuthorization(req, limiter);
       const decision = await req.authorize(authz.action, authz.resource(req));
       if (decision.allow) return;
       if (decision.reason_code === 'TENANT_MISMATCH') {
@@ -174,7 +202,12 @@ export const sfSecurity = fp(
         });
       }
       throw new SecurityError('SF-AUTH-002', { statusCode: 403 });
-    });
+    }
+
+    app.addHook('onRequest', rateLimit);
+    app.addHook('onRequest', resolvePrincipal);
+    app.addHook('preHandler', rateLimit);
+    app.addHook('preHandler', enforceRouteAuthz);
   },
   { name: 'sf-security', fastify: '5.x' },
 );

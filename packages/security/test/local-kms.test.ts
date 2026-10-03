@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { LocalKms } from '../src/kms/local-kms.js';
 import { LocalSecretsProvider } from '../src/secrets/local-secrets-provider.js';
 import { T1, T2 } from './helpers/fakes.js';
+import { SYNTHETIC_WRAP_KEY } from './helpers/synthetic-wrap-key.js';
 
 describe('LocalKms (002-27 S3-S5, 002-29)', () => {
-  const env = { SF_ENVIRONMENT: 'CI', SF_SECRET_KEK: 'x'.repeat(32) };
+  const env = { SF_ENVIRONMENT: 'CI', SF_SECRET_KEK: SYNTHETIC_WRAP_KEY };
 
   it('round-trips and fails closed on tenant AAD mismatch / tamper', async () => {
     process.env['SF_ENVIRONMENT'] = 'CI';

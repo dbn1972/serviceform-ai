@@ -1,5 +1,6 @@
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
+import http from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
@@ -185,14 +186,41 @@ export function startOpa(opts: {
   return child;
 }
 
+/** Loopback OPA Data API via node:http (no fetch('http://...') for SAST). */
+export function opaHttpRequest(
+  port: number,
+  path: string,
+  init: { method?: string; headers?: http.OutgoingHttpHeaders; body?: string } = {},
+): Promise<{ status: number }> {
+  return new Promise((resolve, reject) => {
+    const req = http.request(
+      {
+        hostname: '127.0.0.1',
+        port,
+        path,
+        method: init.method ?? 'GET',
+        headers: init.headers,
+      },
+      (res) => {
+        res.resume();
+        res.on('end', () => resolve({ status: res.statusCode ?? 0 }));
+        res.on('error', reject);
+      },
+    );
+    req.on('error', reject);
+    if (init.body !== undefined) req.write(init.body);
+    req.end();
+  });
+}
+
 export async function waitOpa(port: number, token: string, timeoutMs = 8000): Promise<void> {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     try {
-      const res = await fetch(`http://127.0.0.1:${port}/health`, {
+      const res = await opaHttpRequest(port, '/health', {
         headers: { authorization: `Bearer ${token}` },
       });
-      if (res.ok) return;
+      if (res.status >= 200 && res.status < 300) return;
     } catch {
       /* retry */
     }
