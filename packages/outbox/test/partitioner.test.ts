@@ -10,5 +10,7 @@ describe('murmur2 partitioner (U8)', () => {
     expect(a).toBeLessThan(6);
     expect(toPositive(-1)).toBe(0x7fffffff);
     expect(murmur2(Buffer.from('hello'))).toBe(murmur2(Buffer.from('hello')));
+    expect(partitionForKey('x', 0)).toBe(0);
+    expect(partitionForKey('x', -1)).toBe(0);
   });
 });

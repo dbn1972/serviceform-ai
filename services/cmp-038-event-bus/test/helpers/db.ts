@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,11 +8,12 @@ import type { RequestContext } from '@serviceform/contracts';
 
 export const T1 = '11111111-1111-4111-8111-111111111111';
 export const T2 = '22222222-2222-4222-8222-222222222222';
-export const APP_USER = 'sf_t004_app';
-export const PUB_USER = 'sf_t004_pub';
-export const PEER_USER = 'sf_t004_peer';
+export const APP_ROLE = 'sf_t004_app';
+export const PUB_ROLE = 'sf_t004_pub';
+export const PEER_ROLE = 'sf_t004_peer';
 export const APP_ONLY = 'sf_t004_apponly';
-export const PASS = 't004-local-only';
+/** Per-process synthetic local-only role secret. Never a real credential. */
+export const TEST_ROLE_SECRET = 'synthetic-test-not-a-secret-' + randomBytes(16).toString('hex');
 export const FIXTURE_A = 'sf_t004_a';
 export const FIXTURE_B = 'sf_t004_b';
 
@@ -57,7 +59,7 @@ export function adminPool(): pg.Pool {
 }
 
 export function rolePool(user: string, max = 4): pg.Pool {
-  return new pg.Pool({ connectionString: urlAs(user, PASS), max });
+  return new pg.Pool({ connectionString: urlAs(user, TEST_ROLE_SECRET), max });
 }
 
 export function templateSql(schema: string): string {
@@ -82,7 +84,7 @@ export async function ensureRole(admin: pg.Pool, name: string, members: string[]
     'CREATE ROLE ' +
       role +
       ' LOGIN PASSWORD ' +
-      quoteLiteral(PASS) +
+      quoteLiteral(TEST_ROLE_SECRET) +
       ' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT',
   );
   for (const m of members) {
@@ -143,9 +145,9 @@ export async function setupCmp038Roles(admin: pg.Pool): Promise<void> {
   await ensureGroupRole(admin, 'sf_cmp031_rw');
   await ensureGroupRole(admin, 'sf_cmp037_rw');
   await ensureGroupRole(admin, 'sf_cmp048_rw');
-  await ensureRole(admin, APP_USER, ['sf_app', 'sf_cmp038_rw']);
-  await ensureRole(admin, PUB_USER, ['sf_outbox_publisher']);
-  await ensureRole(admin, PEER_USER, ['sf_app', 'sf_cmp002_rw']);
+  await ensureRole(admin, APP_ROLE, ['sf_app', 'sf_cmp038_rw']);
+  await ensureRole(admin, PUB_ROLE, ['sf_outbox_publisher']);
+  await ensureRole(admin, PEER_ROLE, ['sf_app', 'sf_cmp002_rw']);
   await ensureRole(admin, APP_ONLY, ['sf_app']);
 }
 

@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { checkCompatibility } from '../../src/registry/compatibility.js';
-import { isSimulatedAllowed, loadConfig } from '../../src/config.js';
+import {
+  assertCompatible,
+  checkCompatibility,
+  isSimulatedAllowed,
+  loadConfig,
+} from '../../src/index.js';
 
 describe('schema compatibility (U7)', () => {
   const base = {
@@ -43,6 +47,51 @@ describe('schema compatibility (U7)', () => {
       false,
     );
   });
+
+  it('evaluates FORWARD and FULL and assertCompatible version rules', () => {
+    const wider = {
+      type: 'object',
+      properties: { a: { type: 'string' }, b: { type: 'string' } },
+      required: ['a'],
+    };
+    expect(checkCompatibility(base, wider, 'FORWARD').ok).toBe(false);
+    expect(checkCompatibility(base, base, 'FULL').ok).toBe(true);
+    expect(checkCompatibility(base, { ...base, required: ['a', 'b'] }, 'FULL').ok).toBe(false);
+    expect(() => assertCompatible(undefined, base, 'BACKWARD', 2, 0)).toThrow();
+    expect(() => assertCompatible(undefined, base, 'BACKWARD', 1, 0)).not.toThrow();
+    expect(() =>
+      assertCompatible(base, { ...base, required: ['a', 'b'] }, 'BACKWARD', 2, 1),
+    ).toThrow();
+    expect(
+      checkCompatibility(
+        { type: 'object', properties: { a: { type: ['string', 'null'] } } },
+        { type: 'object', properties: { a: { type: 'string' } } },
+        'BACKWARD',
+      ).ok,
+    ).toBe(false);
+    expect(
+      checkCompatibility(
+        { type: 'object', properties: { a: { enum: ['x'] } } },
+        { type: 'object', properties: { a: { type: 'string' } } },
+        'BACKWARD',
+      ).ok,
+    ).toBe(true);
+    expect(
+      checkCompatibility(
+        { additionalProperties: false },
+        { additionalProperties: false },
+        'BACKWARD',
+      ).ok,
+    ).toBe(true);
+    expect(checkCompatibility(undefined, {}, 'BACKWARD').ok).toBe(true);
+    expect(
+      checkCompatibility(
+        { type: 'object', properties: { a: {} } },
+        { type: 'object', properties: { a: {} } },
+        'FULL',
+      ).ok,
+    ).toBe(true);
+  });
 });
 
 describe('config (U9)', () => {
@@ -54,7 +103,14 @@ describe('config (U9)', () => {
     });
     expect(cfg.kafkaBrokers).toEqual(['127.0.0.1:19092']);
     expect(isSimulatedAllowed('CI')).toBe(true);
-    expect(isSimulatedAllowed('PRODUCTION')).toBe(false);
-    expect(isSimulatedAllowed('')).toBe(false);
+    expect(isSimulatedAllowed('PERFORMANCE')).toBe(true);
+    expect(isSimulatedAllowed('SIT')).toBe(true);
+    expect(isSimulatedAllowed('LOCAL')).toBe(true);
+    expect(isSimulatedAllowed('DEVELOPMENT')).toBe(true);
+    const empty = loadConfig({});
+    expect(empty.kafkaBrokers).toEqual([]);
+    expect(empty.workerId).toBe('cmp038-relay');
+    expect(empty.databaseUrl).toBe('');
+    expect(empty.environment).toBe('');
   });
 });

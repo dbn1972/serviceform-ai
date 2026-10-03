@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type pg from 'pg';
 import {
-  APP_USER,
-  PUB_USER,
+  APP_ROLE,
+  PUB_ROLE,
   T1,
   T2,
   adminPool,
@@ -29,8 +29,8 @@ describe('producer and consumer helpers (004-08..004-16)', () => {
     migrate('up');
     admin = adminPool();
     await setupCmp038Roles(admin);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
     void pub;
   });
 

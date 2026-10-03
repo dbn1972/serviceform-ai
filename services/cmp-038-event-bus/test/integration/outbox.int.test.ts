@@ -9,8 +9,8 @@ import {
 import { createOutboxPublisher } from '@serviceform/outbox/publisher';
 import { InMemoryTransport } from '@serviceform/outbox/testing';
 import {
-  APP_USER,
-  PUB_USER,
+  APP_ROLE,
+  PUB_ROLE,
   T1,
   T2,
   adminPool,
@@ -32,10 +32,10 @@ describe('outbox atomicity, ordering, inbox, broker-outage (I1-I13)', () => {
     migrate('up');
     admin = adminPool();
     await ensureGroupRole(admin, 'sf_cmp002_rw');
-    await ensureRole(admin, APP_USER, ['sf_app', 'sf_cmp038_rw']);
-    await ensureRole(admin, PUB_USER, ['sf_outbox_publisher']);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
+    await ensureRole(admin, APP_ROLE, ['sf_app', 'sf_cmp038_rw']);
+    await ensureRole(admin, PUB_ROLE, ['sf_outbox_publisher']);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
     transport = new InMemoryTransport({ environment: 'CI' });
   });
 

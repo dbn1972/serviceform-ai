@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type pg from 'pg';
 import {
-  APP_USER,
-  PUB_USER,
+  APP_ROLE,
+  PUB_ROLE,
   T1,
   adminPool,
   ctx,
@@ -30,8 +30,8 @@ describe('relay faults and races (004-17..004-24)', () => {
     migrate('up');
     admin = adminPool();
     await setupCmp038Roles(admin);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
     transport = new InMemoryTransport({ environment: 'CI' });
   });
 

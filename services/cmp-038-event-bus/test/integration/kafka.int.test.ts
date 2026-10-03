@@ -10,8 +10,8 @@ import { KafkaTransport } from '@serviceform/outbox/kafka';
 import { createOutboxPublisher } from '@serviceform/outbox/publisher';
 import { recordLag } from '../../src/lag/lag-monitor.js';
 import {
-  APP_USER,
-  PUB_USER,
+  APP_ROLE,
+  PUB_ROLE,
   T1,
   adminPool,
   ctx,
@@ -34,8 +34,8 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
     migrate('up');
     admin = adminPool();
     await setupCmp038Roles(admin);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
     transport = new KafkaTransport({ brokers, clientId: 'sf-t004' });
     const registry = snapshotRegistry();
     await transport.ensureTopics(

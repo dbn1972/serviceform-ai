@@ -5,10 +5,10 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type pg from 'pg';
 import {
   APP_ONLY,
-  APP_USER,
+  APP_ROLE,
   FIXTURE_A,
-  PEER_USER,
-  PUB_USER,
+  PEER_ROLE,
+  PUB_ROLE,
   T1,
   T2,
   adminPool,
@@ -34,9 +34,9 @@ describe('CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006)', () => {
     admin = adminPool();
     await setupCmp038Roles(admin);
     await setupFixtureSchema(admin, FIXTURE_A);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
-    peer = rolePool(PEER_USER);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
+    peer = rolePool(PEER_ROLE);
     appOnly = rolePool(APP_ONLY);
   });
 
@@ -166,8 +166,8 @@ describe('CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006)', () => {
     );
     for (const row of r.rows) {
       expect(row.tableowner).toBe('sf_migrator');
-      expect(row.tableowner).not.toBe(APP_USER);
-      expect(row.tableowner).not.toBe(PUB_USER);
+      expect(row.tableowner).not.toBe(APP_ROLE);
+      expect(row.tableowner).not.toBe(PUB_ROLE);
     }
   });
 

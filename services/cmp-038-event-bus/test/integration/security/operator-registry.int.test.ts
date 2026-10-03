@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type pg from 'pg';
 import {
-  APP_USER,
+  APP_ROLE,
   APP_ONLY,
-  PUB_USER,
+  PUB_ROLE,
   T1,
   adminPool,
   ctx,
@@ -34,8 +34,8 @@ describe('operator actions and registry (004-25..004-28, 004-26)', () => {
     migrate('up');
     admin = adminPool();
     await setupCmp038Roles(admin);
-    app = rolePool(APP_USER);
-    pub = rolePool(PUB_USER);
+    app = rolePool(APP_ROLE);
+    pub = rolePool(PUB_ROLE);
     appOnly = rolePool(APP_ONLY);
   });
 

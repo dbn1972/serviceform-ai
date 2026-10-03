@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { EventEnvelope } from '@serviceform/contracts';
-import { OutboxError } from '../src/errors.js';
-import { insertOutboxEvent } from '../src/producer.js';
-import { MAX_ENVELOPE_BYTES } from '../src/sql.js';
+import { insertOutboxEvent, MAX_ENVELOPE_BYTES, OutboxError } from '../src/index.js';
 import type { OutboxTx } from '../src/tx.js';
 
 const T1 = '11111111-1111-4111-8111-111111111111';
@@ -92,12 +90,70 @@ describe('insertOutboxEvent (U1-U3, U10)', () => {
     ).rejects.toMatchObject({ code: 'SF-SYS-003' });
   });
 
-  it('refuses a platform event inside a tenant tx unless allowlisted (004-10)', async () => {
+  it('inserts tenant and allowlisted platform rows', async () => {
+    const sqls: string[] = [];
+    const tx = fakeTx(T1, (sql) => sqls.push(sql));
+    await insertOutboxEvent(tx, {
+      schema: 'sf_event_bus',
+      topic: 'sf.example.events',
+      envelope: envelope(),
+    });
+    expect(sqls.some((s) => s.includes('INSERT INTO'))).toBe(true);
+    sqls.length = 0;
+    await insertOutboxEvent(fakeTx(T1), {
+      schema: 'sf_event_bus',
+      topic: 'sf.eventbus.platform.v1',
+      platformAllowlist: ['AuditEventSubmitted'],
+      envelope: envelope({ tenant_id: null, event_type: 'AuditEventSubmitted' }),
+    });
+    await insertOutboxEvent(fakeTx(null), {
+      schema: 'sf_event_bus',
+      topic: 'sf.eventbus.platform.v1',
+      envelope: envelope({ tenant_id: null, event_type: 'TopicRegistered' }),
+    });
+  });
+
+  it('rejects a platform event that is not allowlisted in a tenant transaction', async () => {
     await expect(
       insertOutboxEvent(fakeTx(T1), {
         schema: 'sf_event_bus',
         topic: 'sf.eventbus.platform.v1',
-        envelope: envelope({ tenant_id: null, event_type: 'AuditEventSubmitted' }),
+        envelope: envelope({ tenant_id: null, event_type: 'TopicRegistered' }),
+      }),
+    ).rejects.toMatchObject({ code: 'SF-SYS-003' });
+  });
+
+  it('treats a missing tenant-context row as null tenant', async () => {
+    const tx = {
+      query: async (sql: string) => {
+        if (sql.includes('current_tenant_id')) return { rows: [], rowCount: 0 };
+        return { rows: [], rowCount: 1 };
+      },
+    } as unknown as OutboxTx;
+    await expect(
+      insertOutboxEvent(tx, {
+        schema: 'sf_event_bus',
+        topic: 'sf.example.events',
+        envelope: envelope(),
+      }),
+    ).rejects.toMatchObject({ code: 'SF-TEN-001' });
+  });
+
+  it('rejects an empty or overlong partition key', async () => {
+    await expect(
+      insertOutboxEvent(fakeTx(T1), {
+        schema: 'sf_event_bus',
+        topic: 'sf.example.events',
+        partitionKey: '',
+        envelope: envelope(),
+      }),
+    ).rejects.toMatchObject({ code: 'SF-SYS-003' });
+    await expect(
+      insertOutboxEvent(fakeTx(T1), {
+        schema: 'sf_event_bus',
+        topic: 'sf.example.events',
+        partitionKey: 'k'.repeat(201),
+        envelope: envelope(),
       }),
     ).rejects.toMatchObject({ code: 'SF-SYS-003' });
   });

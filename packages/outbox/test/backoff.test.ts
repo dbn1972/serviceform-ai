@@ -6,6 +6,9 @@ describe('backoff and classify (U5, U6)', () => {
     const v = backoffMs(20, 250, 1000);
     expect(v).toBeGreaterThan(0);
     expect(v).toBeLessThanOrEqual(1000);
+    const low = backoffMs(1, 250, 30_000);
+    expect(low).toBeGreaterThanOrEqual(250);
+    expect(low).toBeLessThanOrEqual(750);
   });
 
   it('classifies retryable vs fatal', () => {
