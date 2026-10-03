@@ -1,0 +1,21 @@
+check	result	seconds	command
+01-install	PASS	2	pnpm install --frozen-lockfile
+02-format	PASS	2	pnpm format:check
+03-lint	PASS	2	pnpm lint
+04-typecheck	PASS	12	pnpm typecheck
+05-unit-coverage	PASS	4	pnpm test:coverage
+06-contracts	PASS	1	pnpm contracts:validate
+07-dependency-rules	PASS	2	pnpm deps:graph
+08-gate-selftests	PASS	0	python3 -m pytest scripts/gates/tests -q
+09-gates	PASS	1	python3 scripts/gates/run_all.py --json test-results/gates/summary.json
+10-build	PASS	14	NEXT_TELEMETRY_DISABLED=1 pnpm build
+11-db-migrations-rls	PASS	6	pnpm db:test
+12-e2e-a11y	PASS	14	pnpm e2e
+13-flutter	PASS	18	cd apps/mobile && flutter pub get --enforce-lockfile && dart format --output=none --set-exit-if-changed lib test && flutter analyze && flutter test
+14-compose-config	PASS	0	docker compose -f infra/local/docker-compose.yml --env-file infra/local/.env config --quiet
+15-terraform-fmt	PASS	0	terraform fmt -check -recursive infra/terraform
+16-actionlint	PASS	0	actionlint .github/workflows/*.yml
+17-secret-scan	PASS	1	gitleaks git . --config .gitleaks.toml --redact --no-banner --exit-code 1
+18-sast-semgrep	PASS	5	semgrep --test tests/semgrep/ --metrics=off --disable-version-check && semgrep scan --metrics=off --disable-version-check --error --config .semgrep/ --exclude tests/semgrep
+19-dependency-audit	PASS	1	pnpm audit --prod --audit-level high
+20-iac-scan	PASS	6	checkov -d . --framework terraform,github_actions,dockerfile,secrets --skip-path node_modules --skip-path apps/mobile/android --skip-path apps/mobile/ios --compact --quiet --skip-download

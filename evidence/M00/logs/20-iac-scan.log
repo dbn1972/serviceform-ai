@@ -1,0 +1,15 @@
+# 20-iac-scan
+# command: checkov -d . --framework terraform,github_actions,dockerfile,secrets --skip-path node_modules --skip-path apps/mobile/android --skip-path apps/mobile/ios --compact --quiet --skip-download
+# commit: 851083671adcb7b5296881395c29f4d244dc91e0
+# started: 2026-10-03T09:29:10Z
+
+terraform scan results:
+
+Passed checks: 1, Failed checks: 0, Skipped checks: 0
+
+github_actions scan results:
+
+Passed checks: 324, Failed checks: 0, Skipped checks: 0
+
+
+# result: PASS (6s)

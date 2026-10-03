@@ -1,0 +1,27 @@
+# 09-gates
+# command: python3 scripts/gates/run_all.py --json test-results/gates/summary.json
+# commit: 851083671adcb7b5296881395c29f4d244dc91e0
+# started: 2026-10-03T09:28:10Z
+
+INFO  [validate-specs] 8 topology roles, 13 .claude/agents definitions
+WARN  [validate-specs] specs/build-plan.yaml: known finding (ADR-0001 PROPOSED): CMP-027 has no owning module
+WARN  [validate-specs] specs/build-plan.yaml: known finding (ADR-0001 PROPOSED): CMP-032 has no owning module
+WARN  [validate-specs] specs/build-plan.yaml: known finding (ADR-0001 PROPOSED): CMP-052 owned by 2 modules: M01, M03
+WARN  [validate-specs] specs/build-plan.yaml: known finding (ADR-0001 PROPOSED): INT-013 owned by 2 modules: M02, M06
+WARN  [validate-specs] specs/build-plan.yaml: known finding (ADR-0001 PROPOSED): M11 has no exit_gate
+WARN  [validate-specs] specs/build-plan.proposed.yaml (fix before accepting ADR-0001): M11 has no exit_gate
+PASS [validate-specs] 0 error(s), 6 warning(s)
+INFO  [migration-lint] 1 migration file(s) checked
+PASS [migration-lint] 0 error(s), 0 warning(s)
+INFO  [design-system] 9 package manifests checked
+PASS [design-system] 0 error(s), 0 warning(s)
+INFO  [no-hardcoded-jurisdictions] 47 source file(s) scanned
+PASS [no-hardcoded-jurisdictions] 0 error(s), 0 warning(s)
+INFO  [contracts-lock] 11 contract(s) in lock, 0 FROZEN
+PASS [contracts-lock] 0 error(s), 0 warning(s)
+INFO  [agent-rules] 11 cursor rules, 13 Claude subagents
+PASS [agent-rules] 0 error(s), 0 warning(s)
+PASS [codeowners] 0 error(s), 0 warning(s)
+
+7/7 gates passed
+# result: PASS (1s)

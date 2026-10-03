@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="0.807169916">
+    <testsuite name="apps/api/test/app.test.ts" timestamp="2026-10-03T09:28:06.932Z" hostname="vm" tests="13" failures="0" errors="0" skipped="0" time="0.528474374">
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports liveness" time="0.11426085">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports readiness from its checks and fails when a dependency fails" time="0.047510355">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns service identity without tenant or secret data" time="0.025345025">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; propagates a valid inbound correlation id and replaces a malformed one" time="0.023080429">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; sets security headers" time="0.031486339">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns a contract-valid SF-SYS-002 body for unknown routes" time="0.123512023">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps schema validation failures to SF-SYS-003 with JSON pointers" time="0.069918569">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps PlatformError to its catalogue status and code" time="0.020917706">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; does not log client network identifiers" time="0.018649936">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; hides internal error details and stack traces" time="0.025555536">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; rejects oversized bodies with a contract error" time="0.022461984">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; requires DATABASE_URL outside LOCAL and CI" time="0.001517483">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; reports invalid variable names without echoing values" time="0.001278616">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/readiness.test.ts" timestamp="2026-10-03T09:28:06.941Z" hostname="vm" tests="1" failures="0" errors="0" skipped="0" time="0.014270438">
+        <testcase classname="apps/api/test/readiness.test.ts" name="database readiness probe (REQ: AWS v1.7 s2 readiness probes) &gt; fails when PostgreSQL is unreachable and closes its pool" time="0.011882292">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/contracts/test/contracts.test.ts" timestamp="2026-10-03T09:28:06.942Z" hostname="vm" tests="7" failures="0" errors="0" skipped="0" time="0.179708342">
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; accepts a snake_case event envelope and rejects the camelCase variant" time="0.106055303">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires tenant context fields on a request context" time="0.013176476">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; never allows extra fields (such as a stack trace) on an error response" time="0.009318724">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires a reason for decision, override and privileged audit events" time="0.023493963">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; fails closed on a critical SIMULATED connector in production (Constitution #22)" time="0.014234623">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires FORCE RLS for tenant- and jurisdiction-scoped entities" time="0.007682141">
+        </testcase>
+        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; has a unique, well-formed error catalogue" time="0.002968185">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/observability/test/redaction.test.ts" timestamp="2026-10-03T09:28:06.945Z" hostname="vm" tests="3" failures="0" errors="0" skipped="0" time="0.025777597">
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; recognises snake_case, camelCase and header-style sensitive keys" time="0.005700499">
+        </testcase>
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; redacts sensitive values at any depth and keeps safe fields" time="0.000675204">
+        </testcase>
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; logger never writes sensitive values" time="0.01410361">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/observability/test/telemetry.test.ts" timestamp="2026-10-03T09:28:06.946Z" hostname="vm" tests="3" failures="0" errors="0" skipped="0" time="0.049003571">
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when no OTLP endpoint is configured" time="0.003129495">
+        </testcase>
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when OTEL_SDK_DISABLED is true" time="0.000378111">
+        </testcase>
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; starts and shuts down cleanly with an endpoint" time="0.042858121">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/app-shell.test.tsx" timestamp="2026-10-03T09:28:06.947Z" hostname="vm" tests="3" failures="0" errors="0" skipped="0" time="0.009935594">
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; renders banner, main and contentinfo landmarks" time="0.006532633">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; starts with a skip link targeting main content" time="0.000362325">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; marks the surface for theming and tests" time="0.000248028">
+        </testcase>
+    </testsuite>
+</testsuites>

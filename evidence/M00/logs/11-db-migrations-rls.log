@@ -1,0 +1,23 @@
+# 11-db-migrations-rls
+# command: pnpm db:test
+# commit: 851083671adcb7b5296881395c29f4d244dc91e0
+# started: 2026-10-03T09:28:25Z
+
+
+> serviceform-ai@ db:test /home/claude/sf
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /home/claude/sf/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /home/claude/sf/db
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  09:28:26
+   Duration  4.23s (tests 95%, transform 2%, import 2%)
+
+# result: PASS (6s)

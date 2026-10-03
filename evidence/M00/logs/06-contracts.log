@@ -1,0 +1,35 @@
+# 06-contracts
+# command: pnpm contracts:validate
+# commit: 851083671adcb7b5296881395c29f4d244dc91e0
+# started: 2026-10-03T09:28:07Z
+
+
+> serviceform-ai@ contracts:validate /home/claude/sf
+> pnpm --filter @serviceform/contracts run validate
+
+
+> @serviceform/contracts@0.0.0 validate /home/claude/sf/packages/contracts
+> tsx scripts/validate-contracts.ts
+
+PASS valid/audit-event.json -> audit-event
+PASS valid/authz-decision-input.json -> authz-decision-input
+PASS valid/authz-decision-output.json -> authz-decision-output
+PASS valid/connector-binding.local.json -> connector-binding
+PASS valid/error-response.json -> error-response
+PASS valid/event-envelope.json -> event-envelope
+PASS valid/idempotency-record.json -> idempotency-record
+PASS valid/isolation-declaration.json -> isolation-declaration
+PASS valid/request-context.citizen.json -> request-context
+PASS valid/request-context.officer.json -> request-context
+PASS valid/simulation-marker.json -> simulation-marker
+PASS invalid/audit-event.override-without-reason.json -> audit-event
+PASS invalid/authz-decision-output.pii-leak.json -> authz-decision-output
+PASS invalid/connector-binding.production-simulated.json -> connector-binding
+PASS invalid/connector-binding.secret-value.json -> connector-binding
+PASS invalid/error-response.stack-trace.json -> error-response
+PASS invalid/event-envelope.camel-case.json -> event-envelope
+PASS invalid/isolation-declaration.tenant-without-rls.json -> isolation-declaration
+PASS invalid/request-context.bad-trace.json -> request-context
+
+10 contracts, 0 failure(s)
+# result: PASS (1s)
