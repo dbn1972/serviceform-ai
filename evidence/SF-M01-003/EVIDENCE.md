@@ -10,7 +10,7 @@ Resolved model: Cursor Agent (Composer)
 Effort: high  
 Gate recommendation: **VERIFY candidate** for human/CI. **Not CERTIFIED.** No Wave 2. No merge.
 
-Commit SHA: see `orchestrator/handovers/SF-M01-003.yaml` `result_commit` (filled after this evidence commit).
+Commit SHA: `b45810eeef07143f5b643e8d456e8c9b2e741328`
 
 ## Commands and results
 
