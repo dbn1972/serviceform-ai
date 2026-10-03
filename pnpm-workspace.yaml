@@ -4,3 +4,8 @@ packages:
   - packages/*
   - services/*
   - db
+
+# Supply-chain controls (pnpm >=10.26).
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade

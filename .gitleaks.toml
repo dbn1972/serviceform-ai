@@ -10,11 +10,32 @@ description = "Database/cache URL with an inline password"
 regex = '''(?i)\b(postgres(ql)?|redis|amqp|mongodb)://[^:\s/]+:[^@\s/]{6,}@'''
 tags = ["password", "url"]
 
-[allowlist]
-description = "Synthetic test identifiers and generated lockfiles"
+# Generated artefacts whose hashes/integrity strings are not credentials.
+[[allowlists]]
+id = "generated-lockfiles"
+description = "Generated lockfiles and hash manifests; package integrity strings are not credentials"
 paths = [
-  '''pnpm-lock\.yaml''',
-  '''apps/mobile/pubspec\.lock''',
-  '''MANIFEST\.sha256''',
-  '''orchestrator/contracts-lock\.yaml''',
+  '''pnpm-lock\.yaml$''',
+  '''apps/mobile/pubspec\.lock$''',
+  '''MANIFEST\.sha256$''',
+  '''orchestrator/contracts-lock\.yaml$''',
+]
+
+# TEST_FIXTURE only. generic-api-key matched RFC4122 identifiers next to partition_key
+# in SF-CON-OUTBOX examples (commit 9947a9b). Current tree uses synthetic placeholders.
+# gitleaks git still scans history, so this exception is required. History rewrite is not
+# required: no real credential. AND + targetRules + exact paths + UUID regex: a non-UUID
+# secret in these files, or the same UUID shape in any other path, still fails.
+[[allowlists]]
+id = "sf-con-outbox-example-rfc4122-ids"
+description = "TEST_FIXTURE: RFC4122 example identifiers in three SF-CON-OUTBOX JSON fixtures (generic-api-key / partition_key). Not credentials. History-only after HEAD placeholders."
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = [
+  '''contracts/shared/examples/valid/outbox-record\.json$''',
+  '''contracts/shared/examples/invalid/outbox-record\.camel-case-envelope\.json$''',
+  '''contracts/shared/examples/invalid/outbox-record\.dead-letter-without-error\.json$''',
+]
+regexes = [
+  '''(?i)[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}''',
 ]

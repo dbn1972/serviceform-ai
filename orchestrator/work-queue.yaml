@@ -1,17 +1,25 @@
 version: "2.5"
-# Wave M01-W1 planned by the orchestrator on 3 Oct 2026 (orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md).
-# All tasks READY since 3 Oct 2026 (P-01..P-05 closed). Nothing claimed, no builder spawned.
+# M01-W1: ADR-0006 ACCEPTED Option A (3 Oct 2026). Builders not launched.
 build_plan_basis: specs/build-plan.yaml (ADR-0001 ACCEPTED)
-base_commit: d1d0965
+base_commit: 126ded198235230982aba0d377061573969ff7ee
+orchestrator_branch: cursor/m01-wave1-dispatch-b828
+result: ADR_0006_ACCEPTED_BUILDERS_NOT_SPAWNED
+builders_launched: 0
+lockfile_policy: orchestrator/dispatch/LOCKFILE-POLICY.md
+adr_0006: ACCEPTED
 tasks:
-  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: CLAIMED}
-  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: CLAIMED}
-  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: CLAIMED}
-  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: CLAIMED}
-  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: CLAIMED}
+  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: READY, privilege_role: sf_cmp002_rw}
+  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: READY, privilege_role: sf_cmp048_rw}
+  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: READY, privilege_role: sf_cmp031_rw}
+  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: READY, privilege_role: sf_cmp038_rw}
+  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: READY, privilege_role: sf_cmp037_rw}
 deferred_to_wave_2:
   - {components: [CMP-003], reason: "needs CMP-002 organisation hierarchy merged"}
   - {components: [CMP-030], reason: "needs CMP-002, CMP-031 and CMP-048 merged"}
   - {components: [CMP-032], reason: "needs CMP-048 secrets/KMS adapter and CMP-031 merged"}
   - {components: [CMP-036, CMP-047], reason: "own apps/api and packages/observability; wiring of wave-1 plugins happens here (single writer)"}
   - {components: [CMP-055], reason: "touches scripts/gates and .github (guardian/delivery-controlled paths)"}
+dispatch_holds:
+  - {id: G-01, item: "Do not spawn builders from this pass. PR #6 must have executed GitHub CI before merge."}
+merge_holds:
+  - {id: G-01, item: "Nothing merges to main until required GitHub Actions on PR #6 are green"}

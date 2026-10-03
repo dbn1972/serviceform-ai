@@ -1,5 +1,7 @@
 # Dispatch plan: M01 wave 1 (DISPATCH-PLAN-M01-W1)
 
+**Superseded as the live queue.** Re-verification against `origin/main` `126ded1` is `orchestrator/dispatch/DISPATCH-PLAN-M01-W1-126ded1.md`. This file remains the original W1 design record (base `d1d0965`). CLAIMED registry state after `de0ac12` was stale and has been reset to READY.
+
 | Field | Value |
 |---|---|
 | Prompt | `prompts/07_MULTI_AGENT_ORCHESTRATOR.md` |
@@ -7,8 +9,8 @@
 | Date | 3 October 2026 |
 | Base commit | `d1d0965` (ADRs accepted, contracts frozen; M00 accepted at `684b443`) |
 | Build plan used | **`specs/build-plan.yaml` version 2.5-adr0001 (ADR-0001, ACCEPTED 3 Oct 2026).** See section 2. |
-| Builders spawned | **None.** Envelopes are written; no task is claimed. |
-| Result | **READY_TO_DISPATCH** (updated 3 Oct 2026; section 3). Builders start only when the owner says "dispatch". |
+| Builders spawned | **None.** |
+| Result | **ADR-0006 ACCEPTED (Option A).** Builders not spawned. PR #6 merge waits on executed GitHub CI. |
 
 ## 1. What is dependency-ready
 
