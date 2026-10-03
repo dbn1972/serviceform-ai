@@ -82,6 +82,7 @@ read_only_paths:
 - policy/**
 - simulators/**
 contract_locks:
+- SF-CON-AUTHZ-DECISION
 - SF-CON-COMMON
 - SF-CON-REQUEST-CONTEXT
 - SF-CON-ERROR-RESPONSE
@@ -108,7 +109,7 @@ acceptance_tests:
 - pnpm test (unit, contract and failure-path tests for this task)
 - service integration suite against disposable PostgreSQL 16 (services/<cmp>/vitest.integration.config.ts)
 - pnpm gates (migration_lint, contracts_lock_gate, hardcoding_gate, agent_rules_gate, codeowners_gate)
-- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base 684b443
+- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base d1d0965
 - pnpm deps:graph (no component-to-component imports, no cycles)
 - gitleaks and semgrep clean on the diff
 required_evidence:
