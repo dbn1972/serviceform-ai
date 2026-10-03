@@ -6,6 +6,7 @@ export default defineConfig({
   test: {
     include: ['test/**/*.int.test.ts'],
     fileParallelism: false,
+    maxWorkers: 1,
     testTimeout: 60_000,
     hookTimeout: 60_000,
   },
