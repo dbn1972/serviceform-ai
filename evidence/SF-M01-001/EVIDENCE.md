@@ -30,7 +30,7 @@
 | `pnpm deps:graph` | PASS (110 modules, 199 deps, no violations) |
 | Migration down 2 / up | PASS (`evidence/SF-M01-001/migration-roundtrip.log`) |
 | `check_scope.py --envelope orchestrator/tasks/SF-M01-001.yaml --base origin/main` | recorded in `scope-check.log` |
-| gitleaks / semgrep | **NOT RUN** in this VM (binaries not installed; CI-PRECHECK-M01-W1). Residual for GitHub `security.yml`. |
+| gitleaks / semgrep | GitHub: in-scope helpers.ts connection-string and node_username findings fixed. Sibling `packages/security` leaks remain (out of write scope). |
 
 ## ADR-0006 privilege layer (executed)
 
@@ -54,8 +54,9 @@
 
 ## Residuals / risks (not blockers claimed)
 
-- `pnpm-lock.yaml` not committed (envelope). CI `--frozen-lockfile` needs merger regeneration.
-- gitleaks/semgrep not executed locally; GitHub security workflow is the gate.
+- `pnpm-lock.yaml` not committed (envelope). CI `--frozen-lockfile` **fails** until orchestrator/merger regenerates the lockfile for this workspace importer.
+- GitHub gitleaks also reports `packages/security/test/*.ts` from SF-M01-002 (commit `1cf3d995`, not on this branch). `.gitleaks.toml` is not an allowed write.
+- In-scope helpers.ts gitleaks/semgrep findings fixed (Pool config fields; no `*User = 'literal'`).
 - Coverage branches 67.57% (envelope line threshold met).
 - Plugin not mounted in the API host (intentional, Wave 2).
 - Production rollback is forward-fix; Down drops `sf_tenant_org` (data loss) and `sf_cmp002_rw` only.

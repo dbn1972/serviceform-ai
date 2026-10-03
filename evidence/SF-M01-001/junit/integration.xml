@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="2.755416379">
-    <testsuite name="test/integration/api-negative.int.test.ts" timestamp="2026-10-03T17:01:37.163Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.647975333">
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-17/23 forged tenant header is 403 and GET other tenant is 403" time="0.070728137">
+<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="2.894730612">
+    <testsuite name="test/integration/api-negative.int.test.ts" timestamp="2026-10-03T17:09:19.120Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.670237499">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-17/23 forged tenant header is 403 and GET other tenant is 403" time="0.067591145">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-19 tenant_id in body is 400" time="0.002349145">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-19 tenant_id in body is 400" time="0.001924942">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-24 missing context is 401" time="0.000794084">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-24 missing context is 401" time="0.000635512">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-28 tenant officer is denied on admin routes" time="0.01664301">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-28 tenant officer is denied on admin routes" time="0.016289788">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; PRIVILEGED_ADMIN without MFA is denied" time="0.003887276">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; PRIVILEGED_ADMIN without MFA is denied" time="0.004250903">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; creates a tenant, organisation, office and activates it" time="0.040454826">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; creates a tenant, organisation, office and activates it" time="0.043144083">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; maker-checker placement requires a different admin" time="0.010959449">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; maker-checker placement requires a different admin" time="0.012410262">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-21 invalid identifiers are 400" time="0.001150273">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-21 invalid identifiers are 400" time="0.000956237">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; GET tenant and offices for the context tenant succeed without T2 leakage" time="0.004664152">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; GET tenant and offices for the context tenant succeed without T2 leakage" time="0.003233889">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-25 authz deny is 403 and PDP throw is 503" time="0.000844308">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-25 authz deny is 403 and PDP throw is 503" time="0.000832443">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-24/30 privileged admin without tenant is 401 on tenant routes" time="0.000626871">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-24/30 privileged admin without tenant is 401 on tenant routes" time="0.000498191">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-32 missing idempotency key is 400" time="0.000584937">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-32 missing idempotency key is 400" time="0.000531792">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-22 bad cursor is 400" time="0.000468734">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-22 bad cursor is 400" time="0.00049412">
         </testcase>
-        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-18 spoofed actor header is 403" time="0.000405526">
-        </testcase>
-    </testsuite>
-    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-03T17:01:37.165Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.504821297">
-        <testcase classname="test/integration/migration.int.test.ts" name="migration static checks (001-42/43) &gt; SQL does not alter sf_app membership and does not grant business DML to sf_app" time="0.01169375">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="API tenant isolation and privileged path &gt; 001-18 spoofed actor header is 403" time="0.000391974">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/pool-reuse.int.test.ts" timestamp="2026-10-03T17:01:37.165Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.496992736">
-        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; reused backend without context sees zero rows" time="0.009828283">
-        </testcase>
-        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; producers cannot select or update outbox; cross-tenant envelope insert is refused" time="0.006240222">
-        </testcase>
-        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; 001-14 failed transaction does not leak tenant context on reuse" time="0.003526753">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-03T17:09:19.122Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.510255096">
+        <testcase classname="test/integration/migration.int.test.ts" name="migration static checks (001-42/43) &gt; SQL does not alter sf_app membership and does not grant business DML to sf_app" time="0.010249359">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-03T17:01:37.166Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.537982361">
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-01 runtime identity is non-superuser sf_app member and not table owner" time="0.003179929">
+    <testsuite name="test/integration/pool-reuse.int.test.ts" timestamp="2026-10-03T17:09:19.122Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.548841382">
+        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; reused backend without context sees zero rows" time="0.007246879">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-02 FORCE RLS on tenant-scoped tables; sf_app is not owner and has no BYPASSRLS" time="0.007294442">
+        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; producers cannot select or update outbox; cross-tenant envelope insert is refused" time="0.004008675">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-03 policies use current_tenant_id and are not TO public" time="0.002430936">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-04 PUBLIC has nothing; sf_app has no TRUNCATE; insert-only have no UPDATE/DELETE" time="0.001261003">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-05 no security definer functions or materialised views" time="0.001591161">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-06 owner-bypass attempts fail as runtime" time="0.002396193">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; ADR-0006 other component cannot DML business tables or SET ROLE _rw" time="0.0073498">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-07/13 RLS matrix: other tenant and unset context see zero rows" time="0.004270378">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-08 cannot reassign tenant_id" time="0.001242109">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-11 FKs include tenant_id" time="0.002286711">
+        <testcase classname="test/integration/pool-reuse.int.test.ts" name="pool reuse and outbox (001-13, 001-37, 001-38) &gt; 001-14 failed transaction does not leak tenant context on reuse" time="0.002225703">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/rls-matrix.int.test.ts" timestamp="2026-10-03T17:01:37.166Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.567644652">
-        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; covers table x operation x tenant case and writes evidence" time="0.05247778">
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-03T17:09:19.122Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.580431328">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-01 runtime identity is non-superuser sf_app member and not table owner" time="0.002474821">
         </testcase>
-        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; 001-09 leakproof ordering hides other-tenant values" time="0.002958454">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-02 FORCE RLS on tenant-scoped tables; sf_app is not owner and has no BYPASSRLS" time="0.006778452">
         </testcase>
-        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; 001-10 pg_stats does not expose canary values" time="0.009768994">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-03 policies use current_tenant_id and are not TO public" time="0.002131151">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-04 PUBLIC has nothing; sf_app has no TRUNCATE; insert-only have no UPDATE/DELETE" time="0.001616079">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-05 no security definer functions or materialised views" time="0.001086536">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-06 owner-bypass attempts fail as runtime" time="0.002530102">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; ADR-0006 other component cannot DML business tables or SET ROLE _rw" time="0.007991057">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-07/13 RLS matrix: other tenant and unset context see zero rows" time="0.005235461">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-08 cannot reassign tenant_id" time="0.001216143">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="001 privilege boundary and catalogue (ADR-0006) &gt; 001-11 FKs include tenant_id" time="0.001989259">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-matrix.int.test.ts" timestamp="2026-10-03T17:09:19.123Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.584965307">
+        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; covers table x operation x tenant case and writes evidence" time="0.049197651">
+        </testcase>
+        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; 001-09 leakproof ordering hides other-tenant values" time="0.004239468">
+        </testcase>
+        <testcase classname="test/integration/rls-matrix.int.test.ts" name="001-07 RLS negative matrix &gt; 001-10 pg_stats does not expose canary values" time="0.0096896">
         </testcase>
     </testsuite>
 </testsuites>

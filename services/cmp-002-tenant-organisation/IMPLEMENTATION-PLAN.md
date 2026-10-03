@@ -273,7 +273,7 @@ Envelope RLS matrix as `sf_app` is executed as the **real login** that is a memb
 
 No new third-party package. Service `package.json` pins versions already present:
 
-- `fastify` 5.12.5, `fastify-plugin` 5.1.0, `pg` 8.23.1
+- `fastify` 5.12.5, `pg` 8.23.1
 - `@serviceform/contracts` workspace:*, `@serviceform/observability` workspace:*
 - dev: `@types/pg` 8.23.1, `typescript` (workspace), vitest provided at root
 
