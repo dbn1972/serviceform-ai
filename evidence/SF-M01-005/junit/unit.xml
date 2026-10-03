@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="28" failures="0" errors="0" time="0.473202806">
+    <testsuite name="packages/connector-sdk/test/circuit-breaker.test.ts" timestamp="2026-10-03T16:54:51.060Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003382413">
+        <testcase classname="packages/connector-sdk/test/circuit-breaker.test.ts" name="circuit breaker &gt; opens after the failure threshold and fail-fasts, then probes once" time="0.002005228">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/egress-imports.test.ts" timestamp="2026-10-03T16:54:51.061Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003681522">
+        <testcase classname="packages/connector-sdk/test/egress-imports.test.ts" name="egress import rule (005-29) &gt; forbids node:http(s), undici and global fetch outside guarded-fetch" time="0.002188438">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/events.test.ts" timestamp="2026-10-03T16:54:51.061Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.054117633">
+        <testcase classname="packages/connector-sdk/test/events.test.ts" name="event builders &gt; rejects an invalid envelope and keeps data free of secret_ref" time="0.052860381">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/guarded-fetch.test.ts" timestamp="2026-10-03T16:54:51.061Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.025715264">
+        <testcase classname="packages/connector-sdk/test/guarded-fetch.test.ts" name="guardedFetch SSRF (005-28) &gt; blocks private, link-local, loopback, schemes and off-allowlist hosts" time="0.024344348">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/modes.test.ts" timestamp="2026-10-03T16:54:51.063Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.057834841">
+        <testcase classname="packages/connector-sdk/test/modes.test.ts" name="mode resolution (005-16, 005-17, 005-18, 005-21) &gt; parses SF_ENVIRONMENT fail-closed" time="0.001844992">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/modes.test.ts" name="mode resolution (005-16, 005-17, 005-18, 005-21) &gt; builds the 8x3xcritical matrix without rewriting mode" time="0.052987737">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/modes.test.ts" name="mode resolution (005-16, 005-17, 005-18, 005-21) &gt; refuses production simulated critical bindings at the guard" time="0.000882562">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/modes.test.ts" name="mode resolution (005-16, 005-17, 005-18, 005-21) &gt; does not fall through when a binding is invalid" time="0.000293453">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/modes.test.ts" name="mode resolution (005-16, 005-17, 005-18, 005-21) &gt; contains no SIMULATED substitution in source" time="0.000291587">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/no-txn-guard.test.ts" timestamp="2026-10-03T16:54:51.064Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.004354199">
+        <testcase classname="packages/connector-sdk/test/no-txn-guard.test.ts" name="no-txn guard &gt; throws inside withTransaction and is clean outside, including nested promises" time="0.002784057">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/retry.test.ts" timestamp="2026-10-03T16:54:51.064Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003990962">
+        <testcase classname="packages/connector-sdk/test/retry.test.ts" name="retry &gt; retries retryable_error with jittered delay and not permanent_error" time="0.001871579">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/retry.test.ts" name="retry &gt; does not retry permanent_error" time="0.000186609">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/retry.test.ts" name="retry &gt; caps retry_after_ms" time="0.000097882">
+        </testcase>
+        <testcase classname="packages/connector-sdk/test/retry.test.ts" name="retry &gt; maps AbortError to timeout and uses default sleeper for a zero delay" time="0.000219964">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/secrets.test.ts" timestamp="2026-10-03T16:54:51.065Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003241301">
+        <testcase classname="packages/connector-sdk/test/secrets.test.ts" name="SecretMaterial &gt; redacts JSON inspect and string forms" time="0.001875951">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/connector-sdk/test/webhook.test.ts" timestamp="2026-10-03T16:54:51.065Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003819056">
+        <testcase classname="packages/connector-sdk/test/webhook.test.ts" name="webhook hmac &gt; accepts a valid signature and rejects tamper, stale, missing and truncated" time="0.002314988">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-037-integration-hub/test/config.test.ts" timestamp="2026-10-03T16:54:51.065Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003831478">
+        <testcase classname="services/cmp-037-integration-hub/test/config.test.ts" name="hub config fail-closed (005-18) &gt; refuses unset, empty, lowercase and unknown SF_ENVIRONMENT" time="0.002300105">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-037-integration-hub/test/echo.test.ts" timestamp="2026-10-03T16:54:51.065Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.059620462">
+        <testcase classname="services/cmp-037-integration-hub/test/echo.test.ts" name="echo simulator &gt; is deterministic and refuses production-class environments" time="0.05745544">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/echo.test.ts" name="echo simulator &gt; covers timeout, permanent, transient, malformed and REAL-mode refusal" time="0.000560548">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-037-integration-hub/test/invoke.test.ts" timestamp="2026-10-03T16:54:51.065Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.17744701">
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="invoke saga (005-06, 005-19, 005-30, 005-31, 005-32, 005-33) &gt; denies by default with no provider call" time="0.005075487">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="invoke saga (005-06, 005-19, 005-30, 005-31, 005-32, 005-33) &gt; rejects missing tenant, body tenant_id and mode overrides" time="0.000716957">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="invoke saga (005-06, 005-19, 005-30, 005-31, 005-32, 005-33) &gt; invokes only outside a DB transaction and replays in-progress without a second call" time="0.079622916">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="invoke saga (005-06, 005-19, 005-30, 005-31, 005-32, 005-33) &gt; opens the circuit after timeouts and emits a failed event" time="0.006389351">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="invoke saga (005-06, 005-19, 005-30, 005-31, 005-32, 005-33) &gt; refuses an adapter call that is made inside withTransaction" time="0.000716251">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="http plugin &gt; treats a forged tenant header as cross-tenant and hides unknown bindings" time="0.051523935">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="http plugin &gt; echo simulator invoke and signed webhook are idempotent" time="0.020492565">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/invoke.test.ts" name="http plugin &gt; health, 401 webhook, oversized body, in-progress replay and production refuse" time="0.010782994">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-037-integration-hub/test/pg.test.ts" timestamp="2026-10-03T16:54:51.066Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.072166665">
+        <testcase classname="services/cmp-037-integration-hub/test/pg.test.ts" name="createPgHub &gt; runs domain DML, maps optional columns, duplicates, rollback and miss paths" time="0.070603958">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-037/connector-invocation-started/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["connector_binding_id", "connector_type", "direction", "mode", "attempts"],
+  "properties": {
+    "connector_binding_id": { "type": "string", "format": "uuid" },
+    "connector_type": { "type": "string" },
+    "direction": { "enum": ["INVOKE", "WEBHOOK"] },
+    "mode": { "enum": ["REAL", "SANDBOX", "SIMULATED"] },
+    "attempts": { "type": "integer" },
+    "outcome": { "type": "string" },
+    "error_code": { "type": "string" },
+    "provider_reference": { "type": "string" },
+    "simulation": { "type": "object" }
+  }
+}
