@@ -10,7 +10,7 @@ Cursor-host captures under `evidence/SF-M01-00{1..5}/` are **SUPERSEDED** (see e
 | Remediation branch | `cursor/m01-w1-remediation-r1` |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/22 |
 | Baseline (immutable, PR #21) | `d33601a5c2c332548530897df1bd35702317df44` |
-| Evidence commit (this index) | _filled after first remediation push_ |
+| CI/evidence remediation commit | see HEAD of this branch after push (job binds `github.sha`) |
 | GitHub run ID | _filled after `m01-envelope-int` job completes_ |
 | Artifact name | `m01-envelope-int-<sha>` |
 | Summary schema | `serviceform.m01.envelope-int.summary.v1` |
