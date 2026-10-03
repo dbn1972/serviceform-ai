@@ -9,7 +9,7 @@ Build ServiceForm AI as a metadata-driven, multi-tenant, government-grade servic
 3. `specs/build-plan.yaml`
 4. Relevant component(s) in `specs/component-map.yaml`
 5. Relevant integration contract(s) in `specs/integration-map.yaml`
-6. Relevant architecture/specification sections in `docs/architecture/`
+6. Relevant architecture/specification sections in `docs/authoritative/` (background only: `docs/reference/`)
 7. Existing code/tests/migrations and accepted ADRs
 8. Applicable path-scoped `.cursor/rules/*.mdc`
 

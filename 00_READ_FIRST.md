@@ -6,11 +6,13 @@ This repository package is the executable engineering companion to the ServiceFo
 1. `ARCHITECTURE-CONSTITUTION.md` - immutable engineering rules unless superseded by approved ADR.
 2. `AGENTS.md` - how every AI coding agent must work.
 3. `specs/build-plan.yaml` - implementation order and gate sequencing.
-4. Relevant `docs/architecture/*` section for the module/component being implemented.
+4. Relevant `docs/authoritative/*` section for the module/component being implemented (`docs/reference/*` is background only).
 5. Relevant `specs/component-map.yaml` and `specs/integration-map.yaml` entries.
 6. Existing code, migrations, tests and accepted ADRs.
 
 ## Authoritative documents
+All three are in `docs/authoritative/`. Older background documents are in `docs/reference/`; the human operating handbook is `docs/handbook/ServiceForm_AI_Claude_Code_Multi_Agent_Read_Plan_Execute_Guide_v1.1.docx`.
+
 - `ServiceForm_AI_Component_Functional_Technical_Specification_AWS_v1.7.docx` - current end-to-end architecture, Studio, tenancy, OPA/Temporal integration and runtime model.
 - `ServiceForm_AI_Building_Block_Engineering_Specifications_v1.4.docx` - all 61 logical components, integration contracts and Design -> Develop -> Verify -> Certify gates.
 - `ServiceForm_AI_Tenant_Isolation_Architecture_v1.0.docx` - tenant isolation and FORCE RLS specification.
