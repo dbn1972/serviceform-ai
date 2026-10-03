@@ -1,0 +1,52 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+coverage/
+
+# test output
+test-results/
+playwright-report/
+blob-report/
+
+# env and secrets (configuration is supplied per environment, never committed)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# python
+__pycache__/
+.venv/
+
+# flutter / dart
+apps/mobile/.dart_tool/
+apps/mobile/build/
+apps/mobile/.flutter-plugins
+apps/mobile/.flutter-plugins-dependencies
+apps/mobile/.packages
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# os/editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# claude local settings
+.claude/settings.local.json
+
+# next.js generated type references
+apps/web-*/next-env.d.ts

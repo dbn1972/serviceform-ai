@@ -1,0 +1,55 @@
+{
+  "name": "serviceform-ai",
+  "private": true,
+  "description": "ServiceForm AI monorepo: metadata-driven, multi-tenant government service platform",
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12.0 <23",
+    "pnpm": ">=10.28.0"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "pnpm -r --workspace-concurrency=2 run typecheck",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "build": "pnpm -r --workspace-concurrency=2 run build",
+    "contracts:validate": "pnpm --filter @serviceform/contracts run validate",
+    "db:migrate": "pnpm --filter @serviceform/db run migrate:up",
+    "db:migrate:down": "pnpm --filter @serviceform/db run migrate:down",
+    "db:test": "pnpm --filter @serviceform/db run test:integration",
+    "e2e": "playwright test -c tests/e2e/playwright.config.ts",
+    "gates": "python3 scripts/gates/run_all.py",
+    "deps:graph": "depcruise apps packages services --config .dependency-cruiser.cjs",
+    "check:bootstrap": "bash scripts/bootstrap-check.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@next/eslint-plugin-next": "16.3.8",
+    "@playwright/test": "1.63.0",
+    "@axe-core/playwright": "4.13.0",
+    "@types/node": "22.20.5",
+    "@vitest/coverage-v8": "5.0.3",
+    "dependency-cruiser": "18.5.0",
+    "eslint": "9.39.5",
+    "eslint-plugin-security": "4.2.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.9",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.0",
+    "vitest": "5.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ],
+    "ignoredBuiltDependencies": [
+      "protobufjs"
+    ]
+  }
+}

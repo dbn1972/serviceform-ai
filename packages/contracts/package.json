@@ -1,0 +1,22 @@
+{
+  "name": "@serviceform/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "TypeScript types and validators for the shared envelopes in /contracts/shared (DRAFT until frozen by the Contract Guardian)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "validate": "tsx scripts/validate-contracts.ts",
+    "build": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15"
+  }
+}

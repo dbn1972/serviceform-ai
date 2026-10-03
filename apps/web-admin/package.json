@@ -1,0 +1,23 @@
+{
+  "name": "@serviceform/web-admin",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Tenant administration and platform operations surface (tenant_admin and platform_ops).",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build",
+    "start": "next start -p 3003",
+    "typecheck": "next typegen && tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@serviceform/ui-ux4g": "workspace:*",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  }
+}

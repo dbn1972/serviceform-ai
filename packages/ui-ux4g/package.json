@@ -1,0 +1,29 @@
+{
+  "name": "@serviceform/ui-ux4g",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Governed UX4G 3.0 wrapper for first-party React surfaces (DESIGN-SYSTEM.md). The only place UI primitives may be defined.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css",
+    "./security-headers": {
+      "types": "./src/security-headers.d.mts",
+      "default": "./src/security-headers.mjs"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
+}

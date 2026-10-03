@@ -1,0 +1,29 @@
+# Local OpenTelemetry collector: OTLP in, traces to Jaeger, metrics/logs to debug output.
+# Attribute processors drop request/response headers and known PII keys defensively
+# (Constitution #21); the application already redacts before export.
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }
+      http: { endpoint: 0.0.0.0:4318 }
+
+processors:
+  batch: {}
+  attributes/redact:
+    actions:
+      - { pattern: ^http\.request\.header\..*, action: delete }
+      - { pattern: ^http\.response\.header\..*, action: delete }
+      - { pattern: (?i).*(aadhaar|mobile|phone|email|password|otp|token|secret).*, action: delete }
+
+exporters:
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls: { insecure: true }
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces: { receivers: [otlp], processors: [attributes/redact, batch], exporters: [otlp/jaeger] }
+    metrics: { receivers: [otlp], processors: [batch], exporters: [debug] }
+    logs: { receivers: [otlp], processors: [attributes/redact, batch], exporters: [debug] }

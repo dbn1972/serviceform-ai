@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 10
+    groups:
+      opentelemetry: { patterns: ['@opentelemetry/*'] }
+      next-react: { patterns: ['next', 'react', 'react-dom', '@types/react*', '@next/*', 'eslint-config-next'] }
+      lint-test: { patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'vitest', '@vitest/*', 'prettier', 'typescript'] }
+  - package-ecosystem: pub
+    directory: /apps/mobile
+    schedule: { interval: weekly }
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+  - package-ecosystem: docker-compose
+    directory: /infra/local
+    schedule: { interval: monthly }
+  - package-ecosystem: terraform
+    directory: /infra/terraform/envs/dev
+    schedule: { interval: monthly }
+  - package-ecosystem: pip
+    directory: /scripts
+    schedule: { interval: monthly }

@@ -1,0 +1,22 @@
+name: serviceform_mobile
+description: "ServiceForm AI citizen mobile app (Flutter). M00 foundation shell only."
+publish_to: 'none'
+version: 0.0.0+1
+
+environment:
+  sdk: ^3.13.5
+  flutter: ">=3.47.6"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  # Visual components come from the governed UX4G wrapper in lib/ux4g (DESIGN-SYSTEM.md),
+  # not from Material. Re-enable only through that wrapper with an ADR.
+  uses-material-design: false

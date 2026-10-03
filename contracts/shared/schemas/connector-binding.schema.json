@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/connector-binding/v1",
+  "title": "ConnectorBinding",
+  "description": "External dependency adapter binding and simulation markings (Eng v1.4 s10, Constitution #22). Production fails closed if a critical binding resolves to SIMULATED.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "connector_binding_id",
+    "connector_type",
+    "mode",
+    "environment",
+    "critical",
+    "secret_ref"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "environment": { "const": "PRODUCTION" }, "critical": { "const": true } }
+      },
+      "then": { "properties": { "mode": { "const": "REAL" } } }
+    },
+    {
+      "if": { "properties": { "environment": { "enum": ["LOCAL", "CI"] } } },
+      "then": { "properties": { "mode": { "const": "SIMULATED" } } }
+    }
+  ],
+  "properties": {
+    "connector_binding_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "tenant_id": {
+      "oneOf": [
+        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+        { "type": "null" }
+      ]
+    },
+    "connector_type": {
+      "type": "string",
+      "enum": ["PAYMENT", "OTP", "SMS", "EMAIL", "DIGILOCKER", "ESIGN", "DEPARTMENT_API"]
+    },
+    "mode": { "type": "string", "enum": ["REAL", "SANDBOX", "SIMULATED"] },
+    "environment": {
+      "type": "string",
+      "enum": ["LOCAL", "CI", "DEVELOPMENT", "SIT", "PERFORMANCE", "UAT", "PREPROD", "PRODUCTION"]
+    },
+    "critical": { "type": "boolean" },
+    "secret_ref": {
+      "type": ["string", "null"],
+      "pattern": "^(aws-sm|aws-ssm|vault)://[A-Za-z0-9/_.+=@-]+$",
+      "description": "Reference to an external secret store entry, never a secret value."
+    },
+    "simulator_version": { "type": "string", "maxLength": 40 }
+  }
+}

@@ -1,0 +1,12 @@
+# Ownership findings in the in-force specs/build-plan.yaml, recorded by
+# ARCHITECTURE-VERIFICATION-001 (H-02) and fixed by the PROPOSED ADR-0001.
+# Ratchet: validate_specs.py fails on any finding not listed here, and on any listed finding
+# that no longer occurs. Delete this file's entries when ADR-0001 is accepted.
+resolution: ADR-0001 PROPOSED
+known_findings:
+  - CMP-027 has no owning module
+  - CMP-032 has no owning module
+  - "CMP-052 owned by 2 modules: M01, M03"
+  - "INT-013 owned by 2 modules: M02, M06"
+  # Found by the M00 validator (not in ARCHITECTURE-VERIFICATION-001): M11 reuse proof has no exit gate.
+  - M11 has no exit_gate

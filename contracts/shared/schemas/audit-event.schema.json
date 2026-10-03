@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/audit-event/v1",
+  "title": "AuditEvent",
+  "description": "Audit event minimum contract (AWS v1.7 s14.3). before/after are references to versions or diffs, not sensitive payload copies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "audit_id",
+    "occurred_at",
+    "tenant_id",
+    "actor_type",
+    "actor_id",
+    "action",
+    "resource_type",
+    "resource_id",
+    "correlation_id",
+    "trace_id",
+    "result"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "action_class": { "enum": ["DECISION", "OVERRIDE", "PRIVILEGED"] } },
+        "required": ["action_class"]
+      },
+      "then": { "required": ["reason"] }
+    }
+  ],
+  "properties": {
+    "audit_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "occurred_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "tenant_id": {
+      "oneOf": [
+        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+        { "type": "null" }
+      ]
+    },
+    "actor_type": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType" },
+    "actor_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "office_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "jurisdiction_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "action": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "action_class": {
+      "type": "string",
+      "enum": ["READ", "WRITE", "DECISION", "OVERRIDE", "PRIVILEGED"]
+    },
+    "resource_type": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]{1,63}$" },
+    "resource_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "before_ref": { "type": "string", "maxLength": 300 },
+    "after_ref": { "type": "string", "maxLength": 300 },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 1000 },
+    "correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "trace_id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
+    "result": { "type": "string", "enum": ["SUCCESS", "DENIED", "FAILED"] }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/idempotency-record/v1",
+  "title": "IdempotencyRecord",
+  "description": "Authoritative idempotency record (AWS v1.7 s13.4). Scope = principal + tenant + endpoint + key; a key reused with a different request fingerprint is rejected with SF-APP-002.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "principal_id",
+    "endpoint",
+    "idempotency_key",
+    "request_fingerprint",
+    "status",
+    "created_at",
+    "expires_at"
+  ],
+  "properties": {
+    "tenant_id": {
+      "oneOf": [
+        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+        { "type": "null" }
+      ]
+    },
+    "principal_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "endpoint": {
+      "type": "string",
+      "pattern": "^(GET|POST|PUT|PATCH|DELETE) /[A-Za-z0-9_{}/.:-]*$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "request_fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "status": { "type": "string", "enum": ["IN_PROGRESS", "COMPLETED", "FAILED"] },
+    "response_ref": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "Reference to the stored final response, not the response body."
+    },
+    "created_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "expires_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" }
+  }
+}

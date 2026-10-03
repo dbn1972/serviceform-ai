@@ -1,0 +1,20 @@
+# Secret scanning config (SECURITY.md: secret scanning in CI). Extends the default rule set.
+title = "ServiceForm AI gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "serviceform-connection-string-password"
+description = "Database/cache URL with an inline password"
+regex = '''(?i)\b(postgres(ql)?|redis|amqp|mongodb)://[^:\s/]+:[^@\s/]{6,}@'''
+tags = ["password", "url"]
+
+[allowlist]
+description = "Synthetic test identifiers and generated lockfiles"
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''apps/mobile/pubspec\.lock''',
+  '''MANIFEST\.sha256''',
+  '''orchestrator/contracts-lock\.yaml''',
+]

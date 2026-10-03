@@ -1,0 +1,155 @@
+# ServiceForm AI CI: quality, architecture gates, database, UI smoke/accessibility, mobile.
+# Required checks for main (configure branch protection): every job in this workflow and in
+# security.yml. Failing gates are never bypassed by disabling tests or rules (AGENTS.md).
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PNPM_VERSION: '10.28.0'
+  PYTHON_VERSION: '3.11'
+  FLUTTER_VERSION: '3.47.6'
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  quality:
+    name: format, lint, typecheck, unit, contracts, build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test:coverage
+      - run: pnpm contracts:validate
+      - run: pnpm deps:graph
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-results
+          path: |
+            test-results/unit
+            coverage/coverage-summary.json
+
+  architecture-gates:
+    name: architecture gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@v6
+        with: { python-version: '${{ env.PYTHON_VERSION }}' }
+      - run: pip install -r scripts/requirements.txt
+      - name: gate self-tests
+        run: python -m pytest scripts/gates/tests -q
+      - name: run gates
+        run: python scripts/gates/run_all.py
+      - name: task envelope scope (agent branches only)
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'agent/')
+        run: |
+          task="${GITHUB_HEAD_REF##*-SF-}"; task="SF-${task}"
+          envelope="orchestrator/tasks/${task}.yaml"
+          test -f "$envelope" || { echo "agent branch without task envelope $envelope"; exit 1; }
+          python scripts/gates/check_scope.py --envelope "$envelope" --base "origin/${GITHUB_BASE_REF}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: gate-results, path: test-results/gates }
+
+  database:
+    name: migrations and tenant-isolation harness
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16.14-alpine
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ${{ github.run_id }}-ci-only
+          POSTGRES_DB: serviceform_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgres://ci:${{ github.run_id }}-ci-only@localhost:5432/serviceform_test
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: '${{ env.PYTHON_VERSION }}' }
+      - run: python scripts/gates/migration_lint.py
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:test
+
+  ui-smoke:
+    name: web shells smoke and accessibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm -r --filter "./apps/web-*" run build
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: e2e-results, path: 'test-results/e2e' }
+
+  mobile:
+    name: flutter analyze and test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run: { working-directory: apps/mobile }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with: { flutter-version: '${{ env.FLUTTER_VERSION }}', channel: stable, cache: true }
+      - run: flutter pub get --enforce-lockfile
+      - run: dart format --output=none --set-exit-if-changed lib test
+      - run: flutter analyze
+      - run: flutter test
+
+  infra:
+    name: workflows, compose and terraform validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: lint workflows (actionlint)
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color
+      - name: docker compose config
+        run: |
+          bash scripts/dev/init-local-env.sh
+          docker compose -f infra/local/docker-compose.yml --env-file infra/local/.env config --quiet
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: '1.16.5' }
+      - run: terraform fmt -check -recursive infra/terraform
+      - name: terraform validate
+        working-directory: infra/terraform/envs/dev
+        run: terraform init -backend=false -input=false && terraform validate

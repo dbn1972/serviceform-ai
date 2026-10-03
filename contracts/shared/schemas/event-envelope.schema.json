@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/event-envelope/v1",
+  "title": "EventEnvelope",
+  "description": "Standard domain event envelope, field set and casing from AWS v1.7 s13.2 (precedence over Eng v1.4 Appendix A camelCase; see proposed ADR-0002). Payload is minimal; binaries and evidence are referenced, never embedded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "event_type",
+    "schema_version",
+    "tenant_id",
+    "cell_id",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_version",
+    "occurred_at",
+    "correlation_id",
+    "actor",
+    "data"
+  ],
+  "properties": {
+    "event_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "event_type": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]{2,79}$" },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "tenant_id": {
+      "oneOf": [
+        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+        { "type": "null" }
+      ],
+      "description": "Required (non-null) for tenant-owned events (TI constitution #10); null only for GLOBAL/PLATFORM_OPERATIONAL events."
+    },
+    "cell_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId" },
+    "aggregate_type": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]{1,63}$" },
+    "aggregate_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "aggregate_version": { "type": "integer", "minimum": 0 },
+    "occurred_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "causation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "actor": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actor" },
+    "data": { "type": "object" }
+  }
+}

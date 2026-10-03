@@ -1,0 +1,31 @@
+/*
+ * BOOTSTRAP PLACEHOLDER (M00 gap G-03). Token names consumed by the wrapper, mapped to neutral
+ * system defaults. Replace with the vendored UX4G 3.0 token stylesheet; do not tune these values.
+ */
+:root {
+  --sf-font-family: system-ui, sans-serif;
+  --sf-color-text: CanvasText;
+  --sf-color-background: Canvas;
+  --sf-focus-outline: 3px solid Highlight;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sf-font-family);
+  color: var(--sf-color-text);
+  background: var(--sf-color-background);
+}
+
+.sf-skip-link {
+  position: absolute;
+  left: -10000px;
+}
+
+.sf-skip-link:focus {
+  position: static;
+  outline: var(--sf-focus-outline);
+}
+
+:focus-visible {
+  outline: var(--sf-focus-outline);
+}

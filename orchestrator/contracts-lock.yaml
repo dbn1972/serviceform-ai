@@ -1,3 +1,94 @@
 version: "2.5"
-contracts: []
-# Example fields: id, version, status, owner, producer, consumers, schema_hash, change_request.
+# Shared-envelope contracts drafted in M00 (bootstrap). Status DRAFT: builders may code against
+# them, but they are not FROZEN until the Architecture & Contract Guardian reviews them and the
+# event-envelope casing decision (proposed ADR-0002) is accepted. FROZEN entries are hash-checked
+# by scripts/gates/contracts_lock_gate.py.
+contracts:
+  - id: SF-CON-AUDIT-EVENT
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s14.3"
+    path: contracts/shared/schemas/audit-event.schema.json
+    schema_hash: 1707c856f35a3e3377ceb00c27b1348e5fd4136c7d521b7d9a0e17801975f96a
+    change_request: null
+  - id: SF-CON-AUTHZ-DECISION
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s20.3"
+    path: contracts/shared/schemas/authz-decision.schema.json
+    schema_hash: 36a4e23860489742281410247facd5894aa206195ad01baaaeacfa2973d188b1
+    change_request: null
+  - id: SF-CON-COMMON
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s13.3, s14.1"
+    path: contracts/shared/schemas/common.schema.json
+    schema_hash: ca8a12ad179f5d025a0cc818c0a04bbe6a4114d5591663160baef0953d36a6f3
+    change_request: null
+  - id: SF-CON-CONNECTOR-BINDING
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "Eng v1.4 s10.1-10.2"
+    path: contracts/shared/schemas/connector-binding.schema.json
+    schema_hash: 317aa44f76b720180310c97ed65d40da02b8444959ed3854babc36883b80a011
+    change_request: null
+  - id: SF-CON-ERROR-RESPONSE
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s13.1, s13.3"
+    path: contracts/shared/schemas/error-response.schema.json
+    schema_hash: 816837b6f741d47659820d816eefc0fedb0c37dadc063efc1921313092523b55
+    change_request: null
+  - id: SF-CON-EVENT-ENVELOPE
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s13.2"
+    path: contracts/shared/schemas/event-envelope.schema.json
+    schema_hash: 6297417c901662b2f8c6b712be3854fc04656e593a1719cbbdae6cf98627e9ce
+    change_request: null
+  - id: SF-CON-IDEMPOTENCY
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s13.4"
+    path: contracts/shared/schemas/idempotency-record.schema.json
+    schema_hash: 9fdda937d4af9a7f62b03e5b228154f3bcc56c146ba04105e7d87d89aab4e031
+    change_request: null
+  - id: SF-CON-ISOLATION-DECLARATION
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "TI v1.0 s7; Constitution #24"
+    path: contracts/shared/schemas/isolation-declaration.schema.json
+    schema_hash: bdce57fe44798fe02aa3a94da2112e55450622a237d9038c969646a3d9ed3f01
+    change_request: null
+  - id: SF-CON-REQUEST-CONTEXT
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "TI v1.0 s6; AWS v1.7 s13.1"
+    path: contracts/shared/schemas/request-context.schema.json
+    schema_hash: a0812a5a5c79529981298bb4aba07fd53cdd78dbf0e17f0e021f3810e0d5ac55
+    change_request: null
+  - id: SF-CON-SIMULATION-MARKER
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "Eng v1.4 s10.4"
+    path: contracts/shared/schemas/simulation-marker.schema.json
+    schema_hash: e5c8f6869d65b7eda2bacf0ec1dfac5d1f14717daf7265fd2f6605d6f3604c62
+    change_request: null
+  - id: SF-CON-ERROR-CATALOGUE
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s13.3; specs/error-codes.yaml; SF-SYS-* proposed"
+    path: contracts/shared/error-catalogue.json
+    schema_hash: 04c93ddb07bfea2d92dc9189641d8b2449179bc87fb64a78d942ca3457a24a2b
+    change_request: null

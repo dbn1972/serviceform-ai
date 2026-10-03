@@ -1,0 +1,144 @@
+{
+  "$comment": "SF-* error catalogue for the API foundation. Codes marked source AWS-v1.7-s13.3 are authoritative. SF-SYS-* and SF-AI-001 are PROPOSED additions pending Contract Guardian review (generic platform errors have no code in AWS v1.7 s13.3).",
+  "status": "DRAFT",
+  "codes": [
+    {
+      "code": "SF-AUTH-001",
+      "message": "Authentication required",
+      "http": [401],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-AUTH-002",
+      "message": "Insufficient authorization",
+      "http": [403],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-TEN-001",
+      "message": "Tenant context missing",
+      "http": [400, 401],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-TEN-002",
+      "message": "Cross-tenant operation denied",
+      "http": [403],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-FORM-001",
+      "message": "Form/schema version unavailable",
+      "http": [409, 422],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-FORM-002",
+      "message": "Form schema validation failed",
+      "http": [422],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-RULE-001",
+      "message": "Rule evaluation failed safely",
+      "http": [422, 500],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-RULE-002",
+      "message": "Eligibility conditions not satisfied",
+      "http": [422],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-APP-001",
+      "message": "Invalid application state transition",
+      "http": [409],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-APP-002",
+      "message": "Duplicate submission / idempotency conflict",
+      "http": [409],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-EVD-001",
+      "message": "Required evidence missing",
+      "http": [422],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-EVD-002",
+      "message": "Evidence expired or invalid",
+      "http": [422],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-PAY-001",
+      "message": "Payment pending",
+      "http": [409],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-PAY-002",
+      "message": "Duplicate payment detected",
+      "http": [409],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-WF-001",
+      "message": "Workflow transition rejected",
+      "http": [409],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-CRED-001",
+      "message": "Credential signing/issuance failed",
+      "http": [503],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-INT-001",
+      "message": "External integration temporarily unavailable",
+      "http": [503],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-RATE-001",
+      "message": "Rate limit exceeded",
+      "http": [429],
+      "source": "AWS-v1.7-s13.3"
+    },
+    {
+      "code": "SF-AI-001",
+      "message": "AI assistance unavailable",
+      "http": [503],
+      "source": "specs/error-codes.yaml"
+    },
+    {
+      "code": "SF-SYS-001",
+      "message": "Unexpected server error",
+      "http": [500],
+      "source": "PROPOSED"
+    },
+    {
+      "code": "SF-SYS-002",
+      "message": "Resource or route not found",
+      "http": [404],
+      "source": "PROPOSED"
+    },
+    {
+      "code": "SF-SYS-003",
+      "message": "Request validation failed",
+      "http": [400],
+      "source": "PROPOSED"
+    },
+    {
+      "code": "SF-SYS-004",
+      "message": "Service temporarily unavailable",
+      "http": [503],
+      "source": "PROPOSED"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@serviceform/web-studio",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ServiceForm Studio surface: no-code service, form, rules, workflow and access authoring (built from M03 onward).",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "typecheck": "next typegen && tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@serviceform/ui-ux4g": "workspace:*",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  }
+}

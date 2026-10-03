@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/request-context/v1",
+  "title": "RequestContext",
+  "description": "Server-derived tenant/actor context established before domain execution (TI v1.0 s6, AWS v1.7 s13.1). Never populated from client-supplied tenant identifiers. tenant_id is null only for actors that are not tenant members (for example a citizen before selecting a tenant-scoped resource).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tenant_id",
+    "cell_id",
+    "actor",
+    "roles",
+    "jurisdiction_ids",
+    "correlation_id",
+    "trace_id",
+    "auth_assurance"
+  ],
+  "properties": {
+    "tenant_id": {
+      "oneOf": [
+        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+        { "type": "null" }
+      ]
+    },
+    "cell_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId" },
+    "actor": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actor" },
+    "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "office_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+      "uniqueItems": true
+    },
+    "jurisdiction_ids": {
+      "type": "array",
+      "items": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+      "uniqueItems": true
+    },
+    "delegation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "auth_assurance": {
+      "type": "string",
+      "enum": ["NONE", "OTP", "PASSWORD", "MFA", "WORKLOAD_IDENTITY"]
+    },
+    "correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "trace_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$",
+      "description": "W3C trace-context trace id."
+    }
+  }
+}

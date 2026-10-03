@@ -1,0 +1,21 @@
+{
+  "name": "@serviceform/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PostgreSQL migration framework (node-pg-migrate, SQL files) and database test harness",
+  "type": "module",
+  "scripts": {
+    "migrate:up": "node-pg-migrate up --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform --create-migrations-schema --check-order",
+    "migrate:down": "node-pg-migrate down --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform",
+    "migrate:create": "node-pg-migrate create --migrations-dir migrations --migration-file-language sql",
+    "test:integration": "vitest run --root . --config vitest.integration.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "node-pg-migrate": "9.0.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

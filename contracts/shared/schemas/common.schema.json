@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/common/v1",
+  "title": "ServiceForm common definitions",
+  "$defs": {
+    "uuid": { "type": "string", "format": "uuid" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp (RFC 3339)."
+    },
+    "cellId": {
+      "type": "string",
+      "pattern": "^cell-[a-z0-9-]{1,40}$",
+      "description": "Execution/data cell identity (AWS v1.7 s2, TI v1.0 layer 4)."
+    },
+    "actorType": {
+      "type": "string",
+      "enum": ["CITIZEN", "OFFICER", "SYSTEM", "INTEGRATION", "PRIVILEGED_ADMIN"],
+      "description": "AWS v1.7 s14.3 actor_type values."
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "$ref": "#/$defs/actorType" },
+        "id": { "$ref": "#/$defs/uuid" }
+      }
+    },
+    "errorCode": {
+      "type": "string",
+      "pattern": "^SF-(AUTH|TEN|FORM|RULE|APP|EVD|PAY|WF|CRED|INT|RATE|AI|SYS)-[0-9]{3}$",
+      "description": "Stable machine-readable SF-* error code (AWS v1.7 s13.3, specs/error-codes.yaml)."
+    },
+    "isolationClass": {
+      "type": "string",
+      "enum": [
+        "GLOBAL",
+        "TENANT_SCOPED",
+        "JURISDICTION_SCOPED",
+        "CITIZEN_PRIVATE",
+        "PLATFORM_OPERATIONAL"
+      ],
+      "description": "Mandatory isolation class (AWS v1.7 s14.1, TI v1.0 s7, Constitution #24)."
+    }
+  }
+}

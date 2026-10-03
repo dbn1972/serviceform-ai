@@ -1,0 +1,33 @@
+# Repository-specific SAST rules (SECURITY.md; Constitution #21; TI v1.0 s6). BYPASSRLS and
+# RLS rules for SQL are enforced by scripts/gates/migration_lint.py. Run with the
+# p/default, p/typescript, p/nodejsscan and p/secrets registry packs in CI.
+rules:
+  - id: sf-no-sql-interpolation
+    languages: [typescript]
+    severity: ERROR
+    message: SQL built with template interpolation. Use parameterised queries ($1, $2, ...).
+    patterns:
+      - pattern-either:
+          - pattern: $DB.query(`...${$X}...`, ...)
+          - pattern: $DB.query(`...${$X}...`)
+  - id: sf-no-console-log
+    languages: [typescript]
+    severity: ERROR
+    message: Use the redacting logger from @serviceform/observability, not console.log (Constitution #21).
+    pattern: console.log(...)
+    paths:
+      include: [apps/api/src/, services/, packages/*/src/]
+  - id: sf-no-tenant-from-client-header
+    languages: [typescript]
+    severity: ERROR
+    message: Tenant context is server-derived; client tenant headers are never authoritative (TI v1.0 s6).
+    pattern-either:
+      - pattern: $REQ.headers['x-tenant-id']
+      - pattern: $REQ.headers["x-tenant-id"]
+  - id: sf-no-tls-verify-disable
+    languages: [typescript]
+    severity: ERROR
+    message: Never disable TLS verification.
+    pattern-either:
+      - pattern: 'rejectUnauthorized: false'
+      - pattern: process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
