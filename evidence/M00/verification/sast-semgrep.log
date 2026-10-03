@@ -1,0 +1,36 @@
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 1 file with 4 Code rules:
+  Scanning 1 file with 4 ts rules.
+3/3: ✓ All tests passed
+No tests for fixes found.
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 291 files tracked by git with 4 Code rules:
+  Scanning 51 files with 4 ts rules.
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 4
+ • Targets scanned: 51
+ • Parsed lines: ~100.0%
+ • Scan skipped: 
+   ◦ Matching --exclude patterns: 2
+   ◦ Files matching .semgrepignore patterns: 84
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 4 rules on 51 files: 0 findings.

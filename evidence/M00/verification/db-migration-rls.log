@@ -1,0 +1,17 @@
+
+> serviceform-ai@ db:test /home/claude/sf
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /home/claude/sf/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /home/claude/sf/db
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  09:44:54
+   Duration  5.44s (tests 97%, import 2%, transform 1%)
+
