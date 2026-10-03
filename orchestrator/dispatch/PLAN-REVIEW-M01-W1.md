@@ -80,3 +80,22 @@
 - O-2: owner of the AWS s20.12 access-model entities (likely Studio/Access Designer, M03). Default: not built in W1.
 - O-3: whether audit may store source IP / device metadata. Default: not stored.
 - O-4: Contract Change Requests to queue: `purpose` on audit events (TI s19); forbid SANDBOX in PRODUCTION in connector-binding (Eng s10.1).
+
+## 5. Proposed security precheck rulings (SECURITY-PRECHECK-M01-W1, 3 Oct 2026) — awaiting owner approval before implementation starts
+
+Every fix the verifier proposed is adopted; every case in `SF-M01-00N-negative-tests.md` is mandatory, including the H1 harness rules (real LOGIN role per run, no `SET ROLE` from a superuser session, fail rather than skip).
+
+| ID | Ruling |
+|---|---|
+| X-1 | **Proposed for wave 1; needs owner approval (ADR-0006 PROPOSED).** Each component migration creates a NOLOGIN role `sf_<component>_rw` (`sf_tenant_org_rw`, `sf_security_rw`, `sf_audit_rw`, `sf_event_bus_rw`, `sf_integration_hub_rw`) and grants its DML to that role, not to `sf_app`. RLS policies stay `TO sf_app`; component logins are `IN ROLE sf_app, sf_<component>_rw`. Outbox/inbox grants stay exactly as the frozen template says (residual recorded). The state-machine triggers in P-002-2, P-002-6, P-001-3 and P-003-2 are built as well, so the control holds if the owner refuses ADR-0006. Test 003-05 must pass. |
+| X-2 | Restates X-12: tests never use the `SET LOCAL ROLE sf_app` harness pattern. |
+| X-3 | Catalogue tests are the control; a migration_lint extension is queued for the Contract Guardian. |
+| P-001-1 | Target tenant only from the route (`/v1/admin/tenants/{id}/bindings`) or the stored proposal; authorize with `resource.tenant_id` = target before BEGIN; set `app.tenant_id` to the target only inside the privileged transaction after allow. P-001-2..4 adopted. |
+| P-002-1 | **Proposed: SF-M01-002 would own `infra/local/docker-compose.yml` (the `opa` service only) and `infra/local/README.md`.** OPA runs with `--authentication=token --authorization=basic`, a `system.authz` policy under `policy/opa/system/` (PEP token: decision POST only; grant-publisher token: `sf_runtime/**` writes only; nobody writes `/v1/policies`). Tokens come from environment variables required by compose (`${VAR:?}`) and the SecretsProvider, never committed values. Test 002-15. |
+| P-002-2 | Trigger state machine as proposed; the publisher pushes only the approve command's committed result. P-002-3..7 adopted. |
+| P-003-1 | `sf_app` (and `sf_audit_rw`) get INSERT only on `audit_event_platform`; platform reads go through the privileged path, deny-only in W1. P-003-2: `sf_audit_rw` writer role plus head trigger. P-003-3..5 adopted. |
+| P-004-1 | No test flag: the relay guard checks `session_user` and `current_user` always. Tests connect as a real login in `sf_outbox_publisher`. |
+| P-004-2 | Audit before act: the operator command runs as a CMP-038 login (`sf_app` + `sf_event_bus_rw`), checks PRIVILEGED_ADMIN + MFA + reason + authorization, commits its audit/outbox row first; only then the relay applies replay/discard, conditioned on status and DLQ acknowledgement. P-004-3..6 adopted; P-004-4 queued as a CCR (O-4). |
+| P-005-1..5 | Adopted. |
+
+New owner item **O-5**: accept or refuse ADR-0006 (per-component write roles) before the first wave-1 merge.
