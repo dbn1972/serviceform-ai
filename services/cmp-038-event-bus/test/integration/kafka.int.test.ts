@@ -146,7 +146,7 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
       await insertOutboxEvent(tx, {
         schema: 'sf_event_bus',
         topic: 'sf.example.events',
-        partitionKey: 'not-the-aggregate-id',
+        partitionKey: 'not-' + id,
         envelope: exampleEnvelope(T1, id),
       });
     });
@@ -157,7 +157,7 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
       workerId: 'k4',
       schemaAllowlist: ['sf_event_bus'],
     });
-    await publisher.runOnce();
+    for (let i = 0; i < 4; i += 1) await publisher.runOnce();
     const row = await admin.query<{ status: string; last_error_code: string | null }>(
       'SELECT status, last_error_code FROM sf_event_bus.outbox_event WHERE event_id = $1::uuid',
       [id],
