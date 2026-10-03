@@ -1,0 +1,27 @@
+{
+  "name": "@serviceform/cmp-048-security-platform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-048 Security Platform commands, privileged access and policy metadata",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "opa:test": "bash scripts/opa-test.sh"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.1",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "@serviceform/security": "workspace:*",
+    "fastify": "5.12.5",
+    "fastify-plugin": "5.1.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

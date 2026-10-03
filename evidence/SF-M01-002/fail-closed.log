@@ -1,0 +1,17 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > P5 ECONNREFUSED -> PDP_UNAVAILABLE 5ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > P6 timeout -> PDP_TIMEOUT 30ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > P7 empty result -> POLICY_UNDEFINED 9ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > P7 allow string true denied 46ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > P7 text/html denied 4ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > 002-21 rejects userinfo and bad scheme 1ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > 002-21 does not follow redirect 4ms
+ ✓ packages/security/test/pdp-client.fault.test.ts > OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) > positive control: valid allow 4ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  16:59:16
+   Duration  383ms (transform 40%, tests 36%, import 23%, worker 1%)
+

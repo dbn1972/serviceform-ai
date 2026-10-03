@@ -1,0 +1,27 @@
+{
+  "name": "@serviceform/security",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-048 PEP, request-context plugin, secrets and KMS ports",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "10.3.0",
+    "@opentelemetry/api": "1.9.1",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "fastify-plugin": "5.1.0"
+  },
+  "peerDependencies": {
+    "fastify": "5.12.5"
+  },
+  "devDependencies": {
+    "fastify": "5.12.5"
+  }
+}

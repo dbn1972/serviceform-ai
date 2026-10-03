@@ -1,0 +1,18 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-048-security-platform
+
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-01..04 catalogue: NOLOGIN, membership, no bypass, owner sf_migrator 13ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-05 own authorized INSERT/SELECT succeeds 5ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-06 wrong tenant / unset is isolated on one backend 4ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-07/11 peer sf_app-only login is denied DML on authoritative tables 8ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-08/09 SET ROLE into other _rw roles fails 2ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-10 GRANT sibling role as runtime fails 1ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-12/13 PUBLIC empty; sf_app has no DML on authoritative tables 2ms
+ ✓ test/integration/privilege-boundary.int.test.ts > ADR-0006 privilege-boundary (PB-01..PB-15) > PB-15 runtime cannot own or disable RLS 1ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  16:59:32
+   Duration  637ms (tests 86%, transform 8%, import 6%, worker 1%)
+
+decision_latency_p99_ms=0.0929559999999583

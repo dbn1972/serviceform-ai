@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="42" failures="0" errors="0" time="2.797100583">
+    <testsuite name="packages/security/test/circuit-breaker.test.ts" timestamp="2026-10-03T16:59:05.405Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.0032279">
+        <testcase classname="packages/security/test/circuit-breaker.test.ts" name="CircuitBreaker (002-22) &gt; opens after N failures and admits one half-open probe" time="0.001834237">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/contract-conformance.test.ts" timestamp="2026-10-03T16:59:05.406Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.072217254">
+        <testcase classname="packages/security/test/contract-conformance.test.ts" name="SF-CON-AUTHZ-DECISION conformance &gt; accepts a valid input and output" time="0.07049001">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/decision-log-canary.test.ts" timestamp="2026-10-03T16:59:05.406Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="2.032648588">
+        <testcase classname="packages/security/test/decision-log-canary.test.ts" name="1000 decision logs contain no canary (P11) &gt; writes 1000 allowlisted lines without canary" time="2.03043651">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/decision-log-redaction.test.ts" timestamp="2026-10-03T16:59:05.406Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003810526">
+        <testcase classname="packages/security/test/decision-log-redaction.test.ts" name="decision log allowlist (002-35) &gt; drops forbidden fields and keeps allowlist" time="0.002216333">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/deny-by-default.test.ts" timestamp="2026-10-03T16:59:05.406Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.070387306">
+        <testcase classname="packages/security/test/deny-by-default.test.ts" name="authorize deny-by-default (P9) &gt; invalid action does not call PDP" time="0.068797322">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/local-kms.test.ts" timestamp="2026-10-03T16:59:05.407Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.034402518">
+        <testcase classname="packages/security/test/local-kms.test.ts" name="LocalKms (002-27 S3-S5, 002-29) &gt; round-trips and fails closed on tenant AAD mismatch / tamper" time="0.007894568">
+        </testcase>
+        <testcase classname="packages/security/test/local-kms.test.ts" name="LocalKms (002-27 S3-S5, 002-29) &gt; IVs do not repeat across many encryptions" time="0.023860904">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/local-secrets-provider.test.ts" timestamp="2026-10-03T16:59:05.407Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.009434823">
+        <testcase classname="packages/security/test/local-secrets-provider.test.ts" name="LocalSecretsProvider (002-28) &gt; reads SF_SECRET_* and refuses bad env/names/paths" time="0.003967899">
+        </testcase>
+        <testcase classname="packages/security/test/local-secrets-provider.test.ts" name="LocalSecretsProvider (002-28) &gt; refuses symlink escape" time="0.003745874">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/pdp-client.fault.test.ts" timestamp="2026-10-03T16:59:05.407Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.12628608">
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; P5 ECONNREFUSED -&gt; PDP_UNAVAILABLE" time="0.006420021">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; P6 timeout -&gt; PDP_TIMEOUT" time="0.031969591">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; P7 empty result -&gt; POLICY_UNDEFINED" time="0.01123226">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; P7 allow string true denied" time="0.063095434">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; P7 text/html denied" time="0.00438875">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; 002-21 rejects userinfo and bad scheme" time="0.000988432">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; 002-21 does not follow redirect" time="0.002324975">
+        </testcase>
+        <testcase classname="packages/security/test/pdp-client.fault.test.ts" name="OpaPdpClient fail-closed (002-18 P5-P9, 002-20, 002-21) &gt; positive control: valid allow" time="0.002334753">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/plugin.test.ts" timestamp="2026-10-03T16:59:05.408Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.177860531">
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; P1 no principal -&gt; 401 without OPA call" time="0.046326423">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; P2 resolver null -&gt; 401 SF-TEN-001" time="0.003913323">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; P3 forged x-tenant-id -&gt; 403" time="0.002703472">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; P4 undeclared route fails boot" time="0.002473782">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; allows a declared route when OPA allows" time="0.108841791">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; 002-19 local tenant pre-check does not call OPA" time="0.003283559">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; 002-23 sfPublic+sfAuthz fails boot" time="0.001854888">
+        </testcase>
+        <testcase classname="packages/security/test/plugin.test.ts" name="sfSecurity plugin (002-18) &gt; 002-25 deep freeze throws on mutation" time="0.006659823">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/security/test/secret-value.test.ts" timestamp="2026-10-03T16:59:05.408Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.004312681">
+        <testcase classname="packages/security/test/secret-value.test.ts" name="SecretValue redaction (002-27, 002-30) &gt; never leaks via String/JSON/inspect/template" time="0.002749451">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-048-security-platform/test/commands.test.ts" timestamp="2026-10-03T16:59:05.409Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.004991457">
+        <testcase classname="services/cmp-048-security-platform/test/commands.test.ts" name="idempotency fingerprint &gt; is stable for the same body and differs when a field changes" time="0.002913098">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-048-security-platform/test/events.test.ts" timestamp="2026-10-03T16:59:05.409Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.067855033">
+        <testcase classname="services/cmp-048-security-platform/test/events.test.ts" name="event envelopes (D14) &gt; SecurityPolicyPublished is platform (null tenant)" time="0.064820799">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/events.test.ts" name="event envelopes (D14) &gt; SecurityIncidentDetected is tenant-scoped" time="0.001170997">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-048-security-platform/test/outbox-template.test.ts" timestamp="2026-10-03T16:59:05.409Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003455653">
+        <testcase classname="services/cmp-048-security-platform/test/outbox-template.test.ts" name="SF-CON-OUTBOX copy (ADR-0006 #9, PB-14) &gt; migration outbox/inbox block matches rendered template" time="0.001994727">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-048-security-platform/test/service-commands.test.ts" timestamp="2026-10-03T16:59:05.409Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.186210233">
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="PrivilegedAccessCommands &gt; rejects missing tenant and overlong window" time="0.002915602">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="PrivilegedAccessCommands &gt; inserts REQUESTED, writes audit outbox, honours idempotent replay" time="0.065482726">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="PrivilegedAccessCommands &gt; approve and review persist and optionally push grants" time="0.001420081">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="PrivilegedAccessCommands &gt; revoke retries grant delete and emits incident on failure (002-34)" time="0.001847791">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="PrivilegedAccessCommands &gt; approve/revoke 404 when missing" time="0.000663939">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="idempotency remember/complete &gt; replays same fingerprint and conflicts on a different one" time="0.000408256">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="idempotency remember/complete &gt; uses the platform table when tenant is null" time="0.000273938">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="policy metadata and incidents &gt; registers, activates (platform outbox), and reports incidents" time="0.001060843">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="withTenantTx &gt; commits settings then rolls back on failure" time="0.001132293">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="GrantPublisher &gt; pushes and removes grants; fails closed on non-404" time="0.032103486">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="GrantPublisher &gt; treats leftover grant document as failure" time="0.005695432">
+        </testcase>
+        <testcase classname="services/cmp-048-security-platform/test/service-commands.test.ts" name="cmp048Plugin routes &gt; wires privileged-access request through injected commands" time="0.071202866">
+        </testcase>
+    </testsuite>
+</testsuites>
