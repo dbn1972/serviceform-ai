@@ -41,7 +41,7 @@ jobs:
       - run: pnpm contracts:validate
       - run: pnpm deps:graph
       - run: pnpm build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: unit-results
@@ -70,7 +70,7 @@ jobs:
           envelope="orchestrator/tasks/${task}.yaml"
           test -f "$envelope" || { echo "agent branch without task envelope $envelope"; exit 1; }
           python scripts/gates/check_scope.py --envelope "$envelope" --base "origin/${GITHUB_BASE_REF}"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: gate-results, path: test-results/gates }
 
@@ -116,7 +116,7 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm -r --filter "./apps/web-*" run build
       - run: pnpm e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: e2e-results, path: 'test-results/e2e' }
 

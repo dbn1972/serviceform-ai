@@ -24,7 +24,7 @@ jobs:
           docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1
           git /repo --config /repo/.gitleaks.toml --redact --exit-code 1 --report-format sarif
           --report-path /repo/gitleaks.sarif
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: gitleaks, path: gitleaks.sarif }
 
@@ -40,7 +40,7 @@ jobs:
           semgrep scan --metrics=off --error
           --config p/default --config p/typescript --config p/nodejsscan --config p/secrets
           --config .semgrep/ --exclude tests/semgrep --sarif --output semgrep.sarif
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: semgrep, path: semgrep.sarif }
 
@@ -72,7 +72,7 @@ jobs:
         run: pnpm audit --audit-level moderate --json > audit-all.json || echo "dev-dependency advisories recorded in audit-all.json"
       - name: licence and SBOM
         run: npx --yes @cyclonedx/cdxgen@11 -t js -o sbom.cdx.json .
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sbom-and-audit
           path: |
