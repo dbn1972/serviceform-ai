@@ -123,7 +123,10 @@ jobs:
           --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 20
     env:
       DATABASE_URL: postgres://ci:${{ github.run_id }}-ci-only@localhost:5432/serviceform_test
-      KAFKA_HOME: /var/tmp/kafka/kafka_2.13-4.1.0
+      # Runner-writable install (no sudo ownership). Helper default path matches.
+      KAFKA_HOME: /home/runner/kafka/kafka_2.13-4.1.0
+      KAFKA_HEAP_OPTS: -Xmx512m
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
       OPA_BIN: opa
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -131,15 +134,23 @@ jobs:
         with: { version: '${{ env.PNPM_VERSION }}' }
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with: { node-version-file: .nvmrc, cache: pnpm }
-      - name: install Java (Kafka 4.1.0 KRaft)
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq openjdk-17-jre-headless lsof
-      - name: install Apache Kafka 4.1.0 (pinned)
+      - name: install Java 17 + lsof (Kafka 4.1.0 KRaft)
         run: |
           set -euo pipefail
-          sudo mkdir -p /var/tmp/kafka
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openjdk-17-jdk-headless lsof
+          test -d "$JAVA_HOME"
+          "$JAVA_HOME/bin/java" -version
+      - name: install Apache Kafka 4.1.0 (pinned, runner-owned)
+        run: |
+          set -euo pipefail
+          mkdir -p /home/runner/kafka
           curl -fsSL "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz" \
-            | sudo tar -xz -C /var/tmp/kafka
+            | tar -xz -C /home/runner/kafka
           test -x "${KAFKA_HOME}/bin/kafka-server-start.sh"
+          test -x "${KAFKA_HOME}/bin/kafka-storage.sh"
+      - name: Kafka KRaft preflight (bind 19092 then stop)
+        run: bash scripts/ci/kafka-preflight.sh
       - name: install OPA 1.21.1 (pinned)
         run: |
           set -euo pipefail

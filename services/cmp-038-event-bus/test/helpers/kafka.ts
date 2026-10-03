@@ -1,5 +1,5 @@
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
-import { writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, mkdtempSync, openSync } from 'node:fs';
 import { createConnection } from 'node:net';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -102,9 +102,12 @@ async function freeLocalPorts(): Promise<void> {
 }
 
 function spawnBroker(props: string): ChildProcess {
+  const heap = process.env['KAFKA_HEAP_OPTS'] ?? '-Xmx512m';
+  const out =
+    process.env['SF_KAFKA_DEBUG'] === '1' && logDir ? join(logDir, 'broker.log') : undefined;
   return spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
-    env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx384m' },
-    stdio: 'ignore',
+    env: { ...process.env, KAFKA_HEAP_OPTS: heap },
+    stdio: out ? ['ignore', openSync(out, 'a'), openSync(out, 'a')] : 'ignore',
     detached: true,
   });
 }
@@ -147,8 +150,9 @@ export async function ensureKafka(): Promise<string[]> {
     [
       'process.roles=broker,controller',
       'node.id=1',
-      'controller.quorum.bootstrap.servers=localhost:' + CONTROLLER_PORT,
-      'listeners=PLAINTEXT://:' + PORT + ',CONTROLLER://:' + CONTROLLER_PORT,
+      // Bind 127.0.0.1 explicitly: GHA runners may resolve localhost to ::1 first.
+      'controller.quorum.bootstrap.servers=127.0.0.1:' + CONTROLLER_PORT,
+      'listeners=PLAINTEXT://127.0.0.1:' + PORT + ',CONTROLLER://127.0.0.1:' + CONTROLLER_PORT,
       'inter.broker.listener.name=PLAINTEXT',
       'advertised.listeners=PLAINTEXT://127.0.0.1:' +
         PORT +
