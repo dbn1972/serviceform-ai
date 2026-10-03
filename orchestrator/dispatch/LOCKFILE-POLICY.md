@@ -20,29 +20,31 @@ Gitleaks with `fetch-depth: 0` scans reachable history across refs. Hits in `pac
 
 ## Canonical lockfile branch
 
-Branch: `cursor/m01-w1-lockfile-b828` (base `origin/main` `8a4695d`).
+Branch: `cursor/m01-w1-lockfile-b828` (base `origin/main` `8a4695d`). Draft PR: https://github.com/dbn1972/serviceform-ai/pull/19 — **do not merge**.
 
-Admitted importers (tips at regen):
+Admitted importers (regen 2, all five Wave 1 heads):
 
 | Task | SHA | Importers |
 |---|---|---|
 | SF-M01-001 | `34262a3` | `services/cmp-002-tenant-organisation/package.json` |
-| SF-M01-002 | `b8a8dd9` | `packages/security/package.json`, `services/cmp-048-security-platform/package.json` |
-| SF-M01-003 | `c28f6d9` | `packages/audit-client/package.json`, `services/cmp-031-audit-ledger/package.json` |
+| SF-M01-002 | `d9c2196` | `packages/security/package.json`, `services/cmp-048-security-platform/package.json` |
+| SF-M01-003 | `f38089e` | `packages/audit-client/package.json`, `services/cmp-031-audit-ledger/package.json` |
+| SF-M01-004 | `e8d054b` | `packages/outbox/package.json` (`kafkajs@2.2.4`), `services/cmp-038-event-bus/package.json` |
 | SF-M01-005 | `b574b2d` | `packages/connector-sdk/package.json`, `services/cmp-037-integration-hub/package.json` |
 
-Regen used Node 22.22.2 and a one-shot `minimumReleaseAge=0` so new importers could depend on `pg@8.23.1` already pinned on main (published 2026-09-30, younger than the 7-day workspace cooldown). The committed `pnpm-workspace.yaml` cooldown and `trustPolicy: no-downgrade` are unchanged. Lockfile delta is importer entries only (no version bumps).
+Regen used Node 22.22.2 and a one-shot `minimumReleaseAge=0` so new importers could depend on `pg@8.23.1` already pinned on main. Workspace `minimumReleaseAge: 10080` and `trustPolicy: no-downgrade` are unchanged. `pnpm install --frozen-lockfile` **PASS** on this branch after regen 2.
+
+Also pulled from current heads: `@fastify/rate-limit@10.3.0` (002), `@fastify/rate-limit@11.2.0` (003). No `@platformatic/kafka`.
 
 **Do not merge this lockfile PR to `main` yet.** It carries manifests without component source; typecheck/build on this branch are not a Wave 1 gate. Do not merge builder PRs. Do not start Wave 2.
 
-## SF-M01-004 not admitted
+## SF-M01-004 admitted (regen 2)
 
-`packages/outbox` (`@platformatic/kafka@2.12.1`) is **not** in this lockfile. `pnpm` `trustPolicy: no-downgrade` refuses transitive `@platformatic/wasm-utils@0.2.1` (earlier versions had trusted publisher; 0.2.1 has none). Do not disable `trustPolicy` or security jobs to admit it. CMP-038 must change client or raise an owner exception before a later lockfile regen includes 004.
+CMP-038 replaced `@platformatic/kafka` with `kafkajs@2.2.4` (published 2023-02-27). `trustPolicy: no-downgrade` stayed on. `packages/outbox` and `services/cmp-038-event-bus` are in the lockfile. Previous block (`@platformatic/wasm-utils@0.2.1` trust downgrade) no longer applies.
 
 ## Later integration (not this step)
 
 1. 002 remediates gitleaks fixtures (historical scan stays on).
-2. 004 resolves kafka/wasm-utils trust or files a CCR/exception.
-3. Rebuild the canonical lockfile from all five **then-current** `package.json` tips onto an integration branch that also contains component source.
-4. Run `pnpm install --frozen-lockfile` plus tests on that integration tree.
-5. Only then consider merges to `main`.
+2. Integration branch: all five sources + this canonical lockfile (re-regen if `package.json` tips moved again).
+3. Run `pnpm install --frozen-lockfile` plus tests on that integration tree.
+4. Only then consider merges to `main`.
