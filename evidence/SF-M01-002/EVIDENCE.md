@@ -8,7 +8,7 @@
 | Branch | `agent/M01-cmp-048-security-platform-SF-M01-002` |
 | PR | https://github.com/dbn1972/serviceform-ai/pull/17 |
 | Base | `origin/main` `8a4695d62a065fd3e8047b0c49085bfebbb0c513` |
-| Result commit | see handover `result_commit` (set after push) |
+| Result commit | `1cf3d995347d0a32f9fe69bcae62d7869bbefc0b` |
 | Model / effort | claude-opus-5-5, high (as routed) |
 | Builder | serviceform-foundation-builder |
 | Self-certified | **no** |
