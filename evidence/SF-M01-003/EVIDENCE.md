@@ -10,7 +10,7 @@ Resolved model: Cursor Agent (Composer)
 Effort: high  
 Gate recommendation: **VERIFY candidate** for human/CI. **Not CERTIFIED.** No Wave 2. No merge.
 
-Commit SHA: `f38089e2df17bf94839d69a45539a910f60a9831` (unit-coverage + Semgrep follow-up SHA recorded after commit)
+Commit SHA: `a2a191bf02a3222bfd35c1a33469e72271ab372d` (unit-coverage + Semgrep follow-up)
 
 ## Unit coverage (stitch gate, `*.int.test.ts` excluded)
 
