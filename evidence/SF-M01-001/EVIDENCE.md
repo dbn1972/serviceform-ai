@@ -10,7 +10,7 @@
 | Branch | `agent/M01-cmp-002-tenant-organisation-SF-M01-001` |
 | PR | https://github.com/dbn1972/serviceform-ai/pull/14 |
 | Base | `origin/main` `8a4695d62a065fd3e8047b0c49085bfebbb0c513` |
-| Result commit | recorded after `git rev-parse HEAD` in this evidence pass |
+| Result commit | `944574fc7463fdca17a2f45f615b34e7b8857f7a` |
 | Model / effort actually used | Cursor Auto / Composer (cloud agent), effort high |
 | Envelope route | opus / claude-opus-5-5 (not the executing runtime) |
 | Plugin mount | **not** registered in `apps/api` (Wave 2 / CMP-036) |
