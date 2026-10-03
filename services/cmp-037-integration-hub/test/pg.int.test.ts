@@ -12,7 +12,7 @@ import { loadHubConfig } from '../src/config.js';
 import { registerIntegrationHub } from '../src/plugin.js';
 import { createPgHub } from '../src/pg.js';
 import { allowAuth, CANARY, ctx, definition, simulatedBinding } from './support/fixtures.js';
-import { databaseUrl, migrate } from './support/db.js';
+import { databaseUrl, migrate, withAdmin } from './support/db.js';
 import { InMemorySecretResolver } from '../../../packages/connector-sdk/test/support/in-memory-secrets.js';
 
 const config = loadHubConfig({ SF_ENVIRONMENT: 'CI', SF_CELL_ID: 'cell-01' });
@@ -20,8 +20,25 @@ const config = loadHubConfig({ SF_ENVIRONMENT: 'CI', SF_CELL_ID: 'cell-01' });
 describe('createPgHub against PostgreSQL (duplicate webhook, RLS session)', () => {
   let pool: pg.Pool;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     migrate('up');
+    // Suite isolation: connector_binding_enabled_uniq is (tenant, service, type, env) WHERE enabled.
+    // Truncate so residual enabled bindings from earlier INT files cannot collide.
+    await withAdmin(async (c) => {
+      await c.query(`
+        TRUNCATE TABLE
+          sf_integration_hub.connector_transaction,
+          sf_integration_hub.webhook_route,
+          sf_integration_hub.connector_binding_index,
+          sf_integration_hub.connector_binding,
+          sf_integration_hub.connector_definition,
+          sf_integration_hub.outbox_event,
+          sf_integration_hub.outbox_event_platform,
+          sf_integration_hub.inbox_event,
+          sf_integration_hub.inbox_event_platform
+        RESTART IDENTITY CASCADE
+      `);
+    });
     pool = new pg.Pool({ connectionString: databaseUrl(), max: 2 });
   }, 120_000);
 

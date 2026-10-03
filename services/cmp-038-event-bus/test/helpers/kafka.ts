@@ -103,11 +103,25 @@ async function freeLocalPorts(): Promise<void> {
 
 function spawnBroker(props: string): ChildProcess {
   const heap = process.env['KAFKA_HEAP_OPTS'] ?? '-Xmx512m';
+  // Prefer a writable LOG_DIR under the kraft scratch tree. If KAFKA_HOME is not
+  // runner-owned (historical sudo extract), default $KAFKA_HOME/logs mkdir fails
+  // and the JVM aborts before PLAINTEXT binds.
+  const jvmLogDir = logDir ? join(logDir, 'jvm-logs') : undefined;
+  if (jvmLogDir) mkdirSync(jvmLogDir, { recursive: true, mode: 0o700 });
   const out =
-    process.env['SF_KAFKA_DEBUG'] === '1' && logDir ? join(logDir, 'broker.log') : undefined;
+    process.env['SF_KAFKA_DEBUG'] === '1' && logDir
+      ? join(logDir, 'broker.log')
+      : jvmLogDir
+        ? join(jvmLogDir, 'broker.stdout.log')
+        : undefined;
+  const fd = out ? openSync(out, 'a') : undefined;
   return spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
-    env: { ...process.env, KAFKA_HEAP_OPTS: heap },
-    stdio: out ? ['ignore', openSync(out, 'a'), openSync(out, 'a')] : 'ignore',
+    env: {
+      ...process.env,
+      KAFKA_HEAP_OPTS: heap,
+      ...(jvmLogDir ? { LOG_DIR: jvmLogDir } : {}),
+    },
+    stdio: fd !== undefined ? ['ignore', fd, fd] : 'ignore',
     detached: true,
   });
 }
