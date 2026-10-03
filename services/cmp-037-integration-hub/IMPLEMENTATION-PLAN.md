@@ -5,7 +5,7 @@
 | Task | SF-M01-005 |
 | Component | CMP-037 Integration Hub |
 | Integration | INT-013 |
-| Phase | **PLAN ONLY** — no implementation in this commit |
+| Phase | **IMPLEMENTATION** — code, migrations, tests, evidence on this branch. Not VERIFIED/CERTIFIED. Wave 2, merge, and self-certification remain out of scope. |
 | Branch | `agent/M01-cmp-037-integration-hub-SF-M01-005` |
 | Base | `origin/main` `8a4695d62a065fd3e8047b0c49085bfebbb0c513` |
 | Builder | serviceform-integration-builder |
@@ -13,7 +13,7 @@
 | Gate | Design. Recommended after orchestrator plan approval: Develop. Not VERIFIED/CERTIFIED. |
 | Privilege role | `sf_cmp037_rw` (ADR-0006 Option A; supersedes PLAN-REVIEW `sf_integration_hub_rw`) |
 
-**Stop for orchestrator approval.** Wave 2, merge, and self-certification are out of scope.
+Implementation followed orchestrator plan approval. Wave 2, merge, and self-certification remain out of scope.
 
 Binding documents (read, not edited): envelope `orchestrator/tasks/SF-M01-005.yaml`; PLAN-REVIEW-M01-W1; SECURITY-PRECHECK P-005-1..5; dispatch plan + negative tests; ADR-0006 ACCEPTED; frozen SF-CON-CONNECTOR-BINDING, SF-CON-SIMULATION-MARKER, SF-CON-OUTBOX, SF-CON-EVENT-ENVELOPE, SF-CON-DB-SESSION-CONTEXT, SF-CON-ERROR-CATALOGUE, SF-CON-IDEMPOTENCY, SF-CON-AUTHZ-DECISION, SF-CON-AUDIT-EVENT, SF-CON-ISOLATION-DECLARATION, SF-CON-REQUEST-CONTEXT; M00 baseline + shared-db-contracts; `simulators/README.md`; Constitution #11, #12, #21, #22, #23, #24.
 
@@ -83,7 +83,7 @@ Canonical names (ADR-0006 Option A). PLAN-REVIEW X-1 `sf_integration_hub_rw` is 
 |---|---|---|---|
 | `sf_cmp037_rw` | NOLOGIN group | NOSUPERUSER NOCREATEDB NOCREATEROLE **NOBYPASSRLS** | none |
 | CMP-037 runtime LOGIN (deploy: secrets provider; tests: `sf_t005_rt`) | LOGIN | NOSUPERUSER NOBYPASSRLS INHERIT | **only** `sf_app` + `sf_cmp037_rw` |
-| `sf_migrator` (or equivalent; CREATE IF NOT EXISTS) | NOLOGIN | NOSUPERUSER NOBYPASSRLS | schema/table **owner**; never used as app runtime |
+| `sf_migrator` (or equivalent; guarded `DO $$ IF NOT EXISTS pg_roles`) | NOLOGIN | NOSUPERUSER NOBYPASSRLS | schema/table **owner**; never used as app runtime |
 | `sf_app` | existing NOLOGIN | NOBYPASSRLS | RLS policy target `TO sf_app` only |
 | `sf_outbox_publisher` | existing NOLOGIN | frozen template grants | not granted `sf_cmp037_rw` |
 
@@ -93,7 +93,7 @@ Canonical names (ADR-0006 Option A). PLAN-REVIEW X-1 `sf_integration_hub_rw` is 
 2. `sf_cmp037_rw` is NOLOGIN.
 3. Runtime LOGIN inherits only `sf_app` and `sf_cmp037_rw`. Tests assert `pg_auth_members` has no `sf_cmp002_rw` / `sf_cmp031_rw` / `sf_cmp038_rw` / `sf_cmp048_rw`. `SET ROLE` to those roles fails.
 4. Runtime: `rolsuper = false`, `rolbypassrls = false`.
-5. Runtime is **not** table/schema owner. Owner = `sf_migrator` (created IF NOT EXISTS in this migration with identical attributes if missing; not dropped on down if other components may share it).
+5. Runtime is **not** table/schema owner. Owner = `sf_migrator` (created once idempotently via guarded `DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles …) THEN CREATE ROLE …; END IF; END $$;` — PostgreSQL has no `CREATE ROLE IF NOT EXISTS`. Not dropped on down; shared across Wave 1).
 6. TENANT_SCOPED tables: ENABLE + **FORCE** RLS. Policies `USING/WITH CHECK (tenant_id = sf_platform.current_tenant_id())` **TO sf_app**. Policies read tenant **only** via `sf_platform.current_tenant_id()` (never raw `current_setting('app.tenant_id')`).
 7. Cross-component SQL **DENY**: no SELECT/INSERT/UPDATE/DELETE on CMP-037 authoritative tables to other `_rw` roles or to `sf_app` (except frozen outbox/inbox). No views that leak. Zero `prosecdef` functions in `sf_integration_hub`.
 8. `REVOKE ALL ON SCHEMA/TABLES/SEQUENCES FROM PUBLIC`. `ALTER DEFAULT PRIVILEGES IN SCHEMA sf_integration_hub REVOKE ALL ON TABLES, SEQUENCES FROM PUBLIC` (and from `sf_app` for DML). `sf_app` gets no TRUNCATE/TRIGGER/REFERENCES/CREATE.
@@ -108,7 +108,7 @@ P-005-1 **adapted to ADR-0006**: `webhook_route` INSERT/SELECT granted to **`sf_
 
 Migrations in band **17595005xxxxx** (PLAN-REVIEW X-1), names `*_cmp-037-*.sql`, timestamp > 1759490000000:
 
-1. `1759500500000_cmp-037-integration-hub-schema.sql` — schema, `sf_cmp037_rw`, `sf_migrator` IF NOT EXISTS, domain tables, RLS, grants, REVOKE PUBLIC.
+1. `1759500500000_cmp-037-integration-hub-schema.sql` — schema, `sf_cmp037_rw`, shared `sf_migrator` (guarded DO, create once), domain tables, RLS, grants, REVOKE PUBLIC.
 2. `1759500510000_cmp-037-integration-hub-outbox.sql` — frozen outbox/inbox copy.
 3. `1759500520000_cmp-037-integration-hub-webhook-route.sql` — `webhook_route` + FK + policies + `_rw` grants.
 
@@ -300,7 +300,7 @@ Do **not** disable lint/security. Do **not** claim CERTIFIED.
 
 ## 10. Rollback
 
-- **Down migrations:** DROP tables/schema objects in reverse; DROP ROLE `sf_cmp037_rw`; do **not** DROP shared `sf_migrator` if created IF NOT EXISTS. Lint checks destructive markers on **up** only (X-9).
+- **Down migrations:** DROP tables/schema objects in reverse; DROP ROLE `sf_cmp037_rw`; do **not** DROP shared `sf_migrator`. Lint checks destructive markers on **up** only (X-9).
 - **Code:** revert the branch. No apps/api wiring, so no runtime consumers in W1.
 - **Forward-safe:** new schema only; no backfill of existing business data.
 

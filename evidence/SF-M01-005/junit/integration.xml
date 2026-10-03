@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="1.047015419">
+    <testsuite name="services/cmp-037-integration-hub/test/pg.int.test.ts" timestamp="2026-10-03T16:54:53.532Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.521565749">
+        <testcase classname="services/cmp-037-integration-hub/test/pg.int.test.ts" name="createPgHub against PostgreSQL (duplicate webhook, RLS session) &gt; persists one webhook transaction and one outbox event for duplicate callbacks" time="0.147939255">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-037-integration-hub/test/privilege.int.test.ts" timestamp="2026-10-03T16:54:53.532Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.52544967">
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-01/005-34 runtime identity: no superuser, no bypassrls, not owner, only own _rw" time="0.014942628">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-35 own DML succeeds and 005-36 wrong tenant is empty" time="0.018374088">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-04 webhook_route cannot retarget another tenant" time="0.001797547">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-37/005-38 peer and sf_app-only cannot DML domain tables" time="0.007955145">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-39 cannot SET ROLE into another component _rw" time="0.001193324">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-03/005-40 no SECURITY DEFINER, no PUBLIC grants" time="0.011194583">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; 005-41 outbox up-migration contains the rendered frozen template" time="0.000329655">
+        </testcase>
+        <testcase classname="services/cmp-037-integration-hub/test/privilege.int.test.ts" name="CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) &gt; DB CHECK refuses PRODUCTION SIMULATED and inline secrets" time="0.004789828">
+        </testcase>
+    </testsuite>
+</testsuites>

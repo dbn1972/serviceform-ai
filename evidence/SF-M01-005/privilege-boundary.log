@@ -1,0 +1,19 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-01/005-34 runtime identity: no superuser, no bypassrls, not owner, only own _rw 16ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-35 own DML succeeds and 005-36 wrong tenant is empty 15ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-04 webhook_route cannot retarget another tenant 4ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-37/005-38 peer and sf_app-only cannot DML domain tables 7ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-39 cannot SET ROLE into another component _rw 1ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-03/005-40 no SECURITY DEFINER, no PUBLIC grants 10ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > 005-41 outbox up-migration contains the rendered frozen template 0ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > creates sf_migrator and sf_cmp037_rw with a guarded DO block, not CREATE ROLE IF NOT EXISTS 0ms
+ ✓ services/cmp-037-integration-hub/test/privilege.int.test.ts > CMP-037 integration (RLS, privilege-boundary, outbox, webhook_route) > DB CHECK refuses PRODUCTION SIMULATED and inline secrets 4ms
+ ✓ services/cmp-037-integration-hub/test/pg.int.test.ts > createPgHub against PostgreSQL (duplicate webhook, RLS session) > persists one webhook transaction and one outbox event for duplicate callbacks 128ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  16:56:54
+   Duration  1.61s (tests 66%, import 18%, transform 15%)
+
