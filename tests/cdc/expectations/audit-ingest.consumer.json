@@ -1,0 +1,35 @@
+{
+  "consumer": "CMP-031",
+  "topic": "sf.audit.ingest.v1",
+  "supported": {
+    "event_type": "AuditEventSubmitted",
+    "schema_version": 1,
+    "aggregate_type": "AuditEvent",
+    "data_contract": "SF-CON-AUDIT-EVENT",
+    "envelope_contract": "SF-CON-EVENT-ENVELOPE"
+  },
+  "producers": [
+    {
+      "component": "CMP-002",
+      "topics_contract": "services/cmp-002-tenant-organisation/contracts/topics.json"
+    },
+    {
+      "component": "CMP-048",
+      "topics_contract": "services/cmp-048-security-platform/contracts/topics.json"
+    },
+    {
+      "component": "CMP-037",
+      "topics_contract": "services/cmp-037-integration-hub/contracts/topics.json"
+    }
+  ],
+  "reject_reasons": [
+    "INVALID_ENVELOPE",
+    "EVENT_TYPE",
+    "SCHEMA_VERSION",
+    "AGGREGATE_TYPE",
+    "INVALID_EVENT",
+    "AGGREGATE_ID",
+    "TENANT_MISMATCH",
+    "CORRELATION_MISMATCH"
+  ]
+}

@@ -39,6 +39,8 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test:coverage
       - run: pnpm contracts:validate
+      - name: consumer-driven contracts (Wave 1 CDC)
+        run: pnpm test:cdc
       - run: pnpm deps:graph
       - run: pnpm build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -47,6 +49,7 @@ jobs:
           name: unit-results
           path: |
             test-results/unit
+            test-results/cdc
             coverage/coverage-summary.json
 
   architecture-gates:

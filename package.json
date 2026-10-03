@@ -16,6 +16,7 @@
     "typecheck": "pnpm -r --workspace-concurrency=2 run typecheck",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:cdc": "vitest run --config tests/cdc/vitest.config.ts",
     "build": "pnpm -r --workspace-concurrency=2 run build",
     "contracts:validate": "pnpm --filter @serviceform/contracts run validate",
     "db:migrate": "pnpm --filter @serviceform/db run migrate:up",
