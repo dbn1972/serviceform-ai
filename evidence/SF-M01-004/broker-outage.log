@@ -1,0 +1,16 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-038-event-bus
+
+{"level":"warn","time":"2026-10-03T17:34:56.098Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"dcabe02a-6b03-4f7b-bbb7-61b8361e07e5","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/kafka.int.test.ts (5 tests) 24638ms
+   ✓ real Kafka 4.1.0 (K1-K5, 004-29) (5)
+     ✓ K1 publish after commit and consume with inbox dedup 5742ms
+     ✓ K2 per-aggregate order is preserved on the broker 5103ms
+     ✓ K3 broker stop/start loses no committed outbox row 6214ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  17:34:39
+   Duration  25.10s (tests 98%, import 1%, transform 1%)
+
+JUNIT report written to /workspace/services/cmp-038-event-bus/test-results/integration-junit.xml

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="68" failures="0" errors="0" time="31.545248212">
+    <testsuite name="packages/outbox/test/backoff.test.ts" timestamp="2026-10-03T17:37:57.171Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003051935">
+        <testcase classname="packages/outbox/test/backoff.test.ts" name="backoff and classify (U5, U6) &gt; caps exponential backoff" time="0.00142518">
+        </testcase>
+        <testcase classname="packages/outbox/test/backoff.test.ts" name="backoff and classify (U5, U6) &gt; classifies retryable vs fatal" time="0.000263732">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/identifiers.test.ts" timestamp="2026-10-03T17:37:57.173Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.004250048">
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; accepts a plain schema name and quotes it" time="0.001452431">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; rejects identifier injection before SQL" time="0.001007167">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; rejects bad topics" time="0.000328194">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; quotes catalog names that contain quotes (004-07)" time="0.00011584">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/in-memory-transport.test.ts" timestamp="2026-10-03T17:37:57.174Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.004393794">
+        <testcase classname="packages/outbox/test/in-memory-transport.test.ts" name="in-memory transport (U8, U9, 004-23) &gt; refuses SIMULATED unless SF_ENVIRONMENT is an exact D-04 value" time="0.002618016">
+        </testcase>
+        <testcase classname="packages/outbox/test/in-memory-transport.test.ts" name="in-memory transport (U8, U9, 004-23) &gt; down() makes publish retryable and up() restores" time="0.000494191">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/metrics.test.ts" timestamp="2026-10-03T17:37:57.174Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002785609">
+        <testcase classname="packages/outbox/test/metrics.test.ts" name="metrics (U11) &gt; records counters without tenant attributes" time="0.001463369">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/partitioner.test.ts" timestamp="2026-10-03T17:37:57.175Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.00332081">
+        <testcase classname="packages/outbox/test/partitioner.test.ts" name="murmur2 partitioner (U8) &gt; is stable and in range" time="0.001995544">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/producer.test.ts" timestamp="2026-10-03T17:37:57.175Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.054163026">
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects an invalid envelope with SF-SYS-003 and no insert" time="0.04940163">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects tenant mismatch with SF-TEN-002" time="0.001252638">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects a tenant event with no context using SF-TEN-001" time="0.000292356">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects oversize payloads counted in bytes" time="0.001567857">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; refuses a platform event inside a tenant tx unless allowlisted (004-10)" time="0.000261799">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/publisher-source.test.ts" timestamp="2026-10-03T17:37:57.175Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003446955">
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; has no environment flag that disables the role guard" time="0.001616559">
+        </testcase>
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; SQL table names are only outbox_event / outbox_event_platform plus catalogue" time="0.000336596">
+        </testcase>
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; DELETE predicates mention PUBLISHED or DEAD_LETTERED" time="0.00014314">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" timestamp="2026-10-03T17:37:57.176Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="24.84952968">
+        <testcase classname="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K1 publish after commit and consume with inbox dedup" time="5.637681899">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K2 per-aggregate order is preserved on the broker" time="5.104387612">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K4 poison envelope is dead-lettered not published on the topic" time="0.045145588">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K5 lag monitor writes consumer_checkpoint" time="0.013257104">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K3 broker stop/start loses no committed outbox row" time="6.524514999">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/migration.int.test.ts" timestamp="2026-10-03T17:37:57.176Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="1.47294915">
+        <testcase classname="services/cmp-038-event-bus/test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; does not use CREATE ROLE IF NOT EXISTS" time="0.001800227">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; copies SF-CON-OUTBOX tables byte-identical after placeholder substitution" time="0.00036996">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; round-trips down then up for this migration" time="1.469148478">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" timestamp="2026-10-03T17:37:57.176Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="2.249113842">
+        <testcase classname="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I1 rollback leaves no outbox row; commit publishes once" time="0.071498948">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I5 / 004-17 per-key order with interleaved aggregates" time="0.088111792">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I7 broker down then up loses no committed events" time="1.565600663">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I9 inbox dedupes duplicate delivery" time="0.008420105">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I10 T1 inbox rows are invisible to T2" time="0.005634199">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/security/operator-registry.int.test.ts" timestamp="2026-10-03T17:37:57.177Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.700906259">
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-25 replay/discard requires PRIVILEGED_ADMIN, MFA, reason, authz; audit before act" time="0.047646108">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-26 incompatible schema fails; event_schema is insert-only; sync is idempotent" time="0.034959889">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-27 non-CMP-038 sf_app cannot INSERT registry; snapshot drives the relay" time="0.06142048">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-28 metric attribute names do not include tenant_id or canary fields" time="0.000314895">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" timestamp="2026-10-03T17:37:57.177Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.796552831">
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P1 own authorized DML on GRANT-only registry succeeds" time="0.053652141">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P2 wrong-tenant insert fails" time="0.003199828">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P3 / 004-P8 peer and sf_app-only cannot DML registry (42501 from GRANT)" time="0.051022929">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P4 SET ROLE into another component _rw is unavailable" time="0.031301332">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P5 / 004-01 runtime and publisher are not superuser and have no BYPASSRLS" time="0.005371597">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P6 runtime is not table owner (sf_migrator owns)" time="0.002187073">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P7 FORCE RLS on tenant outbox/inbox; registry relrowsecurity false" time="0.000843954">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P8 PUBLIC has no table privileges" time="0.00188322">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-02 / 004-P9 publisher catalogue is frozen outbox grants only" time="0.002501353">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-03 publisher runtime denials" time="0.022241171">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-04 policies match the frozen template; no policy TO PUBLIC" time="0.002596974">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-05 relay guard refuses sf_app, superuser, and SET ROLE from superuser" time="0.009089138">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-06 publisher SQL sources do not name business tables" time="0.000351158">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-07 discovery ignores views and non-allowlisted schemas; quoted names work" time="0.015262354">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" timestamp="2026-10-03T17:37:57.178Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.593339901">
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-08 rollback leaves no row; no ctx SF-TEN-001; invalid envelope SF-SYS-003" time="0.066817687">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-09 identifier injection is rejected before SQL" time="0.002335019">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-10 platform event inside tenant tx is refused unless allowlisted" time="0.001359083">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-11 raw SQL CHECK and producer DML denials" time="0.005063253">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-12 envelope size is counted in bytes" time="0.002236068">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-13 / 004-16 inbox dedupes; handler throw rolls back; T2 cannot see T1" time="0.009478864">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-14 forged envelopes go to consumer DLQ with no handler and no inbox row" time="0.000461524">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-15 platform then T2 sees no residual T1 tenant setting" time="0.004007615">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" timestamp="2026-10-03T17:37:57.178Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.800155003">
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-17 interleaved keys stay ordered; broker down loses no committed event" time="0.13551102">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-18 / 004-19 purge deletes only PUBLISHED; discard requires DLQ ack" time="0.02080809">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-20 lost-lease retry does not unpublish" time="0.012989503">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-21 two publishers with the same workerId option get distinct leases" time="0.003632381">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-22 DLQ publish failure keeps PENDING; unregistered topic is retried" time="0.015911666">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-23 SIMULATED refused outside D-04 (covered in unit tests; in-memory constructed for CI here)" time="0.000149581">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-24 DLQ keeps tenant header on TENANT_SCOPED topic" time="0.012682566">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/unit/compatibility.test.ts" timestamp="2026-10-03T17:37:57.179Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.004148034">
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="schema compatibility (U7) &gt; accepts an additive optional field under BACKWARD" time="0.001630798">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="schema compatibility (U7) &gt; refuses new required properties, removals, type changes, enum narrowing, additionalProperties" time="0.000256744">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="config (U9) &gt; loads brokers and refuses non-allowlisted simulated environments" time="0.000715186">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/unit/snapshot.test.ts" timestamp="2026-10-03T17:37:57.179Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003141335">
+        <testcase classname="services/cmp-038-event-bus/test/unit/snapshot.test.ts" name="registry snapshot (Q2 / 004-27) &gt; packages/outbox snapshot matches services/cmp-038-event-bus/registry/topics.json" time="0.00199396">
+        </testcase>
+    </testsuite>
+</testsuites>

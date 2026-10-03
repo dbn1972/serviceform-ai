@@ -1,0 +1,66 @@
+task_id: SF-M01-004
+component_id: CMP-038
+integration_ids: [INT-011, INT-013]
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+status: IMPLEMENTATION_READY
+recommended_gate_status: IMPLEMENTATION_READY
+certified: false
+merged: false
+wave_2_started: false
+branch: agent/M01-cmp-038-event-bus-SF-M01-004
+pr: https://github.com/dbn1972/serviceform-ai/pull/15
+base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
+tested_commit: a4619be2d7111449d2de944399940ff66e4c2e7c
+result_commit: 9bb0d09fdd886bbf474036a10c801bbf88861db9
+envelope_model: opus
+envelope_effort: high
+actual_model: composer
+actual_model_note: Cursor cloud agent originalModelName=default
+completed:
+  - Transactional outbox/inbox from frozen SF-CON-OUTBOX template in schema sf_event_bus
+  - GRANT-only topic/event_schema/consumer_checkpoint; FORCE RLS only on TENANT_SCOPED outbox/inbox
+  - ADR-0006 sf_cmp038_rw NOLOGIN; runtime sf_app+sf_cmp038_rw; relay sf_outbox_publisher only
+  - '@serviceform/outbox producer, publisher protocol, inbox helper, snapshot registry'
+  - Kafka transport via kafkajs@2.2.4 (replaced @platformatic/kafka)
+  - Real Kafka 4.1.0 KRaft tests K1-K5; SIMULATED in-memory refused outside D-04
+  - CodeQL: Kafka scratch under workspace test-results/kafka, not os.tmpdir()
+  - Privilege-boundary 004-01..30 / 004-P1..P10 executed
+unresolved:
+  - O-LOCK: orchestrator must regenerate pnpm-lock.yaml for kafkajs@2.2.4; builder did not commit the lockfile
+  - Git push from this agent failed (GitHub token invalid for write); local commits exist on the branch
+  - CI frozen-lockfile will fail until lockfile regen
+  - Process entry points registry-port.ts, registry/sync.ts, relay/main.ts uncovered by tests (aggregate lines still 80.69%)
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500400000_cmp-038-event-bus.sql
+tests:
+  unit: 22 passed
+  integration: 46 passed
+  combined_coverage: 68 passed
+  coverage_lines_pct: 80.69
+evidence:
+  - evidence/SF-M01-004/EVIDENCE.md
+  - evidence/SF-M01-004/privilege-boundary.log
+  - evidence/SF-M01-004/outbox-atomicity.log
+  - evidence/SF-M01-004/broker-outage.log
+  - evidence/SF-M01-004/ordering.log
+  - evidence/SF-M01-004/junit/unit.xml
+  - evidence/SF-M01-004/junit/integration.xml
+  - evidence/SF-M01-004/junit/combined.xml
+  - evidence/SF-M01-004/coverage-summary.json
+  - evidence/SF-M01-004/scope-check.log
+  - evidence/SF-M01-004/gates.log
+risks:
+  - kafkajs 2.2.4 is unmaintained relative to Kafka 4.1 protocol; admin/consumer APIs used here executed against Kafka 4.1.0
+  - Template grants to sf_app on outbox/inbox remain frozen residuals (P-004-4)
+blockers:
+  - Lockfile regeneration owned by orchestrator (trustPolicy no-downgrade must stay on)
+  - Agent git push authentication failure; PR 15 may still show d53c886 until push succeeds
+stop_conditions_hit: []
+do_not:
+  - merge PR 15
+  - self-certify
+  - start Wave 2
+  - commit pnpm-lock.yaml
+  - disable trustPolicy
