@@ -1,0 +1,70 @@
+task_id: SF-M01-003
+title: Audit and Evidence Ledger
+status: IMPLEMENTATION_READY
+recommended_gate: VERIFY_CANDIDATE
+certified: false
+wave_2_started: false
+merged: false
+pr: https://github.com/dbn1972/serviceform-ai/pull/16
+branch: agent/M01-cmp-031-audit-ledger-SF-M01-003
+base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
+result_commit: 45293807ffc86b4d2dd17bae55eea6b1d31cdbf4
+coverage_semgrep_commit: a2a191bf02a3222bfd35c1a33469e72271ab372d
+builder: serviceform-foundation-builder
+resolved_model: Cursor Agent (Composer)
+effort: high
+
+completed_work:
+  - CMP-031 schema sf_audit with ADR-0006 Option A privilege role sf_cmp031_rw
+  - Guarded DO $$ pg_roles CREATE ROLE for shared sf_migrator and sf_cmp031_rw (no CREATE ROLE IF NOT EXISTS)
+  - Append-only hash-chained tenant and platform ledgers, monthly partitions, head triggers
+  - Frozen SF-CON-OUTBOX template copied with schema/cmp replacements only
+  - packages/audit-client producer helpers (no SQL)
+  - Fastify plugin POST /v1/internal/audit-events, GET /v1/audit, GET /v1/audit/{type}/{id} (not wired into apps/api)
+  - Consumer handleEnvelope for AuditEventSubmitted; emits AuditRecordCreated via own outbox
+  - Unit, contract, integration, tenant-negative, privilege-boundary, tamper, failure-path tests
+  - Unit coverage (stitch, int tests excluded): lines 98.60%, statements 98.48%, functions 98.55%, branches 95.09% on cmp-031 src excluding CLI
+  - Semgrep: removed query-filter regexes (bounded/linear FP) in favour of includes/char-code checks; integration LOGIN secrets are ephemeral SF-TEST-ONLY-synthetic values
+  - CodeQL: GET /audit no longer uses query params as a security guard; Fastify rate-limit registered so js/missing-rate-limiting can see it (static import + per-route config.rateLimit)
+
+unresolved_work:
+  - Independent security/evidence verifier review
+  - Orchestrator pnpm-lock.yaml reconciliation
+  - CMP-036 apps/api plugin registration (W2)
+  - CMP-049 retention; G-11 WORM
+  - Privileged cross-tenant read allow-path (W2; W1 deny-only)
+
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500300000_cmp-031-audit-ledger.sql
+  - db/migrations/1759500301000_cmp-031-outbox-inbox.sql
+
+blockers: []
+
+risks:
+  - residual_outbox_sf_app_insert: frozen template GRANT INSERT TO sf_app; 003-PB-08
+  - residual_owner_bypass: table owner/superuser can rewrite rows if they disable triggers; verify detects; runtime is not owner
+  - lockfile: builders must not commit pnpm-lock.yaml; workspace protocol for @serviceform/audit-client needs orchestrator install
+
+evidence:
+  - evidence/SF-M01-003/EVIDENCE.md
+  - evidence/SF-M01-003/privilege-boundary.log
+  - evidence/SF-M01-003/tamper-detection.log
+  - evidence/SF-M01-003/rls-negative-matrix.md
+  - evidence/SF-M01-003/coverage-summary.json
+  - evidence/SF-M01-003/junit/unit.xml
+  - evidence/SF-M01-003/junit/integration.xml
+  - evidence/SF-M01-003/scope-check.log
+  - evidence/SF-M01-003/gates.log
+
+adr_0006:
+  role: sf_cmp031_rw
+  nologin: true
+  runtime_membership: [sf_app, sf_cmp031_rw]
+  superuser: false
+  bypassrls: false
+  table_owner: sf_migrator
+  force_rls: true
+  public_revoked: true
+  cross_component_sql: DENY
+  create_role_syntax: guarded DO $$ IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname=...) THEN CREATE ROLE ... NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS

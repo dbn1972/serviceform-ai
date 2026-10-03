@@ -1,0 +1,19 @@
+| table | op | own | other | unset | empty |
+|---|---|---|---|---|---|
+| audit_event | SELECT | deny | deny | deny | deny |
+| audit_event | INSERT | deny | deny | deny | deny |
+| audit_event | UPDATE | deny | deny | deny | deny |
+| audit_event | DELETE | deny | deny | deny | deny |
+| audit_event | SELECT | own-only | empty | empty | empty |
+| audit_event | SELECT | deny | deny | deny | deny |
+| audit_event | UPDATE | deny | deny | deny | deny |
+| audit_event | DELETE | deny | deny | deny | deny |
+| audit_event_key | SELECT | deny | deny | deny | deny |
+| audit_event_key | UPDATE | deny | deny | deny | deny |
+| audit_event_key | DELETE | deny | deny | deny | deny |
+| audit_chain_head | SELECT | deny | deny | deny | deny |
+| audit_chain_head | UPDATE | deny | deny | deny | deny |
+| audit_chain_head | DELETE | deny | deny | deny | deny |
+| inbox_event | UPDATE | deny | deny | deny | deny |
+| inbox_event | DELETE | deny | deny | deny | deny |
+| inbox_event | SELECT | residual-template-empty | deny | deny | deny |

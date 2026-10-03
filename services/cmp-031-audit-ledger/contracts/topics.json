@@ -1,0 +1,16 @@
+{
+  "component": "CMP-031",
+  "topics": [
+    {
+      "name": "sf.audit.ingest.v1",
+      "direction": "consume",
+      "event_types": ["AuditEventSubmitted"]
+    },
+    {
+      "name": "sf.audit.events.v1",
+      "direction": "produce",
+      "event_types": ["AuditRecordCreated"],
+      "eng_alias": "AuditRecorded"
+    }
+  ]
+}

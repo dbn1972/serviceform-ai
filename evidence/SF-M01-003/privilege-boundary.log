@@ -1,0 +1,14 @@
+003-01 PASS H1 writer identity
+003-PB-05 PASS no superuser/bypassrls
+003-PB-04 PASS no sibling rw
+003-PB-01 PASS writer append
+003-PB-02 PASS wrong tenant
+003-05 PASS rt cannot forge
+003-PB-03 PASS rt DML denied
+003-04 PASS no prosecdef, no owner bypass
+003-PB-06 PASS not owner
+003-PB-07 PASS PUBLIC revoked
+003-PB-08 residual: rt INSERT outbox_event allowed by frozen template
+003-13 PASS rt matrix deny
+003-02 PASS owner trigger P0001
+003-10 PASS no partition no persist
