@@ -1,3 +1,5 @@
+import { randomInt } from 'node:crypto';
+
 export interface RetryPolicy {
   timeoutMs: number;
   maxAttempts: number;
@@ -45,7 +47,9 @@ export const systemSleeper: Sleeper = {
   },
 };
 
-export const systemRandom: RandomSource = { next: () => Math.random() };
+export const systemRandom: RandomSource = {
+  next: () => randomInt(0, 2 ** 32) / 2 ** 32,
+};
 
 export function backoffMs(
   attempt: number,

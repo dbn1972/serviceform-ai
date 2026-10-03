@@ -10,7 +10,7 @@
 | Builder | serviceform-integration-builder |
 | Resolved model | claude-sonnet-5-5, effort high (envelope `model_route: sonnet`) |
 | Commit SHA | `8c07433a5f553089f62f05b43016a831a388c65f` |
-| Recommended gate | Develop / PR_OPEN. **Not VERIFIED. Not CERTIFIED.** Builder cannot self-certify. |
+| Recommended gate | **IMPLEMENTATION_READY_PENDING_INTEGRATION**. Not VERIFIED. Not CERTIFIED. |
 | Wave 2 | Not started |
 
 ## Commands and results
@@ -26,7 +26,8 @@
 | `pnpm gates` | **7/7 PASS** (`gates.log`) |
 | `python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M01-005.yaml --base origin/main` | see `scope-check.log` |
 | `pnpm deps:graph` | PASS, 118 modules, 233 dependencies, no violations (`deps-graph.log`) |
-| gitleaks / semgrep | **Not installed** in this environment (`secret-scan.log`). CI on the PR remains the independent scan. |
+| gitleaks | PASS on PR #18 CI |
+| Semgrep 1.179.0 | CI had 3 findings; remediations in connector-sdk + plugin; local re-scan **0 findings** (see `semgrep-triage.md`) |
 
 ## Privilege / ADR-0006
 

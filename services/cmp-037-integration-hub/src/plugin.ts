@@ -41,6 +41,13 @@ export interface IntegrationHubDeps {
   now?: () => Date;
 }
 
+/** Client tenant headers are never authoritative; any such header is refused (TI v1.0 s6). */
+const CLIENT_TENANT_HEADER = /^(x-)?(sf-)?tenant(-id)?$/i;
+
+function clientSentTenantHeader(headers: FastifyRequest['headers']): boolean {
+  return Object.keys(headers).some((name) => CLIENT_TENANT_HEADER.test(name));
+}
+
 function sendError(request: FastifyRequest, reply: FastifyReply, err: HubError) {
   const entry = errorEntry(err.code);
   const body: Record<string, unknown> = {
@@ -118,7 +125,7 @@ export const integrationHubPlugin = fp(
     const prefix = opts.prefix ?? '/v1';
 
     app.post(`${prefix}/connectors/:id/invoke`, async (request, reply) => {
-      if (request.headers['x-tenant-id'] || request.headers['x-sf-tenant-id']) {
+      if (clientSentTenantHeader(request.headers)) {
         throw new HubError('SF-TEN-002');
       }
       if (request.headers['x-sf-simulation'] === 'true') {

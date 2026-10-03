@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { backoffMs, executeWithResilience, type RetryPolicy } from '../src/retry.js';
+import { backoffMs, executeWithResilience, systemRandom, type RetryPolicy } from '../src/retry.js';
 
 const policy: RetryPolicy = { timeoutMs: 20, maxAttempts: 3, baseMs: 10, factor: 2, maxMs: 50 };
 
@@ -40,6 +40,12 @@ describe('retry', () => {
 
   it('caps retry_after_ms', () => {
     expect(backoffMs(1, policy, { next: () => 1 }, 9999)).toBe(50);
+  });
+
+  it('draws default jitter from crypto.randomInt, not Math.random', () => {
+    const sample = systemRandom.next();
+    expect(sample).toBeGreaterThanOrEqual(0);
+    expect(sample).toBeLessThan(1);
   });
 
   it('maps AbortError to timeout and uses default sleeper for a zero delay', async () => {

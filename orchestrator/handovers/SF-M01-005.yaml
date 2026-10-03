@@ -7,7 +7,7 @@ agent_role: component_builder
 builder_agent: serviceform-integration-builder
 resolved_model: claude-sonnet-5-5
 effort: high
-state: PR_OPEN
+state: IMPLEMENTATION_READY_PENDING_INTEGRATION
 recommended_gate: Develop
 self_certified: false
 merged: false
@@ -29,13 +29,14 @@ completed_work:
   - simulators/framework: echo DEPARTMENT_API SIMULATED-only adapter
   - Fastify plugin registerIntegrationHub (not wired into apps/api)
   - PRODUCTION ⇒ REAL; fail-closed if critical/non-REAL enabled binding in PRODUCTION
+  - Semgrep CI (run 37138868386): 3 findings remediations — crypto.randomInt jitter; hex decode without Buffer.from(str,'hex'); tenant header deny via name scan
   - Unit 28 passed; integration 10 passed; coverage lines 92.15% on new src
   - pnpm format:check, lint, typecheck, gates 7/7, deps:graph pass
+  - Local semgrep 1.179.0 full-repo re-scan: 0 findings (721 rules / 411 files)
 
 unresolved_work:
   - Independent verification (stitcher, security-verifier, evidence-verifier) not run by this builder
-  - pnpm-lock.yaml reconciliation owned by orchestrator/integration (fastify, fastify-plugin, pg)
-  - gitleaks/semgrep not installed in builder environment; CI must scan the diff
+  - pnpm-lock.yaml reconciliation owned by orchestrator/integration (BLOCKED_PENDING_ORCHESTRATOR_LOCKFILE_RECONCILIATION for frozen-lockfile CI)
   - apps/api registration deferred (read-only)
   - Provider-specific connectors deferred (later modules)
   - Q5 stale IN_PROGRESS reconciler deferred
@@ -64,6 +65,7 @@ evidence:
   - evidence/SF-M01-005/coverage-summary.json
   - evidence/SF-M01-005/scope-check.log
   - evidence/SF-M01-005/gates.log
+  - evidence/SF-M01-005/semgrep-triage.md
 
 architecture_change_required: false
 frozen_contracts_edited: false
