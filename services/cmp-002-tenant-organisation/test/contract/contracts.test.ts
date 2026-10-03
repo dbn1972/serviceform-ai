@@ -73,30 +73,37 @@ describe('component contracts', () => {
   });
 
   it('outbox migration Up matches the frozen template after substitution', () => {
-    const template = readFileSync(
+    const renderedTemplate = readFileSync(
       join(root, '../../contracts/shared/sql/outbox.template.sql'),
       'utf8',
     )
       .replaceAll('{schema}', 'sf_tenant_org')
       .replaceAll('{cmp}', 'CMP-002')
-      .replace(/\s+/g, ' ')
       .trim();
     const file = readFileSync(
       join(root, '../../db/migrations/1759500100001_cmp-002-outbox.sql'),
       'utf8',
     );
     const up = file.split('-- Up Migration')[1]?.split('-- Down Migration')[0] ?? '';
-    expect(up.replace(/\s+/g, ' ').trim()).toContain(template.slice(0, 80));
-    const normalisedFile = up.replace(/\s+/g, ' ').trim();
-    expect(normalisedFile).toContain('GRANT INSERT ON sf_tenant_org.outbox_event TO sf_app');
-    expect(file).not.toMatch(/GRANT INSERT ON sf_tenant_org\.\w+ TO sf_cmp002_rw/);
-    expect(template).toBe(
-      readFileSync(join(root, '../../contracts/shared/sql/outbox.template.sql'), 'utf8')
-        .replaceAll('{schema}', 'sf_tenant_org')
-        .replaceAll('{cmp}', 'CMP-002')
-        .replace(/\s+/g, ' ')
-        .trim(),
+    // Frozen SF-CON-OUTBOX body must stay byte-identical after {schema}/{cmp} substitution.
+    // ADR-0006 ownership (ALTER … OWNER TO sf_migrator) is allowed only after that body.
+    expect(up).toContain(renderedTemplate);
+    const templateOffset = up.indexOf(renderedTemplate);
+    const afterTemplate = up.slice(templateOffset + renderedTemplate.length);
+    expect(templateOffset).toBeGreaterThanOrEqual(0);
+    expect(afterTemplate).toMatch(/ALTER TABLE sf_tenant_org\.outbox_event OWNER TO sf_migrator/);
+    expect(afterTemplate).toMatch(
+      /ALTER TABLE sf_tenant_org\.outbox_event_platform OWNER TO sf_migrator/,
     );
-    expect(normalisedFile).toBe(template);
+    expect(afterTemplate).toMatch(/ALTER TABLE sf_tenant_org\.inbox_event OWNER TO sf_migrator/);
+    expect(afterTemplate).toMatch(
+      /ALTER TABLE sf_tenant_org\.inbox_event_platform OWNER TO sf_migrator/,
+    );
+    // No OWNER / extra DML may appear inside the frozen template section itself.
+    const templateSection = up.slice(templateOffset, templateOffset + renderedTemplate.length);
+    expect(templateSection).toBe(renderedTemplate);
+    expect(templateSection).not.toMatch(/OWNER TO/i);
+    expect(up).toContain('GRANT INSERT ON sf_tenant_org.outbox_event TO sf_app');
+    expect(file).not.toMatch(/GRANT INSERT ON sf_tenant_org\.\w+ TO sf_cmp002_rw/);
   });
 });
