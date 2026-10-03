@@ -1,0 +1,10 @@
+export { withTenantTx } from './db/tx.js';
+export { envelope } from './events/envelopes.js';
+export { writeOutbox } from './events/outbox-writer.js';
+export { complete, fingerprint, remember } from './idempotency.js';
+export { reportIncident } from './incidents.js';
+export { cmp048Plugin } from './plugin.js';
+export { activatePolicy, registerPolicy } from './policy-metadata/commands.js';
+export { PrivilegedAccessCommands } from './privileged-access/commands.js';
+export { GrantPublisher } from './privileged-access/grant-publisher.js';
+export type { PrivilegedAccessRecord } from './privileged-access/model.js';

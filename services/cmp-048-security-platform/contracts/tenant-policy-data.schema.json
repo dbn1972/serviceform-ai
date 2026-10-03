@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-048/tenant-policy-data/v1",
+  "title": "TenantPolicyData",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": ["roles"],
+    "properties": {
+      "roles": { "type": "object" },
+      "jurisdiction_ancestors": { "type": "object" },
+      "delegations": { "type": "object" }
+    }
+  }
+}

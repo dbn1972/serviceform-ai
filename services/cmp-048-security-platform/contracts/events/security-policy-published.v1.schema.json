@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-048/security-policy-published/v1",
+  "title": "SecurityPolicyPublished",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["bundle_name", "revision", "content_sha256", "activated_at"],
+  "properties": {
+    "bundle_name": { "type": "string" },
+    "revision": { "type": "string" },
+    "content_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "activated_at": { "type": "string", "format": "date-time" }
+  }
+}
