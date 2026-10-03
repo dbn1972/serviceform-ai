@@ -1,0 +1,12 @@
+---
+description: BPMN interoperability, signed service packages, migration, semantic registry, assisted service, risk and privacy extensions
+alwaysApply: false
+---
+- Temporal remains the durable workflow runtime; BPMN is import/export over the canonical ServiceForm Workflow Model.
+- Never silently migrate active cases to new workflow/config versions.
+- Promote service configuration through signed `.sfpackage` artifacts; never embed secrets.
+- Assisted channels must keep `applied_by` distinct from `applied_for`.
+- Reuse CMP-058 canonical semantic elements for common government fields.
+- Risk/AI integrity signals cannot independently reject or penalize a citizen.
+- Privacy Centre orchestrates owner-domain tasks; it must not directly mutate foreign tables.
+- Read `specs/world-class-extensions.yaml` before implementing CMP-056..CMP-061 or related cross-cutting capabilities.

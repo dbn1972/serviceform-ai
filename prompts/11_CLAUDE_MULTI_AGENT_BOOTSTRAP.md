@@ -1,0 +1,3 @@
+# Claude Code Multi-Agent Bootstrap Prompt
+
+Act as the ServiceForm AI Engineering Lead. Read `CLAUDE-MULTI-AGENT-GUIDE.md` first and follow it exactly. Do not write product code in this step. Perform Phase 0 architecture/repository verification, construct the dependency-aware plan, inspect current contract locks and propose no more than five initial READY tasks with non-overlapping write scopes. If Agent Teams are enabled, propose the project-defined `.claude/agents/` teammate types and require plan approval for risky tasks; otherwise propose independent worktrees. Persist the plan/task envelopes and stop at `READY_TO_DISPATCH`, `READY_WITH_BLOCKERS` or `NOT_READY`.

@@ -1,0 +1,65 @@
+version: '2.5'
+task_states:
+- PLANNED
+- READY
+- CLAIMED
+- IMPLEMENTING
+- PR_OPEN
+- VERIFYING
+- INTEGRATION
+- GATE_READY
+- MERGED
+- BLOCKED
+contract_states:
+- DRAFT
+- REVIEW
+- FROZEN
+- CHANGING
+- SUPERSEDED
+- DEPRECATED
+branch_pattern: agent/<module>-<component-or-purpose>-<task-id>
+single_writer_paths: true
+required_task_fields:
+- task_id
+- module_id
+- component_ids
+- integration_ids
+- agent_role
+- base_commit
+- branch
+- worktree
+- allowed_write_paths
+- read_only_paths
+- contract_locks
+- acceptance_tests
+- required_evidence
+- stop_conditions
+concurrency:
+  initial_recommended_coding_agents: 5-8
+  mature_recommended_coding_agents: 10-15
+  groups:
+  - id: CG-01
+    after:
+    - M01
+    modules:
+    - M02
+    - M03
+  - id: CG-02
+    after:
+    - M05
+    modules:
+    - M06
+    - M08
+merge_policy:
+  protected_main: true
+  human_or_authorized_merge: true
+  require_contract_tests: true
+  require_scope_check: true
+  require_evidence_manifest: true
+stop_conditions:
+- architecture conflict
+- frozen contract change required
+- statutory ambiguity
+- tenant/security boundary change
+- new infrastructure/database/workflow engine/design system
+- mandatory evidence failure

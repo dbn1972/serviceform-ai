@@ -1,0 +1,22 @@
+version: '1.1'
+integrations:
+  INT-001: Citizen authentication -> profile -> DigiLocker/consent
+  INT-002: Service Design Studio -> validation -> maker-checker -> publication
+  INT-003: Discovery/recommendation -> form/application draft
+  INT-004: Application submission hot path with PostgreSQL transaction/outbox
+  INT-005: Application -> Temporal -> officer task -> OPA-authorized action
+  INT-006: Evidence -> S3/DigiLocker -> OCR -> verification
+  INT-007: Fee -> payment -> verified callback -> application/workflow
+  INT-008: Approval -> signing -> credential -> QR -> DigiLocker
+  INT-009: Deficiency -> SLA pause/resume -> citizen response
+  INT-010: Events -> OpenSearch -> analytics -> dashboards
+  INT-011: Tenant isolation enforcement chain
+  INT-012: AI Gateway -> AI agents -> deterministic/human decision boundary
+  INT-013: External dependency simulation contract
+  INT-014: Appointment, inspection and hearing scheduling
+  INT-015: Assisted service and representative submission
+  INT-016: Semantic registry to Studio and runtime data contracts
+  INT-017: Legacy migration and onboarding factory
+  INT-018: Risk/integrity signal to authorized review
+  INT-019: Citizen privacy rights fulfilment
+architecture_baseline: ServiceForm AI AWS v1.7

@@ -1,0 +1,213 @@
+version: '1.0'
+components:
+  CMP-056:
+    name: Scheduler & Appointment Service
+    purpose: Provide reusable appointment, hearing, interview, counter-visit and inspection
+      scheduling without embedding calendar logic inside individual services.
+    data:
+    - appointment_type
+    - schedule_template
+    - resource_calendar
+    - appointment
+    - appointment_participant
+    - appointment_event
+    apis:
+    - GET /appointments/slots
+    - POST /appointments
+    - POST /appointments/{id}/reschedule
+    - POST /appointments/{id}/cancel
+    - GET /appointments/{id}
+    events:
+    - AppointmentBooked
+    - AppointmentRescheduled
+    - AppointmentCancelled
+    - AppointmentCompleted
+    - AppointmentNoShow
+    acceptance:
+    - 'Atomic capacity: two concurrent requests cannot overbook a single-capacity
+      slot.'
+    - Appointment access is tenant/jurisdiction scoped and OPA protected.
+    - Notification failure does not invalidate a committed booking.
+    - Inspection/workflow can wait on appointment events without polling.
+  CMP-057:
+    name: Assisted Service / Omnichannel Service
+    purpose: Support legally auditable applications made with assistance through counters,
+      CSC/kiosks, call centres, authorized representatives, guardians or institutional
+      operators.
+    data:
+    - assisted_session
+    - representation_authority
+    - channel_context
+    - assisted_consent
+    - operator_action_audit
+    apis:
+    - POST /assisted/sessions
+    - POST /assisted/sessions/{id}/applicant
+    - POST /assisted/sessions/{id}/representation
+    - POST /assisted/sessions/{id}/handoff
+    - GET /assisted/sessions/{id}
+    events:
+    - AssistedSessionStarted
+    - RepresentationVerified
+    - AssistedApplicationSubmitted
+    - AssistedSessionHandedOff
+    acceptance:
+    - Every assisted application can prove who applied, for whom, under what authority
+      and through which channel.
+    - Operator cannot exceed OPA role/jurisdiction scope.
+    - Citizen can resume an eligible assisted draft through self-service without changing
+      citizen_id or application identity.
+  CMP-058:
+    name: Government Semantic & Data Dictionary Registry
+    purpose: Define canonical government data elements, code lists, validation semantics,
+      privacy classification and translations so services reuse common meanings instead
+      of inventing field variants.
+    data:
+    - semantic_element
+    - semantic_version
+    - semantic_alias
+    - semantic_mapping
+    - code_list_binding
+    - semantic_usage
+    apis:
+    - GET /semantics/elements
+    - GET /semantics/elements/{id}
+    - POST /admin/semantics/elements
+    - POST /semantics/mappings/validate
+    - GET /semantics/usage/{id}
+    events:
+    - SemanticElementPublished
+    - SemanticElementDeprecated
+    - SemanticMappingPublished
+    acceptance:
+    - Studio can bind common fields to canonical semantic IDs.
+    - Impact analysis identifies every published service using a semantic version
+      before deprecation.
+    - Legacy aliases map without changing canonical meaning.
+  CMP-059:
+    name: Migration & Legacy Onboarding Workbench
+    purpose: Migrate legacy forms, workflows, service definitions and data into canonical
+      ServiceForm models with mapping, rehearsal, reconciliation and rollback evidence.
+    data:
+    - migration_project
+    - source_profile
+    - mapping_spec
+    - migration_batch
+    - reconciliation_result
+    - cutover_manifest
+    apis:
+    - POST /migrations/projects
+    - POST /migrations/{id}/profile
+    - POST /migrations/{id}/map
+    - POST /migrations/{id}/dry-run
+    - POST /migrations/{id}/execute
+    - GET /migrations/{id}/reconciliation
+    events:
+    - MigrationDryRunCompleted
+    - MigrationBatchApplied
+    - MigrationReconciliationFailed
+    - MigrationCompleted
+    acceptance:
+    - Every production migration has dry-run evidence, mapping version, source/target
+      counts, exception list and reconciliation result.
+    - Failed migration can resume or rollback according to approved plan.
+  CMP-060:
+    name: Risk, Fraud & Integrity Service
+    purpose: Generate explainable integrity signals for duplicate, anomalous, tampered
+      or suspicious cases and route them for authorized review without replacing lawful
+      eligibility or final decision authority.
+    data:
+    - risk_assessment
+    - risk_signal
+    - risk_reason
+    - risk_review
+    - risk_model_binding
+    - integrity_case_link
+    apis:
+    - POST /risk/evaluate
+    - GET /risk/assessments/{id}
+    - POST /risk/assessments/{id}/review
+    - POST /risk/signals/{id}/disposition
+    events:
+    - RiskAssessmentCompleted
+    - HighRiskReviewRequested
+    - RiskDispositionRecorded
+    acceptance:
+    - Every adverse workflow effect requires deterministic policy or authorized human
+      decision; raw AI score alone cannot reject.
+    - Signals include provenance, reason and model/rule version.
+    - Fairness/drift and false-positive monitoring are part of release evidence where
+      ML is used.
+  CMP-061:
+    name: Citizen Privacy & Data Rights Centre
+    purpose: Give citizens a coherent view of data use, consent, provenance, retention
+      and applicable rights requests while orchestrating fulfillment across owning
+      components.
+    data:
+    - privacy_request
+    - privacy_request_scope
+    - privacy_fulfilment_task
+    - privacy_decision
+    - data_use_summary
+    apis:
+    - GET /privacy/me
+    - GET /privacy/me/consents
+    - POST /privacy/requests
+    - GET /privacy/requests/{id}
+    - POST /privacy/requests/{id}/withdraw
+    events:
+    - PrivacyRequestSubmitted
+    - PrivacyTaskRequested
+    - PrivacyRequestCompleted
+    - ConsentWithdrawalRequested
+    acceptance:
+    - Rights request has clear scope, legal basis/exception, SLA, owning-service tasks
+      and completion evidence.
+    - No direct cross-domain deletion; owning services execute and attest changes.
+cross_cutting:
+  bpmn_interoperability:
+    canonical_model: ServiceForm Workflow Model
+    runtime: Temporal
+    requirements:
+    - BPMN 2.0 supported-profile import/export
+    - compatibility report
+    - round-trip semantic tests
+  service_package:
+    extension: .sfpackage
+    requirements:
+    - content-addressed manifest
+    - artifact hashes
+    - signature
+    - dependency versions
+    - no embedded secrets
+    - promotion across environments
+  workflow_migration:
+    modes:
+    - CONTINUE_OLD_VERSION
+    - MIGRATE_AT_SAFE_POINT
+    - MANDATORY_SECURITY_PATCH
+    - ADMINISTRATIVE_TERMINATION
+    requirements:
+    - impact simulation
+    - node/data mapping
+    - maker-checker
+    - rollback/compensation
+    - reconciliation
+  ai_governance:
+    pin:
+    - model version
+    - prompt version/hash
+    - toolset version
+    - evaluation dataset/version
+    tests:
+    - hallucination
+    - prompt injection
+    - PII leakage
+    - task quality
+    - latency
+    - cost
+    requirements:
+    - fallback
+    - budget
+    - monitoring
+    - human override

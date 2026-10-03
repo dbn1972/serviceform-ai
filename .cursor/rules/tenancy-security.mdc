@@ -1,0 +1,6 @@
+---
+description: Tenant isolation, OPA and security rules
+globs: ["services/**", "apps/**", "policy/**", "database/**"]
+alwaysApply: false
+---
+Tenant context is server-derived, never trusted from client headers. Authorization is deny-by-default and considers tenant + organisation + office + jurisdiction + service + role + delegation + resource ownership. PostgreSQL FORCE RLS is mandatory for pooled tenant tables. OPA authorizes actions but does not decide statutory eligibility. Add negative cross-tenant tests for every tenant-scoped capability. No PII/secrets/tokens in logs.

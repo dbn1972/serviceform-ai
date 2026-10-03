@@ -1,0 +1,14 @@
+---
+description: Mandatory UX4G Design System 3.0 rules for all ServiceForm UI work
+alwaysApply: false
+---
+- Read `DESIGN-SYSTEM.md` and `specs/design-system.yaml` before changing UI.
+- UX4G Design System 3.0 is the mandatory baseline for Citizen, Officer, Studio, Tenant Admin and platform UI.
+- Next.js/React uses UX4G React components/tokens/patterns. Flutter uses UX4G Flutter components/tokens/patterns.
+- JSON Forms is schema/runtime only; standard widgets must resolve to UX4G-backed renderers.
+- Before creating a control, search UX4G and the ServiceForm extension registry.
+- Do not hard-code colors, spacing, typography, radii, shadows or focus states when UX4G tokens exist.
+- No MUI/Bootstrap/Tailwind visual design system in product UI without approved ADR + UX4G-conformance wrapper.
+- Tenant branding is token overlay only; never tenant CSS/JS/component forks.
+- Any custom ServiceForm UX4G extension needs Figma/Storybook parity, accessibility, responsive, localization and visual regression tests.
+- Never mark UI VERIFIED without executed test evidence.

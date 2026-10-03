@@ -1,0 +1,61 @@
+version: "1.0"
+platform: ServiceForm AI
+baseline:
+  architecture: "1.7"
+  building_blocks: "1.4"
+  claude_multi_agent_guide: "1.1"
+  autonomous_package: "2.5"
+quality_objective:
+  first_pass_verified_acceptance_pct: 90
+  meaning: "Release-window engineering KPI; not a claim of intrinsic model accuracy."
+hard_gates:
+  cross_tenant_leakage: {required: zero, blocking: true}
+  rls_required_negative_tests: {required_pass_pct: 100, blocking: true}
+  opa_required_negative_tests: {required_pass_pct: 100, blocking: true}
+  unresolved_critical_security: {required: zero, blocking: true}
+  lost_committed_applications: {required: zero, blocking: true}
+  duplicate_financial_side_effects: {required: zero, blocking: true}
+  duplicate_credential_side_effects: {required: zero, blocking: true}
+  frozen_contract_conformance: {required_pass_pct: 100, blocking: true}
+  production_simulated_critical_connector: {required: zero, blocking: true}
+  golden_e2e_required_scenarios: {required_pass_pct: 100, blocking: true}
+models:
+  opus:
+    approved_release: claude-opus-5-5
+    use_for: [architecture, orchestration, critical_state, security, integration_verification, evidence_verification]
+  sonnet:
+    approved_release: claude-sonnet-5-5
+    use_for: [bounded_implementation, ux4g, tests, simulators, adapters, performance_execution]
+routes:
+  orchestrator: {model: opus, effort: high}
+  architecture_guardian: {model: opus, effort: high}
+  foundation_builder: {model: opus, effort: high}
+  studio_builder: {model: sonnet, effort: high}
+  forms_rules_builder: {model: sonnet, effort: high}
+  case_execution_builder: {model: opus, effort: high}
+  integration_builder: {model: sonnet, effort: high}
+  credential_builder: {model: opus, effort: high}
+  ux4g_builder: {model: sonnet, effort: high}
+  ai_platform_builder: {model: sonnet, effort: high}
+  integration_stitcher: {model: opus, effort: high}
+  security_verifier: {model: opus, effort: xhigh}
+  performance_verifier: {model: sonnet, effort: high}
+  evidence_verifier: {model: opus, effort: high}
+score:
+  threshold_gate_ready: 90
+  threshold_single_remediation: 85
+  threshold_opus_escalation: 70
+  dimensions:
+    requirements_traceability: 20
+    functional_behavior: 20
+    contract_conformance: 15
+    tenant_security_privacy: 20
+    integration_failure_idempotency: 10
+    code_quality: 5
+    observability_audit_evidence: 5
+    ux4g_accessibility_visual: 5
+escalation:
+  sonnet_first_failure: "one bounded remediation if no hard gate or architecture issue"
+  second_failure_or_score_below_85: "escalate to opus"
+  any_hard_gate_failure: "BLOCKED_CRITICAL_GATE and independent re-verification after remediation"
+  two_failed_opus_remediations: "mandatory human review"

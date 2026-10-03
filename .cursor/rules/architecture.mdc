@@ -1,0 +1,5 @@
+---
+description: Core ServiceForm AI architecture rules
+alwaysApply: true
+---
+Read @ARCHITECTURE-CONSTITUTION.md and @AGENTS.md. Treat them as MUST-level constraints. ServiceForm is metadata-driven. No normal service may require bespoke backend code. Aurora PostgreSQL is the authoritative v1 datastore. OPA=authorization, GoRules=deterministic business rules, Temporal=process sequencing, PostgreSQL=authoritative state/RLS. Published versions are immutable and applications pin TenantServiceBinding versions.

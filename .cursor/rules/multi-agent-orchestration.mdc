@@ -1,0 +1,13 @@
+---
+description: Multi-agent ownership, contracts, worktrees, integration and certification rules
+alwaysApply: true
+---
+# Multi-Agent Rules
+- Read `MULTI-AGENT-DEVELOPMENT.md`, `specs/agent-topology.yaml` and `specs/agent-orchestration.yaml`.
+- If a task envelope is present, write only to `allowed_write_paths`. Treat `read_only_paths` and FROZEN contracts as immutable.
+- Never assume another agent's unmerged branch as source of truth. Consume frozen contracts or merged commits only.
+- Do not hand-edit generated SDK/types; regenerate from contracts.
+- Use a dedicated branch/worktree per concurrent agent.
+- If a frozen contract or architecture rule must change, STOP and create a Contract Change Request/ADR.
+- Builder agents cannot self-certify. Integration/security/performance/evidence agents remain independent.
+- Do not resolve integration failures by cross-component SQL or copying code between components.

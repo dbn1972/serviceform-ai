@@ -1,0 +1,6 @@
+---
+description: Test evidence and certification rules
+globs: ["**/*", "tests/**", "ci/**", "evidence/**"]
+alwaysApply: true
+---
+Generated tests are not verification. Execute tests and capture evidence. Required gates are Design -> Develop -> Verify -> Certify. AI agents may propose gate status but cannot self-certify. Every component needs appropriate unit, contract, integration, tenant-negative/security and failure-path tests. Golden E2E requires Residence Certificate through Studio metadata. Production release also requires performance, resilience, backup/restore, rollback and real critical connector validation.

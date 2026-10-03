@@ -1,0 +1,6 @@
+---
+description: PostgreSQL persistence, transactions, RLS and migration rules
+globs: ["**/*.ts", "**/*.sql", "database/**", "services/**"]
+alwaysApply: false
+---
+Use Aurora PostgreSQL as the v1 authoritative datastore. Use UUID/ULID stable IDs. Tenant-owned pooled rows require tenant_id + FORCE RLS. Use domain repositories, not raw SQL scattered through handlers. Keep transactions short. Never call external providers inside transactions. Material changes write outbox events atomically. Binary documents go to S3. Cross-component SQL is prohibited. Migrations must include rollback/forward-safety and tenant-isolation tests.

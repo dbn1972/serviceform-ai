@@ -1,0 +1,25 @@
+task_id: SF-MA-<id>
+module_id: M00
+component_ids: []
+integration_ids: []
+agent_role: component_builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+quality_target_vtqs: 90
+hard_gates: []
+base_commit: <sha>
+branch: agent/<module>-<scope>-<task-id>
+worktree: ../wt-<task-id>
+allowed_write_paths: []
+read_only_paths:
+  - contracts/**
+  - ARCHITECTURE-CONSTITUTION.md
+contract_locks: []
+acceptance_tests: []
+required_evidence: []
+stop_conditions:
+  - frozen contract change required
+  - architecture or statutory ambiguity
+  - tenant/security boundary change

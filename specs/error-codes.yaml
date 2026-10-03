@@ -1,0 +1,31 @@
+version: 1.0
+families:
+  SF-AUTH: authentication_and_authorization
+  SF-TEN: tenant_isolation
+  SF-FORM: forms_and_schema
+  SF-RULE: deterministic_rules
+  SF-APP: application_and_case
+  SF-EVD: evidence
+  SF-PAY: payment
+  SF-WF: workflow_and_tasks
+  SF-CRED: credentials
+  SF-INT: integrations
+  SF-AI: ai_gateway_and_agents
+examples:
+  SF-AUTH-001: Authentication required
+  SF-AUTH-002: Insufficient authorization
+  SF-TEN-001: Tenant context missing
+  SF-TEN-002: Cross-tenant operation denied
+  SF-FORM-001: Form version unavailable
+  SF-FORM-002: Schema validation failed
+  SF-RULE-001: Rule evaluation failed
+  SF-APP-001: Invalid application state transition
+  SF-APP-002: Duplicate submission
+  SF-EVD-001: Required evidence missing
+  SF-EVD-002: Evidence expired
+  SF-PAY-001: Payment pending
+  SF-PAY-002: Duplicate payment detected
+  SF-WF-001: Workflow transition rejected
+  SF-CRED-001: Credential signing failed
+  SF-INT-001: External provider unavailable
+  SF-AI-001: AI assistance unavailable

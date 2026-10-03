@@ -1,0 +1,213 @@
+version: '2.3'
+platform: ServiceForm AI
+principle: Build one bounded module at a time; certify evidence before advancing.
+modules:
+- id: M00
+  name: Architecture Verification and Repository Bootstrap
+  depends_on: []
+  deliverables:
+  - docs/audits/ARCHITECTURE-VERIFICATION-001.md
+  - monorepo skeleton
+  - CI quality gates
+  - local docker/dev environment
+  exit_gate: G1_BUILD_READY
+- id: M01
+  name: Foundation, Tenancy, Organisation, Jurisdiction, Security
+  depends_on:
+  - M00
+  components:
+  - CMP-002
+  - CMP-003
+  - CMP-030
+  - CMP-031
+  - CMP-048
+  - CMP-052
+  - CMP-055
+  exit_gate: G4_SECURITY_VERIFIED
+- id: M02
+  name: Identity and Citizen Profile
+  depends_on:
+  - M01
+  components:
+  - CMP-004
+  - CMP-005
+  integrations:
+  - INT-001
+  - INT-013
+  exit_gate: G3_INTEGRATION_VERIFIED
+- id: M03
+  name: Catalogue, Tenant Service Binding and Service Design Studio
+  depends_on:
+  - M01
+  components:
+  - CMP-001
+  - CMP-033
+  - CMP-034
+  - CMP-050
+  - CMP-051
+  - CMP-052
+  - CMP-053
+  - CMP-054
+  integrations:
+  - INT-002
+  exit_gate: G3_INTEGRATION_VERIFIED
+  cross_cutting:
+  - UX4G Design System 3.0 baseline and renderer/theming foundation
+  deliverables:
+  - ServiceForm UX4G React/Flutter wrapper packages
+  - UX4G-backed JSON Forms renderer registry
+  - Storybook/Figma component inventory
+  - UX4G accessibility and visual-regression CI gates
+- id: M04
+  name: Forms, Rules, Evidence and AI-Assisted Design
+  depends_on:
+  - M02
+  - M03
+  components:
+  - CMP-008
+  - CMP-009
+  - CMP-010
+  - CMP-011
+  - CMP-013
+  - CMP-014
+  - CMP-040
+  - CMP-043
+  - CMP-044
+  integrations:
+  - INT-003
+  - INT-006
+  exit_gate: G3_INTEGRATION_VERIFIED
+- id: M05
+  name: Application, Case, Workflow, Tasks, Deficiency and SLA
+  depends_on:
+  - M04
+  components:
+  - CMP-015
+  - CMP-016
+  - CMP-017
+  - CMP-018
+  - CMP-019
+  - CMP-028
+  - CMP-029
+  integrations:
+  - INT-004
+  - INT-005
+  - INT-009
+  - INT-011
+  exit_gate: G4_SECURITY_VERIFIED
+- id: M06
+  name: Fees, Payments, Notifications and Integration Runtime
+  depends_on:
+  - M05
+  components:
+  - CMP-020
+  - CMP-021
+  - CMP-025
+  - CMP-026
+  - CMP-036
+  - CMP-037
+  - CMP-038
+  integrations:
+  - INT-007
+  - INT-013
+  exit_gate: G3_INTEGRATION_VERIFIED
+- id: M07
+  name: Credentials, QR, DigiLocker and Outcome Delivery
+  depends_on:
+  - M06
+  components:
+  - CMP-012
+  - CMP-022
+  - CMP-023
+  - CMP-024
+  integrations:
+  - INT-008
+  exit_gate: G3_INTEGRATION_VERIFIED
+- id: M08
+  name: Search, Recommendation, AI, Analytics and Operations
+  depends_on:
+  - M05
+  components:
+  - CMP-006
+  - CMP-007
+  - CMP-035
+  - CMP-039
+  - CMP-041
+  - CMP-042
+  - CMP-045
+  - CMP-046
+  - CMP-047
+  - CMP-049
+  integrations:
+  - INT-010
+  - INT-012
+  exit_gate: G3_INTEGRATION_VERIFIED
+- id: M09
+  name: World-Class Interoperability, Omnichannel, Integrity and Trust
+  depends_on:
+  - M05
+  - M07
+  - M08
+  components:
+  - CMP-056
+  - CMP-057
+  - CMP-058
+  - CMP-059
+  - CMP-060
+  - CMP-061
+  integrations:
+  - INT-014
+  - INT-015
+  - INT-016
+  - INT-017
+  - INT-018
+  - INT-019
+  cross_cutting:
+  - BPMN 2.0 import/export profile
+  - signed .sfpackage promotion
+  - long-running workflow/config migration
+  - AI model/prompt/tool/evaluation governance
+  exit_gate: G4_SECURITY_VERIFIED
+- id: M10
+  name: Golden Residence Certificate Certification
+  depends_on:
+  - M07
+  - M08
+  - M09
+  deliverables:
+  - canonical residence service template
+  - tenant overlay
+  - published TenantServiceBinding
+  - full E2E test evidence
+  - tenant isolation evidence
+  - 10k sustained and 20k burst evidence
+  - chaos and recovery evidence
+  - UX4G conformance evidence for citizen web/mobile and officer journey
+  exit_gate: G6_RELEASE_CERTIFIED
+- id: M11
+  name: Reuse Proof with Second Service
+  depends_on:
+  - M10
+  deliverables:
+  - second service configured mainly through metadata
+  - delta capability report
+  rule: No bespoke service backend unless approved reusable capability gap is documented.
+execution_model: dependency-aware multi-agent orchestration with frozen contracts
+  and non-overlapping write scopes
+concurrency_groups:
+- id: CG-01
+  after:
+  - M01
+  parallel_modules:
+  - M02
+  - M03
+  rule: Identity/Profile and Catalogue/Studio may proceed concurrently against frozen
+    tenant/identity contracts.
+- id: CG-02
+  after:
+  - M05
+  parallel_modules:
+  - M06
+  - M08
+  rule: Payments/integration and Search/AI/Analytics may proceed concurrently against
+    stable case events.

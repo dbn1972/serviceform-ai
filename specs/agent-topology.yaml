@@ -1,0 +1,72 @@
+version: '2.5'
+platform: ServiceForm AI
+principle: Parallelize implementation, not architecture.
+roles:
+- id: orchestrator
+  default_model_route: opus
+  name: AI Engineering Orchestrator
+  writes:
+  - orchestrator/**
+  cannot:
+  - change frozen architecture/contracts
+  - self-certify
+- id: contract_guardian
+  default_model_route: opus
+  name: Architecture & Contract Guardian
+  writes:
+  - docs/adr/**
+  - contracts/**
+  - ARCHITECTURE-CONSTITUTION.md
+  cannot:
+  - silently implement breaking contract changes
+- id: component_builder
+  default_model_route: sonnet
+  name: Component Builder Agent
+  writes:
+  - task.allowed_write_paths
+  cannot:
+  - write outside task scope
+  - edit frozen contracts
+  - self-certify
+- id: ux4g_agent
+  default_model_route: sonnet
+  name: UX4G Experience Agent
+  writes:
+  - packages/ux4g/**
+  - design-system test paths
+  cannot:
+  - introduce alternate design system
+- id: integration_agent
+  default_model_route: opus
+  name: Integration & Stitching Agent
+  writes:
+  - tests/integration/**
+  - tests/e2e/**
+  - evidence/integration/**
+  cannot:
+  - patch component production code to make tests pass
+- id: security_agent
+  default_model_route: opus
+  name: Security & Tenant Isolation Agent
+  writes:
+  - tests/security/**
+  - evidence/security/**
+  cannot:
+  - waive security findings
+- id: performance_agent
+  default_model_route: sonnet
+  name: Performance & Resilience Agent
+  writes:
+  - tests/performance/**
+  - tests/chaos/**
+  - evidence/performance/**
+  cannot:
+  - change NFR thresholds after failure
+- id: verification_agent
+  default_model_route: opus
+  name: Verification & Evidence Agent
+  writes:
+  - evidence/**
+  - certification/**
+  cannot:
+  - certify own work or release

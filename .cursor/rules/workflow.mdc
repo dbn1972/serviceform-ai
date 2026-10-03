@@ -1,0 +1,6 @@
+---
+description: Temporal workflow and case execution boundaries
+globs: ["services/workflow/**", "services/case/**", "services/tasks/**", "workflow/**"]
+alwaysApply: false
+---
+Temporal is durable orchestration, not the authoritative case store. For authoritative state transitions, commit Application/Case state and outbox first, then signal Temporal idempotently. Human tasks assign role+office/jurisdiction, not named users. Rules stay in GoRules; authorization stays in OPA. Workflow definitions are versioned metadata interpreted by generic runtime; do not create tenant/service-specific workflow classes without ADR.

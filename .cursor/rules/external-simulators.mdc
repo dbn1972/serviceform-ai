@@ -1,0 +1,6 @@
+---
+description: External integration simulation and production safety
+globs: ["connectors/**", "simulators/**", "services/payment/**", "services/notification/**", "services/identity/**"]
+alwaysApply: false
+---
+Every external connector supports REAL, SANDBOX or SIMULATED through one provider-adapter interface. Development/CI may use SIMULATED. Production must fail deployment if a critical connector resolves to SIMULATED. Payment simulation must exercise the real Payment Service callback/state machine. OTP simulation must still exercise challenge creation/expiry/attempts/verification/session issuance. SMS/email test sinks must not control authoritative state. Simulated artifacts are visibly marked TEST/SIMULATED.

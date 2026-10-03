@@ -1,0 +1,49 @@
+version: '1.0'
+baseline:
+  name: UX4G Design System
+  version: '3.0'
+  mandatory: true
+  upgrade_policy: pin per release; compatibility/accessibility/visual-regression evidence
+    before promotion
+frameworks:
+  web_react: UX4G React components/tokens/patterns
+  mobile_flutter: UX4G Flutter components/tokens/patterns
+  embedded: UX4G Web Components where appropriate
+  design: Official UX4G Figma library
+  form_runtime: JSON Forms schemas/runtime + UX4G-backed renderer registry
+foundations:
+- color
+- typography
+- spacing_layout
+- elevation
+- iconography
+- design_tokens
+- accessibility
+- content_design
+surfaces:
+- citizen_web
+- citizen_mobile
+- officer_workbench
+- service_studio
+- tenant_admin
+- platform_ops
+prohibited_without_adr:
+- Material UI visual components
+- Bootstrap visual components
+- Tailwind component styling as alternate design system
+- tenant arbitrary CSS
+- tenant arbitrary JavaScript
+- hard-coded design primitives where UX4G token exists
+required_evidence:
+- storybook_build
+- component_tests
+- keyboard_tests
+- automated_accessibility
+- contrast_token_checks
+- responsive_reflow_200_percent
+- multilingual_truncation
+- visual_regression
+- figma_code_inventory
+- manual_screen_reader_smoke_for_release_critical_journeys
+golden_gate: Residence Certificate G6 requires UX4G conformance evidence across citizen
+  web, mobile and officer workbench

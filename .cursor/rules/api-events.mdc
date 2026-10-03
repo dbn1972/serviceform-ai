@@ -1,0 +1,6 @@
+---
+description: API, event, idempotency and ownership contracts
+globs: ["contracts/**", "services/**", "packages/**"]
+alwaysApply: false
+---
+OpenAPI/AsyncAPI/JSON Schema contracts are compatibility boundaries. Use stable SF-* error codes, correlationId and structured details. Material state changes emit versioned domain events via outbox. Event consumers assume at-least-once delivery and deduplicate by eventId. External create/submit/payment/callback operations must be idempotent. Never expose another component's DB schema as an integration mechanism.
