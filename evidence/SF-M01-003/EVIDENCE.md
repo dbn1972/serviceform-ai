@@ -10,7 +10,7 @@ Resolved model: Cursor Agent (Composer)
 Effort: high  
 Gate recommendation: **VERIFY candidate** for human/CI. **Not CERTIFIED.** No Wave 2. No merge.
 
-Commit SHA: `4529380`
+Commit SHA: `45293807ffc86b4d2dd17bae55eea6b1d31cdbf4`
 
 ## CodeQL (PR 16)
 
