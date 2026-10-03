@@ -133,7 +133,6 @@ export async function setupHarness(): Promise<Harness> {
     other: runtimePool('sf_t001_other', 2),
     password,
   };
-
 }
 
 export async function closeHarness(h: Harness | undefined): Promise<void> {
