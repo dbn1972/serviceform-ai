@@ -82,11 +82,12 @@ function syntheticTestPassword(label: string): string {
 }
 
 async function createLoginRole(admin: pg.Pool, name: string, password: string): Promise<void> {
+  // PG16 cannot infer unbound format() parameter types; cast like CMP-002 harness.
   const built = await admin.query<{ sql: string }>(
     `SELECT format(
        'CREATE ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT',
-       $1,
-       $2
+       $1::text,
+       $2::text
      ) AS sql`,
     [name, password],
   );
