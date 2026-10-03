@@ -1,5 +1,5 @@
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
-import { writeFileSync, mkdirSync, existsSync, mkdtempSync, openSync } from 'node:fs';
+import { writeFileSync, mkdirSync, mkdtempSync, openSync } from 'node:fs';
 import { createConnection } from 'node:net';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,9 +7,18 @@ import { fileURLToPath } from 'node:url';
 const KAFKA_HOME = process.env['KAFKA_HOME'] ?? '/var/tmp/kafka/kafka_2.13-4.1.0';
 const PORT = Number(process.env['SF_KAFKA_PORT'] ?? '19092');
 const CONTROLLER_PORT = Number(process.env['SF_KAFKA_CONTROLLER_PORT'] ?? '19093');
+const KAFKA_START = join(KAFKA_HOME, 'bin', 'kafka-server-start.sh');
+const KAFKA_STORAGE = join(KAFKA_HOME, 'bin', 'kafka-storage.sh');
 
 let child: ChildProcess | undefined;
 let logDir: string | undefined;
+
+function kafkaMissingError(err: NodeJS.ErrnoException): Error {
+  if (err.code === 'ENOENT') {
+    return new Error('Kafka 4.1.0 tarball not found at ' + KAFKA_HOME + ' (004-29 must execute)');
+  }
+  return err;
+}
 
 function waitPortClosed(port: number, host = '127.0.0.1', timeoutMs = 30_000): Promise<void> {
   const start = Date.now();
@@ -114,8 +123,9 @@ function spawnBroker(props: string): ChildProcess {
       : jvmLogDir
         ? join(jvmLogDir, 'broker.stdout.log')
         : undefined;
+  // Open log fd once; no existsSync (avoids js/file-system-race TOCTOU).
   const fd = out ? openSync(out, 'a') : undefined;
-  return spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
+  return spawn(KAFKA_START, [props], {
     env: {
       ...process.env,
       KAFKA_HEAP_OPTS: heap,
@@ -123,6 +133,42 @@ function spawnBroker(props: string): ChildProcess {
     },
     stdio: fd !== undefined ? ['ignore', fd, fd] : 'ignore',
     detached: true,
+  });
+}
+
+/** Reject when the owned broker process cannot start (avoids a full waitPort timeout). */
+function waitBrokerReady(proc: ChildProcess, timeoutMs = 90_000): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const onError = (err: NodeJS.ErrnoException) => {
+      cleanup();
+      reject(kafkaMissingError(err));
+    };
+    const onExit = (code: number | null, signal: NodeJS.Signals | null) => {
+      cleanup();
+      reject(
+        new Error(
+          'kafka-server-start exited before bind: code=' +
+            String(code) +
+            (signal ? ' signal=' + signal : ''),
+        ),
+      );
+    };
+    const cleanup = () => {
+      proc.off('error', onError);
+      proc.off('exit', onExit);
+    };
+    proc.once('error', onError);
+    proc.once('exit', onExit);
+    waitPort(PORT, '127.0.0.1', timeoutMs).then(
+      () => {
+        cleanup();
+        resolve();
+      },
+      (err: unknown) => {
+        cleanup();
+        reject(err);
+      },
+    );
   });
 }
 
@@ -151,9 +197,8 @@ export async function ensureKafka(): Promise<string[]> {
     await waitPort(Number(portStr ?? PORT), host || '127.0.0.1', 15_000);
     return fromEnv;
   }
-  if (!existsSync(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'))) {
-    throw new Error('Kafka 4.1.0 tarball not found at ' + KAFKA_HOME + ' (004-29 must execute)');
-  }
+  // Do not existsSync(KAFKA_*) then spawn — CodeQL js/file-system-race (TOCTOU).
+  // First executable use is kafka-storage; map ENOENT to the install error.
   await freeLocalPorts();
   const scratchRoot = join(dirname(fileURLToPath(import.meta.url)), '../../test-results/kafka');
   mkdirSync(scratchRoot, { recursive: true, mode: 0o700 });
@@ -187,7 +232,7 @@ export async function ensureKafka(): Promise<string[]> {
     { encoding: 'utf8', mode: 0o600 },
   );
   const clusterId = await new Promise<string>((resolve, reject) => {
-    const p = spawn(join(KAFKA_HOME, 'bin', 'kafka-storage.sh'), ['random-uuid'], {
+    const p = spawn(KAFKA_STORAGE, ['random-uuid'], {
       env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx64m' },
     });
     let out = '';
@@ -197,10 +242,10 @@ export async function ensureKafka(): Promise<string[]> {
     p.on('exit', (code) =>
       code === 0 ? resolve(out.trim()) : reject(new Error('random-uuid ' + code)),
     );
-    p.on('error', reject);
+    p.on('error', (err: NodeJS.ErrnoException) => reject(kafkaMissingError(err)));
   });
   const storage = spawn(
-    join(KAFKA_HOME, 'bin', 'kafka-storage.sh'),
+    KAFKA_STORAGE,
     ['format', '--standalone', '--ignore-formatted', '-t', clusterId, '-c', props],
     { env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx256m' } },
   );
@@ -210,10 +255,10 @@ export async function ensureKafka(): Promise<string[]> {
         ? resolve()
         : reject(new Error('kafka-storage format ' + String(code))),
     );
-    storage.on('error', reject);
+    storage.on('error', (err: NodeJS.ErrnoException) => reject(kafkaMissingError(err)));
   });
   child = spawnBroker(props);
-  await waitPort(PORT, '127.0.0.1', 90_000);
+  await waitBrokerReady(child, 90_000);
   process.env['SF_KAFKA_BROKERS'] = '127.0.0.1:' + PORT;
   return kafkaBrokers();
 }
@@ -235,5 +280,5 @@ export async function startKafkaAgain(): Promise<void> {
   await waitPortClosed(PORT, '127.0.0.1', 15_000).catch(() => undefined);
   const props = join(logDir, 'server.properties');
   child = spawnBroker(props);
-  await waitPort(PORT, '127.0.0.1', 90_000);
+  await waitBrokerReady(child, 90_000);
 }
