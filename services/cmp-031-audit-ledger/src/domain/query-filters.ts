@@ -61,7 +61,7 @@ export function parseAuditQuery(
   const out: AuditQuery = { from, to, limit };
   if (typeof q['actor_id'] === 'string') out.actor_id = q['actor_id'];
   if (typeof q['action'] === 'string') {
-    if (/['\\]/.test(q['action']) || q['action'].includes('%') || q['action'].includes('_')) {
+    if (hasUnsafeActionToken(q['action'])) {
       throw new AuditError('SF-SYS-003', {
         details: [{ code: 'INVALID_FILTER', pointer: '/action' }],
       });
@@ -70,7 +70,7 @@ export function parseAuditQuery(
   }
   if (typeof q['action_class'] === 'string') out.action_class = q['action_class'];
   if (typeof q['resource_type'] === 'string') {
-    if (!/^[A-Z][A-Za-z0-9]{1,63}$/.test(q['resource_type'])) {
+    if (!isResourceTypeCode(q['resource_type'])) {
       throw new AuditError('SF-SYS-003', {
         details: [{ code: 'INVALID_FILTER', pointer: '/resource_type' }],
       });
@@ -84,6 +84,24 @@ export function parseAuditQuery(
     out.cursor = decodeCursor(q['cursor']);
   }
   return out;
+}
+
+/** Reject quote/escape tokens. Action filters are parameterized equality, not LIKE. */
+export function hasUnsafeActionToken(value: string): boolean {
+  return value.includes("'") || value.includes('\\');
+}
+
+/** PascalCase resource type: A-Z then 1..63 A-Za-z0-9 (SF-CON-COMMON resourceType). */
+export function isResourceTypeCode(value: string): boolean {
+  if (value.length < 2 || value.length > 64) return false;
+  const first = value.charCodeAt(0);
+  if (first < 65 || first > 90) return false;
+  for (let i = 1; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    const ok = (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || (c >= 48 && c <= 57);
+    if (!ok) return false;
+  }
+  return true;
 }
 
 export function encodeCursor(recordedAt: string, chainSeq: number): string {

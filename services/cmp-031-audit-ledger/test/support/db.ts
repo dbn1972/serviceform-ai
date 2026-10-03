@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
@@ -76,6 +77,24 @@ export interface Harness {
 const WRITER = 'sf_t003_writer';
 const RT = 'sf_t003_rt';
 
+function syntheticTestPassword(label: string): string {
+  return `SF-TEST-ONLY-synthetic-${label}-${randomBytes(16).toString('hex')}`;
+}
+
+async function createLoginRole(admin: pg.Pool, name: string, password: string): Promise<void> {
+  const built = await admin.query<{ sql: string }>(
+    `SELECT format(
+       'CREATE ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT',
+       $1,
+       $2
+     ) AS sql`,
+    [name, password],
+  );
+  const sql = built.rows[0]?.sql;
+  if (sql === undefined) throw new Error('role ddl missing');
+  await admin.query(sql);
+}
+
 export async function createHarness(): Promise<Harness> {
   migrate('up');
   const admin = new pg.Pool({ connectionString: databaseUrl(), max: 4 });
@@ -110,12 +129,10 @@ export async function createHarness(): Promise<Harness> {
       END IF;
     END $$;
   `);
-  await admin.query(
-    "CREATE ROLE sf_t003_writer LOGIN PASSWORD 't003-writer-pass' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT",
-  );
-  await admin.query(
-    "CREATE ROLE sf_t003_rt LOGIN PASSWORD 't003-rt-pass' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT",
-  );
+  const writerPassword = syntheticTestPassword('writer');
+  const rtPassword = syntheticTestPassword('rt');
+  await createLoginRole(admin, WRITER, writerPassword);
+  await createLoginRole(admin, RT, rtPassword);
   await admin.query('GRANT sf_app TO sf_t003_writer');
   await admin.query('GRANT sf_cmp031_rw TO sf_t003_writer');
   await admin.query('GRANT sf_app TO sf_t003_rt');
@@ -124,16 +141,18 @@ export async function createHarness(): Promise<Harness> {
   if (dbname === undefined) throw new Error('current_database missing');
   const ident = '"' + dbname.replaceAll('"', '""') + '"';
   await admin.query('GRANT CONNECT ON DATABASE ' + ident + ' TO sf_t003_writer, sf_t003_rt');
-  const base = new URL(databaseUrl());
-  base.username = WRITER;
-  base.password = 't003-writer-pass';
-  const writerUrl = base.toString();
-  base.username = RT;
-  base.password = 't003-rt-pass';
-  const rtUrl = base.toString();
+  const parsed = new URL(databaseUrl());
+  const writerUrl = roleUrl(parsed, WRITER, writerPassword);
+  const rtUrl = roleUrl(parsed, RT, rtPassword);
   const writer = new pg.Pool({ connectionString: writerUrl, max: 8 });
   const rt = new pg.Pool({ connectionString: rtUrl, max: 4 });
   return { admin, writer, rt, writerUrl, writerName: WRITER, rtName: RT };
+}
+
+function roleUrl(base: URL, user: string, secret: string): string {
+  const host = base.host;
+  const path = `${base.pathname}${base.search}${base.hash}`;
+  return `${base.protocol}//${encodeURIComponent(user)}:${encodeURIComponent(secret)}@${host}${path}`;
 }
 
 export async function asWriter<T>(

@@ -4,6 +4,7 @@ import type { FastifyInstance } from 'fastify';
 import type { Pool } from 'pg';
 import { AuditError } from '../domain/errors.js';
 import { appendLedger } from '../domain/ledger-writer.js';
+import { isResourceTypeCode } from '../domain/query-filters.js';
 import type { AuthzPort } from '../ports/authz-port.js';
 import { queryTenantAudit } from '../repo/query-repo.js';
 import { withTenantTx } from '../repo/tx.js';
@@ -37,10 +38,7 @@ export function registerGetAuditByResource(
     async (request, reply) => {
       const ctx = requireCtx(request.ctx);
       const params = request.params as { resourceType: string; id: string };
-      if (
-        !/^[A-Z][A-Za-z0-9]{1,63}$/.test(params.resourceType) ||
-        params.resourceType.includes('..')
-      ) {
+      if (!isResourceTypeCode(params.resourceType) || params.resourceType.includes('..')) {
         throw new AuditError('SF-SYS-003', { details: [{ code: 'INVALID_RESOURCE' }] });
       }
       if (params.id.includes('..') || params.id.includes('%2f') || params.id.includes('%2F')) {

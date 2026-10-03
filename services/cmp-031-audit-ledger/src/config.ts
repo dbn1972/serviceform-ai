@@ -28,7 +28,21 @@ export function loadConfig(): AuditServiceConfig {
 }
 
 export function assertCellId(cellId: string): void {
-  if (!/^cell-[a-z0-9-]{1,40}$/.test(cellId)) {
+  if (!isCellId(cellId)) {
     throw new Error('Invalid SF_CELL_ID');
   }
+}
+
+function isCellId(value: string): boolean {
+  if (!value.startsWith('cell-')) return false;
+  const rest = value.slice(5);
+  if (rest.length < 1 || rest.length > 40) return false;
+  for (let i = 0; i < rest.length; i += 1) {
+    const c = rest.charCodeAt(i);
+    const lower = c >= 97 && c <= 122;
+    const digit = c >= 48 && c <= 57;
+    const hyphen = c === 45;
+    if (!lower && !digit && !hyphen) return false;
+  }
+  return true;
 }

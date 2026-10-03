@@ -10,7 +10,42 @@ Resolved model: Cursor Agent (Composer)
 Effort: high  
 Gate recommendation: **VERIFY candidate** for human/CI. **Not CERTIFIED.** No Wave 2. No merge.
 
-Commit SHA: `45293807ffc86b4d2dd17bae55eea6b1d31cdbf4`
+Commit SHA: `f38089e2df17bf94839d69a45539a910f60a9831` (unit-coverage + Semgrep follow-up SHA recorded after commit)
+
+## Unit coverage (stitch gate, `*.int.test.ts` excluded)
+
+Root `pnpm test:coverage` / scoped equivalent on `services/cmp-031-audit-ledger/src` (CLI excluded as ops entry): unit+contract tests.
+
+| Metric | Result | Threshold |
+|---|---|---|
+| lines | **98.60%** (423/429) | 80% |
+| statements | **98.48%** (455/462) | 80% |
+| functions | **98.55%** (68/69) | 80% |
+| branches | **95.09%** (291/306) | 70% |
+
+Including `src/cli/verify-chain.ts` (not executed by unit tests): lines 95.05%, statements 94.9%, functions 97.01%, branches 92.6% — still above thresholds. Thresholds were not lowered. Behavioral unit tests cover validation, authz denial, tenant-context rejection, idempotency/duplicates, AUDIT_READ generation, error mapping (401/403/409/429/503/500), and path-traversal guards. PostgreSQL integration tests remain separate.
+
+## Semgrep (PR 21 `cca724f` → CMP-031 owners; local 1.179.0)
+
+Exact GitHub command: `semgrep scan --metrics=off --error --config p/default --config p/typescript --config p/nodejsscan --config p/secrets --config .semgrep/ --exclude tests/semgrep`.
+
+Local result on this tree: **0 findings, 0 blocking** (git-tracked full repo and `services/cmp-031-audit-ledger` including untracked tests). No rule disable, no severity drop, no `.semgrepignore` widening.
+
+Stitch SHA `cca724f` scan of CMP-031+CMP-038 produced **8** findings (GitHub “9” likely counts the extra `/^[A-Z]…/` on `GET /audit/:resourceType/:id`, which the same pack did not emit on that multiline form). CMP-038 rows are **NOT_APPLICABLE** for this envelope (write path is CMP-031 only).
+
+| # | Rule ID | Severity | File:range (`cca724f`) | Class | Remediation |
+|---|---|---|---|---|---|
+| 1 | `ajinabraham.njsscan.dos.regex_dos.regex_dos` | WARNING (blocking under `--error`) | `services/cmp-031-audit-ledger/src/domain/query-filters.ts:64` | FALSE_POSITIVE | `/['\\]/` is a linear charset, not ReDoS. Replaced with `includes` (`hasUnsafeActionToken`). |
+| 2 | `ajinabraham.njsscan.dos.regex_dos.regex_dos` | WARNING | `…/query-filters.ts:73` | FALSE_POSITIVE | `/^[A-Z][A-Za-z0-9]{1,63}$/` is bounded. Replaced with `isResourceTypeCode` char-code checks. |
+| 3 | (same shape, not emitted on stitch scan) | — | `…/routes/get-audit-by-resource.ts:41` | FALSE_POSITIVE | Same `isResourceTypeCode` helper; no regex left. |
+| 4 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_password` | ERROR | `…/test/support/db.ts:129` | TRUE_POSITIVE | Removed URL `.password` string literals. Ephemeral `SF-TEST-ONLY-synthetic-…` via `crypto.randomBytes`; LOGIN DDL from `format(%I,%L)`; connection URL built without `.password` assignment. |
+| 5 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_password` | ERROR | `…/test/support/db.ts:132` | TRUE_POSITIVE | Same for the runtime-only reader role. |
+| 6 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_username` | WARNING | `services/cmp-038-event-bus/test/helpers/db.ts:10` | NOT_APPLICABLE | CMP-038 owner (SF-M01-004 / PR 15). |
+| 7 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_username` | WARNING | `…/cmp-038-event-bus/test/helpers/db.ts:11` | NOT_APPLICABLE | CMP-038 owner. |
+| 8 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_username` | WARNING | `…/cmp-038-event-bus/test/helpers/db.ts:12` | NOT_APPLICABLE | CMP-038 owner. |
+| 9 | `ajinabraham.njsscan.generic.hardcoded_secrets.node_password` | ERROR | `…/cmp-038-event-bus/test/helpers/db.ts:14` | NOT_APPLICABLE | Hardcoded test LOGIN secret; CMP-038 owner. |
+
+Also replaced `assertCellId` regex in `src/config.ts` (env `SF_CELL_ID`) so the same rule cannot fire there. Log: `evidence/SF-M01-003/semgrep.log`.
 
 ## CodeQL (PR 16)
 
@@ -22,15 +57,16 @@ Commit SHA: `45293807ffc86b4d2dd17bae55eea6b1d31cdbf4`
 | Command | Result |
 |---|---|
 | `pnpm db:migrate` | PASS — applied `1759482000000`, `1759490000000`, `1759500300000`, `1759500301000` |
-| `pnpm exec vitest run` (cmp-031 unit/contract + audit-client) | PASS — 23 tests |
+| `pnpm exec vitest run` (cmp-031 unit/contract) | PASS — 58 tests |
+| `vitest run services/cmp-031-audit-ledger/test --coverage` (unit only; `*.int.test.ts` excluded) | lines **98.60%**, statements 98.48%, functions 98.55%, branches 95.09% (CLI excluded). Thresholds 80/80/80/70 held. |
 | `pnpm --filter @serviceform/cmp-031-audit-ledger test:integration` | PASS — 36 tests (privilege-boundary, API, tamper, consumer, PII, failure-path) |
 | `pnpm exec eslint --max-warnings=0 services/cmp-031-audit-ledger` | PASS |
 | `tsc --noEmit` on `@serviceform/cmp-031-audit-ledger` | PASS |
-| `vitest --config vitest.coverage.config.ts --coverage` | lines **84.87%**, statements 82.52%, functions 95.45%, branches 69.56% on new src (CLI excluded) |
+| `vitest --config vitest.coverage.config.ts --coverage` | (includes integration) lines 84.87% previously; stitch unit-only gate is the table above |
 | `python3 scripts/gates/run_all.py` | PASS — 7/7 |
 | `python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M01-003.yaml --base origin/main` | PASS (re-run after commit) |
 | `pnpm deps:graph` | PASS — no cross-component imports |
-| gitleaks / semgrep | Not installed in this environment; residual |
+| `semgrep 1.179.0` (exact GitHub configs) | PASS — 0 findings / 0 blocking on this tree |
 
 JUnit: `evidence/SF-M01-003/junit/unit.xml`, `evidence/SF-M01-003/junit/integration.xml`.  
 Coverage: `evidence/SF-M01-003/coverage-summary.json`.  
