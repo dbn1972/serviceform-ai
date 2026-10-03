@@ -9,7 +9,6 @@ blocked_by:
 - P-01
 - P-02
 - P-03
-- P-04
 - P-05
 component_ids:
 - CMP-038
@@ -97,9 +96,12 @@ contract_locks:
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 acceptance_tests:
+- packages/outbox implements the publisher protocol of contracts/shared/sql/outbox.template.sql rules 3-6 (lease claim, publish
+  outside any transaction, per-key seq order, dead-letter holds its key)
+- New migration files are named with a timestamp after 1759490000000 (check-order)
 - packages/outbox writes an event row in the caller's transaction using the frozen SF-CON-OUTBOX shape; rollback leaves no
   event (test)
 - Relay publishes to Kafka (local compose broker) after commit; at-least-once with event_id de-duplication on the consumer

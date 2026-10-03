@@ -8,7 +8,7 @@
 | Base commit | `684b443` (M00 accepted by the owner) |
 | Build plan used | **`specs/build-plan.proposed.yaml` (ADR-0001, PROPOSED).** See section 2. |
 | Builders spawned | **None.** Envelopes are written; no task is claimed. |
-| Result | **BLOCKED** (section 3). The plan below is ready to dispatch as written once P-01 to P-05 are closed. |
+| Result | **BLOCKED** (section 3). The plan below is ready to dispatch as written once P-01, P-02, P-03 and P-05 are closed (P-04 closed 3 Oct). |
 
 ## 1. What is dependency-ready
 
@@ -47,10 +47,10 @@ task needs the shared envelopes, and all eleven are DRAFT. Unaccepted ADRs block
 
 | ID | Blocker | Blocks | Who closes it | How |
 |---|---|---|---|---|
-| P-01 | ADR-0001 build sequence is PROPOSED; M11 has no exit gate | All tasks (ADR text forbids M01 dispatch) | Owner (human approver) | Accept ADR-0001 with an M11 exit gate added; rename `build-plan.proposed.yaml` to `build-plan.yaml`. |
+| P-01 | ADR-0001 build sequence is PROPOSED (M11 exit gate added 3 Oct) | All tasks (ADR text forbids M01 dispatch) | Owner (human approver) | Accept ADR-0001 with an M11 exit gate added; rename `build-plan.proposed.yaml` to `build-plan.yaml`. |
 | P-02 | ADR-0002 snake_case envelope is PROPOSED (AWS v1.7 s13.2 vs Eng v1.4 CMP-038 "tenantId, cellId, eventId") | Freezing the event, error, audit, request-context and authz contracts | Owner, after Contract Guardian review | Accept or amend ADR-0002. |
-| P-03 | All 11 shared contracts in `orchestrator/contracts-lock.yaml` are DRAFT | All tasks | Contract Guardian (Opus), owner approves | Review, set FROZEN with hashes; `contracts_lock_gate.py` then guards them. |
-| P-04 | Two shared contracts that wave 1 needs do not exist: **SF-CON-OUTBOX** (outbox table shape and relay protocol) and **SF-CON-DB-SESSION-CONTEXT** (`app.tenant_id` and related transaction-local settings, today only in `db/test/rls-harness.int.test.ts`) | SF-M01-001..005 all write to the outbox; 001, 002, 003, 005 rely on the tenant session setting | Contract Guardian drafts, owner approves | Draft both under `contracts/shared`, freeze with P-03. Without them, CMP-038 and its four producers would each invent the shape in parallel. |
+| P-03 | All 13 shared contracts in `orchestrator/contracts-lock.yaml` are DRAFT (reviewed in CONTRACT-REVIEW-001, findings fixed) | All tasks | Contract Guardian (Opus), owner approves | Review, set FROZEN with hashes; `contracts_lock_gate.py` then guards them. |
+| P-04 | ~~Two shared contracts that wave 1 needs did not exist: SF-CON-OUTBOX and SF-CON-DB-SESSION-CONTEXT~~ **Closed 3 Oct 2026:** drafted and reviewed in `docs/audits/CONTRACT-REVIEW-001.md`; they now wait on the P-03 freeze with the others | SF-M01-001..005 | Contract Guardian | Done |
 | P-05 | ADR-0004 greenfield repository is PROPOSED (verification condition 1) | Formal basis for building fresh in this repo | Owner | Accept ADR-0004 (records the owner's 3 Oct instruction). |
 
 Non-blocking for wave 1, tracked:
@@ -59,9 +59,7 @@ Non-blocking for wave 1, tracked:
 - **CI has never run (G-01); nothing is pushed.** `merge_policy` requires CI checks and a PR. Until
   the owner pushes, a "PR" is a local branch reviewed by the verifiers, and evidence comes from local
   gate runs. The owner should decide whether wave-1 merges wait for the first CI run.
-- **Coverage thresholds skip `services/**`.** `vitest.config.ts` only measures `apps/api` and
-  `packages/*`. The orchestrator should add `services/*/src/**` before dispatch (one-line change,
-  owner review as a delivery control).
+- ~~Coverage thresholds skip `services/**`.~~ Fixed 3 Oct 2026: `vitest.config.ts` now measures `services/*/src/**`.
 - **No runner for service integration tests.** `pnpm db:test` only covers `db/test`. Each envelope
   therefore asks for a per-service `vitest.integration.config.ts`.
 - G-10 (query strings in access logs) is fixed in W2 with CMP-036. G-11 (region, DR) is not needed until infrastructure work.
@@ -75,6 +73,10 @@ Non-blocking for wave 1, tracked:
 | SF-M01-003 | CMP-031 Audit and Evidence Ledger | INT-011 | `serviceform-foundation-builder` | Opus (claude-opus-5-5), high | `services/cmp-031-audit-ledger/**`<br>`packages/audit-client/**`<br>`db/migrations/*_cmp-031-*.sql` | security-verifier; evidence-verifier |
 | SF-M01-004 | CMP-038 Event Bus | INT-011, INT-013 | `serviceform-foundation-builder` | Opus (claude-opus-5-5), high | `services/cmp-038-event-bus/**`<br>`packages/outbox/**`<br>`db/migrations/*_cmp-038-*.sql` | integration-stitcher; evidence-verifier |
 | SF-M01-005 | CMP-037 Integration Hub | INT-013 | `serviceform-integration-builder` | Sonnet (claude-sonnet-5-5), high | `services/cmp-037-integration-hub/**`<br>`packages/connector-sdk/**`<br>`simulators/framework/**`<br>`db/migrations/*_cmp-037-*.sql` | integration-stitcher; security-verifier; evidence-verifier |
+
+Every envelope also requires (added 3 Oct with CONTRACT-REVIEW-001): outbox and inbox tables copied
+unchanged from `contracts/shared/sql/outbox.template.sql`, RLS policies written with
+`sf_platform.current_tenant_id()`, and migration timestamps after `1759490000000`.
 
 All five write scopes were checked against each other with `scripts/gates/check_scope.py`: no path is
 writable by two tasks, and each task's sample files pass its own envelope. The only shared file is
@@ -132,8 +134,8 @@ lower end of the 5-8 the topology recommends for a first wave.
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 
 **Allowed write paths**
 - `services/cmp-002-tenant-organisation/**`
@@ -203,8 +205,8 @@ lower end of the 5-8 the topology recommends for a first wave.
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 - SF-CON-AUTHZ-DECISION
 
 **Allowed write paths**
@@ -278,8 +280,8 @@ lower end of the 5-8 the topology recommends for a first wave.
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 
 **Allowed write paths**
 - `services/cmp-031-audit-ledger/**`
@@ -348,8 +350,8 @@ lower end of the 5-8 the topology recommends for a first wave.
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 
 **Allowed write paths**
 - `services/cmp-038-event-bus/**`
@@ -420,8 +422,8 @@ lower end of the 5-8 the topology recommends for a first wave.
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 - SF-CON-CONNECTOR-BINDING
 - SF-CON-SIMULATION-MARKER
 
@@ -467,8 +469,9 @@ lower end of the 5-8 the topology recommends for a first wave.
 
 ## 7. Next action
 
-Close P-01 to P-05 (owner acceptance of ADR-0001 with an M11 gate, ADR-0002 and ADR-0004; Contract
-Guardian drafts SF-CON-OUTBOX and SF-CON-DB-SESSION-CONTEXT and freezes all shared contracts).
+Close P-01, P-02, P-03 and P-05: owner acceptance of ADR-0001 (M11 gate now added), ADR-0002 and
+ADR-0004, plus decisions D-01 to D-05 in CONTRACT-REVIEW-001; then the Contract Guardian freezes all
+13 shared contracts.
 The orchestrator then re-checks the lock file, sets these envelopes to READY, and dispatches.
 
 BLOCKED

@@ -6,9 +6,11 @@ import {
   type ConnectorBinding,
   type ErrorResponse,
   type EventEnvelope,
+  type OutboxRecord,
   type RequestContext,
   ERROR_CATALOGUE,
   CONTRACTS_DIR,
+  dbSessionSettings,
   errorEntry,
   validate,
 } from '../src/index.js';
@@ -84,5 +86,33 @@ describe('shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10
     for (const c of codes) expect(c).toMatch(/^SF-[A-Z]+-\d{3}$/);
     expect(errorEntry('SF-TEN-002').http).toEqual([403]);
     expect(() => errorEntry('SF-NOPE-999')).toThrow();
+  });
+
+  it('maps a request context to transaction-local DB settings (SF-CON-DB-SESSION-CONTEXT)', () => {
+    const officer = example<RequestContext>('valid', 'request-context.officer.json');
+    const settings = dbSessionSettings(officer);
+    expect(validate('db-session-context', settings).valid).toBe(true);
+    expect(settings['app.tenant_id']).toBe(officer.tenant_id);
+    const citizen = example<RequestContext>('valid', 'request-context.citizen.json');
+    const citizenSettings = dbSessionSettings({ ...citizen, tenant_id: null });
+    expect('app.tenant_id' in citizenSettings).toBe(false);
+    expect(validate('db-session-context', citizenSettings).valid).toBe(true);
+  });
+
+  it('keeps outbox row columns consistent with a valid envelope (SF-CON-OUTBOX)', () => {
+    const row = example<OutboxRecord>('valid', 'outbox-record.json');
+    expect(validate('outbox-record', row).valid).toBe(true);
+    expect(row.event_id).toBe(row.envelope.event_id);
+    expect(row.tenant_id).toBe(row.envelope.tenant_id);
+    expect(
+      validate('outbox-record', { ...row, status: 'PUBLISHED', published_at: undefined }).valid,
+    ).toBe(false);
+  });
+
+  it('requires a purpose for integration actors (TI v1.0 s6)', () => {
+    const ctx = example<RequestContext>('valid', 'request-context.integration.json');
+    expect(validate('request-context', ctx).valid).toBe(true);
+    const { purpose: _p, ...noPurpose } = ctx;
+    expect(validate('request-context', noPurpose).valid).toBe(false);
   });
 });

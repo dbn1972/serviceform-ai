@@ -9,7 +9,6 @@ blocked_by:
 - P-01
 - P-02
 - P-03
-- P-04
 - P-05
 component_ids:
 - CMP-002
@@ -96,9 +95,11 @@ contract_locks:
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 acceptance_tests:
+- Outbox and inbox tables are created from contracts/shared/sql/outbox.template.sql without changes; RLS policies use sf_platform.current_tenant_id()
+- New migration files are named with a timestamp after 1759490000000 (check-order)
 - 'Eng v1.4 CMP-002 interfaces: GET /tenants/{id}, GET/POST /organisations, GET /offices, POST /admin/tenant-bindings; responses
   and errors validate against frozen schemas'
 - Tables tenant, organisation, organisation_relation, office, tenant_cell_binding declared with sf:isolation; tenant-scoped

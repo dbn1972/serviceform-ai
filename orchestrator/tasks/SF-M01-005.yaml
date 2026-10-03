@@ -9,7 +9,6 @@ blocked_by:
 - P-01
 - P-02
 - P-03
-- P-04
 - P-05
 component_ids:
 - CMP-037
@@ -98,11 +97,13 @@ contract_locks:
 - SF-CON-IDEMPOTENCY
 - SF-CON-AUDIT-EVENT
 - SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT (to be drafted and frozen, see dispatch plan P-04)
-- SF-CON-OUTBOX (to be drafted and frozen, see dispatch plan P-04)
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
 - SF-CON-CONNECTOR-BINDING
 - SF-CON-SIMULATION-MARKER
 acceptance_tests:
+- Outbox and inbox tables are created from contracts/shared/sql/outbox.template.sql without changes; RLS policies use sf_platform.current_tenant_id()
+- New migration files are named with a timestamp after 1759490000000 (check-order)
 - 'Connector SPI in packages/connector-sdk: invoke, webhook verify, health; modes REAL | SANDBOX | SIMULATED from SF-CON-CONNECTOR-BINDING'
 - Production profile refuses to start when a critical connector binding is SIMULATED (fail closed test)
 - Simulated responses carry SF-CON-SIMULATION-MARKER and a test_run_id

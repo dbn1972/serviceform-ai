@@ -3,6 +3,7 @@ never fails proves nothing)."""
 from __future__ import annotations
 
 import pathlib
+import tempfile
 
 import check_scope
 import migration_lint
@@ -49,6 +50,24 @@ def test_bad_file_name_fails():
 
 def test_nullable_tenant_id_fails():
     assert any("tenant_id uuid NOT NULL" in e for e in lint("1700000000006_nullable-tenant.sql"))
+
+
+def test_raw_tenant_setting_in_policy_fails():
+    errors = lint("1700000000007_raw-tenant-setting.sql")
+    assert len([e for e in errors if "sf_platform.current_tenant_id()" in e]) == 1
+
+
+def test_outbox_template_passes_migration_lint():
+    """SF-CON-OUTBOX: the normative template, rendered for a component, satisfies the lint."""
+    root = pathlib.Path(__file__).resolve().parents[3]
+    body = (root / "contracts/shared/sql/outbox.template.sql").read_text(encoding="utf-8")
+    body = body.replace("{schema}", "cmp_example").replace("{cmp}", "CMP-038")
+    with tempfile.TemporaryDirectory(dir=FIX) as d:  # lint reports repo-relative paths
+        f = pathlib.Path(d) / "1800000000000_outbox-example.sql"
+        f.write_text(f"-- Up Migration\nCREATE SCHEMA cmp_example;\n{body}\n-- Down Migration\n", encoding="utf-8")
+        r = Report("t")
+        migration_lint.lint_file(f, r)
+    assert r.errors == []
 
 
 def test_repository_migrations_pass():
@@ -141,3 +160,27 @@ def test_jurisdiction_gate_ignores_tests(tmp_path, monkeypatch):
     monkeypatch.setattr(_common, "ROOT", tmp_path)
     monkeypatch.setattr(hardcoding_gate, "ROOT", tmp_path)
     assert hardcoding_gate.main() == 0
+
+
+def test_contracts_lock_gate_catches_changed_frozen_companion(tmp_path, monkeypatch):
+    import hashlib
+
+    import _common
+    import contracts_lock_gate
+
+    (tmp_path / "orchestrator").mkdir()
+    main_file, companion = tmp_path / "c.json", tmp_path / "c.sql"
+    main_file.write_text("{}", encoding="utf-8")
+    companion.write_text("-- v1", encoding="utf-8")
+    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()  # noqa: E731
+    (tmp_path / "orchestrator" / "contracts-lock.yaml").write_text(
+        "contracts:\n"
+        f"  - {{id: X, status: FROZEN, path: c.json, schema_hash: {sha(main_file)},\n"
+        f"     companions: [{{path: c.sql, sha256: {sha(companion)}}}]}}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(_common, "ROOT", tmp_path)
+    monkeypatch.setattr(contracts_lock_gate, "ROOT", tmp_path)
+    assert contracts_lock_gate.main() == 0
+    companion.write_text("-- v2", encoding="utf-8")
+    assert contracts_lock_gate.main() == 1

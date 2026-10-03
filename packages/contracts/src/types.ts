@@ -17,6 +17,8 @@ export interface Actor {
   id: Uuid;
 }
 
+export type AuthAssurance = 'NONE' | 'OTP' | 'PASSWORD' | 'MFA' | 'WORKLOAD_IDENTITY';
+
 export interface RequestContext {
   tenant_id: Uuid | null;
   cell_id: string;
@@ -26,7 +28,9 @@ export interface RequestContext {
   roles: string[];
   jurisdiction_ids: Uuid[];
   delegation_id?: Uuid;
-  auth_assurance: 'NONE' | 'OTP' | 'PASSWORD' | 'MFA' | 'WORKLOAD_IDENTITY';
+  auth_assurance: AuthAssurance;
+  /** Required for INTEGRATION actors (TI v1.0 s6). */
+  purpose?: string;
   correlation_id: Uuid;
   trace_id: string;
 }
@@ -76,6 +80,7 @@ export interface AuditEvent {
   audit_id: Uuid;
   occurred_at: IsoTimestamp;
   tenant_id: Uuid | null;
+  cell_id: string;
   actor_type: ActorType;
   actor_id: Uuid;
   organisation_id?: Uuid;
@@ -91,6 +96,8 @@ export interface AuditEvent {
   correlation_id: Uuid;
   trace_id: string;
   result: 'SUCCESS' | 'DENIED' | 'FAILED';
+  classification?: IsolationClass;
+  client_context?: { source_ip?: string; device_id?: string };
 }
 
 export interface AuthzDecisionInput {
@@ -102,7 +109,7 @@ export interface AuthzDecisionInput {
     office_id?: Uuid;
     roles: string[];
     jurisdiction_ids: Uuid[];
-    assurance?: string;
+    assurance?: AuthAssurance;
     delegation_id?: Uuid;
   };
   resource: {
@@ -124,7 +131,12 @@ export interface AuthzDecisionInput {
     required_action?: string;
     task_state?: string;
   };
-  environment?: Record<string, unknown>;
+  environment?: {
+    request_time?: IsoTimestamp;
+    client_id?: string;
+    risk_flags?: string[];
+    trace_id?: string;
+  };
 }
 
 export interface AuthzDecisionOutput {
@@ -140,7 +152,8 @@ export type DeploymentEnvironment =
 
 export interface ConnectorBinding {
   connector_binding_id: Uuid;
-  tenant_id?: Uuid | null;
+  tenant_id: Uuid | null;
+  service_id?: Uuid;
   connector_type: 'PAYMENT' | 'OTP' | 'SMS' | 'EMAIL' | 'DIGILOCKER' | 'ESIGN' | 'DEPARTMENT_API';
   mode: ConnectorMode;
   environment: DeploymentEnvironment;
@@ -163,4 +176,36 @@ export interface IsolationDeclaration {
   isolation_class: IsolationClass;
   rls?: 'FORCE' | 'NOT_APPLICABLE';
   justification?: string;
+}
+
+/** Transaction-local PostgreSQL settings (SF-CON-DB-SESSION-CONTEXT). */
+export interface DbSessionContext {
+  'app.tenant_id'?: Uuid;
+  'app.cell_id': string;
+  'app.actor_type': ActorType;
+  'app.actor_id': Uuid;
+  'app.correlation_id': Uuid;
+}
+
+/** Row of a component outbox table (SF-CON-OUTBOX). */
+export interface OutboxRecord {
+  seq: number;
+  event_id: Uuid;
+  tenant_id?: Uuid;
+  topic: string;
+  partition_key: string;
+  event_type: string;
+  schema_version: number;
+  aggregate_type: string;
+  aggregate_id: Uuid;
+  aggregate_version: number;
+  envelope: EventEnvelope;
+  status: 'PENDING' | 'PUBLISHED' | 'DEAD_LETTERED';
+  attempts: number;
+  next_attempt_at: IsoTimestamp;
+  lease_owner?: string;
+  lease_expires_at?: IsoTimestamp;
+  last_error_code?: string;
+  created_at: IsoTimestamp;
+  published_at?: IsoTimestamp;
 }

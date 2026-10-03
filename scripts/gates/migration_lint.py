@@ -23,6 +23,11 @@ FORBIDDEN = [
     (re.compile(r"\bDISABLE\s+ROW\s+LEVEL\s+SECURITY\b", re.I), "disables row level security"),
     (re.compile(r"\bNO\s+FORCE\s+ROW\s+LEVEL\s+SECURITY\b", re.I), "removes FORCE row level security"),
 ]
+# SF-CON-DB-SESSION-CONTEXT: policies read the tenant through sf_platform.current_tenant_id().
+# A direct current_setting('app.tenant_id', true)::uuid raises on reused pooled sessions
+# (CONTRACT-REVIEW-001 CR-01). Only the migration that defines the accessor may read the setting.
+RAW_TENANT_SETTING = re.compile(r"current_setting\s*\(\s*'app\.tenant_id'", re.I)
+SESSION_ACCESSOR_FILES = {"1759490000000_shared-db-contracts.sql"}
 DESTRUCTIVE = re.compile(r"\b(DROP\s+TABLE|DROP\s+COLUMN|TRUNCATE)\b", re.I)
 ALLOW_DESTRUCTIVE = re.compile(r"^--\s*sf:allow-destructive\s+ADR-\d{4}\s*$")
 
@@ -48,6 +53,9 @@ def lint_file(path: pathlib.Path, r: Report) -> None:
     for pattern, why in FORBIDDEN:
         if pattern.search(up_code):
             r.error(f"{name}: up migration {why}")
+
+    if path.name not in SESSION_ACCESSOR_FILES and RAW_TENANT_SETTING.search(re.sub(r"--[^\n]*", "", up)):
+        r.error(f"{name}: read the tenant with sf_platform.current_tenant_id(), not current_setting('app.tenant_id') (SF-CON-DB-SESSION-CONTEXT)")
 
     lines = up.splitlines()
     for i, line in enumerate(lines):

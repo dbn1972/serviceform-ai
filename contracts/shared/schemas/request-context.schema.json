@@ -18,34 +18,74 @@
   "properties": {
     "tenant_id": {
       "oneOf": [
-        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-        { "type": "null" }
+        {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
-    "cell_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId" },
-    "actor": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actor" },
-    "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "office_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "cell_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId"
+    },
+    "actor": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actor"
+    },
+    "organisation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "office_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
     "roles": {
       "type": "array",
-      "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+      "items": {
+        "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/roleCode"
+      },
       "uniqueItems": true
     },
     "jurisdiction_ids": {
       "type": "array",
-      "items": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+      "items": {
+        "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+      },
       "uniqueItems": true
     },
-    "delegation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "auth_assurance": {
-      "type": "string",
-      "enum": ["NONE", "OTP", "PASSWORD", "MFA", "WORKLOAD_IDENTITY"]
+    "delegation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
     },
-    "correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "auth_assurance": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/authAssurance"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
     "trace_id": {
-      "type": "string",
-      "pattern": "^[0-9a-f]{32}$",
-      "description": "W3C trace-context trace id."
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/traceId"
+    },
+    "purpose": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/purposeCode",
+      "description": "Required for INTEGRATION actors: the integration purpose their credential is scoped to (TI v1.0 s6)."
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "actor": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "INTEGRATION"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": ["purpose"]
+      }
+    }
+  ]
 }

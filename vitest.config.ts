@@ -15,7 +15,7 @@ export default defineConfig({
     outputFile: { junit: 'test-results/unit/junit.xml' },
     coverage: {
       provider: 'v8',
-      include: ['apps/api/src/**', 'packages/*/src/**'],
+      include: ['apps/api/src/**', 'packages/*/src/**', 'services/*/src/**'],
       // Process entry point: exercised by the built-server smoke run, not unit tests.
       exclude: ['apps/api/src/server.ts'],
       reporter: ['text-summary', 'json-summary', 'lcov'],

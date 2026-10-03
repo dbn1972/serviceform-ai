@@ -24,8 +24,8 @@ describe('RLS harness self-test (REQ: TI v1.0 s8, s8.1; Constitution #6)', () =>
         ALTER TABLE sf_harness.example_record ENABLE ROW LEVEL SECURITY;
         ALTER TABLE sf_harness.example_record FORCE ROW LEVEL SECURITY;
         CREATE POLICY tenant_isolation ON sf_harness.example_record
-          USING (tenant_id = current_setting('app.tenant_id', true)::uuid)
-          WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid);
+          USING (tenant_id = sf_platform.current_tenant_id())
+          WITH CHECK (tenant_id = sf_platform.current_tenant_id());
         GRANT USAGE ON SCHEMA sf_harness TO sf_app;
         GRANT SELECT, INSERT ON sf_harness.example_record TO sf_app;
       `);
@@ -99,5 +99,28 @@ describe('RLS harness self-test (REQ: TI v1.0 s8, s8.1; Constitution #6)', () =>
       async (q) => (await q('SELECT * FROM sf_harness.example_record WHERE id = $1', [t2Id])).rows,
     );
     expect(rows).toEqual([]);
+  });
+
+  it('stays fail-closed on a reused pooled session after SET LOCAL (CONTRACT-REVIEW-001 CR-01)', async () => {
+    await withClient(async (c) => {
+      await c.query('BEGIN');
+      await c.query('SET LOCAL ROLE sf_app');
+      await c.query(`SELECT set_config('app.tenant_id', $1, true)`, [T1]);
+      await c.query('SELECT 1 FROM sf_harness.example_record');
+      await c.query('COMMIT');
+      // The same connection now holds app.tenant_id = '' (not NULL).
+      await c.query('BEGIN');
+      try {
+        await c.query('SET LOCAL ROLE sf_app');
+        const { rows } = await c.query('SELECT label FROM sf_harness.example_record');
+        expect(rows).toEqual([]);
+        // The TI v1.0 s8 form raises instead; that is why policies use the accessor.
+        await expect(
+          c.query(`SELECT current_setting('app.tenant_id', true)::uuid`),
+        ).rejects.toThrow(/invalid input syntax for type uuid/);
+      } finally {
+        await c.query('ROLLBACK');
+      }
+    });
   });
 });

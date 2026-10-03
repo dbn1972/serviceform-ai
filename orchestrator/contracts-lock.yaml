@@ -1,8 +1,8 @@
 version: "2.5"
-# Shared-envelope contracts drafted in M00 (bootstrap). Status DRAFT: builders may code against
-# them, but they are not FROZEN until the Architecture & Contract Guardian reviews them and the
-# event-envelope casing decision (proposed ADR-0002) is accepted. FROZEN entries are hash-checked
-# by scripts/gates/contracts_lock_gate.py.
+# Shared-envelope contracts drafted in M00 (bootstrap) and M01 prep. Status DRAFT: reviewed by the
+# Architecture & Contract Guardian in docs/audits/CONTRACT-REVIEW-001.md (findings fixed), but not
+# FROZEN until the owner accepts ADR-0002 and approves the freeze. FROZEN entries, including their
+# companions, are hash-checked by scripts/gates/contracts_lock_gate.py.
 contracts:
   - id: SF-CON-AUDIT-EVENT
     version: 1
@@ -10,7 +10,7 @@ contracts:
     owner: contract_guardian
     source: "AWS v1.7 s14.3"
     path: contracts/shared/schemas/audit-event.schema.json
-    schema_hash: 1707c856f35a3e3377ceb00c27b1348e5fd4136c7d521b7d9a0e17801975f96a
+    schema_hash: 997fc6a97edcdcf0d29c060e033355a744421582e2868b9c42f01200c9ec1f71
     change_request: null
   - id: SF-CON-AUTHZ-DECISION
     version: 1
@@ -18,7 +18,7 @@ contracts:
     owner: contract_guardian
     source: "AWS v1.7 s20.3"
     path: contracts/shared/schemas/authz-decision.schema.json
-    schema_hash: 36a4e23860489742281410247facd5894aa206195ad01baaaeacfa2973d188b1
+    schema_hash: dc0e6a62423757c60b1ec2c135ac41c6e4198ed3df484d5bfb3a6326f2e00275
     change_request: null
   - id: SF-CON-COMMON
     version: 1
@@ -26,7 +26,7 @@ contracts:
     owner: contract_guardian
     source: "AWS v1.7 s13.3, s14.1"
     path: contracts/shared/schemas/common.schema.json
-    schema_hash: ca8a12ad179f5d025a0cc818c0a04bbe6a4114d5591663160baef0953d36a6f3
+    schema_hash: 82d44cd5fd4d71f1985fdcd287737c6d1e7c63f67595ee750338754df0ca40b8
     change_request: null
   - id: SF-CON-CONNECTOR-BINDING
     version: 1
@@ -34,7 +34,7 @@ contracts:
     owner: contract_guardian
     source: "Eng v1.4 s10.1-10.2"
     path: contracts/shared/schemas/connector-binding.schema.json
-    schema_hash: 317aa44f76b720180310c97ed65d40da02b8444959ed3854babc36883b80a011
+    schema_hash: 9a4c71b94b8088a09216db633ba4d823b8033b26adb5e005e7884d37eb8e59a0
     change_request: null
   - id: SF-CON-ERROR-RESPONSE
     version: 1
@@ -58,7 +58,7 @@ contracts:
     owner: contract_guardian
     source: "AWS v1.7 s13.4"
     path: contracts/shared/schemas/idempotency-record.schema.json
-    schema_hash: 9fdda937d4af9a7f62b03e5b228154f3bcc56c146ba04105e7d87d89aab4e031
+    schema_hash: 3b126852ad01a86b7e31bfb10af386a95cf040b1fbcc184c5a6d2c140ebf64de
     change_request: null
   - id: SF-CON-ISOLATION-DECLARATION
     version: 1
@@ -66,7 +66,7 @@ contracts:
     owner: contract_guardian
     source: "TI v1.0 s7; Constitution #24"
     path: contracts/shared/schemas/isolation-declaration.schema.json
-    schema_hash: bdce57fe44798fe02aa3a94da2112e55450622a237d9038c969646a3d9ed3f01
+    schema_hash: 8aa660966813ad8e16827d917927cf603373717723cd9ed664f27d891d47ac02
     change_request: null
   - id: SF-CON-REQUEST-CONTEXT
     version: 1
@@ -74,7 +74,7 @@ contracts:
     owner: contract_guardian
     source: "TI v1.0 s6; AWS v1.7 s13.1"
     path: contracts/shared/schemas/request-context.schema.json
-    schema_hash: a0812a5a5c79529981298bb4aba07fd53cdd78dbf0e17f0e021f3810e0d5ac55
+    schema_hash: 76894a7db855bb1cbd9b88246a6f3d5902274a09ce2080331895983c92abebec
     change_request: null
   - id: SF-CON-SIMULATION-MARKER
     version: 1
@@ -91,4 +91,26 @@ contracts:
     source: "AWS v1.7 s13.3; specs/error-codes.yaml; SF-SYS-* proposed"
     path: contracts/shared/error-catalogue.json
     schema_hash: 04c93ddb07bfea2d92dc9189641d8b2449179bc87fb64a78d942ca3457a24a2b
+    change_request: null
+  - id: SF-CON-DB-SESSION-CONTEXT
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "TI v1.0 s8, s8.1; Eng v1.4 golden path 'repository sets transaction-local tenant context'"
+    path: contracts/shared/schemas/db-session-context.schema.json
+    schema_hash: 738ca80be8c24d488e98ae0e03f50425467a97b7249ae072e4adc2bb03d1b01a
+    companions:
+      - path: db/migrations/1759490000000_shared-db-contracts.sql
+        sha256: 2e2354a00ce39c71f4195ab5838218dcfb827de1abc238622f32540093a92b0d
+    change_request: null
+  - id: SF-CON-OUTBOX
+    version: 1
+    status: DRAFT
+    owner: contract_guardian
+    source: "AWS v1.7 s4.3, s13.2, CMP-038; Eng v1.4 s3; TI v1.0 s13; Constitution #11"
+    path: contracts/shared/schemas/outbox-record.schema.json
+    schema_hash: b0afa1938cf7299579b4c8af684e46c43551c733a412f5198d8e01b5b9491ba4
+    companions:
+      - path: contracts/shared/sql/outbox.template.sql
+        sha256: 4e1ad97dadf15e30a21db789c1d1bc4c32c4f45d6dae8e65515cc2c5d695fa21
     change_request: null

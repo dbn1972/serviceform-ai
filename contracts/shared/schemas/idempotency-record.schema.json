@@ -18,11 +18,17 @@
   "properties": {
     "tenant_id": {
       "oneOf": [
-        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-        { "type": "null" }
+        {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
-    "principal_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "principal_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
     "endpoint": {
       "type": "string",
       "pattern": "^(GET|POST|PUT|PATCH|DELETE) /[A-Za-z0-9_{}/.:-]*$"
@@ -33,14 +39,38 @@
       "maxLength": 128,
       "pattern": "^[A-Za-z0-9_.:-]+$"
     },
-    "request_fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
-    "status": { "type": "string", "enum": ["IN_PROGRESS", "COMPLETED", "FAILED"] },
+    "request_fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["IN_PROGRESS", "COMPLETED", "FAILED"]
+    },
     "response_ref": {
       "type": "string",
       "maxLength": 300,
       "description": "Reference to the stored final response, not the response body."
     },
-    "created_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
-    "expires_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" }
-  }
+    "created_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "expires_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "COMPLETED"
+          }
+        }
+      },
+      "then": {
+        "required": ["response_ref"]
+      }
+    }
+  ]
 }

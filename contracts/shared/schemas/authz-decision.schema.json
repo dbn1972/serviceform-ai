@@ -14,24 +14,48 @@
           "additionalProperties": false,
           "required": ["user_id", "actor_type", "tenant_id", "roles", "jurisdiction_ids"],
           "properties": {
-            "user_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "actor_type": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType" },
+            "user_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "actor_type": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType"
+            },
             "tenant_id": {
               "oneOf": [
-                { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-                { "type": "null" }
+                {
+                  "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+                },
+                {
+                  "type": "null"
+                }
               ]
             },
-            "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "office_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "roles": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-            "jurisdiction_ids": {
+            "organisation_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "office_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "roles": {
               "type": "array",
-              "items": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+              "items": {
+                "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/roleCode"
+              },
               "uniqueItems": true
             },
-            "assurance": { "type": "string" },
-            "delegation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" }
+            "jurisdiction_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+              },
+              "uniqueItems": true
+            },
+            "assurance": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/authAssurance"
+            },
+            "delegation_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            }
           }
         },
         "resource": {
@@ -39,39 +63,93 @@
           "additionalProperties": false,
           "required": ["resource_type", "tenant_id"],
           "properties": {
-            "resource_type": { "type": "string" },
+            "resource_type": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/resourceType"
+            },
             "tenant_id": {
               "oneOf": [
-                { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-                { "type": "null" }
+                {
+                  "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+                },
+                {
+                  "type": "null"
+                }
               ]
             },
-            "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "jurisdiction_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "service_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "application_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "task_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-            "owner_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+            "organisation_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "jurisdiction_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "service_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "application_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "task_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
+            "owner_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+            },
             "classification": {
               "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/isolationClass"
             }
           }
         },
-        "action": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+        "action": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+        },
         "workflow_context": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "workflow_instance_id": { "type": "string", "maxLength": 200 },
-            "workflow_node_id": { "type": "string", "maxLength": 200 },
-            "required_role": { "type": "string" },
-            "required_action": { "type": "string" },
-            "task_state": { "type": "string" }
+            "workflow_instance_id": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "workflow_node_id": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "required_role": {
+              "type": "string"
+            },
+            "required_action": {
+              "type": "string"
+            },
+            "task_state": {
+              "type": "string"
+            }
           }
         },
         "environment": {
           "type": "object",
-          "description": "Approved contextual facts only (time/calendar, client identity, risk flags)."
+          "additionalProperties": false,
+          "description": "Approved contextual facts only (AWS v1.7 s20.3): time, client/service identity, risk flags, trace id for decision logs (s20.6). No personal data.",
+          "properties": {
+            "request_time": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+            },
+            "client_id": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9._-]{0,99}$"
+            },
+            "risk_flags": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+              },
+              "uniqueItems": true,
+              "maxItems": 20
+            },
+            "trace_id": {
+              "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/traceId"
+            }
+          }
         }
       }
     },
@@ -80,10 +158,20 @@
       "additionalProperties": false,
       "required": ["allow", "reason_code", "policy_revision", "decision_id"],
       "properties": {
-        "allow": { "type": "boolean" },
-        "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
-        "policy_revision": { "type": "string", "minLength": 1, "maxLength": 128 },
-        "decision_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" }
+        "allow": {
+          "type": "boolean"
+        },
+        "reason_code": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+        },
+        "policy_revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "decision_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        }
       }
     }
   }

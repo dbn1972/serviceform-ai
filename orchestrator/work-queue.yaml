@@ -1,14 +1,14 @@
 version: "2.5"
 # Wave M01-W1 planned by the orchestrator on 3 Oct 2026 (orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md).
-# All tasks BLOCKED on pre-dispatch items P-01..P-05. Nothing claimed, no builder spawned.
+# All tasks BLOCKED on P-01, P-02, P-03, P-05 (P-04 closed by CONTRACT-REVIEW-001). Nothing claimed, no builder spawned.
 build_plan_basis: specs/build-plan.proposed.yaml (ADR-0001 PROPOSED)
 base_commit: 684b443
 tasks:
-  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-04, P-05]}
-  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-04, P-05]}
-  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-04, P-05]}
-  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-04, P-05]}
-  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-04, P-05]}
+  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-05]}
+  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-05]}
+  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-05]}
+  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-05]}
+  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: BLOCKED, blocked_by: [P-01, P-02, P-03, P-05]}
 deferred_to_wave_2:
   - {components: [CMP-003], reason: "needs CMP-002 organisation hierarchy merged"}
   - {components: [CMP-030], reason: "needs CMP-002, CMP-031 and CMP-048 merged"}

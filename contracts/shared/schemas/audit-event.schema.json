@@ -9,6 +9,7 @@
     "audit_id",
     "occurred_at",
     "tenant_id",
+    "cell_id",
     "actor_type",
     "actor_id",
     "action",
@@ -21,38 +22,116 @@
   "allOf": [
     {
       "if": {
-        "properties": { "action_class": { "enum": ["DECISION", "OVERRIDE", "PRIVILEGED"] } },
+        "properties": {
+          "action_class": {
+            "enum": ["DECISION", "OVERRIDE", "PRIVILEGED"]
+          }
+        },
         "required": ["action_class"]
       },
-      "then": { "required": ["reason"] }
+      "then": {
+        "required": ["reason"]
+      }
     }
   ],
   "properties": {
-    "audit_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "occurred_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "audit_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "occurred_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
     "tenant_id": {
       "oneOf": [
-        { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-        { "type": "null" }
+        {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        {
+          "type": "null"
+        }
       ]
     },
-    "actor_type": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType" },
-    "actor_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "organisation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "office_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "jurisdiction_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "action": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "cell_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId"
+    },
+    "actor_type": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType"
+    },
+    "actor_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "organisation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "office_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "jurisdiction_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "action": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+    },
     "action_class": {
       "type": "string",
       "enum": ["READ", "WRITE", "DECISION", "OVERRIDE", "PRIVILEGED"]
     },
-    "resource_type": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]{1,63}$" },
-    "resource_id": { "type": "string", "minLength": 1, "maxLength": 128 },
-    "before_ref": { "type": "string", "maxLength": 300 },
-    "after_ref": { "type": "string", "maxLength": 300 },
-    "reason": { "type": "string", "minLength": 1, "maxLength": 1000 },
-    "correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
-    "trace_id": { "type": "string", "pattern": "^[0-9a-f]{32}$" },
-    "result": { "type": "string", "enum": ["SUCCESS", "DENIED", "FAILED"] }
+    "resource_type": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/resourceType"
+    },
+    "resource_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "before_ref": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "after_ref": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "trace_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/traceId"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["SUCCESS", "DENIED", "FAILED"]
+    },
+    "classification": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/isolationClass",
+      "description": "Isolation class of the resource acted upon (Eng v1.4 CMP-031: every record carries classification)."
+    },
+    "client_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Source IP/device metadata, only where policy requires and privacy allows (AWS v1.7 s14.3).",
+      "properties": {
+        "source_ip": {
+          "type": "string",
+          "oneOf": [
+            {
+              "format": "ipv4"
+            },
+            {
+              "format": "ipv6"
+            }
+          ]
+        },
+        "device_id": {
+          "type": "string",
+          "maxLength": 128
+        }
+      }
+    }
   }
 }

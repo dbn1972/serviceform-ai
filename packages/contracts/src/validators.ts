@@ -19,6 +19,8 @@ export const CONTRACTS = {
   'connector-binding': `${SCHEMA_BASE}/connector-binding/v1`,
   'simulation-marker': `${SCHEMA_BASE}/simulation-marker/v1`,
   'isolation-declaration': `${SCHEMA_BASE}/isolation-declaration/v1`,
+  'db-session-context': `${SCHEMA_BASE}/db-session-context/v1`,
+  'outbox-record': `${SCHEMA_BASE}/outbox-record/v1`,
 } as const;
 
 export type ContractName = keyof typeof CONTRACTS;
