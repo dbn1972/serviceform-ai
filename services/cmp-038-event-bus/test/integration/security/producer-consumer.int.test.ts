@@ -192,15 +192,17 @@ describe('producer and consumer helpers (004-08..004-16)', () => {
     await handler(msg);
     expect(applied).toBe(1);
     const asT2 = await withOutboxTransaction(app, ctx(T2), async (tx) =>
-      tx.query('SELECT count(*)::int AS n FROM sf_event_bus.inbox_event WHERE event_id = $1::uuid', [
-        id,
-      ]),
+      tx.query(
+        'SELECT count(*)::int AS n FROM sf_event_bus.inbox_event WHERE event_id = $1::uuid',
+        [id],
+      ),
     );
     expect(asT2.rows[0]?.n).toBe(0);
     const asT1 = await withOutboxTransaction(app, ctx(T1), async (tx) =>
-      tx.query('SELECT count(*)::int AS n FROM sf_event_bus.inbox_event WHERE event_id = $1::uuid', [
-        id,
-      ]),
+      tx.query(
+        'SELECT count(*)::int AS n FROM sf_event_bus.inbox_event WHERE event_id = $1::uuid',
+        [id],
+      ),
     );
     expect(asT1.rows[0]?.n).toBe(1);
   });
