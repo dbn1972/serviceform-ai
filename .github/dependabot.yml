@@ -3,6 +3,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule: { interval: weekly }
+    cooldown: { default-days: 7 }
     open-pull-requests-limit: 10
     groups:
       opentelemetry: { patterns: ['@opentelemetry/*'] }
@@ -11,15 +12,20 @@ updates:
   - package-ecosystem: pub
     directory: /apps/mobile
     schedule: { interval: weekly }
+    cooldown: { default-days: 7 }
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }
+    cooldown: { default-days: 7 }
   - package-ecosystem: docker-compose
     directory: /infra/local
     schedule: { interval: monthly }
+    cooldown: { default-days: 7 }
   - package-ecosystem: terraform
     directory: /infra/terraform/envs/dev
     schedule: { interval: monthly }
+    cooldown: { default-days: 7 }
   - package-ecosystem: pip
     directory: /scripts
     schedule: { interval: monthly }
+    cooldown: { default-days: 7 }

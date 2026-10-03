@@ -11,10 +11,11 @@ regex = '''(?i)\b(postgres(ql)?|redis|amqp|mongodb)://[^:\s/]+:[^@\s/]{6,}@'''
 tags = ["password", "url"]
 
 [allowlist]
-description = "Synthetic test identifiers and generated lockfiles"
+description = "Synthetic identifiers, lockfiles, and contract example fixtures (RFC4122 UUIDs in examples are not secrets; gitleaks git scans history)"
 paths = [
   '''pnpm-lock\.yaml''',
   '''apps/mobile/pubspec\.lock''',
   '''MANIFEST\.sha256''',
   '''orchestrator/contracts-lock\.yaml''',
+  '''contracts/shared/examples/''',
 ]
