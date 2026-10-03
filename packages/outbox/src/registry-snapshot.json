@@ -1,0 +1,87 @@
+{
+  "topics": [
+    {
+      "topic_name": "sf.eventbus.platform.v1",
+      "owner_component": "CMP-038",
+      "tenancy": "PLATFORM_OPERATIONAL",
+      "partition_key_strategy": "AGGREGATE_ID",
+      "partitions": 3,
+      "replication_factor": 1,
+      "broker_retention": "7 days",
+      "outbox_retention": "7 days",
+      "replay_class": "STANDARD",
+      "compatibility": "BACKWARD",
+      "dlq_topic": "sf.eventbus.platform.v1.dlq",
+      "status": "ACTIVE",
+      "schemas": [
+        {
+          "event_type": "TopicRegistered",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        },
+        {
+          "event_type": "EventSchemaRegistered",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        },
+        {
+          "event_type": "DeadLetterReplayed",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        },
+        {
+          "event_type": "DeadLetterDiscarded",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        },
+        {
+          "event_type": "AuditEventSubmitted",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        }
+      ]
+    },
+    {
+      "topic_name": "sf.audit.ingest.v1",
+      "owner_component": "CMP-038",
+      "tenancy": "PLATFORM_OPERATIONAL",
+      "partition_key_strategy": "DECLARED",
+      "partitions": 3,
+      "replication_factor": 1,
+      "broker_retention": "7 days",
+      "outbox_retention": "7 days",
+      "replay_class": "STANDARD",
+      "compatibility": "BACKWARD",
+      "dlq_topic": "sf.audit.ingest.v1.dlq",
+      "status": "ACTIVE",
+      "schemas": [
+        {
+          "event_type": "AuditEventSubmitted",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        }
+      ]
+    },
+    {
+      "topic_name": "sf.example.events",
+      "owner_component": "CMP-038",
+      "tenancy": "TENANT_SCOPED",
+      "partition_key_strategy": "AGGREGATE_ID",
+      "partitions": 6,
+      "replication_factor": 1,
+      "broker_retention": "7 days",
+      "outbox_retention": "7 days",
+      "replay_class": "STANDARD",
+      "compatibility": "BACKWARD",
+      "dlq_topic": "sf.example.events.dlq",
+      "status": "ACTIVE",
+      "schemas": [
+        {
+          "event_type": "ExampleAggregateCreated",
+          "schema_version": 1,
+          "data_schema": { "type": "object", "additionalProperties": true }
+        }
+      ]
+    }
+  ]
+}

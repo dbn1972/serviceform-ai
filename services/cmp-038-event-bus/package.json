@@ -1,0 +1,27 @@
+{
+  "name": "@serviceform/cmp-038-event-bus",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-038 Event Bus: topic registry, outbox relay, lag monitor",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "registry:sync": "tsx src/registry/sync.ts"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.1",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "@serviceform/outbox": "workspace:*",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "tsx": "4.23.15"
+  }
+}

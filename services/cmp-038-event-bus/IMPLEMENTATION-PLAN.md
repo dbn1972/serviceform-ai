@@ -1,6 +1,6 @@
 # SF-M01-004 implementation plan (PHASE 1 — PLAN ONLY)
 
-Status: **PLAN_READY** (revision 2). No implementation. Awaiting orchestrator re-approval after CHANGES_REQUIRED.
+Status: **IMPLEMENTING** (revision 2 plan, approved). Role creation uses idempotent `DO $$ … IF NOT EXISTS (pg_roles) … CREATE ROLE` blocks — PostgreSQL has no `CREATE ROLE IF NOT EXISTS`.
 
 **Rev 2 (orchestrator finding):** `topic` / `event_schema` / `consumer_checkpoint` are **GRANT-only**. Do **not** ENABLE RLS on them (zero-policy RLS would also deny CMP-038 runtime and fail 004-P1). ADR-0006 requires FORCE RLS only on TENANT_SCOPED tables. Peers still fail with 42501 from missing GRANT.
 
@@ -46,7 +46,7 @@ Scope check after implementation: `python scripts/gates/check_scope.py --envelop
 | Data | Schema `sf_event_bus` (PLAN-REVIEW X-2). Three CMP-038 registry tables with DML **only** to `sf_cmp038_rw`. Four template tables copied unchanged (grants stay on `sf_app` / `sf_outbox_publisher` as frozen). Relay touches **other components’** `outbox_event*` **only** through frozen `sf_outbox_publisher` grants (D-02; Constitution #23 exception already frozen). No business-table SQL. |
 | APIs / events | No end-user REST in W1 (Eng: AsyncAPI; apps/api mount is W2/CMP-036). Library API in `@serviceform/outbox`. CLI/process: `registry:sync`, relay `main`, lag monitor. Platform events: `TopicRegistered`, `EventSchemaRegistered`, `DeadLetterReplayed`, `DeadLetterDiscarded` (`tenant_id` null, `sf_event_bus.outbox_event_platform`, topic `sf.eventbus.platform.v1`). Audit of operator actions: `AuditEventSubmitted` on producer outbox per PLAN-REVIEW X-4 (`sf.audit.ingest.v1`) **before** replay/discard (P-004-2). |
 | Tenancy / authz | Producer: `dbSessionSettings(ctx)` then RLS INSERT. Tenant envelope vs session: SF-TEN-001 / SF-TEN-002. Publisher is the approved cross-tenant service (D-02): login ∈ `sf_outbox_publisher` only — **not** `sf_app`, **not** `sf_cmp038_rw`, never SUPERUSER/BYPASSRLS. Consumer sets session from validated envelope. Operator replay/discard: CMP-038 runtime login (`sf_app` + `sf_cmp038_rw`) + PRIVILEGED_ADMIN + MFA + reason + injected `AuthorizationPort`; audit commit first. No tenant_id in metric attributes. |
-| Migration | `db/migrations/1759500400000_cmp-038-event-bus.sql` (band `17595004xxxxx`, PLAN-REVIEW X-1; after `1759490000000`). Creates `sf_migrator` if missing, `sf_cmp038_rw`, schema, tables, FORCE RLS on **TENANT_SCOPED** outbox/inbox via template only, **no RLS** on the three registry tables, PUBLIC revoke, default privileges. |
+| Migration | `db/migrations/1759500400000_cmp-038-event-bus.sql` (band `17595004xxxxx`, PLAN-REVIEW X-1; after `1759490000000`). Creates `sf_migrator` if missing (idempotent `DO $$` / `pg_roles` check — not `CREATE ROLE IF NOT EXISTS`), `sf_cmp038_rw`, schema, tables, FORCE RLS on **TENANT_SCOPED** outbox/inbox via template only, **no RLS** on the three registry tables, PUBLIC revoke, default privileges. |
 | Tests | Security cases 004-01..004-30 first (test-before-code). ADR-0006 cases 004-P1..004-P10. Unit + PG 16 integration + real Kafka 4.1.0 (Q1 approved). |
 | Observability | `metrics.getMeter('@serviceform/outbox')` via `@opentelemetry/api` after `startTelemetry()` (Q4 approved). Logs via `createLogger()` (redaction). Lag gauges + `consumer_checkpoint` upserts. |
 | Rollback | Revert branch. Down migration drops `sf_event_bus` objects and `sf_cmp038_rw` if unused (dev/CI). Stopping the relay is safe: PENDING rows remain; no committed event is lost. Kafka topics are operator-owned (do not delete on down). Production data rollback is forward-fix only. |
@@ -61,7 +61,7 @@ Scope check after implementation: `python scripts/gates/check_scope.py --envelop
 
 Schema: `sf_event_bus` — `-- sf:schema sf_event_bus PLATFORM_OPERATIONAL owner=CMP-038`.
 
-Owner of schema and all tables: **`sf_migrator`** (NOLOGIN, NOSUPERUSER, NOBYPASSRLS, not an application identity). Created `IF NOT EXISTS` so sibling Wave 1 migrations can share it. Runtime logins never own objects (ADR-0006 #5).
+Owner of schema and all tables: **`sf_migrator`** (NOLOGIN, NOSUPERUSER, NOBYPASSRLS, not an application identity). Created with an idempotent `DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_migrator') THEN CREATE ROLE …; END IF; END $$` block so sibling Wave 1 migrations can share it. PostgreSQL does not support `CREATE ROLE IF NOT EXISTS`. Runtime logins never own objects (ADR-0006 #5). No competing writer: M00 baseline does not create `sf_migrator`.
 
 ### 2.1 CMP-038 authoritative tables (ADR-0006 DML → `sf_cmp038_rw` only)
 
@@ -224,7 +224,7 @@ Phase 2 evidence (not now): listed in the envelope (`privilege-boundary.log`, at
 | ID | Item | Proposal |
 |---|---|---|
 | O-LOCK | New `@platformatic/kafka` requires lockfile regen | Builder will not commit `pnpm-lock.yaml`. Request reconciliation after plan approval / before CI on the implementation PR. |
-| O-MIG | `sf_migrator` does not exist in M00 | This migration `CREATE ROLE IF NOT EXISTS` + `OWNER TO sf_migrator`. Sibling tasks will do the same. |
+| O-MIG | `sf_migrator` does not exist in M00 | This migration creates it with the same idempotent `DO $$` / `pg_roles` pattern as `sf_app` in the platform baseline, then `OWNER TO sf_migrator`. Sibling tasks may share the role; this task does not edit the frozen baseline. |
 | O-CCR | P-004-4 DELETE on PENDING | Record residual; do **not** edit template. |
 | STOP | SQS vs MSK, payload > 256 KiB, frozen contract edit, publisher SQL beyond outbox, root/`pnpm-lock` write, ADR-0006 violation | Stop; no silent architecture change. |
 

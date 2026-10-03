@@ -1,0 +1,28 @@
+{
+  "name": "@serviceform/outbox",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Transactional outbox producer, publisher protocol and inbox helper (SF-CON-OUTBOX, CMP-038)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./publisher": "./src/publisher/index.ts",
+    "./kafka": "./src/transport/kafka.ts",
+    "./testing": "./src/testing/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.1",
+    "@platformatic/kafka": "2.12.1",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@opentelemetry/sdk-metrics": "2.11.0",
+    "@types/pg": "8.23.1"
+  }
+}
