@@ -1,6 +1,8 @@
 # SF-M01-004 implementation plan (PHASE 1 — PLAN ONLY)
 
-Status: **PLAN_READY**. No implementation in this revision. Awaiting orchestrator plan approval.
+Status: **PLAN_READY** (revision 2). No implementation. Awaiting orchestrator re-approval after CHANGES_REQUIRED.
+
+**Rev 2 (orchestrator finding):** `topic` / `event_schema` / `consumer_checkpoint` are **GRANT-only**. Do **not** ENABLE RLS on them (zero-policy RLS would also deny CMP-038 runtime and fail 004-P1). ADR-0006 requires FORCE RLS only on TENANT_SCOPED tables. Peers still fail with 42501 from missing GRANT.
 
 | Field | Value |
 |---|---|
@@ -44,7 +46,7 @@ Scope check after implementation: `python scripts/gates/check_scope.py --envelop
 | Data | Schema `sf_event_bus` (PLAN-REVIEW X-2). Three CMP-038 registry tables with DML **only** to `sf_cmp038_rw`. Four template tables copied unchanged (grants stay on `sf_app` / `sf_outbox_publisher` as frozen). Relay touches **other components’** `outbox_event*` **only** through frozen `sf_outbox_publisher` grants (D-02; Constitution #23 exception already frozen). No business-table SQL. |
 | APIs / events | No end-user REST in W1 (Eng: AsyncAPI; apps/api mount is W2/CMP-036). Library API in `@serviceform/outbox`. CLI/process: `registry:sync`, relay `main`, lag monitor. Platform events: `TopicRegistered`, `EventSchemaRegistered`, `DeadLetterReplayed`, `DeadLetterDiscarded` (`tenant_id` null, `sf_event_bus.outbox_event_platform`, topic `sf.eventbus.platform.v1`). Audit of operator actions: `AuditEventSubmitted` on producer outbox per PLAN-REVIEW X-4 (`sf.audit.ingest.v1`) **before** replay/discard (P-004-2). |
 | Tenancy / authz | Producer: `dbSessionSettings(ctx)` then RLS INSERT. Tenant envelope vs session: SF-TEN-001 / SF-TEN-002. Publisher is the approved cross-tenant service (D-02): login ∈ `sf_outbox_publisher` only — **not** `sf_app`, **not** `sf_cmp038_rw`, never SUPERUSER/BYPASSRLS. Consumer sets session from validated envelope. Operator replay/discard: CMP-038 runtime login (`sf_app` + `sf_cmp038_rw`) + PRIVILEGED_ADMIN + MFA + reason + injected `AuthorizationPort`; audit commit first. No tenant_id in metric attributes. |
-| Migration | `db/migrations/1759500400000_cmp-038-event-bus.sql` (band `17595004xxxxx`, PLAN-REVIEW X-1; after `1759490000000`). Creates `sf_migrator` if missing, `sf_cmp038_rw`, schema, tables, FORCE RLS on tenant outbox/inbox via template, PUBLIC revoke, default privileges. |
+| Migration | `db/migrations/1759500400000_cmp-038-event-bus.sql` (band `17595004xxxxx`, PLAN-REVIEW X-1; after `1759490000000`). Creates `sf_migrator` if missing, `sf_cmp038_rw`, schema, tables, FORCE RLS on **TENANT_SCOPED** outbox/inbox via template only, **no RLS** on the three registry tables, PUBLIC revoke, default privileges. |
 | Tests | Security cases 004-01..004-30 first (test-before-code). ADR-0006 cases 004-P1..004-P10. Unit + PG 16 integration + real Kafka 4.1.0 (Q1 approved). |
 | Observability | `metrics.getMeter('@serviceform/outbox')` via `@opentelemetry/api` after `startTelemetry()` (Q4 approved). Logs via `createLogger()` (redaction). Lag gauges + `consumer_checkpoint` upserts. |
 | Rollback | Revert branch. Down migration drops `sf_event_bus` objects and `sf_cmp038_rw` if unused (dev/CI). Stopping the relay is safe: PENDING rows remain; no committed event is lost. Kafka topics are operator-owned (do not delete on down). Production data rollback is forward-fix only. |
@@ -65,11 +67,13 @@ Owner of schema and all tables: **`sf_migrator`** (NOLOGIN, NOSUPERUSER, NOBYPAS
 
 | Table | Isolation | DML | Notes |
 |---|---|---|---|
-| `sf_event_bus.topic` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT, UPDATE(status, … non-key ops as needed) to **`sf_cmp038_rw` only** | PK `topic_name`; `owner_component`; `tenancy` TENANT_SCOPED \| PLATFORM_OPERATIONAL; `partition_key_strategy` AGGREGATE_ID \| DECLARED; partitions; replication; broker/outbox retention; replay_class; compatibility BACKWARD \| FORWARD \| FULL; `dlq_topic` NOT NULL; status ACTIVE \| DEPRECATED. **No GRANT to `sf_app`.** |
-| `sf_event_bus.event_schema` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT to **`sf_cmp038_rw` only** | PK `(topic_name, event_type, schema_version)`; `data_schema jsonb`; INSERT-only. Trigger refuses UPDATE/DELETE (published versions immutable). **No GRANT to `sf_app`.** |
-| `sf_event_bus.consumer_checkpoint` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT, UPDATE to **`sf_cmp038_rw` only** | PK `(consumer_group, topic_name, partition)`; offsets + lag. Written by lag monitor on the **CMP-038 runtime login**, never by the publisher role. **No GRANT to `sf_app`.** |
+| `sf_event_bus.topic` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT, UPDATE(status, … non-key ops as needed) to **`sf_cmp038_rw` only** | PK `topic_name`; `owner_component`; `tenancy` TENANT_SCOPED \| PLATFORM_OPERATIONAL; `partition_key_strategy` AGGREGATE_ID \| DECLARED; partitions; replication; broker/outbox retention; replay_class; compatibility BACKWARD \| FORWARD \| FULL; `dlq_topic` NOT NULL; status ACTIVE \| DEPRECATED. **No GRANT to `sf_app`. No RLS.** |
+| `sf_event_bus.event_schema` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT to **`sf_cmp038_rw` only** | PK `(topic_name, event_type, schema_version)`; `data_schema jsonb`; INSERT-only. Trigger refuses UPDATE/DELETE (published versions immutable). **No GRANT to `sf_app`. No RLS.** |
+| `sf_event_bus.consumer_checkpoint` | PLATFORM_OPERATIONAL owner=CMP-038 | SELECT, INSERT, UPDATE to **`sf_cmp038_rw` only** | PK `(consumer_group, topic_name, partition)`; offsets + lag. Written by lag monitor on the **CMP-038 runtime login**, never by the publisher role. **No GRANT to `sf_app`. No RLS.** |
 
-RLS policies remain `TO sf_app` where a policy exists. Registry tables are platform-operational (no tenant_id; migration_lint does not require FORCE RLS). Still: `REVOKE ALL … FROM PUBLIC`; no policy `TO public`; ENABLE RLS with a deny-default / no PUBLIC policy so unprivileged roles see nothing even if a grant slipped.
+**Registry isolation is GRANT-only (orchestrator ruling, rev 2).** Do **not** `ENABLE ROW LEVEL SECURITY` on `topic`, `event_schema`, or `consumer_checkpoint`. ADR-0006 condition 6 requires FORCE RLS only on TENANT_SCOPED tables. Zero-policy / deny-default RLS on these PLATFORM_OPERATIONAL tables would hide rows from the table owner’s non-owner runtime as well (`FORCE` is not the issue; default-deny with no `TO sf_app`/`TO sf_cmp038_rw` policy still blocks 004-P1). Peers and `sf_app`-only logins still get **42501** from missing GRANT. `REVOKE ALL … FROM PUBLIC` and revoked default privileges remain. RLS policies stay `TO sf_app` only where the frozen outbox/inbox template already creates them.
+
+Do not take the alternative (`ENABLE RLS` + `USING (true) WITH CHECK (true) TO sf_app`) unless the orchestrator reverses this ruling: that would let every `sf_app` member pass RLS and would require DML grants on registry tables to `sf_app`, contradicting ADR-0006 condition 1.
 
 ### 2.2 Frozen outbox/inbox (copy template unchanged — ADR-0006 #9)
 
@@ -151,7 +155,7 @@ Transport interface and SIMULATED/REAL behaviour: dispatch plan §3.2, plus 004-
 | 3 | Runtime LOGIN inherits only `sf_app` + own `_rw` | Test + deploy docs. Relay LOGIN is **not** that runtime; it inherits publisher only. |
 | 4 | No SUPERUSER / BYPASSRLS | Role attrs + 004-01 / 004-P5 |
 | 5 | Runtime is not table owner | `ALTER SCHEMA/TABLE OWNER TO sf_migrator`; 004-P6 |
-| 6 | FORCE RLS on TENANT_SCOPED | Template `outbox_event` / `inbox_event`; lint + 004-P7 |
+| 6 | FORCE RLS on TENANT_SCOPED only | Template `outbox_event` / `inbox_event` ENABLE+FORCE. Registry tables: **no RLS** (GRANT-only). Lint + 004-P7 |
 | 7 | Cross-component SQL default DENY | No grants to other `_rw` or other CMP logins; publisher has no registry SELECT; 004-P3 / 004-27 / 004-03 |
 | 8 | PUBLIC + default privileges | `REVOKE ALL ON SCHEMA/TABLES/SEQUENCES FROM PUBLIC`; `ALTER DEFAULT PRIVILEGES FOR ROLE sf_migrator IN SCHEMA sf_event_bus REVOKE ALL ON TABLES, SEQUENCES FROM PUBLIC, sf_app`; 004-P8 |
 | 9 | Preserve SF-CON-OUTBOX | Copy template unchanged; 004-30 |
@@ -175,13 +179,13 @@ Run as CMP-038 runtime LOGIN `sf_t004_app` (`IN ROLE sf_app, sf_cmp038_rw`) unle
 
 | ID | Assert |
 |---|---|
-| **004-P1** | Own authorized DML succeeds: INSERT/SELECT topic + event_schema; UPSERT consumer_checkpoint; INSERT own outbox (via frozen `sf_app` INSERT) in a tenant tx. |
+| **004-P1** | Own authorized DML succeeds under GRANT-only registry access (no RLS on those tables): INSERT/SELECT topic + event_schema; UPSERT consumer_checkpoint; INSERT own outbox (via frozen `sf_app` INSERT) in a tenant tx. |
 | **004-P2** | Wrong-tenant: envelope T2 with context T1 → SF-TEN-002 / RLS, no row; T2 cannot see T1 `inbox_event`. |
-| **004-P3** | Peer login `IN ROLE sf_app, sf_cmp002_rw` (harness): SELECT/INSERT/UPDATE/DELETE on `sf_event_bus.topic`, `event_schema`, `consumer_checkpoint` → 42501. CMP-038 login: SELECT/INSERT/UPDATE/DELETE on fixture `sf_t004_peer.orders` (granted only to `sf_cmp002_rw`) → 42501. |
+| **004-P3** | Peer login `IN ROLE sf_app, sf_cmp002_rw` (harness): SELECT/INSERT/UPDATE/DELETE on `sf_event_bus.topic`, `event_schema`, `consumer_checkpoint` → **42501 from missing GRANT** (not RLS). CMP-038 login: SELECT/INSERT/UPDATE/DELETE on fixture `sf_t004_peer.orders` (granted only to `sf_cmp002_rw`) → 42501. An `sf_app`-only login (no `_rw`) also 42501 on registry DML. |
 | **004-P4** | `pg_has_role(session_user, 'sf_cmp002_rw'|'sf_cmp031_rw'|'sf_cmp037_rw'|'sf_cmp048_rw', 'MEMBER')` is false; `SET ROLE` those roles → error. Same for publisher login vs `sf_cmp038_rw` and `sf_app`. |
 | **004-P5** | Runtime and publisher: `rolsuper` false, `rolbypassrls` false. |
 | **004-P6** | `pg_tables.tableowner` / schema owner is `sf_migrator` (or equivalent), never the runtime/publisher LOGIN. |
-| **004-P7** | Tenant outbox/inbox: `relforcerowsecurity` true; policies only as template; no policy TO PUBLIC. |
+| **004-P7** | Tenant outbox/inbox: `relrowsecurity` and `relforcerowsecurity` true; policies only as template; no policy TO PUBLIC. Registry tables `topic` / `event_schema` / `consumer_checkpoint`: `relrowsecurity` **false** (no ENABLE RLS, no policies). |
 | **004-P8** | `has_table_privilege('public', …)` false for all new tables/sequences; default privileges do not grant `sf_app` DML on registry tables. |
 | **004-P9** | Publisher catalogue (004-02) still holds after registry tables exist (no new publisher grants). |
 | **004-P10** | Lost-event invariant H3 across rollback, broker down/up, lease expiry (ties 004-08/17/29). |
@@ -224,7 +228,7 @@ Phase 2 evidence (not now): listed in the envelope (`privilege-boundary.log`, at
 | O-CCR | P-004-4 DELETE on PENDING | Record residual; do **not** edit template. |
 | STOP | SQS vs MSK, payload > 256 KiB, frozen contract edit, publisher SQL beyond outbox, root/`pnpm-lock` write, ADR-0006 violation | Stop; no silent architecture change. |
 
-Rulings already binding (do not re-ask): Q1 Kafka tarball; Q2 no publisher registry GRANT + snapshot; Q3 unregistered → retry not DLQ; Q4 OTel global meter; Q5 discard = DELETE after DLQ + audit; Q8 no REST; naming `sf_cmp038_rw`.
+Rulings already binding (do not re-ask): Q1 Kafka tarball; Q2 no publisher registry GRANT + snapshot; Q3 unregistered → retry not DLQ; Q4 OTel global meter; Q5 discard = DELETE after DLQ + audit; Q8 no REST; naming `sf_cmp038_rw`; **registry tables GRANT-only, no RLS** (rev 2).
 
 ---
 
