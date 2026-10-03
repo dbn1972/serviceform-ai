@@ -38,6 +38,38 @@ export function migrate(direction: 'up' | 'down', count?: number): void {
   });
 }
 
+/** Applied migration names whose timestamp/name belong to CMP-048. */
+export function isCmp048MigrationName(name: string): boolean {
+  return /(?:^|_)cmp-048[-_]/.test(name);
+}
+
+/**
+ * node-pg-migrate can only down from the tip. On a composed Wave 1 chain the tip
+ * is often a later component, so `down 1` does not drop `sf_security`.
+ * Return the number of tip steps that removes every applied CMP-048 migration
+ * (later siblings first, then this component's count).
+ */
+export async function downCountThroughCmp048(client: pg.Client): Promise<number> {
+  const { rows } = await client.query<{ name: string }>(
+    `SELECT name FROM sf_platform.sf_schema_migrations ORDER BY name DESC`,
+  );
+  let steps = 0;
+  let seenCmp048 = false;
+  for (const row of rows) {
+    if (isCmp048MigrationName(row.name)) {
+      seenCmp048 = true;
+      steps += 1;
+      continue;
+    }
+    if (seenCmp048) break;
+    steps += 1;
+  }
+  if (!seenCmp048 || steps < 1) {
+    throw new Error('no applied CMP-048 migration found in sf_schema_migrations');
+  }
+  return steps;
+}
+
 export async function adminClient(): Promise<pg.Client> {
   const c = new pg.Client({ connectionString: adminUrl() });
   await c.connect();
