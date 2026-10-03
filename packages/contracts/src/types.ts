@@ -1,7 +1,7 @@
 /**
  * TypeScript shapes for the shared envelopes in ../schemas. The JSON Schemas are authoritative;
  * test/contracts.test.ts checks these types against the schema examples.
- * Status: DRAFT until the Contract Guardian freezes them in orchestrator/contracts-lock.yaml.
+ * Status: FROZEN in orchestrator/contracts-lock.yaml (ADR-0002, 3 October 2026).
  */
 
 export type Uuid = string;

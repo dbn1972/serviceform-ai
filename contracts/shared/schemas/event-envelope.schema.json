@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/event-envelope/v1",
   "title": "EventEnvelope",
-  "description": "Standard domain event envelope, field set and casing from AWS v1.7 s13.2 (precedence over Eng v1.4 Appendix A camelCase; see proposed ADR-0002). Payload is minimal; binaries and evidence are referenced, never embedded.",
+  "description": "Standard domain event envelope, field set and casing from AWS v1.7 s13.2 (precedence over Eng v1.4 Appendix A camelCase; ADR-0002). Payload is minimal; binaries and evidence are referenced, never embedded.",
   "type": "object",
   "additionalProperties": false,
   "required": [

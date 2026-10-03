@@ -12,7 +12,7 @@ families:
   SF-INT: integrations
   SF-AI: ai_gateway_and_agents
   SF-RATE: rate_limiting  # AWS v1.7 s13.3 SF-RATE-001; added by CONTRACT-REVIEW-001
-  SF-SYS: generic_platform  # PROPOSED with ADR-0002; AWS v1.7 s13.3 has no generic codes
+  SF-SYS: generic_platform  # added by ADR-0002; AWS v1.7 s13.3 has no generic codes
 examples:
   SF-AUTH-001: Authentication required
   SF-AUTH-002: Insufficient authorization
@@ -32,7 +32,7 @@ examples:
   SF-INT-001: External provider unavailable
   SF-AI-001: AI assistance unavailable
   SF-RATE-001: Rate limit exceeded
-  SF-SYS-001: Unexpected server error (proposed)
-  SF-SYS-002: Resource or route not found (proposed)
-  SF-SYS-003: Request validation failed (proposed)
-  SF-SYS-004: Service temporarily unavailable (proposed)
+  SF-SYS-001: Unexpected server error
+  SF-SYS-002: Resource or route not found
+  SF-SYS-003: Request validation failed
+  SF-SYS-004: Service temporarily unavailable

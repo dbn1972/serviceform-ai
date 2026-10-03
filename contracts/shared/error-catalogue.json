@@ -1,6 +1,6 @@
 {
-  "$comment": "SF-* error catalogue for the API foundation. Codes marked source AWS-v1.7-s13.3 are authoritative. SF-SYS-* and SF-AI-001 are PROPOSED additions pending Contract Guardian review (generic platform errors have no code in AWS v1.7 s13.3).",
-  "status": "DRAFT",
+  "$comment": "SF-* error catalogue for the API foundation. Codes with source AWS-v1.7-s13.3 are authoritative; SF-AI-001 comes from specs/error-codes.yaml; SF-SYS-* were added by ADR-0002 (generic platform errors have no code in AWS v1.7 s13.3).",
+  "status": "FROZEN",
   "codes": [
     {
       "code": "SF-AUTH-001",
@@ -120,25 +120,25 @@
       "code": "SF-SYS-001",
       "message": "Unexpected server error",
       "http": [500],
-      "source": "PROPOSED"
+      "source": "ADR-0002"
     },
     {
       "code": "SF-SYS-002",
       "message": "Resource or route not found",
       "http": [404],
-      "source": "PROPOSED"
+      "source": "ADR-0002"
     },
     {
       "code": "SF-SYS-003",
       "message": "Request validation failed",
       "http": [400],
-      "source": "PROPOSED"
+      "source": "ADR-0002"
     },
     {
       "code": "SF-SYS-004",
       "message": "Service temporarily unavailable",
       "http": [503],
-      "source": "PROPOSED"
+      "source": "ADR-0002"
     }
   ]
 }

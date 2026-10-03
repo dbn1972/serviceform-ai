@@ -50,6 +50,19 @@ concurrency:
     modules:
     - M06
     - M08
+  - id: CG-03
+    after:
+    - M07
+    - M08
+    modules:
+    - M09
+    - M10
+  - id: CG-04
+    after:
+    - M10
+    modules:
+    - M11
+    - M12
 merge_policy:
   protected_main: true
   human_or_authorized_merge: true

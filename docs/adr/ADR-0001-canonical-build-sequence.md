@@ -2,12 +2,13 @@
 
 | Field | Value |
 |---|---|
-| Status | **PROPOSED** (needs human approver acceptance; until then `specs/build-plan.yaml` stays in force and no M01 task may be dispatched) |
+| Status | **ACCEPTED** |
+| Accepted by | Debabrata Nayak (owner), 3 October 2026, in the ServiceFormAi project thread ("yes i accept", 10:26 UTC, replying to Claude's recommendation to accept ADR-0001, ADR-0002, ADR-0004 and CONTRACT-REVIEW-001 D-01 to D-05 and freeze the 13 contracts); recorded by Claude |
 | Date | 3 October 2026 |
 | Proposed by | Principal Engineering Orchestrator (Claude), from ARCHITECTURE-VERIFICATION-001 findings H-01 to H-04 |
 | Decision owner | Authorized human approver (Architecture & Contract Guardian review recommended) |
 | Changes | Scheduling only. No Architecture Constitution rule, frozen decision, component boundary, contract or gate definition changes. |
-| Artifact | `specs/build-plan.proposed.yaml` (new file; replaces `specs/build-plan.yaml` only on acceptance) |
+| Artifact | `specs/build-plan.yaml` version 2.5-adr0001 (was `specs/build-plan.proposed.yaml`; the previous plan is in git history) |
 
 ## Context
 
@@ -24,7 +25,7 @@ ServiceForm AI currently has four sequencing sources that reuse the same module 
 
 Agents resolve conflicts by precedence. Here precedence does not produce one answer, because the two higher-precedence documents disagree with each other and Engineering v1.4 disagrees with itself. Without one canonical sequence the orchestrator cannot build a dependency-correct work queue, so M01 cannot be dispatched safely.
 
-## Decision (proposed)
+## Decision
 
 1. `specs/build-plan.proposed.yaml` becomes the single executable build sequence, renamed to `specs/build-plan.yaml` on acceptance. AWS v1.7 §17 milestones and Engineering v1.4 §7 waves and §12 module groupings remain valid as descriptions of capability and certification content, but are not used for scheduling. AWS v1.7 §17 explicitly permits this change by ADR.
 2. Module IDs keep the Engineering v1.4 §20.7 meanings where possible (M00–M11), with one new module, M12 AI Assistants and Agents.
@@ -134,3 +135,6 @@ The 19 FROZEN-contract peer edges are all cases where a provider lists one of it
 ## Approval
 
 Accept by changing Status to ACCEPTED with approver name and date, renaming `specs/build-plan.proposed.yaml` to `specs/build-plan.yaml` (version 2.5-adr0001), emptying `known_findings` in `scripts/gates/baselines/build-plan-known-findings.yaml`, and recording the change in `CHANGELOG`/commit. Reject or amend by comment on this file.
+
+Accepted 3 October 2026 with the M11 exit-gate amendment. `specs/build-plan.proposed.yaml` was
+renamed to `specs/build-plan.yaml` and the known-findings baseline emptied in the same commit.

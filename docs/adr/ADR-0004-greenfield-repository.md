@@ -2,7 +2,8 @@
 
 | Field | Value |
 |---|---|
-| Status | **PROPOSED** (records the owner's 3 October 2026 instruction; needs the owner's acceptance) |
+| Status | **ACCEPTED** |
+| Accepted by | Debabrata Nayak (owner), 3 October 2026, in the ServiceFormAi project thread ("yes i accept", 10:26 UTC, replying to Claude's recommendation to accept ADR-0001, ADR-0002, ADR-0004 and CONTRACT-REVIEW-001 D-01 to D-05 and freeze the 13 contracts); recorded by Claude |
 | Date | 3 October 2026 |
 | Proposed by | Claude (M00 bootstrap), from ARCHITECTURE-VERIFICATION-001 finding H-06 |
 | Changes | Starting point only. The frozen stack and constitution are unchanged. |
@@ -16,7 +17,7 @@ RLS, OPA, GoRules, Temporal). ARCHITECTURE-VERIFICATION-001 (H-06) made bootstra
 the owner choosing a starting point. On 3 October 2026 the owner accepted the verification and
 instructed that the Fastify and Next.js foundation be bootstrapped in this repository.
 
-## Decision (proposed)
+## Decision
 
 1. This repository is the implementation of record and starts greenfield (M00 bootstrap).
 2. `dbn1972/serviceformai` is frozen as a prototype and is read-only reference input.

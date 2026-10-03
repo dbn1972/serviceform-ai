@@ -1,12 +1,12 @@
 version: "2.5"
-# Shared-envelope contracts drafted in M00 (bootstrap) and M01 prep. Status DRAFT: reviewed by the
-# Architecture & Contract Guardian in docs/audits/CONTRACT-REVIEW-001.md (findings fixed), but not
-# FROZEN until the owner accepts ADR-0002 and approves the freeze. FROZEN entries, including their
-# companions, are hash-checked by scripts/gates/contracts_lock_gate.py.
+# Shared contracts. FROZEN on 3 October 2026 by the Architecture & Contract Guardian after
+# CONTRACT-REVIEW-001 and owner acceptance of ADR-0002 and decisions D-01 to D-05. Any change,
+# including to a companion file, needs a Contract Change Request; scripts/gates/contracts_lock_gate.py
+# fails on a hash mismatch.
 contracts:
   - id: SF-CON-AUDIT-EVENT
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s14.3"
     path: contracts/shared/schemas/audit-event.schema.json
@@ -14,7 +14,7 @@ contracts:
     change_request: null
   - id: SF-CON-AUTHZ-DECISION
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s20.3"
     path: contracts/shared/schemas/authz-decision.schema.json
@@ -22,7 +22,7 @@ contracts:
     change_request: null
   - id: SF-CON-COMMON
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s13.3, s14.1"
     path: contracts/shared/schemas/common.schema.json
@@ -30,7 +30,7 @@ contracts:
     change_request: null
   - id: SF-CON-CONNECTOR-BINDING
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "Eng v1.4 s10.1-10.2"
     path: contracts/shared/schemas/connector-binding.schema.json
@@ -38,7 +38,7 @@ contracts:
     change_request: null
   - id: SF-CON-ERROR-RESPONSE
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s13.1, s13.3"
     path: contracts/shared/schemas/error-response.schema.json
@@ -46,15 +46,15 @@ contracts:
     change_request: null
   - id: SF-CON-EVENT-ENVELOPE
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s13.2"
     path: contracts/shared/schemas/event-envelope.schema.json
-    schema_hash: 6297417c901662b2f8c6b712be3854fc04656e593a1719cbbdae6cf98627e9ce
+    schema_hash: fbb012cc1c345c643b008e47e184e587931d6d7b72cfe0042c1eae98bbad9283
     change_request: null
   - id: SF-CON-IDEMPOTENCY
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s13.4"
     path: contracts/shared/schemas/idempotency-record.schema.json
@@ -62,7 +62,7 @@ contracts:
     change_request: null
   - id: SF-CON-ISOLATION-DECLARATION
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "TI v1.0 s7; Constitution #24"
     path: contracts/shared/schemas/isolation-declaration.schema.json
@@ -70,7 +70,7 @@ contracts:
     change_request: null
   - id: SF-CON-REQUEST-CONTEXT
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "TI v1.0 s6; AWS v1.7 s13.1"
     path: contracts/shared/schemas/request-context.schema.json
@@ -78,7 +78,7 @@ contracts:
     change_request: null
   - id: SF-CON-SIMULATION-MARKER
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "Eng v1.4 s10.4"
     path: contracts/shared/schemas/simulation-marker.schema.json
@@ -86,15 +86,15 @@ contracts:
     change_request: null
   - id: SF-CON-ERROR-CATALOGUE
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s13.3; specs/error-codes.yaml; SF-SYS-* proposed"
     path: contracts/shared/error-catalogue.json
-    schema_hash: 04c93ddb07bfea2d92dc9189641d8b2449179bc87fb64a78d942ca3457a24a2b
+    schema_hash: 4a89444f7cea8837dca1c90b2bd8025241b9207efb5d01936af448ea83e190fa
     change_request: null
   - id: SF-CON-DB-SESSION-CONTEXT
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "TI v1.0 s8, s8.1; Eng v1.4 golden path 'repository sets transaction-local tenant context'"
     path: contracts/shared/schemas/db-session-context.schema.json
@@ -105,7 +105,7 @@ contracts:
     change_request: null
   - id: SF-CON-OUTBOX
     version: 1
-    status: DRAFT
+    status: FROZEN
     owner: contract_guardian
     source: "AWS v1.7 s4.3, s13.2, CMP-038; Eng v1.4 s3; TI v1.0 s13; Constitution #11"
     path: contracts/shared/schemas/outbox-record.schema.json

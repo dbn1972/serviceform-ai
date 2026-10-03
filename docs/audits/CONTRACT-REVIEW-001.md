@@ -6,7 +6,7 @@
 | Date | 3 October 2026 |
 | Scope | All 13 entries in `orchestrator/contracts-lock.yaml`: the 11 M00 drafts plus the two contracts M01 wave 1 needs (SF-CON-DB-SESSION-CONTEXT, SF-CON-OUTBOX) |
 | Checked against | AWS v1.7 s4.3, s13, s14, s20.3-20.6, CMP-031/037/038; Eng v1.4 s3, CMP-031/037/038/048, s10; TI v1.0 s6-s8, s13; Constitution #11, #22, #24; `simulators/README.md`; `specs/error-codes.yaml` |
-| Result | 13 findings, 12 fixed in this change, 1 recorded. 5 decisions for the owner (section 3). All 13 contracts remain **DRAFT**; none is frozen by this review. |
+| Result | 13 findings, 12 fixed, 1 recorded. Decisions D-01 to D-05 accepted by the owner on 3 October 2026 as recommended; all 13 contracts FROZEN the same day with ADR-0002. |
 | Prompted by | Dispatch plan DISPATCH-PLAN-M01-W1, items P-03 and P-04 |
 
 ## 1. Findings
@@ -42,7 +42,7 @@ All runs on the change commit, PostgreSQL 16 local, Node 22.22.0.
 | `pytest scripts/gates/tests` (incl. raw-setting lint, rendered outbox template lint, lock companion drift) | 17 passed |
 | `pnpm gates`, `pnpm lint`, `pnpm typecheck`, `pnpm deps:graph`, `prettier --check` | all pass |
 
-## 3. Decisions for the owner before freezing
+## 3. Decisions for the owner before freezing (all accepted as recommended, 3 October 2026)
 
 | ID | Decision | Recommendation |
 |---|---|---|
@@ -52,5 +52,5 @@ All runs on the change commit, PostgreSQL 16 local, Node 22.22.0.
 | D-04 | SIMULATED connectors limited to LOCAL, CI, DEVELOPMENT, SIT and PERFORMANCE. This is stricter than Constitution #22, which only forbids SIMULATED critical connectors in production. | Approve; it matches `simulators/README.md` and the simulation-marker contract. |
 | D-05 | RLS policies use `sf_platform.current_tenant_id()` instead of the literal TI v1.0 s8 example. The rule (transaction-local `SET LOCAL`, FORCE RLS) is unchanged; only the expression is corrected. | Approve as a clarification of TI v1.0 s8, recorded here. |
 
-Freezing then means: the owner accepts ADR-0002 and D-01 to D-05, and the Contract Guardian sets
-all 13 entries to FROZEN in `orchestrator/contracts-lock.yaml` with their current hashes.
+Accepted by Debabrata Nayak (owner), 3 October 2026, in the ServiceFormAi project thread ("yes i accept", 10:26 UTC, replying to Claude's recommendation to accept ADR-0001, ADR-0002, ADR-0004 and CONTRACT-REVIEW-001 D-01 to D-05 and freeze the 13 contracts); recorded by Claude. The Contract Guardian then set all 13 entries to FROZEN in
+`orchestrator/contracts-lock.yaml` with their current hashes.

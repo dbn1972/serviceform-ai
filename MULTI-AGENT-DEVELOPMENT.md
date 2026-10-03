@@ -46,7 +46,9 @@ Use OpenAPI, AsyncAPI, JSON Schema, event schemas, generated SDK/types, consumer
 - M05 is a tightly coordinated Case Execution pod.
 - M06 and M08 can run in parallel after M05; M07 follows M06.
 - M09 uses separate bounded extension agents after prerequisites.
+- M09 world-class extensions can run in parallel with M10 after M07 and M08 (ADR-0001).
 - M10 is integrated Golden Residence certification; M11 proves metadata reuse.
+- M12 AI assistants and agents run in parallel with M11 after M10 (ADR-0001).
 
 Start with ~5-8 concurrent coding agents. Scale toward ~10-15 only after contract locks, CI, integration environments and ownership controls are stable.
 
