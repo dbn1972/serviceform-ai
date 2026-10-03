@@ -1,15 +1,10 @@
-# Task envelope, wave M01-W1. State BLOCKED until the pre-dispatch items in
-# orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md are resolved. Do not claim.
+# Task envelope, wave M01-W1. READY since 3 Oct 2026 (ADRs accepted, contracts FROZEN).
+# Claim only when the orchestrator dispatches it after the owner says "dispatch".
 task_id: SF-M01-005
 title: 'Integration Hub: connector SPI, binding registry, simulation framework'
 module_id: M01
-build_plan: specs/build-plan.proposed.yaml (ADR-0001, PROPOSED)
-state: BLOCKED
-blocked_by:
-- P-01
-- P-02
-- P-03
-- P-05
+build_plan: specs/build-plan.yaml (ADR-0001, ACCEPTED 3 Oct 2026)
+state: READY
 component_ids:
 - CMP-037
 integration_ids:
@@ -36,7 +31,7 @@ plan_approval:
   - new third-party dependencies with versions
   - rollback
   test_before_code: verifier defines duplicate-callback and simulation-mode tests before implementation
-base_commit: 684b443
+base_commit: d1d0965
 branch: agent/M01-cmp-037-integration-hub-SF-M01-005
 worktree: ../wt-SF-M01-005
 depends_on:

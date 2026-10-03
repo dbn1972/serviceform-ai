@@ -5,10 +5,10 @@
 | Prompt | `prompts/07_MULTI_AGENT_ORCHESTRATOR.md` |
 | Orchestrator route | Opus (`claude-opus-5-5`), effort high |
 | Date | 3 October 2026 |
-| Base commit | `684b443` (M00 accepted by the owner) |
-| Build plan used | **`specs/build-plan.proposed.yaml` (ADR-0001, PROPOSED).** See section 2. |
+| Base commit | `d1d0965` (ADRs accepted, contracts frozen; M00 accepted at `684b443`) |
+| Build plan used | **`specs/build-plan.yaml` version 2.5-adr0001 (ADR-0001, ACCEPTED 3 Oct 2026).** See section 2. |
 | Builders spawned | **None.** Envelopes are written; no task is claimed. |
-| Result | **BLOCKED** (section 3). The plan below is ready to dispatch as written once P-01, P-02, P-03 and P-05 are closed (P-04 closed 3 Oct). |
+| Result | **READY_TO_DISPATCH** (updated 3 Oct 2026; section 3). Builders start only when the owner says "dispatch". |
 
 ## 1. What is dependency-ready
 
@@ -27,7 +27,7 @@ contracts. They form wave 1. The other six wait for wave-1 merges or own single-
 
 ## 2. Which build plan this relies on
 
-This plan uses **`specs/build-plan.proposed.yaml`**, not the current `specs/build-plan.yaml`.
+This plan uses ADR-0001's sequence, which became `specs/build-plan.yaml` when the owner accepted ADR-0001 on 3 October 2026. The reasons it was chosen over the v2.3 plan:
 
 - ADR-0001 itself says that while it is PROPOSED, `specs/build-plan.yaml` stays in force **and no
   M01 task may be dispatched**. The current plan leaves CMP-032 unowned, puts CMP-052 in both M01
@@ -40,18 +40,18 @@ This plan uses **`specs/build-plan.proposed.yaml`**, not the current `specs/buil
 - Neither plan has an exit gate for M11 (gap G-06). This does not affect M01, but ADR-0001 must
   add it before acceptance.
 
-## 3. Result: BLOCKED
+## 3. Result: READY_TO_DISPATCH (was BLOCKED; all five pre-dispatch items closed 3 October 2026)
 
 Prompt 07 step 2 requires refusing any task whose required contract is not FROZEN. Every wave-1
 task needs the shared envelopes, and all eleven are DRAFT. Unaccepted ADRs block the freeze.
 
 | ID | Blocker | Blocks | Who closes it | How |
 |---|---|---|---|---|
-| P-01 | ADR-0001 build sequence is PROPOSED (M11 exit gate added 3 Oct) | All tasks (ADR text forbids M01 dispatch) | Owner (human approver) | Accept ADR-0001 with an M11 exit gate added; rename `build-plan.proposed.yaml` to `build-plan.yaml`. |
-| P-02 | ADR-0002 snake_case envelope is PROPOSED (AWS v1.7 s13.2 vs Eng v1.4 CMP-038 "tenantId, cellId, eventId") | Freezing the event, error, audit, request-context and authz contracts | Owner, after Contract Guardian review | Accept or amend ADR-0002. |
-| P-03 | All 13 shared contracts in `orchestrator/contracts-lock.yaml` are DRAFT (reviewed in CONTRACT-REVIEW-001, findings fixed) | All tasks | Contract Guardian (Opus), owner approves | Review, set FROZEN with hashes; `contracts_lock_gate.py` then guards them. |
+| P-01 | **Closed 3 Oct 2026.** ADR-0001 build sequence is PROPOSED (M11 exit gate added 3 Oct) | All tasks (ADR text forbids M01 dispatch) | Owner (human approver) | Accept ADR-0001 with an M11 exit gate added; rename `build-plan.proposed.yaml` to `build-plan.yaml`. |
+| P-02 | **Closed 3 Oct 2026.** ADR-0002 snake_case envelope is PROPOSED (AWS v1.7 s13.2 vs Eng v1.4 CMP-038 "tenantId, cellId, eventId") | Freezing the event, error, audit, request-context and authz contracts | Owner, after Contract Guardian review | Accept or amend ADR-0002. |
+| P-03 | **Closed 3 Oct 2026.** All 13 shared contracts in `orchestrator/contracts-lock.yaml` are DRAFT (reviewed in CONTRACT-REVIEW-001, findings fixed) | All tasks | Contract Guardian (Opus), owner approves | Review, set FROZEN with hashes; `contracts_lock_gate.py` then guards them. |
 | P-04 | ~~Two shared contracts that wave 1 needs did not exist: SF-CON-OUTBOX and SF-CON-DB-SESSION-CONTEXT~~ **Closed 3 Oct 2026:** drafted and reviewed in `docs/audits/CONTRACT-REVIEW-001.md`; they now wait on the P-03 freeze with the others | SF-M01-001..005 | Contract Guardian | Done |
-| P-05 | ADR-0004 greenfield repository is PROPOSED (verification condition 1) | Formal basis for building fresh in this repo | Owner | Accept ADR-0004 (records the owner's 3 Oct instruction). |
+| P-05 | **Closed 3 Oct 2026.** ADR-0004 greenfield repository is PROPOSED (verification condition 1) | Formal basis for building fresh in this repo | Owner | Accept ADR-0004 (records the owner's 3 Oct instruction). |
 
 Non-blocking for wave 1, tracked:
 
@@ -116,7 +116,7 @@ lower end of the 5-8 the topology recommends for a first wave.
 | Effort | high |
 | Verifiers | serviceform-security-verifier (opus, xhigh); serviceform-evidence-verifier (opus, high) |
 | Branch | `agent/M01-cmp-002-tenant-organisation-SF-M01-001` |
-| Worktree | `../wt-SF-M01-001` from `684b443` |
+| Worktree | `../wt-SF-M01-001` from `d1d0965` |
 | Plan approval | Required before any write. The security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md s9). |
 | Envelope | `orchestrator/tasks/SF-M01-001.yaml` |
 
@@ -187,7 +187,7 @@ lower end of the 5-8 the topology recommends for a first wave.
 | Effort | high |
 | Verifiers | serviceform-security-verifier (opus, xhigh); serviceform-evidence-verifier (opus, high) |
 | Branch | `agent/M01-cmp-048-security-platform-SF-M01-002` |
-| Worktree | `../wt-SF-M01-002` from `684b443` |
+| Worktree | `../wt-SF-M01-002` from `d1d0965` |
 | Plan approval | Required before any write. The security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md s9). |
 | Envelope | `orchestrator/tasks/SF-M01-002.yaml` |
 
@@ -262,7 +262,7 @@ lower end of the 5-8 the topology recommends for a first wave.
 | Effort | high |
 | Verifiers | serviceform-security-verifier (opus, xhigh); serviceform-evidence-verifier (opus, high) |
 | Branch | `agent/M01-cmp-031-audit-ledger-SF-M01-003` |
-| Worktree | `../wt-SF-M01-003` from `684b443` |
+| Worktree | `../wt-SF-M01-003` from `d1d0965` |
 | Plan approval | Required before any write. The security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md s9). |
 | Envelope | `orchestrator/tasks/SF-M01-003.yaml` |
 
@@ -333,7 +333,7 @@ lower end of the 5-8 the topology recommends for a first wave.
 | Effort | high |
 | Verifiers | serviceform-integration-stitcher (opus, high); serviceform-evidence-verifier (opus, high) |
 | Branch | `agent/M01-cmp-038-event-bus-SF-M01-004` |
-| Worktree | `../wt-SF-M01-004` from `684b443` |
+| Worktree | `../wt-SF-M01-004` from `d1d0965` |
 | Plan approval | Required before any write. The security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md s9). |
 | Envelope | `orchestrator/tasks/SF-M01-004.yaml` |
 
@@ -404,7 +404,7 @@ lower end of the 5-8 the topology recommends for a first wave.
 | Effort | high |
 | Verifiers | serviceform-integration-stitcher (opus, high); serviceform-security-verifier (opus, high) for credential handling; serviceform-evidence-verifier (opus, high) |
 | Branch | `agent/M01-cmp-037-integration-hub-SF-M01-005` |
-| Worktree | `../wt-SF-M01-005` from `684b443` |
+| Worktree | `../wt-SF-M01-005` from `d1d0965` |
 | Plan approval | Required before any write. The verifier defines duplicate-callback and simulation-mode tests before implementation. |
 | Envelope | `orchestrator/tasks/SF-M01-005.yaml` |
 
@@ -469,9 +469,11 @@ lower end of the 5-8 the topology recommends for a first wave.
 
 ## 7. Next action
 
-Close P-01, P-02, P-03 and P-05: owner acceptance of ADR-0001 (M11 gate now added), ADR-0002 and
-ADR-0004, plus decisions D-01 to D-05 in CONTRACT-REVIEW-001; then the Contract Guardian freezes all
-13 shared contracts.
-The orchestrator then re-checks the lock file, sets these envelopes to READY, and dispatches.
+P-01 to P-05 are closed: the owner accepted ADR-0001, ADR-0002 and ADR-0004 and decisions D-01 to
+D-05 on 3 October 2026, and all 13 shared contracts are FROZEN (`d1d0965`). The five envelopes are
+READY with base commit `d1d0965`. On the owner's "dispatch", the orchestrator creates the worktrees,
+spawns the builders in plan mode and follows section 5. Merge policy until the first CI run: builders
+work and verify locally, and nothing merges to main until the repository is pushed and CI is green
+(recommended default, gap G-01).
 
-BLOCKED
+READY_TO_DISPATCH

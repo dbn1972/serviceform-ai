@@ -1,15 +1,10 @@
-# Task envelope, wave M01-W1. State BLOCKED until the pre-dispatch items in
-# orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md are resolved. Do not claim.
+# Task envelope, wave M01-W1. READY since 3 Oct 2026 (ADRs accepted, contracts FROZEN).
+# Claim only when the orchestrator dispatches it after the owner says "dispatch".
 task_id: SF-M01-003
 title: Audit and Evidence Ledger
 module_id: M01
-build_plan: specs/build-plan.proposed.yaml (ADR-0001, PROPOSED)
-state: BLOCKED
-blocked_by:
-- P-01
-- P-02
-- P-03
-- P-05
+build_plan: specs/build-plan.yaml (ADR-0001, ACCEPTED 3 Oct 2026)
+state: READY
 component_ids:
 - CMP-031
 integration_ids:
@@ -36,7 +31,7 @@ plan_approval:
   - rollback
   test_before_code: security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md
     s9)
-base_commit: 684b443
+base_commit: d1d0965
 branch: agent/M01-cmp-031-audit-ledger-SF-M01-003
 worktree: ../wt-SF-M01-003
 depends_on:
