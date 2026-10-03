@@ -49,10 +49,18 @@ Agents resolve conflicts by precedence. Here precedence does not produce one ans
 | M08 | Search, discovery, recommendation, analytics, operations, retention | M05 | 006, 007, 035, 045, 046, 049 | INT-003, INT-010 | G3 |
 | M09 | World-class interoperability, omnichannel, integrity, trust | M05, M07, M08 | 056, 057, 058, 059, 060, 061 | INT-014 … 019 | G4 |
 | M10 | Golden Residence Certificate certification | M07, M08 | (metadata only, IND-SOC-002) | full golden suite | G6 |
-| M11 | Reuse proof with second service | M10 | (metadata only) | | |
+| M11 | Reuse proof with second service | M10 | (metadata only) | second-service E2E suite | G3 |
 | M12 | AI assistants and agents | M10 | 010, 040, 041, 042, 043, 044 | INT-012 | G4 |
 
 Concurrency: CG-01 M02 ‖ M03 after M01; CG-02 M06 ‖ M08 after M05; CG-03 M09 ‖ M10 after M07 and M08; CG-04 M11 ‖ M12 after M10.
+
+M11 exit gate (amendment, 3 October 2026; the M00 validator found that neither plan gave M11 a gate):
+M11 exits on **G3_INTEGRATION_VERIFIED**. The second service's E2E suite must pass in full on the
+generic engines, the tenant isolation and authorization regression suites must still pass, and
+every non-metadata change must trace to an accepted capability-gap ADR (Eng v1.4 §20.7 "Reuse
+proof"; AWS v1.7 golden-slice reuse rule). G3 certifies the reuse proof only; releasing the second
+service to production is a separate G6 decision. The second service is Eng v1.4's example, Income
+Certificate, unless the owner names another.
 
 ### What moved and why
 
@@ -125,4 +133,4 @@ The 19 FROZEN-contract peer edges are all cases where a provider lists one of it
 
 ## Approval
 
-Accept by changing Status to ACCEPTED with approver name and date, renaming `specs/build-plan.proposed.yaml` to `specs/build-plan.yaml` (version 2.5-adr0001), and recording the change in `CHANGELOG`/commit. Reject or amend by comment on this file.
+Accept by changing Status to ACCEPTED with approver name and date, renaming `specs/build-plan.proposed.yaml` to `specs/build-plan.yaml` (version 2.5-adr0001), emptying `known_findings` in `scripts/gates/baselines/build-plan-known-findings.yaml`, and recording the change in `CHANGELOG`/commit. Reject or amend by comment on this file.

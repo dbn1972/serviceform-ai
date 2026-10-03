@@ -97,7 +97,17 @@ modules:
 - id: M11
   name: Reuse Proof with Second Service
   depends_on: [M10]
+  deliverables:
+  - second service (Eng v1.4 example: Income Certificate; owner to confirm) configured through Studio metadata and published as a TenantServiceBinding
+  - second-service E2E suite on the generic engines (same scenario classes as the golden suite)
+  - delta capability report listing every non-metadata change with its approved capability-gap ADR
   rule: No bespoke service backend unless approved reusable capability gap is documented.
+  exit_criteria:
+  - second-service E2E suite passes 100% on the release candidate
+  - no new services/** code specific to the second service; every engine change traces to an accepted capability-gap ADR
+  - tenant isolation and authorization regression suites still pass
+  note: G3 certifies the reuse proof. Releasing the second service to production is a separate G6 decision.
+  exit_gate: G3_INTEGRATION_VERIFIED
 - id: M12
   name: AI Assistants and Agents
   depends_on: [M10]
