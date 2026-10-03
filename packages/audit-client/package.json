@@ -1,0 +1,17 @@
+{
+  "name": "@serviceform/audit-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-031 producer helpers: build/validate AuditEvent and outbox values. Never opens SQL.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@serviceform/contracts": "workspace:*"
+  }
+}
