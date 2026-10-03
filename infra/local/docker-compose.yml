@@ -11,7 +11,7 @@ x-healthcheck: &hc
 
 services:
   postgres:
-    image: postgres:16.14-alpine
+    image: postgres:18.6-alpine
     environment:
       POSTGRES_USER: ${SF_LOCAL_PG_USER:?run scripts/dev/init-local-env.sh}
       POSTGRES_PASSWORD: ${SF_LOCAL_PG_PASSWORD:?run scripts/dev/init-local-env.sh}
