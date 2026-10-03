@@ -1,17 +1,24 @@
 version: "2.5"
-# Wave M01-W1 planned by the orchestrator on 3 Oct 2026 (orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md).
-# All tasks READY since 3 Oct 2026 (P-01..P-05 closed). Nothing claimed, no builder spawned.
+# Wave M01-W1 re-verified 3 Oct 2026 against origin/main 126ded198235230982aba0d377061573969ff7ee.
+# Prior CLAIMED rows (de0ac12) were stale: no agent/* branches on origin, no live worktrees,
+# and services/ still has only README.md. Reset to READY. Coding agents are not launched here.
 build_plan_basis: specs/build-plan.yaml (ADR-0001 ACCEPTED)
-base_commit: d1d0965
+base_commit: 126ded198235230982aba0d377061573969ff7ee
+orchestrator_branch: cursor/m01-wave1-dispatch-b828
+result: READY_TO_DISPATCH
+builders_launched: 0
 tasks:
-  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: CLAIMED}
-  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: CLAIMED}
-  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: CLAIMED}
-  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: CLAIMED}
-  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: CLAIMED}
+  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: READY}
+  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: READY}
+  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: READY}
+  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: READY}
+  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: READY}
 deferred_to_wave_2:
   - {components: [CMP-003], reason: "needs CMP-002 organisation hierarchy merged"}
   - {components: [CMP-030], reason: "needs CMP-002, CMP-031 and CMP-048 merged"}
   - {components: [CMP-032], reason: "needs CMP-048 secrets/KMS adapter and CMP-031 merged"}
   - {components: [CMP-036, CMP-047], reason: "own apps/api and packages/observability; wiring of wave-1 plugins happens here (single writer)"}
   - {components: [CMP-055], reason: "touches scripts/gates and .github (guardian/delivery-controlled paths)"}
+merge_holds:
+  - {id: O-5, item: "ADR-0006 per-component write roles is PROPOSED; owner accept/refuse before first W1 merge"}
+  - {id: G-01, item: "Nothing merges to main until CI is green (owner, 3 Oct 2026)"}

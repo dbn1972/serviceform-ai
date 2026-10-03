@@ -1,5 +1,7 @@
 # Dispatch plan: M01 wave 1 (DISPATCH-PLAN-M01-W1)
 
+**Superseded as the live queue.** Re-verification against `origin/main` `126ded1` is `orchestrator/dispatch/DISPATCH-PLAN-M01-W1-126ded1.md`. This file remains the original W1 design record (base `d1d0965`). CLAIMED registry state after `de0ac12` was stale and has been reset to READY.
+
 | Field | Value |
 |---|---|
 | Prompt | `prompts/07_MULTI_AGENT_ORCHESTRATOR.md` |

@@ -1,5 +1,5 @@
-# Task envelope, wave M01-W1. READY since 3 Oct 2026 (ADRs accepted, contracts FROZEN).
-# Claim only when the orchestrator dispatches it after the owner says "dispatch".
+# Task envelope, wave M01-W1. Re-verified READY on 3 Oct 2026 against origin/main
+# 126ded198235230982aba0d377061573969ff7ee. Not claimed. No coding agent launched.
 task_id: SF-M01-001
 title: Tenant and Government Organisation Service
 module_id: M01
@@ -31,12 +31,19 @@ plan_approval:
   - rollback
   test_before_code: security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md
     s9)
-base_commit: d1d0965
+base_commit: 126ded198235230982aba0d377061573969ff7ee
 branch: agent/M01-cmp-002-tenant-organisation-SF-M01-001
 worktree: ../wt-SF-M01-001
+binding_documents:
+- orchestrator/dispatch/PLAN-REVIEW-M01-W1.md
+- orchestrator/dispatch/plans-M01-W1/SECURITY-PRECHECK-M01-W1.md
+- orchestrator/dispatch/plans-M01-W1/SF-M01-001-plan.md
+- orchestrator/dispatch/plans-M01-W1/SF-M01-001-negative-tests.md
+- docs/adr/ADR-0006-per-component-write-roles.md
 depends_on:
-- M00 accepted (684b443)
-- P-01..P-05 resolved
+- M00 G1_BUILD_READY recommended with executed evidence (BOOTSTRAP-EVIDENCE-001; verification re-run 684b443); not independently certified
+- P-01..P-05 closed (ADR-0001/0002/0004 ACCEPTED; 13 shared contracts FROZEN)
+- PLAN-REVIEW-M01-W1 approved with conditions; security precheck findings adopted provisionally
 - 'no runtime dependency on SF-M01-002..005: audit and outbox are reached through the frozen contracts, with contract-validated
   test doubles'
 allowed_write_paths:
@@ -115,7 +122,7 @@ acceptance_tests:
 - pnpm test (unit, contract and failure-path tests for this task)
 - service integration suite against disposable PostgreSQL 16 (services/<cmp>/vitest.integration.config.ts)
 - pnpm gates (migration_lint, contracts_lock_gate, hardcoding_gate, agent_rules_gate, codeowners_gate)
-- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base d1d0965
+- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base origin/main
 - pnpm deps:graph (no component-to-component imports, no cycles)
 - gitleaks and semgrep clean on the diff
 required_evidence:
@@ -143,3 +150,4 @@ stop_conditions:
 - geographic containment needed (belongs to CMP-003)
 - a cross-schema foreign key or query is needed
 - officer permission decisions needed (belongs to CMP-048/OPA)
+- ADR-0006 still PROPOSED at merge time (owner O-5; implement provisionally, do not merge until accepted or refused)

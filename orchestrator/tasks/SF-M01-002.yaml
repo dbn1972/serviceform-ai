@@ -1,5 +1,5 @@
-# Task envelope, wave M01-W1. READY since 3 Oct 2026 (ADRs accepted, contracts FROZEN).
-# Claim only when the orchestrator dispatches it after the owner says "dispatch".
+# Task envelope, wave M01-W1. Re-verified READY on 3 Oct 2026 against origin/main
+# 126ded198235230982aba0d377061573969ff7ee. Not claimed. No coding agent launched.
 task_id: SF-M01-002
 title: 'Security Platform: OPA enforcement, secrets/KMS abstraction, privileged access'
 module_id: M01
@@ -31,12 +31,19 @@ plan_approval:
   - rollback
   test_before_code: security verifier defines tenant-negative and deny tests before implementation (MODEL-ROUTING-QUALITY.md
     s9)
-base_commit: d1d0965
+base_commit: 126ded198235230982aba0d377061573969ff7ee
 branch: agent/M01-cmp-048-security-platform-SF-M01-002
 worktree: ../wt-SF-M01-002
+binding_documents:
+- orchestrator/dispatch/PLAN-REVIEW-M01-W1.md
+- orchestrator/dispatch/plans-M01-W1/SECURITY-PRECHECK-M01-W1.md
+- orchestrator/dispatch/plans-M01-W1/SF-M01-002-plan.md
+- orchestrator/dispatch/plans-M01-W1/SF-M01-002-negative-tests.md
+- docs/adr/ADR-0006-per-component-write-roles.md
 depends_on:
-- M00 accepted (684b443)
-- P-01..P-05 resolved
+- M00 G1_BUILD_READY recommended with executed evidence (BOOTSTRAP-EVIDENCE-001; verification re-run 684b443); not independently certified
+- P-01..P-05 closed (ADR-0001/0002/0004 ACCEPTED; 13 shared contracts FROZEN)
+- PLAN-REVIEW-M01-W1 approved with conditions; security precheck findings adopted provisionally
 - 'identity (CMP-004) is M02: the verified principal arrives through SF-CON-REQUEST-CONTEXT; this task does not issue tokens'
 allowed_write_paths:
 - services/cmp-048-security-platform/**
@@ -110,7 +117,7 @@ acceptance_tests:
 - pnpm test (unit, contract and failure-path tests for this task)
 - service integration suite against disposable PostgreSQL 16 (services/<cmp>/vitest.integration.config.ts)
 - pnpm gates (migration_lint, contracts_lock_gate, hardcoding_gate, agent_rules_gate, codeowners_gate)
-- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base d1d0965
+- python scripts/gates/check_scope.py --envelope orchestrator/tasks/<task>.yaml --base origin/main
 - pnpm deps:graph (no component-to-component imports, no cycles)
 - gitleaks and semgrep clean on the diff
 required_evidence:
@@ -140,3 +147,5 @@ stop_conditions:
 - a token issuer or identity store is needed (CMP-004, M02)
 - a statutory business rule would be encoded in Rego (belongs to GoRules/CMP-008)
 - a policy pinning model is needed beyond AWS v1.7 s20.3 (pinned vs effective-latest ambiguity, verification report)
+- ADR-0006 still PROPOSED at merge time (owner O-5; implement provisionally, do not merge until accepted or refused)
+- a write to infra/local/docker-compose.yml is required (P-002-1 remains an owner exception; start authenticated OPA from this task's test harness instead)
