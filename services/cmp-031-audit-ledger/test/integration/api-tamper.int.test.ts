@@ -141,7 +141,7 @@ describe('CMP-031 API, consumer, tamper, duplicates', () => {
     await app.close();
   });
 
-  it('003-18 target_tenant_id always 403', async () => {
+  it('003-18 privileged read deny is session-scoped, not query-gated', async () => {
     const plat = systemCtx(null);
     plat.actor = { type: 'PRIVILEGED_ADMIN', id: ACTOR };
     const app = await appFor(() => plat);
@@ -151,6 +151,29 @@ describe('CMP-031 API, consumer, tamper, duplicates', () => {
     });
     expect(res.statusCode).toBe(403);
     await app.close();
+    const admin = await h.admin.connect();
+    try {
+      const recorded = await admin.query<{ action: string; result: string }>(
+        `SELECT record->>'action' AS action, record->>'result' AS result
+         FROM sf_audit.audit_event_platform
+         WHERE record->>'action' = 'AUDIT_CROSS_TENANT_READ'
+         ORDER BY recorded_at DESC LIMIT 1`,
+      );
+      expect(recorded.rows[0]).toMatchObject({
+        action: 'AUDIT_CROSS_TENANT_READ',
+        result: 'DENIED',
+      });
+    } finally {
+      admin.release();
+    }
+    const tenantApp = await appFor(() => ctx);
+    const tenantRes = await tenantApp.inject({
+      method: 'GET',
+      url: `/v1/audit?from=2026-09-01T00:00:00Z&to=2026-10-31T00:00:00Z&target_tenant_id=${T2}`,
+    });
+    expect(tenantRes.statusCode).toBe(200);
+    expect(JSON.stringify(tenantRes.json())).not.toContain(T2);
+    await tenantApp.close();
   });
 
   it('003-24 extra field rejected', async () => {

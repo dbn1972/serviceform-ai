@@ -7,6 +7,7 @@ import { loadConfig, type AuditServiceConfig } from './config.js';
 import { handleEnvelope } from './consumer/handle-envelope.js';
 import { AuditError, DuplicateContentError } from './domain/errors.js';
 import { createMetrics, type Metrics } from './domain/metrics.js';
+import { auditRateLimitOptions } from './http/rate-limit.js';
 import { denyAllAuthz, type AuthzPort } from './ports/authz-port.js';
 import type { RequestContextResolver } from './ports/request-context-port.js';
 import { registerGetAudit } from './routes/get-audit.js';
@@ -50,6 +51,11 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
 
   await app.register(
     async (scoped) => {
+      const { default: rateLimit } = await import('@fastify/rate-limit');
+      await scoped.register(
+        rateLimit,
+        auditRateLimitOptions(config.rateLimitMax, config.rateLimitWindowMs),
+      );
       scoped.decorateRequest('ctx', null);
       scoped.addHook('onRequest', async (request) => {
         request.ctx = opts.resolveRequestContext(request.headers as Record<string, unknown>);
@@ -88,18 +94,24 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
         metrics,
         clockSkewSeconds: config.clockSkewSeconds,
         now,
+        rateLimitMax: config.rateLimitMax,
+        rateLimitWindowMs: config.rateLimitWindowMs,
       });
       registerGetAudit(scoped, {
         pool: opts.pool,
         authz,
         queryMaxDays: config.queryMaxDays,
         queryMaxLimit: config.queryMaxLimit,
+        rateLimitMax: config.rateLimitMax,
+        rateLimitWindowMs: config.rateLimitWindowMs,
       });
       registerGetAuditByResource(scoped, {
         pool: opts.pool,
         authz,
         queryMaxDays: config.queryMaxDays,
         queryMaxLimit: config.queryMaxLimit,
+        rateLimitMax: config.rateLimitMax,
+        rateLimitWindowMs: config.rateLimitWindowMs,
       });
     },
     { prefix },

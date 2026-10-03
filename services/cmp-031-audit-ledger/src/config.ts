@@ -3,6 +3,14 @@ export interface AuditServiceConfig {
   queryMaxDays: number;
   queryMaxLimit: number;
   cellId: string;
+  rateLimitMax: number;
+  rateLimitWindowMs: number;
+}
+
+function positiveInt(raw: string, fallback: number): number {
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 1) return fallback;
+  return n;
 }
 
 export function loadConfig(): AuditServiceConfig {
@@ -14,6 +22,8 @@ export function loadConfig(): AuditServiceConfig {
     queryMaxDays: 31,
     queryMaxLimit: 200,
     cellId,
+    rateLimitMax: positiveInt(process.env['SF_AUDIT_RATE_LIMIT_MAX'] ?? '60', 60),
+    rateLimitWindowMs: positiveInt(process.env['SF_AUDIT_RATE_LIMIT_WINDOW_MS'] ?? '60000', 60_000),
   };
 }
 

@@ -71,7 +71,7 @@ Per-tenant `audit_chain_head` plus one platform head. Short transaction: insert 
 - Null-tenant events → `audit_event_platform` only when context/envelope has no tenant.
 - `sf_cmp031_rw`: INSERT on platform ledger; SELECT/UPDATE on platform head/key as needed to chain. **No SELECT** on `audit_event_platform` for `sf_app`.
 - Platform SELECT policy is **not** “current_tenant_id() IS NULL” for all of `sf_app` (that was fail-open). W1 query of platform rows is deny-only except verify CLI as operations/owner connection (H2).
-- Privileged cross-tenant read: AuthzPort allow + reason required in design, but **W1 always 403** if `target_tenant_id` present (003-18); still write a platform attempt record when the caller is a platform actor. No `set_config` of the target. No BYPASSRLS.
+- Privileged cross-tenant read: AuthzPort allow + reason required in design, but **W1 always 403** when the authenticated session has no tenant (`ctx.tenant_id === null`). Query parameters never select tenant and never skip `AUDIT_READ`. A platform attempt record is written for that session-denied path. No `set_config` of a query target. No BYPASSRLS.
 
 ### PII (Q6, Q8)
 
@@ -137,7 +137,7 @@ Plugin `cmp031AuditLedgerPlugin({ pool, resolveRequestContext, authz, logger, cl
 | Eng v1.4 | Implementation |
 |---|---|
 | Command `POST /internal/audit-events` | Body = AuditEvent. Bind actor/cell/correlation to context (P-003-4 / 003-19); INTEGRATION relay only with purpose, own tenant. 201 `{audit_id, chain_seq, recorded_at}`; same id+content 200; same id+different content 409 SF-APP-002; schema/PII 400 SF-SYS-003; tenant mismatch 403 SF-TEN-002; missing context 401 SF-TEN-001; future `occurred_at` > now+300s 400; DB down 503 SF-SYS-004. Internal: SYSTEM/INTEGRATION + authz. `\u0000` → 400 not 500. |
-| Query `GET /audit` | Required `from,to` max 31 days; filters actor/action/class/resource/result/correlation; keyset `(recorded_at, chain_seq)`; limit ≤ 200. Items `{ event: AuditEvent, ledger: { chain_seq, recorded_at, row_hash } }`. `target_tenant_id` → 403 in W1 (003-18) + attempt audit. Every GET itself audited (READ). |
+| Query `GET /audit` | Required `from,to` max 31 days; filters actor/action/class/resource/result/correlation; keyset `(recorded_at, chain_seq)`; limit ≤ 200. Items `{ event: AuditEvent, ledger: { chain_seq, recorded_at, row_hash } }`. Tenant scope is **only** `ctx.tenant_id`. W1 platform/null-tenant GET is 403 (003-18) + attempt audit. `@fastify/rate-limit` on authorization routes (SF-RATE-001). Every GET itself audited (READ). |
 | Query `GET /audit/{resourceType}/{id}` | Same item shape. Existence oracle: T2 resource under T1 looks like unknown id (empty, not 403). |
 | Handles `AuditEventSubmitted` v1 | Envelope SF-CON-EVENT-ENVELOPE; `data` = exactly one AuditEvent; topic `sf.audit.ingest.v1`; `aggregate_type=AuditEvent`; `aggregate_id=audit_id`; `schema_version=1`. Reject mismatches (003-21). Platform-null only from allowlisted `sf-source` (P-003-3). |
 | Emits `AuditRecordCreated` v1 | Alias comment: Eng `AuditRecorded`. Own outbox, same tx as ledger write. `data` = `{audit_id, chain_seq, recorded_at, action, action_class, resource_type, result}` — no reason/refs. Topic `sf.audit.events.v1`. |
@@ -202,7 +202,7 @@ Log 003-PB-* to `evidence/SF-M01-003/privilege-boundary.log`. Tamper to `tamper-
 
 ## 7. Third-party dependencies
 
-**None new.** Pin to lockfile versions already on main: `fastify 5.12.5`, `fastify-plugin 5.1.0`, `pg 8.23.1`, `@types/pg 8.23.1` (dev). Workspace: `@serviceform/contracts`, `@serviceform/observability`, `@serviceform/audit-client`. Hash `node:crypto`; HTTP `fetch`; UUID `crypto.randomUUID()`. Migrations via existing `@serviceform/db` / node-pg-migrate 9.0.0. No pg_partman.
+New: `@fastify/rate-limit 11.2.0` (Fastify 5, IPv6-normalized key ≥11.2.0) on CMP-031 HTTP plugin only. Pin already on main: `fastify 5.12.5`, `fastify-plugin 5.1.0`, `pg 8.23.1`, `@types/pg 8.23.1` (dev). Workspace: `@serviceform/contracts`, `@serviceform/observability`, `@serviceform/audit-client`. Hash `node:crypto`; HTTP `fetch`; UUID `crypto.randomUUID()`. Migrations via existing `@serviceform/db` / node-pg-migrate 9.0.0. No pg_partman.
 
 `pnpm-lock.yaml` is read-only. If install dirties it, restore before commit; orchestrator reconciles lockfile later.
 

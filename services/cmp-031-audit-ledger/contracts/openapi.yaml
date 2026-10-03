@@ -17,6 +17,8 @@ paths:
           description: Stored
         '200':
           description: Duplicate same content
+        '429':
+          description: Rate limit exceeded (SF-RATE-001)
   /v1/audit:
     get:
       operationId: listAudit
@@ -32,6 +34,8 @@ paths:
       responses:
         '200':
           description: Page of audit items
+        '429':
+          description: Rate limit exceeded (SF-RATE-001)
   /v1/audit/{resourceType}/{id}:
     get:
       operationId: listAuditByResource
@@ -47,3 +51,5 @@ paths:
       responses:
         '200':
           description: Page of audit items
+        '429':
+          description: Rate limit exceeded (SF-RATE-001)
