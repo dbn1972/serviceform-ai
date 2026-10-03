@@ -202,7 +202,7 @@ Log 003-PB-* to `evidence/SF-M01-003/privilege-boundary.log`. Tamper to `tamper-
 
 ## 7. Third-party dependencies
 
-New: `@fastify/rate-limit 11.2.0` (Fastify 5, IPv6-normalized key ≥11.2.0) on CMP-031 HTTP plugin only. Pin already on main: `fastify 5.12.5`, `fastify-plugin 5.1.0`, `pg 8.23.1`, `@types/pg 8.23.1` (dev). Workspace: `@serviceform/contracts`, `@serviceform/observability`, `@serviceform/audit-client`. Hash `node:crypto`; HTTP `fetch`; UUID `crypto.randomUUID()`. Migrations via existing `@serviceform/db` / node-pg-migrate 9.0.0. No pg_partman.
+New: `@fastify/rate-limit 11.2.0` (Fastify 5, IPv6-normalized key ≥11.2.0) plus pnpm alias `fastify-rate-limit` → same package so CodeQL's legacy Fastify model matches. Pin already on main: `fastify 5.12.5`, `fastify-plugin 5.1.0`, `pg 8.23.1`, `@types/pg 8.23.1` (dev). Workspace: `@serviceform/contracts`, `@serviceform/observability`, `@serviceform/audit-client`. Hash `node:crypto`; HTTP `fetch`; UUID `crypto.randomUUID()`. Migrations via existing `@serviceform/db` / node-pg-migrate 9.0.0. No pg_partman.
 
 `pnpm-lock.yaml` is read-only. If install dirties it, restore before commit; orchestrator reconciles lockfile later.
 

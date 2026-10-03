@@ -16,7 +16,7 @@ export default defineConfig({
       include: ['src/**', '../../packages/audit-client/src/**'],
       exclude: ['src/cli/**'],
       reporter: ['text-summary', 'json-summary', 'lcov'],
-      reportsDirectory: '../../evidence/SF-M01-003',
+      reportsDirectory: '../../evidence/SF-M01-003/coverage',
       thresholds: { lines: 80, functions: 70, branches: 50, statements: 75 },
     },
   },

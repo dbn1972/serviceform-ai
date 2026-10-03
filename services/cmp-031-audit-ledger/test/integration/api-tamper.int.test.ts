@@ -169,7 +169,7 @@ describe('CMP-031 API, consumer, tamper, duplicates', () => {
     const tenantApp = await appFor(() => ctx);
     const tenantRes = await tenantApp.inject({
       method: 'GET',
-      url: `/v1/audit?from=2026-09-01T00:00:00Z&to=2026-10-31T00:00:00Z&target_tenant_id=${T2}`,
+      url: `/v1/audit?from=2026-10-01T00:00:00Z&to=2026-10-31T00:00:00Z&target_tenant_id=${T2}`,
     });
     expect(tenantRes.statusCode).toBe(200);
     expect(JSON.stringify(tenantRes.json())).not.toContain(T2);

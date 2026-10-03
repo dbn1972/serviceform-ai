@@ -4,7 +4,6 @@ import type { FastifyInstance } from 'fastify';
 import type { Pool } from 'pg';
 import { AuditError } from '../domain/errors.js';
 import { appendLedger } from '../domain/ledger-writer.js';
-import { auditRouteRateLimitConfig } from '../http/rate-limit.js';
 import type { AuthzPort } from '../ports/authz-port.js';
 import { queryTenantAudit } from '../repo/query-repo.js';
 import { withTenantTx } from '../repo/tx.js';
@@ -27,7 +26,14 @@ export function registerGetAuditByResource(
 ): void {
   app.get(
     '/audit/:resourceType/:id',
-    auditRouteRateLimitConfig(deps.rateLimitMax, deps.rateLimitWindowMs),
+    {
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = requireCtx(request.ctx);
       const params = request.params as { resourceType: string; id: string };

@@ -1,7 +1,9 @@
+import rateLimit from '@fastify/rate-limit';
 import { errorEntry } from '@serviceform/contracts';
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import fp from 'fastify-plugin';
 import type { Logger } from '@serviceform/observability';
+import fastifyRateLimit from 'fastify-rate-limit';
 import type { Pool } from 'pg';
 import { loadConfig, type AuditServiceConfig } from './config.js';
 import { handleEnvelope } from './consumer/handle-envelope.js';
@@ -51,11 +53,9 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
 
   await app.register(
     async (scoped) => {
-      const { default: rateLimit } = await import('@fastify/rate-limit');
-      await scoped.register(
-        rateLimit,
-        auditRateLimitOptions(config.rateLimitMax, config.rateLimitWindowMs),
-      );
+      const rateLimitOpts = auditRateLimitOptions(config.rateLimitMax, config.rateLimitWindowMs);
+      await scoped.register(rateLimit, rateLimitOpts);
+      await scoped.register(fastifyRateLimit, rateLimitOpts);
       scoped.decorateRequest('ctx', null);
       scoped.addHook('onRequest', async (request) => {
         request.ctx = opts.resolveRequestContext(request.headers as Record<string, unknown>);
@@ -80,6 +80,14 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
           if (error.details) body['details'] = error.details;
           return reply.code(error.statusCode).send(body);
         }
+        const status = (error as { statusCode?: number }).statusCode;
+        if (status === 429) {
+          return reply.code(429).send({
+            error_code: 'SF-RATE-001',
+            message: errorEntry('SF-RATE-001').message,
+            correlation_id,
+          });
+        }
         opts.logger.error({ err: error }, 'unhandled audit error');
         return reply.code(500).send({
           error_code: 'SF-SYS-001',
@@ -88,7 +96,7 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
         });
       });
 
-      registerPostAuditEvent(scoped, {
+      await registerPostAuditEvent(scoped, {
         pool: opts.pool,
         authz,
         metrics,
@@ -97,7 +105,7 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
         rateLimitMax: config.rateLimitMax,
         rateLimitWindowMs: config.rateLimitWindowMs,
       });
-      registerGetAudit(scoped, {
+      await registerGetAudit(scoped, {
         pool: opts.pool,
         authz,
         queryMaxDays: config.queryMaxDays,
@@ -105,7 +113,7 @@ const pluginImpl: FastifyPluginAsync<AuditPluginOptions> = async (app, opts) => 
         rateLimitMax: config.rateLimitMax,
         rateLimitWindowMs: config.rateLimitWindowMs,
       });
-      registerGetAuditByResource(scoped, {
+      await registerGetAuditByResource(scoped, {
         pool: opts.pool,
         authz,
         queryMaxDays: config.queryMaxDays,

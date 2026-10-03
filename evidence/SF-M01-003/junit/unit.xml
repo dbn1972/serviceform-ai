@@ -1,135 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="54" failures="0" errors="0" time="0.776710802">
-    <testsuite name="apps/api/test/app.test.ts" timestamp="2026-10-03T17:04:59.413Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.19607047">
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports liveness" time="0.046487717">
+<testsuites name="vitest tests" tests="23" failures="0" errors="0" time="0.470888766">
+    <testsuite name="packages/audit-client/test/build-event.test.ts" timestamp="2026-10-03T17:27:19.038Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.056616315">
+        <testcase classname="packages/audit-client/test/build-event.test.ts" name="buildAuditEvent &gt; refuses null-tenant input under a tenant context (003-20)" time="0.001279212">
         </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports readiness from its checks and fails when a dependency fails" time="0.016480617">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns service identity without tenant or secret data" time="0.009917307">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; propagates a valid inbound correlation id and replaces a malformed one" time="0.006448708">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; sets security headers" time="0.006533366">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns a contract-valid SF-SYS-002 body for unknown routes" time="0.048506117">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps schema validation failures to SF-SYS-003 with JSON pointers" time="0.023607612">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps PlatformError to its catalogue status and code" time="0.01458491">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; does not log client network identifiers" time="0.005095842">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; hides internal error details and stack traces" time="0.008229731">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; rejects oversized bodies with a contract error" time="0.007705497">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; requires DATABASE_URL outside LOCAL and CI" time="0.000581511">
-        </testcase>
-        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; reports invalid variable names without echoing values" time="0.000613413">
+        <testcase classname="packages/audit-client/test/build-event.test.ts" name="buildAuditEvent &gt; drops client_context and hashes stably" time="0.054438126">
         </testcase>
     </testsuite>
-    <testsuite name="apps/api/test/readiness.test.ts" timestamp="2026-10-03T17:04:59.416Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.00840025">
-        <testcase classname="apps/api/test/readiness.test.ts" name="database readiness probe (REQ: AWS v1.7 s2 readiness probes) &gt; fails when PostgreSQL is unreachable and closes its pool" time="0.007248716">
+    <testsuite name="packages/audit-client/test/http-sink.test.ts" timestamp="2026-10-03T17:27:19.039Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.026450441">
+        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="HttpAuditSink &gt; retries 503 then succeeds (S3)" time="0.020261612">
+        </testcase>
+        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="HttpAuditSink &gt; throws AuditSinkUnavailableError when 503 persists" time="0.004269528">
+        </testcase>
+        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="requireAudit &gt; blocks PRIVILEGED when write fails" time="0.000771193">
         </testcase>
     </testsuite>
-    <testsuite name="packages/audit-client/test/build-event.test.ts" timestamp="2026-10-03T17:04:59.416Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.065204668">
-        <testcase classname="packages/audit-client/test/build-event.test.ts" name="buildAuditEvent &gt; refuses null-tenant input under a tenant context (003-20)" time="0.001205419">
+    <testsuite name="packages/audit-client/test/pii-guard.test.ts" timestamp="2026-10-03T17:27:19.039Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004372674">
+        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects Aadhaar variants in free text (003-24, 003-25)" time="0.001627819">
         </testcase>
-        <testcase classname="packages/audit-client/test/build-event.test.ts" name="buildAuditEvent &gt; drops client_context and hashes stably" time="0.063058811">
+        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects PAN, email evasions and mobile" time="0.000700192">
         </testcase>
-    </testsuite>
-    <testsuite name="packages/audit-client/test/http-sink.test.ts" timestamp="2026-10-03T17:04:59.416Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.025633618">
-        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="HttpAuditSink &gt; retries 503 then succeeds (S3)" time="0.018096353">
+        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects NUL" time="0.000131019">
         </testcase>
-        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="HttpAuditSink &gt; throws AuditSinkUnavailableError when 503 persists" time="0.005583636">
+        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; allows a synthetic reason without identifiers" time="0.000652735">
         </testcase>
-        <testcase classname="packages/audit-client/test/http-sink.test.ts" name="requireAudit &gt; blocks PRIVILEGED when write fails" time="0.000803137">
+        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="canonicalJson &gt; sorts keys independently of insertion order" time="0.000217825">
         </testcase>
     </testsuite>
-    <testsuite name="packages/audit-client/test/pii-guard.test.ts" timestamp="2026-10-03T17:04:59.416Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004645786">
-        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects Aadhaar variants in free text (003-24, 003-25)" time="0.00177329">
+    <testsuite name="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" timestamp="2026-10-03T17:27:19.040Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.056197671">
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; valid example still validates" time="0.042827869">
         </testcase>
-        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects PAN, email evasions and mobile" time="0.000687604">
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; rejects extra top-level fields" time="0.00033555">
         </testcase>
-        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; rejects NUL" time="0.000147258">
-        </testcase>
-        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="pii-guard &gt; allows a synthetic reason without identifiers" time="0.000630392">
-        </testcase>
-        <testcase classname="packages/audit-client/test/pii-guard.test.ts" name="canonicalJson &gt; sorts keys independently of insertion order" time="0.000219213">
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; buildAuditEvent fills context and envelope/outbox validate" time="0.012038001">
         </testcase>
     </testsuite>
-    <testsuite name="packages/contracts/test/contracts.test.ts" timestamp="2026-10-03T17:04:59.417Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.095144976">
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; accepts a snake_case event envelope and rejects the camelCase variant" time="0.053452666">
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" timestamp="2026-10-03T17:27:19.040Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003790318">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="query-filters &gt; rejects inverted and oversized ranges and bad limits (003-28)" time="0.002025547">
         </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires tenant context fields on a request context" time="0.006228709">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; never allows extra fields (such as a stack trace) on an error response" time="0.002440536">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires a reason for decision, override and privileged audit events" time="0.014505503">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; fails closed on a critical SIMULATED connector in production (Constitution #22)" time="0.005842808">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires FORCE RLS for tenant- and jurisdiction-scoped entities" time="0.002334527">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; has a unique, well-formed error catalogue" time="0.001353355">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; maps a request context to transaction-local DB settings (SF-CON-DB-SESSION-CONTEXT)" time="0.00192379">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; keeps outbox row columns consistent with a valid envelope (SF-CON-OUTBOX)" time="0.005579947">
-        </testcase>
-        <testcase classname="packages/contracts/test/contracts.test.ts" name="shared envelopes (REQ: AWS v1.7 s13.2-13.4, s14.3, s20.3; Eng v1.4 s10; TI v1.0 s6-7) &gt; requires a purpose for integration actors (TI v1.0 s6)" time="0.000281675">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="clock-guard &gt; rejects occurred_at beyond skew" time="0.000720094">
         </testcase>
     </testsuite>
-    <testsuite name="packages/observability/test/redaction.test.ts" timestamp="2026-10-03T17:04:59.418Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.00832096">
-        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; recognises snake_case, camelCase and header-style sensitive keys" time="0.001530648">
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" timestamp="2026-10-03T17:27:19.040Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.323461347">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="handleEnvelope contract rejects (003-21) &gt; dead-letters wrong event_type, version, aggregate, extra keys, correlation" time="0.057838753">
         </testcase>
-        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; redacts sensitive values at any depth and keeps safe fields" time="0.000373362">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; loads defaults and rejects bad cell id" time="0.000910208">
         </testcase>
-        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; logger never writes sensitive values" time="0.005388528">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; deny-all authz" time="0.000195335">
         </testcase>
-    </testsuite>
-    <testsuite name="packages/observability/test/telemetry.test.ts" timestamp="2026-10-03T17:04:59.418Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.011006053">
-        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when no OTLP endpoint is configured" time="0.001171333">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="query cursor &gt; round-trips and rejects T2-looking garbage" time="0.000482517">
         </testcase>
-        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when OTEL_SDK_DISABLED is true" time="0.000197857">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="clock &gt; accepts historical occurred_at" time="0.000234737">
         </testcase>
-        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; starts and shuts down cleanly with an endpoint" time="0.008483468">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; POST and GET return 401 when resolver returns null" time="0.252689994">
         </testcase>
-    </testsuite>
-    <testsuite name="packages/ui-ux4g/test/app-shell.test.tsx" timestamp="2026-10-03T17:04:59.418Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.002462165">
-        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; renders banner, main and contentinfo landmarks" time="0.001212762">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; GET /audit is rate-limited with SF-RATE-001" time="0.00528263">
         </testcase>
-        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; starts with a skip link targeting main content" time="0.000244984">
-        </testcase>
-        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; marks the surface for theming and tests" time="0.00010918">
-        </testcase>
-    </testsuite>
-    <testsuite name="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" timestamp="2026-10-03T17:04:59.418Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.065501481">
-        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; valid example still validates" time="0.054735454">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; rejects extra top-level fields" time="0.000392608">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; buildAuditEvent fills context and envelope/outbox validate" time="0.009286346">
-        </testcase>
-    </testsuite>
-    <testsuite name="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" timestamp="2026-10-03T17:04:59.419Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003918412">
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="query-filters &gt; rejects inverted and oversized ranges and bad limits (003-28)" time="0.001903625">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="clock-guard &gt; rejects occurred_at beyond skew" time="0.000961506">
-        </testcase>
-    </testsuite>
-    <testsuite name="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" timestamp="2026-10-03T17:04:59.419Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.290401963">
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="handleEnvelope contract rejects (003-21) &gt; dead-letters wrong event_type, version, aggregate, extra keys, correlation" time="0.052965807">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; loads defaults and rejects bad cell id" time="0.000879423">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; deny-all authz" time="0.00017039">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="query cursor &gt; round-trips and rejects T2-looking garbage" time="0.000522786">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="clock &gt; accepts historical occurred_at" time="0.000193442">
-        </testcase>
-        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; POST and GET return 401 when resolver returns null" time="0.234368489">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; query target_tenant_id cannot skip AUDIT_READ" time="0.004414119">
         </testcase>
     </testsuite>
 </testsuites>

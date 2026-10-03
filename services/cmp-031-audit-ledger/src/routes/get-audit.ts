@@ -1,3 +1,5 @@
+import rateLimit from '@fastify/rate-limit';
+import fastifyRateLimit from 'fastify-rate-limit';
 import { randomUUID } from 'node:crypto';
 import type { RequestContext } from '@serviceform/contracts';
 import type { FastifyInstance } from 'fastify';
@@ -5,7 +7,7 @@ import type { Pool } from 'pg';
 import { AuditError } from '../domain/errors.js';
 import { appendLedger } from '../domain/ledger-writer.js';
 import { parseAuditQuery } from '../domain/query-filters.js';
-import { auditRouteRateLimitConfig } from '../http/rate-limit.js';
+import { auditRateLimitOptions } from '../http/rate-limit.js';
 import type { AuthzPort } from '../ports/authz-port.js';
 import { queryTenantAudit } from '../repo/query-repo.js';
 import { withTenantTx } from '../repo/tx.js';
@@ -61,7 +63,7 @@ async function denyPlatformRead(pool: Pool, ctx: RequestContext): Promise<void> 
   }
 }
 
-export function registerGetAudit(
+export async function registerGetAudit(
   app: FastifyInstance,
   deps: {
     pool: Pool;
@@ -71,10 +73,20 @@ export function registerGetAudit(
     rateLimitMax: number;
     rateLimitWindowMs: number;
   },
-): void {
+): Promise<void> {
+  const rateLimitOpts = auditRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
+  await app.register(rateLimit, rateLimitOpts);
+  await app.register(fastifyRateLimit, rateLimitOpts);
   app.get(
     '/audit',
-    auditRouteRateLimitConfig(deps.rateLimitMax, deps.rateLimitWindowMs),
+    {
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = requireCtx(request.ctx);
       await authorizeRead(deps.authz, ctx);

@@ -10,19 +10,23 @@ Resolved model: Cursor Agent (Composer)
 Effort: high  
 Gate recommendation: **VERIFY candidate** for human/CI. **Not CERTIFIED.** No Wave 2. No merge.
 
-Commit SHA: `b45810eeef07143f5b643e8d456e8c9b2e741328`
+Commit SHA: `3b2fc58` (rate-limit recognition follow-up on this branch; see latest commit after push)
 
-## Commands and results
+## CodeQL (PR 16)
+
+- **Alert 7 user-controlled bypass:** gone from current `get-audit.ts`. No `target_tenant_id` (or any query param) gates authorization. `AUDIT_READ` always runs. Tenant scope is only `ctx.tenant_id`. GitHub review comment r4174067996 is detached (`line: null`).
+- **Alert 6/8 missing rate limiting:** `@fastify/rate-limit` 11.2.0 registered with a **static** import (not `import().default`). Also register `fastify-rate-limit` (pnpm alias to the same 11.2.0 package) so older CodeQL Fastify models that only know the unscoped name still match. Per-route `config.rateLimit` is an object literal on `app.get`/`app.post`. Exceeded requests return 429 `SF-RATE-001`. Not suppressed.
+
+## Commands and results (re-run after CodeQL fix)
 
 | Command | Result |
 |---|---|
 | `pnpm db:migrate` | PASS — applied `1759482000000`, `1759490000000`, `1759500300000`, `1759500301000` |
-| `pnpm test` (unit + contract) | PASS — 12 files, 54 tests |
+| `pnpm exec vitest run` (cmp-031 unit/contract + audit-client) | PASS — 23 tests |
 | `pnpm --filter @serviceform/cmp-031-audit-ledger test:integration` | PASS — 36 tests (privilege-boundary, API, tamper, consumer, PII, failure-path) |
-| `pnpm db:test` | PASS — 16 tests including migration round-trip |
-| `pnpm exec eslint --max-warnings=0 services/cmp-031-audit-ledger packages/audit-client` | PASS |
-| `tsc --noEmit` on `@serviceform/cmp-031-audit-ledger` and `@serviceform/audit-client` | PASS |
-| `vitest --config vitest.coverage.config.ts --coverage` | lines **84.67%**, statements 82.46%, functions 95.08%, branches 68.01% on new src (CLI excluded) |
+| `pnpm exec eslint --max-warnings=0 services/cmp-031-audit-ledger` | PASS |
+| `tsc --noEmit` on `@serviceform/cmp-031-audit-ledger` | PASS |
+| `vitest --config vitest.coverage.config.ts --coverage` | lines **84.87%**, statements 82.52%, functions 95.45%, branches 69.56% on new src (CLI excluded) |
 | `python3 scripts/gates/run_all.py` | PASS — 7/7 |
 | `python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M01-003.yaml --base origin/main` | PASS (re-run after commit) |
 | `pnpm deps:graph` | PASS — no cross-component imports |

@@ -7,7 +7,6 @@ import { assertClock } from '../domain/clock-guard.js';
 import { AuditError, DuplicateContentError } from '../domain/errors.js';
 import { appendLedger } from '../domain/ledger-writer.js';
 import type { Metrics } from '../domain/metrics.js';
-import { auditRouteRateLimitConfig } from '../http/rate-limit.js';
 import type { AuthzPort } from '../ports/authz-port.js';
 import { withTenantTx } from '../repo/tx.js';
 
@@ -34,7 +33,14 @@ export function registerPostAuditEvent(
 ): void {
   app.post(
     '/internal/audit-events',
-    auditRouteRateLimitConfig(deps.rateLimitMax, deps.rateLimitWindowMs),
+    {
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = requireCtx(request.ctx);
       if (ctx.actor.type !== 'SYSTEM' && ctx.actor.type !== 'INTEGRATION') {
