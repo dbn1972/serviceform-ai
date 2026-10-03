@@ -8,7 +8,7 @@
 | Branch | `agent/M01-cmp-048-security-platform-SF-M01-002` |
 | PR | https://github.com/dbn1972/serviceform-ai/pull/17 |
 | Base | `origin/main` `8a4695d62a065fd3e8047b0c49085bfebbb0c513` |
-| Result commit | (implementation `1cf3d995`; history rewritten to drop gitleaks test-key blob — see HEAD) |
+| Result commit | `9e421342f79344f3605498d9486dff58b69a01d1` (history rewritten; old `1cf3d995` blob removed) |
 | Model / effort | claude-opus-5-5, high (as routed) |
 | Builder | serviceform-foundation-builder |
 | Self-certified | **no** |
@@ -33,7 +33,7 @@
 | `pnpm deps:graph` | no violations (124 modules) |
 | `python scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M01-002.yaml --base origin/main` | see `scope-check.log` |
 | gitleaks detect (working tree `packages/security/test`) | **no leaks found** (`SYNTHETIC_WRAP_KEY = 'x'.repeat(32)`) |
-| gitleaks git (branch after history rewrite) | must be clean of `abcdefghijabcdefghijabcdefghij12`; sibling cmp-002 helper hit is out of write scope |
+| gitleaks git (`8a4695d..HEAD` after rewrite) | no leaks; sibling cmp-002 helper hit is out of write scope |
 
 ## ADR-0006 / Wave-1 role correction
 
