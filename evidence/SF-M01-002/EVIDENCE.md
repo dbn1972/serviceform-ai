@@ -1,5 +1,7 @@
 # SF-M01-002 evidence (CMP-048 Security Platform)
 
+> **SUPERSEDED — not VERIFIED.** Cursor-host captures below are provenance-invalid for M01 Wave 1 gates (F-V5-002). See [`SUPERSEDED.md`](./SUPERSEDED.md) and [`../m01-w1-remediation/INDEX.md`](../m01-w1-remediation/INDEX.md). Replacement evidence must come from GitHub job `m01-envelope-int`.
+
 | Field | Value |
 |---|---|
 | Task | SF-M01-002 |

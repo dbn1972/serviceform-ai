@@ -1,5 +1,7 @@
 # SF-M01-003 evidence (CMP-031 Audit and Evidence Ledger)
 
+> **SUPERSEDED — not VERIFIED.** Cursor-host captures below are provenance-invalid for M01 Wave 1 gates (F-V5-002). See [`SUPERSEDED.md`](./SUPERSEDED.md) and [`../m01-w1-remediation/INDEX.md`](../m01-w1-remediation/INDEX.md). Replacement evidence must come from GitHub job `m01-envelope-int`.
+
 Task: SF-M01-003  
 Component: CMP-031  
 Integration: INT-011 (ledger RLS + privilege boundary)  

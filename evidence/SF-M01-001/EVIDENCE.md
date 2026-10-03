@@ -1,5 +1,7 @@
 # SF-M01-001 evidence — CMP-002 Tenant & Government Organisation
 
+> **SUPERSEDED — not VERIFIED.** Cursor-host captures below are provenance-invalid for M01 Wave 1 gates (F-V5-002). See [`SUPERSEDED.md`](./SUPERSEDED.md) and [`../m01-w1-remediation/INDEX.md`](../m01-w1-remediation/INDEX.md). Replacement evidence must come from GitHub job `m01-envelope-int`.
+
 **Not CERTIFIED.** Builder recommendation: Design complete; Develop ready for independent Verify.
 
 | Field | Value |
