@@ -49,6 +49,7 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
   afterAll(async () => {
     await transport?.close();
     await Promise.all([app?.end(), pub?.end(), admin?.end()]);
+    await stopKafka();
   });
 
   it('K1 publish after commit and consume with inbox dedup', async () => {

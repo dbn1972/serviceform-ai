@@ -1,4 +1,4 @@
-import { spawn, type ChildProcess } from 'node:child_process';
+import { execFileSync, spawn, type ChildProcess } from 'node:child_process';
 import { writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs';
 import { createConnection } from 'node:net';
 import { dirname, join } from 'node:path';
@@ -53,6 +53,62 @@ function waitPort(port: number, host = '127.0.0.1', timeoutMs = 60_000): Promise
   });
 }
 
+function listenerPids(port: number): number[] {
+  try {
+    const out = execFileSync('lsof', ['-t', `-iTCP:${port}`, '-sTCP:LISTEN'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return out
+      .split(/\s+/)
+      .map((s) => Number(s))
+      .filter((n) => Number.isInteger(n) && n > 1);
+  } catch {
+    return [];
+  }
+}
+
+function killPids(pids: number[], signal: NodeJS.Signals): void {
+  for (const pid of pids) {
+    try {
+      process.kill(pid, signal);
+    } catch {
+      // already gone
+    }
+  }
+}
+
+function killGroup(proc: ChildProcess, signal: NodeJS.Signals): void {
+  if (proc.pid) {
+    try {
+      process.kill(-proc.pid, signal);
+      return;
+    } catch {
+      // fall through to the direct child
+    }
+  }
+  try {
+    proc.kill(signal);
+  } catch {
+    // already gone
+  }
+}
+
+async function freeLocalPorts(): Promise<void> {
+  killPids([...listenerPids(PORT), ...listenerPids(CONTROLLER_PORT)], 'SIGTERM');
+  await new Promise((r) => setTimeout(r, 400));
+  killPids([...listenerPids(PORT), ...listenerPids(CONTROLLER_PORT)], 'SIGKILL');
+  await waitPortClosed(PORT, '127.0.0.1', 15_000).catch(() => undefined);
+}
+
+function spawnBroker(props: string): ChildProcess {
+  return spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
+    env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx384m' },
+    stdio: 'ignore',
+    detached: true,
+  });
+}
+
 export function kafkaBrokers(): string[] {
   const fromEnv = (process.env['SF_KAFKA_BROKERS'] ?? '')
     .split(',')
@@ -81,6 +137,7 @@ export async function ensureKafka(): Promise<string[]> {
   if (!existsSync(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'))) {
     throw new Error('Kafka 4.1.0 tarball not found at ' + KAFKA_HOME + ' (004-29 must execute)');
   }
+  await freeLocalPorts();
   const scratchRoot = join(dirname(fileURLToPath(import.meta.url)), '../../test-results/kafka');
   mkdirSync(scratchRoot, { recursive: true, mode: 0o700 });
   logDir = mkdtempSync(join(scratchRoot, 'kraft-'));
@@ -137,31 +194,28 @@ export async function ensureKafka(): Promise<string[]> {
     );
     storage.on('error', reject);
   });
-  child = spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
-    env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx384m' },
-    stdio: 'ignore',
-  });
+  child = spawnBroker(props);
   await waitPort(PORT, '127.0.0.1', 90_000);
   process.env['SF_KAFKA_BROKERS'] = '127.0.0.1:' + PORT;
   return kafkaBrokers();
 }
 
 export async function stopKafka(): Promise<void> {
-  if (!child) return;
-  child.kill('SIGTERM');
-  await new Promise((r) => setTimeout(r, 3000));
-  if (child) child.kill('SIGKILL');
-  child = undefined;
+  if (child) {
+    killGroup(child, 'SIGTERM');
+    await new Promise((r) => setTimeout(r, 2000));
+    killGroup(child, 'SIGKILL');
+    child = undefined;
+  }
+  killPids([...listenerPids(PORT), ...listenerPids(CONTROLLER_PORT)], 'SIGKILL');
+  delete process.env['SF_KAFKA_BROKERS'];
   await waitPortClosed(PORT, '127.0.0.1', 20_000);
 }
 
 export async function startKafkaAgain(): Promise<void> {
   if (!logDir) throw new Error('kafka was not started by this helper');
-  await waitPortClosed(PORT, '127.0.0.1', 10_000).catch(() => undefined);
+  await waitPortClosed(PORT, '127.0.0.1', 15_000).catch(() => undefined);
   const props = join(logDir, 'server.properties');
-  child = spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
-    env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx384m' },
-    stdio: 'ignore',
-  });
+  child = spawnBroker(props);
   await waitPort(PORT, '127.0.0.1', 90_000);
 }
