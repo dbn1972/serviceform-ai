@@ -8,7 +8,7 @@ merged: false
 pr: https://github.com/dbn1972/serviceform-ai/pull/16
 branch: agent/M01-cmp-031-audit-ledger-SF-M01-003
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-result_commit: b45810eeef07143f5b643e8d456e8c9b2e741328
+result_commit: 4529380d
 builder: serviceform-foundation-builder
 resolved_model: Cursor Agent (Composer)
 effort: high
@@ -22,7 +22,7 @@ completed_work:
   - Fastify plugin POST /v1/internal/audit-events, GET /v1/audit, GET /v1/audit/{type}/{id} (not wired into apps/api)
   - Consumer handleEnvelope for AuditEventSubmitted; emits AuditRecordCreated via own outbox
   - Unit, contract, integration, tenant-negative, privilege-boundary, tamper, failure-path tests
-  - Evidence under evidence/SF-M01-003/
+  - CodeQL: GET /audit no longer uses query params as a security guard; Fastify rate-limit registered so js/missing-rate-limiting can see it (static import + per-route config.rateLimit)
 
 unresolved_work:
   - Independent security/evidence verifier review
