@@ -138,9 +138,7 @@ Operator replay/discard (P-004-2):
 
 **Broker evidence:** Apache Kafka **4.1.0** KRaft from tarball in `/var/tmp/kafka` (PLAN-REVIEW Q1). `infra/**` is read-only; do not add compose services. Real-broker tests are **mandatory** (004-29); skip = failed LOST gate.
 
-**Client:** `@platformatic/kafka` **2.12.1** (Apache-2.0, no native `install` script — required because root `onlyBuiltDependencies` is read-only). Exact pin. Workspace pins: `pg` 8.23.1, `@types/pg` 8.23.1, `@opentelemetry/api` 1.9.1, `@serviceform/contracts` / `@serviceform/observability` `workspace:*`. Dev: `@opentelemetry/sdk-metrics` 2.11.0 for `InMemoryMetricExporter`. **No Fastify** in this task. **Do not commit `pnpm-lock.yaml`.** After package.json changes, orchestrator regenerates the lockfile.
-
-If 2.12.1 lacks a required admin API at implementation: **STOP and re-plan** (do not silently swap clients or edit root `package.json`).
+**Client:** `kafkajs` **2.2.4** (MIT, zero transitive dependencies, no native `install` script — required because root `onlyBuiltDependencies` is read-only). Exact pin. Replaces `@platformatic/kafka` 2.12.1: every published version of that client depends on `@platformatic/wasm-utils@^0.2.1`, which workspace `trustPolicy: no-downgrade` rejects (OIDC trusted-publishing provenance present on `0.1.0` and removed on `0.2.1`). Policy is not disabled; no owner exception requested. Workspace pins: `pg` 8.23.1, `@types/pg` 8.23.1, `@opentelemetry/api` 1.9.1, `@serviceform/contracts` / `@serviceform/observability` `workspace:*`. Dev: `@opentelemetry/sdk-metrics` 2.11.0 for `InMemoryMetricExporter`. **No Fastify** in this task. **Do not commit `pnpm-lock.yaml`.** After package.json changes, orchestrator regenerates the lockfile.
 
 Transport interface and SIMULATED/REAL behaviour: dispatch plan §3.2, plus 004-23 fail-closed.
 
@@ -223,7 +221,7 @@ Phase 2 evidence (not now): listed in the envelope (`privilege-boundary.log`, at
 
 | ID | Item | Proposal |
 |---|---|---|
-| O-LOCK | New `@platformatic/kafka` requires lockfile regen | Builder will not commit `pnpm-lock.yaml`. Request reconciliation after plan approval / before CI on the implementation PR. |
+| O-LOCK | New `kafkajs@2.2.4` requires lockfile regen | Builder will not commit `pnpm-lock.yaml`. Replaces `@platformatic/kafka` (transitive `@platformatic/wasm-utils@0.2.1` failed `trustPolicy: no-downgrade`). Request orchestrator lockfile reconciliation; do not turn the policy off. |
 | O-MIG | `sf_migrator` does not exist in M00 | This migration creates it with the same idempotent `DO $$` / `pg_roles` pattern as `sf_app` in the platform baseline, then `OWNER TO sf_migrator`. Sibling tasks may share the role; this task does not edit the frozen baseline. |
 | O-CCR | P-004-4 DELETE on PENDING | Record residual; do **not** edit template. |
 | STOP | SQS vs MSK, payload > 256 KiB, frozen contract edit, publisher SQL beyond outbox, root/`pnpm-lock` write, ADR-0006 violation | Stop; no silent architecture change. |

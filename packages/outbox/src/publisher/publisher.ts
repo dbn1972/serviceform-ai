@@ -335,7 +335,7 @@ export function createOutboxPublisher(options: PublisherOptions): OutboxPublishe
     replay(schema, table, seq) {
       return inTx((c) => replayDeadLetter(c, schema, table, seq));
     },
-    discard(schema, table, seq, dlqAcked) {
+    async discard(schema, table, seq, dlqAcked) {
       if (!dlqAcked) {
         throw new OutboxError('SF-SYS-003', { details: [{ code: 'DLQ_ACK_REQUIRED' }] });
       }

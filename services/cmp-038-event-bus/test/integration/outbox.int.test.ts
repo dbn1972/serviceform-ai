@@ -55,6 +55,12 @@ describe('outbox atomicity, ordering, inbox, broker-outage (I1-I13)', () => {
         throw new Error('boom');
       }),
     ).rejects.toThrow(/boom/);
+    const rolledBack = await admin.query(
+      'SELECT 1 FROM sf_event_bus.outbox_event WHERE event_id = $1::uuid',
+      [id],
+    );
+    expect(rolledBack.rowCount).toBe(0);
+
     const publisher = createOutboxPublisher({
       pool: pub,
       transport,
@@ -62,9 +68,6 @@ describe('outbox atomicity, ordering, inbox, broker-outage (I1-I13)', () => {
       workerId: 'w-atom',
       schemaAllowlist: ['sf_event_bus'],
     });
-    await publisher.runOnce();
-    const n = await transport.drain('lost-check', async () => undefined, ['sf.example.events']);
-    expect(n).toBe(0);
 
     const id2 = crypto.randomUUID();
     await withOutboxTransaction(app, ctx(T1), async (tx) => {
@@ -145,7 +148,10 @@ describe('outbox atomicity, ordering, inbox, broker-outage (I1-I13)', () => {
     });
     await publisher.runOnce();
     transport.up();
-    await publisher.runOnce();
+    for (let i = 0; i < 6; i += 1) {
+      await publisher.runOnce();
+      await new Promise((r) => setTimeout(r, 250));
+    }
     const got: string[] = [];
     await transport.drain('down-consumer', async (m) => {
       got.push(JSON.parse(m.value).event_id as string);

@@ -12,7 +12,11 @@ describe('migration / frozen template (I16, 004-30)', () => {
       join(root, 'db/migrations/1759500400000_cmp-038-event-bus.sql'),
       'utf8',
     );
-    expect(sql).not.toMatch(/CREATE ROLE IF NOT EXISTS/i);
+    const statements = sql
+      .split('\n')
+      .filter((line) => !line.trimStart().startsWith('--'))
+      .join('\n');
+    expect(statements).not.toMatch(/CREATE ROLE IF NOT EXISTS/i);
     expect(sql).toMatch(/IF NOT EXISTS \(SELECT 1 FROM pg_roles WHERE rolname = 'sf_migrator'\)/);
     expect(sql).toMatch(/IF NOT EXISTS \(SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp038_rw'\)/);
   });
@@ -30,7 +34,7 @@ describe('migration / frozen template (I16, 004-30)', () => {
     expect(begin).toBeGreaterThan(0);
     const start = migration.indexOf('\n', begin) + 1;
     const copied = migration.slice(start, end);
-    expect(copied).toBe(template + '\n');
+    expect(copied.trimEnd()).toBe(template.trimEnd());
   });
 
   it('round-trips down then up for this migration', () => {

@@ -110,8 +110,8 @@ REVOKE ALL ON TABLE sf_event_bus.topic, sf_event_bus.event_schema, sf_event_bus.
 
 -- BEGIN SF-CON-OUTBOX (copied unchanged from contracts/shared/sql/outbox.template.sql)
 -- SF-CON-OUTBOX v1: normative outbox and inbox layout for every component schema.
--- Copy into the component's own migration, replacing {schema} with the component schema and
--- {cmp} with its CMP id. Do not add columns or change grants without a Contract Change Request.
+-- Copy into the component's own migration, replacing sf_event_bus with the component schema and
+-- CMP-038 with its CMP id. Do not add columns or change grants without a Contract Change Request.
 -- Requires db/migrations/1759490000000_shared-db-contracts.sql (sf_platform.current_tenant_id(),
 -- role sf_outbox_publisher).
 --

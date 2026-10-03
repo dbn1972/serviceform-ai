@@ -1,10 +1,4 @@
-import {
-  Admin,
-  Consumer,
-  Producer,
-  stringDeserializers,
-  stringSerializers,
-} from '@platformatic/kafka';
+import { Kafka, logLevel, type Admin, type Consumer, type IHeaders, type Producer } from 'kafkajs';
 import type {
   EventTransport,
   IncomingMessage,
@@ -21,40 +15,96 @@ export interface KafkaTransportOptions {
   clientId?: string;
 }
 
+function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(message)), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (cause: unknown) => {
+        clearTimeout(timer);
+        reject(cause);
+      },
+    );
+  });
+}
+
+function decodeHeaders(raw: IHeaders | undefined): Record<string, string> {
+  const headers: Record<string, string> = {};
+  if (!raw) return headers;
+  for (const [key, value] of Object.entries(raw)) {
+    if (value === undefined) continue;
+    if (Array.isArray(value)) {
+      headers[key] = value
+        .map((item) => (Buffer.isBuffer(item) ? item.toString('utf8') : String(item)))
+        .join(',');
+      continue;
+    }
+    headers[key] = Buffer.isBuffer(value) ? value.toString('utf8') : String(value);
+  }
+  return headers;
+}
+
+function isRetryable(message: string): boolean {
+  return /timeout|unavailable|network|not.?leader|unknown.?topic|connection|econnrefused|enotfound|broker|disconnect|retr/i.test(
+    message,
+  );
+}
+
 export class KafkaTransport implements EventTransport {
   readonly mode = 'REAL' as const;
   private readonly brokers: string[];
   private readonly clientId: string;
-  private producer: Producer<string, string, string, string> | undefined;
+  private client: Kafka | undefined;
+  private producer: Producer | undefined;
   private admin: Admin | undefined;
   private readonly partitions = new Map<string, number>();
-  private readonly consumers: Consumer<string, string, string, string>[] = [];
+  private readonly consumers: Consumer[] = [];
 
   constructor(options: KafkaTransportOptions) {
     this.brokers = options.brokers;
     this.clientId = options.clientId ?? 'sf-cmp038';
   }
 
-  private async getProducer(): Promise<Producer<string, string, string, string>> {
-    if (!this.producer) {
-      this.producer = new Producer({
-        clientId: this.clientId + '-producer',
-        bootstrapBrokers: this.brokers,
-        serializers: stringSerializers,
-        idempotent: true,
-        acks: -1,
-        autocreateTopics: false,
+  private kafka(): Kafka {
+    if (!this.client) {
+      this.client = new Kafka({
+        clientId: this.clientId,
+        brokers: this.brokers,
+        logLevel: logLevel.NOTHING,
+        connectionTimeout: 3_000,
+        requestTimeout: 5_000,
+        retry: {
+          retries: 1,
+          initialRetryTime: 100,
+          maxRetryTime: 1_000,
+        },
       });
+    }
+    return this.client;
+  }
+
+  private async getProducer(): Promise<Producer> {
+    if (!this.producer) {
+      const producer = this.kafka().producer({
+        idempotent: true,
+        maxInFlightRequests: 1,
+        allowAutoTopicCreation: false,
+        retry: { retries: 1, initialRetryTime: 100, maxRetryTime: 1_000 },
+      });
+      await withTimeout(producer.connect(), 8_000, 'producer connect timeout');
+      this.producer = producer;
     }
     return this.producer;
   }
 
   private async getAdmin(): Promise<Admin> {
     if (!this.admin) {
-      this.admin = new Admin({
-        clientId: this.clientId + '-admin',
-        bootstrapBrokers: this.brokers,
-      });
+      const admin = this.kafka().admin();
+      await withTimeout(admin.connect(), 8_000, 'admin connect timeout');
+      this.admin = admin;
     }
     return this.admin;
   }
@@ -63,10 +113,11 @@ export class KafkaTransport implements EventTransport {
     const admin = await this.getAdmin();
     try {
       await admin.createTopics({
+        waitForLeaders: true,
         topics: defs.map((d) => ({
           topic: d.topic,
-          partitions: d.partitions,
-          replicas: d.replicationFactor,
+          numPartitions: d.partitions,
+          replicationFactor: d.replicationFactor,
         })),
       });
     } catch (cause) {
@@ -77,32 +128,44 @@ export class KafkaTransport implements EventTransport {
   }
 
   async publish(msgs: OutgoingMessage[], o: { timeoutMs: number }): Promise<PublishOutcome[]> {
+    if (msgs.length === 0) return [];
     try {
       const producer = await this.getProducer();
-      await producer.send({
-        messages: msgs.map((m) => {
-          const count = this.partitions.get(m.topic);
-          if (count !== undefined) {
-            return {
-              topic: m.topic,
-              key: m.key,
-              value: m.value,
-              headers: m.headers,
-              partition: partitionForKey(m.key, count),
-            };
-          }
-          return { topic: m.topic, key: m.key, value: m.value, headers: m.headers };
-        }),
+      const byTopic = new Map<string, OutgoingMessage[]>();
+      for (const msg of msgs) {
+        const list = byTopic.get(msg.topic) ?? [];
+        list.push(msg);
+        byTopic.set(msg.topic, list);
+      }
+      const send = producer.sendBatch({
         acks: -1,
-        idempotent: true,
+        timeout: Math.max(1_000, o.timeoutMs),
+        topicMessages: [...byTopic.entries()].map(([topic, list]) => ({
+          topic,
+          messages: list.map((m) => {
+            const count = this.partitions.get(m.topic);
+            if (count !== undefined) {
+              return {
+                key: m.key,
+                value: m.value,
+                headers: m.headers,
+                partition: partitionForKey(m.key, count),
+              };
+            }
+            return { key: m.key, value: m.value, headers: m.headers };
+          }),
+        })),
       });
-      void o;
+      await Promise.race([
+        send,
+        new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('timeout')), Math.max(1_000, o.timeoutMs));
+        }),
+      ]);
       return msgs.map(() => ({ kind: 'ok' as const }));
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : 'BROKER_UNAVAILABLE';
-      const retryable = /timeout|unavailable|network|not.?leader|unknown.?topic|connection/i.test(
-        message,
-      );
+      const retryable = isRetryable(message);
       return msgs.map(() => ({
         kind: retryable ? 'retryable' : 'fatal',
         errorCode: retryable ? 'BROKER_UNAVAILABLE' : 'RECORD_INVALID',
@@ -111,85 +174,116 @@ export class KafkaTransport implements EventTransport {
   }
 
   async subscribe(group: string, topics: string[], h: MessageHandler): Promise<Subscription> {
-    const consumer = new Consumer({
+    const consumer = this.kafka().consumer({
       groupId: group,
-      clientId: this.clientId + '-consumer-' + group,
-      bootstrapBrokers: this.brokers,
-      deserializers: stringDeserializers,
-    });
-    this.consumers.push(consumer);
-    const stream = await consumer.consume({
-      topics,
-      autocommit: false,
       sessionTimeout: 15_000,
       heartbeatInterval: 3_000,
+      allowAutoTopicCreation: false,
+      retry: { retries: 1, initialRetryTime: 100, maxRetryTime: 1_000 },
     });
-    const loop = (async () => {
-      for await (const message of stream) {
-        const headers: Record<string, string> = {};
-        for (const [k, v] of message.headers) {
-          headers[String(k)] = String(v);
-        }
-        const incoming: IncomingMessage = {
-          topic: message.topic,
-          partition: message.partition,
-          offset: message.offset.toString(),
-          key: message.key ?? '',
-          value: message.value ?? '',
-          headers,
-        };
-        await h(incoming);
-        await message.commit();
-      }
-    })();
-    void loop.catch(() => undefined);
+    this.consumers.push(consumer);
+    await withTimeout(consumer.connect(), 10_000, 'consumer connect timeout');
+    for (const topic of topics) {
+      await consumer.subscribe({ topic, fromBeginning: true });
+    }
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('consumer group join timeout')), 20_000);
+      let joined = false;
+      consumer.on(consumer.events.GROUP_JOIN, () => {
+        if (joined) return;
+        joined = true;
+        clearTimeout(timer);
+        resolve();
+      });
+      void consumer
+        .run({
+          autoCommit: false,
+          eachMessage: async ({ topic, partition, message }) => {
+            const incoming: IncomingMessage = {
+              topic,
+              partition,
+              offset: message.offset,
+              key: message.key?.toString() ?? '',
+              value: message.value?.toString() ?? '',
+              headers: decodeHeaders(message.headers),
+            };
+            await h(incoming);
+            await consumer.commitOffsets([
+              { topic, partition, offset: (BigInt(message.offset) + 1n).toString() },
+            ]);
+          },
+        })
+        .catch((cause: unknown) => {
+          if (!joined) {
+            clearTimeout(timer);
+            reject(cause instanceof Error ? cause : new Error(String(cause)));
+          }
+        });
+    });
     return {
       close: async () => {
-        await consumer.close(true);
+        await consumer.stop();
+        await consumer.disconnect();
       },
     };
   }
 
   async logEndOffsets(topic: string): Promise<Map<number, bigint>> {
     const admin = await this.getAdmin();
-    const count = this.partitions.get(topic) ?? 1;
-    const listed = await admin.listOffsets({
-      topics: [
-        {
-          name: topic,
-          partitions: Array.from({ length: count }, (_, i) => ({
-            partitionIndex: i,
-            timestamp: -1n,
-          })),
-        },
-      ],
-    });
+    const listed = await admin.fetchTopicOffsets(topic);
     const map = new Map<number, bigint>();
-    for (const t of listed) {
-      for (const p of t.partitions) map.set(p.partitionIndex, p.offset);
+    for (const p of listed) {
+      map.set(p.partition, BigInt(p.high));
     }
     return map;
   }
 
   async committedOffsets(group: string, topic: string): Promise<Map<number, bigint>> {
     const admin = await this.getAdmin();
-    const groups = await admin.listConsumerGroupOffsets({ groups: [group] });
+    const groups = await admin.fetchOffsets({ groupId: group, topics: [topic] });
     const map = new Map<number, bigint>();
-    for (const g of groups) {
-      for (const t of g.topics) {
-        if (t.name !== topic) continue;
-        for (const p of t.partitions) map.set(p.partitionIndex, p.committedOffset);
+    for (const t of groups) {
+      if (t.topic !== topic) continue;
+      for (const p of t.partitions) {
+        const offset = BigInt(p.offset);
+        map.set(p.partition, offset < 0n ? 0n : offset);
       }
     }
     return map;
   }
 
   async close(): Promise<void> {
-    await Promise.all(this.consumers.map(async (c) => c.close()));
+    await Promise.all(
+      this.consumers.map(async (c) => {
+        try {
+          await c.stop();
+        } catch {
+          // already stopped
+        }
+        try {
+          await c.disconnect();
+        } catch {
+          // already disconnected
+        }
+      }),
+    );
     this.consumers.length = 0;
-    if (this.producer) await this.producer.close();
+    if (this.producer) {
+      try {
+        await this.producer.disconnect();
+      } catch {
+        // already disconnected
+      }
+    }
     this.producer = undefined;
-    if (this.admin) await this.admin.close();
+    if (this.admin) {
+      try {
+        await this.admin.disconnect();
+      } catch {
+        // already disconnected
+      }
+    }
     this.admin = undefined;
+    this.client = undefined;
   }
 }

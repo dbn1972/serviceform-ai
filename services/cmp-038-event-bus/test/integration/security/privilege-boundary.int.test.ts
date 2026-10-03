@@ -213,6 +213,7 @@ describe('CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006)', () => {
        JOIN pg_namespace n ON n.oid = c.relnamespace
        CROSS JOIN unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) AS p
        WHERE has_table_privilege('sf_t004_pub', c.oid, p)
+         AND c.relkind IN ('r', 'p')
          AND n.nspname NOT IN ('pg_catalog', 'information_schema', 'pg_toast')`,
     );
     for (const row of r.rows) {
@@ -245,7 +246,7 @@ describe('CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006)', () => {
 
   it('004-04 policies match the frozen template; no policy TO PUBLIC', async () => {
     const pols = await admin.query<{ polname: string; relname: string; public_role: boolean }>(
-      `SELECT p.polname, c.relname, (ARRAY['public'::regrole] && p.polroles) AS public_role
+      `SELECT p.polname, c.relname, (0 = ANY (p.polroles)) AS public_role
        FROM pg_policy p
        JOIN pg_class c ON c.oid = p.polrelid
        JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -297,6 +298,7 @@ describe('CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006)', () => {
         weird +
         '.outbox_event TO sf_outbox_publisher',
     );
+    await admin.query('DROP VIEW IF EXISTS sf_event_bus.outbox_event_view');
     await admin.query(
       'CREATE VIEW sf_event_bus.outbox_event_view AS SELECT 1 AS seq; GRANT SELECT ON sf_event_bus.outbox_event_view TO sf_outbox_publisher',
     );

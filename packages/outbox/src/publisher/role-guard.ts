@@ -24,9 +24,7 @@ async function hasRole(client: pg.PoolClient, whoSql: string, role: string): Pro
 }
 
 function isPoolClient(db: pg.Pool | pg.PoolClient): db is pg.PoolClient {
-  return (
-    typeof (db as pg.PoolClient).release === 'function' && typeof (db as pg.Pool).end !== 'function'
-  );
+  return typeof (db as pg.PoolClient).release === 'function';
 }
 
 /**

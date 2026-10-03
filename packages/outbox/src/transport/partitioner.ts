@@ -1,4 +1,4 @@
-/** Kafka DefaultPartitioner murmur2 (Utils.java / @platformatic/kafka port). */
+/** Kafka DefaultPartitioner murmur2 (Utils.java / Java client). */
 const seed = 0x9747b28cn;
 const m = 0x5bd1e995n;
 const r = 24n;

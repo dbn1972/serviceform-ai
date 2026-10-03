@@ -68,6 +68,11 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
       schemaAllowlist: ['sf_event_bus'],
     });
     await publisher.runOnce();
+    const published = await admin.query<{ status: string }>(
+      'SELECT status FROM sf_event_bus.outbox_event WHERE event_id = $1::uuid',
+      [id],
+    );
+    expect(published.rows[0]?.status).toBe('PUBLISHED');
     let applied = 0;
     const handler = consumeWithInbox({
       pool: app,
@@ -183,6 +188,7 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
       registry: snapshotRegistry(),
       workerId: 'k3',
       schemaAllowlist: ['sf_event_bus'],
+      leaseMs: 4_000,
     });
     await publisher.runOnce();
     const mid = await admin.query<{ status: string }>(
@@ -192,15 +198,25 @@ describe('real Kafka 4.1.0 (K1-K5, 004-29)', () => {
     expect(mid.rows[0]?.status === 'PENDING' || mid.rows[0]?.status === 'PUBLISHED').toBe(true);
     await startKafkaAgain();
     const up = new KafkaTransport({ brokers, clientId: 'sf-t004-k3b' });
+    const registry = snapshotRegistry();
+    await up.ensureTopics(
+      registry.allTopics().flatMap((t) => [
+        { topic: t.topic_name, partitions: t.partitions, replicationFactor: 1 },
+        { topic: t.dlq_topic, partitions: t.partitions, replicationFactor: 1 },
+      ]),
+    );
     const publisher2 = createOutboxPublisher({
       pool: pub,
       transport: up,
-      registry: snapshotRegistry(),
+      registry,
       workerId: 'k3b',
       schemaAllowlist: ['sf_event_bus'],
+      leaseMs: 4_000,
     });
-    await publisher2.runOnce();
-    await publisher2.runOnce();
+    for (let i = 0; i < 6; i += 1) {
+      await publisher2.runOnce();
+      await new Promise((r) => setTimeout(r, 300));
+    }
     const end = await admin.query<{ status: string }>(
       'SELECT status FROM sf_event_bus.outbox_event WHERE event_id = $1::uuid',
       [id],

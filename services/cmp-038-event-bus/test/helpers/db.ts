@@ -81,8 +81,9 @@ export async function ensureRole(admin: pg.Pool, name: string, members: string[]
   await admin.query(
     'CREATE ROLE ' +
       role +
-      ' LOGIN PASSWORD $1 NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT',
-    [PASS],
+      ' LOGIN PASSWORD ' +
+      quoteLiteral(PASS) +
+      ' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT',
   );
   for (const m of members) {
     await admin.query('GRANT ' + assertRoleName(m) + ' TO ' + role);

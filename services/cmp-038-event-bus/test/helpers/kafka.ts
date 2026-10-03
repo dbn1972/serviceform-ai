@@ -1,8 +1,8 @@
 import { spawn, type ChildProcess } from 'node:child_process';
-import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, mkdtempSync } from 'node:fs';
 import { createConnection } from 'node:net';
-import { join } from 'node:path';
-import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const KAFKA_HOME = process.env['KAFKA_HOME'] ?? '/var/tmp/kafka/kafka_2.13-4.1.0';
 const PORT = Number(process.env['SF_KAFKA_PORT'] ?? '19092');
@@ -10,6 +10,27 @@ const CONTROLLER_PORT = Number(process.env['SF_KAFKA_CONTROLLER_PORT'] ?? '19093
 
 let child: ChildProcess | undefined;
 let logDir: string | undefined;
+
+function waitPortClosed(port: number, host = '127.0.0.1', timeoutMs = 30_000): Promise<void> {
+  const start = Date.now();
+  return new Promise((resolve, reject) => {
+    const tryOnce = () => {
+      const sock = createConnection({ host, port }, () => {
+        sock.end();
+        if (Date.now() - start > timeoutMs) {
+          reject(new Error('timeout waiting for port ' + port + ' to close'));
+          return;
+        }
+        setTimeout(tryOnce, 300);
+      });
+      sock.on('error', () => {
+        sock.destroy();
+        resolve();
+      });
+    };
+    tryOnce();
+  });
+}
 
 function waitPort(port: number, host = '127.0.0.1', timeoutMs = 60_000): Promise<void> {
   const start = Date.now();
@@ -60,9 +81,9 @@ export async function ensureKafka(): Promise<string[]> {
   if (!existsSync(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'))) {
     throw new Error('Kafka 4.1.0 tarball not found at ' + KAFKA_HOME + ' (004-29 must execute)');
   }
-  logDir = join(tmpdir(), 'sf-kraft-t004-' + process.pid);
-  rmSync(logDir, { recursive: true, force: true });
-  mkdirSync(logDir, { recursive: true });
+  const scratchRoot = join(dirname(fileURLToPath(import.meta.url)), '../../test-results/kafka');
+  mkdirSync(scratchRoot, { recursive: true, mode: 0o700 });
+  logDir = mkdtempSync(join(scratchRoot, 'kraft-'));
   const props = join(logDir, 'server.properties');
   writeFileSync(
     props,
@@ -88,6 +109,7 @@ export async function ensureKafka(): Promise<string[]> {
       'group.initial.rebalance.delay.ms=0',
       'auto.create.topics.enable=false',
     ].join('\n') + '\n',
+    { encoding: 'utf8', mode: 0o600 },
   );
   const clusterId = await new Promise<string>((resolve, reject) => {
     const p = spawn(join(KAFKA_HOME, 'bin', 'kafka-storage.sh'), ['random-uuid'], {
@@ -127,13 +149,15 @@ export async function ensureKafka(): Promise<string[]> {
 export async function stopKafka(): Promise<void> {
   if (!child) return;
   child.kill('SIGTERM');
-  await new Promise((r) => setTimeout(r, 2000));
-  child.kill('SIGKILL');
+  await new Promise((r) => setTimeout(r, 3000));
+  if (child) child.kill('SIGKILL');
   child = undefined;
+  await waitPortClosed(PORT, '127.0.0.1', 20_000);
 }
 
 export async function startKafkaAgain(): Promise<void> {
   if (!logDir) throw new Error('kafka was not started by this helper');
+  await waitPortClosed(PORT, '127.0.0.1', 10_000).catch(() => undefined);
   const props = join(logDir, 'server.properties');
   child = spawn(join(KAFKA_HOME, 'bin', 'kafka-server-start.sh'), [props], {
     env: { ...process.env, KAFKA_HEAP_OPTS: '-Xmx384m' },
