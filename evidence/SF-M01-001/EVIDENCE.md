@@ -20,9 +20,9 @@
 | Command | Result |
 |---|---|
 | Guarded role create (no `CREATE ROLE IF NOT EXISTS`) | PASS (static assert in File A + migration.int.test.ts) |
-| `vitest` unit+contract (`vitest.unit.config.ts`) | PASS 14 tests |
+| `vitest` unit+contract (`vitest.unit.config.ts`) | PASS 38 tests |
 | `vitest` integration (`vitest.integration.config.ts`) | PASS 31 tests (PostgreSQL 16, real LOGIN `sf_t001_rt`) |
-| Coverage on `src/**` | lines **85.18%**, statements 82.26%, functions 89.47% (branches 67.57%, no branch gate in envelope) |
+| Stitch unit coverage (`*.int.test.ts` excluded) | lines **100%**, statements 100%, functions 100%, branches **96.09%** (thresholds 80/80/80/70) |
 | `prettier --check` (this package) | PASS |
 | `eslint services/cmp-002-tenant-organisation --max-warnings=0` | PASS |
 | `pnpm --filter @serviceform/cmp-002-tenant-organisation run typecheck` | PASS |
@@ -57,7 +57,7 @@
 - `pnpm-lock.yaml` not committed (envelope). CI `--frozen-lockfile` **fails** until orchestrator/merger regenerates the lockfile for this workspace importer.
 - GitHub gitleaks also reports `packages/security/test/*.ts` from SF-M01-002 (commit `1cf3d995`, not on this branch). `.gitleaks.toml` is not an allowed write.
 - In-scope helpers.ts gitleaks/semgrep findings fixed (Pool config fields; no `*User = 'literal'`).
-- Coverage branches 67.57% (envelope line threshold met).
+- Stitch unit coverage on `services/cmp-002-tenant-organisation/src` is 100% lines / 96.09% branches (`evidence/SF-M01-001/unit-coverage.log`).
 - Plugin not mounted in the API host (intentional, Wave 2).
 - Production rollback is forward-fix; Down drops `sf_tenant_org` (data loss) and `sf_cmp002_rw` only.
 
