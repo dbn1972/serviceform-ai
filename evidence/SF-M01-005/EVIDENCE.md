@@ -9,7 +9,7 @@
 | PR | https://github.com/dbn1972/serviceform-ai/pull/18 |
 | Builder | serviceform-integration-builder |
 | Resolved model | claude-sonnet-5-5, effort high (envelope `model_route: sonnet`) |
-| Commit SHA | (filled after commit; see `git rev-parse HEAD` on this branch) |
+| Commit SHA | `8c07433a5f553089f62f05b43016a831a388c65f` |
 | Recommended gate | Develop / PR_OPEN. **Not VERIFIED. Not CERTIFIED.** Builder cannot self-certify. |
 | Wave 2 | Not started |
 
