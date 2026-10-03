@@ -1,0 +1,63 @@
+[
+  {
+    "entity": "sf_audit.audit_event",
+    "owner_component": "CMP-031",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.audit_event_key",
+    "owner_component": "CMP-031",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.audit_chain_head",
+    "owner_component": "CMP-031",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.audit_event_platform",
+    "owner_component": "CMP-031",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "FORCE",
+    "justification": "Platform chain; INSERT only when current_tenant_id() is null"
+  },
+  {
+    "entity": "sf_audit.audit_event_platform_key",
+    "owner_component": "CMP-031",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.audit_chain_head_platform",
+    "owner_component": "CMP-031",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.outbox_event",
+    "owner_component": "CMP-031",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.outbox_event_platform",
+    "owner_component": "CMP-031",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_audit.inbox_event",
+    "owner_component": "CMP-031",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_audit.inbox_event_platform",
+    "owner_component": "CMP-031",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]

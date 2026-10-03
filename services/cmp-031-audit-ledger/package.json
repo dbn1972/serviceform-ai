@@ -1,0 +1,25 @@
+{
+  "name": "@serviceform/cmp-031-audit-ledger",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-031 Audit and Evidence Ledger",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@serviceform/audit-client": "workspace:*",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "fastify": "5.12.5",
+    "fastify-plugin": "5.1.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}
