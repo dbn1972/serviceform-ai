@@ -1,0 +1,25 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-002 Tenant and Government Organisation",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/tenants/{id}": { "get": { "operationId": "getTenant" } },
+    "/v1/organisations": {
+      "get": { "operationId": "listOrganisations" },
+      "post": { "operationId": "createOrganisation" }
+    },
+    "/v1/organisations/{id}/versions": { "post": { "operationId": "createOrganisationVersion" } },
+    "/v1/offices": {
+      "get": { "operationId": "listOffices" },
+      "post": { "operationId": "createOffice" }
+    },
+    "/v1/offices/{id}/activate": { "post": { "operationId": "activateOffice" } },
+    "/v1/admin/tenants": { "post": { "operationId": "createTenant" } },
+    "/v1/admin/tenants/{id}/placement-proposals": { "post": { "operationId": "proposePlacement" } },
+    "/v1/admin/tenants/{id}/placement-proposals/{proposalId}/approve": {
+      "post": { "operationId": "approvePlacement" }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-002/organisation-changed.data/v1",
+  "title": "OrganisationChangedData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["organisation_id", "change", "version_no", "valid_from", "organisation_type_code"],
+  "properties": {
+    "organisation_id": { "type": "string", "format": "uuid" },
+    "change": { "type": "string", "enum": ["CREATED", "VERSIONED", "RELATION_CHANGED"] },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "valid_from": { "type": "string", "format": "date-time" },
+    "parent_organisation_id": { "type": ["string", "null"], "format": "uuid" },
+    "organisation_type_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" }
+  }
+}

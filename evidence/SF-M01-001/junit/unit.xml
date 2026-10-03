@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="14" failures="0" errors="0" time="0.115511969">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-03T17:02:17.031Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.050067029">
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; parses OpenAPI and AsyncAPI JSON" time="0.00126396">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; validates domain event envelopes" time="0.047049222">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.00079503">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/authz-context-audit.test.ts" timestamp="2026-10-03T17:02:17.032Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.061790652">
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="authorize fail-closed &gt; denies malformed input, PDP throw, deny, and extra fields" time="0.053478283">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="authorize fail-closed &gt; denies TENANT_SCOPED subject/resource tenant mismatch" time="0.000305102">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="context and tx guards &gt; requireContext and route id checks" time="0.005556579">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="context and tx guards &gt; currentClient throws outside withContextTx" time="0.000233611">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; rate-limits denied audit writes" time="0.000335075">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; maps remaining pg codes without SQL text" time="0.000294915">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; builds audit and envelope helpers" time="0.000428078">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-03T17:02:17.033Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003654288">
+        <testcase classname="test/unit/domain.test.ts" name="hierarchy cycle detector &gt; detects self-parent and ancestor cycles" time="0.001135314">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="fingerprint &gt; is stable for key-reordered bodies" time="0.000722565">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="header guard &gt; refuses tenant and spoofed role headers" time="0.000274419">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="error mapping &gt; maps catalogue failures without SQL text" time="0.000476075">
+        </testcase>
+    </testsuite>
+</testsuites>

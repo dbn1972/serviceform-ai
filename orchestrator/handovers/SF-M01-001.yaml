@@ -1,0 +1,56 @@
+task_id: SF-M01-001
+title: Tenant and Government Organisation Service
+module_id: M01
+component_ids: [CMP-002]
+integration_ids: [INT-011]
+agent_role: component_builder
+state: IMPLEMENTATION_READY
+branch: agent/M01-cmp-002-tenant-organisation-SF-M01-001
+pr: https://github.com/dbn1972/serviceform-ai/pull/14
+base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
+result_commit: pending-git-rev-parse
+self_certified: false
+recommended_gate: IMPLEMENTATION_READY
+not_verified: true
+not_certified: true
+wave2_started: false
+completed_work:
+  - Phase 2 CMP-002 Fastify plugin, domain, repositories, routes under services/cmp-002-tenant-organisation
+  - Migrations 1759500100000 (schema/roles/tables) and 1759500100001 (outbox template)
+  - ADR-0006 Option A: sf_cmp002_rw NOLOGIN; runtime sf_app + own _rw; FORCE RLS; PUBLIC revoked; outbox template unchanged
+  - Role create uses guarded DO $$ / pg_roles (PostgreSQL has no CREATE ROLE IF NOT EXISTS); sf_migrator created once, never dropped
+  - Unit, contract, integration, tenant-negative, privilege-boundary, failure-path, idempotency tests
+  - Evidence under evidence/SF-M01-001
+unresolved_work:
+  - Independent security verifier and evidence verifier
+  - Orchestrator/integration lockfile regeneration (pnpm-lock.yaml not committed)
+  - gitleaks/semgrep on GitHub (not installed in this VM)
+  - CMP-036 host mount (Wave 2; out of scope)
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500100000_cmp-002-tenant-organisation.sql
+  - db/migrations/1759500100001_cmp-002-outbox.sql
+blockers: []
+risks:
+  - CI frozen-lockfile fails until merger regenerates pnpm-lock.yaml for the new workspace importer
+  - Local gitleaks/semgrep not run; GitHub security.yml is the remaining secret/SAST gate
+  - Outbox GRANT INSERT TO sf_app is frozen-template residual (ADR-0006 condition 9)
+evidence:
+  - evidence/SF-M01-001/EVIDENCE.md
+  - evidence/SF-M01-001/privilege-boundary.log
+  - evidence/SF-M01-001/rls-negative-matrix.md
+  - evidence/SF-M01-001/event-schema-validation.log
+  - evidence/SF-M01-001/junit/unit.xml
+  - evidence/SF-M01-001/junit/integration.xml
+  - evidence/SF-M01-001/coverage-summary.json
+  - evidence/SF-M01-001/scope-check.log
+  - evidence/SF-M01-001/gates.log
+  - evidence/SF-M01-001/migration-roundtrip.log
+  - evidence/SF-M01-001/deps-graph.log
+  - evidence/SF-M01-001/lint-typecheck.log
+  - evidence/SF-M01-001/secrets-sast.log
+tests:
+  unit_contract: 14 passed
+  integration: 31 passed
+  coverage_lines_pct: 85.18
+  gates: 7/7 passed

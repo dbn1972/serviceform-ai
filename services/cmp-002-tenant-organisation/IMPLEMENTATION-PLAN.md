@@ -1,6 +1,6 @@
 # SF-M01-001 implementation plan — CMP-002 Tenant & Government Organisation
 
-Status: **PLAN_READY** (Phase 1). Do not implement until the orchestrator approves this document.
+Status: **IMPLEMENTATION_READY** (Phase 2). Recommended for independent Verify. **Not VERIFIED. Not CERTIFIED.**
 
 | Field | Value |
 |---|---|
@@ -91,7 +91,7 @@ Fastify `request.log` via `@serviceform/observability` redaction: `correlation_i
 
 - Code is an unregistered plugin until CMP-036 mounts it → revert merge.
 - DB: Down revokes grants and `DROP SCHEMA sf_tenant_org CASCADE`. Production rollback is forward-fix only (stated in EVIDENCE.md after implementation).
-- Roles: `DROP ROLE sf_cmp002_rw` in Down after schema drop. `sf_migrator` remains (`IF NOT EXISTS` on Up).
+- Roles: `DROP ROLE sf_cmp002_rw` in Down after schema drop. `sf_migrator` remains (guarded `DO $$` create on Up; never dropped).
 
 ## 2. Allowed vs prohibited writes (verified)
 
@@ -117,7 +117,7 @@ M00 today: `sf_app` NOLOGIN group; tables would be granted to `sf_app`; tests of
 | 2 | `_rw` is NOLOGIN | `CREATE ROLE sf_cmp002_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS`. |
 | 3 | Runtime LOGIN = `sf_app` + own `_rw` only | Tests create `sf_t001_rt` / `sf_t001_rt2` `LOGIN … IN ROLE sf_app, sf_cmp002_rw`. A sibling login `sf_t001_other` `IN ROLE sf_app, sf_cmp048_rw` (test-only role) proves cross-component DENY. Production name is deployment-owned, not committed. |
 | 4 | No SUPERUSER / BYPASSRLS | Asserted on `sf_cmp002_rw`, `sf_t001_rt`, `sf_app`. Migrations never grant `BYPASSRLS`. |
-| 5 | Runtime not table owner | Schema/tables/sequences owned by `sf_migrator` (`CREATE ROLE sf_migrator NOLOGIN … IF NOT EXISTS` then `AUTHORIZATION` / `ALTER … OWNER TO`). Runtime `pg_has_role(session_user, relowner, 'MEMBER') = false`. |
+| 5 | Runtime not table owner | Schema/tables/sequences owned by `sf_migrator` (guarded `DO $$ IF NOT EXISTS (SELECT 1 FROM pg_roles …) THEN CREATE ROLE … NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS`; PostgreSQL has no `CREATE ROLE IF NOT EXISTS`). Then `AUTHORIZATION` / `ALTER … OWNER TO`. Runtime `pg_has_role(session_user, relowner, 'MEMBER') = false`. |
 | 6 | FORCE RLS retained | Every TENANT_SCOPED table: `ENABLE` + `FORCE ROW LEVEL SECURITY`; policies `TO sf_app` using `sf_platform.current_tenant_id()`. |
 | 7 | Cross-component SQL DENY | No GRANT of SELECT/INSERT/UPDATE/DELETE on `sf_tenant_org` business tables to any other `_rw` or to `sf_app`. Privilege-boundary tests (001-04 plus ADR-0006 §10). |
 | 8 | PUBLIC revoked | `REVOKE ALL ON SCHEMA sf_tenant_org FROM PUBLIC`; revoke table/sequence/function from PUBLIC; `ALTER DEFAULT PRIVILEGES FOR ROLE sf_migrator IN SCHEMA sf_tenant_org REVOKE ALL ON TABLES, SEQUENCES FROM PUBLIC`. |
@@ -139,8 +139,8 @@ Common TENANT_SCOPED rules: `tenant_id uuid NOT NULL`; ENABLE + FORCE RLS; polic
 ### File A — `1759500100000_cmp-002-tenant-organisation.sql`
 
 1. **Roles**
-   - `sf_migrator` IF NOT EXISTS: `NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS` (shared; Down does not drop it).
-   - `sf_cmp002_rw` as above.
+   - `sf_migrator` created once with a guarded `DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_migrator') THEN CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS; END IF; END $$;` (shared; Down does not drop it; siblings must not fight this create).
+   - `sf_cmp002_rw` with the same guarded `DO $$` idiom (component-owned). Never `CREATE ROLE IF NOT EXISTS`.
 2. **`sf_tenant_org` schema** `AUTHORIZATION sf_migrator`. Comment: isolation owner=CMP-002. `GRANT USAGE ON SCHEMA` to `sf_cmp002_rw` only (plus later File B’s `sf_outbox_publisher`).
 3. **`tenant`** TENANT_SCOPED. PK `tenant_id`. `code` UNIQUE global (`^[a-z0-9][a-z0-9-]{1,62}$`), `display_name`, `status` CHECK (`ACTIVE`,`SUSPENDED`), `version` bigint, timestamps, `created_by`. Grants: SELECT, INSERT, UPDATE(`status`,`display_name`,`version`,`updated_at`) to `sf_cmp002_rw`. Status trigger as §3.
 4. **`tenant_cell_binding`** TENANT_SCOPED, insert-only. `binding_id` PK, FK `tenant_id` → tenant, `cell_id` CHECK (common.cellId), `isolation_model` CHECK (`POOL`,`BRIDGE`,`SILO`), `valid_from`, `seq`, `reason`, `requested_by`, `created_at`. UNIQUE (`tenant_id`,`seq`), UNIQUE (`tenant_id`,`valid_from`). Current = latest `valid_from <= now()`.
@@ -325,7 +325,7 @@ Remaining (do not invent; stop if they become required):
 - Geographic containment (CMP-003)
 - Officer permission decisions (CMP-048/OPA) — port + fixture only
 - Tightening frozen outbox `GRANT INSERT TO sf_app` (needs CCR)
-- Creating `sf_migrator` in this component’s migration vs a later platform migration: **this plan uses IF NOT EXISTS in File A** so Wave 1 can satisfy ADR-0006 §5 without editing M00 baseline (read-only). Sibling builders should use the same idiom; Down must not drop `sf_migrator`.
+- Creating `sf_migrator` in this component’s migration vs a later platform migration: **File A uses a guarded `DO $$` / `pg_roles` check** (PostgreSQL has no `CREATE ROLE IF NOT EXISTS`) so Wave 1 can satisfy ADR-0006 §5 without editing M00 baseline (read-only). Sibling builders use the same single-writer/idempotent idiom; Down must not drop `sf_migrator`.
 
 ## 11. Stop conditions (will halt implementation)
 
