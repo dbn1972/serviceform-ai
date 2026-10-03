@@ -172,6 +172,23 @@ run_suite SF-M01-005 CMP-037 failure-paths @serviceform/cmp-037-integration-hub 
   test/pg.int.test.ts
 run_suite SF-M01-005 CMP-037 envelope-int @serviceform/cmp-037-integration-hub
 
+# --- F-V1-CDC: cross-component consumer-driven contracts (schema-driven; no cross-SQL) ---
+{
+  started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  mkdir -p "${OUT_ROOT}/CDC/junit"
+  set +e
+  pnpm test:cdc 2>&1 | tee "${OUT_ROOT}/CDC/wave1-cdc.log"
+  rc=${PIPESTATUS[0]}
+  set -e
+  finished="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  if [[ -f test-results/cdc/junit.xml ]]; then
+    cp -f test-results/cdc/junit.xml "${OUT_ROOT}/CDC/junit/wave1-cdc.xml"
+  fi
+  if [[ "$rc" -eq 0 ]]; then result=PASS; else result=FAIL; echo "CDC:wave1-cdc" >>"${OUT_ROOT}/.failed"; fi
+  write_suite_meta CDC CROSS-CMP wave1-cdc "$result" "$started" "$finished" \
+    "${OUT_ROOT}/CDC/wave1-cdc.log"
+}
+
 python3 - <<'PY'
 import json, os, pathlib, sys
 
@@ -205,6 +222,7 @@ summary = {
         "retry-DLQ",
         "no-lost-committed-event",
         "failure-paths",
+        "cross-component-CDC",
     ],
 }
 (root / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")

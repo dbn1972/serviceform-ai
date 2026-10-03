@@ -78,14 +78,20 @@ async function dropTestLoginRoles(c: pg.Client): Promise<void> {
   );
   for (const role of TEST_LOGIN_ROLES) {
     // DROP OWNED avoids leftover grants when re-running on a shared disposable DB.
-    await c.query(
-      `DO $$ BEGIN
-         IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${role}') THEN
-           DROP OWNED BY ${role};
-           DROP ROLE ${role};
-         END IF;
-       END $$`,
+    // Role identifiers via format(%I/%L) — no JS string interpolation into SQL.
+    const built = await c.query<{ s: string }>(
+      `SELECT format(
+         'DO $do$ BEGIN
+            IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
+              DROP OWNED BY %I;
+              DROP ROLE %I;
+            END IF;
+          END $do$',
+         $1::text, $1::text, $1::text
+       ) AS s`,
+      [role],
     );
+    await c.query(built.rows[0]?.s ?? '');
   }
 }
 

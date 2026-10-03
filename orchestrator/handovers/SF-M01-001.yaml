@@ -4,13 +4,13 @@ module_id: M01
 component_ids: [CMP-002]
 integration_ids: [INT-011]
 agent_role: component_builder
-state: BLOCKED_CI
-branch: agent/M01-cmp-002-tenant-organisation-SF-M01-001
+state: REMEDIATION_IN_PROGRESS
+branch: cursor/m01-w1-remediation-r1
 pr: https://github.com/dbn1972/serviceform-ai/pull/14
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-result_commit: 944574fc7463fdca17a2f45f615b34e7b8857f7a
+result_commit: REMEDIATION_R1_PENDING
 self_certified: false
-recommended_gate: BLOCKED_CI
+recommended_gate: REMEDIATION_OPENED
 not_verified: true
 not_certified: true
 wave2_started: false
@@ -32,6 +32,7 @@ changed_migrations:
   - db/migrations/1759500100000_cmp-002-tenant-organisation.sql
   - db/migrations/1759500100001_cmp-002-outbox.sql
 blockers:
+  - "Await GitHub m01-envelope-int + quality/security green on remediation-r1 tip; then bind result_commit to that SHA"
   - 'ci/format-lint-typecheck-unit-contracts-build: ERR_PNPM_OUTDATED_LOCKFILE; envelope forbids committing pnpm-lock.yaml'
   - 'ci/migrations-and-tenant-isolation: same frozen-lockfile'
   - 'ci/web-shells-smoke-and-accessibility: same frozen-lockfile'
