@@ -68,52 +68,111 @@ export interface Harness {
   password: string;
 }
 
+const TEST_LOGIN_ROLES = ['sf_t001_rt', 'sf_t001_rt2', 'sf_t001_other'] as const;
+
+async function dropTestLoginRoles(c: pg.Client): Promise<void> {
+  await c.query(
+    `SELECT pg_terminate_backend(pid) FROM pg_stat_activity
+      WHERE usename = ANY($1::text[]) AND pid <> pg_backend_pid()`,
+    [TEST_LOGIN_ROLES as unknown as string[]],
+  );
+  for (const role of TEST_LOGIN_ROLES) {
+    // DROP OWNED avoids leftover grants when re-running on a shared disposable DB.
+    await c.query(
+      `DO $$ BEGIN
+         IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = '${role}') THEN
+           DROP OWNED BY ${role};
+           DROP ROLE ${role};
+         END IF;
+       END $$`,
+    );
+  }
+}
+
+async function ensurePeerGroupRoles(c: pg.Client): Promise<void> {
+  await c.query(`
+    DO $$ BEGIN
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp048_rw') THEN
+        CREATE ROLE sf_cmp048_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;
+      END IF;
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp031_rw') THEN
+        CREATE ROLE sf_cmp031_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;
+      END IF;
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp037_rw') THEN
+        CREATE ROLE sf_cmp037_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;
+      END IF;
+      IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp038_rw') THEN
+        CREATE ROLE sf_cmp038_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;
+      END IF;
+    END $$;
+  `);
+}
+
+async function createLoginRole(c: pg.Client, ddl: string, password: string): Promise<void> {
+  const created = await c.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+    ddl,
+    password,
+  ]);
+  await c.query(created.rows[0]?.s ?? '');
+}
+
+/**
+ * Truncate CMP-002 data without touching sf_schema_migrations.
+ * Safe on empty PG16 (no-op when schema absent) and on a full Wave 1 catalog.
+ */
+async function resetCmp002Data(c: pg.Client): Promise<void> {
+  const present = await c.query<{ exists: boolean }>(
+    `SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'sf_tenant_org') AS exists`,
+  );
+  if (!present.rows[0]?.exists) return;
+  await c.query(`
+    TRUNCATE TABLE
+      sf_tenant_org.inbox_event,
+      sf_tenant_org.inbox_event_platform,
+      sf_tenant_org.outbox_event,
+      sf_tenant_org.outbox_event_platform,
+      sf_tenant_org.idempotency_record,
+      sf_tenant_org.idempotency_record_platform,
+      sf_tenant_org.office,
+      sf_tenant_org.organisation_relation,
+      sf_tenant_org.organisation_version,
+      sf_tenant_org.organisation,
+      sf_tenant_org.tenant_placement_proposal,
+      sf_tenant_org.tenant_cell_binding,
+      sf_tenant_org.tenant
+    RESTART IDENTITY CASCADE
+  `);
+}
+
+/**
+ * F-V1-002: never DELETE a subset of sf_schema_migrations (breaks --check-order when later
+ * Wave 1 names remain). Never DROP SCHEMA / DROP ROLE sf_cmp002_rw. migrate('up') is
+ * idempotent on a full catalog and creates the catalog on empty disposable PG16.
+ */
 export async function setupHarness(): Promise<Harness> {
   const password = rolePassword();
   await withAdmin(async (c) => {
-    await c.query(
-      `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE usename IN ('sf_t001_rt','sf_t001_rt2','sf_t001_other') AND pid <> pg_backend_pid()`,
-    );
-    await c.query('DROP ROLE IF EXISTS sf_t001_rt');
-    await c.query('DROP ROLE IF EXISTS sf_t001_rt2');
-    await c.query('DROP ROLE IF EXISTS sf_t001_other');
-    await c.query('DROP SCHEMA IF EXISTS sf_tenant_org CASCADE');
-    await c.query(`DELETE FROM sf_platform.sf_schema_migrations WHERE name LIKE '%cmp-002%'`);
-    await c.query('DROP ROLE IF EXISTS sf_cmp002_rw');
+    await dropTestLoginRoles(c);
   });
   migrate('up');
   await withAdmin(async (c) => {
-    await c.query(`
-      DO $$ BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp048_rw') THEN
-          CREATE ROLE sf_cmp048_rw NOLOGIN NOSUPERUSER NOBYPASSRLS;
-        END IF;
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp031_rw') THEN
-          CREATE ROLE sf_cmp031_rw NOLOGIN NOSUPERUSER NOBYPASSRLS;
-        END IF;
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp037_rw') THEN
-          CREATE ROLE sf_cmp037_rw NOLOGIN NOSUPERUSER NOBYPASSRLS;
-        END IF;
-        IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp038_rw') THEN
-          CREATE ROLE sf_cmp038_rw NOLOGIN NOSUPERUSER NOBYPASSRLS;
-        END IF;
-      END $$;
-    `);
-    const created = await c.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+    await ensurePeerGroupRoles(c);
+    await resetCmp002Data(c);
+    await createLoginRole(
+      c,
       'CREATE ROLE sf_t001_rt LOGIN PASSWORD %L NOSUPERUSER NOBYPASSRLS INHERIT IN ROLE sf_app, sf_cmp002_rw',
       password,
-    ]);
-    await c.query(created.rows[0]?.s ?? '');
-    const created2 = await c.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+    );
+    await createLoginRole(
+      c,
       'CREATE ROLE sf_t001_rt2 LOGIN PASSWORD %L NOSUPERUSER NOBYPASSRLS INHERIT IN ROLE sf_app, sf_cmp002_rw',
       password,
-    ]);
-    await c.query(created2.rows[0]?.s ?? '');
-    const created3 = await c.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+    );
+    await createLoginRole(
+      c,
       'CREATE ROLE sf_t001_other LOGIN PASSWORD %L NOSUPERUSER NOBYPASSRLS INHERIT IN ROLE sf_app, sf_cmp048_rw',
       password,
-    ]);
-    await c.query(created3.rows[0]?.s ?? '');
+    );
   });
   const parsed = new URL(adminUrl());
   const runtimePool = (role: string, max: number, application_name?: string) =>

@@ -84,6 +84,49 @@ describe('001 privilege boundary and catalogue (ADR-0006)', () => {
     expect(owned.rowCount).toBe(0);
   });
 
+  it('F-V2-001 outbox/inbox owned by sf_migrator; migrator NOSUPERUSER/NOBYPASSRLS; FORCE RLS', async () => {
+    const migrator = await h.admin.query<{
+      rolsuper: boolean;
+      rolbypassrls: boolean;
+    }>("SELECT rolsuper, rolbypassrls FROM pg_roles WHERE rolname = 'sf_migrator'");
+    expect(migrator.rows[0]?.rolsuper).toBe(false);
+    expect(migrator.rows[0]?.rolbypassrls).toBe(false);
+
+    const owners = await h.admin.query<{ relname: string; owner: string }>(
+      `SELECT c.relname, r.rolname AS owner
+         FROM pg_class c
+         JOIN pg_namespace n ON n.oid = c.relnamespace
+         JOIN pg_roles r ON r.oid = c.relowner
+        WHERE n.nspname = 'sf_tenant_org'
+          AND c.relkind = 'r'
+          AND c.relname IN (
+            'outbox_event','outbox_event_platform','inbox_event','inbox_event_platform'
+          )
+        ORDER BY c.relname`,
+    );
+    expect(owners.rows.map((r) => r.relname)).toEqual([
+      'inbox_event',
+      'inbox_event_platform',
+      'outbox_event',
+      'outbox_event_platform',
+    ]);
+    for (const row of owners.rows) {
+      expect(row.owner, row.relname).toBe('sf_migrator');
+    }
+
+    const forced = await h.admin.query<{ relname: string; relforcerowsecurity: boolean }>(
+      `SELECT c.relname, c.relforcerowsecurity
+         FROM pg_class c
+         JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname = 'sf_tenant_org'
+          AND c.relkind = 'r'
+          AND c.relname IN ('outbox_event','inbox_event')`,
+    );
+    for (const row of forced.rows) {
+      expect(row.relforcerowsecurity, row.relname).toBe(true);
+    }
+  });
+
   it('001-03 policies use current_tenant_id and are not TO public', async () => {
     const policies = await h.admin.query<{
       roles: string[];

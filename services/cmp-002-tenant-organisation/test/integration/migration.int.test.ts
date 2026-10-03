@@ -32,6 +32,18 @@ describe('migration static checks (001-42/43)', () => {
     expect(a).not.toMatch(/DROP ROLE.*sf_migrator/i);
     expect(a).not.toMatch(/GRANT INSERT ON sf_tenant_org\.tenant TO sf_app/);
     expect(b).toMatch(/GRANT INSERT ON sf_tenant_org.outbox_event TO sf_app/);
+    // F-V2-001: OWNER TO is outside the frozen template; grants/columns stay byte-identical.
+    const template = readFileSync(join(root, 'contracts/shared/sql/outbox.template.sql'), 'utf8')
+      .replaceAll('{schema}', 'sf_tenant_org')
+      .replaceAll('{cmp}', 'CMP-002')
+      .trim();
+    expect(b).toContain(template);
+    expect(b.indexOf(template)).toBeLessThan(
+      b.indexOf('ALTER TABLE sf_tenant_org.outbox_event OWNER TO sf_migrator'),
+    );
+    expect(b).toMatch(
+      /ALTER TABLE sf_tenant_org\.outbox_event OWNER TO sf_migrator[\s\S]*ALTER TABLE sf_tenant_org\.inbox_event_platform OWNER TO sf_migrator/,
+    );
     const srcDir = join(root, 'services/cmp-002-tenant-organisation/src');
     const { readdirSync } = await import('node:fs');
     const walk = (dir: string): string[] =>

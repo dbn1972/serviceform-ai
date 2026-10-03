@@ -122,6 +122,12 @@ CREATE TABLE sf_tenant_org.inbox_event_platform (
 );
 GRANT SELECT, INSERT ON sf_tenant_org.inbox_event_platform TO sf_app;
 
+-- Outside frozen SF-CON-OUTBOX template body (columns/policies/grants above unchanged).
+-- ADR-0006 #5: authoritative tables owned by sf_migrator, not the migrate LOGIN.
+ALTER TABLE sf_tenant_org.outbox_event OWNER TO sf_migrator;
+ALTER TABLE sf_tenant_org.outbox_event_platform OWNER TO sf_migrator;
+ALTER TABLE sf_tenant_org.inbox_event OWNER TO sf_migrator;
+ALTER TABLE sf_tenant_org.inbox_event_platform OWNER TO sf_migrator;
 
 -- Down Migration
 REVOKE INSERT ON sf_tenant_org.outbox_event FROM sf_app;
