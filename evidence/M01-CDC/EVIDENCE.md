@@ -6,7 +6,7 @@
 | Lane | R9 |
 | Baseline (immutable) | `d33601a5c2c332548530897df1bd35702317df44` (PR #21 frozen) |
 | Remediation branch | `cursor/m01-w1-remediation-r1` (PR #22) |
-| Candidate SHA | `220e5a8c95890e711326d5146ade55073e44a3aa` (CDC suite commit on `cursor/m01-w1-remediation-r1`) |
+| Candidate SHA | `1f14462f69328fce654a311bbe11f157e19c9bd4` (CDC suite commit on `cursor/m01-w1-remediation-r1`; tip `415ae6a7cf81d4f23a432adf0680ba864cad177b`) |
 | Command | `pnpm test:cdc` |
 | CI hook | `.github/workflows/ci.yml` quality job step `consumer-driven contracts (Wave 1 CDC)` — failure fails the workflow |
 | Frozen contracts used | SF-CON-EVENT-ENVELOPE, SF-CON-AUDIT-EVENT (no frozen-contract edits) |
