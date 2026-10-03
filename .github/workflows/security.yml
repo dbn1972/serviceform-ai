@@ -17,7 +17,7 @@ jobs:
     name: secret scan (gitleaks)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
       - name: gitleaks
         run: >-
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-24.04
     container: { image: 'semgrep/semgrep:1.179.0' }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: rule self-tests
         run: semgrep --test tests/semgrep/ --metrics=off
       - run: >-
@@ -51,7 +51,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: github/codeql-action/init@v3
         with: { languages: javascript-typescript, queries: security-extended }
       - uses: github/codeql-action/analyze@v3
@@ -60,7 +60,7 @@ jobs:
     name: dependency audit
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with: { version: '10.28.0' }
       - uses: actions/setup-node@v5
@@ -83,7 +83,7 @@ jobs:
     name: IaC scan (checkov)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with: { python-version: '3.11' }
       - run: pip install checkov==3.3.22
