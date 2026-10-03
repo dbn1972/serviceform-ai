@@ -9,9 +9,9 @@
 | Verified HEAD | `126ded198235230982aba0d377061573969ff7ee` (`origin/main`, clean) |
 | Orchestrator branch | `cursor/m01-wave1-dispatch-b828` |
 | Builders launched | **None** |
-| Result | **M01_PRE_DISPATCH_BLOCKED** |
+| Result | **ADR-0006 ACCEPTED (Option A).** Builders not spawned. |
 
-Lockfile: builders do not write `pnpm-lock.yaml` (`orchestrator/dispatch/LOCKFILE-POLICY.md`). ADR-0006 remains PROPOSED and is not implemented.
+Lockfile: builders do not write `pnpm-lock.yaml` (`orchestrator/dispatch/LOCKFILE-POLICY.md`). ADR-0006 is ACCEPTED with ten privilege-layer conditions.
 
 Supersedes the CLAIMED registry/queue on `de0ac12` (no `agent/*` branches on origin, no `services/**` implementation). Historical plan: `orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md`.
 
@@ -83,6 +83,6 @@ Registry: `orchestrator/agent-registry.yaml`. Queue: `orchestrator/work-queue.ya
 - UX4G not vendored: does not block M01 W1.
 - Do not auto-approve ADRs, contract changes, security exceptions, or certification.
 
-READY_TO_DISPATCH is withdrawn until ADR-0006 is decided and GitHub CI is green.
+ADR-0006 is ACCEPTED. Do not spawn builders from this orchestrator pass. PR #6 merge waits on executed GitHub CI.
 
-M01_PRE_DISPATCH_BLOCKED
+ADR_0006_ACCEPTED

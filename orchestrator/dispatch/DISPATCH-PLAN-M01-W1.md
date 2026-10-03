@@ -10,7 +10,7 @@
 | Base commit | `d1d0965` (ADRs accepted, contracts frozen; M00 accepted at `684b443`) |
 | Build plan used | **`specs/build-plan.yaml` version 2.5-adr0001 (ADR-0001, ACCEPTED 3 Oct 2026).** See section 2. |
 | Builders spawned | **None.** |
-| Result | **M01_PRE_DISPATCH_BLOCKED** (ADR-0006 still PROPOSED; GitHub CI not green). See `DISPATCH-PLAN-M01-W1-126ded1.md` and `CI-PRECHECK-M01-W1.md`. |
+| Result | **ADR-0006 ACCEPTED (Option A).** Builders not spawned. PR #6 merge waits on executed GitHub CI. |
 
 ## 1. What is dependency-ready
 

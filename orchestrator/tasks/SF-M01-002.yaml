@@ -1,10 +1,10 @@
-# Task envelope, wave M01-W1. BLOCKED on ADR-0006 owner accept/refuse (3 Oct 2026).
-# No coding agent launched. Do not implement sf_<component>_rw until ADR-0006 is decided.
+# Task envelope, wave M01-W1. ADR-0006 ACCEPTED (Option A + ten privilege-layer conditions).
+# No coding agent launched from this orchestrator pass.
 task_id: SF-M01-002
 title: 'Security Platform: OPA enforcement, secrets/KMS abstraction, privileged access'
 module_id: M01
 build_plan: specs/build-plan.yaml (ADR-0001, ACCEPTED 3 Oct 2026)
-state: BLOCKED
+state: READY
 component_ids:
 - CMP-048
 integration_ids:
@@ -43,7 +43,7 @@ binding_documents:
 depends_on:
 - M00 G1_BUILD_READY recommended with executed evidence (BOOTSTRAP-EVIDENCE-001; verification re-run 684b443); not independently certified
 - P-01..P-05 closed (ADR-0001/0002/0004 ACCEPTED; 13 shared contracts FROZEN)
-- PLAN-REVIEW-M01-W1 approved with conditions; SECURITY-PRECHECK adopted except ADR-0006/_rw roles (owner decision required)
+- PLAN-REVIEW-M01-W1 approved with conditions; SECURITY-PRECHECK adopted; ADR-0006 ACCEPTED Option A (canonical privilege role sf_cmp048_rw supersedes PLAN-REVIEW X-1 names)
 - 'identity (CMP-004) is M02: the verified principal arrives through SF-CON-REQUEST-CONTEXT; this task does not issue tokens'
 allowed_write_paths:
 - services/cmp-048-security-platform/**
@@ -104,7 +104,13 @@ contract_locks:
 - SF-CON-OUTBOX
 - SF-CON-AUTHZ-DECISION
 acceptance_tests:
-- Outbox and inbox tables are created from contracts/shared/sql/outbox.template.sql without changes; RLS policies use sf_platform.current_tenant_id()
+- Outbox and inbox tables are created from contracts/shared/sql/outbox.template.sql without any grant or column changes (ADR-0006 condition 9; tightening needs a Contract Change Request)
+- ADR-0006: NOLOGIN role sf_cmp048_rw receives this component's DML and sequence use; sf_app has no generic DML on CMP-048 authoritative tables; RLS policies remain TO sf_app
+- ADR-0006: runtime LOGIN inherits only sf_app and sf_cmp048_rw; NOSUPERUSER NOBYPASSRLS; not the table/schema owner (owner is sf_migrator or equivalent)
+- ADR-0006: TENANT_SCOPED tables ENABLE + FORCE RLS; grants do not replace tenant RLS
+- ADR-0006: PUBLIC and default privileges do not recreate broad access on new tables/sequences
+- ADR-0006: no SELECT/INSERT/UPDATE/DELETE granted to another component; cross-component SQL default DENY
+- 'ADR-0006 privilege-boundary suite as the CMP-048 runtime LOGIN: own authorized DML succeeds; wrong-tenant ops fail through RLS; another component SELECT/INSERT/UPDATE/DELETE fail; SET ROLE / membership in sf_cmp002_rw, sf_cmp031_rw, sf_cmp037_rw, sf_cmp038_rw unavailable; rolbypassrls false; runtime login is not table owner'
 - New migration files are named with a timestamp after 1759490000000 (check-order)
 - packages/security exposes a Fastify plugin that builds the request context from a verified principal and an OPA PEP client
   returning SF-CON-AUTHZ-DECISION
@@ -123,6 +129,7 @@ acceptance_tests:
 - pnpm deps:graph (no component-to-component imports, no cycles)
 - gitleaks and semgrep clean on the diff
 required_evidence:
+- evidence/SF-M01-002/privilege-boundary.log
 - evidence/SF-M01-002/opa-test-results.txt (opa test -v)
 - evidence/SF-M01-002/fail-closed.log
 - evidence/SF-M01-002/deny-matrix.md
@@ -137,6 +144,7 @@ hard_gates:
 - unresolved_critical_security (zero)
 - opa_required_negative_tests (100%)
 - rls_required_negative_tests (100%)
+- component_privilege_boundary (100%)
 stop_conditions:
 - any FROZEN contract change required (raise a Contract Change Request; do not edit contracts/**)
 - architecture or statutory ambiguity
@@ -149,6 +157,6 @@ stop_conditions:
 - a token issuer or identity store is needed (CMP-004, M02)
 - a statutory business rule would be encoded in Rego (belongs to GoRules/CMP-008)
 - a policy pinning model is needed beyond AWS v1.7 s20.3 (pinned vs effective-latest ambiguity, verification report)
-- ADR-0006 still PROPOSED (do not create sf_<component>_rw or otherwise implement ADR-0006; STOP and wait for owner accept/refuse)
+- ADR-0006 condition 1-10 violated (including granting another component SQL access without a new ADR, or editing frozen outbox grants)
 - a pnpm-lock.yaml change is required (request orchestrator lockfile reconciliation; do not commit the lockfile)
 - a write to infra/local/docker-compose.yml is required (P-002-1 remains an owner exception; start authenticated OPA from this task's test harness instead)
