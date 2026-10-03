@@ -9,8 +9,8 @@
 | Date | 3 October 2026 |
 | Base commit | `d1d0965` (ADRs accepted, contracts frozen; M00 accepted at `684b443`) |
 | Build plan used | **`specs/build-plan.yaml` version 2.5-adr0001 (ADR-0001, ACCEPTED 3 Oct 2026).** See section 2. |
-| Builders spawned | **None.** Envelopes are written; no task is claimed. |
-| Result | **READY_TO_DISPATCH** (updated 3 Oct 2026; section 3). Builders start only when the owner says "dispatch". |
+| Builders spawned | **None.** |
+| Result | **M01_PRE_DISPATCH_BLOCKED** (ADR-0006 still PROPOSED; GitHub CI not green). See `DISPATCH-PLAN-M01-W1-126ded1.md` and `CI-PRECHECK-M01-W1.md`. |
 
 ## 1. What is dependency-ready
 

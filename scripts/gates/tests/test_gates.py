@@ -84,6 +84,8 @@ def test_scope_allows_envelope_paths_and_refuses_others():
     assert check_scope.violations(env, ok) == []
     bad = check_scope.violations(env, ["contracts/shared/x.json", "orchestrator/work-queue.yaml", "services/cmp-003-jurisdiction/a.ts"])
     assert len(bad) == 3
+    lockfile = check_scope.violations(env, ["pnpm-lock.yaml"])
+    assert lockfile and "lockfile" in lockfile[0]
 
 
 def test_plan_validator_flags_duplicate_and_missing_owners(tmp_path, monkeypatch):

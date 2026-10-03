@@ -1,24 +1,27 @@
 version: "2.5"
-# Wave M01-W1 re-verified 3 Oct 2026 against origin/main 126ded198235230982aba0d377061573969ff7ee.
-# Prior CLAIMED rows (de0ac12) were stale: no agent/* branches on origin, no live worktrees,
-# and services/ still has only README.md. Reset to READY. Coding agents are not launched here.
+# M01-W1 pre-dispatch 3 Oct 2026. Builders not launched.
+# Result BLOCKED: ADR-0006 still PROPOSED (no W1 task is independent); GitHub CI not green.
 build_plan_basis: specs/build-plan.yaml (ADR-0001 ACCEPTED)
 base_commit: 126ded198235230982aba0d377061573969ff7ee
 orchestrator_branch: cursor/m01-wave1-dispatch-b828
-result: READY_TO_DISPATCH
+result: M01_PRE_DISPATCH_BLOCKED
 builders_launched: 0
+lockfile_policy: orchestrator/dispatch/LOCKFILE-POLICY.md
 tasks:
-  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: READY}
-  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: READY}
-  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: READY}
-  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: READY}
-  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: READY}
+  - {task_id: SF-M01-001, module_id: M01, components: [CMP-002], envelope: orchestrator/tasks/SF-M01-001.yaml, state: BLOCKED, reason: "ADR-0006 PROPOSED; migrations need DML grant target"}
+  - {task_id: SF-M01-002, module_id: M01, components: [CMP-048], envelope: orchestrator/tasks/SF-M01-002.yaml, state: BLOCKED, reason: "ADR-0006 PROPOSED; migrations need DML grant target"}
+  - {task_id: SF-M01-003, module_id: M01, components: [CMP-031], envelope: orchestrator/tasks/SF-M01-003.yaml, state: BLOCKED, reason: "ADR-0006 PROPOSED; migrations need DML grant target"}
+  - {task_id: SF-M01-004, module_id: M01, components: [CMP-038], envelope: orchestrator/tasks/SF-M01-004.yaml, state: BLOCKED, reason: "ADR-0006 PROPOSED; component tables need DML grant target"}
+  - {task_id: SF-M01-005, module_id: M01, components: [CMP-037], envelope: orchestrator/tasks/SF-M01-005.yaml, state: BLOCKED, reason: "ADR-0006 PROPOSED; migrations need DML grant target"}
 deferred_to_wave_2:
   - {components: [CMP-003], reason: "needs CMP-002 organisation hierarchy merged"}
   - {components: [CMP-030], reason: "needs CMP-002, CMP-031 and CMP-048 merged"}
   - {components: [CMP-032], reason: "needs CMP-048 secrets/KMS adapter and CMP-031 merged"}
   - {components: [CMP-036, CMP-047], reason: "own apps/api and packages/observability; wiring of wave-1 plugins happens here (single writer)"}
   - {components: [CMP-055], reason: "touches scripts/gates and .github (guardian/delivery-controlled paths)"}
+dispatch_holds:
+  - {id: O-5, item: "Owner accept or refuse ADR-0006. No Wave 1 task is independent of the DML grant model."}
+  - {id: G-01, item: "Required GitHub CI jobs on PR #6 not yet PASS (queued at last inspect). Local quality/db/e2e passed; Flutter/SAST/IaC/gitleaks not executed here."}
 merge_holds:
-  - {id: O-5, item: "ADR-0006 per-component write roles is PROPOSED; owner accept/refuse before first W1 merge"}
+  - {id: O-5, item: "ADR-0006 per-component write roles is PROPOSED"}
   - {id: G-01, item: "Nothing merges to main until CI is green (owner, 3 Oct 2026)"}

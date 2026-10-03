@@ -9,7 +9,9 @@
 | Verified HEAD | `126ded198235230982aba0d377061573969ff7ee` (`origin/main`, clean) |
 | Orchestrator branch | `cursor/m01-wave1-dispatch-b828` |
 | Builders launched | **None** |
-| Result | **READY_TO_DISPATCH** |
+| Result | **M01_PRE_DISPATCH_BLOCKED** |
+
+Lockfile: builders do not write `pnpm-lock.yaml` (`orchestrator/dispatch/LOCKFILE-POLICY.md`). ADR-0006 remains PROPOSED and is not implemented.
 
 Supersedes the CLAIMED registry/queue on `de0ac12` (no `agent/*` branches on origin, no `services/**` implementation). Historical plan: `orchestrator/dispatch/DISPATCH-PLAN-M01-W1.md`.
 
@@ -44,7 +46,7 @@ ADR-0006 (per-component `sf_<component>_rw` roles) is **PROPOSED**. Implement pr
 | SF-M01-004 | `component_builder` / `serviceform-foundation-builder` (opus, high) | CMP-038 / INT-011, INT-013 | `services/cmp-038-event-bus/**`, `packages/outbox/**`, `db/migrations/*_cmp-038-*.sql` | COMMON through OUTBOX | G3/G4: no lost committed events |
 | SF-M01-005 | `component_builder` / `serviceform-integration-builder` (sonnet, high; opus verifier) | CMP-037 / INT-013 | `services/cmp-037-integration-hub/**`, `packages/connector-sdk/**`, `simulators/framework/**`, `db/migrations/*_cmp-037-*.sql` | same + CONNECTOR-BINDING, SIMULATION-MARKER | G4: production refuses SIMULATED critical connectors |
 
-`pnpm-lock.yaml` is the only shared write; regenerate via `pnpm install`, never hand-edit. `check_scope.py` also allows `orchestrator/handovers/<task>.yaml` and `evidence/<task>/**`.
+`check_scope.py` also allows `orchestrator/handovers/<task>.yaml` and `evidence/<task>/**`. `pnpm-lock.yaml` is orchestrator/integration owned.
 
 Plans are already approved with conditions (`PLAN-REVIEW-M01-W1.md`). Negative tests and SECURITY-PRECHECK are binding. Workers start implementation against this HEAD, not a second plan-only cycle, unless a stop condition fires.
 
@@ -81,4 +83,6 @@ Registry: `orchestrator/agent-registry.yaml`. Queue: `orchestrator/work-queue.ya
 - UX4G not vendored: does not block M01 W1.
 - Do not auto-approve ADRs, contract changes, security exceptions, or certification.
 
-READY_TO_DISPATCH
+READY_TO_DISPATCH is withdrawn until ADR-0006 is decided and GitHub CI is green.
+
+M01_PRE_DISPATCH_BLOCKED

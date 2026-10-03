@@ -7,7 +7,8 @@ Usage (CI, on a PR branch whose head commit names the task, or explicitly):
   python scripts/gates/check_scope.py --envelope ENV.yaml --files a.ts b.ts     # explicit list
 
 Allowed for every task: `allowed_write_paths`, plus `orchestrator/handovers/<task>.yaml` and
-`evidence/<task>/**`. Always refused: `read_only_paths`, and other `orchestrator/**` paths.
+`evidence/<task>/**`. Always refused: `read_only_paths`, `pnpm-lock.yaml` (orchestrator/integration
+owned), and other `orchestrator/**` paths.
 A change with no envelope (orchestrator or guardian work) is governed by CODEOWNERS instead.
 """
 from __future__ import annotations
@@ -38,6 +39,8 @@ def violations(envelope: dict, files: list[str]) -> list[str]:
     for f in files:
         if matches(f, read_only):
             out.append(f"{f}: read-only for {task}")
+        elif f == "pnpm-lock.yaml" or f.endswith("/pnpm-lock.yaml"):
+            out.append(f"{f}: lockfile is orchestrator/integration owned; builders must not commit it")
         elif f.startswith("orchestrator/") and f != f"orchestrator/handovers/{task}.yaml":
             out.append(f"{f}: only the orchestrator writes orchestrator/**")
         elif not matches(f, allowed):
