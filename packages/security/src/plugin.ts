@@ -13,6 +13,12 @@ import type { AuditSink } from './audit-sink.js';
 import { SecurityError } from './errors.js';
 import { authorizeAction, isPdpFailure, type AuthzResource } from './pep/authorize.js';
 import { assertOpaUrl, type PdpClient } from './pep/pdp-client.js';
+import {
+  AuthzRateLimiter,
+  defaultAuthzRateLimit,
+  rateLimitAuthorization,
+  type AuthzRateLimitConfig,
+} from './pep/rate-limit.js';
 import { deepFreeze, type ContextResolver, type PrincipalVerifier } from './principal.js';
 
 const FORGED = [
@@ -40,6 +46,8 @@ export interface SfSecurityOptions {
   logger?: Logger;
   audit?: AuditSink;
   opaUrl?: string;
+  /** In-process PEP bound. Edge/gateway quotas remain a platform (CMP-036) concern. */
+  authzRateLimit?: AuthzRateLimitConfig;
 }
 
 declare module 'fastify' {
@@ -86,6 +94,7 @@ export const sfSecurity = fp(
       throw new Error('sfSecurity requires verifier, resolver and pdp');
     }
     if (opts.opaUrl !== undefined) assertOpaUrl(opts.opaUrl);
+    const limiter = new AuthzRateLimiter(opts.authzRateLimit ?? defaultAuthzRateLimit);
 
     app.decorateRequest('authorize', async function denyUntilReady() {
       throw new SecurityError('SF-TEN-001', { statusCode: 401 });
@@ -101,6 +110,9 @@ export const sfSecurity = fp(
     });
 
     app.addHook('onRequest', async (req: FastifyRequest, _reply: FastifyReply) => {
+      if (!req.routeOptions.config.sfPublic) {
+        rateLimitAuthorization(req, limiter);
+      }
       req.authorize = async (action, resource, workflow) => {
         const ctx = req.sfContext;
         if (!ctx) throw new SecurityError('SF-TEN-001', { statusCode: 401 });
@@ -149,6 +161,7 @@ export const sfSecurity = fp(
     app.addHook('preHandler', async (req: FastifyRequest) => {
       const authz = req.routeOptions.config.sfAuthz;
       if (!authz) return;
+      rateLimitAuthorization(req, limiter);
       const decision = await req.authorize(authz.action, authz.resource(req));
       if (decision.allow) return;
       if (decision.reason_code === 'TENANT_MISMATCH') {

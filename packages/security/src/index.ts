@@ -4,6 +4,12 @@ export { authorizeAction, isPdpFailure, type AuthzResource } from './pep/authori
 export { CircuitBreaker } from './pep/circuit-breaker.js';
 export { sanitizeDecisionLog, type DecisionLogEntry } from './pep/decision-log.js';
 export { assertOpaUrl, OpaPdpClient, type PdpClient } from './pep/pdp-client.js';
+export {
+  AuthzRateLimiter,
+  defaultAuthzRateLimit,
+  rateLimitAuthorization,
+  type AuthzRateLimitConfig,
+} from './pep/rate-limit.js';
 export { sfSecurity, type SfAuthzConfig, type SfSecurityOptions } from './plugin.js';
 export {
   deepFreeze,

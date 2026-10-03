@@ -37,6 +37,7 @@ unresolved_work:
   - 'CI may lack opa test / cmp-048 integration jobs (PLAN-REVIEW X-14)'
   - 'gitleaks binary not installed in this environment; semgrep not run on this pass'
   - 'Multi-pod grant distribution consistency is an M02 gap'
+  - 'Platform-wide HTTP rate limiting remains an API-edge / CMP-036 concern. CMP-048 added an in-process PEP limiter (SF-RATE-001) so CodeQL-flagged authz hooks are not unbounded; it is not a gateway quota.'
 
 changed_contracts: []
 changed_migrations:
@@ -62,5 +63,6 @@ evidence:
   - evidence/SF-M01-002/junit/integration.xml
   - evidence/SF-M01-002/scope-check.log
   - evidence/SF-M01-002/gates.log
+  - evidence/SF-M01-002/codeql-triage.md
 
 stop_conditions_hit: []

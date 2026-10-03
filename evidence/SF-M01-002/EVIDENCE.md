@@ -50,6 +50,10 @@ and the same form for `sf_cmp048_rw` plus `NOINHERIT`. Shared `sf_migrator` is c
 
 Runtime test login: `sf_cmp048_rt IN ROLE sf_app, sf_cmp048_rw`. Never `SET ROLE` from superuser. OPA started from the test harness with `--authentication=token --authorization=basic` (not `infra/**`).
 
+## CodeQL (PR comments r4174040932 / r4174040942 / r4174040949)
+
+See `codeql-triage.md`. In-process PEP rate limit (`SF-RATE-001`) and fd-based secret read. No global suppressions. Platform-wide HTTP quotas remain CMP-036 / M00.
+
 ## Residuals (not UCS if listed gates hold)
 
 - Frozen outbox/inbox grants still target `sf_app` (ADR-0006 #9).

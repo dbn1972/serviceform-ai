@@ -1,5 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import { realpath, stat } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { open, realpath } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
 import {
   SECRET_NAME,
@@ -33,24 +33,33 @@ export class LocalSecretsProvider implements SecretsProvider {
     throw new SecretUnavailableError(ref.name);
   }
 
+  /**
+   * Open-then-fstat-then-read on one fd (O_NOFOLLOW). Avoids CodeQL
+   * js/file-system-race (stat/realpath then path-based readFile).
+   */
   private async readMounted(name: string): Promise<SecretValue | undefined> {
     const root = await realpath(resolve(this.opts.mountDir ?? ''));
     const candidate = resolve(join(root, name));
     if (!candidate.startsWith(root + sep) && candidate !== root) {
       throw new SecretUnavailableError(name);
     }
-    let target: string;
+    let fh: Awaited<ReturnType<typeof open>>;
     try {
-      target = await realpath(candidate);
+      fh = await open(candidate, constants.O_RDONLY | constants.O_NOFOLLOW);
     } catch {
       return undefined;
     }
-    if (!target.startsWith(root + sep) && target !== root) {
-      throw new SecretUnavailableError(name);
+    try {
+      const st = await fh.stat();
+      if (!st.isFile()) throw new SecretUnavailableError(name);
+      const opened = await realpath(`/proc/self/fd/${String(fh.fd)}`).catch(() => '');
+      if (opened && opened !== root && !opened.startsWith(root + sep)) {
+        throw new SecretUnavailableError(name);
+      }
+      const buf = await fh.readFile();
+      return new SecretValue(buf);
+    } finally {
+      await fh.close();
     }
-    const st = await stat(target);
-    if (!st.isFile()) throw new SecretUnavailableError(name);
-    const buf = await readFile(target);
-    return new SecretValue(buf);
   }
 }
