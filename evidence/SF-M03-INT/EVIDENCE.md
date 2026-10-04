@@ -4,7 +4,8 @@
 **`CROSS_TENANT_LEAKAGE=0`**  
 **Not CERTIFIED. Does not claim `G3_INTEGRATION_VERIFIED`. Not G6 / RELEASE CERTIFIED.**
 
-Independent integration stitcher. Frozen contracts and production domain code were not modified.
+Independent integration stitcher. Frozen contracts and production domain code were not modified. Envelope YAML remains **`state: READY` / `dispatched: false`** (CG-01 uniqueness promote). Recommended gate is recorded here, not by mutating the envelope state.
+
 
 | Field | Value |
 |---|---|

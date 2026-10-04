@@ -102,7 +102,9 @@ describe('INT-011 M03 LOGIN RLS catalog (independent)', () => {
       const r = await c.query<{ canonical_service_id: string }>(
         `SELECT canonical_service_id FROM sf_catalogue.canonical_service WHERE service_code = 'svc-m03int'`,
       );
-      return r.rows[0]!.canonical_service_id;
+      const row = r.rows[0];
+      if (!row) throw new Error('canonical missing');
+      return row.canonical_service_id;
     });
     await asTenant(p001, T1, ACTOR, async (c) => {
       await c.query(

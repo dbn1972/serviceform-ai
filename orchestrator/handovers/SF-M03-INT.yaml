@@ -1,4 +1,4 @@
-# M03 independent integration stitcher — executed (not CERTIFIED)
+# M03 READY — independent integration stitcher
 task_id: SF-M03-INT
 title: M03 independent integration (INT-002)
 module_id: M03
@@ -9,7 +9,7 @@ model_release: claude-opus-5-5
 effort: high
 component_ids: [CMP-001, CMP-033, CMP-034, CMP-050, CMP-051, CMP-052, CMP-053, CMP-054]
 integration_ids: [INT-002, INT-011, INT-013]
-branch: cursor/m03-int-verify-9ef2
+branch: agent/M03-int-SF-M03-INT
 worktree: ../wt-SF-M03-INT
 parallel_group: M03-VERIFY
 allowed_write_paths:
@@ -31,29 +31,15 @@ serial_after:
   - SF-M03-008
 planning_only: false
 implementation_authorized: true
-dispatched: true
-orchestration_task_state: EXECUTED
-state: V1_INTEGRATION_FAIL
+dispatched: false
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
-g3_integration_verified_claimed: false
 ccr_required: false
 frozen_contracts_altered: false
-candidate_sha: 7424235592824d5ceda9dcac55380a78c05cb6c5
-host_pr: https://github.com/dbn1972/serviceform-ai/pull/57
-verify_pr: https://github.com/dbn1972/serviceform-ai/pull/59
-independent_run_id: local-m03-int
-github_ci_corroboration:
-  ci: "37195753267"
-  security: "37195753178"
-  developer_platform: "37195753176"
-CROSS_TENANT_LEAKAGE: 0
-result: V1_INTEGRATION_FAIL
-recommended_gate: V1_INTEGRATION_FAIL
-evidence_path: evidence/SF-M03-INT/
-human_authorizer: Debabrata Nayak
 base_commit:
   prefix: 8613d0ec
   suffix: 844e189191a782753c30c65871756048
@@ -79,15 +65,5 @@ stop_conditions:
   - dependency on unmerged sibling CG-01 code as source of truth
   - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
-acceptance_tests_executed:
-  - INT-002 HTTP stitch CMP-050 client against CMP-033/051/052 LOGIN plugins — PASS
-  - INT-011 host tenant-header SF-TEN-002 — PASS
-  - INT-011 LOGIN RLS catalog M03 layers — PASS CROSS_TENANT_LEAKAGE=0
-  - INT-013 REAL/SANDBOX/SIMULATED fail-closed + LOCAL SIMULATED — PASS
-  - CMP-033/034/051/052/053 envelope INT — PASS
-  - CMP-001 envelope INT — FAIL (owner CMP-001; not patched)
-residuals:
-  - CMP-001 privilege-boundary insert-only test asserts second DML 42501 after aborted tx (25P02)
-  - CMP-050 approve/reject client omits CMP-051 decision reason
-  - Published workflow compile/run is M05 (ADR-0001)
-  - REAL DEPARTMENT_API adapter not shipped; fail-closed verified
+
+

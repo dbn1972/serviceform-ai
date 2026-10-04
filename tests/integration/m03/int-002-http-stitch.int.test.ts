@@ -118,11 +118,14 @@ describe('INT-002 HTTP stitch (CMP-050 client → 033/051/052 LOGIN plugins)', (
     sessions.set('checker', ctx(T1, CHECKER, ['SERVICE_CHECKER']));
     sessions.set('t2', ctx(T2, ACTOR, ['SERVICE_DESIGNER']));
 
+    const running = app;
+    if (!running) throw new Error('INT-002 host app not started');
+
     const injectAs = (token: string): PlatformTransport => ({
       async send(req) {
         const headers: Record<string, string> = { authorization: `Bearer ${token}` };
         if (req.idempotencyKey) headers['idempotency-key'] = req.idempotencyKey;
-        const injected = await app!.inject({
+        const injected = await running.inject({
           method: req.method,
           url: req.path,
           headers,
@@ -174,7 +177,7 @@ describe('INT-002 HTTP stitch (CMP-050 client → 033/051/052 LOGIN plugins)', (
 
     expect((await makerClient.submitPublicationRequest(requestId)).status).toBe(200);
 
-    const selfApprove = await app!.inject({
+    const selfApprove = await running.inject({
       method: 'POST',
       url: `/v1/publication-requests/${requestId}/approve`,
       headers: { authorization: 'Bearer maker', 'idempotency-key': randomUUID() },
@@ -182,7 +185,7 @@ describe('INT-002 HTTP stitch (CMP-050 client → 033/051/052 LOGIN plugins)', (
     });
     expect(selfApprove.statusCode).toBe(403);
 
-    const approved = await app!.inject({
+    const approved = await running.inject({
       method: 'POST',
       url: `/v1/publication-requests/${requestId}/approve`,
       headers: { authorization: 'Bearer checker', 'idempotency-key': randomUUID() },
@@ -195,7 +198,7 @@ describe('INT-002 HTTP stitch (CMP-050 client → 033/051/052 LOGIN plugins)', (
     expect(published.status).toBe(200);
     expect((published.body as { status: string }).status).toBe('PUBLISHED');
 
-    const t2 = await app!.inject({
+    const t2 = await running.inject({
       method: 'GET',
       url: `/v1/tenant-service-bindings/${bindingId}`,
       headers: { authorization: 'Bearer t2' },
