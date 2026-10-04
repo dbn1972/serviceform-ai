@@ -1,14 +1,14 @@
-# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 task envelope — SF-M01-W2-001 CMP-003 Jurisdiction
 task_id: SF-M01-W2-001
 title: Jurisdiction Engine
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-003]
 integration_ids: [INT-011]
 requirement_ids:
@@ -24,13 +24,13 @@ verifier_model_route: opus
 verifiers:
   - serviceform-security-verifier (opus, xhigh)
   - serviceform-evidence-verifier (opus, high)
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-cmp-003-jurisdiction-SF-M01-W2-001
-worktree: ../wt-SF-M01-W2-001
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+branch: cursor/m01-w2-cmp-003-e34d
+worktree: .
 depends_on:
   - M01 Wave 1 MERGED_AND_CLOSED (CMP-002 on main)
   - 13 shared contracts FROZEN
-  - human implementation authorization (not granted)
+  - human implementation authorization (granted for Wave 2 builders)
 allowed_write_paths:
   - services/cmp-003-jurisdiction/**
   - db/migrations/*_cmp-003-*.sql
@@ -83,6 +83,7 @@ authoritative_tables_planned:
   - jurisdiction_relation
   - jurisdiction_binding
 privilege_role: sf_cmp003_rw
+schema: sf_jurisdiction
 acceptance_tests_planning:
   - Organisation hierarchy (CMP-002) is not owned or mutated here
   - No hard-coded state/tenant/jurisdiction level names in domain logic
@@ -96,9 +97,28 @@ stop_conditions:
   - statutory / geography policy invention required
   - write outside allowed_write_paths
   - dependency on unmerged sibling Wave 2 code
-  - implementation_authorized remains false (do not code)
 self_certified: false
 not_certified: true
-blockers: []
+certified: false
+blockers:
+  - pnpm-lock.yaml importer for services/cmp-003-jurisdiction requires orchestrator regen (envelope read_only; do not expand write paths). Blocks frozen-lockfile install for quality/db/ui/audit/m01-int jobs.
 ccr_required: false
 parallel_group: W2-A
+evidence_paths:
+  - evidence/SF-M01-W2-001/EVIDENCE.md
+  - evidence/SF-M01-W2-001/CI-RESIDUAL.md
+  - evidence/SF-M01-W2-001/junit/unit.xml
+  - evidence/SF-M01-W2-001/junit/integration.xml
+  - evidence/SF-M01-W2-001/logs/unit.log
+  - evidence/SF-M01-W2-001/logs/integration.log
+pr_url: https://github.com/dbn1972/serviceform-ai/pull/26
+head_sha: 1dd0d7625d3c2dd872c939e96467b6518d797bc5
+ci_status: RED_LOCKFILE_ONLY
+ci_confirmed_tip: e503822d90e52538602267deea68c54cdab6cf23
+ci_fixable_in_scope:
+  - semgrep regex_dos → PASS on tip e503822
+ci_residual_orchestrator:
+  - pnpm-lock.yaml workspace importer for @serviceform/cmp-003-jurisdiction (5 install-gated jobs)
+builder_result: SF-M01-W2-001_READY
+# Lockfile not committed. No further in-scope CI fixes.
+

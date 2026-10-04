@@ -1,0 +1,24 @@
+{
+  "name": "@serviceform/cmp-047-observability",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-047 Observability Platform: OTel bootstrap, redacting logs, correlation helpers",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@serviceform/observability": "workspace:*",
+    "fastify-plugin": "5.1.0"
+  },
+  "peerDependencies": {
+    "fastify": "5.12.5"
+  },
+  "devDependencies": {
+    "fastify": "5.12.5"
+  }
+}

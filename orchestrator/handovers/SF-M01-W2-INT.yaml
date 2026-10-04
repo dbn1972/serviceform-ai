@@ -1,12 +1,13 @@
-# M01 Wave 2 integration stitcher envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 integration stitcher envelope — ready for independent dispatch after stitch PR.
+# Not CERTIFIED. Do not patch component production code to force green.
 task_id: SF-M01-W2-INT
 title: Wave 2 independent integration stitch
 module_id: M01
 wave: 2
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
+state: STITCH_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
 dispatched: false
 component_ids: [CMP-003, CMP-030, CMP-032, CMP-036, CMP-047, CMP-055]
 integration_ids: [INT-011, INT-013]
@@ -15,12 +16,16 @@ builder_agent: serviceform-integration-stitcher
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
 branch: agent/M01-wave2-integration-SF-M01-W2-INT
 worktree: ../wt-SF-M01-W2-INT
 depends_on:
-  - SF-M01-W2-001..005 builder merge candidates available
-  - human implementation authorization completed for builders first
+  - SF-M01-W2-001..005 builder merge candidates integrated on stitch branch
+  - pnpm-lock.yaml regenerated on stitch; frozen-lockfile PASS locally
+  - Phase B host mounts for CMP-003/030/032 completed on stitch
+  - human implementation authorization completed for builders
+stitch_branch: cursor/m01-w2-stitch-e19b
+stitch_evidence: evidence/SF-M01-W2-STITCH/
 allowed_write_paths:
   - tests/integration/**
   - evidence/integration/**
@@ -32,10 +37,12 @@ read_only_paths:
   - contracts/**
   - db/**
   - policy/**
+  - pnpm-lock.yaml
 explicit_cannot:
   - patch component production code to force green
   - self-certify
   - start or continue builder implementation
+  - merge stitch to main
 acceptance_tests_planning:
   - Host composition mounts W1+W2 plugins without cross-component SQL
   - INT-011 scenarios for new tenant-owned layers

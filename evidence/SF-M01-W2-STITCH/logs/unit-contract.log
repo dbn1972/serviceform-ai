@@ -1,0 +1,37 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ services/cmp-030-consent-privacy/test/unit/authz-context.test.ts (4 tests) 81ms
+ ✓ services/cmp-030-consent-privacy/test/contract/contracts.test.ts (3 tests) 58ms
+ ✓ services/cmp-003-jurisdiction/test/contract/contracts.test.ts (4 tests) 58ms
+ ✓ apps/api/test/app.test.ts (14 tests) 270ms
+ ✓ services/cmp-036-api-gateway/test/edge.test.ts (6 tests) 123ms
+ ✓ services/cmp-032-storage/test/contract/contracts.test.ts (4 tests) 51ms
+ ✓ packages/storage/test/simulated-store.test.ts (3 tests) 47ms
+ ✓ services/cmp-030-consent-privacy/test/unit/plugin-http.test.ts (1 test) 79ms
+ ✓ apps/api/test/composition.test.ts (7 tests) 889ms
+   ✓ CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) (1)
+     ✓ mounts CMP-003/030/032 under /v1 with frozen deny envelopes 385ms
+ ✓ packages/observability/test/redaction.test.ts (3 tests) 11ms
+ ✓ services/cmp-032-storage/test/unit/store-service.test.ts (1 test) 4ms
+ ✓ services/cmp-030-consent-privacy/test/unit/access-check.test.ts (4 tests) 4ms
+ ✓ services/cmp-003-jurisdiction/test/unit/domain.test.ts (5 tests) 4ms
+ ✓ services/cmp-032-storage/test/unit/modes-authz.test.ts (4 tests) 51ms
+ ✓ packages/observability/test/access-log.test.ts (3 tests) 9ms
+ ✓ services/cmp-047-observability/test/plugin.test.ts (2 tests) 60ms
+ ✓ packages/storage/test/simulation-marker.test.ts (2 tests) 43ms
+ ✓ packages/storage/test/modes.test.ts (4 tests) 3ms
+ ✓ packages/storage/test/object-key.test.ts (1 test) 2ms
+ ✓ packages/observability/test/telemetry.test.ts (3 tests) 54ms
+ ✓ packages/storage/test/checksum.test.ts (2 tests) 3ms
+ ✓ apps/api/test/readiness.test.ts (1 test) 6ms
+
+ Test Files  22 passed (22)
+      Tests  81 passed (81)
+   Start at  01:38:40
+   Duration  2.42s (import 41%, tests 37%, transform 21%, worker 1%)
+
+    Isolate  22 workers spawned · ~81ms startup each (spawn + environment, per file)
+             at least ~513ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/test-results/unit/junit.xml

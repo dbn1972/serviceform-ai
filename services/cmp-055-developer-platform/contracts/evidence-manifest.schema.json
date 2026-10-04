@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/cmp-055/evidence-manifest.schema.json",
+  "title": "CMP-055 evidence manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "component_id",
+    "task_id",
+    "commit_sha",
+    "github_run_id",
+    "github_job",
+    "artifacts",
+    "gates",
+    "certified",
+    "self_certified",
+    "generated_at"
+  ],
+  "properties": {
+    "schema": { "const": "serviceform.cmp055.evidence-manifest.v1" },
+    "component_id": { "const": "CMP-055" },
+    "task_id": { "type": "string", "pattern": "^SF-" },
+    "commit_sha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "github_run_id": { "type": ["string", "null"] },
+    "github_job": { "type": ["string", "null"] },
+    "artifacts": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "result"],
+        "properties": {
+          "name": { "type": "string" },
+          "result": { "enum": ["PASS", "FAIL"] }
+        }
+      }
+    },
+    "certified": { "const": false },
+    "self_certified": { "const": false },
+    "generated_at": { "type": "string", "format": "date-time" }
+  }
+}

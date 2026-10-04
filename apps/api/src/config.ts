@@ -30,6 +30,9 @@ const schema = z.object({
   BODY_LIMIT_BYTES: z.coerce.number().int().min(1024).max(10_485_760).default(1_048_576),
   DATABASE_URL: z.url().optional(),
   OTEL_EXPORTER_OTLP_ENDPOINT: z.url().optional(),
+  /** CMP-036 edge rate limit: max requests per window per hashed client key. */
+  SF_GATEWAY_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(1_000_000).default(300),
+  SF_GATEWAY_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().min(100).max(3_600_000).default(60_000),
 });
 
 export type AppConfig = z.infer<typeof schema>;

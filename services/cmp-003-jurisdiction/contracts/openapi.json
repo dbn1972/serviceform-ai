@@ -1,0 +1,60 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-003 Jurisdiction Engine",
+    "version": "0.1.0",
+    "description": "Versioned geographic/administrative jurisdiction. Host mount deferred to CMP-036."
+  },
+  "paths": {
+    "/v1/jurisdiction-types": {
+      "get": {
+        "operationId": "listJurisdictionTypes",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createJurisdictionType",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/jurisdictions": {
+      "get": {
+        "operationId": "listJurisdictions",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createJurisdiction",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/jurisdictions/{id}/children": {
+      "get": {
+        "operationId": "listJurisdictionChildren",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/jurisdictions/{id}/publish": {
+      "post": {
+        "operationId": "publishJurisdictionVersion",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/jurisdictions/{id}/relations": {
+      "post": {
+        "operationId": "changeJurisdictionBoundary",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/jurisdiction-bindings": {
+      "post": {
+        "operationId": "createJurisdictionBinding",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/jurisdiction/resolve": {
+      "post": {
+        "operationId": "resolveJurisdiction",
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.ai/schemas/cmp-003/jurisdiction-version-published.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["jurisdiction_id", "version_no", "name", "status", "valid_from"],
+  "properties": {
+    "jurisdiction_id": { "type": "string", "format": "uuid" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "status": { "type": "string", "const": "PUBLISHED" },
+    "valid_from": { "type": "string", "format": "date-time" }
+  }
+}

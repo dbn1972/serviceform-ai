@@ -1,43 +1,63 @@
-# M01 Wave 2 planning index (machine-readable)
-# PLANNING ONLY. Not dispatched. No builders started. Not CERTIFIED.
+# M01 Wave 2 planning/implementation index (machine-readable)
+# STITCH_READY for independent INT/SEC/EVD. Not CERTIFIED. Do not merge to main from this record alone.
 
 module_id: M01
 wave: 2
 record: M01-WAVE2-PLAN
-decision: M01_WAVE2_PLAN_READY
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-builders_dispatched: 0
+decision: M01_WAVE2_STITCH_READY
+state: STITCH_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+builders_dispatched: 5
+builders_implementation_ready: 5
+stitch_ready: true
 self_certified: false
 not_certified: true
 certified: false
 frozen_contracts_altered: false
 
 baseline:
-  origin_main: 1c9a650abc439610badd21d927c7a53d27d3fd12
+  origin_main: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
   wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
   wave1_status: M01_WAVE1_MERGED_AND_CLOSED
   wave1_v1_v5: PASS
   cross_tenant_leakage: 0
   frozen_contract_hashes: 13/13 MATCH
 
+stitch:
+  branch: cursor/m01-w2-stitch-e19b
+  tip_sha: 347fe74cb0221cbc0b8542bb187aa6adc752405c
+  draft_pr: https://github.com/dbn1972/serviceform-ai/pull/30
+  evidence: evidence/SF-M01-W2-STITCH/
+  store_mirror: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-stitch.md
+  integrated_builder_prs:
+    - { pr: 25, cmp: CMP-055, branch: cursor/m01-w2-cmp-055-0fa8, tip: 5f574e0 }
+    - { pr: 26, cmp: CMP-003, branch: cursor/m01-w2-cmp-003-e34d, tip: 453e282 }
+    - { pr: 27, cmp: CMP-030, branch: cursor/m01-w2-cmp-030-4362, tip: 78448c7 }
+    - { pr: 28, cmp: 'CMP-036+047', branch: cursor/m01-w2-cmp-036-047-aef8, tip: 234f1b2 }
+    - { pr: 29, cmp: CMP-032, branch: cursor/m01-w2-cmp-032-1f9a, tip: 13560a9 }
+  phase_b_mounts: completed_on_stitch
+  lockfile: regenerated_on_stitch
+  do_not_merge_main: true
+
 documents:
   repo_plan: docs/planning/M01-WAVE2-PLAN.md
   store_plan: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-plan.md
   store_envelopes: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-envelopes.md
+  store_stitch: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-stitch.md
   wave1_closure: docs/verification/M01-WAVE1-CLOSURE.md
 
 governance_sequence:
   - architecture_constitution
   - frozen_contracts
   - dependency_aware_wave2_scope
-  - bounded_task_envelopes_planning
-  - later_if_authorized_isolated_parallel_builders
-  - integration
-  - security_verification
-  - evidence_verification
+  - bounded_task_envelopes
+  - isolated_parallel_builders
+  - stitch_lockfile_reconcile
+  - integration_verification_pending
+  - security_verification_pending
+  - evidence_verification_pending
   - human_gate
 
 builder_envelopes:
@@ -59,3 +79,5 @@ residuals_non_blocking:
   - ADR-0006-9 outbox sf_app GRANTs (CCR if tightening)
   - DPDP statutory anchors deferred; CMP-030 platform-only without inventing statute
   - REAL S3/KMS/WAF infra requires later ADR; W2 uses SIMULATED/local + ports
+  - migration timestamps 1759500600000 shared by cmp-003 and cmp-032 filenames (lint PASS; lexicographic order stable)
+  - independent INT/SEC/EVD not yet dispatched

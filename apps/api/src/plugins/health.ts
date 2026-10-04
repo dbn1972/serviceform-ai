@@ -30,7 +30,11 @@ export async function healthRoutes(app: FastifyInstance, opts: HealthOptions): P
 
   app.get(
     '/health/live',
-    { schema: { response: { 200: statusSchema } }, logLevel: 'warn' },
+    {
+      config: { sfPublic: true },
+      schema: { response: { 200: statusSchema } },
+      logLevel: 'warn',
+    },
     async () => ({
       status: 'ok',
     }),
@@ -38,7 +42,11 @@ export async function healthRoutes(app: FastifyInstance, opts: HealthOptions): P
 
   app.get(
     '/health/ready',
-    { schema: { response: { 200: statusSchema, 503: statusSchema } }, logLevel: 'warn' },
+    {
+      config: { sfPublic: true },
+      schema: { response: { 200: statusSchema, 503: statusSchema } },
+      logLevel: 'warn',
+    },
     async (_request, reply) => {
       const results: Record<string, 'ok' | 'failed'> = {};
       await Promise.all(

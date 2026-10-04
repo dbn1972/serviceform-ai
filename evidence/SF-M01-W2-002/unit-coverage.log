@@ -1,0 +1,32 @@
+
+> @serviceform/cmp-030-consent-privacy@0.0.0 test:coverage /workspace/services/cmp-030-consent-privacy
+> vitest run --root . --config vitest.coverage.config.ts --coverage
+
+
+ RUN  v5.0.3 /workspace/services/cmp-030-consent-privacy
+      Coverage enabled with v8
+
+ ✓ test/integration/api-flow.int.test.ts (1 test) 679ms
+ ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 528ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 492ms
+ ✓ test/unit/authz-context.test.ts (4 tests) 69ms
+ ✓ test/unit/plugin-http.test.ts (1 test) 74ms
+ ✓ test/contract/contracts.test.ts (3 tests) 61ms
+ ✓ test/unit/access-check.test.ts (4 tests) 4ms
+
+ Test Files  7 passed (7)
+      Tests  18 passed (18)
+   Start at  01:27:34
+   Duration  3.35s (tests 72%, import 18%, transform 7%, worker 3%)
+
+    Isolate  7 workers spawned · ~68ms startup each (spawn + environment, per file)
+             at least ~409ms faster with isolate: false — reuses workers across files instead of one per file
+
+ % Coverage report from v8
+
+=============================== Coverage summary ===============================
+Statements   : 79.8% ( 328/411 )
+Branches     : 59.39% ( 158/266 )
+Functions    : 92% ( 69/75 )
+Lines        : 84.36% ( 313/371 )
+================================================================================
