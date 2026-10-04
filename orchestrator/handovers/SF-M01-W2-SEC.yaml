@@ -1,0 +1,52 @@
+# M01 Wave 2 security verifier envelope — PLANNING ONLY. Not dispatched.
+task_id: SF-M01-W2-SEC
+title: Wave 2 independent security and tenant-isolation verification
+module_id: M01
+wave: 2
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-003, CMP-030, CMP-032, CMP-036, CMP-047, CMP-055]
+integration_ids: [INT-011]
+agent_role: security_agent
+builder_agent: serviceform-security-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: xhigh
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-wave2-security-SF-M01-W2-SEC
+worktree: ../wt-SF-M01-W2-SEC
+depends_on:
+  - Builder envelopes implemented and stitch candidate available
+  - Prefers post-INT; may author negative tests before builder code once implementation authorized
+allowed_write_paths:
+  - tests/security/**
+  - evidence/security/**
+  - orchestrator/handovers/SF-M01-W2-SEC.yaml
+read_only_paths:
+  - services/**
+  - apps/**
+  - packages/**
+  - contracts/**
+  - db/**
+  - policy/**
+explicit_cannot:
+  - waive Critical/High security findings
+  - self-certify
+  - edit frozen contracts
+hard_gates:
+  - cross_tenant_leakage: 0
+  - rls_required_negative_tests: 100%
+  - component_privilege_boundary: 100%
+  - unresolved_critical_security: 0
+acceptance_tests_planning:
+  - Forged tenant headers at edge denied
+  - Consent missing deny path
+  - Storage wrong-tenant / unsigned access denied
+  - Jurisdiction resolution does not leak other-tenant bindings
+  - No PII/secrets in observability samples
+self_certified: false
+not_certified: true
+parallel_group: W2-VERIFY

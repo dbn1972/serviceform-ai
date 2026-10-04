@@ -1,0 +1,112 @@
+# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# Single writer for apps/api + packages/observability (CMP-036 + CMP-047).
+task_id: SF-M01-W2-004
+title: API Gateway host composition and Observability platform slice
+module_id: M01
+wave: 2
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-036, CMP-047]
+integration_ids: [INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-036
+  - Eng-v1.4-CMP-047
+  - Constitution-21
+  - PLAN-REVIEW-M01-W1-X-10
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+verifiers:
+  - serviceform-integration-stitcher (opus, high)
+  - serviceform-security-verifier (opus, xhigh)
+  - serviceform-evidence-verifier (opus, high)
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-cmp-036-047-gateway-obs-SF-M01-W2-004
+worktree: ../wt-SF-M01-W2-004
+depends_on:
+  - M01 Wave 1 plugins on main (CMP-002/048/031/038/037)
+  - 13 shared contracts FROZEN
+  - human implementation authorization (not granted)
+  - W2 component plugin registration follows those merges (same writer)
+allowed_write_paths:
+  - apps/api/**
+  - packages/observability/**
+  - services/cmp-036-api-gateway/**
+  - services/cmp-047-observability/**
+allowed_write_notes:
+  - Single writer for host wiring; no other W2 envelope may touch apps/api or packages/observability
+  - Phase A: mount Wave 1 Fastify plugins under /v1; correlation IDs; rate-limit edge; redaction
+  - Phase B (same envelope): mount CMP-003/030/032 plugins after those merges
+  - package.json under write paths may change; do not commit pnpm-lock.yaml
+  - evidence/SF-M01-W2-004/** and this handover update allowed at evidence time
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - specs/**
+  - policy/**
+  - .github/**
+  - scripts/gates/**
+  - infra/**
+  - db/migrations/**
+  - services/cmp-002-tenant-organisation/**
+  - services/cmp-003-jurisdiction/**
+  - services/cmp-030-consent-privacy/**
+  - services/cmp-032-storage/**
+  - services/cmp-031-audit-ledger/**
+  - services/cmp-037-integration-hub/**
+  - services/cmp-038-event-bus/**
+  - services/cmp-048-security-platform/**
+  - services/cmp-055-developer-platform/**
+  - packages/contracts/**
+  - packages/security/**
+  - packages/outbox/**
+  - packages/audit-client/**
+  - packages/connector-sdk/**
+  - packages/storage/**
+  - packages/ui-ux4g/**
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-IDEMPOTENCY
+eng_responsibilities:
+  cmp_036:
+    - Ingress routing of component plugins
+    - Edge rate limits / request IDs
+    - Tenant headers never authoritative
+    - No domain authorization ownership (OPA stays CMP-048)
+  cmp_047:
+    - OpenTelemetry bootstrap / metrics / traces / redacting logs
+    - Correlation IDs
+    - No secrets or full PII in logs
+    - Does not replace domain audit (CMP-031)
+scope_notes:
+  - CloudFront/WAF/ALB REAL infra out of scope without ADR; Fastify edge slice only
+  - G-10 query-string redaction in access logs is in this envelope
+acceptance_tests_planning:
+  - Wave 1 routes reachable via apps/api with frozen error envelopes
+  - Forged client tenant header cannot authorize
+  - Rate-limit path emits controlled denial without leakage
+  - Logger redacts secrets/PII patterns; telemetry starts before HTTP patch
+  - No business logic ownership stolen from component services
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - new edge infrastructure required without ADR
+  - another task needs to write apps/api or packages/observability
+  - implementation_authorized remains false (do not code)
+self_certified: false
+not_certified: true
+blockers: []
+ccr_required: false
+parallel_group: W2-A-with-host-followups
