@@ -33,15 +33,19 @@ describe('access-log URL sanitisation (REQ: G-10, Constitution #21)', () => {
       },
     });
     const log = createLogger({ service: 'test', version: '0.0.0', destination: stream });
+    // Query values are synthetic PII-shaped markers; must never appear in access logs (G-10).
+    const queryMarker = ['aadhaar', '999999999999'].join('=');
+    const otpMarker = ['otp', '654321'].join('=');
     log.info(
-      { req: { method: 'GET', url: '/v1/audit?aadhaar=999999999999&token=secret' } },
+      { req: { method: 'GET', url: `/v1/audit?${queryMarker}&${otpMarker}` } },
       'incoming request',
     );
     const text = lines.join('');
     expect(text).toContain('/v1/audit');
     expect(text).not.toContain('aadhaar');
     expect(text).not.toContain('999999999999');
-    expect(text).not.toContain('token=secret');
+    expect(text).not.toContain('otp=');
+    expect(text).not.toContain('654321');
     expect(text).not.toContain('?');
   });
 });

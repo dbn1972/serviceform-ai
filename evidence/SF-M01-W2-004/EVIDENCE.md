@@ -53,7 +53,19 @@
 
 - `vitest.log`, `junit/unit.xml`, `coverage-summary.json`
 - `typecheck.log`, `eslint.log`, `build.log`, `scope-check.log`
+- `ci-triage.md`, `semgrep.log` (CI remediation)
+
+## CI triage (PR #28)
+
+See `ci-triage.md`. Semgrep (2 fixture findings) + Checkov false-positive decision-token fixed in-scope.  
+Five jobs remain red solely for **orchestrator lockfile reconciliation** (`pnpm install --frozen-lockfile`).
+
+## Residuals
+
+- `pnpm-lock.yaml` not committed (envelope / LOCKFILE-POLICY). Orchestrator must admit new CMP-036/047 importers + `apps/api` deps.
+- Phase B mounts for CMP-003/030/032 after peer merges (same writer).
+- Independent INT/SEC/EVD not run by this builder.
 
 ## Recommended gate status
 
-Design: complete. Develop: **IMPLEMENTATION_READY** for independent integration/security/evidence verifiers. **Not VERIFIED. Not CERTIFIED.**
+Design: complete. Develop: **IMPLEMENTATION_READY** for independent Verify after lockfile reconcile. **Not VERIFIED. Not CERTIFIED.** Decision status: task SF-M01-W2-004 / READY.

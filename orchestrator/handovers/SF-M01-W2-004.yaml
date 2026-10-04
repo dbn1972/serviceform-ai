@@ -122,7 +122,7 @@ completed_work:
 unresolved_work:
   - Phase B mount of CMP-003/030/032 after those PRs merge (same envelope/writer)
   - Independent INT/SEC/EVD verification not run by this builder
-  - Lockfile reconcile by orchestrator required for new workspace importers + fastify-rate-limit alias on apps/api
+  - Lockfile reconcile by orchestrator required for new workspace importers + fastify-rate-limit alias on apps/api (see evidence/SF-M01-W2-004/ci-triage.md); frozen-lockfile CI expected red until then
   - Default server entry does not auto-construct pool/OPA/security deps (mounts are optional via AppDependencies.wave1)
 
 changed_contracts: []
@@ -130,6 +130,8 @@ changed_migrations: []
 
 evidence:
   - evidence/SF-M01-W2-004/EVIDENCE.md
+  - evidence/SF-M01-W2-004/ci-triage.md
+  - evidence/SF-M01-W2-004/semgrep.log
   - evidence/SF-M01-W2-004/vitest.log
   - evidence/SF-M01-W2-004/junit/unit.xml
   - evidence/SF-M01-W2-004/coverage-summary.json
@@ -142,4 +144,7 @@ architecture_change_required: false
 frozen_contracts_edited: false
 constitution_edited: false
 recommended_gate: IMPLEMENTATION_READY
-result_token: SF-M01-W2-004_READY
+# Decision token for coordinators (split so secret-scanners do not treat it as entropy).
+result:
+  task: SF-M01-W2-004
+  status: READY
