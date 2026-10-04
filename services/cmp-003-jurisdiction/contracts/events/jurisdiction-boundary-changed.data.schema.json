@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.ai/schemas/cmp-003/jurisdiction-boundary-changed.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "jurisdiction_id",
+    "parent_jurisdiction_id",
+    "relation_type_code",
+    "version_no",
+    "valid_from"
+  ],
+  "properties": {
+    "jurisdiction_id": { "type": "string", "format": "uuid" },
+    "parent_jurisdiction_id": { "type": ["string", "null"], "format": "uuid" },
+    "relation_type_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "valid_from": { "type": "string", "format": "date-time" }
+  }
+}
