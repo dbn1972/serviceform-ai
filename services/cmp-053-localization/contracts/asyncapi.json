@@ -1,0 +1,38 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-053 Localization Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.localization.events.v1": {
+      "address": "sf.localization.events.v1",
+      "messages": {
+        "LocalizationCatalogPublished": {
+          "$ref": "#/components/messages/LocalizationCatalogPublished"
+        },
+        "LocalizationCatalogRetired": {
+          "$ref": "#/components/messages/LocalizationCatalogRetired"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "LocalizationCatalogPublished": {
+        "name": "LocalizationCatalogPublished",
+        "payload": { "$ref": "./events/localization-catalog-published.data.schema.json" }
+      },
+      "LocalizationCatalogRetired": {
+        "name": "LocalizationCatalogRetired",
+        "payload": { "$ref": "./events/localization-catalog-retired.data.schema.json" }
+      }
+    }
+  }
+}

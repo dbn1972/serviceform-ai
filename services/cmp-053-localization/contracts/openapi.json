@@ -1,0 +1,66 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-053 Localization Service",
+    "version": "0.1.0",
+    "description": "Tenant-scoped translation catalogs, locale fallback, and format profiles. Host mount deferred to CMP-036."
+  },
+  "paths": {
+    "/v1/locales": {
+      "get": { "operationId": "listLocales", "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "operationId": "createLocale",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/locales/{id}/format-profile": {
+      "put": {
+        "operationId": "upsertFormatProfile",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/catalogs": {
+      "get": { "operationId": "listCatalogs", "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "operationId": "createCatalog",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/catalogs/{id}/versions": {
+      "post": {
+        "operationId": "createCatalogVersion",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/catalogs/{id}/versions/{version_no}/messages": {
+      "put": {
+        "operationId": "upsertCatalogMessages",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/catalogs/{id}/versions/{version_no}/publish": {
+      "post": {
+        "operationId": "publishCatalogVersion",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/catalogs/{id}/versions/{version_no}/retire": {
+      "post": {
+        "operationId": "retireCatalogVersion",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/localization/resolve": {
+      "post": { "operationId": "resolveMessages", "responses": { "200": { "description": "OK" } } }
+    },
+    "/v1/format/resolve": {
+      "post": { "operationId": "resolveFormat", "responses": { "200": { "description": "OK" } } }
+    },
+    "/v1/localization/assist": {
+      "post": {
+        "operationId": "assistTranslation",
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}
