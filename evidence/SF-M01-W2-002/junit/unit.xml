@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="0.195621404">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T01:27:31.230Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.056591926">
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; parses OpenAPI and AsyncAPI JSON" time="0.001344309">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; validates domain event envelopes" time="0.053555105">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.000666362">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/access-check.test.ts" timestamp="2026-10-04T01:27:31.231Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003881782">
+        <testcase classname="test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; denies missing purpose and inactive purpose" time="0.001511845">
+        </testcase>
+        <testcase classname="test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; allows when consent not required" time="0.000260913">
+        </testcase>
+        <testcase classname="test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; requires active grant when consent required" time="0.000352056">
+        </testcase>
+        <testcase classname="test/unit/access-check.test.ts" name="fingerprint &gt; canonicalizes and fingerprints stably" time="0.000688177">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/authz-context.test.ts" timestamp="2026-10-04T01:27:31.231Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.070174049">
+        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies malformed input, PDP throw, and deny" time="0.058040361">
+        </testcase>
+        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies tenant mismatch on TENANT_SCOPED resources" time="0.000414983">
+        </testcase>
+        <testcase classname="test/unit/authz-context.test.ts" name="context guards &gt; rejects tenant-identifying headers and missing context" time="0.009485662">
+        </testcase>
+        <testcase classname="test/unit/authz-context.test.ts" name="errors and audit helpers &gt; maps pg errors and rate-limits deny audits" time="0.001045876">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-04T01:27:31.232Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.064973647">
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP guards &gt; requires auth and rejects tenant-identifying headers" time="0.041595889">
+        </testcase>
+    </testsuite>
+</testsuites>

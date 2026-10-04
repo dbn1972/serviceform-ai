@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="1.492940294">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-04T01:27:34.057Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.620448363">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-030 API flows &gt; grant → access-check allow → withdraw idempotent → access-check deny" time="0.176404287">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T01:27:34.058Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.433750219">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-030 migration static checks &gt; creates schema/role with FORCE RLS and ADR-0006 grants" time="0.009670974">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-030 migration static checks &gt; SQL keeps frozen outbox grants and guarded role creates" time="0.000802417">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T01:27:34.058Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.438741712">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-030 privilege boundary (ADR-0006) &gt; runtime is non-superuser sf_app member and not table owner" time="0.008946347">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-030 privilege boundary (ADR-0006) &gt; own DML succeeds; peer component role cannot DML business tables" time="0.010401076">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-030 privilege boundary (ADR-0006) &gt; wrong-tenant RLS yields zero rows (no canary leak)" time="0.003079355">
+        </testcase>
+    </testsuite>
+</testsuites>
