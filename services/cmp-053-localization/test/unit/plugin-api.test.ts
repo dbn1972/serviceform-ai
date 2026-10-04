@@ -50,6 +50,41 @@ interface FormatRow {
   group_separator: string;
 }
 
+function collapseWs(text: string): string {
+  let out = '';
+  let space = false;
+  for (let i = 0; i < text.length; i += 1) {
+    const c = text.charCodeAt(i);
+    const isSpace = c === 9 || c === 10 || c === 13 || c === 32;
+    if (isSpace) {
+      space = true;
+      continue;
+    }
+    if (space && out.length > 0) out += ' ';
+    space = false;
+    out += text[i];
+  }
+  return out;
+}
+
+function draftVersionNo(sql: string, fallback: number): number {
+  const marker = '$2,';
+  const at = sql.indexOf(marker);
+  if (at < 0) return fallback;
+  let i = at + marker.length;
+  while (i < sql.length && sql.charCodeAt(i) === 32) i += 1;
+  let n = 0;
+  let digits = 0;
+  while (i < sql.length) {
+    const c = sql.charCodeAt(i);
+    if (c < 48 || c > 57) break;
+    n = n * 10 + (c - 48);
+    digits += 1;
+    i += 1;
+  }
+  return digits > 0 ? n : fallback;
+}
+
 function memoryPool(): Pool {
   const locales: LocaleRow[] = [];
   const catalogs: CatalogRow[] = [];
@@ -59,7 +94,7 @@ function memoryPool(): Pool {
   let tenant: string | null = null;
 
   const query = async (text: string, params: unknown[] = []) => {
-    const sql = text.replace(/\s+/g, ' ');
+    const sql = collapseWs(text);
     if (
       sql.startsWith('BEGIN') ||
       sql.startsWith('COMMIT') ||
@@ -127,11 +162,10 @@ function memoryPool(): Pool {
       return { rows: [], rowCount: 1 };
     }
     if (sql.includes('INSERT INTO sf_localization.catalog_version')) {
-      const literal = /VALUES \(\$1,\$2,(\d+),'DRAFT'/.exec(sql);
       versions.push({
         tenant_id: String(params[0]),
         catalog_id: String(params[1]),
-        version_no: literal ? Number(literal[1]) : Number(params[2]),
+        version_no: draftVersionNo(sql, Number(params[2])),
         status: 'DRAFT',
         content_hash: null,
         published_at: null,
