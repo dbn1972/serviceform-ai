@@ -9,10 +9,19 @@ agent_role: component_builder
 builder_agent: serviceform-foundation-builder
 state: REMEDIATION_CI_GREEN
 branch: cursor/m01-w1-remediation-r1
+remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
 pr: https://github.com/dbn1972/serviceform-ai/pull/17
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-# result_commit filled after the implementation commit is created
-result_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
+result_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+tested_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+blocked_ci: false
+prior_green_tip: 1c7de49d6ab2df3d2140d5177aa414804631a688
+artifact_name: m01-envelope-int-d270a4fc51ca317062d14127a53bba419e87b341
+m01_envelope_int_job: M01 envelope integration (SF-M01-001..005)
+github_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807119
+github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807120
+github_security_run_id: '37163807119'
+github_ci_run_id: '37163807120'
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
@@ -52,6 +61,8 @@ risks:
   - 'Branch coverage on new src 69.5% (lines 87.65% meet the 80% line bar).'
 
 evidence:
+  - evidence/m01-w1-remediation/INDEX.md
+  - evidence/SF-M01-002/SUPERSEDED.md
   - evidence/SF-M01-002/EVIDENCE.md
   - evidence/SF-M01-002/PLAN.md
   - evidence/SF-M01-002/privilege-boundary.log

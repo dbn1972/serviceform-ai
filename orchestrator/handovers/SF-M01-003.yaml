@@ -8,8 +8,18 @@ wave_2_started: false
 merged: false
 pr: https://github.com/dbn1972/serviceform-ai/pull/16
 branch: cursor/m01-w1-remediation-r1
+remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-result_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
+result_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+tested_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+blocked_ci: false
+prior_green_tip: 1c7de49d6ab2df3d2140d5177aa414804631a688
+artifact_name: m01-envelope-int-d270a4fc51ca317062d14127a53bba419e87b341
+m01_envelope_int_job: M01 envelope integration (SF-M01-001..005)
+github_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807119
+github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807120
+github_security_run_id: '37163807119'
+github_ci_run_id: '37163807120'
 coverage_semgrep_commit: a2a191bf02a3222bfd35c1a33469e72271ab372d
 builder: serviceform-foundation-builder
 resolved_model: Cursor Agent (Composer)
@@ -48,6 +58,8 @@ risks:
   - lockfile: builders must not commit pnpm-lock.yaml; workspace protocol for @serviceform/audit-client needs orchestrator install
 
 evidence:
+  - evidence/m01-w1-remediation/INDEX.md
+  - evidence/SF-M01-003/SUPERSEDED.md
   - evidence/SF-M01-003/EVIDENCE.md
   - evidence/SF-M01-003/privilege-boundary.log
   - evidence/SF-M01-003/tamper-detection.log
