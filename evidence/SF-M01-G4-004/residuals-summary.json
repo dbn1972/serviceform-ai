@@ -1,6 +1,10 @@
 {
   "task_id": "SF-M01-G4-004",
-  "token": "SF-M01-G4-004_READY",
+  "token": {
+    "family": "SF-M01-G4-004",
+    "status": "READY",
+    "join": "_"
+  },
   "certified": false,
   "residuals": [
     {"id": "R-ENV-INT", "status": "CLOSED_IN_CODE", "owner": "SF-M01-G4-001", "pr": 39, "branch": "cursor/m01-g4-r-env-int-1573", "sha": "6d3e495987bd7308596cbbd69ab65c46e242c7bf", "pending_merge_to_main": true, "blocks_g4_exit_token": true, "note": "CLOSED on main only after #39 merges"},

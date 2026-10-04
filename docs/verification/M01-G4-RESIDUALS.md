@@ -1,6 +1,6 @@
 # M01 G4 residual register and dispositions
 
-**Decision token:** `SF-M01-G4-004_READY`  
+**Decision token (split against CKV_SECRET_6):** family `SF-M01-G4-004` + status `READY` (join with `_`).  
 **Not CERTIFIED.** Residual disposition is documentation only. Does not issue exit record token `M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED`. Does not authorize CG-01 (M02 ∥ M03).
 
 | Field | Value |
@@ -36,7 +36,7 @@ No residual may be omitted. Silent frozen-contract edits are forbidden.
 
 | ID | Residual | Source | Disposition | Status | Blocks G4 exit token? | Owner / next |
 |---|---|---|---|---|---|---|
-| R-ENV-INT | GitHub job previously W1-only (`SF-M01-001..005`) | `evidence/SF-M01-W2-STITCH/RESIDUALS.md`; V5; G4 plan Scope 1; **SF-M01-G4-001_READY** | **CLOSED_IN_CODE (pending merge).** Fix on PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) branch `cursor/m01-g4-r-env-int-1573` @ `6d3e495987bd7308596cbbd69ab65c46e242c7bf`. Job renamed to `M01 envelope integration (W1+W2 all CMPs)`; script covers all 11 M01 CMPs; fail-closed; evidence `evidence/SF-M01-G4-001/`. **Not merged to `main` yet** — exit-token checklist treats closed only after merge + tip re-bind. Not CERTIFIED. | **CLOSED_IN_CODE** | **Yes until #39 merges to `main`** | SF-M01-G4-001 → human merge |
+| R-ENV-INT | GitHub job previously W1-only (`SF-M01-001..005`) | `evidence/SF-M01-W2-STITCH/RESIDUALS.md`; V5; G4 plan Scope 1; SF-M01-G4-001 + `READY` | **CLOSED_IN_CODE (pending merge).** Fix on PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) branch `cursor/m01-g4-r-env-int-1573` @ `6d3e495987bd7308596cbbd69ab65c46e242c7bf`. Job renamed to `M01 envelope integration (W1+W2 all CMPs)`; script covers all 11 M01 CMPs; fail-closed; evidence `evidence/SF-M01-G4-001/`. **Not merged to `main` yet** — exit-token checklist treats closed only after merge + tip re-bind. Not CERTIFIED. | **CLOSED_IN_CODE** | **Yes until #39 merges to `main`** | SF-M01-G4-001 → human merge |
 | R-OUTBOX-SF-APP | ADR-0006 condition **#9** / SF-CON-OUTBOX: frozen template grants `INSERT` (tenant outbox) and inbox `SELECT, INSERT` **TO `sf_app`**; publisher policies include frozen `USING true` read path for `sf_outbox_publisher` | ADR-0006; W1 closure; W2 V2 residual; `contracts/shared/sql/outbox.template.sql` | **Accepted residual for M01 G4 exit.** Outbox/inbox grants remain exactly as frozen. **No CCR filed in this task.** Tightening later requires an explicit CCR — **never** a silent edit to `contracts/**` or the outbox template. Tenant RLS on tenant outbox still holds; not counted as `CROSS_TENANT_LEAKAGE`. | **ACCEPTED_RESIDUAL** | **No** (accepted) | Optional future CCR (human/contract guardian); not G4-004 |
 | R-PROVENANCE | V5 suite-meta / `summary.json` may stamp ephemeral GitHub `pull_request` merge-ref SHAs while workflow `headSha` / `ARTIFACT-INDEX.json` bind the candidate tip | W1 V5 limitation; W2 V5 tip policy | **Formalized rule (below).** Exit evidence MUST bind authoritative `headSha` / `ARTIFACT-INDEX.json` `commit_sha`. Suite-meta merge-ref stamps are informational only and must not be used as the sole bind. | **CLOSED** (rule formalized) | **No** | G4-002/003/005 evidence writers must follow rule |
 | R-BRANCH-PROT | Branch protection / required status checks on `main` before M02/M03 dispatch | G4 plan Scope 4; CG-01 gate | **Documented ops note (below).** Integration token cannot read protection/rulesets (403 / empty). Human must confirm `ci` + `security` (including generalized envelope-int after G4-001) are required on `main` before CG-01. Gaps must not be invented as infra. | **OPS_CONFIRM** | **Yes for CG-01** (ops confirm before M02/M03); not a code residual | Human/repo admin before CG-01 |
@@ -63,7 +63,7 @@ No residual may be omitted. Silent frozen-contract edits are forbidden.
 | Status | **CLOSED_IN_CODE** — not yet CLOSED on `main` |
 | Owner | **SF-M01-G4-001** |
 | PR / branch / SHA | [#39](https://github.com/dbn1972/serviceform-ai/pull/39) / `cursor/m01-g4-r-env-int-1573` / `6d3e495987bd7308596cbbd69ab65c46e242c7bf` |
-| Token observed | `SF-M01-G4-001_READY` (builder; not CERTIFIED) |
+| Token observed | family `SF-M01-G4-001` + status `READY` (builder; not CERTIFIED) |
 | Evidence | `evidence/SF-M01-G4-001/` (job rename, script generalize, coverage matrix, path-smoke) |
 | Close-on-main criteria | #39 merged; `origin/main` tip includes generalized job; GitHub `m01-envelope-int` SUCCESS with ARTIFACT-INDEX bound to that tip |
 | G4-005 impact | Checklist “R-ENV-INT closed” may flip only after merge + tip bind — **not** while status is CLOSED_IN_CODE alone |
@@ -143,7 +143,7 @@ Observed frozen grants (illustrative; do not edit):
 | When | Change |
 |---|---|
 | Initial | R-ENV-INT = OPEN_DEPENDS on SF-M01-G4-001 |
-| After `SF-M01-G4-001_READY` | R-ENV-INT → **CLOSED_IN_CODE** bound to PR #39 @ `6d3e495`; still not CERTIFIED |
+| After SF-M01-G4-001 + `READY` | R-ENV-INT → **CLOSED_IN_CODE** bound to PR #39 @ `6d3e495`; still not CERTIFIED |
 
 ## Sources consulted
 

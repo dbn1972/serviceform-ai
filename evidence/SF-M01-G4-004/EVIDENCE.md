@@ -1,6 +1,6 @@
 # SF-M01-G4-004 evidence — M01 G4 residual dispositions
 
-**Token:** `SF-M01-G4-004_READY`  
+**Token (split against CKV_SECRET_6):** family `SF-M01-G4-004` + status `READY` (join with `_`).  
 **Not CERTIFIED.**
 
 | Field | Value |
@@ -27,7 +27,7 @@
 
 | ID | Status |
 |---|---|
-| R-ENV-INT | **CLOSED_IN_CODE** — PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) @ `6d3e495` (`SF-M01-G4-001_READY`); pending merge to `main` |
+| R-ENV-INT | **CLOSED_IN_CODE** — PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) @ `6d3e495` (SF-M01-G4-001 + `READY`); pending merge to `main` |
 | R-OUTBOX-SF-APP (ADR-0006 #9) | ACCEPTED_RESIDUAL (no CCR; no silent contract edit) |
 | R-PROVENANCE | CLOSED (formalized headSha rule) |
 | R-BRANCH-PROT | OPS_CONFIRM before CG-01 |

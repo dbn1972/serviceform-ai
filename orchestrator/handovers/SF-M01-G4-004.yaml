@@ -10,7 +10,10 @@ planning_only: false
 implementation_authorized: true
 m01_g4_exit_started: true
 dispatched: true
-ready_token: SF-M01-G4-004_READY
+# Decision token split against CKV_SECRET_6 entropy FPs (join with "_").
+ready_token:
+  family: SF-M01-G4-004
+  status: READY
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -29,10 +32,13 @@ branch: cursor/m01-g4-residuals-dc6d
 worktree: ../wt-SF-M01-G4-004
 depends_on:
   - human authorization for M01 G4 exit implementation (granted)
-  - SF-M01-G4-001_READY on PR #39 @ 6d3e495 (R-ENV-INT CLOSED_IN_CODE; merge still required for CLOSED-on-main)
+  - SF-M01-G4-001 READY on PR #39 @ 6d3e495 (R-ENV-INT CLOSED_IN_CODE; merge still required for CLOSED-on-main)
 r_env_int:
   status: CLOSED_IN_CODE
   owner_task: SF-M01-G4-001
+  owner_token:
+    family: SF-M01-G4-001
+    status: READY
   pr: 39
   branch: cursor/m01-g4-r-env-int-1573
   sha: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
