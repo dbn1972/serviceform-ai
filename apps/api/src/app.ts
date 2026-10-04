@@ -5,6 +5,7 @@ import { observabilityPlugin } from '@serviceform/cmp-047-observability';
 import type { Logger } from '@serviceform/observability';
 import Fastify, { type FastifyBaseLogger, type FastifyInstance, LogController } from 'fastify';
 import type { AppConfig } from './config.js';
+import { registerM02Plugins, type M02PluginMounts } from './composition/m02.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -26,6 +27,11 @@ export interface AppDependencies {
    * Wave 2 component plugin mounts (CMP-003/030/032). Same optional wiring as wave1.
    */
   wave2?: Wave2PluginMounts;
+  /**
+   * M02 component plugin mounts (CMP-004/005). Optional; tests supply doubles.
+   * M03 catalogue/studio mounts are owned by SF-M03-008 and are not registered here.
+   */
+  m02?: M02PluginMounts;
 }
 
 /**
@@ -92,6 +98,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('wave2Mounted', [] as string[]);
   }
 
+  if (deps.m02) {
+    const mounted = await registerM02Plugins(app, deps.m02);
+    app.decorate('m02Mounted', mounted);
+  } else {
+    app.decorate('m02Mounted', [] as string[]);
+  }
+
   return app;
 }
 
@@ -99,5 +112,6 @@ declare module 'fastify' {
   interface FastifyInstance {
     wave1Mounted: string[];
     wave2Mounted: string[];
+    m02Mounted: string[];
   }
 }
