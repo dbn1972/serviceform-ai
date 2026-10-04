@@ -1,0 +1,45 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-009 Forms Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.forms.events.v1": {
+      "address": "sf.forms.events.v1",
+      "messages": {
+        "FormValidated": {
+          "payload": { "$ref": "#/components/schemas/FormValidated" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FormValidated": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "execution_id",
+          "form_key",
+          "version_id",
+          "content_hash",
+          "result_code",
+          "error_count",
+          "data_hash",
+          "locale"
+        ],
+        "properties": {
+          "execution_id": { "type": "string", "format": "uuid" },
+          "form_key": { "type": "string" },
+          "version_id": { "type": "string", "format": "uuid" },
+          "content_hash": { "type": "string" },
+          "result_code": { "type": "string", "enum": ["VALID", "INVALID"] },
+          "error_count": { "type": "integer" },
+          "data_hash": { "type": "string" },
+          "locale": { "type": "string" }
+        }
+      }
+    }
+  }
+}

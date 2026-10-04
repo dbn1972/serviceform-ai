@@ -1,0 +1,24 @@
+{
+  "name": "@serviceform/cmp-009-dynamic-forms",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-009 Dynamic Forms Engine (JSON Schema runtime, UX4G renderer compatibility)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "11.2.0",
+    "@serviceform/contracts": "workspace:*",
+    "fastify": "5.12.5",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

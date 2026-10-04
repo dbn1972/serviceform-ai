@@ -1,0 +1,44 @@
+[
+  {
+    "entity": "sf_forms.form_definition_snapshot",
+    "owner_component": "CMP-009",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_forms.form_execution_record",
+    "owner_component": "CMP-009",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_forms.idempotency_record",
+    "owner_component": "CMP-009",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_forms.outbox_event",
+    "owner_component": "CMP-009",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_forms.outbox_event_platform",
+    "owner_component": "CMP-009",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_forms.inbox_event",
+    "owner_component": "CMP-009",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_forms.inbox_event_platform",
+    "owner_component": "CMP-009",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]

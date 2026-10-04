@@ -1,5 +1,5 @@
-# M04 READY envelope — CMP-009 Dynamic Forms Engine
-# READY. Not dispatched. Not CERTIFIED. LOCK-5 Wave B after 008+011 and STITCH-A on main.
+# M04 builder handover — CMP-009 Dynamic Forms Engine
+# Implementation candidate. Not dispatched. Not CERTIFIED. Not G6. M05 OFF.
 task_id: SF-M04-005
 title: Dynamic Forms Engine
 module_id: M04
@@ -13,62 +13,30 @@ requirement_ids:
 agent_role: component_builder
 builder_agent: serviceform-forms-rules-builder
 model_route: sonnet
-model_release: claude-sonnet-5-5
 effort: high
-verifier_model_route: opus
-branch: agent/M04-forms-SF-M04-005
-worktree: ../wt-SF-M04-005
+branch: cursor/m04-forms-sf-m04-005-a1bc
 parallel_group: M04-B
 privilege_role: sf_cmp009_rw
 schema: sf_forms
 hard_serial_locks: [LOCK-4, LOCK-5]
-depends_on:
-  - SF-M04-STITCH-A on origin/main
-  - SF-M04-002 CMP-008 on main
-  - SF-M04-003 CMP-011 on main
-  - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
   - services/cmp-009-dynamic-forms/**
   - db/migrations/*_cmp-009-*.sql
   - evidence/SF-M04-005/**
   - orchestrator/handovers/SF-M04-005.yaml
-allowed_write_notes:
-  - JSON Forms is schema/runtime only; UX4G-backed renderers
-  - Do not fork packages/ui-ux4g primitives
-  - Do not commit pnpm-lock.yaml
-  - Conditional visibility from metadata; no named-service UI
-read_only_paths:
-  - pnpm-lock.yaml
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - packages/ui-ux4g/**
-  - apps/web-studio/**
-  - apps/web-citizen/**
-  - apps/api/**
-  - services/cmp-008-rules/**
-  - services/cmp-011-evidence-requirements/**
-  - services/cmp-054-ux4g/**
-wave_eligible_now: false
-serial_after:
-  - SF-M04-STITCH-A
-  - SF-M04-002
-  - SF-M04-003
-builders_dispatched_this_envelope: false
-planning_only: false
 implementation_authorized: true
 dispatched: false
 orchestration_task_state: READY
-state: READY
+state: IMPLEMENTATION_CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
-ccr_required: false
+not_g6: true
+m05: OFF
 frozen_contracts_altered: false
-base_commit:
-  prefix: df6a4af1
-  suffix: fc7c300616b59a34cf363db80be642e4
-join_separator: "_"
+ccr_required: false
+base_commit: 2db721feb1303385a0c50c79de8629b2478064d9
 contract_locks:
   - SF-CON-COMMON
   - SF-CON-REQUEST-CONTEXT
@@ -83,18 +51,37 @@ contract_locks:
   - SF-CON-OUTBOX
   - SF-CON-CONNECTOR-BINDING
   - SF-CON-SIMULATION-MARKER
-stop_conditions:
-  - FROZEN contract change required (CCR)
-  - statutory / policy invention required
-  - LLM final statutory eligibility/approval/rejection
-  - write outside allowed_write_paths
-  - dependency on unmerged sibling M04 code as source of truth
-  - builder dispatch without uniqueness PASS / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - M05 start
-  - weaken cg01_path_uniqueness_gate.py
 
-acceptance_tests_planning:
-  - Schema/UI-schema validation without second design system
-  - Accessibility/keyboard semantics via UX4G renderers
+completed_work:
+  - JSON Schema form runtime; UI-schema interpretation; conditional visibility; required-field evaluation
+  - Server-side authoritative POST /v1/executions; interpretations are not authoritative
+  - Published/version-pinned execution; unpublished and pin mismatch fail closed (SF-FORM-001)
+  - Localization via LocalizationPort (CMP-053 contract); no SQL into CMP-053
+  - UX4G renderer ids compatible with packages/ui-ux4g; no second design system; no UX4G fork
+  - ADR-0006: sf_cmp009_rw NOLOGIN; FORCE RLS; PUBLIC revoked; runtime not owner
   - Host mount deferred to SF-M04-007
+  - pnpm-lock.yaml not committed
+
+unresolved_work:
+  - EXPECTED_STITCH_B_LOCKFILE_RESIDUAL (new workspace importer)
+  - Independent STITCH-B / INT / SEC / EVD not started
+  - Host mount SF-M04-007 not started
+  - Do not consume SF-M04-006 as source of truth
+
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759530500000_cmp-009-forms.sql
+  - db/migrations/1759530500001_cmp-009-outbox.sql
+
+blockers: []
+risks:
+  - Isolated builder CI red only at pnpm install --frozen-lockfile until STITCH-B admits the importer
+
+evidence:
+  - evidence/SF-M04-005/EVIDENCE.md
+  - evidence/SF-M04-005/summary.json
+  - evidence/SF-M04-005/junit/unit.xml
+  - evidence/SF-M04-005/junit/integration.xml
+  - evidence/SF-M04-005/logs/gates.log
+
+recommended_gate: IMPLEMENTATION_CANDIDATE

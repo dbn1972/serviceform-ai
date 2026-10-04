@@ -1,0 +1,121 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-009 Dynamic Forms Engine",
+    "version": "0.1.0",
+    "description": "JSON Schema form runtime with UI-schema interpretation, conditional visibility, required-field evaluation and server-side authoritative validation of pinned published FORM metadata. JSON Forms is schema/runtime only; UX4G renderer ids are compatibility metadata. Host mount deferred to SF-M04-007. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/interpretations": {
+      "post": {
+        "operationId": "interpretForm",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["form", "locale"],
+                "properties": {
+                  "form": { "$ref": "#/components/schemas/FormPin" },
+                  "data": { "type": "object" },
+                  "locale": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Interpreted UI schema (not authoritative)" },
+          "401": { "description": "Authentication required" },
+          "403": { "description": "Denied" },
+          "404": { "description": "Form not found" },
+          "409": { "description": "Unpublished or pin mismatch (SF-FORM-001)" }
+        }
+      }
+    },
+    "/v1/executions": {
+      "post": {
+        "operationId": "validateForm",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["form", "data", "purpose_code", "locale"],
+                "properties": {
+                  "form": { "$ref": "#/components/schemas/FormPin" },
+                  "data": { "type": "object" },
+                  "purpose_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "locale": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Authoritative VALID execution recorded" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Authentication required" },
+          "403": { "description": "Denied (authorization or cross-tenant)" },
+          "404": { "description": "Form not found for tenant" },
+          "409": { "description": "Unpublished, pin mismatch, or idempotency conflict" },
+          "422": { "description": "Form schema validation failed (SF-FORM-002)" },
+          "429": { "description": "Rate limit exceeded" },
+          "503": { "description": "Form source or localization unavailable" }
+        }
+      }
+    },
+    "/v1/executions/{id}": {
+      "get": {
+        "operationId": "getFormExecution",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Execution" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FormPin": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["form_key", "version_id", "content_hash"],
+        "properties": {
+          "form_key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]{1,127}$"
+          },
+          "version_id": { "type": "string", "format": "uuid" },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
