@@ -1,0 +1,43 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-030 Consent and Privacy Events",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "sf.consent-privacy.events.v1": {
+      "address": "sf.consent-privacy.events.v1",
+      "messages": {
+        "ConsentGranted": { "$ref": "#/components/messages/ConsentGranted" },
+        "ConsentWithdrawn": { "$ref": "#/components/messages/ConsentWithdrawn" },
+        "PrivacyNoticeUpdated": { "$ref": "#/components/messages/PrivacyNoticeUpdated" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "$ref": "#/components/messages/AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "ConsentGranted": {
+        "name": "ConsentGranted",
+        "payload": { "$ref": "./events/consent-granted.data.schema.json" }
+      },
+      "ConsentWithdrawn": {
+        "name": "ConsentWithdrawn",
+        "payload": { "$ref": "./events/consent-withdrawn.data.schema.json" }
+      },
+      "PrivacyNoticeUpdated": {
+        "name": "PrivacyNoticeUpdated",
+        "payload": { "$ref": "./events/privacy-notice-updated.data.schema.json" }
+      },
+      "AuditEventSubmitted": {
+        "name": "AuditEventSubmitted",
+        "payload": { "type": "object" }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-030/consent-withdrawn.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["consent_id", "subject_id", "purpose_id", "withdrawn_at", "reason_code"],
+  "properties": {
+    "consent_id": { "type": "string", "format": "uuid" },
+    "subject_id": { "type": "string", "format": "uuid" },
+    "purpose_id": { "type": "string", "format": "uuid" },
+    "withdrawn_at": { "type": "string", "format": "date-time" },
+    "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-030/consent-granted.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "consent_id",
+    "subject_id",
+    "purpose_id",
+    "representation_basis",
+    "channel",
+    "granted_at"
+  ],
+  "properties": {
+    "consent_id": { "type": "string", "format": "uuid" },
+    "subject_id": { "type": "string", "format": "uuid" },
+    "purpose_id": { "type": "string", "format": "uuid" },
+    "notice_id": { "type": ["string", "null"], "format": "uuid" },
+    "representation_basis": { "type": "string", "enum": ["SELF", "ASSISTED", "LEGAL_REP"] },
+    "channel": { "type": "string", "enum": ["WEB", "COUNTER", "API"] },
+    "granted_at": { "type": "string", "format": "date-time" }
+  }
+}
