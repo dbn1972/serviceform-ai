@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="18" failures="0" errors="0" time="0.216388834">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T07:28:06.014Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.068277982">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-001 component contracts &gt; parses OpenAPI and AsyncAPI JSON with catalogue interfaces" time="0.001721438">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-001 component contracts &gt; validates isolation declarations" time="0.048405075">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-001 component contracts &gt; validates domain event envelopes and audit" time="0.015887965">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-001 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.000548344">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-001 component contracts &gt; schema migration declares isolation and privilege role without hard-coded names" time="0.000325936">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-04T07:28:06.016Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.004643423">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; accepts generic codes without named geography or services" time="0.001385247">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; fingerprints requests canonically" time="0.000665837">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; rejects tenant-identifying headers" time="0.000164822">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; validates UUID shape without ambiguous regex quantifiers" time="0.000230481">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; refuses published-pin mutation and client tenant fields" time="0.000862674">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-001 domain &gt; INT-013 fail-closed on production critical SIMULATED" time="0.000301914">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-04T07:28:06.016Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.143467429">
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; refuses to boot when a critical connector is SIMULATED in PRODUCTION" time="0.005288763">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; denies missing auth and forged tenant headers" time="0.044721569">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; creates category and canonical service as privileged admin" time="0.054545596">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; refuses privileged catalogue writes without MFA" time="0.001404828">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; creates tenant offering, version, binding; rejects client tenant and pin" time="0.008682689">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; fail-closes PDP timeout and OPA deny" time="0.000898156">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; replays identical idempotency keys" time="0.001849404">
+        </testcase>
+    </testsuite>
+</testsuites>

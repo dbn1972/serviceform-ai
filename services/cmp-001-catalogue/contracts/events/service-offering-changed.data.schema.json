@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["change", "offering_id", "version_no"],
+  "properties": {
+    "change": { "type": "string", "enum": ["CREATED", "VERSIONED"] },
+    "offering_id": { "type": "string", "format": "uuid" },
+    "offering_code": { "type": "string" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string" }
+  }
+}

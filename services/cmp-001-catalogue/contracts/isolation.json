@@ -1,0 +1,56 @@
+{
+  "entities": [
+    {
+      "entity": "sf_catalogue.category",
+      "owner_component": "CMP-001",
+      "isolation_class": "GLOBAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "National canonical category taxonomy; no tenant payload."
+    },
+    {
+      "entity": "sf_catalogue.canonical_service",
+      "owner_component": "CMP-001",
+      "isolation_class": "GLOBAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "Canonical service identity shared for discovery; no tenant payload."
+    },
+    {
+      "entity": "sf_catalogue.canonical_service_version",
+      "owner_component": "CMP-001",
+      "isolation_class": "GLOBAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "Insert-only canonical descriptor versions."
+    },
+    {
+      "entity": "sf_catalogue.offering",
+      "owner_component": "CMP-001",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_catalogue.offering_version",
+      "owner_component": "CMP-001",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_catalogue.offering_binding",
+      "owner_component": "CMP-001",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_catalogue.idempotency_record",
+      "owner_component": "CMP-001",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_catalogue.idempotency_record_platform",
+      "owner_component": "CMP-001",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "Privileged admin idempotency keyed by actor, not tenant."
+    }
+  ]
+}

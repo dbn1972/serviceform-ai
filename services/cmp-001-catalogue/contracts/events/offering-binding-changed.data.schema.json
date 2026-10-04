@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["change", "binding_id", "offering_id"],
+  "properties": {
+    "change": { "type": "string", "enum": ["CREATED"] },
+    "binding_id": { "type": "string", "format": "uuid" },
+    "offering_id": { "type": "string", "format": "uuid" },
+    "jurisdiction_ref": { "type": "string" },
+    "target_type": { "type": "string" }
+  }
+}

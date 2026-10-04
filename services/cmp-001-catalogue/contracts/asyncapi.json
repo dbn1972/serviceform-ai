@@ -1,0 +1,39 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-001 Catalogue Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.catalogue.events.v1": {
+      "address": "sf.catalogue.events.v1",
+      "messages": {
+        "CanonicalServiceChanged": { "$ref": "#/components/messages/CanonicalServiceChanged" },
+        "ServiceOfferingChanged": { "$ref": "#/components/messages/ServiceOfferingChanged" },
+        "OfferingBindingChanged": { "$ref": "#/components/messages/OfferingBindingChanged" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "CanonicalServiceChanged": {
+        "name": "CanonicalServiceChanged",
+        "payload": { "$ref": "./events/canonical-service-changed.data.schema.json" }
+      },
+      "ServiceOfferingChanged": {
+        "name": "ServiceOfferingChanged",
+        "payload": { "$ref": "./events/service-offering-changed.data.schema.json" }
+      },
+      "OfferingBindingChanged": {
+        "name": "OfferingBindingChanged",
+        "payload": { "$ref": "./events/offering-binding-changed.data.schema.json" }
+      }
+    }
+  }
+}
