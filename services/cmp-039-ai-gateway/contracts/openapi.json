@@ -1,0 +1,449 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-039 AI Gateway",
+    "version": "0.1.0",
+    "description": "All model/provider calls pass through this gateway (AI-GOVERNANCE.md). Responses are advisory only; the gateway never issues a statutory eligibility, approval, rejection, penalty or entitlement decision. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/ai/invoke": {
+      "post": {
+        "operationId": "aiInvoke",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvokeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Advisory output",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvokeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Denied: unapproved model/provider, classification, purpose, source ACL, tool, or cross-tenant"
+          },
+          "409": {
+            "description": "Idempotency conflict"
+          },
+          "422": {
+            "description": "Unsafe or non-advisory output blocked"
+          },
+          "429": {
+            "description": "Rate, token or cost budget exceeded"
+          },
+          "503": {
+            "description": "Provider unavailable (see fallback_behavior)"
+          }
+        }
+      }
+    },
+    "/v1/ai/embed": {
+      "post": {
+        "operationId": "aiEmbed",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmbedRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Embeddings"
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Denied: unapproved model/provider, classification, purpose, source ACL, tool, or cross-tenant"
+          },
+          "409": {
+            "description": "Idempotency conflict"
+          },
+          "422": {
+            "description": "Unsafe or non-advisory output blocked"
+          },
+          "429": {
+            "description": "Rate, token or cost budget exceeded"
+          },
+          "503": {
+            "description": "Provider unavailable (see fallback_behavior)"
+          }
+        }
+      }
+    },
+    "/v1/ai/models/capabilities": {
+      "get": {
+        "operationId": "aiModelCapabilities",
+        "responses": {
+          "200": {
+            "description": "Tenant-approved, version-pinned models"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Denied"
+          }
+        }
+      }
+    },
+    "/v1/ai/admin/models": {
+      "post": {
+        "operationId": "registerAiModel",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pinned model registered"
+          },
+          "400": {
+            "description": "Floating model version or invalid limits"
+          },
+          "403": {
+            "description": "Denied"
+          }
+        }
+      }
+    },
+    "/v1/ai/admin/models/{id}/revoke": {
+      "post": {
+        "operationId": "revokeAiModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Revoked"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/v1/ai/admin/policies": {
+      "post": {
+        "operationId": "registerAiPolicy",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Immutable policy version registered"
+          },
+          "400": {
+            "description": "Statutory decision task kind, sensitive template content, floating or invalid fields"
+          },
+          "403": {
+            "description": "Model not approved"
+          }
+        }
+      }
+    },
+    "/v1/ai/admin/policies/{policyId}/versions/{version}/retire": {
+      "post": {
+        "operationId": "retireAiPolicy",
+        "parameters": [
+          {
+            "name": "policyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retired"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ModelPin": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["provider_id", "model_id", "model_version"],
+        "properties": {
+          "provider_id": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "model_version": {
+            "type": "string",
+            "description": "Exact pinned version; floating tags are rejected."
+          }
+        }
+      },
+      "ContextSource": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "tenant_id"],
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "InvokeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_id", "policy_version", "purpose", "data_classification"],
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "data_classification": {
+            "enum": ["PUBLIC", "INTERNAL", "PERSONAL", "SENSITIVE"]
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelPin"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContextSource"
+            }
+          },
+          "caller_component": {
+            "type": "string",
+            "pattern": "^CMP-0[0-9]{2}$"
+          },
+          "variables": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["tool_id", "version"],
+              "properties": {
+                "tool_id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "scopes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "EmbedRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_id", "policy_version", "purpose", "data_classification", "inputs"],
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "purpose": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "data_classification": {
+            "enum": ["PUBLIC", "INTERNAL", "PERSONAL", "SENSITIVE"]
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelPin"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContextSource"
+            }
+          },
+          "caller_component": {
+            "type": "string",
+            "pattern": "^CMP-0[0-9]{2}$"
+          },
+          "inputs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 16,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "InvokeResponse": {
+        "type": "object",
+        "required": [
+          "request_id",
+          "model",
+          "output_text",
+          "usage",
+          "advisory_only",
+          "statutory_decision"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelPin"
+          },
+          "output_text": {
+            "type": "string",
+            "description": "Redacted model output"
+          },
+          "usage": {
+            "type": "object"
+          },
+          "fallback_used": {
+            "type": "boolean"
+          },
+          "advisory_only": {
+            "const": true
+          },
+          "statutory_decision": {
+            "const": false
+          },
+          "simulation": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}
