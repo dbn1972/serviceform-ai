@@ -1,0 +1,99 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-011 Evidence Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.evidence.events.v1": {
+      "address": "sf.evidence.events.v1",
+      "messages": {
+        "EvidencePolicyCreated": {
+          "payload": {
+            "$ref": "#/components/schemas/PolicyLifecycle"
+          }
+        },
+        "EvidencePolicyUpdated": {
+          "payload": {
+            "$ref": "#/components/schemas/PolicyLifecycle"
+          }
+        },
+        "EvidencePolicyPublished": {
+          "payload": {
+            "$ref": "#/components/schemas/PolicyLifecycle"
+          }
+        },
+        "EvidenceRequirementsResolved": {
+          "payload": {
+            "$ref": "#/components/schemas/RequirementsResolved"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PolicyLifecycle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_id", "policy_key", "content_hash", "status"],
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_key": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "version_ref": {
+            "type": "string"
+          }
+        }
+      },
+      "RequirementsResolved": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "resolution_id",
+          "binding_id",
+          "version_ref",
+          "policy_content_hash",
+          "decision_hash",
+          "complete",
+          "simulation"
+        ],
+        "properties": {
+          "resolution_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "binding_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version_ref": {
+            "type": "string"
+          },
+          "policy_content_hash": {
+            "type": "string"
+          },
+          "decision_hash": {
+            "type": "string"
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "simulation": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
