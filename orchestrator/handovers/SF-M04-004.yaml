@@ -95,3 +95,20 @@ acceptance_tests_planning:
   - Virus/type/size policy fail-closed
   - No network calls inside authoritative DB transactions
   - Host mount deferred to SF-M04-007
+
+# Builder handover (SF-M04-004). Envelope keys above are unchanged (READY, dispatched false).
+builder_handover:
+  status: DEVELOP_COMPLETE_PENDING_VERIFY
+  branch: cursor/sf-m04-004-document-upload-6404
+  pull_request: 72
+  base: { prefix: 9ccc2b02, suffix: f8ef64a0987b0c4793137511545ed3f7 }
+  implementation_commit: { prefix: 12c4bf92, suffix: e511ddc7c233ac824ad05bcc5f004227 }
+  evidence: evidence/SF-M04-004/EVIDENCE.md
+  frozen_contracts_altered: false
+  lockfile_modified: false
+  residuals:
+    - pnpm-lock.yaml importer for @serviceform/cmp-013-document-upload owned by SF-M04-STITCH-A
+    - host mount and scan-worker wiring owned by SF-M04-007
+    - REAL object store requires ADR-STORAGE-INFRA
+  self_certified: false
+  certified: false
