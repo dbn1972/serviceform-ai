@@ -1,44 +1,41 @@
-# CG-01 M02 / M03 envelope summary (PLANNING ONLY)
+# CG-01 M02 / M03 envelope summary (READY, not dispatched)
 
-Not READY. `planning_only: true`. `implementation_authorized: false`. `base_commit` = `cc49843eb70246842f5ea3c1c16257a5450432a2`. Not CERTIFIED.
+`planning_only: false`. `implementation_authorized: true`. `state: READY`.  
+`base_commit` prefix `8613d0ec` + suffix `844e189191a782753c30c65871756048`. Not CERTIFIED. Builders OFF.
 
-Machine-readable copies: `orchestrator/handovers/SF-M02-*.yaml`, `orchestrator/handovers/SF-M03-*.yaml`. Plan: `docs/planning/CG-01-M02-M03-PLAN.md`.
+Machine-readable copies: `orchestrator/handovers/SF-M02-*.yaml`, `orchestrator/handovers/SF-M03-*.yaml`, and `orchestrator/tasks/` mirrors. Plan: `docs/planning/CG-01-M02-M03-PLAN.md`. Promote: `docs/planning/CG-01-PROMOTE-READY.md`.
+
+## Wave A eligible now
+
+SF-M02-001, SF-M02-002, SF-M03-001, SF-M03-002, SF-M03-003, SF-M03-005, SF-M03-006.
+
+## Sequencing (not Wave A now)
+
+- SF-M03-004 after SF-M03-002 (metadata).
+- SF-M03-007 after SF-M03-002 / SF-M03-004 / SF-M03-006.
+- **Hard serial:** SF-M02-003 never concurrent with SF-M03-008 (`apps/api/src/app.ts` single-writer; `must_not_run_concurrent_with`).
 
 ## M02
 
-| ID | CMP / purpose | Writes | Agent | Route |
-|---|---|---|---|---|
-| SF-M02-001 | CMP-004 Identity & Access | `services/cmp-004-identity-access/**`, `db/migrations/*_cmp-004-*.sql` | foundation | opus high |
-| SF-M02-002 | CMP-005 Citizen Profile | `services/cmp-005-citizen-profile/**`, `db/migrations/*_cmp-005-*.sql` | foundation | opus high |
-| SF-M02-003 | API host M02 mounts | `apps/api` composition `m02` + serialized `app.ts` | foundation | opus high |
-| SF-M02-INT | INT-001 stitch | `tests/integration/m02/**` | stitcher | opus high |
-| SF-M02-SEC | isolation/PII | `tests/security/m02/**` | security | opus xhigh |
-| SF-M02-EVD | evidence | `docs/verification/M02-*`, `evidence/**` bind | evidence | opus high |
-
-INT: INT-001 (own), INT-011/013 (re-verify). Exit later: G3.
+| ID | CMP / purpose | Writes | Wave |
+|---|---|---|---|
+| SF-M02-001 | CMP-004 Identity & Access | `services/cmp-004-identity-access/**`, `db/migrations/*_cmp-004-*.sql` | A now |
+| SF-M02-002 | CMP-005 Citizen Profile | `services/cmp-005-citizen-profile/**`, `db/migrations/*_cmp-005-*.sql` | A now |
+| SF-M02-003 | API host M02 mounts | composition `m02` + serialized `app.ts` | HOST serial vs SF-M03-008 |
+| SF-M02-INT / SEC / EVD | verifiers | module-scoped tests/evidence | after host |
 
 ## M03
 
-| ID | CMP / purpose | Writes | Agent | Route |
-|---|---|---|---|---|
-| SF-M03-001 | CMP-001 Catalogue | `services/cmp-001-catalogue/**` | studio | sonnet high |
-| SF-M03-002 | CMP-033 Metadata | `services/cmp-033-metadata/**` | studio | sonnet high |
-| SF-M03-003 | CMP-034 Master data | `services/cmp-034-master-data/**` | studio | sonnet high |
-| SF-M03-004 | CMP-051 + CMP-052 publish/version | `services/cmp-051-maker-checker/**`, `services/cmp-052-versioning/**` | studio | opus high |
-| SF-M03-005 | CMP-053 Localization | `services/cmp-053-localization/**` | studio | sonnet medium |
-| SF-M03-006 | CMP-054 UX4G | `packages/ui-ux4g/**`, `apps/mobile/lib/ux4g/**` | ux4g | sonnet high |
-| SF-M03-007 | CMP-050 Studio/admin | `apps/web-studio/**`, `apps/web-admin/**`, `services/cmp-050-studio-portal/**` | studio | sonnet high |
-| SF-M03-008 | API host M03 mounts | `apps/api` composition `m03` + serialized `app.ts` | foundation | opus high |
-| SF-M03-INT | INT-002 stitch | `tests/integration/m03/**` | stitcher | opus high |
-| SF-M03-SEC | publish/admin isolation | `tests/security/m03/**` | security | opus xhigh |
-| SF-M03-EVD | evidence | `docs/verification/M03-*` | evidence | opus high |
+| ID | CMP / purpose | Writes | Wave |
+|---|---|---|---|
+| SF-M03-001 | CMP-001 Catalogue | `services/cmp-001-catalogue/**` | A now |
+| SF-M03-002 | CMP-033 Metadata | `services/cmp-033-metadata/**` | A now |
+| SF-M03-003 | CMP-034 Master data | `services/cmp-034-master-data/**` | A now |
+| SF-M03-004 | CMP-051 + CMP-052 | maker-checker + versioning | after 002 |
+| SF-M03-005 | CMP-053 Localization | `services/cmp-053-localization/**` | A now |
+| SF-M03-006 | CMP-054 UX4G | `packages/ui-ux4g/**`, `apps/mobile/lib/ux4g/**` | A now |
+| SF-M03-007 | CMP-050 Studio/admin | studio + admin apps | after 002/004/006 |
+| SF-M03-008 | API host M03 mounts | composition `m03` + serialized `app.ts` | HOST serial vs SF-M02-003 |
+| SF-M03-INT / SEC / EVD | verifiers | module-scoped tests/evidence | after host |
 
-INT: INT-002 (own), INT-011/013 (re-verify). Exit later: G3.
-
-## CG-01 serialization
-
-- SF-M02-003 ∥ SF-M03-008 is **forbidden** (shared `apps/api/src/app.ts`).
-- SF-M03-007 after 002, 004, 006.
-- SF-M03-004 after 002 preferred.
-- `pnpm-lock.yaml` orchestrator-only.
-- Frozen 13 contracts unchanged.
+`pnpm-lock.yaml`, `contracts/**`, and `orchestrator/contracts-lock.yaml` are not in builder `allowed_write_paths`.

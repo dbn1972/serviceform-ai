@@ -1,34 +1,35 @@
-# CG-01 plan: M02 ∥ M03 after M01 G4 exit (PLANNING ONLY)
+# CG-01 plan: M02 ∥ M03 after M01 G4 exit (IMPLEMENTATION AUTHORIZED / READY)
 
-**Decision token (split against CKV_SECRET_6):** family `CG01_M02_M03_PLAN` + status `PLANNING` (do **not** join to a `READY` token).  
-**Envelope state:** `PLANNING` / orchestration `PLANNED`. Not READY for implementation. Not dispatched.
+**Decision token (split against CKV_SECRET_6):** family `CG01_M02_M03_IMPL` + status `READY` (do **not** join).  
+**Envelope state:** `READY`. Implementation authorized. **Not dispatched.** See `docs/planning/CG-01-PROMOTE-READY.md`.
 
 | Field | Value |
 |---|---|
 | Concurrency group | CG-01 (`specs/build-plan.yaml`, `specs/agent-orchestration.yaml`) |
 | After | M01 exit gate `G4_SECURITY` + `_` + `VERIFIED` |
 | Parallel modules | M02 Identity and Citizen Profile **∥** M03 Catalogue, Versioning, Tenant Service Binding, Studio, UX4G |
-| Planning baseline | `origin/main` @ `cc49843eb70246842f5ea3c1c16257a5450432a2` |
-| M01 G4 combine | PR [#41](https://github.com/dbn1972/serviceform-ai/pull/41) @ `436c3545cf31bc3a8ba9aaacfcb0b888a168bd90` |
+| Planning baseline (historical) | prefix `cc49843e` + suffix `b70246842f5ea3c1c16257a5450432a2` |
+| Implementation baseline | prefix `8613d0ec` + suffix `844e189191a782753c30c65871756048` |
+| M01 G4 combine | PR [#41](https://github.com/dbn1972/serviceform-ai/pull/41) prefix `436c3545` + suffix `cf31bc3a8ba9aaacfcb0b888a168bd90` |
 | M01 exit token | **issued** (human Debabrata Nayak) family `M01` + `COMPLETE` + `G4_SECURITY` + `VERIFIED` via PR [#43](https://github.com/dbn1972/serviceform-ai/pull/43) |
 | Frozen contracts | **13/13 MATCH** — do not change `contracts/**` or `orchestrator/contracts-lock.yaml` |
 | CERTIFIED / RELEASE CERTIFIED / G6 | **false** |
-| `planning_only` | **true** |
-| `implementation_authorized` | **false** |
-| Builders dispatched | **0** |
+| `planning_only` | **false** |
+| `implementation_authorized` | **true** |
+| Builders dispatched | **0** (this slice does not dispatch) |
 | M02 / M03 started | **false** |
 | M01 Wave 3 feature work | **none** (not invented) |
 | Self-certified | **false** |
 
-Human Debabrata Nayak authorized **this planning pass only**. A later, separate human authorization is required before any envelope may leave `PLANNING` or be marked READY for implementation.
+Human Debabrata Nayak authorized **implementation (promote/rebind first slice)**. Envelopes are READY. Builders remain OFF until a later orchestrator dispatch after uniqueness PASS.
 
 ## 1. Governance sequence (normative)
 
 1. Architecture Constitution (immutable constraints)
 2. Frozen shared contracts (`orchestrator/contracts-lock.yaml`, 13/13 MATCH)
 3. M01 G4 exit token issued (complete)
-4. CG-01 concurrency gate plan + bounded M02/M03 envelopes (this document) — **PLANNING**
-5. **Later, only if a human authorizes implementation:** isolated parallel builders inside write-path isolation
+4. CG-01 concurrency gate plan + bounded M02/M03 envelopes — planning complete
+5. **Human authorized implementation (this promote):** envelopes READY; isolated parallel builders **not dispatched in this slice**
 6. Serialized host mounts (`apps/api/**` single-writer windows)
 7. Independent integration stitch per module (stitcher must not patch owner code)
 8. Independent security verification per module (and INT-011 re-verify for new layers)
@@ -36,7 +37,7 @@ Human Debabrata Nayak authorized **this planning pass only**. A later, separate 
 10. Human / CI gate for each module `G3_INTEGRATION` + `_` + `VERIFIED` (still **not** RELEASE CERTIFIED / G6)
 11. M04 remains blocked until **both** M02 and M03 module exits exist
 
-This planning pass stops at step 4.
+This promote pass completes step 5 (READY + rebind). It does **not** dispatch builders or implement CMP code.
 
 ## 2. Authoritative inputs
 
@@ -54,7 +55,7 @@ This planning pass stops at step 4.
 
 Scheduling source of truth is ADR-0001 / `specs/build-plan.yaml`. Eng v1.4 §12 groupings are not used to re-home components (CMP-052 is **M03 only**).
 
-## 3. Why CG-01 is open (planning)
+## 3. Why CG-01 is READY (not dispatched)
 
 M01 G4 exit preconditions recorded as satisfied for token issuance (not CERTIFIED):
 
@@ -64,16 +65,16 @@ M01 G4 exit preconditions recorded as satisfied for token issuance (not CERTIFIE
 - Frozen **13/13 MATCH**
 - Exit token issued by human (not agent self-issue)
 
-CG-01 therefore **may be planned**. CG-01 **must not** be executed until a later human implementation authorization.
+CG-01 is **implementation-authorized**. Wave A envelopes are eligible. Builders are **not** started by the promote slice.
 
 ## 4. Topology (M02 ∥ M03)
 
 ```text
         [M01 G4 exit token issued — human]
                         |
-        [THIS PASS: CG-01 PLANNING only]
+        [THIS PASS: CG-01 READY promote; builders OFF]
                         |
-        [later human implementation authorization — NOT granted]
+        [human implementation authorization GRANTED — READY, not dispatched]
                         |
         +---------------+----------------+
         |                                |
@@ -101,7 +102,7 @@ CG-01 therefore **may be planned**. CG-01 **must not** be executed until a later
 
 **Recommended coding-agent cap after a later authorization:** 5–8 concurrent builders (topology), mixing M02 and M03 Wave A, then verifiers. Do not start 10–15 until path locks and CI are proven on this pair.
 
-### 4.1 Parallelizable (after later implementation auth)
+### 4.1 Parallelizable (Wave A eligible now)
 
 | Lane | Envelopes | Notes |
 |---|---|---|
@@ -187,7 +188,7 @@ Builders **cannot** self-certify. This planning document **cannot** mark G3.
 | R-INFRA | CARRIED | No REAL Keycloak/SMS/S3/KMS/WAF in this plan; SIMULATED/local |
 | R-COV, R-RUNTIME, R-CMP055-PKG, R-HYGIENE-RATELIMIT, R-BUILDER-JUNIT | CARRIED | Unchanged |
 
-## 9. M02 PLANNING envelopes (not READY)
+## 9. M02 READY envelopes (not dispatched)
 
 Module exit (later): `G3_INTEGRATION` + `_` + `VERIFIED`. Components: CMP-004, CMP-005. Owned INT: INT-001.
 
@@ -200,13 +201,13 @@ Module exit (later): `G3_INTEGRATION` + `_` + `VERIFIED`. Components: CMP-004, C
 | SF-M02-SEC | tenant/authz/PII | security verifier | opus xhigh | M02-VERIFY | after INT or parallel with INT if paths disjoint (`tests/security` vs `tests/integration`) |
 | SF-M02-EVD | evidence bind | evidence verifier | opus high | M02-VERIFY | after INT+SEC |
 
-`base_commit` for every M02 envelope = `cc49843eb70246842f5ea3c1c16257a5450432a2` (prefix `cc49843e` + suffix `b70246842f5ea3c1c16257a5450432a2`).
+`base_commit` for every M02 envelope = prefix `8613d0ec` + suffix `844e189191a782753c30c65871756048` (planning SHA `cc49843e…` is historical only).
 
 Requirement anchors (planning; no statute): Eng v1.4 CMP-004/005; Constitution #6/#7/#11/#21/#24/#28; ADR-0006 `sf_cmp004_rw` / `sf_cmp005_rw`; INT-001; INT-011/013.
 
 **Non-goals:** CMP-012 implementation; REAL Keycloak/SMS; officer statutory roles as policy content; LLM authz decisions.
 
-## 10. M03 PLANNING envelopes (not READY)
+## 10. M03 READY envelopes (not dispatched)
 
 Module exit (later): `G3_INTEGRATION` + `_` + `VERIFIED`. Components: CMP-001, 033, 034, 050, 051, 052, 053, 054. Owned INT: INT-002. Cross-cutting: UX4G 3.0 baseline.
 
@@ -224,7 +225,7 @@ Module exit (later): `G3_INTEGRATION` + `_` + `VERIFIED`. Components: CMP-001, 0
 | SF-M03-SEC | tenant/admin/publish authz | security verifier | opus xhigh | M03-VERIFY | disjoint from INT writes |
 | SF-M03-EVD | evidence bind | evidence verifier | opus high | M03-VERIFY | after INT+SEC |
 
-`base_commit` = same `origin/main` tip as §9.
+`base_commit` = same rebound `origin/main` tip as §9.
 
 Requirement anchors: Eng v1.4 listed CMPs; Constitution published-version immutability / TenantServiceBinding pin; UX4G 3.0; ADR-0006 `sf_cmp001_rw`, `sf_cmp033_rw`, `sf_cmp034_rw`, `sf_cmp051_rw`, `sf_cmp052_rw`, `sf_cmp053_rw` (054 is package-first; no tenant SQL unless an isolation declaration is added).
 
@@ -254,7 +255,7 @@ Requirement anchors: Eng v1.4 listed CMPs; Constitution published-version immuta
 
 **Forbidden for all CG-01 builders:** `contracts/**`, `orchestrator/contracts-lock.yaml`, sibling M01 `services/cmp-002|003|030|031|032|036|037|038|047|048|055-*/**` (consume via packages/ports), `infra/**` new cloud, cross-component SQL, CERTIFIED claims.
 
-Path uniqueness must be re-checked with `python scripts/gates/check_scope.py` before any later dispatch. SF-M02-003 and SF-M03-008 share `apps/api/src/app.ts` — **time-isolated**, not concurrent.
+Path uniqueness is gated by `python scripts/gates/cg01_path_uniqueness_gate.py` (CI architecture-gates). Fail the PR on write-path overlap except documented serial pair SF-M02-003 ↔ SF-M03-008 sharing `apps/api/**` (`must_not_run_concurrent_with`). Also run `python scripts/gates/check_scope.py` per agent branch. `pnpm-lock.yaml` remains orchestrator/stitch owned.
 
 ## 12. Traceability to build-plan milestones
 
@@ -272,23 +273,23 @@ Path uniqueness must be re-checked with `python scripts/gates/check_scope.py` be
 
 | ID | Item | Blocks planning? | Action |
 |---|---|---|---|
-| AUTH-IMPL | Human implementation authorization | N/A (planning done) | **Yes** for builders; remain `implementation_authorized: false` |
+| AUTH-IMPL | Human implementation authorization | Cleared | `implementation_authorized: true` (this promote); dispatch still later |
 | CCR-SHARED-ID | Promote identity/profile schemas to shared freeze | No | Component-local first |
 | ADR-IDP-INFRA | REAL Keycloak / SMS / DigiLocker | No | SIMULATED/local; ADR when REAL required |
 | ADR-DPDP | Statutory privacy/eligibility text | No | Stop + ADR if interpretation required |
 | R-BRANCH-PROT | `main` unprotected from API view | No | OPS residual; optional before impl start |
 | CCR-OUTBOX | Tighten SF-CON-OUTBOX grants | No | Carry ACCEPTED_RESIDUAL |
 
-**No blocking CCR/ADR is required to accept this plan.** Status remains `CG01_M02_M03_PLAN` + `PLANNING`, not READY, not BLOCKED.
+**No blocking CCR/ADR is required.** Status is `CG01_M02_M03_IMPL` + `READY`, not dispatched, not BLOCKED, not CERTIFIED.
 
 If a later builder would need to change a frozen contract, tenant isolation model, or statutory meaning: **STOP** and file CCR/ADR. Do not invent policy.
 
-## 14. Explicit non-goals
+## 14. Explicit non-goals (promote slice)
 
-- No M02/M03 implementation, migrations, or package feature code in this PR
+- No M02/M03 CMP implementation, migrations, or package feature code in the promote PR
 - No builder dispatch / worktrees / CLAIMED states
-- No envelope state READY / IMPLEMENTATION_READY
 - No frozen contract edits
+- No `pnpm-lock.yaml` in builder `allowed_write_paths`
 - No M01 Wave 3 feature work
 - No CERTIFIED / RELEASE CERTIFIED / G6 claim
 - No published-version flips
@@ -298,20 +299,21 @@ If a later builder would need to change a frozen contract, tenant isolation mode
 
 | File | State |
 |---|---|
-| `orchestrator/handovers/CG-01-PLAN.yaml` | PLANNING index |
-| `orchestrator/handovers/M02-PLAN.yaml` | PLANNING index |
-| `orchestrator/handovers/M03-PLAN.yaml` | PLANNING index |
-| `orchestrator/handovers/SF-M02-001.yaml` … `003.yaml`, `SF-M02-INT.yaml`, `SF-M02-SEC.yaml`, `SF-M02-EVD.yaml` | PLANNING |
-| `orchestrator/handovers/SF-M03-001.yaml` … `008.yaml`, `SF-M03-INT.yaml`, `SF-M03-SEC.yaml`, `SF-M03-EVD.yaml` | PLANNING |
+| `orchestrator/handovers/CG-01-PLAN.yaml` | READY index |
+| `orchestrator/handovers/M02-PLAN.yaml` | READY index |
+| `orchestrator/handovers/M03-PLAN.yaml` | READY index |
+| `orchestrator/handovers/SF-M02-*.yaml`, `orchestrator/tasks/SF-M02-*.yaml` | READY |
+| `orchestrator/handovers/SF-M03-*.yaml`, `orchestrator/tasks/SF-M03-*.yaml` | READY |
 
-At a **later** implementation authorization, copy/promote envelopes into `orchestrator/tasks/` with `state: READY`, refresh `base_commit` to that authorized `main` tip, run scope checks, then dispatch. Until then: **not dispatched**.
+Copies in `orchestrator/tasks/` are READY. Uniqueness gate must PASS before any dispatch. **This slice does not dispatch.**
 
 ## 16. Confirmation
 
-- Planning only: **yes**
-- Implementation authorized: **no**
+- Planning only: **no** (promoted)
+- Implementation authorized: **yes**
 - Implementation started / builders started: **no**
 - Frozen contracts altered: **no**
 - CERTIFIED claimed: **no**
 - M01 Wave 3 invented: **no**
 - Statute interpreted: **no**
+- Builders dispatched by this slice: **no**

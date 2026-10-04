@@ -3,7 +3,7 @@ Each task writes `<task-id>.yaml` containing base/result commit, completed work,
 
 ## CG-01 / M02 / M03 (current)
 
-Planning envelopes (`CG-01-PLAN.yaml`, `M02-PLAN.yaml`, `M03-PLAN.yaml`, `SF-M02-*.yaml`, `SF-M03-*.yaml`) are **PLANNING only**: `planning_only: true`, `implementation_authorized: false`, not READY, not dispatched. See `docs/planning/CG-01-M02-M03-PLAN.md`.
+Implementation envelopes (`CG-01-PLAN.yaml`, `M02-PLAN.yaml`, `M03-PLAN.yaml`, `SF-M02-*.yaml`, `SF-M03-*.yaml`) are **READY**: `planning_only: false`, `implementation_authorized: true`, not dispatched, not CERTIFIED. See `docs/planning/CG-01-PROMOTE-READY.md`. Builders remain OFF until a later orchestrator dispatch.
 
 ## Historical (on main)
 
