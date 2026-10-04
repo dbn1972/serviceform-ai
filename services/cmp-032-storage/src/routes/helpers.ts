@@ -16,6 +16,8 @@ export interface RouteDeps {
   secrets: StorageSecretsPort;
   config: StorageServiceConfig;
   clock: () => Date;
+  rateLimitMax: number;
+  rateLimitWindowMs: number;
 }
 
 export function tenantId(ctx: RequestContext): string {

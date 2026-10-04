@@ -1,16 +1,30 @@
+import rateLimit from '@fastify/rate-limit';
 import type { FastifyInstance } from 'fastify';
+import fastifyRateLimit from 'fastify-rate-limit';
 import { authorize, authzInput } from '../authz.js';
 import { claimIdempotency, completeIdempotency } from '../db/idempotency.js';
 import { withContextTx } from '../db/tx.js';
 import { archiveFingerprint } from '../domain/fingerprint.js';
 import { Cmp032Error } from '../errors.js';
+import { storageRateLimitOptions } from '../http/rate-limit.js';
 import { archiveObject } from '../service/archive-object.js';
 import type { RouteDeps } from './helpers.js';
 import { tenantId } from './helpers.js';
 
-export function registerPostArchive(app: FastifyInstance, deps: RouteDeps): void {
+export async function registerPostArchive(app: FastifyInstance, deps: RouteDeps): Promise<void> {
+  const rateLimitOpts = storageRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
+  await app.register(rateLimit, rateLimitOpts);
+  await app.register(fastifyRateLimit, rateLimitOpts);
   app.post<{ Params: { id: string } }>(
     '/storage/objects/:id/archive',
+    {
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = request.sfContext!;
       const objectId = request.params.id;

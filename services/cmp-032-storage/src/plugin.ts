@@ -1,4 +1,5 @@
-import type { ErrorResponse } from '@serviceform/contracts';
+import rateLimit from '@fastify/rate-limit';
+import { errorEntry, type ErrorResponse } from '@serviceform/contracts';
 import type {
   ObjectStorePort,
   StorageKmsPort,
@@ -6,6 +7,7 @@ import type {
 } from '@serviceform/storage';
 import { SimulatedObjectStore } from '@serviceform/storage';
 import type { FastifyError, FastifyInstance, FastifyPluginAsync } from 'fastify';
+import fastifyRateLimit from 'fastify-rate-limit';
 import type { Pool } from 'pg';
 import { authorize, denyAllAuthz, type AuthorizationPort } from './authz.js';
 import { loadConfig, type StorageServiceConfig } from './config.js';
@@ -15,6 +17,7 @@ import {
   type ContextResolver,
 } from './context.js';
 import { Cmp032Error, mapPgError } from './errors.js';
+import { storageRateLimitOptions } from './http/rate-limit.js';
 import { LocalWrapKms } from './ports/kms-port.js';
 import { LocalHmacSecrets } from './ports/secrets-port.js';
 import type { RouteDeps } from './routes/helpers.js';
@@ -46,15 +49,22 @@ function errorBody(
 }
 
 const pluginImpl: FastifyPluginAsync<StoragePluginOptions> = async (app, opts) => {
+  const config = opts.config ?? loadConfig();
   const deps: RouteDeps = {
     pool: opts.pool,
     authorizer: opts.authorizer ?? denyAllAuthz(),
     store: opts.store ?? new SimulatedObjectStore(),
     kms: opts.kms ?? new LocalWrapKms(),
     secrets: opts.secrets ?? new LocalHmacSecrets(),
-    config: opts.config ?? loadConfig(),
+    config,
     clock: opts.clock ?? (() => new Date()),
+    rateLimitMax: config.rateLimitMax,
+    rateLimitWindowMs: config.rateLimitWindowMs,
   };
+
+  const rateLimitOpts = storageRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
+  await app.register(rateLimit, rateLimitOpts);
+  await app.register(fastifyRateLimit, rateLimitOpts);
 
   app.addHook('onRequest', async (request) => {
     assertNoTenantIdentifyingHeaders(request);
@@ -75,6 +85,12 @@ const pluginImpl: FastifyPluginAsync<StoragePluginOptions> = async (app, opts) =
     if (fe.validation) {
       return reply.code(400).send(errorBody(request.id, 'SF-SYS-003', 'Request validation failed'));
     }
+    const status = fe.statusCode;
+    if (status === 429) {
+      return reply
+        .code(429)
+        .send(errorBody(request.id, 'SF-RATE-001', errorEntry('SF-RATE-001').message));
+    }
     const mapped = mapPgError(error);
     if (mapped.code !== 'SF-SYS-001') {
       return reply
@@ -85,9 +101,9 @@ const pluginImpl: FastifyPluginAsync<StoragePluginOptions> = async (app, opts) =
     return reply.code(500).send(errorBody(request.id, 'SF-SYS-001', 'Unexpected server error'));
   });
 
-  registerPostObject(app, deps);
-  registerGetAccess(app, deps);
-  registerPostArchive(app, deps);
+  await registerPostObject(app, deps);
+  await registerGetAccess(app, deps);
+  await registerPostArchive(app, deps);
 };
 
 export const storagePlugin: FastifyPluginAsync<StoragePluginOptions> = pluginImpl;

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { validate } from '@serviceform/contracts';
 import { assertStorageModeAllowed } from '@serviceform/storage';
 import { authzInput, authorize, denyAllAuthz } from '../../src/authz.js';
+import { loadConfig } from '../../src/config.js';
 import { Cmp032Error } from '../../src/errors.js';
 import { ContractAuthorizer } from '../doubles/authorizer.js';
 
@@ -19,6 +20,12 @@ const ctx = {
 describe('cmp-032 unit: modes and authz', () => {
   it('refuses REAL storage mode', () => {
     expect(() => assertStorageModeAllowed('REAL', 'LOCAL')).toThrow();
+  });
+
+  it('loads default rate limits', () => {
+    const cfg = loadConfig({ SF_ENVIRONMENT: 'LOCAL', SF_STORAGE_MODE: 'SIMULATED' });
+    expect(cfg.rateLimitMax).toBe(60);
+    expect(cfg.rateLimitWindowMs).toBe(60_000);
   });
 
   it('builds valid authz input and default deny', async () => {

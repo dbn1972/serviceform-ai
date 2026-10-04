@@ -5,6 +5,11 @@ import {
 } from '@serviceform/storage';
 import type { DeploymentEnvironment } from '@serviceform/contracts';
 
+function positiveInt(raw: string, fallback: number): number {
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
+}
+
 export interface StorageServiceConfig {
   environment: DeploymentEnvironment;
   storageMode: StorageMode;
@@ -14,6 +19,8 @@ export interface StorageServiceConfig {
   presignTtlSeconds: number;
   testRunId: string;
   scenario: string;
+  rateLimitMax: number;
+  rateLimitWindowMs: number;
 }
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): StorageServiceConfig {
@@ -36,5 +43,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): StorageService
     presignTtlSeconds: Number.isFinite(presignTtlSeconds) ? presignTtlSeconds : 300,
     testRunId,
     scenario,
+    rateLimitMax: positiveInt(env['SF_STORAGE_RATE_LIMIT_MAX'] ?? '60', 60),
+    rateLimitWindowMs: positiveInt(env['SF_STORAGE_RATE_LIMIT_WINDOW_MS'] ?? '60000', 60_000),
   };
 }
