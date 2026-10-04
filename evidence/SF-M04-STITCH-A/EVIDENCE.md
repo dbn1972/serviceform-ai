@@ -9,12 +9,15 @@ Do **not** merge this stitch as a certification. Do **not** merge builder PRs #6
 | Task | SF-M04-STITCH-A |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/73 |
 | Branch | `cursor/m04-stitch-a-7000` |
-| Authoritative immutable head | PENDING_BIND (filled on bind commit; must match final PR HEAD) |
-| Historical heads | trees `c45d232`; lockfile `6fd5d3f8dcdd50d80486a090e3316960d058130e`; evidence `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe`; previous candidate `50b65c8c1324132ec6f5fb802525a57c66b143a7` |
+| Authoritative immutable head | `PENDING_AUTHORITATIVE_HEAD_SHA` |
+| Correction harness (R-CMP008-DOWN2 14/14) | `bf35d1622ac3f4a7bc0b369d14d5b5d5b149c46f` |
+| Historical heads | trees `c45d2327be21dd0dcce6c598c9036b615f1ca235`; lockfile `6fd5d3f8dcdd50d80486a090e3316960d058130e`; first evidence `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe`; previous GitHub candidate `50b65c8c1324132ec6f5fb802525a57c66b143a7` |
 | Base | `origin/main` `9ccc2b02f8ef64a0987b0c4793137511545ed3f7` |
 | Frozen contracts altered | **none** (13/13 MATCH) |
 | Self-certified | **false** |
 | CERTIFIED | **false** |
+
+A git commit cannot contain its own object id. `Authoritative immutable head` names the SHA-bind parent recorded in `summary.json`. The GitHub PR #73 tip after push is the child SHA-stamp commit. Historical intermediate SHAs are listed separately and are not the current head.
 
 ## Immutable input SHAs (not rewritten)
 
@@ -63,8 +66,8 @@ New package `@gorules/zen-engine@2.0.2` (published 2026-08-24, mature vs 7-day a
 | `pnpm audit --prod --audit-level high` | PASS no known vulns | `logs/pnpm-audit-prod.log` |
 | CMP-039 unit | 51 PASS (baseline 51) | `logs/cmp-039-unit.log` |
 | CMP-039 int | 10 PASS (baseline 10); `CROSS_TENANT_LEAKAGE=0` | `logs/cmp-039-int.log` |
-| CMP-008 unit | 56 PASS (baseline 56) | `logs/cmp-008-unit.log` |
-| CMP-008 int | **14 PASS / 0 FAIL** (baseline 14; no skip). R-CMP008-DOWN2 **CLOSED_TEST_HARNESS** | `logs/cmp-008-int.log` |
+| CMP-008 unit | 56 PASS (baseline 56); reconfirmed 2026-10-04T17:09:56Z | `logs/cmp-008-unit.log` |
+| CMP-008 int | **14 PASS / 0 FAIL** (baseline 14; no skip). Reconfirmed 2026-10-04T17:09:58Z. R-CMP008-DOWN2 **CLOSED_TEST_HARNESS** | `logs/cmp-008-int.log` |
 | CMP-011 unit | 108 PASS (baseline 108) | `logs/cmp-011-unit.log` |
 | CMP-011 int | 13 PASS (baseline 13) | `logs/cmp-011-int.log` |
 | CMP-013 unit | 66 PASS (baseline 66) | `logs/cmp-013-unit.log` |
