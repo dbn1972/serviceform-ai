@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-052-versioning@0.0.0 test:unit /workspace/services/cmp-052-versioning
+> vitest run --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M03-INT/INT-013/junit/cmp-052-unit.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-052-versioning
+
+ ✓ test/contract/contracts.test.ts (4 tests) 60ms
+ ✓ test/unit/modes-authz.test.ts (4 tests) 68ms
+ ✓ test/unit/plugin-http.test.ts (2 tests) 113ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  10:47:44
+   Duration  448ms (transform 40%, tests 29%, import 29%, worker 1%)
+
+JUNIT report written to /workspace/services/cmp-052-versioning/evidence/junit/unit.xml

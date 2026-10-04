@@ -1,0 +1,14 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ apps/api/test/composition-m03.test.ts (5 tests) 891ms
+   ✓ CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) (4)
+     ✓ mounts CMP-001/033/034/051/052/053 under /v1 with frozen deny envelopes and no tenant-header leakage 541ms
+     ✓ keeps Wave 1/2/M02 mounts when M03 plugins are registered 314ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  10:47:18
+   Duration  1.45s (tests 65%, import 20%, transform 15%)
+
+JUNIT report written to /workspace/evidence/SF-M03-INT/SF-M03-008/junit/host-composition-m03.xml

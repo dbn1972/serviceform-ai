@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-034-master-data@0.0.0 test:unit /workspace/services/cmp-034-master-data
+> vitest run --root . --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M03-INT/INT-013/junit/cmp-034-unit.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-034-master-data
+
+ ✓ test/unit/domain.test.ts (5 tests) 47ms
+ ✓ test/contract/contracts.test.ts (4 tests) 75ms
+ ✓ test/unit/plugin-http.test.ts (2 tests) 164ms
+ ✓ test/unit/authz-context.test.ts (2 tests) 63ms
+
+ Test Files  4 passed (4)
+      Tests  13 passed (13)
+   Start at  10:47:42
+   Duration  527ms (transform 39%, tests 33%, import 27%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M03-003/junit/unit.xml

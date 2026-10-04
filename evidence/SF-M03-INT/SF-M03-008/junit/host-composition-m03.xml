@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="0" errors="0" time="0.890798477">
+    <testsuite name="apps/api/test/composition-m03.test.ts" timestamp="2026-10-04T10:47:20.434Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.890798477">
+        <testcase classname="apps/api/test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts CMP-001/033/034/051/052/053 under /v1 with frozen deny envelopes and no tenant-header leakage" time="0.541254653">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; returns SF-AUTH-001 when context is missing and never echoes the tenant canary" time="0.02546059">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps Wave 1/2/M02 mounts when M03 plugins are registered" time="0.314295499">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not register CMP-050 Studio or CMP-054 and has no cross-component SQL in M03 composition" time="0.007164118">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m03.test.ts" name="registerM03Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.001374758">
+        </testcase>
+    </testsuite>
+</testsuites>
