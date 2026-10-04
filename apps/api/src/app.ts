@@ -33,8 +33,8 @@ export interface AppDependencies {
    */
   m02?: M02PluginMounts;
   /**
-   * Wave A M03 mounts (CMP-001/033/034/053). Optional; tests supply doubles.
-   * CMP-051/052 are not registered until those services exist on main.
+   * M03 mounts (CMP-001/033/034/051/052/053). Optional; tests supply doubles.
+   * CMP-050 Studio is not registered on this Fastify host.
    * CMP-054 has no Fastify plugin on main (UX4G React package only).
    */
   m03?: M03PluginMounts;

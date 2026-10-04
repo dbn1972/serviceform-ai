@@ -65,6 +65,16 @@ function m03Mounts() {
       resolveContext,
       authorizer,
     },
+    makerChecker: {
+      pool: {} as never,
+      resolveContext,
+      authorizer,
+    },
+    versioning: {
+      pool: {} as never,
+      resolveContext,
+      authorizer,
+    },
     localization: {
       pool: {} as never,
       resolveContext,
@@ -133,17 +143,16 @@ afterEach(async () => {
   app = undefined;
 });
 
-describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api)', () => {
-  it('mounts CMP-001/033/034/053 under /v1 with frozen deny envelopes and no tenant-header leakage', async () => {
+describe('CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api)', () => {
+  it('mounts CMP-001/033/034/051/052/053 under /v1 with frozen deny envelopes and no tenant-header leakage', async () => {
     app = await buildApp(config, {
       logger: silentLogger(),
       m03: m03Mounts(),
     });
     expect(app.m03Mounted).toEqual(
-      expect.arrayContaining(['CMP-001', 'CMP-033', 'CMP-034', 'CMP-053']),
+      expect.arrayContaining(['CMP-001', 'CMP-033', 'CMP-034', 'CMP-051', 'CMP-052', 'CMP-053']),
     );
-    expect(app.m03Mounted).not.toContain('CMP-051');
-    expect(app.m03Mounted).not.toContain('CMP-052');
+    expect(app.m03Mounted).not.toContain('CMP-050');
     expect(app.m03Mounted).not.toContain('CMP-054');
 
     await expectTen002(app, 'GET', '/v1/categories');
@@ -154,6 +163,12 @@ describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REV
 
     await expectTen002(app, 'GET', '/v1/code-sets');
     await expectAuth002(app, 'GET', '/v1/code-sets');
+
+    await expectTen002(app, 'GET', `/v1/publication-requests/${DOC}`);
+    await expectAuth002(app, 'GET', `/v1/publication-requests/${DOC}`);
+
+    await expectTen002(app, 'GET', `/v1/tenant-service-bindings/${DOC}`);
+    await expectAuth002(app, 'GET', `/v1/tenant-service-bindings/${DOC}`);
 
     await expectTen002(app, 'GET', '/v1/locales');
     await expectAuth002(app, 'GET', '/v1/locales');
@@ -178,7 +193,7 @@ describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REV
     expect(unauth.body).not.toContain(CANARY);
   });
 
-  it('keeps Wave 1/2/M02 mounts when M03 Wave A plugins are registered', async () => {
+  it('keeps Wave 1/2/M02 mounts when M03 plugins are registered', async () => {
     app = await buildApp(config, {
       logger: silentLogger(),
       wave1: {
@@ -202,7 +217,7 @@ describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REV
     expect(app.wave2Mounted).toContain('CMP-003');
     expect(app.m02Mounted).toEqual(expect.arrayContaining(['CMP-004', 'CMP-005']));
     expect(app.m03Mounted).toEqual(
-      expect.arrayContaining(['CMP-001', 'CMP-033', 'CMP-034', 'CMP-053']),
+      expect.arrayContaining(['CMP-001', 'CMP-033', 'CMP-034', 'CMP-051', 'CMP-052', 'CMP-053']),
     );
 
     const tenant = await app.inject({
@@ -223,7 +238,7 @@ describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REV
     expect(identityUnauth.json()).toMatchObject({ error_code: 'SF-AUTH-001' });
   });
 
-  it('does not register CMP-051/052/054 or Studio and has no cross-component SQL in M03 composition', async () => {
+  it('does not register CMP-050 Studio or CMP-054 and has no cross-component SQL in M03 composition', async () => {
     app = await buildApp(config, { logger: silentLogger() });
     expect(app.m03Mounted).toBeUndefined();
 
@@ -232,7 +247,7 @@ describe('CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REV
     );
     expect(src).not.toMatch(/\b(SELECT|INSERT|UPDATE|DELETE)\b/i);
     expect(src).not.toMatch(/registerStudio|registerAdmin/i);
-    expect(src).not.toMatch(/services\/cmp-051|services\/cmp-052/);
+    expect(src).not.toMatch(/services\/cmp-050|cmp-050-studio/);
     expect(src).not.toMatch(/from ['"]@serviceform\/ui-ux4g['"]/);
     expect(src).not.toMatch(/apps\/web-studio|apps\/web-admin/);
   });
@@ -247,6 +262,8 @@ describe('registerM03Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0)', (
     expect(src).not.toMatch(/from '@serviceform\/cmp-001/);
     expect(src).not.toMatch(/from '@serviceform\/cmp-033/);
     expect(src).not.toMatch(/from '@serviceform\/cmp-034/);
+    expect(src).not.toMatch(/from '@serviceform\/cmp-051/);
+    expect(src).not.toMatch(/from '@serviceform\/cmp-052/);
     expect(src).not.toMatch(/from '@serviceform\/cmp-053/);
     expect(typeof registerM03Plugins).toBe('function');
   });

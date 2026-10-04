@@ -7,19 +7,19 @@ import type {
 } from '@serviceform/contracts';
 
 /**
- * Optional Wave A M03 control-plane mounts already on main:
- * CMP-001 catalogue, CMP-033 metadata, CMP-034 master data, CMP-053 localization.
+ * Optional M03 control-plane mounts: CMP-001 catalogue, CMP-033 metadata,
+ * CMP-034 master data, CMP-051 maker-checker, CMP-052 versioning, CMP-053 localization.
  *
  * Same structural rules as Wave 1/2/M02: non-literal dynamic import so the host does not
  * merge sibling Fastify module-augmentation graphs into this TypeScript program.
  *
  * Package specifiers are preferred (stitch admits apps/api importers). File URLs are a
- * pre-lockfile fallback so host tests can load merged Wave A plugins without writing
- * pnpm-lock.yaml or apps/api/package.json in this envelope.
+ * pre-lockfile fallback so host tests can load plugins without writing pnpm-lock.yaml
+ * or apps/api/package.json in this envelope.
  *
- * CMP-051 Studio / CMP-052 admin are not mounted until those packages exist on main
- * (Wave B stitch). SF-M03-007 Studio UI is out of scope. CMP-054 UX4G is a React design
- * package (`@serviceform/ui-ux4g`) with no Fastify plugin on main — not mounted here.
+ * CMP-050 Studio portal is a Next.js/session library with no Fastify register API —
+ * keep it out of this host (SF-M03-007). CMP-054 UX4G is a React design package
+ * (`@serviceform/ui-ux4g`) with no Fastify plugin — not mounted here.
  */
 export interface M03PluginMounts {
   /** CMP-001 Service Catalogue & Registry. */
@@ -51,6 +51,28 @@ export interface M03PluginMounts {
     clock?: () => Date;
     environment?: string;
     importPort?: unknown;
+    prefix?: string;
+  };
+  /** CMP-051 Maker-Checker / Publishing Service. */
+  makerChecker?: {
+    pool: Pool;
+    resolveContext: (request: FastifyRequest) => Promise<RequestContext | null>;
+    authorizer?: { decide: (input: unknown) => Promise<unknown> };
+    metadata?: unknown;
+    versioning?: unknown;
+    ai?: unknown;
+    config?: unknown;
+    clock?: () => Date;
+    prefix?: string;
+  };
+  /** CMP-052 Versioning & Configuration Registry. */
+  versioning?: {
+    pool: Pool;
+    resolveContext: (request: FastifyRequest) => Promise<RequestContext | null>;
+    authorizer?: { decide: (input: unknown) => Promise<unknown> };
+    approval?: unknown;
+    config?: unknown;
+    clock?: () => Date;
     prefix?: string;
   };
   /** CMP-053 Localization Service. */
@@ -85,7 +107,7 @@ function workspaceSpecifiers(pkg: string, srcIndexFromHere: string): string[] {
 }
 
 /**
- * Registers Wave A M03 Fastify plugins under Eng v1.4 `/v1` paths.
+ * Registers M03 Fastify plugins under Eng v1.4 `/v1` paths.
  * Call only from the API host — services must not import each other (no cross-component SQL).
  */
 export async function registerM03Plugins(
@@ -140,6 +162,38 @@ export async function registerM03Plugins(
       ...mounts.masterData,
     });
     mounted.push('CMP-034');
+  }
+
+  if (mounts.makerChecker) {
+    const mod = await loadModule<{
+      registerMakerChecker: (instance: FastifyInstance, opts: unknown) => Promise<void>;
+    }>(
+      workspaceSpecifiers(
+        '@serviceform/cmp-051-maker-checker',
+        '../../../../services/cmp-051-maker-checker/src/index.ts',
+      ),
+    );
+    await mod.registerMakerChecker(app, {
+      prefix: '/v1',
+      ...mounts.makerChecker,
+    });
+    mounted.push('CMP-051');
+  }
+
+  if (mounts.versioning) {
+    const mod = await loadModule<{
+      registerVersioning: (instance: FastifyInstance, opts: unknown) => Promise<void>;
+    }>(
+      workspaceSpecifiers(
+        '@serviceform/cmp-052-versioning',
+        '../../../../services/cmp-052-versioning/src/index.ts',
+      ),
+    );
+    await mod.registerVersioning(app, {
+      prefix: '/v1',
+      ...mounts.versioning,
+    });
+    mounted.push('CMP-052');
   }
 
   if (mounts.localization) {
