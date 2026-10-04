@@ -25,7 +25,7 @@ verifiers:
   - serviceform-evidence-verifier (opus, high)
   - serviceform-architecture-guardian (opus, high) # reviews gate/.github deltas
 implementation_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
-branch_tip: 1edfc90f43894150e8a7de046094aa5da5e5f4d1
+branch_tip: 66851822484f72d88f1c4b0829bc2dddc4833362
 result_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
 tested_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
 base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
@@ -104,3 +104,7 @@ constitution_edited: false
 evidence:
   - evidence/SF-M01-W2-005/PLAN.md
   - evidence/SF-M01-W2-005/EVIDENCE.md
+
+ci_remediation:
+  - eslint no-console / no-non-null-assertion
+  - semgrep sf-no-console-log + regex_dos on SHA validation
