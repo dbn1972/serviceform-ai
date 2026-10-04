@@ -1,0 +1,27 @@
+{
+  "name": "@serviceform/cmp-033-metadata",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-033 Metadata / Configuration Service",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "11.2.0",
+    "fastify-rate-limit": "npm:@fastify/rate-limit@11.2.0",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "fastify": "5.12.5",
+    "fastify-plugin": "5.1.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}
