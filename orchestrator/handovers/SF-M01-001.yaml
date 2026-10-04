@@ -4,13 +4,13 @@ module_id: M01
 component_ids: [CMP-002]
 integration_ids: [INT-011]
 agent_role: component_builder
-state: REMEDIATION_IN_PROGRESS
+state: REMEDIATION_CI_GREEN
 branch: cursor/m01-w1-remediation-r1
 pr: https://github.com/dbn1972/serviceform-ai/pull/14
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-result_commit: REMEDIATION_R1_PENDING
+result_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
 self_certified: false
-recommended_gate: REMEDIATION_OPENED
+recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
 not_verified: true
 not_certified: true
 wave2_started: false
@@ -23,26 +23,17 @@ completed_work:
   - Fastify inject + in-memory pool unit tests covering routes, authz deny, tenant-context rejection, idempotency, audit, error mapping
   - Evidence under evidence/SF-M01-001
 unresolved_work:
-  - Independent security verifier and evidence verifier
-  - Orchestrator/integration lockfile regeneration (pnpm-lock.yaml not committed) — BLOCKS GitHub frozen-lockfile jobs
-  - GitHub gitleaks remaining hits on packages/security (SF-M01-002) — out of this task write scope
+  - Independent security verifier and evidence verifier (not performed by stitcher)
   - CMP-036 host mount (Wave 2; out of scope)
 changed_contracts: []
 changed_migrations:
   - db/migrations/1759500100000_cmp-002-tenant-organisation.sql
   - db/migrations/1759500100001_cmp-002-outbox.sql
-blockers:
-  - "Await GitHub m01-envelope-int + quality/security green on remediation-r1 tip; then bind result_commit to that SHA"
-  - 'ci/format-lint-typecheck-unit-contracts-build: ERR_PNPM_OUTDATED_LOCKFILE; envelope forbids committing pnpm-lock.yaml'
-  - 'ci/migrations-and-tenant-isolation: same frozen-lockfile'
-  - 'ci/web-shells-smoke-and-accessibility: same frozen-lockfile'
-  - 'security/dependency-audit: same frozen-lockfile'
-  - 'security/secret-scan-gitleaks: remaining findings are packages/security tests on SF-M01-002 (1cf3d995); not in this tree'
+blockers: []
+# Cleared: GitHub ci+security 13/13 green on tip 1c7de49 (runs 37163511275 / 37163511248). Independent verification still required.
 risks:
-  - CI frozen-lockfile fails until merger regenerates pnpm-lock.yaml
-  - GitHub gitleaks also reports packages/security test fixtures from SF-M01-002 (other branch; fetch-depth 0); not in this tree
-  - Local gitleaks/semgrep not run; GitHub security.yml is the remaining secret/SAST gate
   - Outbox GRANT INSERT TO sf_app is frozen-template residual (ADR-0006 condition 9)
+  - Independent security/evidence verification not yet executed on remediation tip
 evidence:
   - evidence/SF-M01-001/EVIDENCE.md
   - evidence/SF-M01-001/privilege-boundary.log

@@ -4,16 +4,16 @@ integration_ids: [INT-011, INT-013]
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
 status: IMPLEMENTATION_READY
-state: REMEDIATION_IN_PROGRESS
-recommended_gate_status: REMEDIATION_OPENED
+state: REMEDIATION_CI_GREEN
+recommended_gate_status: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
 certified: false
 merged: false
 wave_2_started: false
 branch: cursor/m01-w1-remediation-r1
 pr: https://github.com/dbn1972/serviceform-ai/pull/15
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
-tested_commit: REMEDIATION_R1_PENDING
-result_commit: REMEDIATION_R1_PENDING
+tested_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
+result_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
 envelope_model: opus
 envelope_effort: high
 actual_model: composer
@@ -28,9 +28,7 @@ completed:
   - CodeQL: Kafka scratch under workspace test-results/kafka, not os.tmpdir()
   - Privilege-boundary 004-01..30 / 004-P1..P10 executed
 unresolved:
-  - O-LOCK: orchestrator must regenerate pnpm-lock.yaml for kafkajs@2.2.4; builder did not commit the lockfile
-  - Git push from this agent failed (GitHub token invalid for write); local commits exist on the branch
-  - CI frozen-lockfile will fail until lockfile regen
+  - Independent security/evidence verification remaining
   - Process entry points registry-port.ts, registry/sync.ts, relay/main.ts uncovered by tests (aggregate lines still 80.69%)
 changed_contracts: []
 changed_migrations:
@@ -55,10 +53,8 @@ evidence:
 risks:
   - kafkajs 2.2.4 is unmaintained relative to Kafka 4.1 protocol; admin/consumer APIs used here executed against Kafka 4.1.0
   - Template grants to sf_app on outbox/inbox remain frozen residuals (P-004-4)
-blockers:
-  - "Await GitHub m01-envelope-int + quality/security green on remediation-r1 tip; then bind result_commit to that SHA"
-  - Lockfile regeneration owned by orchestrator (trustPolicy no-downgrade must stay on)
-  - Agent git push authentication failure; PR 15 may still show d53c886 until push succeeds
+blockers: []
+# Cleared: GitHub ci+security 13/13 green on tip 1c7de49 (runs 37163511275 / 37163511248). Independent verification still required.
 stop_conditions_hit: []
 do_not:
   - merge PR 15

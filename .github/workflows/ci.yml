@@ -166,10 +166,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p test-results/m01-envelope-int
+          # pull_request github.sha is the synthetic merge commit; bind head SHA for evidence.
+          HEAD_SHA="${{ github.event.pull_request.head.sha || github.sha }}"
           cat > test-results/m01-envelope-int/ARTIFACT-INDEX.json <<EOF
           {
             "schema": "serviceform.m01.envelope-int.artifact-index.v1",
-            "commit_sha": "${{ github.sha }}",
+            "commit_sha": "${HEAD_SHA}",
             "github_run_id": "${{ github.run_id }}",
             "github_run_attempt": "${{ github.run_attempt }}",
             "github_job": "${{ github.job }}",

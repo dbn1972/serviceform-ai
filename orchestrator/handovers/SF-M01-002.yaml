@@ -7,17 +7,17 @@ component_ids: [CMP-048]
 integration_ids: [INT-011]
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-state: REMEDIATION_IN_PROGRESS
+state: REMEDIATION_CI_GREEN
 branch: cursor/m01-w1-remediation-r1
 pr: https://github.com/dbn1972/serviceform-ai/pull/17
 base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
 # result_commit filled after the implementation commit is created
-result_commit: REMEDIATION_R1_PENDING
+result_commit: 1c7de49d6ab2df3d2140d5177aa414804631a688
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
 resolved_model: claude-opus-5-5
-recommended_gate: REMEDIATION_OPENED
+recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
 self_certified: false
 wave_2_started: false
 merged: false
