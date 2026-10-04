@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="46" failures="0" errors="0" time="29.958520112">
+    <testsuite name="test/integration/kafka.int.test.ts" timestamp="2026-10-04T05:07:59.797Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="24.713868071">
+        <testcase classname="test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K1 publish after commit and consume with inbox dedup" time="5.755129793">
+        </testcase>
+        <testcase classname="test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K2 per-aggregate order is preserved on the broker" time="5.102842234">
+        </testcase>
+        <testcase classname="test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K4 poison envelope is dead-lettered not published on the topic" time="0.036718892">
+        </testcase>
+        <testcase classname="test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K5 lag monitor writes consumer_checkpoint" time="0.012998732">
+        </testcase>
+        <testcase classname="test/integration/kafka.int.test.ts" name="real Kafka 4.1.0 (K1-K5, 004-29) &gt; K3 broker stop/start loses no committed outbox row" time="6.514271103">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T05:07:59.798Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="1.031225473">
+        <testcase classname="test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; does not use CREATE ROLE IF NOT EXISTS" time="0.001291077">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; copies SF-CON-OUTBOX tables byte-identical after placeholder substitution" time="0.000445636">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="migration / frozen template (I16, 004-30) &gt; round-trips down then up for this migration" time="1.028157991">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/outbox.int.test.ts" timestamp="2026-10-04T05:07:59.798Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="2.078610298">
+        <testcase classname="test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I1 rollback leaves no outbox row; commit publishes once" time="0.057759613">
+        </testcase>
+        <testcase classname="test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I5 / 004-17 per-key order with interleaved aggregates" time="0.071926427">
+        </testcase>
+        <testcase classname="test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I7 broker down then up loses no committed events" time="1.558010172">
+        </testcase>
+        <testcase classname="test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I9 inbox dedupes duplicate delivery" time="0.007326549">
+        </testcase>
+        <testcase classname="test/integration/outbox.int.test.ts" name="outbox atomicity, ordering, inbox, broker-outage (I1-I13) &gt; I10 T1 inbox rows are invisible to T2" time="0.003281847">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/security/operator-registry.int.test.ts" timestamp="2026-10-04T05:07:59.799Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.518619491">
+        <testcase classname="test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-25 replay/discard requires PRIVILEGED_ADMIN, MFA, reason, authz; audit before act" time="0.038936326">
+        </testcase>
+        <testcase classname="test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-26 incompatible schema fails; event_schema is insert-only; sync is idempotent" time="0.031439024">
+        </testcase>
+        <testcase classname="test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-27 non-CMP-038 sf_app cannot INSERT registry; snapshot drives the relay" time="0.0532822">
+        </testcase>
+        <testcase classname="test/integration/security/operator-registry.int.test.ts" name="operator actions and registry (004-25..004-28, 004-26) &gt; 004-28 metric attribute names do not include tenant_id or canary fields" time="0.000356235">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/security/privilege-boundary.int.test.ts" timestamp="2026-10-04T05:07:59.799Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.602190635">
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P1 own authorized DML on GRANT-only registry succeeds" time="0.037754176">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P2 wrong-tenant insert fails" time="0.002735003">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P3 / 004-P8 peer and sf_app-only cannot DML registry (42501 from GRANT)" time="0.04427186">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P4 SET ROLE into another component _rw is unavailable" time="0.026245014">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P5 / 004-01 runtime and publisher are not superuser and have no BYPASSRLS" time="0.005188249">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P6 runtime is not table owner (sf_migrator owns)" time="0.002118345">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P7 FORCE RLS on tenant outbox/inbox; registry relrowsecurity false" time="0.000804828">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-P8 PUBLIC has no table privileges" time="0.002422939">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-02 / 004-P9 publisher catalogue is frozen outbox grants only" time="0.003420261">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-03 publisher runtime denials" time="0.021298303">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-04 policies match the frozen template; no policy TO PUBLIC" time="0.002258129">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-05 relay guard refuses sf_app, superuser, and SET ROLE from superuser" time="0.009889948">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-06 publisher SQL sources do not name business tables" time="0.000253115">
+        </testcase>
+        <testcase classname="test/integration/security/privilege-boundary.int.test.ts" name="CMP-038 privilege boundary (004-P*, 004-01..07, ADR-0006) &gt; 004-07 discovery ignores views and non-allowlisted schemas; quoted names work" time="0.012796526">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/security/producer-consumer.int.test.ts" timestamp="2026-10-04T05:07:59.800Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.479005098">
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-08 rollback leaves no row; no ctx SF-TEN-001; invalid envelope SF-SYS-003" time="0.059819786">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-09 identifier injection is rejected before SQL" time="0.002065909">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-10 platform event inside tenant tx is refused unless allowlisted" time="0.001212369">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-11 raw SQL CHECK and producer DML denials" time="0.004604396">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-12 envelope size is counted in bytes" time="0.002300772">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-13 / 004-16 inbox dedupes; handler throw rolls back; T2 cannot see T1" time="0.006925642">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-14 forged envelopes go to consumer DLQ with no handler and no inbox row" time="0.000439167">
+        </testcase>
+        <testcase classname="test/integration/security/producer-consumer.int.test.ts" name="producer and consumer helpers (004-08..004-16) &gt; 004-15 platform then T2 sees no residual T1 tenant setting" time="0.005749405">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/security/relay-faults.int.test.ts" timestamp="2026-10-04T05:07:59.801Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.535001046">
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-17 interleaved keys stay ordered; broker down loses no committed event" time="0.09135999">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-18 / 004-19 purge deletes only PUBLISHED; discard requires DLQ ack" time="0.017412749">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-20 lost-lease retry does not unpublish" time="0.013934654">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-21 two publishers with the same workerId option get distinct leases" time="0.001895076">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-22 DLQ publish failure keeps PENDING; unregistered topic is retried" time="0.012039461">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-23 SIMULATED refused outside D-04 (covered in unit tests; in-memory constructed for CI here)" time="0.000209844">
+        </testcase>
+        <testcase classname="test/integration/security/relay-faults.int.test.ts" name="relay faults and races (004-17..004-24) &gt; 004-24 DLQ keeps tenant header on TENANT_SCOPED topic" time="0.009441756">
+        </testcase>
+    </testsuite>
+</testsuites>
