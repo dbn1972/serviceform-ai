@@ -1,0 +1,30 @@
+
+ RUN  v5.0.3 /tmp/w2-sec-verify
+
+ ✓ packages/audit-client/test/http-sink.test.ts (3 tests) 23ms
+ ✓ packages/security/test/pdp-client.fault.test.ts (8 tests) 92ms
+ ✓ packages/audit-client/test/build-event.test.ts (2 tests) 75ms
+ ✓ packages/security/test/plugin.test.ts (8 tests) 148ms
+ ✓ packages/security/test/local-kms.test.ts (2 tests) 14ms
+ ✓ packages/security/test/rate-limit.test.ts (3 tests) 86ms
+ ✓ packages/security/test/local-secrets-provider.test.ts (2 tests) 5ms
+ ✓ packages/audit-client/test/pii-guard.test.ts (5 tests) 5ms
+ ✓ packages/security/test/decision-log-canary.test.ts (1 test) 387ms
+   ✓ 1000 decision logs contain no canary (P11) (1)
+     ✓ writes 1000 allowlisted lines without canary 385ms
+ ✓ packages/security/test/contract-conformance.test.ts (1 test) 67ms
+ ✓ packages/security/test/decision-log-redaction.test.ts (1 test) 3ms
+ ✓ packages/security/test/deny-by-default.test.ts (1 test) 48ms
+ ✓ packages/security/test/secret-value.test.ts (1 test) 3ms
+ ✓ packages/security/test/circuit-breaker.test.ts (1 test) 3ms
+
+ Test Files  14 passed (14)
+      Tests  39 passed (39)
+   Start at  01:54:51
+   Duration  6.32s (transform 52%, import 32%, tests 15%, worker 1%)
+
+  Transform  transforming modules took 3.27s · 52% of tracked time, re-done on every run
+             persist transforms across runs with fsModuleCache: true
+             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns
+
+JUNIT report written to /tmp/w2-sec-verify/test-results/unit/junit.xml

@@ -1,0 +1,20 @@
+
+> serviceform-ai@ db:test /tmp/w2-sec-verify
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /tmp/w2-sec-verify/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /tmp/w2-sec-verify/db
+
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  01:55:36
+   Duration  5.90s (tests 98%, import 1%, transform 1%)
+
+    Isolate  3 workers spawned · ~174ms startup each (spawn + environment, per file)
+             at least ~347ms faster with isolate: false — reuses workers across files instead of one per file
+
