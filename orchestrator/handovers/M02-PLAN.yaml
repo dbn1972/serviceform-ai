@@ -1,5 +1,5 @@
-# M02 Identity and Citizen Profile — PLANNING index
-# Not READY. Not CERTIFIED.
+# M02 Identity and Citizen Profile — READY index (pre-dispatch)
+# Not dispatched. Not CERTIFIED.
 module_id: M02
 record: M02-PLAN
 name: Identity and Citizen Profile
@@ -11,14 +11,14 @@ exit_gate:
   id: G3_INTEGRATION
   status: VERIFIED
 decision:
-  family: M02_PLAN
-  status: PLANNING
+  family: M02_IMPL
+  status: READY
 
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNED
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
@@ -26,8 +26,8 @@ release_certified: false
 ccr_required: false
 frozen_contracts_altered: false
 base_commit:
-  prefix: cc49843e
-  suffix: b70246842f5ea3c1c16257a5450432a2
+  prefix: 8613d0ec
+  suffix: 844e189191a782753c30c65871756048
 join_separator: "_"
 contract_locks:
   - SF-CON-COMMON
@@ -48,11 +48,13 @@ stop_conditions:
   - statutory / policy invention required
   - write outside allowed_write_paths
   - dependency on unmerged sibling CG-01 code as source of truth
-  - implementation started without later human authorization
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
 
 builders_dispatched: 0
 m02_started: false
+wave_a_eligible_now: [SF-M02-001, SF-M02-002]
+host_must_not_run_concurrent_with: SF-M03-008
 documents:
   repo_plan: docs/planning/CG-01-M02-M03-PLAN.md
 builder_envelopes:

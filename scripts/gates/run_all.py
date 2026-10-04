@@ -24,6 +24,7 @@ GATES = [
     # CMP-055 additive gates (never weaken the set above)
     ("openapi-asyncapi", "openapi_asyncapi_gate.py"),
     ("workflow-pin", "workflow_pin_gate.py"),
+    ("cg01-path-uniqueness", "cg01_path_uniqueness_gate.py"),
 ]
 
 

@@ -228,6 +228,57 @@ def test_jurisdiction_gate_ignores_tests(tmp_path, monkeypatch):
     assert hardcoding_gate.main() == 0
 
 
+def test_cg01_patterns_overlap_and_serial_exception():
+    import cg01_path_uniqueness_gate as g
+
+    assert g.patterns_overlap("apps/api/src/app.ts", "apps/api/src/app.ts")
+    assert not g.patterns_overlap("apps/api/src/composition/m02.ts", "apps/api/src/composition/m03.ts")
+    assert not g.patterns_overlap("db/migrations/*_cmp-004-*.sql", "db/migrations/*_cmp-005-*.sql")
+    assert not g.patterns_overlap("services/cmp-004-identity-access/**", "services/cmp-005-citizen-profile/**")
+    hits = [("apps/api/src/app.ts", "apps/api/src/app.ts")]
+    assert g.serial_overlap_allowed("SF-M02-003", "SF-M03-008", hits)
+    assert not g.serial_overlap_allowed("SF-M02-001", "SF-M02-002", hits)
+    bad = [("evidence/SF-M02-003/**", "evidence/SF-M03-008/**")]
+    assert not g.serial_overlap_allowed("SF-M02-003", "SF-M03-008", bad)
+    assert g.is_forbidden_write("pnpm-lock.yaml")
+    assert g.is_forbidden_write("contracts/**")
+    assert g.is_forbidden_write("orchestrator/contracts-lock.yaml")
+    assert not g.is_forbidden_write("services/cmp-004-identity-access/contracts/openapi.yaml")
+
+
+def test_cg01_uniqueness_gate_fails_undocumented_overlap(tmp_path, monkeypatch):
+    import cg01_path_uniqueness_gate as g
+    from _common import Report
+
+    left = {
+        "task_id": "SF-M02-001",
+        "allowed_write_paths": ["services/cmp-004-identity-access/**"],
+        "planning_only": False,
+        "implementation_authorized": True,
+        "state": "READY",
+        "dispatched": False,
+        "certified": False,
+        "release_certified": False,
+        "wave_eligible_now": True,
+        "base_commit": {"prefix": g.BASE_PREFIX, "suffix": g.BASE_SUFFIX},
+    }
+    right = dict(left)
+    right["task_id"] = "SF-M02-002"
+    right["allowed_write_paths"] = ["services/cmp-004-identity-access/**"]
+    r = Report("t")
+    hits = g.overlapping_paths(left, right)
+    assert hits
+    for a, b in hits:
+        r.error(f"write-path overlap {left['task_id']} `{a}` ∩ {right['task_id']} `{b}`")
+    assert r.errors
+
+
+def test_cg01_uniqueness_gate_passes_repository():
+    import cg01_path_uniqueness_gate as g
+
+    assert g.main() == 0
+
+
 def test_contracts_lock_gate_catches_changed_frozen_companion(tmp_path, monkeypatch):
     import hashlib
 

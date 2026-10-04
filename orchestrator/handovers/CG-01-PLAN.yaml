@@ -1,19 +1,19 @@
-# CG-01 concurrency gate index — PLANNING ONLY
-# Not READY. Not dispatched. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
-# Decision token split against CKV_SECRET_6: family + status (do not join to READY).
+# CG-01 concurrency gate index — IMPLEMENTATION AUTHORIZED (READY)
+# Pre-dispatch promote only. Builders NOT dispatched. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# Decision token split against CKV_SECRET_6: family + status (do not join).
 record: CG-01-PLAN
 concurrency_group: CG-01
 after_modules: [M01]
 parallel_modules: [M02, M03]
 decision:
-  family: CG01_M02_M03_PLAN
-  status: PLANNING
+  family: CG01_M02_M03_IMPL
+  status: READY
 
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNED
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
@@ -21,6 +21,9 @@ release_certified: false
 ccr_required: false
 frozen_contracts_altered: false
 base_commit:
+  prefix: 8613d0ec
+  suffix: 844e189191a782753c30c65871756048
+planning_base_commit:
   prefix: cc49843e
   suffix: b70246842f5ea3c1c16257a5450432a2
 join_separator: "_"
@@ -43,8 +46,9 @@ stop_conditions:
   - statutory / policy invention required
   - write outside allowed_write_paths
   - dependency on unmerged sibling CG-01 code as source of truth
-  - implementation started without later human authorization
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
+  - concurrent SF-M02-003 and SF-M03-008
 
 m01_exit_token:
   module: M01
@@ -62,22 +66,52 @@ m01_token_pr: 43
 planning_authorization:
   human: Debabrata Nayak
   scope: planning_only
+  planning_pr: 44
 implementation_authorization:
-  granted: false
+  granted: true
+  human: Debabrata Nayak
+  issuer_class: human
+  scope: cg01_m02_m03_promote_rebind_only
+  first_slice: promote_rebind
+  builders_dispatched_by_this_slice: false
 builders_dispatched: 0
 m02_started: false
 m03_started: false
 cg01_started: false
 m01_wave3_feature_work: false
 frozen_contract_hashes: 13/13 MATCH
+lockfile_owner: orchestrator_or_stitch
+immutable_paths:
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - pnpm-lock.yaml
+wave_a_eligible_now:
+  - SF-M02-001
+  - SF-M02-002
+  - SF-M03-001
+  - SF-M03-002
+  - SF-M03-003
+  - SF-M03-005
+  - SF-M03-006
+sequencing:
+  SF-M03-004:
+    after: [SF-M03-002]
+    note: metadata dependency
+  SF-M03-007:
+    after: [SF-M03-002, SF-M03-004, SF-M03-006]
+  hard_serial:
+    pair: [SF-M02-003, SF-M03-008]
+    shared_write_prefix: apps/api/
+    single_writer_file: apps/api/src/app.ts
+    must_not_run_concurrent_with: true
 documents:
   repo_plan: docs/planning/CG-01-M02-M03-PLAN.md
   repo_envelopes: docs/planning/CG-01-M02-M03-ENVELOPES.md
+  repo_promote: docs/planning/CG-01-PROMOTE-READY.md
   store_plan: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/cg01-m02-m03-plan.md
-  store_envelopes: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/cg01-m02-m03-envelopes.md
+  store_promote: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/cg01-promote-ready.md
   m01_g4_exit: docs/verification/M01-G4-EXIT.md
-  m01_g4_residuals: docs/verification/M01-G4-RESIDUALS.md
-  m01_g4_gate: orchestrator/handovers/M01-G4-EXIT-GATE.yaml
+  uniqueness_gate: scripts/gates/cg01_path_uniqueness_gate.py
 residuals_carry_forward:
   adr_0006_9: ACCEPTED_RESIDUAL
   r_branch_prot: ACCEPTED_RESIDUAL
@@ -88,16 +122,18 @@ serialized_paths:
   - apps/api/src/app.ts
   - pnpm-lock.yaml
 verifiers_independent: true
+m04_blocked_until:
+  - M02 G3_INTEGRATION_VERIFIED independent
+  - M03 G3_INTEGRATION_VERIFIED independent
 awaiting:
-  - later_human_authorization_for_implementation
+  - later_orchestrator_builder_dispatch
 blockers_for_planning: []
 adr_opened: []
 ccr_opened: []
 explicit_non_goals:
   - m01_wave3_feature_work
-  - m02_implementation
-  - m03_implementation
+  - cmp_implementation_in_this_slice
+  - builder_dispatch_in_this_slice
   - frozen_contract_edits
   - certified_or_release_certified_claim
-  - envelope_ready_flip
-
+  - lockfile_builder_writes
