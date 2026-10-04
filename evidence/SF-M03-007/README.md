@@ -34,4 +34,10 @@
 - Workspace `package.json` for cmp-050 deferred (no `pnpm-lock.yaml` mutation).
 - Independent INT/SEC/EVD gates are not this builder.
 
+## SAST follow-up (semgrep job 111406338830)
+
+Security run `37192121493` failed only SAST: 4× `ajinabraham.njsscan.dos.regex_dos.regex_dos` on `UUID_RE.test(body['tenant_id'|'actor_id'])` in `apps/web-studio/lib/bff.ts` and `apps/web-admin/lib/bff.ts` (lines 84/87 at `6b69f3a`).
+
+Fix: linear `isUuid` / `isRoleCode` parsers (same pattern as CMP-001/003). No `nosemgrep`. Workflow unchanged. Unit tests 31 passed after the fix.
+
 Recommended gate: **DEVELOP complete; VERIFY pending independent stitcher/security/evidence**. Not CERTIFIED.
