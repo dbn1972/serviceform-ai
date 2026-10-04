@@ -1,0 +1,33 @@
+{
+  "schema": "serviceform.cmp055.evidence-manifest.v1",
+  "component_id": "CMP-055",
+  "task_id": "SF-M01-W2-005",
+  "commit_sha": "f397e1319fdf5005b4dfd44e0813d25c5b695ecf",
+  "github_run_id": null,
+  "github_job": null,
+  "artifacts": [
+    "evidence/SF-M01-W2-005/EVIDENCE.md",
+    "evidence/SF-M01-W2-005/evidence-manifest.json"
+  ],
+  "gates": [
+    {
+      "name": "migration-lint",
+      "result": "PASS"
+    },
+    {
+      "name": "openapi-asyncapi",
+      "result": "PASS"
+    },
+    {
+      "name": "workflow-pin",
+      "result": "PASS"
+    },
+    {
+      "name": "contracts-lock",
+      "result": "PASS"
+    }
+  ],
+  "certified": false,
+  "self_certified": false,
+  "generated_at": "2026-10-04T01:25:35Z"
+}

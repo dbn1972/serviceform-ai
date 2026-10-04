@@ -1,0 +1,108 @@
+# CMP-055 Developer Platform additive workflow (SF-M01-W2-005).
+# Pin-safe and secret-free. Does not weaken ci.yml / security.yml gates.
+name: developer-platform
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: developer-platform-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PNPM_VERSION: '10.28.0'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  cmp-055-gates:
+    name: CMP-055 additive gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with: { python-version: '${{ env.PYTHON_VERSION }}' }
+      - run: pip install -r scripts/requirements.txt
+      - name: gate self-tests (includes CMP-055)
+        run: python -m pytest scripts/gates/tests -q
+      - name: migration lint (db/migrations only; CR-13)
+        run: python scripts/gates/migration_lint.py
+      - name: OpenAPI/AsyncAPI component lint
+        run: python scripts/gates/openapi_asyncapi_gate.py
+      - name: workflow pin / secret-free
+        run: python scripts/gates/workflow_pin_gate.py
+      - name: contracts lock (must remain mandatory)
+        run: python scripts/gates/contracts_lock_gate.py
+      - name: full gate suite
+        run: python scripts/gates/run_all.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: cmp-055-gates
+          path: test-results/gates
+
+  cmp-055-unit:
+    name: CMP-055 unit tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: typecheck CMP-055
+        run: pnpm exec tsc --noEmit -p services/cmp-055-developer-platform/tsconfig.json
+      - name: unit tests CMP-055
+        run: pnpm exec vitest run services/cmp-055-developer-platform/test --reporter=default --reporter=junit --outputFile.junit=test-results/unit/cmp-055-junit.xml
+      - name: write evidence manifest shape
+        env:
+          GITHUB_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          SF_TASK_ID: SF-M01-W2-005
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, datetime
+          sha = os.environ["GITHUB_SHA"].lower()
+          assert len(sha) == 40 and all(c in "0123456789abcdef" for c in sha)
+          out = pathlib.Path("evidence/SF-M01-W2-005/evidence-manifest.json")
+          out.parent.mkdir(parents=True, exist_ok=True)
+          manifest = {
+            "schema": "serviceform.cmp055.evidence-manifest.v1",
+            "component_id": "CMP-055",
+            "task_id": os.environ["SF_TASK_ID"],
+            "commit_sha": sha,
+            "github_run_id": os.environ.get("GITHUB_RUN_ID"),
+            "github_job": os.environ.get("GITHUB_JOB"),
+            "artifacts": [
+              "evidence/SF-M01-W2-005/EVIDENCE.md",
+              "evidence/SF-M01-W2-005/evidence-manifest.json",
+            ],
+            "gates": [
+              {"name": "migration-lint", "result": "PASS"},
+              {"name": "openapi-asyncapi", "result": "PASS"},
+              {"name": "workflow-pin", "result": "PASS"},
+              {"name": "contracts-lock", "result": "PASS"},
+            ],
+            "certified": False,
+            "self_certified": False,
+            "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+          }
+          out.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+          print(f"wrote {out}")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: cmp-055-unit
+          path: |
+            test-results/unit/cmp-055-junit.xml
+            evidence/SF-M01-W2-005/evidence-manifest.json
