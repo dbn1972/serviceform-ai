@@ -1,0 +1,92 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-032 Storage Service",
+    "version": "0.1.0",
+    "description": "Object metadata, encryption policy, SIMULATED/local presigned access (INT-013). Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/storage/objects": {
+      "post": {
+        "operationId": "storeObject",
+        "summary": "Store object metadata and SIMULATED/local bytes",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["content_type", "content_base64"],
+                "properties": {
+                  "content_type": { "type": "string" },
+                  "content_base64": { "type": "string" },
+                  "checksum_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Object stored" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Denied" },
+          "409": { "description": "Idempotency conflict" },
+          "503": { "description": "KMS/secret unavailable" }
+        }
+      }
+    },
+    "/v1/storage/objects/{id}/access": {
+      "get": {
+        "operationId": "getObjectAccess",
+        "summary": "Issue SIMULATED presigned access URL",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Access grant" },
+          "404": { "description": "Not found" },
+          "503": { "description": "Secret unavailable" }
+        }
+      }
+    },
+    "/v1/storage/objects/{id}/archive": {
+      "post": {
+        "operationId": "archiveObject",
+        "summary": "Archive a stored object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Archived" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}

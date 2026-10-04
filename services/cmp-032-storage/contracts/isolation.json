@@ -1,0 +1,44 @@
+[
+  {
+    "entity": "sf_storage.storage_policy",
+    "owner_component": "CMP-032",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_storage.object_metadata",
+    "owner_component": "CMP-032",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_storage.idempotency_record",
+    "owner_component": "CMP-032",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_storage.outbox_event",
+    "owner_component": "CMP-032",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_storage.outbox_event_platform",
+    "owner_component": "CMP-032",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_storage.inbox_event",
+    "owner_component": "CMP-032",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_storage.inbox_event_platform",
+    "owner_component": "CMP-032",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]
