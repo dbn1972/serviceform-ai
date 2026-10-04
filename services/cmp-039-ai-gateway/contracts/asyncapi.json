@@ -1,0 +1,123 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-039 AI Gateway Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.aigateway.events.v1": {
+      "address": "sf.aigateway.events.v1",
+      "messages": {
+        "AIRequestCompleted": {
+          "payload": {
+            "$ref": "#/components/schemas/AIRequestCompleted"
+          }
+        },
+        "AIRequestBlocked": {
+          "payload": {
+            "$ref": "#/components/schemas/AIRequestBlocked"
+          }
+        },
+        "AIProviderFallbackUsed": {
+          "payload": {
+            "$ref": "#/components/schemas/AIProviderFallbackUsed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AIRequestCompleted": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["request_id", "operation", "policy_id", "policy_version"],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "enum": ["INVOKE", "EMBED"]
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer"
+          },
+          "provider_id": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "model_version": {
+            "type": "string"
+          },
+          "input_tokens": {
+            "type": "integer"
+          },
+          "output_tokens": {
+            "type": "integer"
+          },
+          "simulated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AIRequestBlocked": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["request_id", "operation", "policy_id", "policy_version"],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "enum": ["INVOKE", "EMBED"]
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer"
+          },
+          "reason_code": {
+            "type": "string"
+          },
+          "outcome": {
+            "enum": ["BLOCKED", "FAILED"]
+          }
+        }
+      },
+      "AIProviderFallbackUsed": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["request_id", "operation", "policy_id", "policy_version"],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "operation": {
+            "enum": ["INVOKE", "EMBED"]
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "integer"
+          },
+          "provider_id": {
+            "type": "string"
+          },
+          "attempts": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

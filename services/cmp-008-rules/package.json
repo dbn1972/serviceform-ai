@@ -1,0 +1,25 @@
+{
+  "name": "@serviceform/cmp-008-rules",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-008 Eligibility / Rules Engine (GoRules ZEN, deterministic metadata rules)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "11.2.0",
+    "@gorules/zen-engine": "2.0.2",
+    "@serviceform/contracts": "workspace:*",
+    "fastify": "5.12.5",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-008 Rules Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.rules.events.v1": {
+      "address": "sf.rules.events.v1",
+      "messages": {
+        "RuleEvaluated": {
+          "payload": {
+            "$ref": "#/components/schemas/RuleEvaluated"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RuleEvaluated": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evaluation_id",
+          "pack_key",
+          "version_id",
+          "content_hash",
+          "outcome",
+          "result_code",
+          "reason_codes",
+          "matched_rule_count",
+          "input_hash"
+        ],
+        "properties": {
+          "evaluation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "pack_key": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": ["string", "null"]
+          },
+          "result_code": {
+            "type": "string",
+            "enum": ["RULE_OUTPUT_PRODUCED", "NO_RULE_OUTPUT"]
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "matched_rule_count": {
+            "type": "integer"
+          },
+          "input_hash": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

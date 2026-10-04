@@ -1,0 +1,92 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-013 Document Upload Events",
+    "version": "0.1.0",
+    "description": "Events carry ids, integrity facts and reason codes only: no filenames, URLs, object keys or document bytes."
+  },
+  "channels": {
+    "sf.upload.events.v1": {
+      "address": "sf.upload.events.v1",
+      "messages": {
+        "DocumentUploaded": {
+          "$ref": "#/components/messages/DocumentUploaded"
+        },
+        "DocumentScanRequested": {
+          "$ref": "#/components/messages/DocumentScanRequested"
+        },
+        "DocumentScanned": {
+          "$ref": "#/components/messages/DocumentScanned"
+        },
+        "DocumentAvailable": {
+          "$ref": "#/components/messages/DocumentAvailable"
+        },
+        "DocumentRejected": {
+          "$ref": "#/components/messages/DocumentRejected"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "operations": {
+    "publishDocumentEvents": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/sf.upload.events.v1"
+      }
+    },
+    "consumeScanRequested": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/sf.upload.events.v1"
+      },
+      "description": "CMP-013 scan worker (consumer group cmp-013-scan, inbox-deduplicated)",
+      "messages": [
+        {
+          "$ref": "#/channels/sf.upload.events.v1/messages/DocumentScanRequested"
+        }
+      ]
+    }
+  },
+  "components": {
+    "messages": {
+      "DocumentUploaded": {
+        "name": "DocumentUploaded",
+        "payload": {
+          "$ref": "./events/document-uploaded.data.schema.json"
+        }
+      },
+      "DocumentScanRequested": {
+        "name": "DocumentScanRequested",
+        "payload": {
+          "$ref": "./events/document-scan-requested.data.schema.json"
+        }
+      },
+      "DocumentScanned": {
+        "name": "DocumentScanned",
+        "payload": {
+          "$ref": "./events/document-scanned.data.schema.json"
+        }
+      },
+      "DocumentAvailable": {
+        "name": "DocumentAvailable",
+        "payload": {
+          "$ref": "./events/document-available.data.schema.json"
+        }
+      },
+      "DocumentRejected": {
+        "name": "DocumentRejected",
+        "payload": {
+          "$ref": "./events/document-rejected.data.schema.json"
+        }
+      }
+    }
+  }
+}

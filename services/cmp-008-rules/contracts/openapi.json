@@ -1,0 +1,253 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-008 Eligibility / Rules Engine",
+    "version": "0.1.0",
+    "description": "Deterministic evaluation of pinned, published RULES metadata (GoRules ZEN). Rule execution output is advisory input to workflow/officer decisions; no LLM path, no statutory content in code. Authorization is OPA (action RULE_EVALUATION_*); business rules are metadata. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/evaluations": {
+      "post": {
+        "operationId": "evaluateRulePack",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["rule_pack", "inputs", "purpose_code"],
+                "properties": {
+                  "rule_pack": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["pack_key", "version_id", "content_hash"],
+                    "properties": {
+                      "pack_key": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9._-]{1,127}$"
+                      },
+                      "version_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "content_hash": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      }
+                    }
+                  },
+                  "inputs": {
+                    "type": "object"
+                  },
+                  "purpose_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "subject_ref": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Evaluation recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation failed"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Denied (authorization or cross-tenant)"
+          },
+          "404": {
+            "description": "Rule pack not found for tenant"
+          },
+          "409": {
+            "description": "Idempotency conflict"
+          },
+          "422": {
+            "description": "Rule evaluation failed safely (SF-RULE-001)"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "503": {
+            "description": "Rule pack source or PDP unavailable (fail closed)"
+          }
+        }
+      }
+    },
+    "/v1/evaluations/{id}": {
+      "get": {
+        "operationId": "getEvaluation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Evaluation": {
+        "type": "object",
+        "required": [
+          "evaluation_id",
+          "rule_pack",
+          "snapshot_id",
+          "outcome",
+          "result_code",
+          "reason_codes",
+          "outputs",
+          "matched_rules",
+          "input_hash",
+          "purpose_code",
+          "engine",
+          "decision_basis",
+          "evaluated_at"
+        ],
+        "properties": {
+          "evaluation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "rule_pack": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["pack_key", "version_id", "content_hash"],
+            "properties": {
+              "pack_key": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9._-]{1,127}$"
+              },
+              "version_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "content_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "snapshot_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome": {
+            "type": ["string", "null"],
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "result_code": {
+            "type": "string",
+            "enum": ["RULE_OUTPUT_PRODUCED", "NO_RULE_OUTPUT"]
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+            }
+          },
+          "outputs": {
+            "type": "object"
+          },
+          "matched_rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["node_id", "rule_id"],
+              "properties": {
+                "node_id": {
+                  "type": "string"
+                },
+                "rule_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "input_hash": {
+            "type": "string"
+          },
+          "purpose_code": {
+            "type": "string"
+          },
+          "subject_ref": {
+            "type": "string"
+          },
+          "engine": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            }
+          },
+          "decision_basis": {
+            "type": "string",
+            "const": "DETERMINISTIC_RULES"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "simulation": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

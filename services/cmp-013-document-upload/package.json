@@ -1,0 +1,24 @@
+{
+  "name": "@serviceform/cmp-013-document-upload",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-013 Document Upload Service",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --root . --config vitest.unit.config.ts",
+    "test:integration": "vitest run --root . --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/storage": "workspace:*",
+    "fastify": "5.12.5",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

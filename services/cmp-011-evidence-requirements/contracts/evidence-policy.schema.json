@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-011/evidence-policy/v1",
+  "title": "EvidencePolicyDefinition",
+  "description": "Component-local metadata schema for an evidence policy version. Authoritative parser: src/domain/policy.ts. Requirements, alternative sets, exemptions and source preference come only from published policy metadata; no statutory content is encoded in code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_types", "requirements"],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "evidence_types": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "label_key", "sources"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "label_key": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9._-]{1,127}$"
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source"],
+              "properties": {
+                "source": {
+                  "enum": ["UPLOAD", "DIGILOCKER"]
+                },
+                "document_type_ref": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+                }
+              }
+            }
+          },
+          "max_age_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 36500
+          },
+          "min_assurance": {
+            "enum": ["LOW", "SUBSTANTIAL", "HIGH"]
+          },
+          "reusable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "reason_code", "mandatory", "alternative_sets"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "reason_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "mandatory": {
+            "type": "boolean"
+          },
+          "applies_when": {
+            "$ref": "#/$defs/predicate"
+          },
+          "exempt_when": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reason_code", "when"],
+              "properties": {
+                "reason_code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                },
+                "when": {
+                  "$ref": "#/$defs/predicate"
+                }
+              }
+            }
+          },
+          "alternative_sets": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["code", "evidence_type_codes"],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                },
+                "evidence_type_codes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 20,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  }
+                }
+              }
+            }
+          },
+          "source_preference": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "enum": ["UPLOAD", "DIGILOCKER"]
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "predicate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["all"],
+          "properties": {
+            "all": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 50,
+              "items": {
+                "$ref": "#/$defs/predicate"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["any"],
+          "properties": {
+            "any": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 50,
+              "items": {
+                "$ref": "#/$defs/predicate"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["not"],
+          "properties": {
+            "not": {
+              "$ref": "#/$defs/predicate"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref", "op"],
+          "properties": {
+            "ref": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["kind", "key"],
+              "properties": {
+                "kind": {
+                  "enum": ["fact", "rule_outcome"]
+                },
+                "key": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9._-]{0,127}$"
+                }
+              }
+            },
+            "op": {
+              "enum": ["eq", "neq", "in", "exists", "gt", "gte", "lt", "lte"]
+            },
+            "value": {
+              "oneOf": [
+                {
+                  "type": ["string", "number", "boolean"]
+                },
+                {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 50,
+                  "items": {
+                    "type": ["string", "number", "boolean"]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
