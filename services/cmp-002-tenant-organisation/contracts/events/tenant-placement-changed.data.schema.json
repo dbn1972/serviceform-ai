@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-002/tenant-placement-changed.data/v1",
+  "title": "TenantPlacementChangedData",
+  "description": "Emitted for isolation-class and cell moves. Eng v1.4 TenantIsolationClassChanged is an alias.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "binding_id",
+    "from_model",
+    "to_model",
+    "from_cell_id",
+    "to_cell_id",
+    "valid_from",
+    "reason"
+  ],
+  "properties": {
+    "binding_id": { "type": "string", "format": "uuid" },
+    "from_model": { "type": "string", "enum": ["POOL", "BRIDGE", "SILO"] },
+    "to_model": { "type": "string", "enum": ["POOL", "BRIDGE", "SILO"] },
+    "from_cell_id": { "type": "string", "pattern": "^cell-[a-z0-9-]{1,40}$" },
+    "to_cell_id": { "type": "string", "pattern": "^cell-[a-z0-9-]{1,40}$" },
+    "valid_from": { "type": "string", "format": "date-time" },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 1000 }
+  }
+}

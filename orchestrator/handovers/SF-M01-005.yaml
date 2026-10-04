@@ -1,0 +1,84 @@
+task_id: SF-M01-005
+title: 'Integration Hub: connector SPI, binding registry, simulation framework'
+module_id: M01
+component_ids: [CMP-037]
+integration_ids: [INT-013]
+agent_role: component_builder
+builder_agent: serviceform-integration-builder
+resolved_model: claude-sonnet-5-5
+effort: high
+state: REMEDIATION_CI_GREEN
+recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
+self_certified: false
+merged: false
+wave_2_started: false
+branch: cursor/m01-w1-remediation-r1
+remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
+pr_url: https://github.com/dbn1972/serviceform-ai/pull/18
+base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
+result_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+tested_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+blocked_ci: false
+prior_green_tip: 1c7de49d6ab2df3d2140d5177aa414804631a688
+artifact_name: m01-envelope-int-d270a4fc51ca317062d14127a53bba419e87b341
+m01_envelope_int_job: M01 envelope integration (SF-M01-001..005)
+github_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807119
+github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807120
+github_security_run_id: '37163807119'
+github_ci_run_id: '37163807120'
+privilege_role: sf_cmp037_rw
+
+completed_work:
+  - ADR-0006 Option A: NOLOGIN sf_cmp037_rw; runtime LOGIN inherits only sf_app + sf_cmp037_rw; NOSUPERUSER NOBYPASSRLS; owner sf_migrator; FORCE RLS; PUBLIC revoked; cross-component SQL DENY
+  - Shared sf_migrator created once via guarded DO $$ pg_roles check (not CREATE ROLE IF NOT EXISTS); not dropped on down
+  - sf_cmp037_rw created with the same guarded DO $$ pattern
+  - Schema sf_integration_hub: connector_definition, connector_binding, connector_transaction, connector_binding_index, webhook_route
+  - Frozen outbox/inbox copied from template with {schema}=sf_integration_hub {cmp}=CMP-037 only; ALTER OWNER to sf_migrator
+  - webhook_route DML granted to sf_cmp037_rw only (not sf_app)
+  - packages/connector-sdk: SPI, REAL|SANDBOX|SIMULATED, retry, breaker, guardedFetch, webhook HMAC, events, SecretMaterial
+  - simulators/framework: echo DEPARTMENT_API SIMULATED-only adapter
+  - Fastify plugin registerIntegrationHub (not wired into apps/api)
+  - PRODUCTION ⇒ REAL; fail-closed if critical/non-REAL enabled binding in PRODUCTION
+  - Semgrep CI (run 37138868386): 3 findings remediations — crypto.randomInt jitter; hex decode without Buffer.from(str,'hex'); tenant header deny via name scan
+  - Unit 28 passed; integration 10 passed; coverage lines 92.15% on new src
+  - pnpm format:check, lint, typecheck, gates 7/7, deps:graph pass
+  - Local semgrep 1.179.0 full-repo re-scan: 0 findings (721 rules / 411 files)
+
+unresolved_work:
+  - Independent verification (stitcher, security-verifier, evidence-verifier) not run by this builder
+  - apps/api registration deferred (read-only)
+  - Provider-specific connectors deferred (later modules)
+  - Q5 stale IN_PROGRESS reconciler deferred
+  - Q11 same-reference different-payload limitation for M05 payment callbacks
+  - Simulator not a workspace member (Q14)
+
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500500000_cmp-037-integration-hub-schema.sql
+  - db/migrations/1759500510000_cmp-037-integration-hub-outbox.sql
+  - db/migrations/1759500520000_cmp-037-integration-hub-webhook-route.sql
+
+blockers: []
+risks:
+  - Frozen outbox residual GRANT INSERT TO sf_app remains (ADR-0006 condition 9; CCR to tighten)
+  - W1 PRODUCTION ⇒ REAL for every binding is stricter than SF-CON-CONNECTOR-BINDING (documented; CCR follow-up O-4 / CR-06)
+  - New workspace packages will fail pnpm install --frozen-lockfile until lockfile is reconciled
+
+evidence:
+  - evidence/m01-w1-remediation/INDEX.md
+  - evidence/SF-M01-005/SUPERSEDED.md
+  - evidence/SF-M01-005/EVIDENCE.md
+  - evidence/SF-M01-005/privilege-boundary.log
+  - evidence/SF-M01-005/simulation-mode-matrix.md
+  - evidence/SF-M01-005/duplicate-callback.log
+  - evidence/SF-M01-005/junit/unit.xml
+  - evidence/SF-M01-005/junit/integration.xml
+  - evidence/SF-M01-005/coverage-summary.json
+  - evidence/SF-M01-005/scope-check.log
+  - evidence/SF-M01-005/gates.log
+  - evidence/SF-M01-005/semgrep-triage.md
+  - evidence/SF-M01-005/semgrep.log
+
+architecture_change_required: false
+frozen_contracts_edited: false
+constitution_edited: false

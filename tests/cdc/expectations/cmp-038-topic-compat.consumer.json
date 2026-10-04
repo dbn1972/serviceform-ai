@@ -1,0 +1,18 @@
+{
+  "consumer": "CMP-038-topic-registry",
+  "registry": "services/cmp-038-event-bus/registry/topics.json",
+  "snapshot": "packages/outbox/src/registry-snapshot.json",
+  "supported_compatibility_modes": ["BACKWARD", "FORWARD", "FULL"],
+  "wave1_producer_topic_contracts": [
+    "services/cmp-002-tenant-organisation/contracts/topics.json",
+    "services/cmp-048-security-platform/contracts/topics.json",
+    "services/cmp-037-integration-hub/contracts/topics.json",
+    "services/cmp-031-audit-ledger/contracts/topics.json"
+  ],
+  "required_registered_topics": ["sf.audit.ingest.v1"],
+  "audit_ingest": {
+    "topic": "sf.audit.ingest.v1",
+    "event_type": "AuditEventSubmitted",
+    "schema_version": 1
+  }
+}

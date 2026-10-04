@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-048/privileged-grant-data/v1",
+  "title": "PrivilegedGrantData",
+  "type": "object",
+  "required": [
+    "status",
+    "approved_by",
+    "grantee_user_id",
+    "tenant_id",
+    "starts_at",
+    "expires_at",
+    "scope_actions",
+    "scope_resource_types"
+  ],
+  "properties": {
+    "status": { "const": "APPROVED" },
+    "approved_by": { "type": "string", "format": "uuid" },
+    "grantee_user_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "starts_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "scope_actions": { "type": "array", "items": { "type": "string" } },
+    "scope_resource_types": { "type": "array", "items": { "type": "string" } }
+  }
+}

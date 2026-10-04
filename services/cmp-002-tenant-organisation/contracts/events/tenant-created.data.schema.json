@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-002/tenant-created.data/v1",
+  "title": "TenantCreatedData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant_id", "code", "cell_id", "isolation_model", "valid_from"],
+  "properties": {
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "code": { "type": "string" },
+    "cell_id": { "type": "string", "pattern": "^cell-[a-z0-9-]{1,40}$" },
+    "isolation_model": { "type": "string", "enum": ["POOL", "BRIDGE", "SILO"] },
+    "valid_from": { "type": "string", "format": "date-time" }
+  }
+}

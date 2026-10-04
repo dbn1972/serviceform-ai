@@ -1,0 +1,19 @@
+{
+  "component": "CMP-002",
+  "topics": [
+    {
+      "name": "sf.tenant-org.events.v1",
+      "event_types": [
+        "TenantCreated",
+        "OrganisationChanged",
+        "OfficeActivated",
+        "TenantPlacementChanged"
+      ],
+      "notes": "Eng v1.4 TenantIsolationClassChanged is an alias of TenantPlacementChanged (PLAN-REVIEW X-5)."
+    },
+    {
+      "name": "sf.audit.ingest.v1",
+      "event_types": ["AuditEventSubmitted"]
+    }
+  ]
+}

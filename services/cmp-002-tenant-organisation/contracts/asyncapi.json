@@ -1,0 +1,19 @@
+{
+  "asyncapi": "3.0.0",
+  "info": { "title": "CMP-002 Tenant Organisation events", "version": "1.0.0" },
+  "channels": {
+    "sf.tenant-org.events.v1": {
+      "address": "sf.tenant-org.events.v1",
+      "messages": {
+        "TenantCreated": {},
+        "OrganisationChanged": {},
+        "OfficeActivated": {},
+        "TenantPlacementChanged": {}
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": { "AuditEventSubmitted": {} }
+    }
+  }
+}

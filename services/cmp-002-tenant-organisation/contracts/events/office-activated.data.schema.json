@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-002/office-activated.data/v1",
+  "title": "OfficeActivatedData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["office_id", "organisation_id", "activated_at"],
+  "properties": {
+    "office_id": { "type": "string", "format": "uuid" },
+    "organisation_id": { "type": "string", "format": "uuid" },
+    "activated_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -39,6 +39,8 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test:coverage
       - run: pnpm contracts:validate
+      - name: consumer-driven contracts (Wave 1 CDC)
+        run: pnpm test:cdc
       - run: pnpm deps:graph
       - run: pnpm build
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -47,6 +49,7 @@ jobs:
           name: unit-results
           path: |
             test-results/unit
+            test-results/cdc
             coverage/coverage-summary.json
 
   architecture-gates:
@@ -101,6 +104,93 @@ jobs:
         with: { node-version-file: .nvmrc, cache: pnpm }
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:test
+
+  # M01 Wave 1 envelope INT (SF-M01-001..005). Not covered by pnpm test:coverage.
+  # Integration failure fails this job (no continue-on-error). Pinned PG 16.14 + Kafka 4.1.0 + OPA 1.21.1.
+  m01-envelope-int:
+    name: M01 envelope integration (SF-M01-001..005)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: postgres:16.14-alpine
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ${{ github.run_id }}-ci-only
+          POSTGRES_DB: serviceform_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ci" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgres://ci:${{ github.run_id }}-ci-only@localhost:5432/serviceform_test
+      # Runner-writable install (no sudo ownership). Helper default path matches.
+      KAFKA_HOME: /home/runner/kafka/kafka_2.13-4.1.0
+      KAFKA_HEAP_OPTS: -Xmx512m
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+      OPA_BIN: opa
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - name: install Java 17 + lsof (Kafka 4.1.0 KRaft)
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openjdk-17-jdk-headless lsof
+          test -d "$JAVA_HOME"
+          "$JAVA_HOME/bin/java" -version
+      - name: install Apache Kafka 4.1.0 (pinned, runner-owned)
+        run: |
+          set -euo pipefail
+          mkdir -p /home/runner/kafka
+          curl -fsSL "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz" \
+            | tar -xz -C /home/runner/kafka
+          test -x "${KAFKA_HOME}/bin/kafka-server-start.sh"
+          test -x "${KAFKA_HOME}/bin/kafka-storage.sh"
+      - name: Kafka KRaft preflight (bind 19092 then stop)
+        run: bash scripts/ci/kafka-preflight.sh
+      - name: install OPA 1.21.1 (pinned)
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/opa \
+            "https://github.com/open-policy-agent/opa/releases/download/v1.21.1/opa_linux_amd64_static"
+          sudo install -m 0755 /tmp/opa /usr/local/bin/opa
+          opa version
+      - run: pnpm install --frozen-lockfile
+      - name: run SF-M01-001..005 envelope INT suites
+        run: bash scripts/ci/run-m01-envelope-int.sh
+      - name: write artifact index for evidence binding
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p test-results/m01-envelope-int
+          # pull_request github.sha is the synthetic merge commit; bind head SHA for evidence.
+          HEAD_SHA="${{ github.event.pull_request.head.sha || github.sha }}"
+          cat > test-results/m01-envelope-int/ARTIFACT-INDEX.json <<EOF
+          {
+            "schema": "serviceform.m01.envelope-int.artifact-index.v1",
+            "commit_sha": "${HEAD_SHA}",
+            "github_run_id": "${{ github.run_id }}",
+            "github_run_attempt": "${{ github.run_attempt }}",
+            "github_job": "${{ github.job }}",
+            "github_server_url": "${{ github.server_url }}",
+            "repository": "${{ github.repository }}",
+            "workflow": "${{ github.workflow }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "artifacts_root": "test-results/m01-envelope-int",
+            "tasks": ["SF-M01-001","SF-M01-002","SF-M01-003","SF-M01-004","SF-M01-005"]
+          }
+          EOF
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: m01-envelope-int-${{ github.sha }}
+          path: |
+            test-results/m01-envelope-int
+          if-no-files-found: error
+          retention-days: 30
 
   ui-smoke:
     name: web shells smoke and accessibility

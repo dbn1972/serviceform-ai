@@ -1,0 +1,23 @@
+# CMP-002 stitch unit coverage (*.int.test.ts excluded)
+
+Command:
+```
+pnpm exec vitest run --coverage --config vitest.config.ts \
+  services/cmp-002-tenant-organisation/test \
+  --coverage.include=services/cmp-002-tenant-organisation/src/** \
+  --coverage.thresholds.lines=80 \
+  --coverage.thresholds.functions=80 \
+  --coverage.thresholds.statements=80 \
+  --coverage.thresholds.branches=70
+```
+
+Result: PASS (38 unit/contract tests)
+
+| Metric | Covered | Total | Pct |
+|---|---:|---:|---:|
+| Lines | 406 | 406 | 100 |
+| Statements | 451 | 451 | 100 |
+| Functions | 76 | 76 | 100 |
+| Branches | 246 | 256 | 96.09 |
+
+Thresholds not lowered. Integration tests remain excluded via root `vitest.config.ts` `exclude: ['**/*.int.test.ts']`.

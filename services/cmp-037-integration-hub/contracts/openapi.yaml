@@ -1,0 +1,34 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-037 Integration Hub",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/v1/connectors/{id}/invoke": {
+      "post": {
+        "operationId": "invokeConnector",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } },
+          { "name": "Idempotency-Key", "in": "header", "schema": { "type": "string" } }
+        ]
+      }
+    },
+    "/v1/connectors/{id}/health": {
+      "get": {
+        "operationId": "connectorHealth",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ]
+      }
+    },
+    "/v1/webhooks/{connectorId}": {
+      "post": {
+        "operationId": "connectorWebhook",
+        "parameters": [
+          { "name": "connectorId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ]
+      }
+    }
+  }
+}

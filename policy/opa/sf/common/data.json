@@ -1,0 +1,17 @@
+{
+  "actions": {
+    "VIEW": { "action_class": "READ_ONLY" },
+    "CREATE": { "action_class": "PROTECTED" },
+    "UPDATE": { "action_class": "PROTECTED" },
+    "PRIVILEGED_ACCESS_REQUEST": { "action_class": "PRIVILEGED" },
+    "PRIVILEGED_ACCESS_APPROVE": { "action_class": "PRIVILEGED" },
+    "PRIVILEGED_ACCESS_REVOKE": { "action_class": "PRIVILEGED" },
+    "PRIVILEGED_ACCESS_REVIEW": { "action_class": "PRIVILEGED" },
+    "SECURITY_POLICY_REGISTER": { "action_class": "PRIVILEGED" },
+    "SECURITY_POLICY_ACTIVATE": { "action_class": "PRIVILEGED" },
+    "SECURITY_INCIDENT_REPORT": { "action_class": "PROTECTED" }
+  },
+  "resource_types": ["ExampleAggregate", "PrivilegedAccess", "SecurityPolicy", "SecurityIncident"],
+  "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
+  "global_writable_actions": []
+}

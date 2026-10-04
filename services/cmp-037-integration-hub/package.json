@@ -1,0 +1,26 @@
+{
+  "name": "@serviceform/cmp-037-integration-hub",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-037 Integration Hub: connector registry, invocation, webhooks and simulation",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  },
+  "dependencies": {
+    "@serviceform/connector-sdk": "workspace:*",
+    "@serviceform/contracts": "workspace:*",
+    "@serviceform/observability": "workspace:*",
+    "fastify": "5.12.5",
+    "fastify-plugin": "5.1.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1"
+  }
+}

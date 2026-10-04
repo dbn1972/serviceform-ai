@@ -1,0 +1,34 @@
+{
+  "consumer": "wave1-schema-driven-api-consumer",
+  "provider": "CMP-002",
+  "provider_contracts": {
+    "openapi": "services/cmp-002-tenant-organisation/contracts/openapi.json",
+    "asyncapi": "services/cmp-002-tenant-organisation/contracts/asyncapi.json"
+  },
+  "supported": {
+    "openapi": "3.1.0",
+    "asyncapi": "3.0.0",
+    "info_version": "1.0.0"
+  },
+  "required_operations": [
+    "getTenant",
+    "listOrganisations",
+    "createOrganisation",
+    "createOrganisationVersion",
+    "listOffices",
+    "createOffice",
+    "activateOffice",
+    "createTenant",
+    "proposePlacement",
+    "approvePlacement"
+  ],
+  "required_channels": {
+    "sf.tenant-org.events.v1": [
+      "TenantCreated",
+      "OrganisationChanged",
+      "OfficeActivated",
+      "TenantPlacementChanged"
+    ],
+    "sf.audit.ingest.v1": ["AuditEventSubmitted"]
+  }
+}

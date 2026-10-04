@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="58" failures="0" errors="0" time="0.827347921">
+    <testsuite name="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" timestamp="2026-10-03T18:24:57.912Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.079218431">
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; valid example still validates" time="0.060522695">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; rejects extra top-level fields" time="0.000283889">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/contract/audit-event.test.ts" name="CMP-031 contracts (SF-CON-AUDIT-EVENT) &gt; buildAuditEvent fills context and envelope/outbox validate" time="0.017099695">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" timestamp="2026-10-03T18:24:57.914Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.066920549">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" name="handleEnvelope ingest &gt; dead-letters tenant mismatch, missing platform source, and PII in free text" time="0.061133374">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" name="handleEnvelope ingest &gt; dead-letters an envelope that fails schema validation" time="0.000193646">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" name="handleEnvelope ingest &gt; stores a new envelope and marks a replay already_applied" time="0.002857602">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" name="handleEnvelope ingest &gt; returns duplicate when the ledger already has the same content under a new inbox id" time="0.000466336">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts" name="handleEnvelope ingest &gt; stores a platform envelope only from an allow-listed source" time="0.00086564">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" timestamp="2026-10-03T18:24:57.914Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.225839334">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="POST /v1/internal/audit-events &gt; rejects officer actors, deny-all authz, and tenant mismatch" time="0.115000808">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="POST /v1/internal/audit-events &gt; rejects invalid payloads, NUL bytes, PII, actor binding, and clock skew" time="0.007623249">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="POST /v1/internal/audit-events &gt; stores, is idempotent on retry, and conflicts on content change" time="0.014115076">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="POST /v1/internal/audit-events &gt; allows INTEGRATION relay when purpose is set and maps DB failures to 503" time="0.032927765">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="POST /v1/internal/audit-events &gt; maps unhandled errors to SF-SYS-001" time="0.008610757">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit &gt; returns the caller tenant page and writes an AUDIT_READ event" time="0.005250167">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit &gt; denies a platform session even when a target_tenant_id is supplied" time="0.004546582">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit &gt; still 403s when the platform deny audit write fails" time="0.004278669">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit &gt; rejects an invalid query range" time="0.004993512">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit/:resourceType/:id &gt; rejects traversal ids, invalid types, and platform sessions" time="0.013310617">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit/:resourceType/:id &gt; lists a resource when AUDIT_READ is allowed" time="0.004851124">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="GET /v1/audit/:resourceType/:id &gt; denies when authz rejects the resource read" time="0.004002723">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/http-routes.test.ts" name="plugin decorations &gt; exposes metrics and routes envelopes through handleAuditEnvelope" time="0.004601467">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" timestamp="2026-10-03T18:24:57.915Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.058210427">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; rejects a body tenant that does not match the session" time="0.002689295">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; stores a new tenant row and treats an identical retry as idempotent" time="0.049161283">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; conflicts when the same audit_id arrives with different content" time="0.000625673">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; treats a post-lock identical key as a duplicate (race)" time="0.00037308">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; conflicts when the post-lock key has a different hash" time="0.00028259">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger tenant chain &gt; fails closed when the tenant head cannot be locked" time="0.000719165">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger platform chain &gt; stores a platform row and emits a platform outbox envelope" time="0.000606421">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger platform chain &gt; conflicts on platform content mismatch and race mismatch" time="0.000448767">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger platform chain &gt; returns the raced identical platform key without inserting" time="0.000224246">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger platform chain &gt; fails closed when platform head or clock is missing" time="0.000323498">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts" name="appendLedger actor binding &gt; keeps the session actor on the stored record" time="0.000469563">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" timestamp="2026-10-03T18:24:57.916Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.006746174">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="query-filters &gt; rejects inverted and oversized ranges and bad limits (003-28)" time="0.001952843">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="query-filters &gt; requires timestamps and rejects malformed dates, actions, types, and cursors" time="0.001440301">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="query-filters &gt; rejects quote/backslash action tokens and out-of-shape resource types" time="0.000290507">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="clock-guard &gt; rejects occurred_at beyond skew" time="0.000591095">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="clock-guard &gt; rejects a non-timestamp occurred_at" time="0.000184605">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/query-clock.test.ts" name="loadConfig &gt; falls back on non-positive rate limits and non-finite skew, and rejects a bad cell id" time="0.000819451">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" timestamp="2026-10-03T18:24:57.916Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.056611765">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="withTenantTx &gt; applies session settings and commits on success" time="0.001907362">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="withTenantTx &gt; rolls back on failure and still throws when rollback itself fails" time="0.000799244">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="ledger-repo &gt; locks, inserts, lists, and updates a tenant chain" time="0.001465126">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="ledger-repo &gt; locks and lists the platform chain" time="0.000464917">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="outbox-repo &gt; rejects an invalid AuditRecordCreated envelope" time="0.048213183">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="outbox-repo &gt; inserts tenant and platform outbox and reports inbox idempotency" time="0.001150887">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="queryTenantAudit &gt; pages and encodes a cursor when more rows exist" time="0.000760982">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts" name="queryTenantAudit &gt; omits next_cursor on the last page" time="0.000402478">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" timestamp="2026-10-03T18:24:57.917Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.32774059">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="handleEnvelope contract rejects (003-21) &gt; dead-letters wrong event_type, version, aggregate, extra keys, correlation" time="0.062551455">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; loads defaults and rejects bad cell id" time="0.000882026">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="config and authz &gt; deny-all authz" time="0.00016525">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="query cursor &gt; round-trips and rejects T2-looking garbage" time="0.000456117">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="clock &gt; accepts historical occurred_at" time="0.000173727">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; POST and GET return 401 when resolver returns null" time="0.249139366">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; GET /audit is rate-limited with SF-RATE-001" time="0.007266816">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/service-units.test.ts" name="plugin HTTP without context &gt; query target_tenant_id cannot skip AUDIT_READ" time="0.005410326">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts" timestamp="2026-10-03T18:24:57.917Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.006060651">
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts" name="verifyTenantChain &gt; accepts a linked tenant chain whose head matches the tail" time="0.003198192">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts" name="verifyTenantChain &gt; reports seq gap, prev-hash, row-hash, and head mismatches" time="0.000702131">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts" name="verifyTenantChain &gt; reports a head without rows and allows an empty chain with no head" time="0.000452486">
+        </testcase>
+        <testcase classname="services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts" name="verifyPlatformChain &gt; accepts a valid platform chain and flags a broken one" time="0.00045102">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,4 @@
+semgrep 1.179.0
+command: semgrep scan --metrics=off --error --config p/default --config p/typescript --config p/nodejsscan --config p/secrets --config .semgrep/ --exclude tests/semgrep
+cmp-031 src+tests (including untracked, --no-git-ignore): 0 findings, 0 blocking, exit 0
+stitch cca724f cmp-031+cmp-038: 8 findings (see EVIDENCE.md triage); GitHub reported 9

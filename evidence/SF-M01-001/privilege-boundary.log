@@ -1,0 +1,12 @@
+CMP-002 privilege-boundary / ADR-0006 suite
+DATABASE_URL=postgres://sf_ci@127.0.0.1:5432/serviceform_test (password redacted)
+
+ ✓ test/integration/api-negative.int.test.ts (14 tests) 648ms
+ ✓ test/integration/rls-matrix.int.test.ts (3 tests) 568ms
+ ✓ test/integration/pool-reuse.int.test.ts (3 tests) 497ms
+ ✓ test/integration/privilege-boundary.int.test.ts (10 tests) 538ms
+ ✓ test/integration/migration.int.test.ts (1 test) 505ms
+ Test Files  5 passed (5)
+      Tests  31 passed (31)
+
+Result: PASS (see junit/integration.xml)

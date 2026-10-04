@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="0.073800778">
+    <testsuite name="packages/outbox/test/backoff.test.ts" timestamp="2026-10-03T17:35:05.358Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.00250064">
+        <testcase classname="packages/outbox/test/backoff.test.ts" name="backoff and classify (U5, U6) &gt; caps exponential backoff" time="0.00122388">
+        </testcase>
+        <testcase classname="packages/outbox/test/backoff.test.ts" name="backoff and classify (U5, U6) &gt; classifies retryable vs fatal" time="0.000332356">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/identifiers.test.ts" timestamp="2026-10-03T17:35:05.358Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003991509">
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; accepts a plain schema name and quotes it" time="0.001115589">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; rejects identifier injection before SQL" time="0.001043107">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; rejects bad topics" time="0.000457286">
+        </testcase>
+        <testcase classname="packages/outbox/test/identifiers.test.ts" name="identifiers (U4, 004-09) &gt; quotes catalog names that contain quotes (004-07)" time="0.000214802">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/in-memory-transport.test.ts" timestamp="2026-10-03T17:35:05.359Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.004559912">
+        <testcase classname="packages/outbox/test/in-memory-transport.test.ts" name="in-memory transport (U8, U9, 004-23) &gt; refuses SIMULATED unless SF_ENVIRONMENT is an exact D-04 value" time="0.00297825">
+        </testcase>
+        <testcase classname="packages/outbox/test/in-memory-transport.test.ts" name="in-memory transport (U8, U9, 004-23) &gt; down() makes publish retryable and up() restores" time="0.000506316">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/metrics.test.ts" timestamp="2026-10-03T17:35:05.359Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002072284">
+        <testcase classname="packages/outbox/test/metrics.test.ts" name="metrics (U11) &gt; records counters without tenant attributes" time="0.001179456">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/partitioner.test.ts" timestamp="2026-10-03T17:35:05.359Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002258808">
+        <testcase classname="packages/outbox/test/partitioner.test.ts" name="murmur2 partitioner (U8) &gt; is stable and in range" time="0.001374005">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/producer.test.ts" timestamp="2026-10-03T17:35:05.360Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.047089902">
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects an invalid envelope with SF-SYS-003 and no insert" time="0.042631346">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects tenant mismatch with SF-TEN-002" time="0.001106811">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects a tenant event with no context using SF-TEN-001" time="0.000337804">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; rejects oversize payloads counted in bytes" time="0.001715465">
+        </testcase>
+        <testcase classname="packages/outbox/test/producer.test.ts" name="insertOutboxEvent (U1-U3, U10) &gt; refuses a platform event inside a tenant tx unless allowlisted (004-10)" time="0.000321692">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/outbox/test/publisher-source.test.ts" timestamp="2026-10-03T17:35:05.360Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003026387">
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; has no environment flag that disables the role guard" time="0.001310523">
+        </testcase>
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; SQL table names are only outbox_event / outbox_event_platform plus catalogue" time="0.000426132">
+        </testcase>
+        <testcase classname="packages/outbox/test/publisher-source.test.ts" name="publisher source guards (004-05 static, 004-06, 004-19) &gt; DELETE predicates mention PUBLISHED or DEAD_LETTERED" time="0.000179637">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/unit/compatibility.test.ts" timestamp="2026-10-03T17:35:05.360Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.005605601">
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="schema compatibility (U7) &gt; accepts an additive optional field under BACKWARD" time="0.001304784">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="schema compatibility (U7) &gt; refuses new required properties, removals, type changes, enum narrowing, additionalProperties" time="0.001073458">
+        </testcase>
+        <testcase classname="services/cmp-038-event-bus/test/unit/compatibility.test.ts" name="config (U9) &gt; loads brokers and refuses non-allowlisted simulated environments" time="0.002054953">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-038-event-bus/test/unit/snapshot.test.ts" timestamp="2026-10-03T17:35:05.360Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002695735">
+        <testcase classname="services/cmp-038-event-bus/test/unit/snapshot.test.ts" name="registry snapshot (Q2 / 004-27) &gt; packages/outbox snapshot matches services/cmp-038-event-bus/registry/topics.json" time="0.001826592">
+        </testcase>
+    </testsuite>
+</testsuites>

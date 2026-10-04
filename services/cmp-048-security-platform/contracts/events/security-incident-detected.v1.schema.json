@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-048/security-incident-detected/v1",
+  "title": "SecurityIncidentDetected",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["incident_code", "reason_code"],
+  "properties": {
+    "incident_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "decision_id": { "type": "string", "format": "uuid" }
+  }
+}

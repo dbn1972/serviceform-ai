@@ -1,0 +1,38 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-038 Event Bus platform events",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "sf.eventbus.platform.v1": {
+      "address": "sf.eventbus.platform.v1",
+      "messages": {
+        "TopicRegistered": { "$ref": "#/components/messages/TopicRegistered" },
+        "EventSchemaRegistered": { "$ref": "#/components/messages/EventSchemaRegistered" },
+        "DeadLetterReplayed": { "$ref": "#/components/messages/DeadLetterReplayed" },
+        "DeadLetterDiscarded": { "$ref": "#/components/messages/DeadLetterDiscarded" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "TopicRegistered": {
+        "name": "TopicRegistered",
+        "payload": { "type": "object", "additionalProperties": true }
+      },
+      "EventSchemaRegistered": {
+        "name": "EventSchemaRegistered",
+        "payload": { "type": "object", "additionalProperties": true }
+      },
+      "DeadLetterReplayed": {
+        "name": "DeadLetterReplayed",
+        "payload": { "type": "object", "additionalProperties": true }
+      },
+      "DeadLetterDiscarded": {
+        "name": "DeadLetterDiscarded",
+        "payload": { "type": "object", "additionalProperties": true }
+      }
+    }
+  }
+}

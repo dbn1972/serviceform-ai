@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="38" failures="0" errors="0" time="0.623356274">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-03T18:06:30.794Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.117732243">
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; parses OpenAPI and AsyncAPI JSON" time="0.001214646">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; validates domain event envelopes" time="0.111803026">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.003573413">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/authz-context-audit.test.ts" timestamp="2026-10-03T18:06:30.795Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.07576449">
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="authorize fail-closed &gt; denies malformed input, PDP throw, deny, and extra fields" time="0.061157663">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="authorize fail-closed &gt; denies TENANT_SCOPED subject/resource tenant mismatch" time="0.000328522">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="context and tx guards &gt; requireContext and route id checks" time="0.011333316">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="context and tx guards &gt; currentClient throws outside withContextTx" time="0.000256634">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; rate-limits denied audit writes" time="0.000386923">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; maps remaining pg codes without SQL text" time="0.000325599">
+        </testcase>
+        <testcase classname="test/unit/authz-context-audit.test.ts" name="audit and errors &gt; builds audit and envelope helpers" time="0.000490834">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/db-repo.test.ts" timestamp="2026-10-03T18:06:30.796Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.138197153">
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; withContextTx applies session settings, privileged marker, and rolls back" time="0.004181198">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; claim and complete tenant and platform idempotency branches" time="0.006250826">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; claim throws when conflict row is missing" time="0.000440466">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; insertOutbox validates and splits tenant versus platform tables" time="0.097350938">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; lockTenant, currentBinding, assertNoCycle, and newId" time="0.001689436">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="tx, idempotency, outbox, repo &gt; outboxAuditRecorder validates and writes" time="0.020241025">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="route helpers &gt; iso, requirePrivileged, readIdempotencyKey, runCommand, writeDenied" time="0.00250122">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="route helpers &gt; assertNoTenantIdentifyingHeaders covers forwarded arrays" time="0.00044273">
+        </testcase>
+        <testcase classname="test/unit/db-repo.test.ts" name="route helpers &gt; canonicalJson covers arrays and scalars" time="0.000459446">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-03T18:06:30.799Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.005263833">
+        <testcase classname="test/unit/domain.test.ts" name="hierarchy cycle detector &gt; detects self-parent and ancestor cycles" time="0.001876598">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="fingerprint &gt; is stable for key-reordered bodies" time="0.000810038">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="header guard &gt; refuses tenant and spoofed role headers" time="0.000507555">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="error mapping &gt; maps catalogue failures without SQL text" time="0.000621842">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-03T18:06:30.799Z" hostname="cursor" tests="15" failures="0" errors="0" skipped="0" time="0.286398555">
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; GET tenant returns current binding and private cache header" time="0.133430011">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; GET tenant without binding returns null current_binding" time="0.001118335">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; GET missing tenant is 404" time="0.001139313">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; forged tenant header and other-tenant route are 403" time="0.001798171">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; missing context is 401 and admin on tenant route is SF-TEN-001" time="0.001373237">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; validation failures and extra tenant_id are 400" time="0.003914971">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; maps postgres unique and unexpected failures" time="0.003777854">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; creates tenant, org, office, activates, lists, and replays idempotency" time="0.02930653">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; versions organisations, including parent clear and missing targets" time="0.006750121">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; office create/activate failure paths" time="0.004468028">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; placement propose and approve including missing proposal" time="0.006082041">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; privileged denials write denied audit and OPA deny/throw" time="0.006447028">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; bad cursor, missing idempotency key, and spoofed actor header" time="0.004446153">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin HTTP unit (memory pool) &gt; org version without prior version row is 404 and hierarchy cycle via ancestors" time="0.001209892">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="plugin defaults &gt; registers via tenantOrganisationPlugin with default clock and audit" time="0.029570804">
+        </testcase>
+    </testsuite>
+</testsuites>

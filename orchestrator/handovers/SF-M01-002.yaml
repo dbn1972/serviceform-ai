@@ -1,0 +1,79 @@
+# Handover: SF-M01-002 CMP-048 Security Platform
+# Builder cannot self-certify. Independent security + evidence verifiers own hard gates.
+
+task_id: SF-M01-002
+module_id: M01
+component_ids: [CMP-048]
+integration_ids: [INT-011]
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+state: REMEDIATION_CI_GREEN
+branch: cursor/m01-w1-remediation-r1
+remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
+pr: https://github.com/dbn1972/serviceform-ai/pull/17
+base_commit: 8a4695d62a065fd3e8047b0c49085bfebbb0c513
+result_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+tested_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+blocked_ci: false
+prior_green_tip: 1c7de49d6ab2df3d2140d5177aa414804631a688
+artifact_name: m01-envelope-int-d270a4fc51ca317062d14127a53bba419e87b341
+m01_envelope_int_job: M01 envelope integration (SF-M01-001..005)
+github_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807119
+github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807120
+github_security_run_id: '37163807119'
+github_ci_run_id: '37163807120'
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+resolved_model: claude-opus-5-5
+recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
+self_certified: false
+wave_2_started: false
+merged: false
+
+completed_work:
+  - 'Migration db/migrations/1759500200000_cmp-048-security-platform.sql: schema sf_security, FORCE RLS, isolation comments, frozen outbox/inbox copy'
+  - 'Wave-1 role correction: no CREATE ROLE IF NOT EXISTS; guarded DO $$ IF NOT EXISTS (pg_roles) THEN CREATE ROLE ... NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS; sf_migrator created once; sf_cmp048_rw also NOINHERIT'
+  - 'ADR-0006: DML on authoritative tables to sf_cmp048_rw only; RLS policies remain TO sf_app; PUBLIC revoked; runtime tests use sf_cmp048_rt IN ROLE sf_app, sf_cmp048_rw'
+  - 'packages/security: Fastify PEP plugin, OPA client (fail-closed), secrets/KMS local, decision-log allowlist, audit sink'
+  - 'policy/opa: sf.authz deny-by-default, helpers, system.log mask, system.authz token surface; opa test 48/48, coverage ~94.7%'
+  - 'services/cmp-048-security-platform: privileged-access / policy-metadata / incident commands, outbox writer, prefix plugin (not mounted in apps/api)'
+  - 'Unit 42 passed; integration 18 passed including PB-01..15 and real OPA 1.21.1 with --authentication=token --authorization=basic'
+
+unresolved_work:
+  - 'Verifier cases marked gap/partial in evidence/SF-M01-002/deny-matrix.md (002-10 race, 002-26 verifier faults, several variant expansions)'
+  - 'Lockfile not updated (orchestrator reconciliation); @serviceform/security plus @fastify/rate-limit@10.3.0 have no pnpm-lock.yaml importers'
+  - 'CI may lack opa test / cmp-048 integration jobs (PLAN-REVIEW X-14)'
+  - 'Gitleaks test-key blob removed from HEAD and rewritten out of branch history; sibling cmp-002 helper hit is out of write scope'
+  - 'Multi-pod grant distribution consistency is an M02 gap'
+  - 'Platform-wide HTTP rate limiting remains an API-edge / CMP-036 concern. CMP-048 added an in-process PEP limiter (SF-RATE-001) so CodeQL-flagged authz hooks are not unbounded; it is not a gateway quota.'
+
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500200000_cmp-048-security-platform.sql
+
+blockers: []
+
+risks:
+  - 'ADR-0006 #9 residual: frozen outbox/inbox grants still target sf_app; any sf_app member can INSERT tenant outbox / SELECT+INSERT inbox. Tightening needs a CCR.'
+  - 'infra/local/docker-compose.yml OPA remains unauthenticated (P-002-1 owner exception). Authenticated OPA is started from this task test harness only.'
+  - 'sf_migrator created IF-missing from this migration (shared Wave-1 name). Later components must use the same guarded create, never CREATE ROLE IF NOT EXISTS.'
+  - 'Branch coverage on new src 69.5% (lines 87.65% meet the 80% line bar).'
+
+evidence:
+  - evidence/m01-w1-remediation/INDEX.md
+  - evidence/SF-M01-002/SUPERSEDED.md
+  - evidence/SF-M01-002/EVIDENCE.md
+  - evidence/SF-M01-002/PLAN.md
+  - evidence/SF-M01-002/privilege-boundary.log
+  - evidence/SF-M01-002/opa-test-results.txt
+  - evidence/SF-M01-002/fail-closed.log
+  - evidence/SF-M01-002/deny-matrix.md
+  - evidence/SF-M01-002/coverage-summary.json
+  - evidence/SF-M01-002/junit/unit.xml
+  - evidence/SF-M01-002/junit/integration.xml
+  - evidence/SF-M01-002/scope-check.log
+  - evidence/SF-M01-002/gates.log
+  - evidence/SF-M01-002/codeql-triage.md
+
+stop_conditions_hit: []

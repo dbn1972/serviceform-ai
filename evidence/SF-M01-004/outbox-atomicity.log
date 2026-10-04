@@ -1,0 +1,13 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-038-event-bus
+
+ ✓ test/integration/outbox.int.test.ts (5 tests) 2097ms
+   ✓ outbox atomicity, ordering, inbox, broker-outage (I1-I13) (5)
+     ✓ I7 broker down then up loses no committed events 1556ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  17:34:36
+   Duration  2.55s (tests 85%, import 8%, transform 7%)
+
+JUNIT report written to /workspace/services/cmp-038-event-bus/test-results/integration-junit.xml
