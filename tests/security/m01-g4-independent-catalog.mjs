@@ -175,12 +175,7 @@ try {
     END $$;
   `);
 
-  const groupRoles = [
-    'sf_app',
-    'sf_migrator',
-    'sf_outbox_publisher',
-    ...ALL_RW,
-  ];
+  const groupRoles = ['sf_app', 'sf_migrator', 'sf_outbox_publisher', ...ALL_RW];
   const roles = await admin.query(
     `SELECT rolname, rolsuper, rolbypassrls, rolcanlogin
        FROM pg_roles
@@ -348,7 +343,11 @@ try {
                 pg_has_role(session_user,$1,'MEMBER') AS own`,
         [comp.rw],
       );
-      rec(mem.rows[0].app && mem.rows[0].own, `${comp.id}.membership_own`, JSON.stringify(mem.rows[0]));
+      rec(
+        mem.rows[0].app && mem.rows[0].own,
+        `${comp.id}.membership_own`,
+        JSON.stringify(mem.rows[0]),
+      );
       for (const other of ALL_RW.filter((r) => r !== comp.rw)) {
         const m = await c.query(`SELECT pg_has_role(session_user,$1,'MEMBER') AS m`, [other]);
         rec(!m.rows[0].m, `${comp.id}.not_member.${other}`, String(m.rows[0].m));
@@ -371,25 +370,101 @@ try {
   }
 
   const probes = [
-    { actor: 'sf_g4_002_rt', sql: `SELECT count(*) FROM sf_security.privileged_access_record`, id: 'XCOMP.002.select.048' },
-    { actor: 'sf_g4_048_rt', sql: `SELECT count(*) FROM sf_tenant_org.tenant`, id: 'XCOMP.048.select.002' },
-    { actor: 'sf_g4_002_rt', sql: `SELECT count(*) FROM sf_audit.audit_event`, id: 'XCOMP.002.select.031' },
-    { actor: 'sf_g4_031_rt', sql: `SELECT count(*) FROM sf_event_bus.topic`, id: 'XCOMP.031.select.038' },
-    { actor: 'sf_g4_038_rt', sql: `SELECT count(*) FROM sf_integration_hub.connector_binding`, id: 'XCOMP.038.select.037' },
-    { actor: 'sf_g4_037_rt', sql: `SELECT count(*) FROM sf_audit.audit_event`, id: 'XCOMP.037.select.031' },
-    { actor: 'sf_g4_003_rt', sql: `SELECT count(*) FROM sf_consent_privacy.purpose`, id: 'XCOMP.003.select.030' },
-    { actor: 'sf_g4_030_rt', sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction_type`, id: 'XCOMP.030.select.003' },
-    { actor: 'sf_g4_003_rt', sql: `SELECT count(*) FROM sf_storage.object_metadata`, id: 'XCOMP.003.select.032' },
-    { actor: 'sf_g4_032_rt', sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction`, id: 'XCOMP.032.select.003' },
-    { actor: 'sf_g4_030_rt', sql: `SELECT count(*) FROM sf_storage.storage_policy`, id: 'XCOMP.030.select.032' },
-    { actor: 'sf_g4_032_rt', sql: `SELECT count(*) FROM sf_consent_privacy.consent`, id: 'XCOMP.032.select.030' },
-    { actor: 'sf_g4_002_rt', sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction_type`, id: 'XCOMP.002.select.003' },
-    { actor: 'sf_g4_048_rt', sql: `SELECT count(*) FROM sf_consent_privacy.purpose`, id: 'XCOMP.048.select.030' },
-    { actor: 'sf_g4_003_rt', sql: `SELECT count(*) FROM sf_security.privileged_access_record`, id: 'XCOMP.003.select.048' },
-    { actor: 'sf_g4_032_rt', sql: `SELECT count(*) FROM sf_tenant_org.tenant`, id: 'XCOMP.032.select.002' },
-    { actor: 'sf_g4_037_rt', sql: `SELECT count(*) FROM sf_storage.object_metadata`, id: 'XCOMP.037.select.032' },
-    { actor: 'sf_g4_pub', sql: `SELECT count(*) FROM sf_tenant_org.tenant`, id: 'XCOMP.publisher.select.002' },
-    { actor: 'sf_g4_pub', sql: `SELECT count(*) FROM sf_event_bus.topic`, id: 'XCOMP.publisher.select.038_registry' },
+    {
+      actor: 'sf_g4_002_rt',
+      sql: `SELECT count(*) FROM sf_security.privileged_access_record`,
+      id: 'XCOMP.002.select.048',
+    },
+    {
+      actor: 'sf_g4_048_rt',
+      sql: `SELECT count(*) FROM sf_tenant_org.tenant`,
+      id: 'XCOMP.048.select.002',
+    },
+    {
+      actor: 'sf_g4_002_rt',
+      sql: `SELECT count(*) FROM sf_audit.audit_event`,
+      id: 'XCOMP.002.select.031',
+    },
+    {
+      actor: 'sf_g4_031_rt',
+      sql: `SELECT count(*) FROM sf_event_bus.topic`,
+      id: 'XCOMP.031.select.038',
+    },
+    {
+      actor: 'sf_g4_038_rt',
+      sql: `SELECT count(*) FROM sf_integration_hub.connector_binding`,
+      id: 'XCOMP.038.select.037',
+    },
+    {
+      actor: 'sf_g4_037_rt',
+      sql: `SELECT count(*) FROM sf_audit.audit_event`,
+      id: 'XCOMP.037.select.031',
+    },
+    {
+      actor: 'sf_g4_003_rt',
+      sql: `SELECT count(*) FROM sf_consent_privacy.purpose`,
+      id: 'XCOMP.003.select.030',
+    },
+    {
+      actor: 'sf_g4_030_rt',
+      sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction_type`,
+      id: 'XCOMP.030.select.003',
+    },
+    {
+      actor: 'sf_g4_003_rt',
+      sql: `SELECT count(*) FROM sf_storage.object_metadata`,
+      id: 'XCOMP.003.select.032',
+    },
+    {
+      actor: 'sf_g4_032_rt',
+      sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction`,
+      id: 'XCOMP.032.select.003',
+    },
+    {
+      actor: 'sf_g4_030_rt',
+      sql: `SELECT count(*) FROM sf_storage.storage_policy`,
+      id: 'XCOMP.030.select.032',
+    },
+    {
+      actor: 'sf_g4_032_rt',
+      sql: `SELECT count(*) FROM sf_consent_privacy.consent`,
+      id: 'XCOMP.032.select.030',
+    },
+    {
+      actor: 'sf_g4_002_rt',
+      sql: `SELECT count(*) FROM sf_jurisdiction.jurisdiction_type`,
+      id: 'XCOMP.002.select.003',
+    },
+    {
+      actor: 'sf_g4_048_rt',
+      sql: `SELECT count(*) FROM sf_consent_privacy.purpose`,
+      id: 'XCOMP.048.select.030',
+    },
+    {
+      actor: 'sf_g4_003_rt',
+      sql: `SELECT count(*) FROM sf_security.privileged_access_record`,
+      id: 'XCOMP.003.select.048',
+    },
+    {
+      actor: 'sf_g4_032_rt',
+      sql: `SELECT count(*) FROM sf_tenant_org.tenant`,
+      id: 'XCOMP.032.select.002',
+    },
+    {
+      actor: 'sf_g4_037_rt',
+      sql: `SELECT count(*) FROM sf_storage.object_metadata`,
+      id: 'XCOMP.037.select.032',
+    },
+    {
+      actor: 'sf_g4_pub',
+      sql: `SELECT count(*) FROM sf_tenant_org.tenant`,
+      id: 'XCOMP.publisher.select.002',
+    },
+    {
+      actor: 'sf_g4_pub',
+      sql: `SELECT count(*) FROM sf_event_bus.topic`,
+      id: 'XCOMP.publisher.select.038_registry',
+    },
   ];
 
   for (const p of probes) {
@@ -422,10 +497,17 @@ try {
     );
   });
   const leak002 = await asTenant(roleUrl('sf_g4_002_rt'), T1, async (c) => {
-    const leaked = await c.query(`SELECT code, display_name FROM sf_tenant_org.tenant WHERE tenant_id = $1`, [T2]);
+    const leaked = await c.query(
+      `SELECT code, display_name FROM sf_tenant_org.tenant WHERE tenant_id = $1`,
+      [T2],
+    );
     return { count: leaked.rowCount, body: JSON.stringify(leaked.rows) };
   });
-  rec(leak002.count === 0 && !leak002.body.includes(CANARY), 'TI.002.wrong_tenant_select', `count=${leak002.count}`);
+  rec(
+    leak002.count === 0 && !leak002.body.includes(CANARY),
+    'TI.002.wrong_tenant_select',
+    `count=${leak002.count}`,
+  );
   let insertDenied002 = false;
   try {
     await asTenant(roleUrl('sf_g4_002_rt'), T1, async (c) => {
@@ -456,7 +538,11 @@ try {
     );
     return { count: leaked.rowCount, body: JSON.stringify(leaked.rows) };
   });
-  rec(leak003.count === 0 && !leak003.body.includes(CANARY), 'TI.003.wrong_tenant_select', `count=${leak003.count}`);
+  rec(
+    leak003.count === 0 && !leak003.body.includes(CANARY),
+    'TI.003.wrong_tenant_select',
+    `count=${leak003.count}`,
+  );
   let insertDenied003 = false;
   try {
     await asTenant(roleUrl('sf_g4_003_rt'), T1, async (c) => {
@@ -482,10 +568,17 @@ try {
     );
   });
   const leak030 = await asTenant(roleUrl('sf_g4_030_rt'), T1, async (c) => {
-    const leaked = await c.query(`SELECT label FROM sf_consent_privacy.purpose WHERE tenant_id = $1`, [T2]);
+    const leaked = await c.query(
+      `SELECT label FROM sf_consent_privacy.purpose WHERE tenant_id = $1`,
+      [T2],
+    );
     return { count: leaked.rowCount, body: JSON.stringify(leaked.rows) };
   });
-  rec(leak030.count === 0 && !leak030.body.includes(CANARY), 'TI.030.wrong_tenant_select', `count=${leak030.count}`);
+  rec(
+    leak030.count === 0 && !leak030.body.includes(CANARY),
+    'TI.030.wrong_tenant_select',
+    `count=${leak030.count}`,
+  );
   let insertDenied030 = false;
   try {
     await asTenant(roleUrl('sf_g4_030_rt'), T1, async (c) => {
@@ -512,7 +605,10 @@ try {
     );
   });
   const leak032 = await asTenant(roleUrl('sf_g4_032_rt'), T1, async (c) => {
-    const leaked = await c.query(`SELECT policy_id FROM sf_storage.storage_policy WHERE tenant_id = $1`, [T2]);
+    const leaked = await c.query(
+      `SELECT policy_id FROM sf_storage.storage_policy WHERE tenant_id = $1`,
+      [T2],
+    );
     return { count: leaked.rowCount };
   });
   rec(leak032.count === 0, 'TI.032.wrong_tenant_select', `count=${leak032.count}`);
@@ -653,10 +749,7 @@ try {
   );
 
   const leakageFindings = findings.filter(
-    (f) =>
-      f.id.startsWith('TI.') ||
-      f.id.startsWith('XCOMP.') ||
-      f.id.startsWith('TENANT.'),
+    (f) => f.id.startsWith('TI.') || f.id.startsWith('XCOMP.') || f.id.startsWith('TENANT.'),
   );
   const summary = {
     tip: TIP,
