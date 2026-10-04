@@ -9,7 +9,7 @@ Do **not** merge this stitch as a certification. Do **not** merge builder PRs #6
 | Task | SF-M04-STITCH-A |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/73 |
 | Branch | `cursor/m04-stitch-a-7000` |
-| Authoritative immutable head | `PENDING_AUTHORITATIVE_HEAD_SHA` |
+| Authoritative immutable head | `55d6e7df95e5c31636b3040593534b9f4d4a1285` |
 | Correction harness (R-CMP008-DOWN2 14/14) | `bf35d1622ac3f4a7bc0b369d14d5b5d5b149c46f` |
 | Historical heads | trees `c45d2327be21dd0dcce6c598c9036b615f1ca235`; lockfile `6fd5d3f8dcdd50d80486a090e3316960d058130e`; first evidence `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe`; previous GitHub candidate `50b65c8c1324132ec6f5fb802525a57c66b143a7` |
 | Base | `origin/main` `9ccc2b02f8ef64a0987b0c4793137511545ed3f7` |
