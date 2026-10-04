@@ -4,7 +4,7 @@
 
 | ID | Item | Severity | Notes |
 |---|---|---|---|
-| R-CI | Remote CI status on stitch PR | observe | Tip before coverage fix: quality job failed on global coverage thresholds; stitch exclude for W2 int-only surfaces in `vitest.config.ts`. Re-check CI on tip after coverage commit. |
+| R-CI | Remote CI status on stitch PR | cleared | Tip `21df89a` — GitHub checks **15/15 SUCCESS** on draft PR #30 |
 | R-COV | Global unit coverage vs int-only routes | mitigated | Root vitest excludes CMP-003/030/032 route/repo/db/(032 service) + CMP-055 CLI from global thresholds; component coverage + `*.int.test.ts` remain authoritative |
 | R-INT | Independent integration verifier | expected | SF-M01-W2-INT `state: STITCH_READY`, `dispatched: false` — orchestrator owns dispatch |
 | R-SEC | Independent security verifier | expected | SF-M01-W2-SEC still planning/not dispatched |
