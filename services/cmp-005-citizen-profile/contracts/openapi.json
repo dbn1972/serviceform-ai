@@ -1,0 +1,20 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-005 Citizen Profile",
+    "version": "1.0.0",
+    "description": "Platform citizen profile and verified-claim provenance. No statutory field vocabulary. Host mount deferred to SF-M02-003."
+  },
+  "paths": {
+    "/v1/profiles/{subjectId}": {
+      "get": { "operationId": "getProfile" },
+      "put": { "operationId": "ensureProfile" }
+    },
+    "/v1/profiles/{subjectId}/claims": {
+      "put": { "operationId": "upsertSelfAssertedClaims" }
+    },
+    "/v1/profiles/{subjectId}/verified-claims/import": {
+      "post": { "operationId": "importVerifiedClaims" }
+    }
+  }
+}

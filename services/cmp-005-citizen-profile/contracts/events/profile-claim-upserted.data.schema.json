@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-005/profile-claim-upserted.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id",
+    "section_code",
+    "claim_code",
+    "value_sha256",
+    "source_kind",
+    "verification_status"
+  ],
+  "properties": {
+    "claim_id": { "type": "string", "format": "uuid" },
+    "section_code": { "type": "string", "enum": ["IDENTITY", "ADDRESS", "FAMILY", "OCCUPATION"] },
+    "claim_code": { "type": "string" },
+    "value_sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "source_kind": { "type": "string", "enum": ["SELF", "OFFICER", "CONNECTOR"] },
+    "verification_status": {
+      "type": "string",
+      "enum": ["UNVERIFIED", "VERIFIED", "STALE", "REVOKED"]
+    }
+  }
+}

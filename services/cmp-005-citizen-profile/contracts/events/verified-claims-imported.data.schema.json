@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-005/verified-claims-imported.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile_id", "subject_id", "claim_ids", "simulation", "connector_binding_id"],
+  "properties": {
+    "profile_id": { "type": "string", "format": "uuid" },
+    "subject_id": { "type": "string", "format": "uuid" },
+    "claim_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+    "simulation": { "type": "boolean", "const": true },
+    "connector_binding_id": { "type": "string", "format": "uuid" }
+  }
+}
