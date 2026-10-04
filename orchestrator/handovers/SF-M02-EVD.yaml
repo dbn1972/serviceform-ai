@@ -66,4 +66,8 @@ stop_conditions:
   - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
 
+# Issued G3 is recorded on orchestrator/handovers/M02-GATE.yaml (not this envelope).
+# Uniqueness snapshot for this implementation envelope remains READY / dispatched false.
+# Do not set dispatched/state here; uniqueness compared keys must stay READY / false.
+issuance_note: recorded_on_M02-GATE.yaml
 
