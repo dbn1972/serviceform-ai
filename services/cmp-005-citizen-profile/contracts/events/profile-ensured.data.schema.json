@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-005/profile-ensured.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profile_id", "subject_id"],
+  "properties": {
+    "profile_id": { "type": "string", "format": "uuid" },
+    "subject_id": { "type": "string", "format": "uuid" }
+  }
+}

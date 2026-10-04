@@ -1,0 +1,43 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-005 Citizen Profile Events",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "sf.citizen-profile.events.v1": {
+      "address": "sf.citizen-profile.events.v1",
+      "messages": {
+        "ProfileEnsured": { "$ref": "#/components/messages/ProfileEnsured" },
+        "ProfileClaimUpserted": { "$ref": "#/components/messages/ProfileClaimUpserted" },
+        "VerifiedClaimsImported": { "$ref": "#/components/messages/VerifiedClaimsImported" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "$ref": "#/components/messages/AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "ProfileEnsured": {
+        "name": "ProfileEnsured",
+        "payload": { "$ref": "./events/profile-ensured.data.schema.json" }
+      },
+      "ProfileClaimUpserted": {
+        "name": "ProfileClaimUpserted",
+        "payload": { "$ref": "./events/profile-claim-upserted.data.schema.json" }
+      },
+      "VerifiedClaimsImported": {
+        "name": "VerifiedClaimsImported",
+        "payload": { "$ref": "./events/verified-claims-imported.data.schema.json" }
+      },
+      "AuditEventSubmitted": {
+        "name": "AuditEventSubmitted",
+        "payload": { "type": "object" }
+      }
+    }
+  }
+}
