@@ -9,6 +9,8 @@ Do **not** merge this stitch as a certification. Do **not** merge builder PRs #6
 | Task | SF-M04-STITCH-A |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/73 |
 | Branch | `cursor/m04-stitch-a-7000` |
+| Immutable head SHA (local evidence commit) | `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe` |
+| Pushed tip at PR open (trees + lockfile) | `6fd5d3f8dcdd50d80486a090e3316960d058130e` |
 | Base | `origin/main` `9ccc2b02f8ef64a0987b0c4793137511545ed3f7` |
 | Frozen contracts altered | **none** (13/13 MATCH) |
 | Self-certified | **false** |
