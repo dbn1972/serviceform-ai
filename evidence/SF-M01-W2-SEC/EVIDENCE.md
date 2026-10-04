@@ -10,7 +10,7 @@
 | Role | Independent security verifier (not builder) |
 | Assessed | 2026-10-04T01:56Z |
 
-Primary report: store `docs/m01-wave2-v2-security.md`  
+Primary report: store `docs/m01-wave2-v2-security.md`  \nEvidence PR: https://github.com/dbn1972/serviceform-ai/pull/32
 Run artifacts: store `internal/verification/w2-v2-security-runs/`
 
 ## Executed locally on tip
@@ -41,3 +41,6 @@ Run artifacts: store `internal/verification/w2-v2-security-runs/`
 | ci | 37169194082 | SUCCESS |
 
 Frozen contracts unaltered. Thresholds not weakened. Not merged. Not CERTIFIED.
+
+Evidence PR: https://github.com/dbn1972/serviceform-ai/pull/32
+Evidence commit: 599829fea409d7592d532239912c5360f278f3f6
