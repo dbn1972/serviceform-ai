@@ -1,14 +1,14 @@
-# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 task envelope — builder SF-M01-W2-003 (implementation authorized)
 task_id: SF-M01-W2-003
 title: Storage Service
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-032]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -17,25 +17,24 @@ requirement_ids:
   - ADR-0006-Option-A
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-model_route: opus
-model_release: claude-opus-5-5
+model_route: composer
 effort: high
-verifier_model_route: opus
 verifiers:
   - serviceform-security-verifier (opus, xhigh)
   - serviceform-integration-stitcher (opus, high)
   - serviceform-evidence-verifier (opus, high)
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-cmp-032-storage-SF-M01-W2-003
-worktree: ../wt-SF-M01-W2-003
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+branch: cursor/m01-w2-cmp-032-1f9a
 depends_on:
   - M01 Wave 1 MERGED (CMP-031, CMP-048 on main)
   - 13 shared contracts FROZEN
-  - human implementation authorization (not granted)
+  - human implementation authorization (granted)
 allowed_write_paths:
   - services/cmp-032-storage/**
   - packages/storage/**
   - db/migrations/*_cmp-032-*.sql
+  - evidence/SF-M01-W2-003/**
+  - orchestrator/handovers/SF-M01-W2-003.yaml
 allowed_write_notes:
   - package.json under service/package paths may change; do not commit pnpm-lock.yaml
   - Local/SIMULATED object-store adapter only; no infra/** writes
@@ -56,16 +55,6 @@ read_only_paths:
   - .github/**
   - scripts/gates/**
   - infra/**
-  - services/cmp-002-tenant-organisation/**
-  - services/cmp-003-jurisdiction/**
-  - services/cmp-030-consent-privacy/**
-  - services/cmp-031-audit-ledger/**
-  - services/cmp-037-integration-hub/**
-  - services/cmp-038-event-bus/**
-  - services/cmp-048-security-platform/**
-  - services/cmp-036-api-gateway/**
-  - services/cmp-047-observability/**
-  - services/cmp-055-developer-platform/**
 contract_locks:
   - SF-CON-COMMON
   - SF-CON-REQUEST-CONTEXT
@@ -104,12 +93,15 @@ acceptance_tests_planning:
   - Duplicate store command does not duplicate durable side effects
   - ADR-0006 privilege-boundary; outbox template unchanged
   - Host mount deferred to SF-M01-W2-004
-stop_conditions:
-  - FROZEN contract change required (CCR)
-  - new cloud infrastructure required without ADR
-  - write outside allowed_write_paths
-  - dependency on unmerged CMP-013/049 code
-  - implementation_authorized remains false (do not code)
+builder_result:
+  status: SF-M01-W2-003_READY
+  evidence_dir: evidence/SF-M01-W2-003/
+  tests:
+    storage_unit: 12_passed
+    service_unit_contract: 8_passed
+    integration: 6_passed
+  frozen_contracts_altered: none
+  real_s3_kms: false
 self_certified: false
 not_certified: true
 blockers: []
