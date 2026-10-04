@@ -66,4 +66,29 @@ stop_conditions:
   - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
 
+# Evidence bind (recommendation only). Uniqueness fields above MUST stay READY / dispatched false.
+evidence_bind:
+  recommended_gate: G3_INTEGRATION_VERIFIED
+  gate_issued: false
+  human_or_ci_decides: true
+  certified: false
+  self_certified: false
+  release_certified: false
+  g6_claimed: false
+  production_sot: "7424235592824d5ceda9dcac55380a78c05cb6c5"
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contracts: 13/13 MATCH
+  cmp001_int: 8/8
+  pin_insert_fresh_txn: "42501"
+  int_pr: 59
+  int_head: facb0fe72aa674364f14a3f372591866929d54e7
+  int_recommended: V1_INTEGRATION_PASS
+  sec_pr: 61
+  sec_head: 8c859f25113cef4590d79886c8a77e1e7e8e4b3d
+  sec_recommended: V1_SECURITY_PASS
+  tx_split_pr: 60
+  tx_split_head: 4f784b936ab8e3bc1a5e43226ce9310269463299
+  recommendation_doc: docs/verification/M03-G3-RECOMMENDATION.md
+  gate_record: orchestrator/handovers/M03-GATE.yaml
+
 
