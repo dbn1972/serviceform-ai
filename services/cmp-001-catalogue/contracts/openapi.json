@@ -1,0 +1,74 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-001 Service Catalogue and Registry",
+    "version": "0.1.0",
+    "description": "Canonical services, categories, and tenant offerings. Host mount deferred to CMP-036 (SF-M03-008)."
+  },
+  "paths": {
+    "/v1/categories": {
+      "get": {
+        "operationId": "listServiceCategories",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/admin/categories": {
+      "post": {
+        "operationId": "createServiceCategory",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/canonical-services": {
+      "get": {
+        "operationId": "listCanonicalServices",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/canonical-services/{id}": {
+      "get": {
+        "operationId": "getCanonicalService",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/admin/canonical-services": {
+      "post": {
+        "operationId": "createCanonicalService",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/admin/canonical-services/{id}/versions": {
+      "post": {
+        "operationId": "createCanonicalServiceVersion",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/offerings": {
+      "get": {
+        "operationId": "listServiceOfferings",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createServiceOffering",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/offerings/{id}": {
+      "get": {
+        "operationId": "getServiceOffering",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/offerings/{id}/versions": {
+      "post": {
+        "operationId": "createServiceOfferingVersion",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/offerings/{id}/bindings": {
+      "post": {
+        "operationId": "createOfferingBinding",
+        "responses": { "201": { "description": "Created" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["change"],
+  "properties": {
+    "change": { "type": "string", "enum": ["CREATED", "VERSIONED", "CATEGORY_CREATED"] },
+    "canonical_service_id": { "type": "string", "format": "uuid" },
+    "category_id": { "type": "string", "format": "uuid" },
+    "category_code": { "type": "string" },
+    "service_code": { "type": "string" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string" }
+  }
+}
