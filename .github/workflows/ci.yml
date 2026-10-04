@@ -105,12 +105,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:test
 
-  # M01 Wave 1 envelope INT (SF-M01-001..005). Not covered by pnpm test:coverage.
+  # M01 W1+W2 envelope INT (all M01 CMPs). Not covered by pnpm test:coverage.
   # Integration failure fails this job (no continue-on-error). Pinned PG 16.14 + Kafka 4.1.0 + OPA 1.21.1.
+  # Components: CMP-002/003/030/031/032/036/037/038/047/048/055.
   m01-envelope-int:
-    name: M01 envelope integration (SF-M01-001..005)
+    name: M01 envelope integration (W1+W2 all CMPs)
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     services:
       postgres:
         image: postgres:16.14-alpine
@@ -159,7 +160,7 @@ jobs:
           sudo install -m 0755 /tmp/opa /usr/local/bin/opa
           opa version
       - run: pnpm install --frozen-lockfile
-      - name: run SF-M01-001..005 envelope INT suites
+      - name: run M01 W1+W2 envelope INT suites (all CMPs)
         run: bash scripts/ci/run-m01-envelope-int.sh
       - name: write artifact index for evidence binding
         if: always()
@@ -180,7 +181,8 @@ jobs:
             "workflow": "${{ github.workflow }}",
             "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "artifacts_root": "test-results/m01-envelope-int",
-            "tasks": ["SF-M01-001","SF-M01-002","SF-M01-003","SF-M01-004","SF-M01-005"]
+            "tasks": ["SF-M01-001","SF-M01-002","SF-M01-003","SF-M01-004","SF-M01-005","SF-M01-W2-001","SF-M01-W2-002","SF-M01-W2-003","SF-M01-W2-004","SF-M01-W2-005"],
+            "components": ["CMP-002","CMP-003","CMP-030","CMP-031","CMP-032","CMP-036","CMP-037","CMP-038","CMP-047","CMP-048","CMP-055"]
           }
           EOF
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

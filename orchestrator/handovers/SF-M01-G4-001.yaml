@@ -1,15 +1,15 @@
 # M01 G4 exit envelope — SF-M01-G4-001 Fix R-ENV-INT
-# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
+# Builder delivery READY. Not CERTIFIED. No M02/M03.
 task_id: SF-M01-G4-001
 title: Generalize M01 envelope-int CI beyond SF-M01-001..005
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: IMPLEMENTATION_READY
+state: IMPLEMENTATION_COMPLETE
 planning_only: false
 implementation_authorized: true
-m01_g4_exit_started: false
-dispatched: false
+m01_g4_exit_started: true
+dispatched: true
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -21,11 +21,14 @@ builder_agent: serviceform-foundation-builder
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
-branch: agent/M01-g4-env-int-SF-M01-G4-001
-worktree: ../wt-SF-M01-G4-001
+base_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+implementation_sha: 125a81ff9aa0e0cc5b381f0e7001bd0522ed9614
+code_ancestry_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
+branch: cursor/m01-g4-r-env-int-1573
+worktree: .
 depends_on:
-  - origin/main @ c42c7c89aa75653d099883e7f28ece73cf2c7515 (W1+W2 + G4 plan merged; post-merge CI green)
+  - origin/main @ ab8359f0ffe96834bdf61318d1db7877433e7dcc (G4 envelopes READY; PR #35)
+  - code ancestry c42c7c89aa75653d099883e7f28ece73cf2c7515 (W1+W2 + G4 plan)
   - human authorization for M01 G4 exit implementation (granted)
 allowed_write_paths:
   - .github/workflows/ci.yml
@@ -35,8 +38,8 @@ allowed_write_paths:
 allowed_write_notes:
   - Only generalize m01-envelope-int job and runner script; do not weaken fail-closed semantics
   - Do not disable other CI jobs or security gates
-  - CMP-055 path-based vitest allowed; no new CMP-055 product features
-  - Minimal package.json for CMP-055 only if required for pnpm filter; no feature scope
+  - CMP-055 path-based vitest used; no CMP-055 package.json / product features
+  - Timeout 60→90 minutes only to fit added W2 suites; no threshold lowering
 read_only_paths:
   - contracts/**
   - orchestrator/contracts-lock.yaml
@@ -65,8 +68,8 @@ contract_locks:
 acceptance_tests_planning:
   - Job and script execute W1 SF-M01-001..005 suites unchanged in strength
   - Job and script execute W2 CMP-003/030/032 INT suites
-  - Host composition and/or CMP-036/047 suites included as owned by W2 INT pattern
-  - CMP-055 unit/path suites included or residual explicitly documented with rationale
+  - Host composition and CMP-036/047 suites included as owned by W2 INT pattern
+  - CMP-055 path-based vitest included (no package.json on main)
   - ARTIFACT-INDEX tasks list covers full M01; commit_sha binds tip under test
   - No continue-on-error; integration failure fails the job
 stop_conditions:
@@ -80,4 +83,18 @@ certified: false
 ccr_required: false
 parallel_group: G4-A
 evidence_paths:
-  - evidence/SF-M01-G4-001/
+  - evidence/SF-M01-G4-001/EVIDENCE.md
+  - evidence/SF-M01-G4-001/COVERAGE.json
+  - evidence/SF-M01-G4-001/path-smoke/summary.json
+residual_r_env_int: CLOSED_IN_CODE
+job_name: M01 envelope integration (W1+W2 all CMPs)
+builder_result: SF-M01-G4-001_READY
+recommended_gate: READY_FOR_INDEPENDENT_VERIFY
+# pr_url / head_sha filled after push
+pr_url: https://github.com/dbn1972/serviceform-ai/pull/39
+head_sha: edf868a1ddfaedc242588de1e3ac03c7eb7021a4
+ci_status: PENDING_GITHUB  # watch m01-envelope-int on PR #39
+notes:
+  - Local path/unit smoke PASS for CMP-036/047/055/host + INT-013 markers
+  - Full PG+Kafka W1+W2 *.int authoritative on GitHub m01-envelope-int job
+  - Not CERTIFIED; exit token not issued; M02/M03 blocked
