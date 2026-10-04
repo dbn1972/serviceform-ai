@@ -76,6 +76,23 @@ function walkTs(dir: string, acc: string[] = []): string[] {
   return acc;
 }
 
+const IDENT = /[A-Za-z0-9_]/;
+
+/** True when `schema.table` appears as an identifier, without a non-literal RegExp. */
+function mentionsPeerRelation(source: string, schema: string): boolean {
+  const needle = `${schema}.`;
+  let from = 0;
+  while (from <= source.length - needle.length) {
+    const i = source.indexOf(needle, from);
+    if (i < 0) return false;
+    const prev = i === 0 ? '' : source.charAt(i - 1);
+    const next = source.charAt(i + needle.length);
+    if ((prev === '' || !IDENT.test(prev)) && IDENT.test(next)) return true;
+    from = i + needle.length;
+  }
+  return false;
+}
+
 describe('SF-M03-SEC static isolation (not CERTIFIED)', () => {
   it('frozen contracts lock is 13/13 MATCH', () => {
     const lockText = readFileSync(join(ROOT, 'orchestrator/contracts-lock.yaml'), 'utf8');
@@ -147,9 +164,7 @@ describe('SF-M03-SEC static isolation (not CERTIFIED)', () => {
         if (!own) continue;
         for (const peer of PEER_SCHEMAS) {
           if (peer === own) continue;
-          expect(text, `${file} mentions ${peer}`).not.toMatch(
-            new RegExp(`\\b${peer}\\.(?:[a-z_]+)\\b`),
-          );
+          expect(mentionsPeerRelation(text, peer), `${file} mentions ${peer}`).toBe(false);
         }
       }
     }

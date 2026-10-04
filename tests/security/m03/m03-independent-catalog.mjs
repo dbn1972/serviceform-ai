@@ -83,12 +83,6 @@ const COMPONENTS = [
 ];
 const ALL_RW = COMPONENTS.map((c) => c.rw);
 const COMPONENT_SCHEMAS = COMPONENTS.map((c) => c.schema);
-const OUTBOX_TABLES = [
-  'outbox_event',
-  'outbox_event_platform',
-  'inbox_event',
-  'inbox_event_platform',
-];
 
 const TENANT_SCOPED = new Set([
   'sf_catalogue.offering',
