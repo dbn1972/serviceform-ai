@@ -1,0 +1,38 @@
+[
+  {
+    "entity": "sf_maker_checker.publication_request",
+    "owner_component": "CMP-051",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_maker_checker.idempotency_record",
+    "owner_component": "CMP-051",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_maker_checker.outbox_event",
+    "owner_component": "CMP-051",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_maker_checker.outbox_event_platform",
+    "owner_component": "CMP-051",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_maker_checker.inbox_event",
+    "owner_component": "CMP-051",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_maker_checker.inbox_event_platform",
+    "owner_component": "CMP-051",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]

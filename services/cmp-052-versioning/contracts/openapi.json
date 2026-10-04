@@ -1,0 +1,105 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-052 Versioning & Configuration Registry",
+    "version": "0.1.0",
+    "description": "TenantServiceBinding pins and immutable published versions (INT-002). Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/tenant-service-bindings": {
+      "post": {
+        "operationId": "createTenantServiceBinding",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Draft created" },
+          "400": { "description": "Validation failed" }
+        }
+      }
+    },
+    "/v1/tenant-service-bindings/{id}": {
+      "get": {
+        "operationId": "getTenantServiceBinding",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Binding" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "operationId": "patchTenantServiceBinding",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Updated draft" },
+          "400": { "description": "Immutable or invalid" }
+        }
+      }
+    },
+    "/v1/tenant-service-bindings/{id}/publish": {
+      "post": {
+        "operationId": "publishTenantServiceBinding",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Published" },
+          "400": { "description": "Checker approval required or immutable" }
+        }
+      }
+    },
+    "/v1/artifact-versions/{id}": {
+      "get": {
+        "operationId": "getArtifactVersion",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Published artifact version" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  }
+}
