@@ -1,0 +1,41 @@
+{
+  "schema": "serviceform.m01.g4-001.coverage.v1",
+  "task_id": "SF-M01-G4-001",
+  "result": "SF-M01-G4-001_READY",
+  "certified": false,
+  "main_baseline_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "code_ancestry_sha": "c42c7c89aa75653d099883e7f28ece73cf2c7515",
+  "residual_closed": "R-ENV-INT",
+  "job_name_before": "M01 envelope integration (SF-M01-001..005)",
+  "job_name_after": "M01 envelope integration (W1+W2 all CMPs)",
+  "fail_closed": true,
+  "continue_on_error": false,
+  "thresholds_lowered": false,
+  "components": [
+    "CMP-002",
+    "CMP-003",
+    "CMP-030",
+    "CMP-031",
+    "CMP-032",
+    "CMP-036",
+    "CMP-037",
+    "CMP-038",
+    "CMP-047",
+    "CMP-048",
+    "CMP-055"
+  ],
+  "tasks": [
+    "SF-M01-001",
+    "SF-M01-002",
+    "SF-M01-003",
+    "SF-M01-004",
+    "SF-M01-005",
+    "SF-M01-W2-001",
+    "SF-M01-W2-002",
+    "SF-M01-W2-003",
+    "SF-M01-W2-004",
+    "SF-M01-W2-005"
+  ],
+  "authoritative_full_int": "github-job:m01-envelope-int",
+  "local_path_smoke": "evidence/SF-M01-G4-001/path-smoke/summary.json"
+}

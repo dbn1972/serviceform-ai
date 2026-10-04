@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
-# Execute M01 Wave 1 envelope integration suites on pinned CI infra.
+# Execute M01 Wave 1 + Wave 2 envelope / INT suites on pinned CI infra.
 # Failures must fail the caller (no continue-on-error). Emits machine-readable
 # artifacts under test-results/m01-envelope-int/ with SHA/run/job metadata.
+#
+# Covers all M01 W1+W2 components:
+#   CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038,
+#   CMP-047, CMP-048, CMP-055 (+ OPA + CDC + host composition + INT-013 markers).
 #
 # Each component INT suite runs once (full package). Re-running the same *.int
 # files leaves residual rows (e.g. CMP-037 connector_binding_enabled_uniq).
@@ -67,20 +71,40 @@ write_suite_meta() {
 EOF
 }
 
-run_vitest() {
+# Package-scoped vitest (cwd = package via pnpm --filter exec).
+run_pkg_vitest() {
   local pkg="$1"
-  local junit_path="$2"
-  local log_path="$3"
-  shift 3
+  local config="$2"
+  local junit_path="$3"
+  local log_path="$4"
+  shift 4
   local -a extra=("$@")
   set +e
   pnpm --filter "${pkg}" exec vitest run \
     --root . \
-    --config vitest.integration.config.ts \
+    --config "${config}" \
     --reporter=default \
     --reporter=junit \
     --outputFile.junit="${junit_path}" \
     "${extra[@]}" 2>&1 | tee "${log_path}"
+  local rc=${PIPESTATUS[0]}
+  set -e
+  return "$rc"
+}
+
+# Root vitest.config.ts path-based (CMP-036/047/055 and host; no package.json filter).
+run_root_vitest() {
+  local junit_path="$1"
+  local log_path="$2"
+  shift 2
+  local -a paths=("$@")
+  set +e
+  pnpm exec vitest run \
+    --config vitest.config.ts \
+    --reporter=default \
+    --reporter=junit \
+    --outputFile.junit="${junit_path}" \
+    "${paths[@]}" 2>&1 | tee "${log_path}"
   local rc=${PIPESTATUS[0]}
   set -e
   return "$rc"
@@ -91,15 +115,43 @@ run_suite() {
   local component="$2"
   local suite="$3"
   local pkg="$4"
-  shift 4
+  local config="${5:-vitest.integration.config.ts}"
+  shift 5 || shift 4
   local dir="${OUT_ROOT}/${task}"
   mkdir -p "${dir}/junit"
   local started finished result rc=0
   local log_path="${dir}/${suite}.log"
   local junit_path="${dir}/junit/${suite}.xml"
   started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  echo "==> ${task} ${component} suite=${suite}"
-  if ! run_vitest "${pkg}" "${junit_path}" "${log_path}" "$@"; then
+  echo "==> ${task} ${component} suite=${suite} pkg=${pkg} config=${config}"
+  if ! run_pkg_vitest "${pkg}" "${config}" "${junit_path}" "${log_path}" "$@"; then
+    rc=1
+  fi
+  finished="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  if [[ "$rc" -eq 0 ]]; then
+    result="PASS"
+  else
+    result="FAIL"
+    echo "${task}:${suite}" >>"${OUT_ROOT}/.failed"
+  fi
+  write_suite_meta "$task" "$component" "$suite" "$result" "$started" "$finished" "$log_path"
+  return 0
+}
+
+run_path_suite() {
+  local task="$1"
+  local component="$2"
+  local suite="$3"
+  shift 3
+  local -a paths=("$@")
+  local dir="${OUT_ROOT}/${task}"
+  mkdir -p "${dir}/junit"
+  local started finished result rc=0
+  local log_path="${dir}/${suite}.log"
+  local junit_path="${dir}/junit/${suite}.xml"
+  started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "==> ${task} ${component} suite=${suite} paths=${paths[*]}"
+  if ! run_root_vitest "${junit_path}" "${log_path}" "${paths[@]}"; then
     rc=1
   fi
   finished="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -118,13 +170,15 @@ alias_log() {
   cp -f "${OUT_ROOT}/${task}/${src}.log" "${OUT_ROOT}/${task}/${dest}.log"
 }
 
-# One full INT pass per component (covers privilege-boundary, RLS, failure paths, Kafka, etc.)
-run_suite SF-M01-001 CMP-002 envelope-int @serviceform/cmp-002-tenant-organisation
+# ---------------------------------------------------------------------------
+# Wave 1 — SF-M01-001..005 (unchanged strength; fail-closed)
+# ---------------------------------------------------------------------------
+run_suite SF-M01-001 CMP-002 envelope-int @serviceform/cmp-002-tenant-organisation vitest.integration.config.ts
 alias_log SF-M01-001 envelope-int privilege-boundary
 alias_log SF-M01-001 envelope-int rls-negative
 alias_log SF-M01-001 envelope-int failure-paths
 
-run_suite SF-M01-002 CMP-048 envelope-int @serviceform/cmp-048-security-platform
+run_suite SF-M01-002 CMP-048 envelope-int @serviceform/cmp-048-security-platform vitest.integration.config.ts
 alias_log SF-M01-002 envelope-int privilege-boundary
 alias_log SF-M01-002 envelope-int rls-negative
 alias_log SF-M01-002 envelope-int opa-pep-fail-closed
@@ -143,21 +197,52 @@ alias_log SF-M01-002 envelope-int opa-pep-fail-closed
     "${OUT_ROOT}/SF-M01-002/opa-test-results.txt"
 }
 
-run_suite SF-M01-003 CMP-031 envelope-int @serviceform/cmp-031-audit-ledger
+run_suite SF-M01-003 CMP-031 envelope-int @serviceform/cmp-031-audit-ledger vitest.integration.config.ts
 alias_log SF-M01-003 envelope-int privilege-boundary
 alias_log SF-M01-003 envelope-int failure-paths
 alias_log SF-M01-003 envelope-int tamper-detection
 
-run_suite SF-M01-004 CMP-038 envelope-int @serviceform/cmp-038-event-bus
+run_suite SF-M01-004 CMP-038 envelope-int @serviceform/cmp-038-event-bus vitest.integration.config.ts
 alias_log SF-M01-004 envelope-int privilege-boundary
 alias_log SF-M01-004 envelope-int outbox-atomicity
 alias_log SF-M01-004 envelope-int kafka-real-broker
 alias_log SF-M01-004 envelope-int broker-outage
 
-run_suite SF-M01-005 CMP-037 envelope-int @serviceform/cmp-037-integration-hub
+run_suite SF-M01-005 CMP-037 envelope-int @serviceform/cmp-037-integration-hub vitest.integration.config.ts
 alias_log SF-M01-005 envelope-int privilege-boundary
 alias_log SF-M01-005 envelope-int failure-paths
 alias_log SF-M01-005 envelope-int duplicate-callback
+
+# ---------------------------------------------------------------------------
+# Wave 2 — CMP-003 / 030 / 032 / 036 / 047 / 055 (+ host + INT-013 markers)
+# ---------------------------------------------------------------------------
+run_suite SF-M01-W2-001 CMP-003 envelope-int @serviceform/cmp-003-jurisdiction vitest.integration.config.ts
+alias_log SF-M01-W2-001 envelope-int privilege-boundary
+alias_log SF-M01-W2-001 envelope-int rls-negative
+
+run_suite SF-M01-W2-002 CMP-030 envelope-int @serviceform/cmp-030-consent-privacy vitest.integration.config.ts
+alias_log SF-M01-W2-002 envelope-int privilege-boundary
+alias_log SF-M01-W2-002 envelope-int rls-negative
+
+run_suite SF-M01-W2-003 CMP-032 envelope-int @serviceform/cmp-032-storage vitest.integration.config.ts
+alias_log SF-M01-W2-003 envelope-int privilege-boundary
+alias_log SF-M01-W2-003 envelope-int rls-negative
+alias_log SF-M01-W2-003 envelope-int int-013
+
+# INT-013 simulation / mode-refusal markers (owned by CMP-032 + @serviceform/storage)
+run_suite SF-M01-W2-003 CMP-032 int-013-cmp-032-unit @serviceform/cmp-032-storage vitest.unit.config.ts
+run_suite SF-M01-W2-003 CMP-032 int-013-storage-unit @serviceform/storage vitest.config.ts
+
+# CMP-036 / CMP-047: no PG *.int suites on main — host composition + edge/plugin units
+run_path_suite SF-M01-W2-004 CMP-036 host-wave2-composition apps/api/test/composition.test.ts
+run_path_suite SF-M01-W2-004 CMP-036 cmp-036-edge-unit services/cmp-036-api-gateway/test/edge.test.ts
+run_path_suite SF-M01-W2-004 CMP-047 cmp-047-plugin-unit services/cmp-047-observability/test/plugin.test.ts
+
+# CMP-055: no package.json on main — path-based vitest only (no product features)
+run_path_suite SF-M01-W2-005 CMP-055 unit \
+  services/cmp-055-developer-platform/test/agent-packaging.test.ts \
+  services/cmp-055-developer-platform/test/openapi-pipeline.test.ts \
+  services/cmp-055-developer-platform/test/provenance.test.ts
 
 # F-V1-CDC: cross-component consumer-driven contracts (schema-driven; no cross-SQL)
 {
@@ -183,6 +268,31 @@ root = pathlib.Path(os.environ["M01_INT_OUT"])
 metas = sorted(root.glob("*/*.meta.json"))
 suites = [json.loads(p.read_text(encoding="utf-8")) for p in metas]
 failed = [s for s in suites if s.get("result") != "PASS"]
+tasks = [
+    "SF-M01-001",
+    "SF-M01-002",
+    "SF-M01-003",
+    "SF-M01-004",
+    "SF-M01-005",
+    "SF-M01-W2-001",
+    "SF-M01-W2-002",
+    "SF-M01-W2-003",
+    "SF-M01-W2-004",
+    "SF-M01-W2-005",
+]
+components = [
+    "CMP-002",
+    "CMP-003",
+    "CMP-030",
+    "CMP-031",
+    "CMP-032",
+    "CMP-036",
+    "CMP-037",
+    "CMP-038",
+    "CMP-047",
+    "CMP-048",
+    "CMP-055",
+]
 summary = {
     "schema": "serviceform.m01.envelope-int.summary.v1",
     "commit_sha": os.environ.get("M01_COMMIT_SHA") or (suites[0]["commit_sha"] if suites else ""),
@@ -196,7 +306,8 @@ summary = {
     "result": "PASS" if suites and not failed else "FAIL",
     "suites": suites,
     "failed_suites": [f"{s['task_id']}:{s['suite']}" for s in failed],
-    "tasks": ["SF-M01-001", "SF-M01-002", "SF-M01-003", "SF-M01-004", "SF-M01-005"],
+    "tasks": tasks,
+    "components": components,
     "covers": [
         "privilege-boundary-LOGIN",
         "RLS-negative",
@@ -210,9 +321,15 @@ summary = {
         "no-lost-committed-event",
         "failure-paths",
         "cross-component-CDC",
+        "INT-011-W2-CMP-003-030-032",
+        "INT-013-storage-simulation-markers",
+        "host-wave2-composition",
+        "CMP-036-edge",
+        "CMP-047-plugin",
+        "CMP-055-path-unit",
     ],
 }
 (root / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
-print(json.dumps({"result": summary["result"], "fail_count": summary["fail_count"], "failed": summary["failed_suites"]}, indent=2))
+print(json.dumps({"result": summary["result"], "fail_count": summary["fail_count"], "failed": summary["failed_suites"], "suite_count": summary["suite_count"], "components": summary["components"]}, indent=2))
 sys.exit(0 if summary["result"] == "PASS" else 1)
 PY

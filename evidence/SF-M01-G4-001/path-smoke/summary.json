@@ -1,0 +1,16 @@
+{
+  "schema": "serviceform.m01.g4-001.path-smoke.v1",
+  "result": "PASS",
+  "certified": false,
+  "commit_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "main_baseline_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "note": "Local path/unit smoke for W2 surfaces that do not require PG/Kafka. Full envelope-int (incl. W1+W2 *.int) executes on GitHub job m01-envelope-int.",
+  "suites": [
+    "SF-M01-W2-004/host-wave2-composition",
+    "SF-M01-W2-004/cmp-036-edge-unit",
+    "SF-M01-W2-004/cmp-047-plugin-unit",
+    "SF-M01-W2-005/unit",
+    "SF-M01-W2-003/int-013-cmp-032-unit",
+    "SF-M01-W2-003/int-013-storage-unit"
+  ]
+}
