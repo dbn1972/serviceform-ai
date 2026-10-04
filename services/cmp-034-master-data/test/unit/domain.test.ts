@@ -4,17 +4,11 @@ import { canonicalJson, requestFingerprint } from '../../src/domain/fingerprint.
 import { isUuid } from '../../src/domain/uuid.js';
 import { isForbiddenHeaderName } from '../../src/context.js';
 import { assertConnectorImportSafe } from '../../src/domain/import-binding.js';
+import { localSimulatedBinding } from '../doubles/connector-example.js';
 
-const simBinding = {
-  connector_binding_id: 'd17e5fc0-28e4-4b6a-b9d1-04cfa0e28d5d',
+const simBinding = localSimulatedBinding({
   tenant_id: '11111111-1111-4111-8111-111111111111',
-  connector_type: 'DEPARTMENT_API' as const,
-  mode: 'SIMULATED' as const,
-  environment: 'LOCAL' as const,
-  critical: true,
-  secret_ref: null,
-  simulator_version: '0.0.0',
-};
+});
 
 describe('CMP-034 domain', () => {
   it('accepts generic set/value codes without named-service branching', () => {

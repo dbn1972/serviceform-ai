@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="1.553143734">
-    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-10-04T07:22:17.920Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.627655931">
-        <testcase classname="test/integration/api.int.test.ts" name="CMP-034 API + tenant negatives + INT-013 &gt; happy path: draft values, publish, pin, import SIMULATED; published mutation fail-closed" time="0.19778001">
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="1.590893185">
+    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-10-04T07:32:03.465Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.686805918">
+        <testcase classname="test/integration/api.int.test.ts" name="CMP-034 API + tenant negatives + INT-013 &gt; happy path: draft values, publish, pin, import SIMULATED; published mutation fail-closed" time="0.187516512">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T07:22:17.921Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.467455934">
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-034 migration static + live checks &gt; creates schema, privilege role, FORCE RLS, and sf_migrator ownership" time="0.011932175">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T07:32:03.466Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.448759098">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-034 migration static + live checks &gt; creates schema, privilege role, FORCE RLS, and sf_migrator ownership" time="0.011180297">
         </testcase>
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-034 migration static + live checks &gt; SQL follows ADR-0006 / outbox template rules" time="0.001004821">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-034 migration static + live checks &gt; SQL follows ADR-0006 / outbox template rules" time="0.00089724">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T07:22:17.922Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.458031869">
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; own-component DML succeeds; peer-component login is denied" time="0.017587853">
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T07:32:03.466Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.455328169">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; own-component DML succeeds; peer-component login is denied" time="0.018432716">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; wrong-tenant RLS returns zero rows and CROSS_TENANT_LEAKAGE=0" time="0.004445436">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; wrong-tenant RLS returns zero rows and CROSS_TENANT_LEAKAGE=0" time="0.002874514">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; runtime login is not table owner and cannot SET ROLE peer rw" time="0.001380892">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-034 privilege boundary (ADR-0006) &gt; runtime login is not table owner and cannot SET ROLE peer rw" time="0.001327058">
         </testcase>
     </testsuite>
 </testsuites>

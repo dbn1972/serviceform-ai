@@ -15,18 +15,13 @@ import {
   type Harness,
 } from './helpers.js';
 import { fixtures } from '../doubles/context-resolver.js';
+import { localSimulatedBinding } from '../doubles/connector-example.js';
 import { randomUUID } from 'node:crypto';
 
-const simBinding = {
-  connector_binding_id: 'd17e5fc0-28e4-4b6a-b9d1-04cfa0e28d5d',
+const simBinding = localSimulatedBinding({
   tenant_id: T1,
   connector_type: 'DEPARTMENT_API',
-  mode: 'SIMULATED',
-  environment: 'LOCAL',
-  critical: true,
-  secret_ref: null,
-  simulator_version: '0.0.0',
-};
+});
 
 describe('CMP-034 API + tenant negatives + INT-013', () => {
   let h: Harness;
