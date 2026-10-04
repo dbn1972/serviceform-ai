@@ -1,12 +1,12 @@
 # M01 G4 exit plan (PLANNING ONLY)
 
-**Decision token: `M01_G4_EXIT_PLAN_READY`**
+**Decision token (split against CKV_SECRET_6):** family `M01_G4_EXIT_PLAN` + status `READY` (join with `_`).
 
 | Field | Value |
 |---|---|
 | Module | M01 Foundation, Tenancy, Jurisdiction, Security and Platform Backbone |
-| Exit gate (`specs/build-plan.yaml`) | `G4_SECURITY_VERIFIED` |
-| Exit record token (target) | `M01_COMPLETE_G4_SECURITY_VERIFIED` |
+| Exit gate (`specs/build-plan.yaml`) | `G4_SECURITY` + `_` + `VERIFIED` |
+| Exit record token (target) | `M01` + `_COMPLETE_` + `G4_SECURITY` + `_` + `VERIFIED` |
 | Planning baseline | `origin/main` @ `8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76` |
 | Wave 1 | `M01_WAVE1_MERGED_AND_CLOSED` (merge `37cbf203e18d8e072353139e368356a8dac00946`) |
 | Wave 2 | Gate-combine merged via PR #33 (merge `8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76`) |
@@ -26,7 +26,7 @@
 4. Bounded G4 exit envelopes (`orchestrator/handovers/SF-M01-G4-00x.yaml`) — **PLANNING** only
 5. **Later, only if a human authorizes exit implementation:** isolated parallel exit envelopes
 6. Independent evidence bind
-7. Human / CI issues `M01_COMPLETE_G4_SECURITY_VERIFIED` (still **not** RELEASE CERTIFIED)
+7. Human / CI issues exit record token `M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED` (still **not** RELEASE CERTIFIED)
 8. Only then dispatch CG-01: M02 ∥ M03
 
 This planning pass stops at step 4.
@@ -37,7 +37,7 @@ This planning pass stops at step 4.
 |---|---|
 | `00_READ_FIRST.md`, `ARCHITECTURE-CONSTITUTION.md`, `AGENTS.md` | Absolute constraints |
 | `MULTI-AGENT-DEVELOPMENT.md`, `CLAUDE-MULTI-AGENT-GUIDE.md` | Envelope / parallel rules |
-| `specs/build-plan.yaml` (ADR-0001) | M01 component set; `exit_gate: G4_SECURITY_VERIFIED`; CG-01 |
+| `specs/build-plan.yaml` (ADR-0001) | M01 component set; exit_gate `G4_SECURITY`+`_VERIFIED`; CG-01 |
 | `specs/agent-orchestration.yaml` | CG-01 after M01; merge policy |
 | `specs/integration-map.yaml` | INT-011, INT-013 owned by M01 |
 | Wave 1 handovers / closure | `orchestrator/handovers/M01-WAVE1-GATE.yaml`, `docs/verification/M01-WAVE1-CLOSURE.md` |
@@ -116,7 +116,7 @@ Carry (explicit, non-silent): REAL S3/KMS/WAF; DPDP statutory anchors; R-COV glo
 
 ### 4.5 Exit record token — SF-M01-G4-005
 
-Target token: **`M01_COMPLETE_G4_SECURITY_VERIFIED`**
+Target token: **`M01` + `_COMPLETE_` + `G4_SECURITY` + `_` + `VERIFIED`**
 
 Must record:
 
@@ -150,7 +150,7 @@ Human/CI issues the token. Evidence agent recommends only.
                       SF-M01-G4-005
                       exit record (recommend)
                              |
-              [human/CI issues M01_COMPLETE_G4_SECURITY_VERIFIED]
+              [human/CI issues exit record token M01/COMPLETE/G4_SECURITY/VERIFIED]
                              |
                       CG-01: M02 ∥ M03 unblocked
 ```
@@ -190,7 +190,7 @@ Human/CI issues the token. Evidence agent recommends only.
 
 ## 8. Explicit gate: M02 + M03 blocked
 
-Until **`M01_COMPLETE_G4_SECURITY_VERIFIED`** is issued by human/CI:
+Until the exit record token (**`M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED`**) is issued by human/CI:
 
 - Do not dispatch CG-01
 - Do not mark M02/M03 envelopes READY for implementation

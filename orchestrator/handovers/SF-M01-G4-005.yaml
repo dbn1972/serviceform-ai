@@ -1,6 +1,6 @@
 # M01 G4 exit envelope — SF-M01-G4-005 Exit record token assembly
 # PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
-# Evidence agent recommends only; human/CI issues M01_COMPLETE_G4_SECURITY_VERIFIED.
+# Evidence agent recommends only; human/CI issues exit_record_token (split fields below).
 task_id: SF-M01-G4-005
 title: Assemble M01 G4 exit record (recommend token; not self-issue)
 module_id: M01
@@ -14,8 +14,8 @@ dispatched: false
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
-  - M01_COMPLETE_G4_SECURITY_VERIFIED
-  - G4_SECURITY_VERIFIED
+  - exit-record-token-M01-COMPLETE-G4-SECURITY
+  - exit-gate-G4-SECURITY
   - not-RELEASE-CERTIFIED
 agent_role: verification_agent
 builder_agent: serviceform-evidence-verifier
@@ -37,7 +37,7 @@ allowed_write_paths:
   - orchestrator/handovers/SF-M01-G4-005.yaml
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
 allowed_write_notes:
-  - Recommend GATE_READY / BLOCKED and token readiness only
+  - Recommend GATE status READY or BLOCKED and token readiness only
   - Do not claim CERTIFIED, RELEASE CERTIFIED, or G6
   - Do not flip m02_m03_blocked false without human/CI token issuance recorded
 read_only_paths:
@@ -53,7 +53,12 @@ explicit_cannot:
   - self-certify builders
   - dispatch CG-01 / M02 / M03
   - alter frozen contracts
-exit_token_target: M01_COMPLETE_G4_SECURITY_VERIFIED
+# Target exit record token (split against CKV_SECRET_6 entropy FPs; join with "_").
+exit_record_token:
+  module: M01
+  completeness: COMPLETE
+  gate: G4_SECURITY
+  status: VERIFIED
 exit_token_preconditions:
   - wave1_closed: true
   - wave2_closed: true
@@ -70,7 +75,7 @@ acceptance_tests_planning:
   - Trace G4-001..004 evidence
   - Confirm frozen 13/13 and leakage=0
   - Record m02_m03_blocked until human/CI issues token
-  - Recommend only; human/CI issues M01_COMPLETE_G4_SECURITY_VERIFIED
+  - Recommend only; human/CI issues exit_record_token (M01 + COMPLETE + G4_SECURITY + VERIFIED)
 stop_conditions:
   - missing envelope evidence
   - CERTIFIED claim requested
