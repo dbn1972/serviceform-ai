@@ -1,0 +1,27 @@
+
+ RUN  v5.0.3 /workspace
+      Coverage enabled with v8
+
+ ✓ apps/api/test/composition-m02.test.ts (4 tests) 595ms
+   ✓ CMP-036 host M02 mounts (REQ: host-mount-m02, INT-011, PLAN-REVIEW-single-writer-apps-api) (3)
+     ✓ mounts CMP-004/005 under /v1 with frozen deny envelopes and no tenant-header leakage 393ms
+ ✓ apps/api/test/composition.test.ts (7 tests) 756ms
+ ✓ apps/api/test/composition-m03.test.ts (5 tests) 849ms
+   ✓ CMP-036 host M03 Wave A mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) (4)
+     ✓ mounts CMP-001/033/034/053 under /v1 with frozen deny envelopes and no tenant-header leakage 615ms
+ ✓ apps/api/test/app.test.ts (14 tests) 240ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  09:03:30
+   Duration  1.99s (tests 55%, import 29%, transform 15%, worker 1%)
+
+JUNIT report written to /workspace/test-results/unit/junit.xml
+ % Coverage report from v8
+
+=============================== Coverage summary ===============================
+Statements   : 88.88% ( 160/180 )
+Branches     : 81.91% ( 77/94 )
+Functions    : 86.48% ( 32/37 )
+Lines        : 89.65% ( 156/174 )
+================================================================================

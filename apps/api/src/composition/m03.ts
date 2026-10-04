@@ -1,6 +1,10 @@
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import type { Pool } from 'pg';
-import type { ConnectorBinding, DeploymentEnvironment, RequestContext } from '@serviceform/contracts';
+import type {
+  ConnectorBinding,
+  DeploymentEnvironment,
+  RequestContext,
+} from '@serviceform/contracts';
 
 /**
  * Optional Wave A M03 control-plane mounts already on main:
