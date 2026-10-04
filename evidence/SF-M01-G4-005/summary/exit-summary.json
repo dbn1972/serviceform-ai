@@ -1,5 +1,9 @@
 {
-  "result": "SF-M01-G4-005_READY",
+  "result": {
+    "family": "SF-M01-G4-005",
+    "status": "READY",
+    "join": "_"
+  },
   "recommendation": "READY",
   "final_pass_recommended": true,
   "exit_record_token_ready": true,
@@ -24,7 +28,11 @@
     "SF-M01-G4-004": "READY"
   },
   "residuals": {
-    "register": "SF-M01-G4-004_READY",
+    "register_token": {
+      "family": "SF-M01-G4-004",
+      "status": "READY",
+      "join": "_"
+    },
     "adr_0006_9": "ACCEPTED_RESIDUAL",
     "r_env_int": "CLOSED_IN_CODE"
   },
@@ -35,7 +43,10 @@
     "V4": "PASS",
     "V5": "PASS"
   },
-  "baseline_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "baseline_sha": {
+    "prefix": "ab8359f0",
+    "suffix": "ffe96834bdf61318d1db7877433e7dcc"
+  },
   "m02_m03_blocked": true,
   "cg01_blocked": true,
   "human_ci_action": "issue_exit_record_token"
