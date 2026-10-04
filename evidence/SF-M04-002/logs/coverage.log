@@ -1,0 +1,55 @@
+# pnpm exec vitest run --coverage --coverage.include=services/cmp-008-rules/src/** --coverage.thresholds.lines=0 --coverage.thresholds.functions=0 --coverage.thresholds.branches=0 --coverage.thresholds.statements=0 --coverage.reporter=text services/cmp-008-rules
+# sha=1244fdf8967b3387e6b91b00f7f2a7a3789aac67
+
+ RUN  v5.0.3 /workspace
+      Coverage enabled with v8
+
+ ✓ services/cmp-008-rules/test/contract/contracts.test.ts (4 tests) 68ms
+ ✓ services/cmp-008-rules/test/unit/config-ports.test.ts (6 tests) 85ms
+ ✓ services/cmp-008-rules/test/unit/engine.test.ts (7 tests) 17ms
+ ✓ services/cmp-008-rules/test/unit/jdm.test.ts (18 tests) 11ms
+ ✓ services/cmp-008-rules/test/unit/constitution.test.ts (6 tests) 8ms
+ ✓ services/cmp-008-rules/test/unit/plugin-http.test.ts (15 tests) 270ms
+
+ Test Files  6 passed (6)
+      Tests  56 passed (56)
+   Start at  15:06:31
+   Duration  808ms (transform 33%, tests 31%, import 29%, worker 6%)
+
+JUNIT report written to /workspace/test-results/unit/junit.xml
+ % Coverage report from v8
+-----------------|---------|----------|---------|---------|---------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s   
+-----------------|---------|----------|---------|---------|---------------------
+All files        |   92.06 |       85 |   96.38 |    94.9 |                     
+ src             |   87.96 |    84.61 |   95.45 |   91.15 |                     
+  audit.ts       |    87.5 |       50 |     100 |     100 | 36-38               
+  authz.ts       |   85.71 |       85 |     100 |     100 | 14,69-70            
+  config.ts      |   96.55 |    95.91 |     100 |   96.55 | 75                  
+  context.ts     |    91.3 |    77.27 |     100 |     100 | 10,18-19,29         
+  errors.ts      |     100 |    94.44 |     100 |     100 | 16                  
+  plugin.ts      |   71.87 |       70 |   85.71 |   70.96 | 47,69,75-87         
+ src/db          |    87.8 |    57.14 |     100 |   89.18 |                     
+  idempotency.ts |    87.5 |       75 |     100 |    92.3 | 56                  
+  outbox.ts      |      70 |    33.33 |     100 |      70 | 44,47-65            
+ src/domain      |   93.95 |    90.27 |      96 |      97 |                     
+  engine.ts      |   88.23 |       68 |   88.88 |    93.1 | 71,74               
+  inputs.ts      |   91.66 |    93.54 |     100 |   93.61 | 41-42,51            
+  jdm.ts         |   95.18 |    90.47 |     100 |     100 | 57,60,73,93,109-112 
+ src/http        |   66.66 |      100 |   66.66 |   66.66 |                     
+  rate-limit.ts  |   66.66 |      100 |   66.66 |   66.66 | 12                  
+ src/repo        |     100 |       50 |     100 |     100 |                     
+  rules-repo.ts  |     100 |       50 |     100 |     100 | 132                 
+ src/routes      |   93.93 |    84.61 |     100 |     100 |                     
+  evaluations.ts |    93.1 |       75 |     100 |     100 | 24,59               
+ src/service     |   93.54 |    77.08 |     100 |   96.36 |                     
+  evaluations.ts |   93.54 |    77.08 |     100 |   96.36 | 86,94               
+-----------------|---------|----------|---------|---------|---------------------
+
+=============================== Coverage summary ===============================
+Statements   : 92.06% ( 476/517 )
+Branches     : 85% ( 357/420 )
+Functions    : 96.38% ( 80/83 )
+Lines        : 94.9% ( 410/432 )
+================================================================================
+# exit=0

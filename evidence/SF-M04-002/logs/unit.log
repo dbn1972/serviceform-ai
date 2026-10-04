@@ -1,0 +1,23 @@
+# pnpm --filter @serviceform/cmp-008-rules run test:unit
+# sha=1244fdf8967b3387e6b91b00f7f2a7a3789aac67
+
+> @serviceform/cmp-008-rules@0.0.0 test:unit /workspace/services/cmp-008-rules
+> vitest run --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-008-rules
+
+ ✓ test/contract/contracts.test.ts (4 tests) 64ms
+ ✓ test/unit/config-ports.test.ts (6 tests) 71ms
+ ✓ test/unit/engine.test.ts (7 tests) 14ms
+ ✓ test/unit/jdm.test.ts (18 tests) 15ms
+ ✓ test/unit/constitution.test.ts (6 tests) 9ms
+ ✓ test/unit/plugin-http.test.ts (15 tests) 250ms
+
+ Test Files  6 passed (6)
+      Tests  56 passed (56)
+   Start at  15:06:20
+   Duration  686ms (transform 38%, tests 31%, import 30%, worker 2%)
+
+JUNIT report written to /workspace/services/cmp-008-rules/evidence/junit/unit.xml
+# exit=0
