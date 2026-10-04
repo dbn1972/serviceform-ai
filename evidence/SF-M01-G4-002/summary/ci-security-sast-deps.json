@@ -1,0 +1,32 @@
+{
+  "schema": "serviceform.m01.g4-regression.ci-security.v1",
+  "task_id": "SF-M01-G4-002",
+  "main_tip_baseline": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "harness_tip": "9696f48b9da62154493eef598f77cf94982f28de",
+  "ci": {
+    "run_id": "37178714591",
+    "conclusion": "SUCCESS",
+    "url": "https://github.com/dbn1972/serviceform-ai/actions/runs/37178714591",
+    "envelope_job_id": "111366681172",
+    "envelope_job_conclusion": "SUCCESS"
+  },
+  "security": {
+    "run_id": "37178714612",
+    "conclusion": "SUCCESS",
+    "url": "https://github.com/dbn1972/serviceform-ai/actions/runs/37178714612",
+    "jobs": {
+      "SAST (semgrep)": "SUCCESS",
+      "SAST (CodeQL)": "SUCCESS",
+      "IaC scan (checkov)": "SUCCESS",
+      "dependency audit": "SUCCESS",
+      "secret scan (gitleaks)": "SUCCESS"
+    }
+  },
+  "local_gates": {
+    "contracts_lock": "PASS",
+    "deps_graph": "PASS",
+    "migration_lint": "PASS",
+    "pnpm_gates": "PASS"
+  },
+  "certified": false
+}

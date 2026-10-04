@@ -1,15 +1,21 @@
 # M01 G4 exit envelope — SF-M01-G4-002 Full M01 regression on main
-# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
+# EVIDENCE_READY. implementation_authorized: true. Not CERTIFIED.
 task_id: SF-M01-G4-002
 title: Complete M01 regression on main (all CMPs + platform seams)
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: IMPLEMENTATION_READY
+state: EVIDENCE_READY
 planning_only: false
 implementation_authorized: true
-m01_g4_exit_started: false
-dispatched: false
+m01_g4_exit_started: true
+dispatched: true
+implementation_result: SF-M01-G4-002_READY
+CROSS_TENANT_LEAKAGE: 0
+fail_count: 0
+certified: false
+not_certified: true
+self_certified: false
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -74,10 +80,12 @@ stop_conditions:
   - frozen contract change required
   - write outside allowed_write_paths
   - M02/M03 scope creep
-self_certified: false
-not_certified: true
-certified: false
 ccr_required: false
 parallel_group: G4-B
+verification_pr: https://github.com/dbn1972/serviceform-ai/pull/38
+verification_branch: cursor/m01-g4-regression-1041
+harness_tip: 9696f48b9da62154493eef598f77cf94982f28de
+main_tip_baseline: ab8359f0ffe96834bdf61318d1db7877433e7dcc
 evidence_paths:
   - evidence/SF-M01-G4-002/
+
