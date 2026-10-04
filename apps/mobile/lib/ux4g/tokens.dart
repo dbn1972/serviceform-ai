@@ -1,11 +1,27 @@
 import 'package:flutter/widgets.dart';
 
-/// BOOTSTRAP PLACEHOLDER (gap G-03): neutral values for the token names the wrapper
-/// consumes. Replace with the vendored UX4G 3.0 Flutter tokens; do not tune these values.
+/// UX4G Design System 3.0 tokens (vendored from ux4g-web-components 3.0.0).
+/// Tenant branding overlays these values; do not hard-code colours elsewhere.
 abstract final class SfTokens {
-  /// Page background.
   static const Color background = Color(0xFFFFFFFF);
-
-  /// Body text.
-  static const Color text = Color(0xFF000000);
+  static const Color text = Color(0xFF171717);
+  static const Color textSecondary = Color(0xFF404040);
+  static const Color primary = Color(0xFF4A2BC2);
+  static const Color focus = Color(0xFF525252);
+  static const double space1 = 2.0;
+  static const double space10 = 40.0;
+  static const double space12 = 56.0;
+  static const double space13 = 64.0;
+  static const double space2 = 4.0;
+  static const double space3 = 6.0;
+  static const double space4 = 8.0;
+  static const double space5 = 12.0;
+  static const double space6 = 16.0;
+  static const double space7 = 20.0;
+  static const double space8 = 24.0;
+  static const double radiusSm = 4.0;
+  static const double radiusMd = 8.0;
+  static const double radiusLg = 12.0;
+  static const String fontFamily = 'Noto Sans';
 }
+

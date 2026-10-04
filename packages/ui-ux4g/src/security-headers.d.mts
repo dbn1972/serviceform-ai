@@ -1,1 +1,4 @@
-export declare function securityHeaders(development: boolean): { key: string; value: string }[];
+export declare function securityHeaders(
+  development: boolean,
+  nonce?: string,
+): { key: string; value: string }[];
