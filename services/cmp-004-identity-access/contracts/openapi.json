@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-004 Identity & Access",
+    "version": "0.0.1",
+    "description": "Officer token validation and citizen OTP/session. Not CERTIFIED."
+  },
+  "paths": {
+    "/v1/identity/citizen/otp/challenges": {
+      "post": {
+        "operationId": "requestCitizenOtp",
+        "description": "Public OTP challenge (SIMULATED adapter)"
+      }
+    },
+    "/v1/identity/citizen/otp/verify": {
+      "post": { "operationId": "verifyCitizenOtp" }
+    },
+    "/v1/identity/citizen/recovery": {
+      "post": { "operationId": "completeCitizenRecovery" }
+    },
+    "/v1/identity/citizen/sessions/revoke": {
+      "post": { "operationId": "revokeCitizenSession" }
+    },
+    "/v1/identity/citizen/links/digilocker": {
+      "post": { "operationId": "linkDigiLockerIdentity" }
+    },
+    "/v1/identity/me": {
+      "get": { "operationId": "identityMe" }
+    },
+    "/v1/identity/officer/sessions": {
+      "post": { "operationId": "issueOfficerSession" }
+    },
+    "/v1/identity/officer/sessions/revoke": {
+      "post": { "operationId": "revokeOfficerSession" }
+    }
+  }
+}
