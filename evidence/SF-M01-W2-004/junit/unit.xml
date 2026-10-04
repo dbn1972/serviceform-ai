@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="38" failures="0" errors="0" time="1.294045214">
+    <testsuite name="apps/api/test/app.test.ts" timestamp="2026-10-04T01:28:18.557Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.36949032">
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports liveness" time="0.070003769">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports readiness from its checks and fails when a dependency fails" time="0.023702977">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns service identity without tenant or secret data" time="0.018105752">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; propagates a valid inbound correlation id and replaces a malformed one" time="0.015865573">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; sets security headers" time="0.011093377">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns a contract-valid SF-SYS-002 body for unknown routes" time="0.091715871">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps schema validation failures to SF-SYS-003 with JSON pointers" time="0.050442164">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps PlatformError to its catalogue status and code" time="0.022017237">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; does not log client network identifiers or query strings" time="0.017080425">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; denies forged tenant headers at the edge with SF-TEN-002" time="0.011069081">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; hides internal error details and stack traces" time="0.01660898">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; rejects oversized bodies with a contract error" time="0.017557705">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; requires DATABASE_URL outside LOCAL and CI" time="0.000991581">
+        </testcase>
+        <testcase classname="apps/api/test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; reports invalid variable names without echoing values" time="0.000971395">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/composition.test.ts" timestamp="2026-10-04T01:28:18.560Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.63179979">
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts Wave 1 plugin routes under /v1 with frozen error envelopes" time="0.38124773">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; rate-limits with SF-RATE-001 and no request leakage" time="0.031589425">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; strips query strings from access logs (G-10)" time="0.023963263">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; does not steal business logic: unknown /v1 route stays SF-SYS-002" time="0.014586466">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts audit plugin path when deps are supplied" time="0.173809627">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047) &gt; keeps logger redaction for nested secrets on the host logger" time="0.004273062">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/readiness.test.ts" timestamp="2026-10-04T01:28:18.560Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.016398719">
+        <testcase classname="apps/api/test/readiness.test.ts" name="database readiness probe (REQ: AWS v1.7 s2 readiness probes) &gt; fails when PostgreSQL is unreachable and closes its pool" time="0.014388078">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/observability/test/access-log.test.ts" timestamp="2026-10-04T01:28:18.560Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.014311761">
+        <testcase classname="packages/observability/test/access-log.test.ts" name="access-log URL sanitisation (REQ: G-10, Constitution #21) &gt; strips query strings and fragments from URLs" time="0.001947513">
+        </testcase>
+        <testcase classname="packages/observability/test/access-log.test.ts" name="access-log URL sanitisation (REQ: G-10, Constitution #21) &gt; serialises only method, path and id" time="0.000828951">
+        </testcase>
+        <testcase classname="packages/observability/test/access-log.test.ts" name="access-log URL sanitisation (REQ: G-10, Constitution #21) &gt; logger never writes query-string values from req.url" time="0.009878497">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/observability/test/redaction.test.ts" timestamp="2026-10-04T01:28:18.561Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.014893619">
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; recognises snake_case, camelCase and header-style sensitive keys" time="0.002280803">
+        </testcase>
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; redacts sensitive values at any depth and keeps safe fields" time="0.000388882">
+        </testcase>
+        <testcase classname="packages/observability/test/redaction.test.ts" name="PII and secret redaction (REQ: Constitution #21, AWS v1.7 s5) &gt; logger never writes sensitive values" time="0.010373812">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/observability/test/telemetry.test.ts" timestamp="2026-10-04T01:28:18.561Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.01765623">
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when no OTLP endpoint is configured" time="0.001941322">
+        </testcase>
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; stays off when OTEL_SDK_DISABLED is true" time="0.000207072">
+        </testcase>
+        <testcase classname="packages/observability/test/telemetry.test.ts" name="telemetry bootstrap (REQ: AWS v1.7 s3 OpenTelemetry; s5 SLO/dashboards) &gt; starts and shuts down cleanly with an endpoint" time="0.013582646">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-036-api-gateway/test/edge.test.ts" timestamp="2026-10-04T01:28:18.561Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.144707658">
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; recognises forged tenant and identity headers" time="0.003102132">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; detects tenant= in Forwarded" time="0.000808467">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; denies forged client tenant headers with SF-TEN-002 and no leakage" time="0.124123346">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; allows probes and normal /v1 traffic without forged headers" time="0.006440122">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; emits controlled SF-RATE-001 without leaking request details" time="0.005034287">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; does not rate-limit health probes" time="0.00303227">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-047-observability/test/plugin.test.ts" timestamp="2026-10-04T01:28:18.562Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.084787117">
+        <testcase classname="services/cmp-047-observability/test/plugin.test.ts" name="CMP-047 observability plugin (REQ: Eng-v1.4-CMP-047, Constitution #21) &gt; writes access logs without query strings" time="0.077681102">
+        </testcase>
+        <testcase classname="services/cmp-047-observability/test/plugin.test.ts" name="CMP-047 observability plugin (REQ: Eng-v1.4-CMP-047, Constitution #21) &gt; bootstraps telemetry off when no OTLP endpoint is set" time="0.005528614">
+        </testcase>
+    </testsuite>
+</testsuites>
