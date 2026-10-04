@@ -1,6 +1,7 @@
-# M01 G4 exit planning index (machine-readable)
-# PLANNING ONLY. Not CERTIFIED. Not RELEASE CERTIFIED.
+# M01 G4 exit index (machine-readable)
+# IMPLEMENTATION_READY — authorized for exit envelope dispatch. Not CERTIFIED. Not RELEASE CERTIFIED.
 # M02/M03 (CG-01) blocked until exit record token (see exit_record_token) issued by human/CI.
+# Exit builders not yet dispatched (m01_g4_exit_started: false).
 
 module_id: M01
 wave: g4-exit
@@ -9,9 +10,9 @@ record: M01-G4-EXIT
 decision:
   family: M01_G4_EXIT_PLAN
   status: READY
-state: PLANNING
-planning_only: true
-implementation_authorized: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
 m01_g4_exit_started: false
 builders_dispatched: 0
 self_certified: false
@@ -23,12 +24,15 @@ m02_m03_blocked: true
 cg01_blocked: true
 
 baseline:
-  origin_main: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+  origin_main: c42c7c89aa75653d099883e7f28ece73cf2c7515
+  planning_baseline_historical: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
   wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
   wave1_status: M01_WAVE1_MERGED_AND_CLOSED
   wave2_merge_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
   wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
   wave2_pr: 33
+  g4_plan_merge_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
+  g4_plan_pr: 34
   m01_components:
     - CMP-002
     - CMP-003
@@ -64,7 +68,8 @@ governance_sequence:
   - frozen_contracts
   - confirmed_sequencing_no_wave3_features
   - bounded_g4_exit_envelopes
-  - exit_implementation_pending_authorization
+  - exit_implementation_authorized
+  - exit_builders_pending_dispatch
   - independent_evidence_bind
   - human_ci_issues_exit_token
   - cg01_m02_m03_unblocked_only_after_token
@@ -75,6 +80,13 @@ exit_envelopes:
   - SF-M01-G4-003
   - SF-M01-G4-004
   - SF-M01-G4-005
+
+envelope_states:
+  SF-M01-G4-001: IMPLEMENTATION_READY
+  SF-M01-G4-002: IMPLEMENTATION_READY
+  SF-M01-G4-003: IMPLEMENTATION_READY
+  SF-M01-G4-004: IMPLEMENTATION_READY
+  SF-M01-G4-005: IMPLEMENTATION_READY
 
 scopes:
   - id: R-ENV-INT
@@ -103,7 +115,7 @@ blockers_for_planning: []
 ccr_opened: []
 adr_opened: []
 residuals_non_blocking_for_planning:
-  - R-ENV-INT present on main (addressed by G4-001 when authorized)
+  - R-ENV-INT present on main (addressed by G4-001 when dispatched)
   - ADR-0006 #9 outbox sf_app GRANTs (accept or CCR)
   - CMP-055 missing package.json on main (path-based INT or minimal packaging only)
   - REAL S3/KMS/WAF deferred

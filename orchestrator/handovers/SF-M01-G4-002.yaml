@@ -1,13 +1,13 @@
 # M01 G4 exit envelope — SF-M01-G4-002 Full M01 regression on main
-# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
 task_id: SF-M01-G4-002
 title: Complete M01 regression on main (all CMPs + platform seams)
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
 m01_g4_exit_started: false
 dispatched: false
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
@@ -22,12 +22,12 @@ builder_agent: serviceform-integration-stitcher
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
 branch: agent/M01-g4-regression-SF-M01-G4-002
 worktree: ../wt-SF-M01-G4-002
 depends_on:
   - SF-M01-G4-001 merged or tip contains generalized envelope-int
-  - human authorization for M01 G4 exit implementation
+  - human authorization for M01 G4 exit implementation (granted)
 allowed_write_paths:
   - scripts/ci/run-m01-g4-regression.sh
   - tests/integration/m01-g4/**
