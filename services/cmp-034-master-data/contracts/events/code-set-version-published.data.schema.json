@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.ai/schemas/cmp-034/code-set-version-published.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code_set_id", "version_no", "status"],
+  "properties": {
+    "code_set_id": { "type": "string", "format": "uuid" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string", "const": "PUBLISHED" }
+  }
+}

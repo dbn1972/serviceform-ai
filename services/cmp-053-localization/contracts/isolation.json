@@ -1,0 +1,17 @@
+{
+  "component": "CMP-053",
+  "schema": "sf_localization",
+  "privilege_role": "sf_cmp053_rw",
+  "tables": [
+    { "name": "locale", "isolation_class": "TENANT_SCOPED" },
+    { "name": "format_profile", "isolation_class": "TENANT_SCOPED" },
+    { "name": "catalog", "isolation_class": "TENANT_SCOPED" },
+    { "name": "catalog_version", "isolation_class": "TENANT_SCOPED" },
+    { "name": "message", "isolation_class": "TENANT_SCOPED" },
+    { "name": "idempotency_record", "isolation_class": "TENANT_SCOPED" },
+    { "name": "outbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "outbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" },
+    { "name": "inbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "inbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "component": "CMP-005",
+  "schema": "sf_citizen_profile",
+  "privilege_role": "sf_cmp005_rw",
+  "tables": [
+    { "name": "claim_definition", "isolation_class": "GLOBAL" },
+    { "name": "citizen_profile", "isolation_class": "CITIZEN_PRIVATE" },
+    { "name": "profile_claim", "isolation_class": "CITIZEN_PRIVATE" },
+    { "name": "idempotency_record", "isolation_class": "TENANT_SCOPED" },
+    { "name": "idempotency_record_platform", "isolation_class": "PLATFORM_OPERATIONAL" },
+    { "name": "outbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "outbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" },
+    { "name": "inbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "inbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" }
+  ]
+}

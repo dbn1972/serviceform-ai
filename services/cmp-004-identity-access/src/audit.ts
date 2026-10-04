@@ -1,0 +1,65 @@
+import { randomUUID } from 'node:crypto';
+import { validate, type AuditEvent, type RequestContext } from '@serviceform/contracts';
+import type { PoolClient } from 'pg';
+import { Cmp004Error } from './errors.js';
+import { envelopeOf, insertOutbox, TOPIC_AUDIT } from './db/outbox.js';
+
+export interface AuditRecorder {
+  append(tx: PoolClient, event: AuditEvent): Promise<void>;
+}
+
+export const outboxAuditRecorder: AuditRecorder = {
+  async append(tx, event) {
+    const checked = validate('audit-event', event);
+    if (!checked.valid) {
+      throw new Cmp004Error('SF-SYS-001', { details: [{ code: 'INVALID_AUDIT' }] });
+    }
+    const env = envelopeOf({
+      eventType: 'AuditEventSubmitted',
+      tenantId: event.tenant_id,
+      cellId: event.cell_id,
+      aggregateType: 'AuditEvent',
+      aggregateId: event.audit_id,
+      aggregateVersion: 1,
+      occurredAt: event.occurred_at,
+      correlationId: event.correlation_id,
+      actor: { type: event.actor_type, id: event.actor_id },
+      data: event,
+    });
+    await insertOutbox(tx, env, TOPIC_AUDIT);
+  },
+};
+
+export function auditEvent(
+  ctx: RequestContext,
+  params: {
+    action: string;
+    actionClass: NonNullable<AuditEvent['action_class']>;
+    resourceType: string;
+    resourceId: string;
+    result: AuditEvent['result'];
+    reason?: string;
+    tenantId?: string | null;
+    classification?: NonNullable<AuditEvent['classification']>;
+    now: Date;
+  },
+): AuditEvent {
+  const event: AuditEvent = {
+    audit_id: randomUUID(),
+    occurred_at: params.now.toISOString(),
+    tenant_id: params.tenantId === undefined ? ctx.tenant_id : params.tenantId,
+    cell_id: ctx.cell_id,
+    actor_type: ctx.actor.type,
+    actor_id: ctx.actor.id,
+    action: params.action,
+    action_class: params.actionClass,
+    resource_type: params.resourceType,
+    resource_id: params.resourceId,
+    correlation_id: ctx.correlation_id,
+    trace_id: ctx.trace_id,
+    result: params.result,
+    classification: params.classification ?? 'PLATFORM_OPERATIONAL',
+  };
+  if (params.reason) event.reason = params.reason;
+  return event;
+}

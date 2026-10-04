@@ -1,0 +1,10 @@
+{
+  "component_id": "CMP-054",
+  "task_id": "SF-M03-006",
+  "datastore": "none",
+  "tenant_owned_tables": [],
+  "cross_component_sql": false,
+  "cross_tenant_leakage": 0,
+  "isolation_mechanism": "Tenant branding is a CSS custom-property overlay scoped to data-tenant-id. No tenant-owned PostgreSQL tables.",
+  "int_011": "No new tenant-owned tables. Overlay isolation tests require CROSS_TENANT_LEAKAGE=0."
+}

@@ -1,0 +1,38 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-034 Master Data Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.master-data.events.v1": {
+      "address": "sf.master-data.events.v1",
+      "messages": {
+        "CodeSetVersionPublished": {
+          "$ref": "#/components/messages/CodeSetVersionPublished"
+        },
+        "CodeSetImported": {
+          "$ref": "#/components/messages/CodeSetImported"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "CodeSetVersionPublished": {
+        "name": "CodeSetVersionPublished",
+        "payload": { "$ref": "./events/code-set-version-published.data.schema.json" }
+      },
+      "CodeSetImported": {
+        "name": "CodeSetImported",
+        "payload": { "$ref": "./events/code-set-imported.data.schema.json" }
+      }
+    }
+  }
+}

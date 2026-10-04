@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["challenge_id", "purpose", "simulation"],
+  "properties": {
+    "challenge_id": { "type": "string", "format": "uuid" },
+    "purpose": { "type": "string" },
+    "simulation": { "type": "boolean" }
+  }
+}

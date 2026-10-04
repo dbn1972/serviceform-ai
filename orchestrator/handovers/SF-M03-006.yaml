@@ -4,7 +4,7 @@ title: UX4G Design System 3.0 foundation
 module_id: M03
 concurrency_group: CG-01
 component_ids: [CMP-054]
-integration_ids: [INT-002]
+integration_ids: [INT-002, INT-011]
 requirement_ids:
   - Eng-v1.4-CMP-054
   - DESIGN-SYSTEM.md
@@ -76,5 +76,17 @@ stop_conditions:
   - dependency on unmerged sibling CG-01 code as source of truth
   - builder dispatch without uniqueness PASS / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED claim
+
+builder_notes:
+  branch: cursor/m03-ux4g-sf-m03-006-26fb
+  base_commit_used: bd14a4a05fef03a7621a0bf27bc3cbac876b354b
+  cmp_054_datastore: none
+  CROSS_TENANT_LEAKAGE: 0
+  self_certified: false
+  certified: false
+  not_certified: true
+  studio_ui: not_in_scope
+  lockfile: unchanged
+  frozen_contracts: unchanged
 
 

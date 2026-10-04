@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.ai/schemas/cmp-053/localization-catalog-published.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["catalog_id", "version_no", "status", "content_hash"],
+  "properties": {
+    "catalog_id": { "type": "string", "format": "uuid" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string", "const": "PUBLISHED" },
+    "content_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}

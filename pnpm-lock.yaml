@@ -384,6 +384,25 @@ importers:
         specifier: 19.3.0
         version: 19.3.0(react@19.3.0)
 
+  services/cmp-001-catalogue:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
   services/cmp-002-tenant-organisation:
     dependencies:
       '@serviceform/contracts':
@@ -414,6 +433,59 @@ importers:
       fastify:
         specifier: 5.12.5
         version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-004-identity-access:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      '@serviceform/security':
+        specifier: workspace:*
+        version: link:../../packages/security
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-005-citizen-profile:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
       pg:
         specifier: 8.23.1
         version: 8.23.1
@@ -495,6 +567,53 @@ importers:
       fastify-rate-limit:
         specifier: npm:@fastify/rate-limit@11.2.0
         version: '@fastify/rate-limit@11.2.0'
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-033-metadata:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      fastify-plugin:
+        specifier: 5.1.0
+        version: 5.1.0
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-034-master-data:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
       pg:
         specifier: 8.23.1
         version: 8.23.1
@@ -602,6 +721,25 @@ importers:
       fastify-plugin:
         specifier: 5.1.0
         version: 5.1.0
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-053-localization:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
       pg:
         specifier: 8.23.1
         version: 8.23.1

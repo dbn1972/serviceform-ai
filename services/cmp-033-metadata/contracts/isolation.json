@@ -1,0 +1,44 @@
+[
+  {
+    "entity": "sf_metadata.metadata_document",
+    "owner_component": "CMP-033",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_metadata.metadata_bundle",
+    "owner_component": "CMP-033",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_metadata.idempotency_record",
+    "owner_component": "CMP-033",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_metadata.outbox_event",
+    "owner_component": "CMP-033",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_metadata.outbox_event_platform",
+    "owner_component": "CMP-033",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_metadata.inbox_event",
+    "owner_component": "CMP-033",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_metadata.inbox_event_platform",
+    "owner_component": "CMP-033",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]
