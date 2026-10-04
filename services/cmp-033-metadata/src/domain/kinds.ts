@@ -36,7 +36,7 @@ const KEY_RE = /^[a-z][a-z0-9._-]{1,127}$/;
 const CODE_RE = /^[a-z][a-z0-9_]{1,63}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ROLE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
-const ISO_DURATION = /^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?$/;
+const ISO_DURATION = /^P[0-9TYMWDHS]{1,31}$/;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

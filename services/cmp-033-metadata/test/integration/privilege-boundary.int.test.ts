@@ -48,8 +48,13 @@ describe('CMP-033 privilege boundary (ADR-0006)', () => {
              document_id, tenant_id, cell_id, document_key, kind, schema_id, payload, payload_hash,
              status, created_by
            ) VALUES ($1,$2,'cell-01','peer.key','SERVICE','sf.metadata.kind.service.v1','{}'::jsonb,
-             'sha256:${'ab'.repeat(32)}','DRAFT',$3)`,
-          ['dddddddd-dddd-4ddd-8ddd-dddddddddddd', T1, ACTOR],
+             $4,'DRAFT',$3)`,
+          [
+            'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            T1,
+            ACTOR,
+            `sha256:${'ab'.repeat(32)}`,
+          ],
         );
       }),
     ).rejects.toThrow();
