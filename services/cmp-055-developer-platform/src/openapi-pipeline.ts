@@ -36,21 +36,24 @@ export function parseContractDocument(text: string, path: string): unknown {
     if (!line.trim() || line.trimStart().startsWith('#')) continue;
     const top = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
     if (top && !line.startsWith(' ')) {
-      currentKey = top[1] ?? null;
+      const key = top[1];
+      if (!key) continue;
+      currentKey = key;
       currentMap = null;
       const value = (top[2] ?? '').trim().replace(/^['"]|['"]$/g, '');
       if (value === '' || value === '|' || value === '>') {
         currentMap = {};
-        doc[currentKey!] = currentMap;
+        doc[key] = currentMap;
       } else {
-        doc[currentKey!] = value;
+        doc[key] = value;
       }
       continue;
     }
     if (currentMap && currentKey) {
       const nested = /^\s+([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
       if (nested) {
-        const k = nested[1]!;
+        const k = nested[1];
+        if (!k) continue;
         const v = (nested[2] ?? '').trim().replace(/^['"]|['"]$/g, '');
         currentMap[k] = v === '' ? {} : v;
       }
@@ -66,7 +69,7 @@ export function lintOpenApiDocument(doc: unknown, path: string): ContractLintFin
     return out;
   }
   const version = doc.openapi;
-  if (typeof version !== 'string' || !/^3\.\d+/.test(version)) {
+  if (typeof version !== 'string' || !version.startsWith('3.')) {
     out.push({ path, message: 'openapi must be a 3.x version string' });
   }
   if (
@@ -89,7 +92,7 @@ export function lintAsyncApiDocument(doc: unknown, path: string): ContractLintFi
     return out;
   }
   const version = doc.asyncapi;
-  if (typeof version !== 'string' || !/^[23]\.\d+/.test(version)) {
+  if (typeof version !== 'string' || !(version.startsWith('2.') || version.startsWith('3.'))) {
     out.push({ path, message: 'asyncapi must be a 2.x or 3.x version string' });
   }
   if (

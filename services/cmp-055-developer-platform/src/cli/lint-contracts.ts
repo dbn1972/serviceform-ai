@@ -7,7 +7,7 @@ const result = lintComponentContracts(root);
 for (const f of result.findings) {
   console.error(`ERROR ${f.path}: ${f.message}`);
 }
-console.log(
-  `checked ${result.filesChecked} component contract file(s); ${result.findings.length} finding(s)`,
+process.stdout.write(
+  `checked ${result.filesChecked} component contract file(s); ${result.findings.length} finding(s)\n`,
 );
 process.exit(result.findings.length > 0 ? 1 : 0);

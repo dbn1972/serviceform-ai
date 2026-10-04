@@ -29,7 +29,18 @@ export type EvidenceManifest = {
   generated_at: string;
 };
 
-const SHA_RE = /^[0-9a-f]{40}$/i;
+/** Fixed-length hex SHA check without a quantifier regex (avoids njsscan regex_dos). */
+function isGitSha(value: string): boolean {
+  if (value.length !== 40) return false;
+  for (let i = 0; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    const isDigit = c >= 48 && c <= 57; // 0-9
+    const isLower = c >= 97 && c <= 102; // a-f
+    const isUpper = c >= 65 && c <= 70; // A-F
+    if (!isDigit && !isLower && !isUpper) return false;
+  }
+  return true;
+}
 
 export function buildEvidenceManifest(
   input: EvidenceManifestInput,
@@ -38,7 +49,7 @@ export function buildEvidenceManifest(
   if (input.certified === true || input.selfCertified === true) {
     throw new Error('CMP-055 must not self-certify or claim CERTIFIED');
   }
-  if (!SHA_RE.test(input.commitSha)) {
+  if (!isGitSha(input.commitSha)) {
     throw new Error('commitSha must be a 40-char git SHA');
   }
   if (!input.taskId.startsWith('SF-')) {
