@@ -8,6 +8,7 @@
 | Component | CMP-034 |
 | Base | `origin/main` `bd14a4a05fef03a7621a0bf27bc3cbac876b354b` |
 | Branch | `cursor/m03-masterdata-sf-m03-003-2c63` |
+| Head | `75a67b062a8300c67bd7482ef8616260a669bc89` |
 | Model | Composer (Cursor cloud agent); envelope route sonnet 5.5 high |
 | Frozen contracts | unchanged (13/13; no CCR) |
 | `pnpm-lock.yaml` | not committed (orchestrator regen) |
