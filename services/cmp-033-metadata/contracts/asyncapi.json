@@ -1,0 +1,61 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-033 Metadata Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.metadata.events.v1": {
+      "address": "sf.metadata.events.v1",
+      "messages": {
+        "MetadataDocumentCreated": {
+          "payload": { "$ref": "#/components/schemas/DocumentLifecycle" }
+        },
+        "MetadataDocumentUpdated": {
+          "payload": { "$ref": "#/components/schemas/DocumentLifecycle" }
+        },
+        "MetadataDocumentValidated": {
+          "payload": { "$ref": "#/components/schemas/DocumentLifecycle" }
+        },
+        "MetadataDocumentPublished": {
+          "payload": { "$ref": "#/components/schemas/DocumentLifecycle" }
+        },
+        "MetadataBundleComposed": { "payload": { "$ref": "#/components/schemas/BundleComposed" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DocumentLifecycle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["document_id", "kind", "status"],
+        "properties": {
+          "document_id": { "type": "string", "format": "uuid" },
+          "kind": { "type": "string" },
+          "document_key": { "type": "string" },
+          "schema_id": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      },
+      "BundleComposed": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "bundle_id",
+          "bundle_key",
+          "composition_hash",
+          "document_ids",
+          "missing_kinds"
+        ],
+        "properties": {
+          "bundle_id": { "type": "string", "format": "uuid" },
+          "bundle_key": { "type": "string" },
+          "composition_hash": { "type": "string" },
+          "document_ids": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+          "missing_kinds": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}

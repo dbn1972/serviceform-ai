@@ -1,0 +1,134 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-033 Metadata / Configuration Service",
+    "version": "0.1.0",
+    "description": "Draft metadata, structural schema validation, config composition (INT-002 slice, INT-013 SIMULATED). Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/metadata/documents": {
+      "post": {
+        "operationId": "createMetadataDocument",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Draft created" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Denied" },
+          "409": { "description": "Idempotency conflict" }
+        }
+      }
+    },
+    "/v1/metadata/documents/{id}": {
+      "get": {
+        "operationId": "getMetadataDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Document" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "patch": {
+        "operationId": "patchMetadataDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Updated draft" },
+          "400": { "description": "Immutable or invalid" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/v1/metadata/documents/{id}/validate": {
+      "post": {
+        "operationId": "validateMetadataDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Validated" },
+          "400": { "description": "Schema invalid" },
+          "503": { "description": "Schema registry unavailable" }
+        }
+      }
+    },
+    "/v1/metadata/documents/{id}/publish": {
+      "post": {
+        "operationId": "publishMetadataDocument",
+        "summary": "One-way immutability pin (not Studio maker-checker)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Published (immutable)" },
+          "400": { "description": "Not validated or already published" }
+        }
+      }
+    },
+    "/v1/metadata/bundles": {
+      "post": {
+        "operationId": "composeMetadataBundle",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Composed" },
+          "400": { "description": "Incomplete or not validated" }
+        }
+      }
+    }
+  }
+}
