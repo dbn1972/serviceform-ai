@@ -1,0 +1,69 @@
+[
+  {
+    "entity": "sf_identity.citizen_principal",
+    "owner_component": "CMP-004",
+    "isolation_class": "CITIZEN_PRIVATE",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Immutable citizen_id; tenant is not client-supplied and may be null before a tenant-scoped resource."
+  },
+  {
+    "entity": "sf_identity.citizen_otp_challenge",
+    "owner_component": "CMP-004",
+    "isolation_class": "CITIZEN_PRIVATE",
+    "rls": "NOT_APPLICABLE",
+    "justification": "OTP challenge keyed by citizen_id; no tenant_id."
+  },
+  {
+    "entity": "sf_identity.citizen_session",
+    "owner_component": "CMP-004",
+    "isolation_class": "CITIZEN_PRIVATE",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Citizen session before tenant selection."
+  },
+  {
+    "entity": "sf_identity.identity_link",
+    "owner_component": "CMP-004",
+    "isolation_class": "CITIZEN_PRIVATE",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Linked identity methods for a citizen_id."
+  },
+  {
+    "entity": "sf_identity.account_recovery",
+    "owner_component": "CMP-004",
+    "isolation_class": "CITIZEN_PRIVATE",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Account recovery records are citizen-private."
+  },
+  {
+    "entity": "sf_identity.session_lookup",
+    "owner_component": "CMP-004",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Token hash index for PrincipalVerifier; tenant never taken from client headers."
+  },
+  {
+    "entity": "sf_identity.officer_principal",
+    "owner_component": "CMP-004",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_identity.officer_session",
+    "owner_component": "CMP-004",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_identity.idempotency_record",
+    "owner_component": "CMP-004",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_identity.idempotency_record_platform",
+    "owner_component": "CMP-004",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE",
+    "justification": "Public OTP/session commands with null tenant_id."
+  }
+]
