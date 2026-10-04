@@ -1,0 +1,22 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-030 Consent and Privacy",
+    "version": "1.0.0",
+    "description": "Platform consent/purpose/notice/access-check machinery. No statutory DPDP interpretation."
+  },
+  "paths": {
+    "/v1/purposes": {
+      "get": { "operationId": "listPurposes" },
+      "post": { "operationId": "createPurpose" }
+    },
+    "/v1/privacy/notices": { "post": { "operationId": "createPrivacyNotice" } },
+    "/v1/privacy/notices/{id}/publish": { "post": { "operationId": "publishPrivacyNotice" } },
+    "/v1/consents": {
+      "get": { "operationId": "listConsents" },
+      "post": { "operationId": "grantConsent" }
+    },
+    "/v1/consents/{id}/withdraw": { "post": { "operationId": "withdrawConsent" } },
+    "/v1/privacy/access-check": { "post": { "operationId": "privacyAccessCheck" } }
+  }
+}

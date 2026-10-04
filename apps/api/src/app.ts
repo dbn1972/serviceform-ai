@@ -1,8 +1,12 @@
 import helmet from '@fastify/helmet';
 import underPressure from '@fastify/under-pressure';
+import { apiGatewayPlugin, type GatewayEdgeConfig } from '@serviceform/cmp-036-api-gateway';
+import { observabilityPlugin } from '@serviceform/cmp-047-observability';
 import type { Logger } from '@serviceform/observability';
 import Fastify, { type FastifyBaseLogger, type FastifyInstance, LogController } from 'fastify';
 import type { AppConfig } from './config.js';
+import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
+import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
 import { errorHandler } from './plugins/error-handler.js';
 import { type ReadinessCheck, healthRoutes } from './plugins/health.js';
@@ -11,12 +15,22 @@ import { metaRoutes } from './routes/meta.js';
 export interface AppDependencies {
   logger: Logger;
   readinessChecks?: ReadinessCheck[];
+  /** CMP-036 edge overrides (rate limit). */
+  gatewayEdge?: GatewayEdgeConfig;
+  /**
+   * Wave 1 component plugin mounts. Omitted in the default process entry when runtime
+   * deps (pool, OPA, secrets) are not configured; unit/host tests supply doubles.
+   */
+  wave1?: Wave1PluginMounts;
+  /**
+   * Wave 2 component plugin mounts (CMP-003/030/032). Same optional wiring as wave1.
+   */
+  wave2?: Wave2PluginMounts;
 }
 
 /**
- * Builds the Fastify host. M00 contains platform plumbing only: no tenant resolution,
- * authentication or business routes (those arrive with CMP-002/004/036 in M01+).
- * Component modules register as encapsulated plugins under /v1/<component>.
+ * Builds the Fastify host (CMP-036 composition + CMP-047 observability).
+ * Component modules register as encapsulated plugins under /v1 (PLAN-REVIEW X-10).
  */
 export async function buildApp(config: AppConfig, deps: AppDependencies): Promise<FastifyInstance> {
   const app = Fastify({
@@ -31,6 +45,15 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
 
   await app.register(errorHandler);
   await app.register(correlation);
+  await app.register(observabilityPlugin, { logger: deps.logger });
+  await app.register(apiGatewayPlugin, {
+    edge: deps.gatewayEdge ?? {
+      rateLimit: {
+        max: config.SF_GATEWAY_RATE_LIMIT_MAX,
+        timeWindowMs: config.SF_GATEWAY_RATE_LIMIT_WINDOW_MS,
+      },
+    },
+  });
   await app.register(helmet, {
     // JSON API: nothing may be framed, scripted or embedded.
     contentSecurityPolicy: {
@@ -55,5 +78,26 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
   await app.register(healthRoutes, { checks: deps.readinessChecks ?? [] });
   await app.register(metaRoutes, { config });
 
+  if (deps.wave1) {
+    const mounted = await registerWave1Plugins(app, deps.wave1);
+    app.decorate('wave1Mounted', mounted);
+  } else {
+    app.decorate('wave1Mounted', [] as string[]);
+  }
+
+  if (deps.wave2) {
+    const mounted = await registerWave2Plugins(app, deps.wave2);
+    app.decorate('wave2Mounted', mounted);
+  } else {
+    app.decorate('wave2Mounted', [] as string[]);
+  }
+
   return app;
+}
+
+declare module 'fastify' {
+  interface FastifyInstance {
+    wave1Mounted: string[];
+    wave2Mounted: string[];
+  }
 }

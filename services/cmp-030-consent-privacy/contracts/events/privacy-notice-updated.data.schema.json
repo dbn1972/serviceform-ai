@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.local/schemas/cmp-030/privacy-notice-updated.data.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["notice_id", "purpose_id", "version_no", "content_ref", "status", "published_at"],
+  "properties": {
+    "notice_id": { "type": "string", "format": "uuid" },
+    "purpose_id": { "type": "string", "format": "uuid" },
+    "version_no": { "type": "integer", "minimum": 1 },
+    "content_ref": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "status": { "type": "string", "enum": ["PUBLISHED"] },
+    "published_at": { "type": "string", "format": "date-time" }
+  }
+}

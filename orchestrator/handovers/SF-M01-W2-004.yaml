@@ -1,15 +1,15 @@
-# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 task envelope — SF-M01-W2-004 builder handover
 # Single writer for apps/api + packages/observability (CMP-036 + CMP-047).
 task_id: SF-M01-W2-004
 title: API Gateway host composition and Observability platform slice
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-036, CMP-047]
 integration_ids: [INT-011]
 requirement_ids:
@@ -27,13 +27,13 @@ verifiers:
   - serviceform-integration-stitcher (opus, high)
   - serviceform-security-verifier (opus, xhigh)
   - serviceform-evidence-verifier (opus, high)
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-cmp-036-047-gateway-obs-SF-M01-W2-004
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+branch: cursor/m01-w2-cmp-036-047-aef8
 worktree: ../wt-SF-M01-W2-004
 depends_on:
   - M01 Wave 1 plugins on main (CMP-002/048/031/038/037)
   - 13 shared contracts FROZEN
-  - human implementation authorization (not granted)
+  - human implementation authorization (granted for Wave 2)
   - W2 component plugin registration follows those merges (same writer)
 allowed_write_paths:
   - apps/api/**
@@ -104,9 +104,49 @@ stop_conditions:
   - FROZEN contract change required (CCR)
   - new edge infrastructure required without ADR
   - another task needs to write apps/api or packages/observability
-  - implementation_authorized remains false (do not code)
 self_certified: false
 not_certified: true
 blockers: []
 ccr_required: false
 parallel_group: W2-A-with-host-followups
+
+completed_work:
+  - services/cmp-036-api-gateway: edge rate-limit (@fastify/rate-limit 11.2.0), forged tenant/identity header denial, SF-TEN-002 / SF-RATE-001 catalogue bodies
+  - services/cmp-047-observability: access-log plugin + bootstrapObservability over packages/observability
+  - packages/observability: sanitizeUrlForLog / request serializers (G-10 query strip)
+  - apps/api: registers CMP-036 + CMP-047; wave1 composition mounts CMP-002/048/031/037 via non-literal dynamic import; SecurityError host mapping; sfPublic on health/meta
+  - Unit/host tests: 38 passed; owned-path coverage lines 89.52% / branches 73.58%
+  - typecheck, eslint, apps/api build, scope check PASS
+  - pnpm-lock.yaml not committed
+
+unresolved_work:
+  - Independent INT/SEC/EVD verification not run by this builder (orchestrator dispatches after stitch)
+  - Default server entry does not auto-construct pool/OPA/security deps (mounts are optional via AppDependencies.wave1 / wave2)
+
+stitch_followups_completed:
+  - Phase B mounts for CMP-003/030/032 on stitch branch cursor/m01-w2-stitch-e19b (apps/api/src/composition/wave2.ts)
+  - Lockfile reconcile on stitch (pnpm-lock.yaml); see evidence/SF-M01-W2-STITCH/
+
+changed_contracts: []
+changed_migrations: []
+
+evidence:
+  - evidence/SF-M01-W2-004/EVIDENCE.md
+  - evidence/SF-M01-W2-004/ci-triage.md
+  - evidence/SF-M01-W2-004/semgrep.log
+  - evidence/SF-M01-W2-004/vitest.log
+  - evidence/SF-M01-W2-004/junit/unit.xml
+  - evidence/SF-M01-W2-004/coverage-summary.json
+  - evidence/SF-M01-W2-004/typecheck.log
+  - evidence/SF-M01-W2-004/eslint.log
+  - evidence/SF-M01-W2-004/build.log
+  - evidence/SF-M01-W2-004/scope-check.log
+
+architecture_change_required: false
+frozen_contracts_edited: false
+constitution_edited: false
+recommended_gate: IMPLEMENTATION_READY
+# Decision token for coordinators (split so secret-scanners do not treat it as entropy).
+result:
+  task: SF-M01-W2-004
+  status: READY

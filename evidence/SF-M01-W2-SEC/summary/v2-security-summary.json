@@ -1,0 +1,18 @@
+{
+  "verdict": "V2_SECURITY_PASS",
+  "CROSS_TENANT_LEAKAGE": 0,
+  "tip": "347fe74cb0221cbc0b8542bb187aa6adc752405c",
+  "independent_catalog": { "pass": 218, "fail": 0 },
+  "component_int": {
+    "CMP-003": "6/6",
+    "CMP-030": "6/6",
+    "CMP-032": "6/6"
+  },
+  "scanners": {
+    "gitleaks": "0 leaks",
+    "semgrep": "0 findings",
+    "codeql_github": "SUCCESS"
+  },
+  "frozen_contracts": "13/13 MATCH",
+  "certified": false
+}

@@ -1,14 +1,14 @@
-# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 task envelope — CMP-030 Consent & Privacy (builder complete; not CERTIFIED)
 task_id: SF-M01-W2-002
 title: Consent and Privacy Service
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: IMPLEMENTATION_COMPLETE
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-030]
 integration_ids: [INT-011]
 requirement_ids:
@@ -18,20 +18,20 @@ requirement_ids:
   - ADR-0006-Option-A
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-model_route: opus
-model_release: claude-opus-5-5
+model_route: composer
 effort: high
 verifier_model_route: opus
 verifiers:
   - serviceform-security-verifier (opus, xhigh)
   - serviceform-evidence-verifier (opus, high)
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-cmp-030-consent-privacy-SF-M01-W2-002
-worktree: ../wt-SF-M01-W2-002
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+branch: cursor/m01-w2-cmp-030-4362
+result_commit: 5f0227b802dbfd39bfff4b9a741e995b5306b823
+tested_commit: 5f0227b802dbfd39bfff4b9a741e995b5306b823
 depends_on:
   - M01 Wave 1 MERGED (CMP-002, CMP-031, CMP-048 on main)
   - 13 shared contracts FROZEN
-  - human implementation authorization (not granted)
+  - human implementation authorization (granted by coordinator dispatch)
 allowed_write_paths:
   - services/cmp-030-consent-privacy/**
   - db/migrations/*_cmp-030-*.sql
@@ -102,9 +102,48 @@ stop_conditions:
   - statutory privacy interpretation required without owner ADR
   - write outside allowed_write_paths
   - dependency on unmerged M02 identity/profile code
-  - implementation_authorized remains false (do not code)
 self_certified: false
 not_certified: true
-blockers: []
+blockers:
+  - id: PNPM_LOCKFILE_IMPORTER
+    owner: orchestrator_stitch
+    blocks: CI_GREEN
+    detail: >
+      PR #27 tip 9f8d737 — five checks fail only at pnpm install --frozen-lockfile
+      (ERR_PNPM_OUTDATED_LOCKFILE) because services/cmp-030-consent-privacy/package.json
+      is absent from pnpm-lock.yaml. Envelope forbids builder committing the lockfile.
+      See evidence/SF-M01-W2-002/ci-lockfile-residual.md.
 ccr_required: false
 parallel_group: W2-A
+pr: https://github.com/dbn1972/serviceform-ai/pull/27
+ci_status: RED_LOCKFILE_ONLY
+completed_work:
+  - CMP-030 Fastify plugin under services/cmp-030-consent-privacy
+  - Migrations 1759500700000 (schema/roles/tables) and 1759500700001 (outbox template)
+  - ADR-0006 Option A: sf_cmp030_rw NOLOGIN; FORCE RLS; PUBLIC revoked; outbox template unchanged
+  - Purpose/notice support routes + Eng consents/access-check
+  - Unit, contract, integration, privilege-boundary, tenant-negative, idempotency tests
+  - Evidence under evidence/SF-M01-W2-002
+  - CI residual documented for orchestrator lockfile stitch (no write-path expansion)
+unresolved_work:
+  - Orchestrator regen of pnpm-lock.yaml for CMP-030 importer (blocks CI_GREEN)
+  - Independent integration stitcher / security verifier / evidence verifier
+  - CMP-036 host mount (SF-M01-W2-004)
+changed_contracts: []
+changed_migrations:
+  - db/migrations/1759500700000_cmp-030-consent-privacy.sql
+  - db/migrations/1759500700001_cmp-030-outbox.sql
+evidence:
+  - evidence/SF-M01-W2-002/EVIDENCE.md
+  - evidence/SF-M01-W2-002/ci-lockfile-residual.md
+  - evidence/SF-M01-W2-002/junit/unit.xml
+  - evidence/SF-M01-W2-002/junit/integration.xml
+  - evidence/SF-M01-W2-002/coverage-summary.json
+  - evidence/SF-M01-W2-002/scope-check.log
+  - evidence/SF-M01-W2-002/rls-negative-matrix.md
+tests:
+  unit_contract: 12 passed
+  integration: 6 passed
+  coverage_lines_pct: 84.36
+recommended_gate: READY_FOR_INDEPENDENT_VERIFY_AFTER_LOCKFILE_STITCH
+

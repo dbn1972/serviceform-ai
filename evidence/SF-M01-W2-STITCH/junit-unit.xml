@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="0.644249763">
+    <testsuite name="apps/api/test/composition.test.ts" timestamp="2026-10-04T01:39:38.888Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.453829543">
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts Wave 1 plugin routes under /v1 with frozen error envelopes" time="0.177383357">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; rate-limits with SF-RATE-001 and no request leakage" time="0.013379087">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; strips query strings from access logs (G-10)" time="0.007000228">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; does not steal business logic: unknown /v1 route stays SF-SYS-002" time="0.006569154">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts audit plugin path when deps are supplied" time="0.083250048">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) &gt; mounts CMP-003/030/032 under /v1 with frozen deny envelopes" time="0.163143205">
+        </testcase>
+        <testcase classname="apps/api/test/composition.test.ts" name="CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047) &gt; keeps logger redaction for nested secrets on the host logger" time="0.001687752">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-030-consent-privacy/test/unit/access-check.test.ts" timestamp="2026-10-04T01:39:38.889Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003632944">
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; denies missing purpose and inactive purpose" time="0.001387727">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; allows when consent not required" time="0.00023163">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/access-check.test.ts" name="evaluateAccessCheck &gt; requires active grant when consent required" time="0.000251416">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/access-check.test.ts" name="fingerprint &gt; canonicalizes and fingerprints stably" time="0.000773507">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-030-consent-privacy/test/unit/authz-context.test.ts" timestamp="2026-10-04T01:39:38.890Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.060251477">
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies malformed input, PDP throw, and deny" time="0.049062348">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies tenant mismatch on TENANT_SCOPED resources" time="0.000470326">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/authz-context.test.ts" name="context guards &gt; rejects tenant-identifying headers and missing context" time="0.008609289">
+        </testcase>
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/authz-context.test.ts" name="errors and audit helpers &gt; maps pg errors and rate-limits deny audits" time="0.001013814">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-030-consent-privacy/test/unit/plugin-http.test.ts" timestamp="2026-10-04T01:39:38.890Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.068588917">
+        <testcase classname="services/cmp-030-consent-privacy/test/unit/plugin-http.test.ts" name="plugin HTTP guards &gt; requires auth and rejects tenant-identifying headers" time="0.045843631">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-032-storage/test/unit/modes-authz.test.ts" timestamp="2026-10-04T01:39:38.890Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.054516647">
+        <testcase classname="services/cmp-032-storage/test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; refuses REAL storage mode" time="0.001574808">
+        </testcase>
+        <testcase classname="services/cmp-032-storage/test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; loads default rate limits" time="0.000364653">
+        </testcase>
+        <testcase classname="services/cmp-032-storage/test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; builds valid authz input and default deny" time="0.05056047">
+        </testcase>
+        <testcase classname="services/cmp-032-storage/test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; fails closed when PDP throws" time="0.000948267">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-032-storage/test/unit/store-service.test.ts" timestamp="2026-10-04T01:39:38.891Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.003430235">
+        <testcase classname="services/cmp-032-storage/test/unit/store-service.test.ts" name="storeObject (unit doubles) &gt; KMS failure fails closed before store" time="0.002528126">
+        </testcase>
+    </testsuite>
+</testsuites>

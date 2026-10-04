@@ -1,0 +1,227 @@
+Migrating...
+PASS role.super.sf_app: rolsuper=false
+PASS role.bypass.sf_app: rolbypassrls=false
+PASS role.nologin.sf_app: rolcanlogin=false
+PASS role.super.sf_cmp002_rw: rolsuper=false
+PASS role.bypass.sf_cmp002_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp002_rw: rolcanlogin=false
+PASS role.super.sf_cmp003_rw: rolsuper=false
+PASS role.bypass.sf_cmp003_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp003_rw: rolcanlogin=false
+PASS role.super.sf_cmp030_rw: rolsuper=false
+PASS role.bypass.sf_cmp030_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp030_rw: rolcanlogin=false
+PASS role.super.sf_cmp032_rw: rolsuper=false
+PASS role.bypass.sf_cmp032_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp032_rw: rolcanlogin=false
+PASS role.super.sf_cmp048_rw: rolsuper=false
+PASS role.bypass.sf_cmp048_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp048_rw: rolcanlogin=false
+PASS role.super.sf_migrator: rolsuper=false
+PASS role.bypass.sf_migrator: rolbypassrls=false
+PASS role.nologin.sf_migrator: rolcanlogin=false
+PASS role.super.sf_outbox_publisher: rolsuper=false
+PASS role.bypass.sf_outbox_publisher: rolbypassrls=false
+PASS role.nologin.sf_outbox_publisher: rolcanlogin=false
+PASS owner.sf_consent_privacy.consent: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.consent: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.consent: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.consent_event: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.consent_event: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.consent_event: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.idempotency_record_platform: owner=sf_migrator
+PASS owner.sf_consent_privacy.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.inbox_event: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.inbox_event: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_consent_privacy.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.outbox_event: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.outbox_event: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_consent_privacy.privacy_notice: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.privacy_notice: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.privacy_notice: relforcerowsecurity=true
+PASS owner.sf_consent_privacy.purpose: owner=sf_migrator
+PASS rls.enable.sf_consent_privacy.purpose: relrowsecurity=true
+PASS rls.force.sf_consent_privacy.purpose: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.inbox_event: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.inbox_event: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_jurisdiction.jurisdiction: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.jurisdiction: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.jurisdiction: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.jurisdiction_binding: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.jurisdiction_binding: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.jurisdiction_binding: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.jurisdiction_relation: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.jurisdiction_relation: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.jurisdiction_relation: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.jurisdiction_type: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.jurisdiction_type: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.jurisdiction_type: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.jurisdiction_version: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.jurisdiction_version: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.jurisdiction_version: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_jurisdiction.outbox_event: relrowsecurity=true
+PASS rls.force.sf_jurisdiction.outbox_event: relforcerowsecurity=true
+PASS owner.sf_jurisdiction.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_storage.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_storage.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_storage.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_storage.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_storage.inbox_event: relrowsecurity=true
+PASS rls.force.sf_storage.inbox_event: relforcerowsecurity=true
+PASS owner.sf_storage.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_storage.object_metadata: owner=sf_migrator
+PASS rls.enable.sf_storage.object_metadata: relrowsecurity=true
+PASS rls.force.sf_storage.object_metadata: relforcerowsecurity=true
+PASS owner.sf_storage.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_storage.outbox_event: relrowsecurity=true
+PASS rls.force.sf_storage.outbox_event: relforcerowsecurity=true
+PASS owner.sf_storage.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_storage.storage_policy: owner=sf_migrator
+PASS rls.enable.sf_storage.storage_policy: relrowsecurity=true
+PASS rls.force.sf_storage.storage_policy: relforcerowsecurity=true
+PASS policy.public.sf_jurisdiction.jurisdiction_type.jurisdiction_type_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.jurisdiction_type.jurisdiction_type_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.jurisdiction.jurisdiction_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.jurisdiction.jurisdiction_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.jurisdiction_version.jurisdiction_version_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.jurisdiction_version.jurisdiction_version_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.jurisdiction_relation.jurisdiction_relation_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.jurisdiction_relation.jurisdiction_relation_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.jurisdiction_binding.jurisdiction_binding_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.jurisdiction_binding.jurisdiction_binding_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.idempotency_record.idempotency_record_isolation: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.idempotency_record.idempotency_record_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_storage.storage_policy.storage_policy_tenant: roles={sf_app}
+PASS policy.accessor.sf_storage.storage_policy.storage_policy_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_storage.object_metadata.object_metadata_tenant: roles={sf_app}
+PASS policy.accessor.sf_storage.object_metadata.object_metadata_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_storage.idempotency_record.idempotency_tenant: roles={sf_app}
+PASS policy.accessor.sf_storage.idempotency_record.idempotency_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_jurisdiction.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_jurisdiction.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_jurisdiction.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_jurisdiction.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_storage.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_storage.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_storage.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_storage.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_storage.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_storage.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.purpose.purpose_isolation: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.purpose.purpose_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.privacy_notice.privacy_notice_isolation: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.privacy_notice.privacy_notice_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.consent.consent_isolation: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.consent.consent_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.consent_event.consent_event_isolation: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.consent_event.consent_event_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.idempotency_record.idempotency_record_isolation: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.idempotency_record.idempotency_record_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.idempotency_record_platform.idempotency_record_platform_actor: roles={sf_app}
+PASS policy.public.sf_consent_privacy.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_consent_privacy.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_consent_privacy.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_consent_privacy.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_consent_privacy.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS public.table.acl.w2: rows=0
+PASS sf_app.no_authoritative_dml.w2: none
+PASS sf-con-outbox.sf_app.insert_residual.w2: sf_consent_privacy.inbox_event:INSERT, sf_consent_privacy.inbox_event:SELECT, sf_consent_privacy.inbox_event_platform:INSERT, sf_consent_privacy.inbox_event_platform:SELECT, sf_consent_privacy.outbox_event:INSERT, sf_consent_privacy.outbox_event_platform:INSERT, sf_jurisdiction.inbox_event:INSERT, sf_jurisdiction.inbox_event:SELECT, sf_jurisdiction.inbox_event_platform:INSERT, sf_jurisdiction.inbox_event_platform:SELECT, sf_jurisdiction.outbox_event:INSERT, sf_jurisdiction.outbox_event_platform:INSERT, sf_storage.inbox_event:INSERT, sf_storage.inbox_event:SELECT, sf_storage.inbox_event_platform:INSERT, sf_storage.inbox_event_platform:SELECT, sf_storage.outbox_event:INSERT, sf_storage.outbox_event_platform:INSERT
+PASS CMP-003.session_eq_current: sf_w2_003_rt/sf_w2_003_rt
+PASS CMP-003.identity: {"session_user":"sf_w2_003_rt","current_user":"sf_w2_003_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-003.membership_own: {"app":true,"own":true}
+PASS CMP-003.not_member.sf_cmp030_rw: false
+PASS CMP-003.set_role.sf_cmp030_rw: denied
+PASS CMP-003.not_member.sf_cmp032_rw: false
+PASS CMP-003.set_role.sf_cmp032_rw: denied
+PASS CMP-003.not_member.sf_cmp002_rw: false
+PASS CMP-003.set_role.sf_cmp002_rw: denied
+PASS CMP-003.not_member.sf_cmp048_rw: false
+PASS CMP-003.set_role.sf_cmp048_rw: denied
+PASS CMP-003.not_owner: false
+PASS CMP-030.session_eq_current: sf_w2_030_rt/sf_w2_030_rt
+PASS CMP-030.identity: {"session_user":"sf_w2_030_rt","current_user":"sf_w2_030_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-030.membership_own: {"app":true,"own":true}
+PASS CMP-030.not_member.sf_cmp003_rw: false
+PASS CMP-030.set_role.sf_cmp003_rw: denied
+PASS CMP-030.not_member.sf_cmp032_rw: false
+PASS CMP-030.set_role.sf_cmp032_rw: denied
+PASS CMP-030.not_member.sf_cmp002_rw: false
+PASS CMP-030.set_role.sf_cmp002_rw: denied
+PASS CMP-030.not_member.sf_cmp048_rw: false
+PASS CMP-030.set_role.sf_cmp048_rw: denied
+PASS CMP-030.not_owner: false
+PASS CMP-032.session_eq_current: sf_w2_032_rt/sf_w2_032_rt
+PASS CMP-032.identity: {"session_user":"sf_w2_032_rt","current_user":"sf_w2_032_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-032.membership_own: {"app":true,"own":true}
+PASS CMP-032.not_member.sf_cmp003_rw: false
+PASS CMP-032.set_role.sf_cmp003_rw: denied
+PASS CMP-032.not_member.sf_cmp030_rw: false
+PASS CMP-032.set_role.sf_cmp030_rw: denied
+PASS CMP-032.not_member.sf_cmp002_rw: false
+PASS CMP-032.set_role.sf_cmp002_rw: denied
+PASS CMP-032.not_member.sf_cmp048_rw: false
+PASS CMP-032.set_role.sf_cmp048_rw: denied
+PASS CMP-032.not_owner: false
+PASS CMP-002.session_eq_current: sf_w2_002_rt/sf_w2_002_rt
+PASS CMP-002.identity: {"session_user":"sf_w2_002_rt","current_user":"sf_w2_002_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-002.membership_own: {"app":true,"own":true}
+PASS CMP-002.not_member.sf_cmp003_rw: false
+PASS CMP-002.set_role.sf_cmp003_rw: denied
+PASS CMP-002.not_member.sf_cmp030_rw: false
+PASS CMP-002.set_role.sf_cmp030_rw: denied
+PASS CMP-002.not_member.sf_cmp032_rw: false
+PASS CMP-002.set_role.sf_cmp032_rw: denied
+PASS CMP-002.not_member.sf_cmp048_rw: false
+PASS CMP-002.set_role.sf_cmp048_rw: denied
+PASS CMP-002.not_owner: false
+PASS CMP-048.session_eq_current: sf_w2_048_rt/sf_w2_048_rt
+PASS CMP-048.identity: {"session_user":"sf_w2_048_rt","current_user":"sf_w2_048_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-048.membership_own: {"app":true,"own":true}
+PASS CMP-048.not_member.sf_cmp003_rw: false
+PASS CMP-048.set_role.sf_cmp003_rw: denied
+PASS CMP-048.not_member.sf_cmp030_rw: false
+PASS CMP-048.set_role.sf_cmp030_rw: denied
+PASS CMP-048.not_member.sf_cmp032_rw: false
+PASS CMP-048.set_role.sf_cmp032_rw: denied
+PASS CMP-048.not_member.sf_cmp002_rw: false
+PASS CMP-048.set_role.sf_cmp002_rw: denied
+PASS CMP-048.not_owner: false
+PASS XCOMP.003.select.030: 42501
+PASS XCOMP.030.select.003: 42501
+PASS XCOMP.003.select.032: 42501
+PASS XCOMP.032.select.003: 42501
+PASS XCOMP.030.select.032: 42501
+PASS XCOMP.032.select.030: 42501
+PASS XCOMP.002.select.003: 42501
+PASS XCOMP.048.select.030: 42501
+PASS XCOMP.003.select.048: 42501
+PASS TI.003.wrong_tenant_select: count=0
+PASS TI.003.wrong_tenant_insert: denied
+PASS TI.030.wrong_tenant_select: count=0
+PASS TI.030.wrong_tenant_insert: denied
+PASS TI.032.wrong_tenant_select: count=0
+PASS TI.032.wrong_tenant_insert: denied
+PASS TI.003.unset_tenant_zero: n=0
+NOTE ADR-0006#9 probe did not insert: 42P08
+PASS ADR0006.9.outbox_cross_schema_residual: peer outbox insert not allowed on this tip (stricter than frozen residual)
+{
+  "tip": "347fe74cb0221cbc0b8542bb187aa6adc752405c",
+  "pass": 218,
+  "fail": 0,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "findings": []
+}

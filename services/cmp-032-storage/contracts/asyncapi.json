@@ -1,0 +1,54 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-032 Storage Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.storage.events.v1": {
+      "address": "sf.storage.events.v1",
+      "messages": {
+        "ObjectStored": { "payload": { "$ref": "#/components/schemas/ObjectStored" } },
+        "ObjectArchived": { "payload": { "$ref": "#/components/schemas/ObjectArchived" } },
+        "ObjectDeleted": { "payload": { "$ref": "#/components/schemas/ObjectDeleted" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ObjectStored": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_id", "object_key", "checksum_sha256", "byte_size", "storage_mode"],
+        "properties": {
+          "object_id": { "type": "string", "format": "uuid" },
+          "object_key": { "type": "string" },
+          "checksum_sha256": { "type": "string" },
+          "byte_size": { "type": "integer" },
+          "storage_mode": { "enum": ["SIMULATED", "LOCAL"] },
+          "simulation": { "type": "object" }
+        }
+      },
+      "ObjectArchived": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_id", "object_key", "status"],
+        "properties": {
+          "object_id": { "type": "string", "format": "uuid" },
+          "object_key": { "type": "string" },
+          "status": { "const": "ARCHIVED" }
+        }
+      },
+      "ObjectDeleted": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object_id", "object_key", "status"],
+        "properties": {
+          "object_id": { "type": "string", "format": "uuid" },
+          "object_key": { "type": "string" },
+          "status": { "const": "DELETED" }
+        }
+      }
+    }
+  }
+}

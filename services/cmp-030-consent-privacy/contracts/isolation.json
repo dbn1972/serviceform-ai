@@ -1,0 +1,17 @@
+{
+  "component": "CMP-030",
+  "schema": "sf_consent_privacy",
+  "privilege_role": "sf_cmp030_rw",
+  "tables": [
+    { "name": "purpose", "isolation_class": "TENANT_SCOPED" },
+    { "name": "privacy_notice", "isolation_class": "TENANT_SCOPED" },
+    { "name": "consent", "isolation_class": "TENANT_SCOPED" },
+    { "name": "consent_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "idempotency_record", "isolation_class": "TENANT_SCOPED" },
+    { "name": "idempotency_record_platform", "isolation_class": "PLATFORM_OPERATIONAL" },
+    { "name": "outbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "outbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" },
+    { "name": "inbox_event", "isolation_class": "TENANT_SCOPED" },
+    { "name": "inbox_event_platform", "isolation_class": "PLATFORM_OPERATIONAL" }
+  ]
+}

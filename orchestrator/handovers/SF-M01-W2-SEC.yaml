@@ -1,13 +1,14 @@
-# M01 Wave 2 security verifier envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 security verifier envelope — independent verification bind.
+# Not CERTIFIED. Do not waive Critical/High. Do not edit frozen contracts.
 task_id: SF-M01-W2-SEC
 title: Wave 2 independent security and tenant-isolation verification
 module_id: M01
 wave: 2
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: VERIFICATION_READY
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-003, CMP-030, CMP-032, CMP-036, CMP-047, CMP-055]
 integration_ids: [INT-011]
 agent_role: security_agent
@@ -15,15 +16,19 @@ builder_agent: serviceform-security-verifier
 model_route: opus
 model_release: claude-opus-5-5
 effort: xhigh
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-wave2-security-SF-M01-W2-SEC
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+branch: cursor/m01-w2-sec-verify-296b
 worktree: ../wt-SF-M01-W2-SEC
 depends_on:
   - Builder envelopes implemented and stitch candidate available
   - Prefers post-INT; may author negative tests before builder code once implementation authorized
+stitch_branch: cursor/m01-w2-stitch-e19b
+stitch_tip: 347fe74cb0221cbc0b8542bb187aa6adc752405c
+stitch_pr: 30
 allowed_write_paths:
   - tests/security/**
   - evidence/security/**
+  - evidence/SF-M01-W2-SEC/**
   - orchestrator/handovers/SF-M01-W2-SEC.yaml
 read_only_paths:
   - services/**
@@ -36,6 +41,7 @@ explicit_cannot:
   - waive Critical/High security findings
   - self-certify
   - edit frozen contracts
+  - merge stitch to main
 hard_gates:
   - cross_tenant_leakage: 0
   - rls_required_negative_tests: 100%
@@ -47,6 +53,15 @@ acceptance_tests_planning:
   - Storage wrong-tenant / unsigned access denied
   - Jurisdiction resolution does not leak other-tenant bindings
   - No PII/secrets in observability samples
+verifier_result:
+  verdict: V2_SECURITY_PASS
+  CROSS_TENANT_LEAKAGE: 0
+  commit_sha: 347fe74cb0221cbc0b8542bb187aa6adc752405c
+  evidence_path: evidence/SF-M01-W2-SEC/
+  github_security_run_id: "37169194081"
+  github_ci_run_id: "37169194082"
+  independent_catalog_pass: 218
+  independent_catalog_fail: 0
 self_certified: false
 not_certified: true
 parallel_group: W2-VERIFY

@@ -1,0 +1,27 @@
+
+ RUN  v5.0.3 /tmp/m01-w2-int/services/cmp-038-event-bus
+
+ ✓ test/integration/security/privilege-boundary.int.test.ts (14 tests) 612ms
+ ✓ test/integration/security/producer-consumer.int.test.ts (8 tests) 513ms
+ ✓ test/integration/security/relay-faults.int.test.ts (7 tests) 561ms
+{"level":"warn","time":"2026-10-04T01:53:44.787Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"ece6b212-af25-432b-a29c-b4f90543e575","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+{"level":"warn","time":"2026-10-04T01:53:55.482Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"ca8fed2d-476f-485d-9b33-effe6514882c","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/kafka.int.test.ts (5 tests) 24335ms
+   ✓ real Kafka 4.1.0 (K1-K5, 004-29) (5)
+     ✓ K1 publish after commit and consume with inbox dedup 5686ms
+     ✓ K2 per-aggregate order is preserved on the broker 5158ms
+     ✓ K3 broker stop/start loses no committed outbox row 6126ms
+ ✓ test/integration/security/operator-registry.int.test.ts (4 tests) 516ms
+ ✓ test/integration/outbox.int.test.ts (5 tests) 2091ms
+   ✓ outbox atomicity, ordering, inbox, broker-outage (I1-I13) (5)
+     ✓ I7 broker down then up loses no committed events 1567ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 1062ms
+   ✓ migration / frozen template (I16, 004-30) (3)
+     ✓ round-trips down then up for this migration 1059ms
+
+ Test Files  7 passed (7)
+      Tests  46 passed (46)
+   Start at  01:53:36
+   Duration  31.71s (tests 95%, import 4%, transform 1%)
+
+JUNIT report written to /tmp/w2-int-out/m01-envelope-int/SF-M01-004/junit/envelope-int.xml

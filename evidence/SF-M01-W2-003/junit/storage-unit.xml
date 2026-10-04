@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="0.094502769">
+    <testsuite name="test/checksum.test.ts" timestamp="2026-10-04T01:28:30.523Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003530945">
+        <testcase classname="test/checksum.test.ts" name="checksum &gt; hashes bytes and fingerprints" time="0.001943874">
+        </testcase>
+        <testcase classname="test/checksum.test.ts" name="checksum &gt; assertChecksum rejects mismatch" time="0.000597375">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/modes.test.ts" timestamp="2026-10-04T01:28:30.524Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003244692">
+        <testcase classname="test/modes.test.ts" name="modes &gt; allows SIMULATED in LOCAL" time="0.00155623">
+        </testcase>
+        <testcase classname="test/modes.test.ts" name="modes &gt; refuses REAL without ADR" time="0.000261306">
+        </testcase>
+        <testcase classname="test/modes.test.ts" name="modes &gt; refuses SIMULATED in PRODUCTION" time="0.000126904">
+        </testcase>
+        <testcase classname="test/modes.test.ts" name="modes &gt; parses environment" time="0.000274132">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/object-key.test.ts" timestamp="2026-10-04T01:28:30.525Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002456036">
+        <testcase classname="test/object-key.test.ts" name="object-key &gt; builds tenant/cell scoped key without PII" time="0.00141356">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/simulated-store.test.ts" timestamp="2026-10-04T01:28:30.525Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.042895949">
+        <testcase classname="test/simulated-store.test.ts" name="SimulatedObjectStore + presign &gt; puts, archives, and requires simulation marker" time="0.040512891">
+        </testcase>
+        <testcase classname="test/simulated-store.test.ts" name="SimulatedObjectStore + presign &gt; presign fails closed when secret port fails" time="0.000368265">
+        </testcase>
+        <testcase classname="test/simulated-store.test.ts" name="SimulatedObjectStore + presign &gt; verifies simulated presign tokens" time="0.000881574">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/simulation-marker.test.ts" timestamp="2026-10-04T01:28:30.525Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.042375147">
+        <testcase classname="test/simulation-marker.test.ts" name="simulation-marker &gt; builds a valid SF-CON-SIMULATION-MARKER" time="0.038504101">
+        </testcase>
+        <testcase classname="test/simulation-marker.test.ts" name="simulation-marker &gt; rejects empty test_run_id and non-simulation envs" time="0.000377184">
+        </testcase>
+    </testsuite>
+</testsuites>

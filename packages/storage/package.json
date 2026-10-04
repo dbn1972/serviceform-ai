@@ -1,0 +1,18 @@
+{
+  "name": "@serviceform/storage",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-032 storage ports: object keys, checksums, SIMULATED/local object-store adapter (INT-013)",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "dependencies": {
+    "@serviceform/contracts": "workspace:*"
+  }
+}

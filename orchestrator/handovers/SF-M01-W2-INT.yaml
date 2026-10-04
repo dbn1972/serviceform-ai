@@ -1,13 +1,14 @@
-# M01 Wave 2 integration stitcher envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 independent integration verification result.
+# Not CERTIFIED. Do not patch component production code to force green. Do not merge stitch.
 task_id: SF-M01-W2-INT
 title: Wave 2 independent integration stitch
 module_id: M01
 wave: 2
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: V1_INTEGRATION_PASS
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-003, CMP-030, CMP-032, CMP-036, CMP-047, CMP-055]
 integration_ids: [INT-011, INT-013]
 agent_role: integration_agent
@@ -15,15 +16,27 @@ builder_agent: serviceform-integration-stitcher
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-wave2-integration-SF-M01-W2-INT
-worktree: ../wt-SF-M01-W2-INT
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+candidate_sha: 347fe74cb0221cbc0b8542bb187aa6adc752405c
+stitch_branch: cursor/m01-w2-stitch-e19b
+stitch_pr: https://github.com/dbn1972/serviceform-ai/pull/30
+verify_branch: cursor/m01-w2-int-verify-060f
+independent_run_id: local-w2-int
+github_ci_run_id: "37169194082"
+github_ci_envelope_job: "111338489009"
+CROSS_TENANT_LEAKAGE: 0
+result: V1_INTEGRATION_PASS
+evidence_path: evidence/SF-M01-W2-INT/
+stitch_evidence: evidence/SF-M01-W2-STITCH/
 depends_on:
-  - SF-M01-W2-001..005 builder merge candidates available
-  - human implementation authorization completed for builders first
+  - SF-M01-W2-001..005 builder merge candidates integrated on stitch branch
+  - pnpm-lock.yaml regenerated on stitch; frozen-lockfile PASS locally
+  - Phase B host mounts for CMP-003/030/032 completed on stitch
+  - human implementation authorization completed for builders
 allowed_write_paths:
   - tests/integration/**
   - evidence/integration/**
+  - evidence/SF-M01-W2-INT/**
   - orchestrator/handovers/SF-M01-W2-INT.yaml
 read_only_paths:
   - services/**
@@ -32,15 +45,23 @@ read_only_paths:
   - contracts/**
   - db/**
   - policy/**
+  - pnpm-lock.yaml
 explicit_cannot:
   - patch component production code to force green
   - self-certify
   - start or continue builder implementation
-acceptance_tests_planning:
-  - Host composition mounts W1+W2 plugins without cross-component SQL
-  - INT-011 scenarios for new tenant-owned layers
-  - INT-013 SIMULATED storage marker behavior
-  - Failure paths and idempotency across seams
+  - merge stitch to main
+acceptance_tests_executed:
+  - Host composition mounts W1+W2 plugins without cross-component SQL — PASS
+  - INT-011 scenarios for new tenant-owned layers (CMP-003/030/032) — PASS
+  - INT-013 SIMULATED storage marker behavior — PASS
+  - W1 envelope INT-011 re-verify + CDC — PASS
+  - Failure paths and idempotency covered inside component INT suites — PASS
 self_certified: false
 not_certified: true
+certified: false
 parallel_group: W2-VERIFY
+residuals:
+  - No Wave 2 dedicated cross-component CDC suite (W1 CDC re-verified)
+  - CMP-036/047 lack PostgreSQL *.int suites; host composition + unit cover mounts
+  - REAL S3/KMS storage deferred; SIMULATED INT-013 path verified
