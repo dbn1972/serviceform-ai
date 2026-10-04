@@ -1,0 +1,20 @@
+> @serviceform/cmp-001-catalogue@0.0.0 test:integration /workspace/services/cmp-001-catalogue
+> vitest run --root . --config vitest.integration.config.ts
+
+ RUN  v5.0.3 /workspace/services/cmp-001-catalogue
+
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 1882ms
+ ✓ test/integration/api-negative.int.test.ts (3 tests) 561ms
+ ✓ test/integration/migration.int.test.ts (1 test) 480ms
+
+ Test Files  3 passed (3)
+      Tests  8 passed (8)
+   Start at  11:48:48
+   Duration  3.58s (tests 87%, import 8%, transform 5%)
+
+JUNIT report written to /workspace/evidence/SF-M03-001/junit/integration.xml
+(copied to evidence/CMP-001-INT-TX-FIX/junit-integration.xml)
+
+PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+SHA of test change (pre-evidence): b3729b194fb589e32a24f8ce98fbca8d399890d1
+Base: 7424235592824d5ceda9dcac55380a78c05cb6c5
