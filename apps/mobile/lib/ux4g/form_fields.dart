@@ -5,16 +5,32 @@ import 'tokens.dart';
 /// Metadata-driven field mapping for Flutter. JSON Forms remains schema/runtime;
 /// visual values come only from [SfTokens] (UX4G 3.0).
 enum Ux4gRendererId {
+  /// Single-line text input (`ux4g-input-container`).
   textInput,
+
+  /// Multi-line text input.
   textarea,
+
+  /// Numeric input.
   numberInput,
+
+  /// Date input.
   dateInput,
+
+  /// Boolean checkbox (`ux4g-checkbox`).
   checkbox,
+
+  /// Exclusive choice radios (`ux4g-radio`).
   radioGroup,
+
+  /// Enumerated select (`ux4g-input-container`).
   select,
+
+  /// Schema node with no UX4G renderer.
   unsupported,
 }
 
+/// Resolves a JSON Schema node to a UX4G-backed Flutter renderer id.
 Ux4gRendererId resolveUx4gRenderer({
   required String? type,
   String? format,
