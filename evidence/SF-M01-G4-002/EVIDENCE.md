@@ -14,6 +14,7 @@
 | Independent run id | `local-g4-002` / job `m01-g4-regression` |
 | GitHub `ci` (main tip) | [37178714591](https://github.com/dbn1972/serviceform-ai/actions/runs/37178714591) **SUCCESS** — envelope job `111366681172` SUCCESS |
 | GitHub `security` (main tip) | [37178714612](https://github.com/dbn1972/serviceform-ai/actions/runs/37178714612) **SUCCESS** (semgrep, CodeQL, checkov, gitleaks, dependency audit) |
+| GitHub `ci`/`security` (PR head) | [37179060533](https://github.com/dbn1972/serviceform-ai/actions/runs/37179060533) / [37179060537](https://github.com/dbn1972/serviceform-ai/actions/runs/37179060537) **SUCCESS** (15/15) |
 | Components | All 11: CMP-002/003/030/031/032/036/037/038/047/048/055 |
 | Integration IDs | INT-011, INT-013 |
 | Frozen contracts | 13/13 MATCH (`contracts_lock_gate.py`) |
@@ -52,7 +53,7 @@ Machine summary: `summary/m01-g4-regression-summary.json` (`suite_count: 22`, `f
 
 - **R-ENV-INT:** CI job name/script still W1-scoped on tip until SF-M01-G4-001 lands. This harness covers W1+W2 independently; does not close the CI residual.
 - **CMP-055-PKG:** no `package.json` on main — path-based vitest used.
-- PR head CI for harness tip tracked separately on [#38](https://github.com/dbn1972/serviceform-ai/pull/38).
+- PR head CI on `b1ebde6`: [ci 37179060533](https://github.com/dbn1972/serviceform-ai/actions/runs/37179060533) + [security 37179060537](https://github.com/dbn1972/serviceform-ai/actions/runs/37179060537) SUCCESS (15/15 checks).
 
 ## Explicit non-claims
 
