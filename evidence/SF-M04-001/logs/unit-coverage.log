@@ -1,0 +1,54 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-039-ai-gateway
+      Coverage enabled with v8
+
+ ✓ test/unit/redaction.test.ts (14 tests) 65ms
+ ✓ test/contract/contracts.test.ts (4 tests) 58ms
+ ✓ test/unit/guards-config.test.ts (10 tests) 48ms
+ ✓ test/unit/gateway.test.ts (23 tests) 416ms
+
+ Test Files  4 passed (4)
+      Tests  51 passed (51)
+   Start at  15:15:23
+   Duration  908ms (tests 47%, transform 31%, import 18%, worker 4%)
+
+JUNIT report written to /workspace/services/cmp-039-ai-gateway/evidence/junit/unit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    91.1 |    84.29 |   93.33 |    95.3 |                   
+ src               |   85.27 |    77.44 |   85.71 |    90.9 |                   
+  audit.ts         |    87.5 |       75 |     100 |     100 | 38                
+  authz.ts         |   71.42 |       70 |      50 |   81.25 | 21,34-36          
+  config.ts        |     100 |    95.74 |     100 |     100 | 13-27             
+  context.ts       |   73.91 |    54.54 |     100 |    87.5 | 18-19             
+  errors.ts        |      95 |    88.88 |     100 |     100 | 16-22             
+  plugin.ts        |   82.14 |    59.09 |   83.33 |   82.14 | 47,71,74,84-85    
+ src/db            |      80 |    52.17 |   85.71 |    82.5 |                   
+  idempotency.ts   |    87.5 |       75 |     100 |    92.3 | 56                
+  outbox.ts        |      70 |    33.33 |     100 |      70 | 44,47-65          
+  tx.ts            |   78.94 |        0 |   66.66 |   82.35 | 9-11              
+ src/domain        |      98 |    94.73 |     100 |     100 |                   
+  redaction.ts     |   96.72 |     92.3 |     100 |     100 | 31,38             
+ src/ports         |   89.09 |    92.59 |   76.47 |   95.74 |                   
+  policy-ports.ts  |   63.63 |      100 |   42.85 |   77.77 | 19-23             
+  provider.ts      |   95.45 |     91.3 |     100 |     100 | 72,141            
+ src/repo          |     100 |       50 |     100 |     100 |                   
+  metadata-repo.ts |     100 |       50 |     100 |     100 | 101               
+ src/routes        |   95.58 |    71.42 |     100 |   98.41 |                   
+  ...way-routes.ts |     100 |       75 |     100 |     100 | 64,84-103         
+  helpers.ts       |   76.92 |    66.66 |     100 |    90.9 | 11                
+ src/service       |   91.49 |    87.47 |   95.77 |   95.91 |                   
+  gateway.ts       |   96.17 |    89.93 |   90.32 |    97.2 | ...32,275,278,343 
+  provider-call.ts |     100 |       75 |     100 |     100 | 30                
+  registry.ts      |   81.59 |     80.6 |     100 |    90.9 | ...09,323,333,377 
+  request.ts       |   95.69 |    94.39 |     100 |     100 | ...03-104,116,170 
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 91.1% ( 830/911 )
+Branches     : 84.29% ( 569/675 )
+Functions    : 93.33% ( 154/165 )
+Lines        : 95.3% ( 751/788 )
+================================================================================

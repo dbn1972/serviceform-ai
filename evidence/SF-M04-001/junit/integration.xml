@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="1.471448312">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T15:15:23.054Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.442045748">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; creates sf_ai_gateway schema, NOLOGIN privilege role and FORCE RLS tables" time="0.009110174">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; stores no raw prompt, output or tool-argument columns (metadata only)" time="0.005000262">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T15:15:23.055Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.448678995">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime is a non-superuser, non-BYPASSRLS sf_app member and not a table owner" time="0.008723511">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; peer privilege role cannot DML into sf_ai_gateway" time="0.00722557">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime cannot mutate or delete append-only audit metadata or retained registry rows" time="0.006866648">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; PUBLIC has no access to the schema" time="0.004987933">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-04T15:15:23.056Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.580723569">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; registers a pinned model and an immutable policy, then serves a governed advisory call" time="0.073706501">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; CROSS_TENANT_LEAKAGE=0: tenant B cannot read, use or enumerate tenant A configuration or audit" time="0.015323836">
+            <system-err>
+CROSS_TENANT_LEAKAGE=0
+
+            </system-err>
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; denies unapproved model and revoked model against the real registry" time="0.016766288">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; database constraints reject decision task kinds, floating pins, mutation of published rows" time="0.004388345">
+        </testcase>
+    </testsuite>
+</testsuites>
