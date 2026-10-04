@@ -1,0 +1,53 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-052 Versioning Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.versioning.events.v1": {
+      "address": "sf.versioning.events.v1",
+      "messages": {
+        "TenantServiceBindingCreated": {
+          "payload": { "$ref": "#/components/schemas/BindingLifecycle" }
+        },
+        "TenantServiceBindingUpdated": {
+          "payload": { "$ref": "#/components/schemas/BindingLifecycle" }
+        },
+        "TenantServiceBindingPublished": {
+          "payload": { "$ref": "#/components/schemas/BindingLifecycle" }
+        },
+        "ArtifactVersionPublished": {
+          "payload": { "$ref": "#/components/schemas/ArtifactPublished" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BindingLifecycle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["binding_id", "binding_key", "artifact_hash", "status"],
+        "properties": {
+          "binding_id": { "type": "string", "format": "uuid" },
+          "binding_key": { "type": "string" },
+          "artifact_hash": { "type": "string" },
+          "status": { "type": "string" },
+          "published_version_id": { "type": "string", "format": "uuid" }
+        }
+      },
+      "ArtifactPublished": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version_id", "artifact_key", "version_no", "content_hash"],
+        "properties": {
+          "version_id": { "type": "string", "format": "uuid" },
+          "artifact_key": { "type": "string" },
+          "version_no": { "type": "integer" },
+          "content_hash": { "type": "string" }
+        }
+      }
+    }
+  }
+}

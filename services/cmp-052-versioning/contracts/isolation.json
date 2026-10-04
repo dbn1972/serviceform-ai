@@ -1,0 +1,44 @@
+[
+  {
+    "entity": "sf_versioning.tenant_service_binding",
+    "owner_component": "CMP-052",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_versioning.artifact_version",
+    "owner_component": "CMP-052",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_versioning.idempotency_record",
+    "owner_component": "CMP-052",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_versioning.outbox_event",
+    "owner_component": "CMP-052",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_versioning.outbox_event_platform",
+    "owner_component": "CMP-052",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_versioning.inbox_event",
+    "owner_component": "CMP-052",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_versioning.inbox_event_platform",
+    "owner_component": "CMP-052",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]
