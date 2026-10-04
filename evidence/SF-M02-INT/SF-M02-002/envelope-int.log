@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-005-citizen-profile@0.0.0 test:integration /workspace/services/cmp-005-citizen-profile
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M02-INT/SF-M02-002/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-005-citizen-profile
+
+ ✓ test/integration/api-flow.int.test.ts (1 test) 593ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 444ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 455ms
+
+ Test Files  3 passed (3)
+      Tests  7 passed (7)
+   Start at  13:37:50
+   Duration  2.16s (tests 77%, import 15%, transform 8%)
+
+JUNIT report written to /workspace/services/cmp-005-citizen-profile/test-results/junit/integration.xml

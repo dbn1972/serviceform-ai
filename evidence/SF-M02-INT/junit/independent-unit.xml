@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.352502279">
+    <testsuite name="tests/integration/m02/int-011-host.test.ts" timestamp="2026-10-04T13:37:46.270Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.303782429">
+        <testcase classname="tests/integration/m02/int-011-host.test.ts" name="INT-011 host M02 mounts (independent stitcher) &gt; forged x-tenant-id is SF-TEN-002 and never echoes the canary" time="0.247947613">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-011-host.test.ts" name="INT-011 host M02 mounts (independent stitcher) &gt; unauthenticated identity is SF-AUTH-001; deny authorizer is canonical SF-AUTH-002" time="0.054433337">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-011-host.test.ts" name="INT-011 host M02 mounts (independent stitcher) &gt; M02 composition has no SQL and does not mount M03 plugins" time="0.0004603">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m02/int-013-modes.test.ts" timestamp="2026-10-04T13:37:46.271Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.04871985">
+        <testcase classname="tests/integration/m02/int-013-modes.test.ts" name="INT-013 M02 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-004 SIMULATED OTP is allowed in CI/LOCAL and emits a frozen marker" time="0.045793002">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-013-modes.test.ts" name="INT-013 M02 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-004 refuses PRODUCTION SIMULATED and PRODUCTION environment SIMULATED" time="0.000560476">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-013-modes.test.ts" name="INT-013 M02 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-005 SIMULATED DigiLocker is allowed in CI; PRODUCTION SIMULATED fail-closed" time="0.000706541">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-013-modes.test.ts" name="INT-013 M02 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-005 REAL/SANDBOX bindings that mismatch environment fail closed" time="0.000613271">
+        </testcase>
+    </testsuite>
+</testsuites>

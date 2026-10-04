@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="0" errors="0" time="1.01730819">
+    <testsuite name="tests/integration/m02/int-001-http-stitch.int.test.ts" timestamp="2026-10-04T13:37:55.008Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.587228119">
+        <testcase classname="tests/integration/m02/int-001-http-stitch.int.test.ts" name="INT-001 HTTP stitch (CMP-004 session → CMP-005 profile/DigiLocker) &gt; OTP + officer IdP tenant from assertion; T2/forged tenant cannot read T1 claims; idempotent upsert" time="0.157888495">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m02/int-011-rls-catalog.int.test.ts" timestamp="2026-10-04T13:37:55.009Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.430080071">
+        <testcase classname="tests/integration/m02/int-011-rls-catalog.int.test.ts" name="INT-011 M02 LOGIN RLS catalog (independent) &gt; runtime identities are non-owner, not SUPERUSER, no BYPASSRLS" time="0.019494676">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-011-rls-catalog.int.test.ts" name="INT-011 M02 LOGIN RLS catalog (independent) &gt; tenant-scoped M02 tables hide T1 rows from T2 LOGIN sessions" time="0.006899934">
+        </testcase>
+        <testcase classname="tests/integration/m02/int-011-rls-catalog.int.test.ts" name="INT-011 M02 LOGIN RLS catalog (independent) &gt; privilege boundaries: peer cannot DML; SET ROLE denied; wrong-tenant INSERT is 42501 in a fresh tx" time="0.011191162">
+        </testcase>
+    </testsuite>
+</testsuites>
