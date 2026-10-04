@@ -5,6 +5,7 @@
 | Task | SF-M01-W2-003 |
 | Component | CMP-032 |
 | Baseline | `origin/main` @ `f397e13` (plan merge) |
+| Implementation SHA | `93d389dac02ee670cd39802b905c04ce62e2710b` |
 | Branch | `cursor/m01-w2-cmp-032-1f9a` |
 | CERTIFIED | **false** (builder cannot self-certify) |
 | Storage mode | SIMULATED/local only (INT-013 markers); no REAL S3/KMS |
