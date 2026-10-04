@@ -7,7 +7,7 @@
 | INT | INT-011 (privilege boundary / ADR-0006) |
 | Base | `origin/main` `7424235592824d5ceda9dcac55380a78c05cb6c5` (merge #57) |
 | Branch | `cursor/cmp-001-int-test-tx-fix-955a` |
-| Head SHA | `a93c4a8cddfbd425ae4d51dffd9d7e156c545804` |
+| Test commit | `b3729b194fb589e32a24f8ce98fbca8d399890d1` |
 | Recommended gate | **HOLD G3 at FAIL**. Do not claim G3, G6, CERTIFIED, or `V1_INTEGRATION_PASS`. Independent SF-M03-INT rerun is a later agent. |
 | CERTIFIED | **false** |
 
