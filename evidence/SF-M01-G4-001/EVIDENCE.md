@@ -10,6 +10,8 @@
 | Scope | Generalize GitHub `m01-envelope-int` beyond SF-M01-001..005 |
 | Main baseline | `ab8359f0ffe96834bdf61318d1db7877433e7dcc` (`origin/main`, envelopes READY; code ancestry `c42c7c8`) |
 | Branch | `cursor/m01-g4-r-env-int-1573` |
+| Implementation SHA | `125a81ff9aa0e0cc5b381f0e7001bd0522ed9614` |
+| Evidence main bind | `ab8359f0ffe96834bdf61318d1db7877433e7dcc` |
 | Allowed writes | `.github/workflows/ci.yml`, `scripts/ci/run-m01-envelope-int.sh`, `evidence/SF-M01-G4-001/**`, `orchestrator/handovers/SF-M01-G4-001.yaml` |
 | Frozen contracts | untouched (13/13) |
 | M02 / M03 | not started |

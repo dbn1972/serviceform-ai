@@ -22,6 +22,7 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 base_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+implementation_sha: 125a81ff9aa0e0cc5b381f0e7001bd0522ed9614
 code_ancestry_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
 branch: cursor/m01-g4-r-env-int-1573
 worktree: .
@@ -91,7 +92,7 @@ builder_result: SF-M01-G4-001_READY
 recommended_gate: READY_FOR_INDEPENDENT_VERIFY
 # pr_url / head_sha filled after push
 pr_url: null
-head_sha: null
+head_sha: null  # set after push
 ci_status: PENDING_GITHUB
 notes:
   - Local path/unit smoke PASS for CMP-036/047/055/host + INT-013 markers
