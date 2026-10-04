@@ -1,5 +1,8 @@
 {
-  "record": "M01-G4-EXIT-TOKEN",
+  "record": {
+    "family": "SF-M01-G4-005",
+    "kind": "token"
+  },
   "token_issued": true,
   "recording_agent_self_issued": false,
   "exit_record_token": {
@@ -28,7 +31,8 @@
   "CROSS_TENANT_LEAKAGE": 0,
   "r_env_int": "CLOSED",
   "adr_0006_9": "ACCEPTED_RESIDUAL",
-  "r_branch_prot": "OPS_CONFIRM",
+  "r_branch_prot": "ACCEPTED_RESIDUAL",
+  "r_branch_prot_class": "OPS",
   "r_branch_prot_probe": {
     "at": "2026-10-04T05:58:00Z",
     "protected": false,

@@ -36,7 +36,7 @@
 | `CROSS_TENANT_LEAKAGE` | **0** |
 | R-ENV-INT | **CLOSED** (CLOSED_IN_CODE via G4-001 / #39; on tip via gate-combine #41) |
 | ADR-0006 #9 | **ACCEPTED_RESIDUAL** |
-| R-BRANCH-PROT | **OPS_CONFIRM** — tip probe `protected:false`, rulesets `[]`; human issued token despite ops sequencing recommendation |
+| R-BRANCH-PROT | **ACCEPTED_RESIDUAL** (OPS) — tip probe `protected:false`, rulesets `[]`; human authorized token; CLOSED_OPS not required for issuance |
 
 ## Sibling binds (all READY)
 
@@ -97,7 +97,7 @@
 | R-ENV-INT | **CLOSED** (CLOSED_IN_CODE via PR #39; present on tip via #41) |
 | R-OUTBOX-SF-APP (ADR-0006 #9) | **ACCEPTED_RESIDUAL** (no CCR) |
 | R-PROVENANCE | **CLOSED** |
-| R-BRANCH-PROT | **OPS_CONFIRM** — `GET branches/main` → `protected:false`; rulesets `[]`; protection GET 403. Token recorded anyway per human message; ops confirm still advised before CG-01. |
+| R-BRANCH-PROT | **ACCEPTED_RESIDUAL** (OPS) — `GET branches/main` → `protected:false`; rulesets `[]`; protection GET 403. Human Debabrata Nayak authorized token with this OPS residual; CLOSED_OPS not required for token. |
 | Carried | R-COV, R-INFRA, R-DPDP, R-CMP055-PKG, R-RUNTIME, R-BUILDER-JUNIT, R-HYGIENE-RATELIMIT |
 | R-NOT-CERTIFIED | **ACCEPTED_RESIDUAL** |
 
@@ -120,7 +120,7 @@
 | Path | Role |
 |---|---|
 | `evidence/SF-M01-G4-005/` | Exit assembly bind + issuance update |
-| `evidence/M01-G4-EXIT-TOKEN/` | Human issuance evidence |
+| `evidence/SF-M01-G4-005/token/` | Human issuance evidence |
 | `docs/verification/M01-G4-EXIT.md` | This record |
 | `orchestrator/handovers/M01-G4-EXIT-GATE.yaml` | Machine-readable gate |
 | Sibling evidence | `evidence/SF-M01-G4-001/` … `004/` via PRs #39/#38/#40/#37 |
@@ -133,4 +133,4 @@
 - Not G6
 - Exit token not self-issued (human only)
 - CG-01 / M02 / M03 **not started** (eligible pending separate auth)
-- R-BRANCH-PROT **not** CLOSED_OPS (main still unprotected at probe)
+- R-BRANCH-PROT **ACCEPTED_RESIDUAL** (OPS; not CLOSED_OPS; main still unprotected at probe)

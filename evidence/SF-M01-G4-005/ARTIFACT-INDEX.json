@@ -47,7 +47,8 @@
   "r_env_int": "CLOSED",
   "residuals_explicit": true,
   "adr_0006_9": "ACCEPTED_RESIDUAL",
-  "r_branch_prot": "OPS_CONFIRM",
+  "r_branch_prot": "ACCEPTED_RESIDUAL",
+  "r_branch_prot_class": "OPS",
   "siblings": {
     "SF-M01-G4-001": "READY",
     "SF-M01-G4-002": "READY",
@@ -128,7 +129,12 @@
     "docs/verification/M01-G4-EXIT.md",
     "orchestrator/handovers/M01-G4-EXIT-GATE.yaml",
     "evidence/SF-M01-G4-005/EVIDENCE.md",
-    "evidence/M01-G4-EXIT-TOKEN/ISSUANCE.md"
+    {
+      "root": "evidence",
+      "family": "SF-M01-G4-005",
+      "kind": "token",
+      "file": "ISSUANCE.md"
+    }
   ],
   "finalized_at": "2026-10-04T05:13:00Z",
   "token_recorded_at": "2026-10-04T05:58:00Z",

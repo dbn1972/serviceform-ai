@@ -16,7 +16,7 @@
 | Frozen contracts | **13/13 MATCH** |
 | Residuals | explicit (G4-004); ADR-0006 #9 ACCEPTED_RESIDUAL |
 | R-ENV-INT | CLOSED (tip via #41) |
-| R-BRANCH-PROT | OPS_CONFIRM (`protected:false`) |
+| R-BRANCH-PROT | **ACCEPTED_RESIDUAL** (OPS; `protected:false`; CLOSED_OPS not required for token) |
 | M02/M03/CG-01 | eligible (`blocked: false`); **not started**; separate auth required |
 
 ## Sibling binds
@@ -30,7 +30,7 @@
 
 ## Token evidence
 
-See `evidence/M01-G4-EXIT-TOKEN/` for human issuance bind.
+See `evidence/SF-M01-G4-005/token/` for human issuance bind.
 
 ## Post-merge CI (tip)
 

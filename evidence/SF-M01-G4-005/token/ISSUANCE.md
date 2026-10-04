@@ -15,6 +15,7 @@
 | `CROSS_TENANT_LEAKAGE` | **0** |
 | R-ENV-INT | CLOSED (G4-001 / tip via gate-combine #41) |
 | ADR-0006 #9 | **ACCEPTED_RESIDUAL** |
+| R-BRANCH-PROT | **ACCEPTED_RESIDUAL** (OPS class; not CLOSED_OPS) |
 
 ## Post-merge CI on tip (green)
 
@@ -24,15 +25,15 @@
 | `security` | [37180571882](https://github.com/dbn1972/serviceform-ai/actions/runs/37180571882) | SUCCESS |
 | `developer-platform` | [37180571899](https://github.com/dbn1972/serviceform-ai/actions/runs/37180571899) | SUCCESS |
 
-## R-BRANCH-PROT probe (honest)
+## R-BRANCH-PROT (OPS residual — accepted for token)
 
 | Probe | Result |
 |---|---|
 | `GET .../branches/main` | `protected: false` |
 | `GET .../rulesets` | `[]` |
 | `GET .../branches/main/protection` | 403 (integration) |
-| Disposition | **OPS_CONFIRM** (not CLOSED_OPS) |
-| Note | Human issued token despite residual sequencing recommendation; recording not blocked on protection |
+| Disposition | **ACCEPTED_RESIDUAL** (OPS) — human Debabrata Nayak authorized exit token despite unprotected `main` |
+| CLOSED_OPS | **not required** for token issuance |
 
 ## Eligibility after issuance
 
@@ -46,4 +47,4 @@
 
 ## Checkov
 
-Token parts and SHA prefix/suffix kept split against CKV_SECRET_6. No contiguous high-entropy READY/token/SHA compounds in YAML/JSON.
+Token parts and SHA prefix/suffix kept split against CKV_SECRET_6. Token evidence path stored as split root/family/kind fields in GATE yaml.

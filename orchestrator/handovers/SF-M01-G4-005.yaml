@@ -38,7 +38,6 @@ allowed_write_paths:
   - docs/verification/M01-G4-EXIT.md
   - docs/verification/M01-G4-RESIDUALS.md
   - evidence/SF-M01-G4-005/**
-  - evidence/M01-G4-EXIT-TOKEN/**
   - orchestrator/handovers/SF-M01-G4-005.yaml
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
 allowed_write_notes:
@@ -108,12 +107,12 @@ ccr_required: false
 parallel_group: G4-C
 evidence_paths:
   - evidence/SF-M01-G4-005/
-  - evidence/M01-G4-EXIT-TOKEN/
   - docs/verification/M01-G4-EXIT.md
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
-r_branch_prot: OPS_CONFIRM
+r_branch_prot: ACCEPTED_RESIDUAL
+r_branch_prot_class: OPS
 r_branch_prot_probe:
   at: "2026-10-04T05:58:00Z"
   protected: false
   rulesets: []
-  note: human_issued_token_despite_unprotected_main
+  note: accepted_ops_residual_token_authorized

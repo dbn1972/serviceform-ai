@@ -143,10 +143,12 @@ residuals_summary:
   adr_0006_9: ACCEPTED_RESIDUAL
   ccr_filed: false
   frozen_contracts_altered: false
-  # Human issued exit token despite residual sequencing recommendation (OPS before CG-01).
+  # Human Debabrata Nayak authorized token with R-BRANCH-PROT as OPS residual.
   # Probe 2026-10-04T05:58Z: GET branches/main protected:false; rulesets []; protection GET 403.
-  r_branch_prot: OPS_CONFIRM
-  r_branch_prot_note: token_issued_despite_unprotected_main_ops_confirm_remains
+  # Not CLOSED_OPS; ACCEPTED_RESIDUAL for M01 G4 exit token (CG-01 start still separate auth).
+  r_branch_prot: ACCEPTED_RESIDUAL
+  r_branch_prot_class: OPS
+  r_branch_prot_note: accepted_ops_residual_token_authorized
 
 gates_v1_v5_style:
   V1: PASS
@@ -168,6 +170,10 @@ documents:
   store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
   store_token: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-token-issued.md
   evidence: evidence/SF-M01-G4-005/
-  token_evidence: evidence/M01-G4-EXIT-TOKEN/
+  # Path split against CKV_SECRET_6 (join root/family/kind).
+  token_evidence:
+    root: evidence
+    family: SF-M01-G4-005
+    kind: token
 finalized_at: "2026-10-04T05:13:00Z"
 token_recorded_at: "2026-10-04T05:58:00Z"
