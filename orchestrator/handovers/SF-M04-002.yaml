@@ -95,3 +95,24 @@ acceptance_tests_planning:
   - Unauthorized / wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
   - No LLM path in eligibility decision
   - Host mount deferred to SF-M04-007
+
+# Builder result (appended by SF-M04-002 builder; envelope keys above are unchanged).
+# Recommendation only. Not VERIFIED. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6. M05 OFF.
+builder_result:
+  recommended_gate_state: IMPLEMENTATION_READY
+  self_certified: false
+  code_commit: 1244fdf8967b3387e6b91b00f7f2a7a3789aac67
+  base_sha: 9ccc2b02f8ef64a0987b0c4793137511545ed3f7
+  branch: cursor/cmp-008-rules-engine-7da8
+  evidence: evidence/SF-M04-002/EVIDENCE.md
+  migrations:
+    - db/migrations/1759530200000_cmp-008-rules.sql
+    - db/migrations/1759530200001_cmp-008-outbox.sql
+  privilege_role: sf_cmp008_rw
+  schema: sf_rules
+  host_mount: deferred to SF-M04-007
+  lockfile: not committed; STITCH-A must admit the services/cmp-008-rules importer and @gorules/zen-engine@2.0.2
+  residuals:
+    - pnpm install --frozen-lockfile fails until STITCH-A admits the importer (expected for Wave A)
+    - RulePackPort real adapter (CMP-033/CMP-052) and OPA policy bundle are host/integration work (SF-M04-007, INT)
+    - independent INT/SEC/EVD verification not performed by the builder

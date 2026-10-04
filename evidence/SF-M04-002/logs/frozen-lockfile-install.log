@@ -1,0 +1,10 @@
+Scope: all 34 workspace projects
+ ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/services/cmp-008-rules/package.json
+
+Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+
+  Failure reason:
+  specifiers in the lockfile don't match specifiers in package.json:
+* 6 dependencies were added: @types/pg@8.23.1, @fastify/rate-limit@11.2.0, @gorules/zen-engine@2.0.2, @serviceform/contracts@workspace:*, fastify@5.12.5, pg@8.23.1
+
+# exit=1

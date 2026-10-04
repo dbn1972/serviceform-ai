@@ -1,0 +1,22 @@
+# pnpm --filter @serviceform/cmp-008-rules run test:integration
+# sha=1244fdf8967b3387e6b91b00f7f2a7a3789aac67
+
+> @serviceform/cmp-008-rules@0.0.0 test:integration /workspace/services/cmp-008-rules
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-008-rules
+
+ ✓ test/integration/rls-api.int.test.ts (8 tests) 1449ms
+   ✓ CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) (8)
+     ✓ down migration is reversible (schema removed, role retained) and up restores it 812ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 486ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 463ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  15:06:21
+   Duration  3.23s (tests 81%, import 13%, transform 6%)
+
+JUNIT report written to /workspace/services/cmp-008-rules/evidence/junit/integration.xml
+# exit=0

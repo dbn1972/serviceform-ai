@@ -1,0 +1,33 @@
+rolname|rolsuper|rolbypassrls|rolcanlogin
+sf_cmp008_rw|f|f|f
+sf_t008_other|f|f|t
+sf_t008_rt|f|f|t
+(3 rows)
+relname|rls|force_rls|owner
+evaluation_record|t|t|sf_migrator
+idempotency_record|t|t|sf_migrator
+inbox_event|t|t|sf_migrator
+inbox_event_platform|f|f|sf_migrator
+outbox_event|t|t|sf_migrator
+outbox_event_platform|f|f|sf_migrator
+rule_pack_snapshot|t|t|sf_migrator
+(7 rows)
+grantee|table_name|privs
+sf_cmp008_rw|evaluation_record|INSERT,SELECT
+sf_cmp008_rw|idempotency_record|DELETE,INSERT,SELECT
+sf_app|inbox_event|INSERT,SELECT
+sf_app|inbox_event_platform|INSERT,SELECT
+sf_app|outbox_event|INSERT
+sf_outbox_publisher|outbox_event|DELETE,SELECT
+sf_app|outbox_event_platform|INSERT
+sf_outbox_publisher|outbox_event_platform|DELETE,SELECT
+sf_cmp008_rw|rule_pack_snapshot|INSERT,SELECT
+(9 rows)
+tablename|policyname|roles
+evaluation_record|evaluation_record_tenant|{sf_app}
+idempotency_record|idempotency_tenant|{sf_app}
+inbox_event|inbox_event_tenant|{sf_app}
+outbox_event|outbox_event_publisher|{sf_outbox_publisher}
+outbox_event|outbox_event_tenant_insert|{sf_app}
+rule_pack_snapshot|rule_pack_snapshot_tenant|{sf_app}
+(6 rows)

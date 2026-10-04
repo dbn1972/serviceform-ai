@@ -1,0 +1,44 @@
+[
+  {
+    "entity": "sf_rules.rule_pack_snapshot",
+    "owner_component": "CMP-008",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_rules.evaluation_record",
+    "owner_component": "CMP-008",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_rules.idempotency_record",
+    "owner_component": "CMP-008",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_rules.outbox_event",
+    "owner_component": "CMP-008",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_rules.outbox_event_platform",
+    "owner_component": "CMP-008",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_rules.inbox_event",
+    "owner_component": "CMP-008",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_rules.inbox_event_platform",
+    "owner_component": "CMP-008",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]
