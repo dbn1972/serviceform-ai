@@ -8,6 +8,8 @@
 | Component | CMP-009 |
 | Base | `origin/main` @ `2db721feb1303385a0c50c79de8629b2478064d9` |
 | Branch | `cursor/m04-forms-sf-m04-005-a1bc` |
+| Head SHA | `4698f57b287e254a1858f5a88e80a426c967ad40` |
+| PR | https://github.com/dbn1972/serviceform-ai/pull/74 (draft, do not merge) |
 | Privilege role | `sf_cmp009_rw` NOLOGIN |
 | Schema | `sf_forms` |
 | Contracts | 13/13 FROZEN (untouched) |
