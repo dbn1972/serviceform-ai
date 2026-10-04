@@ -1,5 +1,6 @@
 # M01 G4 exit gate — machine-readable
-# READY family/status split against CKV_SECRET_6. Token NOT issued. Not CERTIFIED.
+# READY family/status split against CKV_SECRET_6. Token ISSUED by human (recorded only).
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
 # SHA binds use prefix+suffix (join contiguous) against CKV_SECRET_6 entropy FPs.
 
 module_id: M01
@@ -10,23 +11,30 @@ task_id: SF-M01-G4-005
 state:
   family: SF-M01-G4-005
   status: READY
-handover_open: true
+handover_open: false
 final_pass_recommended: true
-token_issued: false
+token_issued: true
 token_readiness: true
 gate_recommendation: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
-m02_m03_blocked: true
-cg01_blocked: true
+# Token issued → M01 G4 complete at G4; CG-01/M02/M03 eligible but NOT started.
+# CG-01 planning/execution still requires separate human authorization.
+m02_m03_blocked: false
+cg01_blocked: false
+cg01_started: false
+m02_started: false
+m03_started: false
+cg01_requires_separate_human_authorization: true
 
 baseline:
   # Full SHAs split against CKV_SECRET_6 (prefix + suffix = 40-char tip).
   origin_main:
-    prefix: ab8359f0
-    suffix: ffe96834bdf61318d1db7877433e7dcc
+    prefix: 436c3545
+    suffix: cf31bc3a8ba9aaacfcb0b888a168bd90
+  gate_combine_pr: 41
   promote_pr: 35
   wave1_merge_commit:
     prefix: 37cbf203
@@ -37,16 +45,26 @@ baseline:
     suffix: 0ee8aa622fd5a6a2866f50b065a79d76
   wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
   m01_components_merged: 11
+  post_merge_ci:
+    ci_run_id: "37180571888"
+    security_run_id: "37180571882"
+    developer_platform_run_id: "37180571899"
+    conclusion: SUCCESS
 
-# Target exit record token (split against CKV_SECRET_6; join with "_").
+# Exit record token (split against CKV_SECRET_6; join with "_").
 exit_record_token:
   module: M01
   completeness: COMPLETE
   gate: G4_SECURITY
   status: VERIFIED
-  issued: false
-  issuer: null
-  recommended_issuer: human_or_ci
+  issued: true
+  issuer: Debabrata Nayak
+  issuer_class: human_or_ci
+  issuer_role: human
+  issued_at: "2026-10-04T05:58:00Z"
+  recording_agent_self_issued: false
+  join_separator: "_"
+  join_order: [module, completeness, gate, status]
 
 preconditions:
   wave1_closed: true
@@ -125,7 +143,10 @@ residuals_summary:
   adr_0006_9: ACCEPTED_RESIDUAL
   ccr_filed: false
   frozen_contracts_altered: false
+  # Human issued exit token despite residual sequencing recommendation (OPS before CG-01).
+  # Probe 2026-10-04T05:58Z: GET branches/main protected:false; rulesets []; protection GET 403.
   r_branch_prot: OPS_CONFIRM
+  r_branch_prot_note: token_issued_despite_unprotected_main_ops_confirm_remains
 
 gates_v1_v5_style:
   V1: PASS
@@ -138,11 +159,15 @@ gates_v1_v5_style:
 recommendation:
   family: SF-M01-G4-005
   status: READY
-human_ci_action: issue_exit_record_token
+human_ci_action: token_issuance_recorded
 # exit record token fields above (module/completeness/gate/status); join with "_"
-awaiting: []
+awaiting:
+  - separate_human_authorization_for_cg01
 documents:
   repo_exit: docs/verification/M01-G4-EXIT.md
   store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
+  store_token: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-token-issued.md
   evidence: evidence/SF-M01-G4-005/
+  token_evidence: evidence/M01-G4-EXIT-TOKEN/
 finalized_at: "2026-10-04T05:13:00Z"
+token_recorded_at: "2026-10-04T05:58:00Z"

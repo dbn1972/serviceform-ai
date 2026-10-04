@@ -7,13 +7,20 @@
   "recommendation": "READY",
   "final_pass_recommended": true,
   "exit_record_token_ready": true,
-  "exit_record_token_issued": false,
+  "exit_record_token_issued": true,
   "exit_record_token": {
     "module": "M01",
     "completeness": "COMPLETE",
     "gate": "G4_SECURITY",
-    "status": "VERIFIED"
+    "status": "VERIFIED",
+    "join_separator": "_",
+    "join_order": ["module", "completeness", "gate", "status"]
   },
+  "issuer": "Debabrata Nayak",
+  "issuer_class": "human_or_ci",
+  "issuer_role": "human",
+  "issued_at": "2026-10-04T05:58:00Z",
+  "recording_agent_self_issued": false,
   "certified": false,
   "release_certified": false,
   "CROSS_TENANT_LEAKAGE": 0,
@@ -34,7 +41,8 @@
       "join": "_"
     },
     "adr_0006_9": "ACCEPTED_RESIDUAL",
-    "r_env_int": "CLOSED_IN_CODE"
+    "r_env_int": "CLOSED",
+    "r_branch_prot": "OPS_CONFIRM"
   },
   "v1_v5_g4": {
     "V1": "PASS",
@@ -44,10 +52,20 @@
     "V5": "PASS"
   },
   "baseline_sha": {
-    "prefix": "ab8359f0",
-    "suffix": "ffe96834bdf61318d1db7877433e7dcc"
+    "prefix": "436c3545",
+    "suffix": "cf31bc3a8ba9aaacfcb0b888a168bd90"
   },
-  "m02_m03_blocked": true,
-  "cg01_blocked": true,
-  "human_ci_action": "issue_exit_record_token"
+  "post_merge_ci": {
+    "ci_run_id": "37180571888",
+    "security_run_id": "37180571882",
+    "developer_platform_run_id": "37180571899",
+    "conclusion": "SUCCESS"
+  },
+  "m02_m03_blocked": false,
+  "cg01_blocked": false,
+  "cg01_started": false,
+  "m02_started": false,
+  "m03_started": false,
+  "cg01_requires_separate_human_authorization": true,
+  "human_ci_action": "token_issuance_recorded"
 }

@@ -8,34 +8,46 @@
   "gate_recommendation": "READY",
   "final_pass_recommended": true,
   "commit_sha_baseline_main": {
+    "prefix": "436c3545",
+    "suffix": "cf31bc3a8ba9aaacfcb0b888a168bd90"
+  },
+  "prior_assessment_sha": {
     "prefix": "ab8359f0",
     "suffix": "ffe96834bdf61318d1db7877433e7dcc"
   },
-  "token_issued": false,
+  "token_issued": true,
   "token_readiness": true,
   "exit_record_token": {
     "module": "M01",
     "completeness": "COMPLETE",
     "gate": "G4_SECURITY",
     "status": "VERIFIED",
-    "issued": false,
-    "recommended_issuer": "human_or_ci"
+    "issued": true,
+    "issuer": "Debabrata Nayak",
+    "issuer_class": "human_or_ci",
+    "issued_at": "2026-10-04T05:58:00Z",
+    "recording_agent_self_issued": false
   },
   "certified": false,
   "release_certified": false,
   "self_certified": false,
   "not_certified": true,
-  "m02_m03_blocked": true,
-  "cg01_blocked": true,
-  "handover_open": true,
+  "m02_m03_blocked": false,
+  "cg01_blocked": false,
+  "cg01_started": false,
+  "m02_started": false,
+  "m03_started": false,
+  "cg01_requires_separate_human_authorization": true,
+  "handover_open": false,
   "wave1_closed": true,
   "wave2_closed": true,
   "all_m01_cmps_merged": 11,
   "CROSS_TENANT_LEAKAGE": 0,
   "frozen_contracts": "13/13 MATCH",
-  "r_env_int": "CLOSED_IN_CODE",
+  "r_env_int": "CLOSED",
   "residuals_explicit": true,
   "adr_0006_9": "ACCEPTED_RESIDUAL",
+  "r_branch_prot": "OPS_CONFIRM",
   "siblings": {
     "SF-M01-G4-001": "READY",
     "SF-M01-G4-002": "READY",
@@ -106,11 +118,19 @@
     "V4": "PASS",
     "V5": "PASS"
   },
+  "post_merge_ci": {
+    "ci_run_id": "37180571888",
+    "security_run_id": "37180571882",
+    "developer_platform_run_id": "37180571899",
+    "conclusion": "SUCCESS"
+  },
   "documents": [
     "docs/verification/M01-G4-EXIT.md",
     "orchestrator/handovers/M01-G4-EXIT-GATE.yaml",
-    "evidence/SF-M01-G4-005/EVIDENCE.md"
+    "evidence/SF-M01-G4-005/EVIDENCE.md",
+    "evidence/M01-G4-EXIT-TOKEN/ISSUANCE.md"
   ],
   "finalized_at": "2026-10-04T05:13:00Z",
-  "checkov_note": "READY tokens and SHAs split against CKV_SECRET_6; join prefix+suffix / family_status"
+  "token_recorded_at": "2026-10-04T05:58:00Z",
+  "checkov_note": "READY tokens, exit token parts, and SHAs split against CKV_SECRET_6"
 }
