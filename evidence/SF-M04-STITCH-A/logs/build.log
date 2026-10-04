@@ -11,33 +11,25 @@ packages/observability build: Done
 packages/ui-ux4g build: Done
 apps/web-admin build$ next build
 apps/web-citizen build$ next build
-apps/web-citizen build: ▲ Next.js 16.3.8 (Turbopack)
 apps/web-admin build: ▲ Next.js 16.3.8 (Turbopack)
-apps/web-citizen build: ✓ Running next.config.ts took 26ms
-apps/web-admin build: ✓ Running next.config.ts took 22ms
-apps/web-admin build: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-apps/web-admin build: This information is used to shape Next.js' roadmap and prioritize features.
-apps/web-admin build: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-apps/web-admin build: https://nextjs.org/telemetry
-apps/web-citizen build: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-apps/web-citizen build: This information is used to shape Next.js' roadmap and prioritize features.
-apps/web-citizen build: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-apps/web-citizen build: https://nextjs.org/telemetry
+apps/web-citizen build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-citizen build: ✓ Running next.config.ts took 42ms
+apps/web-admin build: ✓ Running next.config.ts took 43ms
 apps/web-citizen build:   Creating an optimized production build ...
 apps/web-admin build:   Creating an optimized production build ...
-apps/web-citizen build: ✓ Compiled successfully in 7.1s
+apps/web-citizen build: ✓ Compiled successfully in 277ms
 apps/web-citizen build:   Running TypeScript ...
-apps/web-admin build: ✓ Compiled successfully in 7.3s
+apps/web-admin build: ✓ Compiled successfully in 261ms
 apps/web-admin build:   Running TypeScript ...
-apps/web-citizen build:   Finished TypeScript in 2.6s ...
+apps/web-citizen build:   Finished TypeScript in 1465ms ...
 apps/web-citizen build:   Collecting page data using 3 workers ...
-apps/web-admin build:   Finished TypeScript in 2.7s ...
+apps/web-admin build:   Finished TypeScript in 1598ms ...
 apps/web-admin build:   Collecting page data using 3 workers ...
 apps/web-citizen build:   Generating static pages using 3 workers (0/4) ...
 apps/web-citizen build:   Generating static pages using 3 workers (1/4) 
 apps/web-citizen build:   Generating static pages using 3 workers (2/4) 
 apps/web-citizen build:   Generating static pages using 3 workers (3/4) 
-apps/web-citizen build: ✓ Generating static pages using 3 workers (4/4) in 169ms
+apps/web-citizen build: ✓ Generating static pages using 3 workers (4/4) in 185ms
 apps/web-citizen build:   Finalizing page optimization ...
 apps/web-citizen build: Route (app)
 apps/web-citizen build: ┌ ○ /
@@ -47,12 +39,10 @@ apps/web-citizen build: ○  (Static)  prerendered as static content
 apps/web-citizen build: Done
 apps/web-officer build$ next build
 apps/web-admin build:   Generating static pages using 3 workers (0/8) ...
-apps/web-officer build: ▲ Next.js 16.3.8 (Turbopack)
-apps/web-officer build: ✓ Running next.config.ts took 26ms
 apps/web-admin build:   Generating static pages using 3 workers (2/8) 
 apps/web-admin build:   Generating static pages using 3 workers (4/8) 
 apps/web-admin build:   Generating static pages using 3 workers (6/8) 
-apps/web-admin build: ✓ Generating static pages using 3 workers (8/8) in 210ms
+apps/web-admin build: ✓ Generating static pages using 3 workers (8/8) in 220ms
 apps/web-admin build:   Finalizing page optimization ...
 apps/web-admin build: Route (app)
 apps/web-admin build: ┌ ○ /
@@ -66,24 +56,28 @@ apps/web-admin build: ├ ○ /reviews
 apps/web-admin build: └ ○ /session
 apps/web-admin build: ○  (Static)   prerendered as static content
 apps/web-admin build: ƒ  (Dynamic)  server-rendered on demand
-apps/web-officer build:   Creating an optimized production build ...
 apps/web-admin build: Done
 apps/web-studio build$ next build
+apps/web-officer build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-officer build: ✓ Running next.config.ts took 24ms
+apps/web-officer build:   Creating an optimized production build ...
 apps/web-studio build: ▲ Next.js 16.3.8 (Turbopack)
-apps/web-studio build: ✓ Running next.config.ts took 23ms
+apps/web-studio build: ✓ Running next.config.ts took 25ms
 apps/web-studio build:   Creating an optimized production build ...
-apps/web-officer build: ✓ Compiled successfully in 6.4s
+apps/web-officer build: ✓ Compiled successfully in 196ms
 apps/web-officer build:   Running TypeScript ...
-apps/web-studio build: ✓ Compiled successfully in 6.7s
+apps/web-studio build: ✓ Compiled successfully in 208ms
 apps/web-studio build:   Running TypeScript ...
-apps/web-officer build:   Finished TypeScript in 2.2s ...
+apps/web-officer build:   Finished TypeScript in 1254ms ...
 apps/web-officer build:   Collecting page data using 3 workers ...
 apps/web-officer build:   Generating static pages using 3 workers (0/4) ...
 apps/web-officer build:   Generating static pages using 3 workers (1/4) 
 apps/web-officer build:   Generating static pages using 3 workers (2/4) 
 apps/web-officer build:   Generating static pages using 3 workers (3/4) 
-apps/web-officer build: ✓ Generating static pages using 3 workers (4/4) in 171ms
+apps/web-officer build: ✓ Generating static pages using 3 workers (4/4) in 159ms
 apps/web-officer build:   Finalizing page optimization ...
+apps/web-studio build:   Finished TypeScript in 1562ms ...
+apps/web-studio build:   Collecting page data using 3 workers ...
 apps/web-officer build: Route (app)
 apps/web-officer build: ┌ ○ /
 apps/web-officer build: ├ ○ /_not-found
@@ -91,13 +85,11 @@ apps/web-officer build: └ ○ /api/health
 apps/web-officer build: ○  (Static)  prerendered as static content
 apps/web-officer build: Done
 packages/audit-client build$ tsc --noEmit -p tsconfig.json
-apps/web-studio build:   Finished TypeScript in 2.5s ...
-apps/web-studio build:   Collecting page data using 3 workers ...
 apps/web-studio build:   Generating static pages using 3 workers (0/7) ...
 apps/web-studio build:   Generating static pages using 3 workers (1/7) 
 apps/web-studio build:   Generating static pages using 3 workers (3/7) 
 apps/web-studio build:   Generating static pages using 3 workers (5/7) 
-apps/web-studio build: ✓ Generating static pages using 3 workers (7/7) in 234ms
+apps/web-studio build: ✓ Generating static pages using 3 workers (7/7) in 228ms
 apps/web-studio build:   Finalizing page optimization ...
 apps/web-studio build: Route (app)
 apps/web-studio build: ┌ ○ /

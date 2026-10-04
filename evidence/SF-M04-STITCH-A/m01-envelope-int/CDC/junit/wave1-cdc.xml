@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="19" failures="0" errors="0" time="0.131857647">
-    <testsuite name="tests/cdc/audit-ingest-envelopes.cdc.test.ts" timestamp="2026-10-04T16:07:39.878Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.067567042">
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; consumer supported versions match frozen audit ingest contract" time="0.001355455">
+<testsuites name="vitest tests" tests="19" failures="0" errors="0" time="0.139188136">
+    <testsuite name="tests/cdc/audit-ingest-envelopes.cdc.test.ts" timestamp="2026-10-04T17:04:06.189Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.071091672">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; consumer supported versions match frozen audit ingest contract" time="0.001424043">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-002 producer envelope satisfies CMP-031 consumer expectation" time="0.061564898">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-002 producer envelope satisfies CMP-031 consumer expectation" time="0.064828996">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-048 producer envelope satisfies CMP-031 consumer expectation" time="0.000823711">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-048 producer envelope satisfies CMP-031 consumer expectation" time="0.000790715">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-037 producer envelope satisfies CMP-031 consumer expectation" time="0.000692869">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-037 producer envelope satisfies CMP-031 consumer expectation" time="0.000694282">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-031 topics contract consumes AuditEventSubmitted on sf.audit.ingest.v1" time="0.000296262">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; CMP-031 topics contract consumes AuditEventSubmitted on sf.audit.ingest.v1" time="0.000313567">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; rejects incompatible / breaking producer envelopes" time="0.000893671">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; rejects incompatible / breaking producer envelopes" time="0.000952911">
         </testcase>
-        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; shared valid audit-event example is accepted as ingest data" time="0.000725952">
-        </testcase>
-    </testsuite>
-    <testsuite name="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" timestamp="2026-10-04T16:07:39.879Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.003938461">
-        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider advertises supported OpenAPI/AsyncAPI versions" time="0.00144784">
-        </testcase>
-        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider OpenAPI satisfies consumer required operations" time="0.000452746">
-        </testcase>
-        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider AsyncAPI satisfies consumer required channels and messages" time="0.000261158">
-        </testcase>
-        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; rejects a breaking OpenAPI provider (removed required operation)" time="0.000304223">
-        </testcase>
-        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; rejects a breaking AsyncAPI provider (removed audit ingest message)" time="0.000195674">
+        <testcase classname="tests/cdc/audit-ingest-envelopes.cdc.test.ts" name="CDC: CMP-002/048/037 → CMP-031 sf.audit.ingest.v1 (F-V1-CDC) &gt; shared valid audit-event example is accepted as ingest data" time="0.000811067">
         </testcase>
     </testsuite>
-    <testsuite name="tests/cdc/cmp-038-topic-compat.cdc.test.ts" timestamp="2026-10-04T16:07:39.880Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.060352144">
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; outbox snapshot matches CMP-038 registry (publisher boundary)" time="0.00185906">
+    <testsuite name="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" timestamp="2026-10-04T17:04:06.190Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004033049">
+        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider advertises supported OpenAPI/AsyncAPI versions" time="0.001473525">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; required Wave 1 seam topics are registered with supported schema versions" time="0.000822778">
+        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider OpenAPI satisfies consumer required operations" time="0.000464914">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; producer audit ingest payloads are accepted by registered AuditEventSubmitted schema" time="0.053368456">
+        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; provider AsyncAPI satisfies consumer required channels and messages" time="0.000257543">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; rejects incompatible / breaking schema evolution under topic compatibility mode" time="0.000643937">
+        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; rejects a breaking OpenAPI provider (removed required operation)" time="0.000327192">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; Wave 1 producer topic contracts are loadable and list event types" time="0.000532031">
+        <testcase classname="tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts" name="CDC: CMP-002 OpenAPI/AsyncAPI consumer (F-V1-CDC) &gt; rejects a breaking AsyncAPI provider (removed audit ingest message)" time="0.000208591">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; producer data schemas (when present) are valid JSON Schema objects" time="0.001610895">
+    </testsuite>
+    <testsuite name="tests/cdc/cmp-038-topic-compat.cdc.test.ts" timestamp="2026-10-04T17:04:06.191Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.064063415">
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; outbox snapshot matches CMP-038 registry (publisher boundary)" time="0.001997856">
         </testcase>
-        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; rejects publishing intent for unknown topic names against the registry" time="0.000220136">
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; required Wave 1 seam topics are registered with supported schema versions" time="0.000835935">
+        </testcase>
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; producer audit ingest payloads are accepted by registered AuditEventSubmitted schema" time="0.05679379">
+        </testcase>
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; rejects incompatible / breaking schema evolution under topic compatibility mode" time="0.000717143">
+        </testcase>
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; Wave 1 producer topic contracts are loadable and list event types" time="0.000544383">
+        </testcase>
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; producer data schemas (when present) are valid JSON Schema objects" time="0.001448157">
+        </testcase>
+        <testcase classname="tests/cdc/cmp-038-topic-compat.cdc.test.ts" name="CDC: CMP-038 topic compatibility vs Wave 1 producer payloads (F-V1-CDC) &gt; rejects publishing intent for unknown topic names against the registry" time="0.000198478">
         </testcase>
     </testsuite>
 </testsuites>

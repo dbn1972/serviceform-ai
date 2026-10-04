@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="1.525781481">
-    <testsuite name="test/integration/api-tamper.int.test.ts" timestamp="2026-10-04T16:06:45.010Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="0.904972933">
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; POST stores and GET lists own tenant only (003-11, 003-22)" time="0.139424597">
+<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="1.571308652">
+    <testsuite name="test/integration/api-tamper.int.test.ts" timestamp="2026-10-04T17:03:10.591Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="0.96951501">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; POST stores and GET lists own tenant only (003-11, 003-22)" time="0.160142782">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-19 actor mismatch is 403" time="0.006298351">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-19 actor mismatch is 403" time="0.008619044">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-18 privileged read deny is session-scoped, not query-gated" time="0.027214521">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-18 privileged read deny is session-scoped, not query-gated" time="0.039042826">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-24 extra field rejected" time="0.005804243">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-24 extra field rejected" time="0.009919693">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-26 client_context dropped" time="0.006706258">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-26 client_context dropped" time="0.010703712">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; consumer handleEnvelope stores once (003-21, 003-22 D3)" time="0.006649748">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; consumer handleEnvelope stores once (003-21, 003-22 D3)" time="0.009390265">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-20 platform source allowlist" time="0.004701727">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-20 platform source allowlist" time="0.006536588">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-07 tamper detection" time="0.014422052">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-07 tamper detection" time="0.018686112">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-07 concurrent writers same tenant contiguous seq" time="0.147545883">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-07 concurrent writers same tenant contiguous seq" time="0.142832378">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-27 logs omit reason text" time="0.00042778">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-27 logs omit reason text" time="0.000279162">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-31 outbox template is contained in migration" time="0.000953513">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-31 outbox template is contained in migration" time="0.000563074">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-08 emoji/combining canonicalisation and NUL 400" time="0.0146008">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-08 emoji/combining canonicalisation and NUL 400" time="0.010642404">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-09 backdated occurred_at uses server recorded_at" time="0.005343531">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-09 backdated occurred_at uses server recorded_at" time="0.003951708">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-15 existence oracle: T1 GET of T2 resource looks unknown" time="0.025957125">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-15 existence oracle: T1 GET of T2 resource looks unknown" time="0.020022021">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-16 pool reuse current_tenant_id follows envelope" time="0.031124353">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-16 pool reuse current_tenant_id follows envelope" time="0.024390156">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-17 without authz allow is 403" time="0.007493713">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-17 without authz allow is 403" time="0.005522902">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-23 concurrent same id one winner" time="0.008208374">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-23 concurrent same id one winner" time="0.005560796">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-29 HttpAuditSink always-503 blocks privileged via requireAudit" time="0.019387323">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-29 HttpAuditSink always-503 blocks privileged via requireAudit" time="0.014902117">
         </testcase>
-        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-30 PII dead-letter does not stall tenant" time="0.007846204">
+        <testcase classname="test/integration/api-tamper.int.test.ts" name="CMP-031 API, consumer, tamper, duplicates &gt; 003-30 PII dead-letter does not stall tenant" time="0.006085688">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T16:06:45.013Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.620808548">
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-01 H1 identity" time="0.009333309">
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T17:03:10.594Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.601793642">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-01 H1 identity" time="0.009730952">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-05 BYPASSRLS false on roles" time="0.001016048">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-05 BYPASSRLS false on roles" time="0.00116616">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-04 no sibling _rw membership" time="0.00415302">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-04 no sibling _rw membership" time="0.003236587">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-01 writer authorized append + verify" time="0.074317877">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-01 writer authorized append + verify" time="0.070366109">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-02 wrong-tenant fail closed" time="0.001787171">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-02 wrong-tenant fail closed" time="0.001643391">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-05 / 003-PB-03 rt cannot DML ledger" time="0.020005863">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-05 / 003-PB-03 rt cannot DML ledger" time="0.016816321">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-02 append-only for writer UPDATE/DELETE" time="0.00262447">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-02 append-only for writer UPDATE/DELETE" time="0.002849487">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-06 head rewind refused" time="0.001554287">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-06 head rewind refused" time="0.001876332">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-03 partitions FORCE RLS and rt cannot EXECUTE ensure_partitions" time="0.004244131">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-03 partitions FORCE RLS and rt cannot EXECUTE ensure_partitions" time="0.004283192">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-04 runtime cannot disable triggers or become owner" time="0.003612278">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-04 runtime cannot disable triggers or become owner" time="0.003573543">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-06/07 not owner, PUBLIC revoked, no schema CREATE" time="0.005241777">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-06/07 not owner, PUBLIC revoked, no schema CREATE" time="0.004543812">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-08 outbox INSERT residual for rt under RLS" time="0.002166247">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-PB-08 outbox INSERT residual for rt under RLS" time="0.002520639">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-11 wrong tenant SELECT empty (W1)" time="0.003064768">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-11 wrong tenant SELECT empty (W1)" time="0.003223028">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-12 unset context platform SELECT is 42501 or empty for rt" time="0.002915321">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-12 unset context platform SELECT is 42501 or empty for rt" time="0.003575508">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-13 RLS matrix as rt for tenant tables" time="0.011338824">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-13 RLS matrix as rt for tenant tables" time="0.011381">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-02 owner trigger refuses UPDATE/DELETE" time="0.019778437">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-02 owner trigger refuses UPDATE/DELETE" time="0.019112186">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-10 out-of-window partition insert rolls back" time="0.003304171">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-031 privilege boundary, append-only, RLS (003-01..16, 003-PB) &gt; 003-10 out-of-window partition insert rolls back" time="0.003138295">
         </testcase>
     </testsuite>
 </testsuites>

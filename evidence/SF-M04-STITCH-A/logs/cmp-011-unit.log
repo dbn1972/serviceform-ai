@@ -1,18 +1,18 @@
 
 > @serviceform/cmp-011-evidence-requirements@0.0.0 test:unit /workspace/services/cmp-011-evidence-requirements
-> vitest run --root . --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=../../evidence/SF-M04-STITCH-A/junit/cmp-011-unit.xml
+> vitest run --root . --config vitest.unit.config.ts
 
 
  RUN  v5.0.3 /workspace/services/cmp-011-evidence-requirements
 
- ✓ test/unit/resolver.test.ts (32 tests) 21ms
- ✓ test/unit/policy-predicate.test.ts (42 tests) 20ms
- ✓ test/contract/contracts.test.ts (7 tests) 74ms
- ✓ test/unit/plugin-http.test.ts (27 tests) 353ms
+ ✓ test/unit/resolver.test.ts (32 tests) 20ms
+ ✓ test/contract/contracts.test.ts (7 tests) 77ms
+ ✓ test/unit/policy-predicate.test.ts (42 tests) 14ms
+ ✓ test/unit/plugin-http.test.ts (27 tests) 374ms
 
  Test Files  4 passed (4)
       Tests  108 passed (108)
-   Start at  16:01:38
-   Duration  842ms (transform 40%, tests 33%, import 26%, worker 1%)
+   Start at  17:00:23
+   Duration  890ms (transform 40%, tests 32%, import 27%, worker 1%)
 
 JUNIT report written to /workspace/services/cmp-011-evidence-requirements/evidence/junit/unit.xml

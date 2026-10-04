@@ -1,5 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { copyFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Fastify from 'fastify';
@@ -43,6 +45,107 @@ export function migrate(direction: 'up' | 'down', count?: number): string {
     encoding: 'utf8',
     env: process.env,
   });
+}
+
+/** CMP-008 pair only. Isolated reversibility must not assume these are the global tail. */
+export const CMP008_MIGRATION_FILES = [
+  '1759530200000_cmp-008-rules.sql',
+  '1759530200001_cmp-008-outbox.sql',
+] as const;
+
+const CMP008_ISOLATED_CHAIN = [
+  '1759482000000_platform-baseline.sql',
+  '1759490000000_shared-db-contracts.sql',
+  ...CMP008_MIGRATION_FILES,
+] as const;
+
+export interface CombinedCatalogSnapshot {
+  migrationNames: string[];
+  uploadTables: { relname: string; relfilenode: string }[];
+  rulesPresent: boolean;
+}
+
+export async function snapshotCombinedCatalog(pool: pg.Pool): Promise<CombinedCatalogSnapshot> {
+  const migrations = await pool.query<{ name: string }>(
+    `SELECT name FROM sf_platform.sf_schema_migrations ORDER BY name`,
+  );
+  const upload = await pool.query<{ relname: string; relfilenode: string }>(
+    `SELECT c.relname, c.relfilenode::text AS relfilenode
+       FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'sf_upload' AND c.relkind = 'r'
+      ORDER BY 1`,
+  );
+  const rules = await pool.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
+  return {
+    migrationNames: migrations.rows.map((r) => r.name),
+    uploadTables: upload.rows,
+    rulesPresent: (rules.rowCount ?? 0) > 0,
+  };
+}
+
+function isolatedMigrate(
+  migrationsDir: string,
+  databaseUrl: string,
+  direction: 'up' | 'down',
+  count?: number,
+): string {
+  const args = [
+    'node-pg-migrate',
+    direction,
+    ...(count === undefined ? [] : [String(count)]),
+    '--migrations-dir',
+    migrationsDir,
+    '--migrations-table',
+    'sf_schema_migrations',
+    '--migrations-schema',
+    'sf_platform',
+    '--create-migrations-schema',
+    '--check-order',
+  ];
+  return execFileSync('pnpm', ['exec', ...args], {
+    cwd: DB_DIR,
+    encoding: 'utf8',
+    env: { ...process.env, DATABASE_URL: databaseUrl },
+  });
+}
+
+/**
+ * Throwaway database whose migration directory contains only platform deps + the CMP-008 pair.
+ * Combined-catalog `node-pg-migrate down N` is not used: later Wave A files (CMP-013) stay applied.
+ */
+export async function withIsolatedCmp008Database<T>(
+  admin: pg.Pool,
+  fn: (
+    iso: pg.Client,
+    migrateIso: (direction: 'up' | 'down', count?: number) => string,
+  ) => Promise<T>,
+): Promise<T> {
+  const name = `sf_cmp008_rev_${randomBytes(4).toString('hex')}`;
+  if (!/^sf_cmp008_rev_[0-9a-f]{8}$/.test(name)) {
+    throw new Error('isolated database name failed allowlist');
+  }
+  const tmp = mkdtempSync(join(tmpdir(), 'cmp008-rev-'));
+  const parsed = new URL(adminUrl());
+  parsed.pathname = `/${name}`;
+  const isoUrl = parsed.toString();
+  const createSql = `CREATE DATABASE ${name} TEMPLATE template0`;
+  const dropSql = `DROP DATABASE IF EXISTS ${name} WITH (FORCE)`;
+  try {
+    for (const file of CMP008_ISOLATED_CHAIN) {
+      copyFileSync(join(DB_DIR, 'migrations', file), join(tmp, file));
+    }
+    await admin.query(createSql);
+    const iso = new pg.Client({ connectionString: isoUrl });
+    await iso.connect();
+    try {
+      return await fn(iso, (direction, count) => isolatedMigrate(tmp, isoUrl, direction, count));
+    } finally {
+      await iso.end();
+    }
+  } finally {
+    await admin.query(dropSql);
+    rmSync(tmp, { recursive: true, force: true });
+  }
 }
 
 export async function withAdmin<T>(fn: (c: pg.Client) => Promise<T>): Promise<T> {

@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="1.63464161">
-    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T16:01:32.731Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.471516251">
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; creates sf_ai_gateway schema, NOLOGIN privilege role and FORCE RLS tables" time="0.009874815">
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="1.791633711">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T17:02:36.760Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.522196121">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; creates sf_ai_gateway schema, NOLOGIN privilege role and FORCE RLS tables" time="0.010390515">
         </testcase>
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; stores no raw prompt, output or tool-argument columns (metadata only)" time="0.005986846">
-        </testcase>
-    </testsuite>
-    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T16:01:32.732Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.4983057">
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime is a non-superuser, non-BYPASSRLS sf_app member and not a table owner" time="0.010042453">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; peer privilege role cannot DML into sf_ai_gateway" time="0.008891462">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime cannot mutate or delete append-only audit metadata or retained registry rows" time="0.008108987">
-        </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; PUBLIC has no access to the schema" time="0.006803884">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-039 migration &gt; stores no raw prompt, output or tool-argument columns (metadata only)" time="0.006581645">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-04T16:01:32.733Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.664819659">
-        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; registers a pinned model and an immutable policy, then serves a governed advisory call" time="0.084850589">
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T17:02:36.761Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.544631543">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime is a non-superuser, non-BYPASSRLS sf_app member and not a table owner" time="0.013412133">
         </testcase>
-        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; CROSS_TENANT_LEAKAGE=0: tenant B cannot read, use or enumerate tenant A configuration or audit" time="0.018075699">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; peer privilege role cannot DML into sf_ai_gateway" time="0.009432908">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; runtime cannot mutate or delete append-only audit metadata or retained registry rows" time="0.008090268">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-039 privilege boundary (ADR-0006) &gt; PUBLIC has no access to the schema" time="0.005910763">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-04T17:02:36.761Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.724806047">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; registers a pinned model and an immutable policy, then serves a governed advisory call" time="0.09006673">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; CROSS_TENANT_LEAKAGE=0: tenant B cannot read, use or enumerate tenant A configuration or audit" time="0.018723259">
             <system-err>
 CROSS_TENANT_LEAKAGE=0
 
             </system-err>
         </testcase>
-        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; denies unapproved model and revoked model against the real registry" time="0.016658801">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; denies unapproved model and revoked model against the real registry" time="0.016430899">
         </testcase>
-        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; database constraints reject decision task kinds, floating pins, mutation of published rows" time="0.005296941">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-039 against PostgreSQL as the non-owner runtime role &gt; database constraints reject decision task kinds, floating pins, mutation of published rows" time="0.005587569">
         </testcase>
     </testsuite>
 </testsuites>

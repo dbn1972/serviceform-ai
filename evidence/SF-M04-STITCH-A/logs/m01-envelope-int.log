@@ -2,42 +2,42 @@
 
  RUN  v5.0.3 /workspace/services/cmp-002-tenant-organisation
 
- ✓ test/integration/rls-matrix.int.test.ts (3 tests) 714ms
- ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 568ms
- ✓ test/integration/api-negative.int.test.ts (14 tests) 728ms
- ✓ test/integration/migration.int.test.ts (1 test) 518ms
- ✓ test/integration/pool-reuse.int.test.ts (3 tests) 540ms
+ ✓ test/integration/api-negative.int.test.ts (14 tests) 712ms
+ ✓ test/integration/rls-matrix.int.test.ts (3 tests) 560ms
+ ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 569ms
+ ✓ test/integration/pool-reuse.int.test.ts (3 tests) 503ms
+ ✓ test/integration/migration.int.test.ts (1 test) 500ms
 
  Test Files  5 passed (5)
       Tests  32 passed (32)
-   Start at  16:06:30
-   Duration  4.33s (tests 80%, import 14%, transform 6%)
+   Start at  17:02:56
+   Duration  4.01s (tests 79%, import 15%, transform 5%)
 
-    Isolate  5 workers spawned · ~87ms startup each (spawn + environment, per file)
-             at least ~349ms faster with isolate: false — reuses workers across files instead of one per file
+    Isolate  5 workers spawned · ~78ms startup each (spawn + environment, per file)
+             at least ~313ms faster with isolate: false — reuses workers across files instead of one per file
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-001/junit/envelope-int.xml
 ==> SF-M01-002 CMP-048 suite=envelope-int pkg=@serviceform/cmp-048-security-platform config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-048-security-platform
 
- ✓ test/integration/privilege-boundary.int.test.ts (8 tests) 484ms
- ✓ test/integration/rls-negative.int.test.ts (5 tests) 467ms
- ✓ test/integration/pep-opa.int.test.ts (2 tests) 180ms
- ✓ test/integration/migration-roundtrip.int.test.ts (1 test) 2490ms
+ ✓ test/integration/migration-roundtrip.int.test.ts (1 test) 2498ms
    ✓ migration round trip (D13) (1)
-     ✓ up / down / up leaves sf_security and sf_cmp048_rw 2488ms
-decision_latency_p99_ms=0.0709590000000162
- ✓ test/integration/decision-latency.int.test.ts (1 test) 65ms
- ✓ test/integration/opa-bundle.int.test.ts (1 test) 39ms
+     ✓ up / down / up leaves sf_security and sf_cmp048_rw 2495ms
+ ✓ test/integration/privilege-boundary.int.test.ts (8 tests) 485ms
+ ✓ test/integration/rls-negative.int.test.ts (5 tests) 471ms
+ ✓ test/integration/pep-opa.int.test.ts (2 tests) 186ms
+decision_latency_p99_ms=0.1922050000000013
+ ✓ test/integration/decision-latency.int.test.ts (1 test) 67ms
+ ✓ test/integration/opa-bundle.int.test.ts (1 test) 37ms
 
  Test Files  6 passed (6)
       Tests  18 passed (18)
-   Start at  16:06:35
-   Duration  5.12s (tests 81%, import 14%, transform 5%)
+   Start at  17:03:01
+   Duration  5.15s (tests 81%, import 14%, transform 5%)
 
     Isolate  6 workers spawned · ~81ms startup each (spawn + environment, per file)
-             at least ~404ms faster with isolate: false — reuses workers across files instead of one per file
+             at least ~405ms faster with isolate: false — reuses workers across files instead of one per file
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-002/junit/envelope-int.xml
 
@@ -10657,96 +10657,96 @@ mutation-check: tenant.rego deletion fails tests (expected)
 
  RUN  v5.0.3 /workspace/services/cmp-031-audit-ledger
 
- ✓ test/integration/api-tamper.int.test.ts (19 tests) 905ms
- ✓ test/integration/privilege-boundary.int.test.ts (17 tests) 621ms
+ ✓ test/integration/api-tamper.int.test.ts (19 tests) 970ms
+ ✓ test/integration/privilege-boundary.int.test.ts (17 tests) 602ms
 
  Test Files  2 passed (2)
       Tests  36 passed (36)
-   Start at  16:06:42
-   Duration  2.28s (tests 73%, import 16%, transform 11%)
+   Start at  17:03:08
+   Duration  2.35s (tests 72%, import 16%, transform 11%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-003/junit/envelope-int.xml
 ==> SF-M01-004 CMP-038 suite=envelope-int pkg=@serviceform/cmp-038-event-bus config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-038-event-bus
 
- ✓ test/integration/security/privilege-boundary.int.test.ts (14 tests) 634ms
- ✓ test/integration/security/producer-consumer.int.test.ts (8 tests) 499ms
- ✓ test/integration/security/relay-faults.int.test.ts (7 tests) 600ms
-{"level":"warn","time":"2026-10-04T16:06:55.145Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"1791ba0f-5204-4f97-9268-e03b9e850ef0","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
-{"level":"warn","time":"2026-10-04T16:07:05.846Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"094aa287-79ed-40d9-9310-d2780e91b52f","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
- ✓ test/integration/kafka.int.test.ts (5 tests) 25583ms
+{"level":"warn","time":"2026-10-04T17:03:29.094Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"7a18f3bb-99e6-42e4-8dc5-04f716977438","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/kafka.int.test.ts (5 tests) 25697ms
    ✓ real Kafka 4.1.0 (K1-K5, 004-29) (5)
-     ✓ K1 publish after commit and consume with inbox dedup 5703ms
-     ✓ K2 per-aggregate order is preserved on the broker 5148ms
-     ✓ K3 broker stop/start loses no committed outbox row 6566ms
- ✓ test/integration/security/operator-registry.int.test.ts (4 tests) 581ms
- ✓ test/integration/outbox.int.test.ts (5 tests) 2135ms
+     ✓ K1 publish after commit and consume with inbox dedup 5695ms
+     ✓ K2 per-aggregate order is preserved on the broker 5110ms
+     ✓ K3 broker stop/start loses no committed outbox row 6544ms
+ ✓ test/integration/outbox.int.test.ts (5 tests) 2145ms
    ✓ outbox atomicity, ordering, inbox, broker-outage (I1-I13) (5)
-     ✓ I7 broker down then up loses no committed events 1564ms
- ✓ test/integration/migration.int.test.ts (3 tests) 1216ms
+     ✓ I7 broker down then up loses no committed events 1546ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 1281ms
    ✓ migration / frozen template (I16, 004-30) (3)
-     ✓ round-trips down then up for this migration 1212ms
+     ✓ round-trips down then up for this migration 1277ms
+ ✓ test/integration/security/privilege-boundary.int.test.ts (14 tests) 649ms
+ ✓ test/integration/security/relay-faults.int.test.ts (7 tests) 582ms
+{"level":"warn","time":"2026-10-04T17:03:44.530Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"58e555a5-bd3a-4164-8a76-b4f6906015cb","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/security/operator-registry.int.test.ts (4 tests) 571ms
+ ✓ test/integration/security/producer-consumer.int.test.ts (8 tests) 533ms
 
  Test Files  7 passed (7)
       Tests  46 passed (46)
-   Start at  16:06:45
-   Duration  33.52s (tests 95%, import 4%, transform 1%)
+   Start at  17:03:11
+   Duration  33.84s (tests 95%, import 4%, transform 1%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-004/junit/envelope-int.xml
 ==> SF-M01-005 CMP-037 suite=envelope-int pkg=@serviceform/cmp-037-integration-hub config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-037-integration-hub
 
- ✓ test/privilege.int.test.ts (9 tests) 534ms
- ✓ test/pg.int.test.ts (1 test) 574ms
+ ✓ test/pg.int.test.ts (1 test) 561ms
+ ✓ test/privilege.int.test.ts (9 tests) 522ms
 
  Test Files  2 passed (2)
       Tests  10 passed (10)
-   Start at  16:07:20
-   Duration  1.77s (tests 69%, import 17%, transform 13%)
+   Start at  17:03:46
+   Duration  1.74s (tests 69%, import 18%, transform 12%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-005/junit/envelope-int.xml
 ==> SF-M01-W2-001 CMP-003 suite=envelope-int pkg=@serviceform/cmp-003-jurisdiction config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-003-jurisdiction
 
- ✓ test/integration/api.int.test.ts (1 test) 647ms
- ✓ test/integration/migration.int.test.ts (2 tests) 466ms
- ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 491ms
+ ✓ test/integration/api.int.test.ts (1 test) 673ms
+ ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 492ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 489ms
 
  Test Files  3 passed (3)
       Tests  6 passed (6)
-   Start at  16:07:22
-   Duration  2.33s (tests 77%, import 15%, transform 7%)
+   Start at  17:03:48
+   Duration  2.42s (tests 77%, import 15%, transform 8%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-001/junit/envelope-int.xml
 ==> SF-M01-W2-002 CMP-030 suite=envelope-int pkg=@serviceform/cmp-030-consent-privacy config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-030-consent-privacy
 
- ✓ test/integration/api-flow.int.test.ts (1 test) 670ms
- ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 481ms
- ✓ test/integration/migration.int.test.ts (2 tests) 473ms
+ ✓ test/integration/api-flow.int.test.ts (1 test) 681ms
+ ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 503ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 484ms
 
  Test Files  3 passed (3)
       Tests  6 passed (6)
-   Start at  16:07:25
-   Duration  2.36s (tests 77%, import 15%, transform 7%)
+   Start at  17:03:51
+   Duration  2.44s (tests 77%, import 15%, transform 8%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-002/junit/envelope-int.xml
 ==> SF-M01-W2-003 CMP-032 suite=envelope-int pkg=@serviceform/cmp-032-storage config=vitest.integration.config.ts
 
  RUN  v5.0.3 /workspace/services/cmp-032-storage
 
- ✓ test/integration/rls-api.int.test.ts (3 tests) 621ms
- ✓ test/integration/privilege-boundary.int.test.ts (2 tests) 473ms
- ✓ test/integration/migration.int.test.ts (1 test) 456ms
+ ✓ test/integration/rls-api.int.test.ts (3 tests) 649ms
+ ✓ test/integration/privilege-boundary.int.test.ts (2 tests) 491ms
+ ✓ test/integration/migration.int.test.ts (1 test) 475ms
 
  Test Files  3 passed (3)
       Tests  6 passed (6)
-   Start at  16:07:28
-   Duration  2.34s (tests 74%, import 16%, transform 9%)
+   Start at  17:03:55
+   Duration  2.44s (tests 74%, import 17%, transform 9%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-003/junit/envelope-int.xml
 ==> SF-M01-W2-003 CMP-032 suite=int-013-cmp-032-unit pkg=@serviceform/cmp-032-storage config=vitest.unit.config.ts
@@ -10754,65 +10754,65 @@ JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-
  RUN  v5.0.3 /workspace/services/cmp-032-storage
 
  ✓ test/unit/store-service.test.ts (1 test) 5ms
- ✓ test/contract/contracts.test.ts (4 tests) 60ms
- ✓ test/unit/modes-authz.test.ts (4 tests) 62ms
+ ✓ test/contract/contracts.test.ts (4 tests) 63ms
+ ✓ test/unit/modes-authz.test.ts (4 tests) 66ms
 
  Test Files  3 passed (3)
       Tests  9 passed (9)
-   Start at  16:07:32
-   Duration  364ms (transform 58%, import 23%, tests 17%, worker 1%)
+   Start at  17:03:58
+   Duration  362ms (transform 50%, import 29%, tests 19%, worker 2%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-003/junit/int-013-cmp-032-unit.xml
 ==> SF-M01-W2-003 CMP-032 suite=int-013-storage-unit pkg=@serviceform/storage config=vitest.config.ts
 
  RUN  v5.0.3 /workspace/packages/storage
 
+ ✓ test/checksum.test.ts (2 tests) 5ms
  ✓ test/modes.test.ts (4 tests) 4ms
+ ✓ test/simulation-marker.test.ts (2 tests) 52ms
+ ✓ test/simulated-store.test.ts (3 tests) 55ms
  ✓ test/object-key.test.ts (1 test) 3ms
- ✓ test/simulation-marker.test.ts (2 tests) 55ms
- ✓ test/simulated-store.test.ts (3 tests) 56ms
- ✓ test/checksum.test.ts (2 tests) 4ms
 
  Test Files  5 passed (5)
       Tests  12 passed (12)
-   Start at  16:07:33
-   Duration  379ms (transform 49%, import 28%, tests 20%, worker 3%)
+   Start at  17:03:59
+   Duration  395ms (transform 51%, import 27%, tests 19%, worker 3%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-003/junit/int-013-storage-unit.xml
 ==> SF-M01-W2-004 CMP-036 suite=host-wave2-composition paths=apps/api/test/composition.test.ts
 
  RUN  v5.0.3 /workspace
 
- ✓ apps/api/test/composition.test.ts (7 tests) 608ms
+ ✓ apps/api/test/composition.test.ts (7 tests) 612ms
 
  Test Files  1 passed (1)
       Tests  7 passed (7)
-   Start at  16:07:34
-   Duration  1.22s (tests 54%, import 28%, transform 18%)
+   Start at  17:04:00
+   Duration  1.27s (tests 52%, import 30%, transform 17%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-004/junit/host-wave2-composition.xml
 ==> SF-M01-W2-004 CMP-036 suite=cmp-036-edge-unit paths=services/cmp-036-api-gateway/test/edge.test.ts
 
  RUN  v5.0.3 /workspace
 
- ✓ services/cmp-036-api-gateway/test/edge.test.ts (6 tests) 103ms
+ ✓ services/cmp-036-api-gateway/test/edge.test.ts (6 tests) 97ms
 
  Test Files  1 passed (1)
       Tests  6 passed (6)
-   Start at  16:07:36
-   Duration  394ms (transform 34%, tests 34%, import 31%, worker 1%)
+   Start at  17:04:02
+   Duration  392ms (import 34%, transform 33%, tests 32%, worker 1%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-004/junit/cmp-036-edge-unit.xml
 ==> SF-M01-W2-004 CMP-047 suite=cmp-047-plugin-unit paths=services/cmp-047-observability/test/plugin.test.ts
 
  RUN  v5.0.3 /workspace
 
- ✓ services/cmp-047-observability/test/plugin.test.ts (2 tests) 59ms
+ ✓ services/cmp-047-observability/test/plugin.test.ts (2 tests) 58ms
 
  Test Files  1 passed (1)
       Tests  2 passed (2)
-   Start at  16:07:37
-   Duration  413ms (import 61%, transform 20%, tests 18%, worker 1%)
+   Start at  17:04:03
+   Duration  406ms (import 61%, transform 20%, tests 18%, worker 1%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-004/junit/cmp-047-plugin-unit.xml
 ==> SF-M01-W2-005 CMP-055 suite=unit paths=services/cmp-055-developer-platform/test/agent-packaging.test.ts services/cmp-055-developer-platform/test/openapi-pipeline.test.ts services/cmp-055-developer-platform/test/provenance.test.ts
@@ -10821,12 +10821,12 @@ JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-
 
  ✓ services/cmp-055-developer-platform/test/provenance.test.ts (2 tests) 4ms
  ✓ services/cmp-055-developer-platform/test/agent-packaging.test.ts (2 tests) 4ms
- ✓ services/cmp-055-developer-platform/test/openapi-pipeline.test.ts (5 tests) 8ms
+ ✓ services/cmp-055-developer-platform/test/openapi-pipeline.test.ts (5 tests) 7ms
 
  Test Files  3 passed (3)
       Tests  9 passed (9)
-   Start at  16:07:38
-   Duration  156ms (transform 69%, import 17%, tests 8%, worker 6%)
+   Start at  17:04:04
+   Duration  153ms (transform 66%, import 18%, tests 10%, worker 6%)
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-W2-005/junit/unit.xml
 
@@ -10837,13 +10837,13 @@ JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-
  RUN  v5.0.3 /workspace
 
  ✓ tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts (5 tests) 4ms
- ✓ tests/cdc/audit-ingest-envelopes.cdc.test.ts (7 tests) 68ms
- ✓ tests/cdc/cmp-038-topic-compat.cdc.test.ts (7 tests) 60ms
+ ✓ tests/cdc/audit-ingest-envelopes.cdc.test.ts (7 tests) 71ms
+ ✓ tests/cdc/cmp-038-topic-compat.cdc.test.ts (7 tests) 64ms
 
  Test Files  3 passed (3)
       Tests  19 passed (19)
-   Start at  16:07:39
-   Duration  405ms (transform 56%, import 22%, tests 21%, worker 2%)
+   Start at  17:04:05
+   Duration  409ms (transform 55%, import 22%, tests 21%, worker 2%)
 
 JUNIT report written to /workspace/test-results/cdc/junit.xml
 {

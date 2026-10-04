@@ -1,18 +1,18 @@
 
  RUN  v5.0.3 /workspace/services/cmp-002-tenant-organisation
 
- ✓ test/integration/rls-matrix.int.test.ts (3 tests) 714ms
- ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 568ms
- ✓ test/integration/api-negative.int.test.ts (14 tests) 728ms
- ✓ test/integration/migration.int.test.ts (1 test) 518ms
- ✓ test/integration/pool-reuse.int.test.ts (3 tests) 540ms
+ ✓ test/integration/api-negative.int.test.ts (14 tests) 712ms
+ ✓ test/integration/rls-matrix.int.test.ts (3 tests) 560ms
+ ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 569ms
+ ✓ test/integration/pool-reuse.int.test.ts (3 tests) 503ms
+ ✓ test/integration/migration.int.test.ts (1 test) 500ms
 
  Test Files  5 passed (5)
       Tests  32 passed (32)
-   Start at  16:06:30
-   Duration  4.33s (tests 80%, import 14%, transform 6%)
+   Start at  17:02:56
+   Duration  4.01s (tests 79%, import 15%, transform 5%)
 
-    Isolate  5 workers spawned · ~87ms startup each (spawn + environment, per file)
-             at least ~349ms faster with isolate: false — reuses workers across files instead of one per file
+    Isolate  5 workers spawned · ~78ms startup each (spawn + environment, per file)
+             at least ~313ms faster with isolate: false — reuses workers across files instead of one per file
 
 JUNIT report written to /workspace/evidence/SF-M04-STITCH-A/m01-envelope-int/SF-M01-001/junit/envelope-int.xml

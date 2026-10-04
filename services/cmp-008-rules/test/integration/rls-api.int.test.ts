@@ -8,8 +8,10 @@ import {
   closeHarness,
   installTenant,
   setupHarness,
+  snapshotCombinedCatalog,
   T1,
   T2,
+  withIsolatedCmp008Database,
   type Harness,
 } from './helpers.js';
 import { criteriaTable, forbiddenNodeGraph, packFixture, pinOf } from '../fixtures/packs.js';
@@ -214,14 +216,32 @@ describe('CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN)', ()
   });
 
   it('down migration is reversible (schema removed, role retained) and up restores it', async () => {
-    const { migrate } = await import('./helpers.js');
-    migrate('down', 2);
-    const gone = await h.admin.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
-    expect(gone.rowCount).toBe(0);
-    const role = await h.admin.query(`SELECT 1 FROM pg_roles WHERE rolname = 'sf_cmp008_rw'`);
-    expect(role.rowCount).toBe(1);
-    migrate('up');
-    const back = await h.admin.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
-    expect(back.rowCount).toBe(1);
+    const before = await snapshotCombinedCatalog(h.admin);
+    expect(before.rulesPresent).toBe(true);
+    expect(before.uploadTables.length).toBeGreaterThan(0);
+    expect(before.migrationNames.some((n) => n.includes('cmp-013'))).toBe(true);
+    expect(before.migrationNames.filter((n) => n.includes('cmp-008'))).toHaveLength(2);
+
+    await withIsolatedCmp008Database(h.admin, async (iso, migrateIso) => {
+      migrateIso('up');
+      const applied = await iso.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
+      expect(applied.rowCount).toBe(1);
+      migrateIso('down', 2);
+      const gone = await iso.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
+      expect(gone.rowCount).toBe(0);
+      const role = await iso.query<{
+        rolcanlogin: boolean;
+        rolbypassrls: boolean;
+        rolsuper: boolean;
+      }>(`SELECT rolcanlogin, rolbypassrls, rolsuper FROM pg_roles WHERE rolname = 'sf_cmp008_rw'`);
+      expect(role.rowCount).toBe(1);
+      expect(role.rows[0]).toEqual({ rolcanlogin: false, rolbypassrls: false, rolsuper: false });
+      migrateIso('up');
+      const back = await iso.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_rules'`);
+      expect(back.rowCount).toBe(1);
+    });
+
+    const after = await snapshotCombinedCatalog(h.admin);
+    expect(after).toEqual(before);
   });
 });

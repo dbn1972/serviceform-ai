@@ -13,15 +13,15 @@ packages/observability typecheck: Done
 packages/ui-ux4g typecheck: Done
 apps/web-admin typecheck$ next typegen && tsc --noEmit -p tsconfig.json
 apps/web-citizen typecheck$ next typegen && tsc --noEmit -p tsconfig.json
-apps/web-admin typecheck: Generating route types...
 apps/web-citizen typecheck: Generating route types...
-apps/web-admin typecheck: ✓ Types generated successfully
+apps/web-admin typecheck: Generating route types...
 apps/web-citizen typecheck: ✓ Types generated successfully
+apps/web-admin typecheck: ✓ Types generated successfully
 apps/web-citizen typecheck: Done
 apps/web-officer typecheck$ next typegen && tsc --noEmit -p tsconfig.json
-apps/web-officer typecheck: Generating route types...
 apps/web-admin typecheck: Done
 apps/web-studio typecheck$ next typegen && tsc --noEmit -p tsconfig.json
+apps/web-officer typecheck: Generating route types...
 apps/web-officer typecheck: ✓ Types generated successfully
 apps/web-studio typecheck: Generating route types...
 apps/web-studio typecheck: ✓ Types generated successfully
@@ -35,9 +35,9 @@ packages/connector-sdk typecheck: Done
 packages/security typecheck$ tsc --noEmit -p tsconfig.json
 packages/outbox typecheck: Done
 packages/storage typecheck$ tsc --noEmit -p tsconfig.json
-packages/storage typecheck: Done
-services/cmp-001-catalogue typecheck$ tsc --noEmit -p tsconfig.json
 packages/security typecheck: Done
+services/cmp-001-catalogue typecheck$ tsc --noEmit -p tsconfig.json
+packages/storage typecheck: Done
 services/cmp-002-tenant-organisation typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-001-catalogue typecheck: Done
 services/cmp-003-jurisdiction typecheck$ tsc --noEmit -p tsconfig.json
@@ -59,13 +59,13 @@ services/cmp-034-master-data typecheck: Done
 services/cmp-039-ai-gateway typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-036-api-gateway typecheck: Done
 services/cmp-047-observability typecheck$ tsc --noEmit -p tsconfig.json
-services/cmp-047-observability typecheck: Done
-services/cmp-051-maker-checker typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-039-ai-gateway typecheck: Done
+services/cmp-051-maker-checker typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-047-observability typecheck: Done
 services/cmp-052-versioning typecheck$ tsc --noEmit -p tsconfig.json
-services/cmp-052-versioning typecheck: Done
-services/cmp-053-localization typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-051-maker-checker typecheck: Done
+services/cmp-053-localization typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-052-versioning typecheck: Done
 services/cmp-053-localization typecheck: Done
 services/cmp-004-identity-access typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-013-document-upload typecheck$ tsc --noEmit -p tsconfig.json
@@ -77,9 +77,9 @@ services/cmp-032-storage typecheck: Done
 services/cmp-037-integration-hub typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-031-audit-ledger typecheck: Done
 services/cmp-038-event-bus typecheck$ tsc --noEmit -p tsconfig.json
-services/cmp-037-integration-hub typecheck: Done
-services/cmp-048-security-platform typecheck$ tsc --noEmit -p tsconfig.json
 services/cmp-038-event-bus typecheck: Done
+services/cmp-048-security-platform typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-037-integration-hub typecheck: Done
 services/cmp-048-security-platform typecheck: Done
 apps/api typecheck$ tsc --noEmit -p tsconfig.json
 apps/api typecheck: Done

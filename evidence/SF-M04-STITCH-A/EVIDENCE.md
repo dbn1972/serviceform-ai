@@ -9,8 +9,8 @@ Do **not** merge this stitch as a certification. Do **not** merge builder PRs #6
 | Task | SF-M04-STITCH-A |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/73 |
 | Branch | `cursor/m04-stitch-a-7000` |
-| Immutable head SHA (local evidence commit) | `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe` |
-| Pushed tip at PR open (trees + lockfile) | `6fd5d3f8dcdd50d80486a090e3316960d058130e` |
+| Authoritative immutable head | PENDING_BIND (filled on bind commit; must match final PR HEAD) |
+| Historical heads | trees `c45d232`; lockfile `6fd5d3f8dcdd50d80486a090e3316960d058130e`; evidence `a09530123b0af9189d0cfcba4e2cf2bfbac60cbe`; previous candidate `50b65c8c1324132ec6f5fb802525a57c66b143a7` |
 | Base | `origin/main` `9ccc2b02f8ef64a0987b0c4793137511545ed3f7` |
 | Frozen contracts altered | **none** (13/13 MATCH) |
 | Self-certified | **false** |
@@ -64,7 +64,7 @@ New package `@gorules/zen-engine@2.0.2` (published 2026-08-24, mature vs 7-day a
 | CMP-039 unit | 51 PASS (baseline 51) | `logs/cmp-039-unit.log` |
 | CMP-039 int | 10 PASS (baseline 10); `CROSS_TENANT_LEAKAGE=0` | `logs/cmp-039-int.log` |
 | CMP-008 unit | 56 PASS (baseline 56) | `logs/cmp-008-unit.log` |
-| CMP-008 int | **13 PASS / 1 FAIL** (baseline 14) — see `RESIDUALS.md` | `logs/cmp-008-int.log` |
+| CMP-008 int | **14 PASS / 0 FAIL** (baseline 14; no skip). R-CMP008-DOWN2 **CLOSED_TEST_HARNESS** | `logs/cmp-008-int.log` |
 | CMP-011 unit | 108 PASS (baseline 108) | `logs/cmp-011-unit.log` |
 | CMP-011 int | 13 PASS (baseline 13) | `logs/cmp-011-int.log` |
 | CMP-013 unit | 66 PASS (baseline 66) | `logs/cmp-013-unit.log` |
@@ -78,10 +78,11 @@ See `logs/architecture-reconfirm.log`. Roles created `NOLOGIN NOSUPERUSER … NO
 
 ## Residuals
 
-`RESIDUALS.md` — CMP-008 INT `migrate('down', 2)` assumes it owns the tail of the migration stack; that is false after CMP-013. **Not patched.**
+`RESIDUALS.md` — **R-CMP008-DOWN2 CLASS-A TEST HARNESS: CLOSED_TEST_HARNESS**. Isolated CMP-008 migrator DB; combined catalog / CMP-013 fingerprint unchanged. No production migration edit.
+
+`summary.json` binds base + four frozen input SHAs.
 
 ## Recommended next (orchestrator)
 
-1. Review draft PR #73 CI (do not merge on this stitch alone).
-2. CMP-008 owner applies the bounded INT down-migration fix on a **new** builder change request if desired; do not rewrite frozen `ef4243f`.
-3. After stitch merge to `main` **and** human LOCK-3, Wave B (005/006) may start. Not started here.
+1. Review draft PR #73 CI on the new immutable head (do not merge on this stitch alone).
+2. After stitch merge to `main` **and** human LOCK-3, Wave B (005/006) may start. Not started here.
