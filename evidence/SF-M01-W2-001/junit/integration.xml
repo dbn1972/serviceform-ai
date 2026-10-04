@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="1.450898104">
+    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-10-04T01:26:41.106Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.603963439">
+        <testcase classname="test/integration/api.int.test.ts" name="CMP-003 API + tenant negatives &gt; happy path: types, hierarchy, publish, resolve, binding; cycle and unknown address fail closed" time="0.173326933">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T01:26:41.107Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.417449818">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-003 migration static + live checks &gt; creates schema, privilege role, FORCE RLS, and sf_migrator ownership" time="0.009491234">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-003 migration static + live checks &gt; SQL follows ADR-0006 / outbox template rules and avoids hard-coded levels" time="0.000932137">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T01:26:41.107Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.429484847">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-003 privilege boundary (ADR-0006) &gt; own-component DML succeeds; peer-component login is denied" time="0.018773722">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-003 privilege boundary (ADR-0006) &gt; wrong-tenant RLS returns zero rows and blocks insert leakage" time="0.002664436">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-003 privilege boundary (ADR-0006) &gt; runtime login is not table owner and cannot SET ROLE peer rw" time="0.00100633">
+        </testcase>
+    </testsuite>
+</testsuites>

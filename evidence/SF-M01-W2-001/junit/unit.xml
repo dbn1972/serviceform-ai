@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.055755454">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T01:27:14.613Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.052439237">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-003 component contracts &gt; parses OpenAPI and AsyncAPI JSON with Eng interfaces" time="0.001313656">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-003 component contracts &gt; validates domain event envelopes and audit" time="0.049295245">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-003 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.00047481">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-003 component contracts &gt; schema migration declares isolation and privilege role without hard-coded levels" time="0.000368718">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-04T01:27:14.616Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003316217">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-003 domain &gt; accepts configurable type codes without hard-coded level names" time="0.001215119">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-003 domain &gt; detects hierarchy cycles and depth limits" time="0.000283144">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-003 domain &gt; fingerprints requests canonically" time="0.000544951">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-003 domain &gt; rejects tenant-identifying headers" time="0.000247509">
+        </testcase>
+    </testsuite>
+</testsuites>
