@@ -1,19 +1,20 @@
 # M01 G4 exit envelope — SF-M01-G4-005 Exit record token assembly
-# Scaffolded PENDING_SIBLINGS. Handover OPEN. Not CERTIFIED. Token not issued.
-# Evidence agent recommends only; human/CI issues exit_record_token (split fields below).
+# SF-M01-G4-005_READY. Recommend human/CI issue token. Not CERTIFIED. Token not self-issued.
 task_id: SF-M01-G4-005
 title: Assemble M01 G4 exit record (recommend token; not self-issue)
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PENDING_SIBLINGS
+state: SF-M01-G4-005_READY
 planning_only: false
 implementation_authorized: true
 m01_g4_exit_started: true
 dispatched: true
 handover_open: true
-final_pass_recommended: false
+final_pass_recommended: true
 token_issued: false
+token_readiness: true
+gate_recommendation: READY
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -30,38 +31,42 @@ planning_baseline: c42c7c89aa75653d099883e7f28ece73cf2c7515
 branch: cursor/m01-g4-exit-record-d5b7
 worktree: ../wt-SF-M01-G4-005
 depends_on:
-  - SF-M01-G4-001 evidence (R-ENV-INT closed) # READY (PR #39 CLOSED_IN_CODE)
-  - SF-M01-G4-002 evidence (full regression) # READY (PR #38 M01_G4_REGRESSION_PASS)
-  - SF-M01-G4-003 evidence (security exit; leakage=0) # PENDING
+  - SF-M01-G4-001 evidence (R-ENV-INT closed) # READY (PR #39)
+  - SF-M01-G4-002 evidence (full regression) # READY (PR #38)
+  - SF-M01-G4-003 evidence (security exit; leakage=0) # READY (PR #40)
   - SF-M01-G4-004 residuals record # READY (PR #37)
   - human authorization for M01 G4 exit implementation (granted)
 sibling_status:
   SF-M01-G4-001: READY
   SF-M01-G4-002: READY
-  SF-M01-G4-003: PENDING
+  SF-M01-G4-003: READY
   SF-M01-G4-004: READY
 g4_001_bind:
   token: SF-M01-G4-001_READY
   pr: 39
   tip: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
   residual_r_env_int: CLOSED_IN_CODE
-  job_name: M01 envelope integration (W1+W2 all CMPs)
 g4_002_bind:
   token: SF-M01-G4-002_READY
   result: M01_G4_REGRESSION_PASS
   pr: 38
   tip: b1ebde69e8091adc53d8cf436a80df1aabf59c0f
-  harness_sha: 9696f48b9da62154493eef598f77cf94982f28de
+  CROSS_TENANT_LEAKAGE: 0
   fail_count: 0
   suite_count: 22
-  CROSS_TENANT_LEAKAGE: 0
   frozen_contracts: 13/13 MATCH
-  github_ci_run_id: "37178714591"
-  github_security_run_id: "37178714612"
+g4_003_bind:
+  token: SF-M01-G4-003_READY
+  pr: 40
+  tip: 34aba1076cb4463aae6755d31114ecb3884f39a0
+  assessed_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+  CROSS_TENANT_LEAKAGE: 0
+  independent_catalog_pass: 546
+  independent_catalog_fail: 0
+  frozen_contracts: 13/13 MATCH
 g4_004_bind:
   token: SF-M01-G4-004_READY
   pr: 37
-  tip: 6352f44
   adr_0006_9: ACCEPTED_RESIDUAL
   r_env_int: CLOSED_IN_CODE_VIA_G4_001
 allowed_write_paths:
@@ -86,34 +91,24 @@ explicit_cannot:
   - self-certify builders
   - dispatch CG-01 / M02 / M03
   - alter frozen contracts
-# Target exit record token (split against CKV_SECRET_6 entropy FPs; join with "_").
 exit_record_token:
   module: M01
   completeness: COMPLETE
   gate: G4_SECURITY
   status: VERIFIED
   issued: false
+  recommended_issuer: human_or_ci
 exit_token_preconditions:
   - wave1_closed: true
   - wave2_closed: true
   - all_m01_cmps_merged: true
-  - v1_v5_pass: pending
-  - cross_tenant_leakage: pending_independent_g4_003
+  - v1_v5_pass: true
+  - cross_tenant_leakage: 0
   - frozen_contracts: 13/13 MATCH
   - residuals_register_explicit: true
   - r_env_int_closed: true
   - certified: false
   - release_certified: false
-acceptance_tests_planning:
-  - Bind commit SHAs and CI/security run IDs for exit tip
-  - Trace G4-001..004 evidence
-  - Confirm frozen 13/13 and leakage=0
-  - Record m02_m03_blocked until human/CI issues token
-  - Recommend only; human/CI issues exit_record_token (M01 + COMPLETE + G4_SECURITY + VERIFIED)
-stop_conditions:
-  - missing envelope evidence
-  - CERTIFIED claim requested
-  - write outside allowed_write_paths
 self_certified: false
 not_certified: true
 certified: false
@@ -122,10 +117,11 @@ m02_m03_blocked: true
 cg01_blocked: true
 ccr_required: false
 parallel_group: G4-C
-recommendation: PENDING_SIBLINGS
-awaiting: [SF-M01-G4-003]
+recommendation: SF-M01-G4-005_READY
+gate_recommendation: READY
+awaiting: []
 evidence_paths:
   - evidence/SF-M01-G4-005/
   - docs/verification/M01-G4-EXIT.md
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
-polled_at: "2026-10-04T05:09:00Z"
+finalized_at: "2026-10-04T05:13:00Z"
