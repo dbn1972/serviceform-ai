@@ -1,0 +1,72 @@
+=== BYPASSRLS/SUPERUSER in Wave A migrations ===
+db/migrations/1759530400000_cmp-013-document-upload.sql:13:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530400000_cmp-013-document-upload.sql:22:    CREATE ROLE sf_cmp013_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530110000_cmp-011-evidence.sql:11:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530110000_cmp-011-evidence.sql:19:    CREATE ROLE sf_cmp011_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530200000_cmp-008-rules.sql:11:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530200000_cmp-008-rules.sql:19:    CREATE ROLE sf_cmp008_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:13:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:21:    CREATE ROLE sf_cmp039_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+=== ENABLE/FORCE RLS ===
+db/migrations/1759530110001_cmp-011-outbox.sql:60:ALTER TABLE sf_evidence.outbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530110001_cmp-011-outbox.sql:61:ALTER TABLE sf_evidence.outbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530110001_cmp-011-outbox.sql:110:ALTER TABLE sf_evidence.inbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530110001_cmp-011-outbox.sql:111:ALTER TABLE sf_evidence.inbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400001_cmp-013-outbox.sql:59:ALTER TABLE sf_upload.outbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400001_cmp-013-outbox.sql:60:ALTER TABLE sf_upload.outbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400001_cmp-013-outbox.sql:109:ALTER TABLE sf_upload.inbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400001_cmp-013-outbox.sql:110:ALTER TABLE sf_upload.inbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:68:ALTER TABLE sf_evidence.evidence_policy ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:69:ALTER TABLE sf_evidence.evidence_policy FORCE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:124:ALTER TABLE sf_evidence.evidence_resolution ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:125:ALTER TABLE sf_evidence.evidence_resolution FORCE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:163:ALTER TABLE sf_evidence.idempotency_record ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530110000_cmp-011-evidence.sql:164:ALTER TABLE sf_evidence.idempotency_record FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:56:ALTER TABLE sf_upload.upload_policy ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:57:ALTER TABLE sf_upload.upload_policy FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:102:ALTER TABLE sf_upload.document_metadata ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:103:ALTER TABLE sf_upload.document_metadata FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:127:ALTER TABLE sf_upload.upload_session ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:128:ALTER TABLE sf_upload.upload_session FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:150:ALTER TABLE sf_upload.document_scan_status ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:151:ALTER TABLE sf_upload.document_scan_status FORCE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:172:ALTER TABLE sf_upload.idempotency_record ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530400000_cmp-013-document-upload.sql:173:ALTER TABLE sf_upload.idempotency_record FORCE ROW LEVEL SECURITY;
+db/migrations/1759530200001_cmp-008-outbox.sql:60:ALTER TABLE sf_rules.outbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530200001_cmp-008-outbox.sql:61:ALTER TABLE sf_rules.outbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530200001_cmp-008-outbox.sql:110:ALTER TABLE sf_rules.inbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530200001_cmp-008-outbox.sql:111:ALTER TABLE sf_rules.inbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:54:ALTER TABLE sf_rules.rule_pack_snapshot ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:55:ALTER TABLE sf_rules.rule_pack_snapshot FORCE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:92:ALTER TABLE sf_rules.evaluation_record ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:93:ALTER TABLE sf_rules.evaluation_record FORCE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:136:ALTER TABLE sf_rules.idempotency_record ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530200000_cmp-008-rules.sql:137:ALTER TABLE sf_rules.idempotency_record FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:75:ALTER TABLE sf_ai_gateway.model_registry ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:76:ALTER TABLE sf_ai_gateway.model_registry FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:159:ALTER TABLE sf_ai_gateway.ai_policy ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:160:ALTER TABLE sf_ai_gateway.ai_policy FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:255:ALTER TABLE sf_ai_gateway.ai_request_metadata ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:256:ALTER TABLE sf_ai_gateway.ai_request_metadata FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:293:ALTER TABLE sf_ai_gateway.idempotency_record ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:294:ALTER TABLE sf_ai_gateway.idempotency_record FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039001_cmp-039-outbox.sql:60:ALTER TABLE sf_ai_gateway.outbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039001_cmp-039-outbox.sql:61:ALTER TABLE sf_ai_gateway.outbox_event FORCE ROW LEVEL SECURITY;
+db/migrations/1759530039001_cmp-039-outbox.sql:110:ALTER TABLE sf_ai_gateway.inbox_event ENABLE ROW LEVEL SECURITY;
+db/migrations/1759530039001_cmp-039-outbox.sql:111:ALTER TABLE sf_ai_gateway.inbox_event FORCE ROW LEVEL SECURITY;
+=== cross-component SQL FROM other schemas in Wave A ===
+=== openai/anthropic/bedrock outside CMP-039 ===
+services/cmp-008-rules/test/unit/constitution.test.ts:22:      /(openai|anthropic|bedrock|langchain|llm|ai-gateway|cmp-039|generative|embedding|@ai-sdk)/i;
+=== zen version ===
+services/cmp-008-rules/package.json:17:    "@gorules/zen-engine": "2.0.2",
+pnpm-lock.yaml:502:      '@gorules/zen-engine':
+pnpm-lock.yaml:1158:  '@gorules/zen-engine-darwin-arm64@2.0.2':
+pnpm-lock.yaml:1164:  '@gorules/zen-engine-darwin-x64@2.0.2':
+pnpm-lock.yaml:1170:  '@gorules/zen-engine-linux-arm64-gnu@2.0.2':
+pnpm-lock.yaml:1177:  '@gorules/zen-engine-linux-arm64-musl@2.0.2':
+pnpm-lock.yaml:1184:  '@gorules/zen-engine-linux-x64-gnu@2.0.2':
+pnpm-lock.yaml:1191:  '@gorules/zen-engine-linux-x64-musl@2.0.2':
+pnpm-lock.yaml:1198:  '@gorules/zen-engine-wasm32-wasi@2.0.2':
+pnpm-lock.yaml:1203:  '@gorules/zen-engine-win32-x64-msvc@2.0.2':
+=== local fs uploads ===
+=== provider credentials ===

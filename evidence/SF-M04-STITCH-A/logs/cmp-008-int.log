@@ -1,0 +1,51 @@
+
+> @serviceform/cmp-008-rules@0.0.0 test:integration /workspace/services/cmp-008-rules
+> vitest run --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=../../evidence/SF-M04-STITCH-A/junit/cmp-008-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-008-rules
+
+ ❯ test/integration/rls-api.int.test.ts (8 tests | 1 failed) 1092ms
+   ❯ CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) (8)
+     ✓ evaluates for tenant 1 and persists snapshot, evaluation, outbox and audit rows 119ms
+     ✓ CROSS_TENANT_LEAKAGE=0: tenant 2 cannot read, resolve, or reference tenant 1 data 12ms
+     ✓ without a tenant session the runtime sees no rows, and cannot write for another tenant 3ms
+     ✓ an evaluation cannot reference another tenant snapshot (composite FK) 2ms
+     ✓ replays by idempotency key without a second evaluation row 12ms
+     ✓ is deterministic and pinned: same pin and inputs -> same result; no match gives no default decision 18ms
+     ✓ fails closed with nothing persisted for forbidden graphs and unauthorized callers 3ms
+     × down migration is reversible (schema removed, role retained) and up restores it 432ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 570ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 533ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/integration/rls-api.int.test.ts > CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) > down migration is reversible (schema removed, role retained) and up restores it
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/integration/rls-api.int.test.ts:220:27
+    218|     migrate('down', 2);
+    219|     const gone = await h.admin.query(`SELECT 1 FROM pg_namespace WHERE…
+    220|     expect(gone.rowCount).toBe(0);
+       |                           ^
+    221|     const role = await h.admin.query(`SELECT 1 FROM pg_roles WHERE rol…
+    222|     expect(role.rowCount).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 13 passed (14)
+   Start at  16:01:35
+   Duration  3.07s (tests 79%, import 14%, transform 7%)
+
+JUNIT report written to /workspace/services/cmp-008-rules/evidence/junit/integration.xml
+/workspace/services/cmp-008-rules:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @serviceform/cmp-008-rules@0.0.0 test:integration: `vitest run --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=../../evidence/SF-M04-STITCH-A/junit/cmp-008-int.xml`
+Exit status 1

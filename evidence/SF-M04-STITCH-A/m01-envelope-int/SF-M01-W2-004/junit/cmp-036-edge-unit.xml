@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="0.103495288">
+    <testsuite name="services/cmp-036-api-gateway/test/edge.test.ts" timestamp="2026-10-04T16:07:36.662Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.103495288">
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; recognises forged tenant and identity headers" time="0.001845866">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; detects tenant= in Forwarded" time="0.000559785">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; denies forged client tenant headers with SF-TEN-002 and no leakage" time="0.083901111">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; allows probes and normal /v1 traffic without forged headers" time="0.005409235">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; emits controlled SF-RATE-001 without leaking request details" time="0.006352808">
+        </testcase>
+        <testcase classname="services/cmp-036-api-gateway/test/edge.test.ts" name="CMP-036 edge guards (REQ: Eng-v1.4-CMP-036, Constitution #6) &gt; does not rate-limit health probes" time="0.004039508">
+        </testcase>
+    </testsuite>
+</testsuites>

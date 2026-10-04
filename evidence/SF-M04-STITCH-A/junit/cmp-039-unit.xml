@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="51" failures="0" errors="0" time="0.630791584">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T16:01:29.467Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.057453741">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-039 component contracts &gt; parses OpenAPI (Eng v1.4 interfaces) and AsyncAPI (Eng v1.4 events)" time="0.001970988">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-039 component contracts &gt; declares every table with the shared isolation-declaration contract" time="0.045722892">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-039 component contracts &gt; validates an AIRequestCompleted envelope" time="0.007576297">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-039 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.000673099">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/gateway.test.ts" timestamp="2026-10-04T16:01:29.468Z" hostname="cursor" tests="23" failures="0" errors="0" skipped="0" time="0.437441404">
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; returns advisory-only output with simulation marker and writes audit metadata + events" time="0.128767011">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; replays identical idempotent requests without a second provider call" time="0.010626155">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; denies unapproved model pins and floating versions" time="0.013574729">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; denies a revoked model and an approved model with no adapter" time="0.011514459">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; redacts PII and secrets before the provider sees them and never persists raw values" time="0.00626829">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; redacts PII in model output" time="0.008168832">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; enforces data classification ceilings and purpose/consent for personal data" time="0.010756091">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; enforces tool allowlist and scopes, and blocks disallowed model tool calls" time="0.013005592">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; enforces tenant/source ACL for retrieval context" time="0.013402484">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; is tenant isolated: another tenant cannot see or use a policy" time="0.005035005">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; applies authorization via the PDP and audits denials" time="0.005261755">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; enforces rate / token / cost controls" time="0.019453937">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; accumulates token usage toward the daily budget" time="0.007388494">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; falls back to a secondary provider and emits a fallback event" time="0.006114304">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; fails safely on outage and timeout, signalling the non-AI path" time="0.110394555">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; blocks output asserting a binding statutory decision and oversized output" time="0.018112922">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; rejects wrong variables and mismatched operations" time="0.005222591">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; supports embeddings through the same governed path" time="0.007762334">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="governed invocation (all model calls through the gateway) &gt; rejects tenant headers and unauthenticated requests" time="0.002725081">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="registry governance &gt; refuses statutory-decision task kinds and unknown kinds" time="0.005175243">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="registry governance &gt; refuses decision-capable tools, sensitive templates, bad evaluation and floating model versions" time="0.013097554">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="registry governance &gt; prevents duplicate pins, retires policy versions and blocks use afterwards" time="0.010960252">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="registry governance &gt; requires authorization for registry changes" time="0.002455442">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/guards-config.test.ts" timestamp="2026-10-04T16:01:29.471Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.060033645">
+        <testcase classname="test/unit/guards-config.test.ts" name="statutory decision boundary &gt; allows only advisory task kinds" time="0.002020311">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="statutory decision boundary &gt; flags output asserting a binding decision" time="0.000583477">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="classification &gt; orders classes and requires purpose for personal data" time="0.002697191">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="production simulator misuse fails closed (INT-013) &gt; refuses SIMULATED in PRODUCTION and non-simulation environments" time="0.000711144">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="production simulator misuse fails closed (INT-013) &gt; refuses REAL/SANDBOX (no real adapter in this task) and unknown modes" time="0.000269206">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="production simulator misuse fails closed (INT-013) &gt; defaults to OFF with no providers; SIMULATED builds marked simulators" time="0.047594666">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="production simulator misuse fails closed (INT-013) &gt; rejects simulation markers outside simulation environments" time="0.000469761">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="error mapping and hashing &gt; maps database errors without leaking detail" time="0.000847901">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="request parsing &gt; accepts a valid invoke request and rejects malformed ones" time="0.001696262">
+        </testcase>
+        <testcase classname="test/unit/guards-config.test.ts" name="request parsing &gt; parses embed requests" time="0.001003718">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/redaction.test.ts" timestamp="2026-10-04T16:01:29.472Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.075862794">
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts EMAIL and never retains the value" time="0.002245728">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts NATIONAL_ID and never retains the value" time="0.000435268">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts TAX_ID and never retains the value" time="0.00023205">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts PHONE and never retains the value" time="0.000238679">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts PAYMENT_CARD and never retains the value" time="0.000333695">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts BEARER_TOKEN and never retains the value" time="0.000154952">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts CREDENTIAL and never retains the value" time="0.00023075">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts CLOUD_ACCESS_KEY and never retains the value" time="0.000183358">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts JWT and never retains the value" time="0.000424501">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts PRIVATE_KEY and never retains the value" time="0.000203016">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts URL_CREDENTIAL and never retains the value" time="0.000174966">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; redacts a card embedded inside a longer digit run and leaves short numbers alone" time="0.000185278">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; merges summaries" time="0.000563882">
+        </testcase>
+        <testcase classname="test/unit/redaction.test.ts" name="redaction (AI-GOVERNANCE data classification/redaction) &gt; handles large hostile input in linear time" time="0.068716104">
+        </testcase>
+    </testsuite>
+</testsuites>
