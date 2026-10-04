@@ -494,6 +494,66 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  services/cmp-008-rules:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@gorules/zen-engine':
+        specifier: 2.0.2
+        version: 2.0.2(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-011-evidence-requirements:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-013-document-upload:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
   services/cmp-030-consent-privacy:
     dependencies:
       '@serviceform/contracts':
@@ -688,6 +748,31 @@ importers:
         specifier: 4.23.15
         version: 4.23.15
 
+  services/cmp-039-ai-gateway:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      fastify-plugin:
+        specifier: 5.1.0
+        version: 5.1.0
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
   services/cmp-047-observability:
     dependencies:
       '@serviceform/observability':
@@ -805,7 +890,6 @@ importers:
         version: 8.23.1
 
 packages:
-
   '@axe-core/playwright@4.13.0':
     resolution: {integrity: sha512-6YLx+kxXu5GJceG4ozFg+33a2EMTdjYwWGloJ3sb9Kta5pp+ZNS53uxGVog5JetIY8s++P5UrtX+cri+u0VAVg==}
     peerDependencies:
@@ -832,8 +916,14 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
+  '@emnapi/core@1.11.3':
+    resolution: {integrity: sha512-zLpS5asjEb7lq8jYLq37N6XKaE41DIexlY1rF/z4/tIl3wo13Sqm28fRyfIsKZD+NZ8mM5RoKkpW/rBcuoSZSg==}
+
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
+
+  '@emnapi/wasi-threads@1.2.3':
+    resolution: {integrity: sha512-ELEBe8PsLvvJ6QMr0zLt8ffvOHW/dc1m3CEzNMg7aJUv3bMaoDtw2TXyDAwkYBuroxxuHEwhRTLJSe5sya547g==}
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -1065,6 +1155,61 @@ packages:
   '@fastify/under-pressure@9.2.0':
     resolution: {integrity: sha512-1dtlvCEf/EGx2s474/GyrqkQ9fKkkhbGC6h200AZ+GLwVn7QkNcLDWmGUeOC2US8RzdsL8A7BsYzMBaEH0uoeg==}
 
+  '@gorules/zen-engine-darwin-arm64@2.0.2':
+    resolution: {integrity: sha512-Mt92lOL5ADCDRxp5Jg+DttP/Yx/3u/ZJorvv8o8dXXLEjo/b0AqdVMVXziU5+uBeSm9QNQNBdzmMB1GYgHh28Q==}
+    engines: {node: '>= 14'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@gorules/zen-engine-darwin-x64@2.0.2':
+    resolution: {integrity: sha512-DY2Z7mrpwVsvPn5bFo4xdpGTer7FaXfDpJ9AQiaQ98kAYO5nT+feDKKjDtP10aNs5kcdnAnrFqZUB+cABMp6gQ==}
+    engines: {node: '>= 14'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@gorules/zen-engine-linux-arm64-gnu@2.0.2':
+    resolution: {integrity: sha512-tbiUCZ6UVjqTI/Z1NdI6ZSnfbYh9H403IAYEeTCnxNcQ3fREuw1BofBC2A/GNztY8V9dcO0AAZTGmzkbLnwqTw==}
+    engines: {node: '>= 14'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@gorules/zen-engine-linux-arm64-musl@2.0.2':
+    resolution: {integrity: sha512-QsCVNqUxkY4xOgOUP126CCUFc5mlSn+FPfHBNlyx2Co330J9T+4JYim6Rbt4EMAVAJwyf/g27ObO6E+d2LehSA==}
+    engines: {node: '>= 14'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@gorules/zen-engine-linux-x64-gnu@2.0.2':
+    resolution: {integrity: sha512-K2v2OlgqgSNE9bmnmywEAEEOke7LjYKwiNZFDKq96f1gLgvzfC79tVIXPTpmTRn1rh9NxxEMWtCvEirrZiW2Tg==}
+    engines: {node: '>= 14'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@gorules/zen-engine-linux-x64-musl@2.0.2':
+    resolution: {integrity: sha512-xoJroGGvSGp5R9eiVRX0yPgFqSV98csb0USu0eB9fqo/WxXA42pBjLGrOmciIXPo4rrM8fDXH3j86QzSNbdwzg==}
+    engines: {node: '>= 14'}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@gorules/zen-engine-wasm32-wasi@2.0.2':
+    resolution: {integrity: sha512-cUYRdsw+ZhHqebFmyAARCVuPKwyFkPswTYkEtd2Fvuh8uonp70b8pd3YcEW8k+/ZE3aL6WEwuLJHoZl0vb+rvw==}
+    engines: {node: '>=14.0.0'}
+    cpu: [wasm32]
+
+  '@gorules/zen-engine-win32-x64-msvc@2.0.2':
+    resolution: {integrity: sha512-BOp7nkf53HhRXqPlcKDsZIKoYFTcfCQPA0hsxT89GPhpQ8OfOnz270pcRdr9HGVdHPycbbi5EUokyhtIxUS6Ig==}
+    engines: {node: '>= 14'}
+    cpu: [x64]
+    os: [win32]
+
+  '@gorules/zen-engine@2.0.2':
+    resolution: {integrity: sha512-KlPBj61KnYvpZ9qMvOep8N9QDlGHS1RsHgFamY6sLk2sJYrFVJRhvuGSjAG0nEIZxPzRyjd549azl3PQ8W4x4w==}
+    engines: {node: '>= 14'}
+
   '@grpc/grpc-js@1.14.5':
     resolution: {integrity: sha512-7VZM+SVdEcUUqSQeNI3zM8Qs/BhQKZndPo2h5VkYkAM8Iz0wJIa8mKV5ekQGqG8UUsnkQ0NMxIxwkIHYvj0qOw==}
     engines: {node: '>=12.10.0'}
@@ -1272,6 +1417,13 @@ packages:
   '@lukeed/ms@2.0.2':
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
     engines: {node: '>=8'}
+
+  '@napi-rs/wasm-runtime@1.2.4':
+    resolution: {integrity: sha512-AJxoUD2/15ESHbvpcyjU274nsAPLuOtPHCk0vKJM5pj//Fg/B1FXNWjPnXTT9PymCYYiHo4zPj0ZomXBKhoy7g==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
+    peerDependencies:
+      '@emnapi/core': ^1.7.1 || ^2.0.0-alpha.4
+      '@emnapi/runtime': ^1.7.1 || ^2.0.0-alpha.4
 
   '@next/env@16.3.8':
     resolution: {integrity: sha512-Al9zqHVV7TJv0eFuOU4U7Lvv74PTih4Ch63sk2xCIpSTkE3udFnaOcnzP2lQVymiL7yS9Cj2iClUXlR3EQ5sEw==}
@@ -1662,6 +1814,9 @@ packages:
 
   '@swc/helpers@0.5.23':
     resolution: {integrity: sha512-5lSsMOTXURePglDfvuAQUqkGek9Hg2kksOYay2m0+XR++b2NWYL/4sWyuvVBIs8oKnJaxkdi9whaL/sqN13afw==}
+
+  '@tybys/wasm-util@0.10.4':
+    resolution: {integrity: sha512-W3c4gRigFS0T/Ma4qIYF3GDAc5AQdHb1yL5znJT1Zv1YaD9Kitx656wBjvr19qbiosmZT8lWDM5BEMynUqX65A==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -3014,7 +3169,6 @@ packages:
     resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
 
 snapshots:
-
   '@axe-core/playwright@4.13.0(playwright-core@1.63.0)':
     dependencies:
       axe-core: 4.13.0
@@ -3035,7 +3189,18 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
+  '@emnapi/core@1.11.3':
+    dependencies:
+      '@emnapi/wasi-threads': 1.2.3
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/runtime@1.11.3':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/wasi-threads@1.2.3':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -3215,6 +3380,49 @@ snapshots:
       '@fastify/error': 4.2.0
       fastify-plugin: 6.0.0
 
+  '@gorules/zen-engine-darwin-arm64@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-darwin-x64@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-linux-arm64-gnu@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-linux-arm64-musl@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-linux-x64-gnu@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-linux-x64-musl@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine-wasm32-wasi@2.0.2(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)':
+    dependencies:
+      '@napi-rs/wasm-runtime': 1.2.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
+    optional: true
+
+  '@gorules/zen-engine-win32-x64-msvc@2.0.2':
+    optional: true
+
+  '@gorules/zen-engine@2.0.2(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)':
+    optionalDependencies:
+      '@gorules/zen-engine-darwin-arm64': 2.0.2
+      '@gorules/zen-engine-darwin-x64': 2.0.2
+      '@gorules/zen-engine-linux-arm64-gnu': 2.0.2
+      '@gorules/zen-engine-linux-arm64-musl': 2.0.2
+      '@gorules/zen-engine-linux-x64-gnu': 2.0.2
+      '@gorules/zen-engine-linux-x64-musl': 2.0.2
+      '@gorules/zen-engine-wasm32-wasi': 2.0.2(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
+      '@gorules/zen-engine-win32-x64-msvc': 2.0.2
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
+
   '@grpc/grpc-js@1.14.5':
     dependencies:
       '@grpc/proto-loader': 0.8.1
@@ -3364,6 +3572,13 @@ snapshots:
   '@lukeed/ms@2.0.2': {}
 
   '@next/env@16.3.8': {}
+
+  '@napi-rs/wasm-runtime@1.2.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)':
+    dependencies:
+      '@emnapi/core': 1.11.3
+      '@emnapi/runtime': 1.11.3
+      '@tybys/wasm-util': 0.10.4
+    optional: true
 
   '@next/eslint-plugin-next@16.3.8(eslint@9.39.5(jiti@2.7.0))':
     dependencies:
@@ -3720,6 +3935,11 @@ snapshots:
   '@swc/helpers@0.5.23':
     dependencies:
       tslib: 2.8.1
+
+  '@tybys/wasm-util@0.10.4':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
 
   '@types/chai@5.2.3':
     dependencies:
