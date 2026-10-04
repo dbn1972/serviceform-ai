@@ -9,7 +9,7 @@
 | Integrations | INT-011 (forged tenant-header denial; CROSS_TENANT_LEAKAGE=0 canary). INT-002 not exercised (CMP-050 Studio stays off this Fastify host). |
 | Base | `origin/main` `670f604515b74187058f1c054ed1f8e102bba1c3` |
 | Branch | `cursor/m03-host-sf-m03-008-9465` |
-| Head | recorded after evidence commit |
+| Head | `d70371c7d3afe291bbac0648e27d9a0095d25da2` |
 | Frozen contracts | unchanged (13/13 MATCH; no CCR) |
 | `pnpm-lock.yaml` | not committed |
 | `apps/api/package.json` | not modified (envelope write path); plugins load via package specifier then workspace file URL |
