@@ -18,12 +18,14 @@
 
 | Check | Result |
 | --- | --- |
-| Unit + contract (28) | PASS (`junit/unit.xml`) |
+| Unit + contract (29) | PASS (`junit/unit.xml`) |
 | Integration RLS/privilege/migration (9) | PASS (`junit/integration.xml`) |
 | Architecture gates | 10/10 PASS (`logs/gates.log`) |
 | migration_lint | PASS |
 | eslint `services/cmp-009-dynamic-forms` | PASS `--max-warnings=0` |
 | `tsc --noEmit` | PASS |
+
+CodeQL `js/polynomial-redos` on `EMAIL_RE` (`schema.ts` line 173 at `10ea29d`) replaced with a linear `isEmailFormat` scan. Isolated frozen-lockfile CI red remains `EXPECTED_STITCH_B_LOCKFILE_RESIDUAL`.
 
 ## Tenant / RLS
 

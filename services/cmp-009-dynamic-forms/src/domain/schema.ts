@@ -119,8 +119,31 @@ export function assertRootObjectSchema(schema: JsonSchemaNode): void {
 }
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+/** Linear email shape check. Avoids `[^\s@]+@...` ReDoS (CodeQL js/polynomial-redos). */
+function isEmailFormat(value: string): boolean {
+  if (value.length < 3 || value.length > 254) return false;
+  let at = -1;
+  for (let i = 0; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    if (c <= 32 || c === 127) return false;
+    if (c === 64) {
+      if (at !== -1) return false;
+      at = i;
+    }
+  }
+  if (at <= 0 || at >= value.length - 1) return false;
+  const domainStart = at + 1;
+  let dot = -1;
+  for (let i = domainStart; i < value.length; i += 1) {
+    if (value.charCodeAt(i) === 46) {
+      if (i === domainStart || i === value.length - 1) return false;
+      dot = i;
+    }
+  }
+  return dot !== -1;
+}
 
 export interface SchemaIssue {
   code: string;
@@ -170,7 +193,7 @@ export function validateAgainstSchema(
     if (schema.format === 'date' && !DATE_RE.test(data)) {
       issues.push({ code: 'FORMAT_DATE', pointer: pointer || '/' });
     }
-    if (schema.format === 'email' && !EMAIL_RE.test(data)) {
+    if (schema.format === 'email' && !isEmailFormat(data)) {
       issues.push({ code: 'FORMAT_EMAIL', pointer: pointer || '/' });
     }
     if (schema.format === 'uuid' && !UUID_RE.test(data)) {

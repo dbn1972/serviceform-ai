@@ -51,6 +51,20 @@ describe('JSON Schema runtime', () => {
     expect(issues[0]?.code).toBe('MIN_LENGTH');
     expect(JSON.stringify(issues)).not.toContain('"a"');
   });
+
+  it('validates email format with a linear scan (no backtracking regex)', () => {
+    const schema = parseJsonSchema({
+      type: 'object',
+      properties: { contact: { type: 'string', format: 'email' } },
+      required: ['contact'],
+    });
+    expect(validateAgainstSchema(schema, { contact: 'user@example.test' })).toEqual([]);
+    expect(validateAgainstSchema(schema, { contact: 'not-an-email' })[0]?.code).toBe(
+      'FORMAT_EMAIL',
+    );
+    const attack = `!@!${'!'.repeat(200)}.`;
+    expect(validateAgainstSchema(schema, { contact: attack })[0]?.code).toBe('FORMAT_EMAIL');
+  });
 });
 
 describe('UI schema + conditional visibility + required fields', () => {
