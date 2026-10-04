@@ -13,7 +13,9 @@ const ALLOWED_PREFIXES = [
 ] as const;
 
 export function assertPlatformPath(path: string): string {
-  const trimmed = path.replace(/^\/+/, '');
+  let i = 0;
+  while (i < path.length && path[i] === '/') i += 1;
+  const trimmed = path.slice(i);
   const relative = trimmed.startsWith('v1/') ? trimmed.slice(3) : trimmed;
   const ok = ALLOWED_PREFIXES.some(
     (prefix) => relative === prefix.replace(/\/$/, '') || relative.startsWith(prefix),

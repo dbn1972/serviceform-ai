@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { Cmp050Error } from '../../src/errors.js';
-import { encodeSessionToken, parseSessionToken, sessionFromLogin } from '../../src/session.js';
+import {
+  encodeSessionToken,
+  isRoleCode,
+  isUuid,
+  parseSessionToken,
+  sessionFromLogin,
+} from '../../src/session.js';
 import { assertSimulatedSessionAllowed, loadPortalConfig } from '../../src/config.js';
 
 const tenant = '11111111-1111-4111-8111-111111111111';
@@ -52,6 +58,23 @@ describe('portal session', () => {
         surface: 'service_studio',
       }),
     ).toThrow(Cmp050Error);
+    expect(() =>
+      sessionFromLogin({
+        tenant_id: `${'a'.repeat(10_000)}-1111-4111-8111-111111111111`,
+        actor_id: actor,
+        roles: ['STUDIO_DESIGNER'],
+        surface: 'service_studio',
+      }),
+    ).toThrow(Cmp050Error);
+  });
+
+  it('validates uuid and role codes linearly', () => {
+    expect(isUuid(tenant)).toBe(true);
+    expect(isUuid('not-a-uuid')).toBe(false);
+    expect(isUuid('a'.repeat(36))).toBe(false);
+    expect(isRoleCode('STUDIO_DESIGNER')).toBe(true);
+    expect(isRoleCode('a')).toBe(false);
+    expect(isRoleCode('studio')).toBe(false);
   });
 
   it('loads config from env without logging secrets', () => {

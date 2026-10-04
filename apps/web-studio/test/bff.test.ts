@@ -54,4 +54,21 @@ describe('studio BFF INT-011', () => {
     expect(denied.error_code).toBe('SF-SYS-004');
     expect(JSON.stringify(denied)).not.toContain(tenantB);
   });
+
+  it('rejects non-UUID tenant/actor ids without regex matching', async () => {
+    const res = await handleCreateSession(
+      new Request('http://studio.local/api/session', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          tenant_id: `${'a'.repeat(4000)}-not-uuid`,
+          actor_id: actor,
+          roles: ['STUDIO_DESIGNER'],
+        }),
+      }),
+      'service_studio',
+    );
+    expect(res.status).toBe(400);
+    expect(await res.text()).toContain('SF-SYS-003');
+  });
 });

@@ -16,12 +16,40 @@ export type PortalSession = {
   surface: PortalSurface;
 };
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ROLE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
 const SURFACES = new Set<PortalSurface>(['service_studio', 'tenant_admin', 'platform_ops']);
 
+/** Linear UUID shape check — avoids quantifier regexes (njsscan regex_dos). */
 export function isUuid(value: string): boolean {
-  return UUID_RE.test(value);
+  if (value.length !== 36) return false;
+  const parts = value.split('-');
+  if (parts.length !== 5) return false;
+  const lengths = [8, 4, 4, 4, 12] as const;
+  for (let i = 0; i < 5; i += 1) {
+    const part = parts[i];
+    if (!part || part.length !== lengths[i]) return false;
+    for (let j = 0; j < part.length; j += 1) {
+      const c = part.charCodeAt(j);
+      const isDigit = c >= 48 && c <= 57;
+      const isLower = c >= 97 && c <= 102;
+      const isUpper = c >= 65 && c <= 70;
+      if (!isDigit && !isLower && !isUpper) return false;
+    }
+  }
+  return true;
+}
+
+/** Linear role-code check (A-Z then 1–63 of A-Z0-9_). */
+export function isRoleCode(value: string): boolean {
+  if (value.length < 2 || value.length > 64) return false;
+  const first = value.charCodeAt(0);
+  if (first < 65 || first > 90) return false;
+  for (let i = 1; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    const isDigit = c >= 48 && c <= 57;
+    const isUpper = c >= 65 && c <= 90;
+    if (!isDigit && !isUpper && c !== 95) return false;
+  }
+  return true;
 }
 
 export function assertResourceTenant(session: PortalSession, resourceTenantId: string): void {
@@ -48,7 +76,7 @@ export function sessionFromLogin(input: LoginInput): PortalSession {
   }
   const roles: string[] = [];
   for (const role of input.roles) {
-    if (typeof role !== 'string' || !ROLE_RE.test(role)) {
+    if (typeof role !== 'string' || !isRoleCode(role)) {
       throw new Cmp050Error('SF-SYS-003', { details: [{ code: 'INVALID_ROLES' }] });
     }
     roles.push(role);

@@ -33,8 +33,23 @@ export function assertNoTenantIdentifyingHeaders(
   }
   for (const [name, value] of entries) {
     if (isForbiddenHeaderName(name)) throw new Cmp050Error('SF-TEN-002');
-    if (name.toLowerCase() === 'forwarded' && /(?:^|;|\s)tenant\s*=/i.test(value)) {
+    if (name.toLowerCase() === 'forwarded' && forwardedDeclaresTenant(value)) {
       throw new Cmp050Error('SF-TEN-002');
     }
   }
+}
+
+function forwardedDeclaresTenant(value: string): boolean {
+  const lower = value.toLowerCase();
+  for (let i = 0; i < lower.length; i += 1) {
+    if (!lower.startsWith('tenant', i)) continue;
+    if (i > 0) {
+      const prev = lower.charCodeAt(i - 1);
+      if (prev !== 59 && prev !== 32 && prev !== 9 && prev !== 13 && prev !== 10) continue;
+    }
+    let j = i + 6;
+    while (j < lower.length && (lower.charCodeAt(j) === 32 || lower.charCodeAt(j) === 9)) j += 1;
+    if (j < lower.length && lower[j] === '=') return true;
+  }
+  return false;
 }

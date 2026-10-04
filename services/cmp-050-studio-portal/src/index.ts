@@ -6,6 +6,7 @@ export {
   cookieHeader,
   encodeSessionToken,
   isUuid,
+  isRoleCode,
   parseSessionToken,
   sessionFromLogin,
   type LoginInput,
