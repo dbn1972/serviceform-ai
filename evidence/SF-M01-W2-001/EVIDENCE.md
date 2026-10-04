@@ -6,6 +6,8 @@
 | Component | CMP-003 |
 | Branch | `cursor/m01-w2-cmp-003-e34d` |
 | Base | `origin/main` @ `f397e13` |
+| Head SHA | `912cd05f7c8977a60d9a3454c5869036cc0affe7` |
+| PR | https://github.com/dbn1972/serviceform-ai/pull/26 |
 | Self-certified | **false** |
 | Not certified | **true** |
 | Recommended gate | IMPLEMENTATION_READY (builder); independent Verify not run by builder |
