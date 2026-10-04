@@ -9,7 +9,7 @@
 | Integrations | INT-011 (forged tenant-header denial; CROSS_TENANT_LEAKAGE=0 canary). INT-002 not exercised (no Studio UI). |
 | Base | `origin/main` `3c3dd1f35695998103ecd490abf3e20c631e3661` |
 | Branch | `cursor/m03-host-sf-m03-008-9465` |
-| Head | recorded after evidence commit |
+| Head | `46048b304bbfeb1c978235ee4bfb68cd6ed60efc` |
 | Frozen contracts | unchanged (13/13 MATCH; no CCR) |
 | `pnpm-lock.yaml` | not committed |
 | `apps/api/package.json` | not modified (envelope write path); plugins load via package specifier then workspace file URL |
