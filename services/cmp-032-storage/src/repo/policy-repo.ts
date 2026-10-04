@@ -37,5 +37,7 @@ export async function ensureActivePolicy(
                allowed_content_types, retention_class, status, version::text`,
     [policyId, tenantId, kmsKeyRef],
   );
-  return inserted.rows[0]!;
+  const row = inserted.rows[0];
+  if (!row) throw new Error('storage_policy insert returned no row');
+  return row;
 }

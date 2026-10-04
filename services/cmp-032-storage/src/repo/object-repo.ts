@@ -75,7 +75,9 @@ export async function insertObjectMetadata(
       row.createdBy,
     ],
   );
-  return result.rows[0]!;
+  const inserted = result.rows[0];
+  if (!inserted) throw new Error('object_metadata insert returned no row');
+  return inserted;
 }
 
 export async function getObjectMetadata(

@@ -17,7 +17,10 @@ export function buildStorageSimulationMarker(input: {
     );
   }
   if (input.testRunId.trim().length === 0) {
-    throw new StoragePortError('TEST_RUN_ID_REQUIRED', 'test_run_id is required for SIMULATED mode');
+    throw new StoragePortError(
+      'TEST_RUN_ID_REQUIRED',
+      'test_run_id is required for SIMULATED mode',
+    );
   }
   const marker: SimulationMarker = {
     simulation: true,

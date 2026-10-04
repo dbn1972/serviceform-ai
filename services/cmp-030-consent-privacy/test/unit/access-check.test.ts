@@ -4,7 +4,9 @@ import { canonicalJson, requestFingerprint } from '../../src/domain/fingerprint.
 
 describe('evaluateAccessCheck', () => {
   it('denies missing purpose and inactive purpose', () => {
-    expect(evaluateAccessCheck({ purposeStatus: null, requiresConsent: null, consentStatus: null })).toEqual({
+    expect(
+      evaluateAccessCheck({ purposeStatus: null, requiresConsent: null, consentStatus: null }),
+    ).toEqual({
       allowed: false,
       reason_code: 'PURPOSE_NOT_FOUND',
     });
@@ -31,7 +33,11 @@ describe('evaluateAccessCheck', () => {
       }),
     ).toEqual({ allowed: false, reason_code: 'CONSENT_WITHDRAWN' });
     expect(
-      evaluateAccessCheck({ purposeStatus: 'ACTIVE', requiresConsent: true, consentStatus: 'GRANTED' }),
+      evaluateAccessCheck({
+        purposeStatus: 'ACTIVE',
+        requiresConsent: true,
+        consentStatus: 'GRANTED',
+      }),
     ).toEqual({ allowed: true, reason_code: 'OK' });
   });
 });

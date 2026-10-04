@@ -1,7 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import {
   ACTOR_CITIZEN,
-  ACTOR_OFFICER,
   bearer,
   buildApp,
   closeHarness,

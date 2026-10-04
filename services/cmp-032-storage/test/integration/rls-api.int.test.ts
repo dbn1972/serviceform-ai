@@ -77,7 +77,10 @@ describe('CMP-032 RLS + API (INT-011/013)', () => {
       headers: bearer('t1'),
     });
     expect(access.statusCode).toBe(200);
-    const accessBody = access.json() as { access_url: string; simulation?: { simulation: boolean } };
+    const accessBody = access.json() as {
+      access_url: string;
+      simulation?: { simulation: boolean };
+    };
     expect(accessBody.access_url.startsWith('sim://storage/')).toBe(true);
     expect(accessBody.simulation?.simulation).toBe(true);
 
@@ -148,9 +151,10 @@ describe('CMP-032 RLS + API (INT-011/013)', () => {
     });
     const objectId = (created.json() as { object_id: string }).object_id;
     const t2rows = await asTenant(h.rt, T2, ACTOR, async (c) => {
-      const r = await c.query(`SELECT object_id FROM sf_storage.object_metadata WHERE object_id = $1`, [
-        objectId,
-      ]);
+      const r = await c.query(
+        `SELECT object_id FROM sf_storage.object_metadata WHERE object_id = $1`,
+        [objectId],
+      );
       return r.rowCount;
     });
     expect(t2rows).toBe(0);

@@ -1,9 +1,5 @@
 import type { RequestContext } from '@serviceform/contracts';
-import type {
-  ObjectStorePort,
-  StorageKmsPort,
-  StorageSecretsPort,
-} from '@serviceform/storage';
+import type { ObjectStorePort, StorageKmsPort, StorageSecretsPort } from '@serviceform/storage';
 import type { Pool } from 'pg';
 import type { AuthorizationPort } from '../authz.js';
 import type { StorageServiceConfig } from '../config.js';

@@ -9,7 +9,7 @@ import type { RequestContext } from '@serviceform/contracts';
  * Plugins load via non-literal dynamic import so tsc does not merge those graphs.
  *
  * CMP-038 Event Bus has no end-user REST surface in M01 — process/library only.
- * Wave 2 CMP-003/030/032 mounts are a follow-up by this same envelope after those merges.
+ * Wave 2 CMP-003/030/032 mounts live in `./wave2.ts` (Phase B on stitch).
  */
 export interface Wave1PluginMounts {
   /** CMP-048 PEP + request-context plugin (@serviceform/security). */

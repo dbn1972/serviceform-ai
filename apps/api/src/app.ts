@@ -6,6 +6,7 @@ import type { Logger } from '@serviceform/observability';
 import Fastify, { type FastifyBaseLogger, type FastifyInstance, LogController } from 'fastify';
 import type { AppConfig } from './config.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
+import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
 import { errorHandler } from './plugins/error-handler.js';
 import { type ReadinessCheck, healthRoutes } from './plugins/health.js';
@@ -21,6 +22,10 @@ export interface AppDependencies {
    * deps (pool, OPA, secrets) are not configured; unit/host tests supply doubles.
    */
   wave1?: Wave1PluginMounts;
+  /**
+   * Wave 2 component plugin mounts (CMP-003/030/032). Same optional wiring as wave1.
+   */
+  wave2?: Wave2PluginMounts;
 }
 
 /**
@@ -80,11 +85,19 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('wave1Mounted', [] as string[]);
   }
 
+  if (deps.wave2) {
+    const mounted = await registerWave2Plugins(app, deps.wave2);
+    app.decorate('wave2Mounted', mounted);
+  } else {
+    app.decorate('wave2Mounted', [] as string[]);
+  }
+
   return app;
 }
 
 declare module 'fastify' {
   interface FastifyInstance {
     wave1Mounted: string[];
+    wave2Mounted: string[];
   }
 }

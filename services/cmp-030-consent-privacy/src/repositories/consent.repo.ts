@@ -57,7 +57,14 @@ export async function insertPurpose(
        tenant_id, purpose_id, code, label, status, requires_consent, created_by
      ) VALUES ($1,$2,$3,$4,'ACTIVE',$5,$6)
      RETURNING tenant_id, purpose_id, code, label, status, requires_consent, version, created_at, updated_at`,
-    [params.tenantId, purposeId, params.code, params.label, params.requiresConsent, params.createdBy],
+    [
+      params.tenantId,
+      purposeId,
+      params.code,
+      params.label,
+      params.requiresConsent,
+      params.createdBy,
+    ],
   );
   const row = res.rows[0];
   if (!row) throw new Cmp030Error('SF-SYS-001');

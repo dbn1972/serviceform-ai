@@ -56,6 +56,9 @@ importers:
       '@fastify/helmet':
         specifier: 13.1.1
         version: 13.1.1
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
       '@fastify/under-pressure':
         specifier: 9.2.0
         version: 9.2.0
@@ -83,12 +86,42 @@ importers:
       '@opentelemetry/semantic-conventions':
         specifier: 1.43.0
         version: 1.43.0
+      '@serviceform/cmp-002-tenant-organisation':
+        specifier: workspace:*
+        version: link:../../services/cmp-002-tenant-organisation
+      '@serviceform/cmp-003-jurisdiction':
+        specifier: workspace:*
+        version: link:../../services/cmp-003-jurisdiction
+      '@serviceform/cmp-030-consent-privacy':
+        specifier: workspace:*
+        version: link:../../services/cmp-030-consent-privacy
+      '@serviceform/cmp-031-audit-ledger':
+        specifier: workspace:*
+        version: link:../../services/cmp-031-audit-ledger
+      '@serviceform/cmp-032-storage':
+        specifier: workspace:*
+        version: link:../../services/cmp-032-storage
+      '@serviceform/cmp-036-api-gateway':
+        specifier: workspace:*
+        version: link:../../services/cmp-036-api-gateway
+      '@serviceform/cmp-037-integration-hub':
+        specifier: workspace:*
+        version: link:../../services/cmp-037-integration-hub
+      '@serviceform/cmp-047-observability':
+        specifier: workspace:*
+        version: link:../../services/cmp-047-observability
+      '@serviceform/cmp-048-security-platform':
+        specifier: workspace:*
+        version: link:../../services/cmp-048-security-platform
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
       '@serviceform/observability':
         specifier: workspace:*
         version: link:../../packages/observability
+      '@serviceform/security':
+        specifier: workspace:*
+        version: link:../../packages/security
       ajv:
         specifier: 8.20.0
         version: 8.20.0
@@ -104,6 +137,9 @@ importers:
       fastify-plugin:
         specifier: 5.1.0
         version: 5.1.0
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
       pg:
         specifier: 8.23.1
         version: 8.23.1
@@ -327,6 +363,12 @@ importers:
         specifier: 5.12.5
         version: 5.12.5
 
+  packages/storage:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+
   packages/ui-ux4g:
     devDependencies:
       '@types/react':
@@ -343,6 +385,44 @@ importers:
         version: 19.3.0(react@19.3.0)
 
   services/cmp-002-tenant-organisation:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-003-jurisdiction:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-030-consent-privacy:
     dependencies:
       '@serviceform/contracts':
         specifier: workspace:*
@@ -391,6 +471,53 @@ importers:
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1
+
+  services/cmp-032-storage:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      '@serviceform/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      fastify-plugin:
+        specifier: 5.1.0
+        version: 5.1.0
+      fastify-rate-limit:
+        specifier: npm:@fastify/rate-limit@11.2.0
+        version: '@fastify/rate-limit@11.2.0'
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-036-api-gateway:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify-plugin:
+        specifier: 5.1.0
+        version: 5.1.0
+    devDependencies:
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
 
   services/cmp-037-integration-hub:
     dependencies:
@@ -441,6 +568,19 @@ importers:
       tsx:
         specifier: 4.23.15
         version: 4.23.15
+
+  services/cmp-047-observability:
+    dependencies:
+      '@serviceform/observability':
+        specifier: workspace:*
+        version: link:../../packages/observability
+      fastify-plugin:
+        specifier: 5.1.0
+        version: 5.1.0
+    devDependencies:
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
 
   services/cmp-048-security-platform:
     dependencies:

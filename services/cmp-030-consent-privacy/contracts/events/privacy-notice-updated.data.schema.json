@@ -3,14 +3,7 @@
   "$id": "https://serviceform.local/schemas/cmp-030/privacy-notice-updated.data.schema.json",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "notice_id",
-    "purpose_id",
-    "version_no",
-    "content_ref",
-    "status",
-    "published_at"
-  ],
+  "required": ["notice_id", "purpose_id", "version_no", "content_ref", "status", "published_at"],
   "properties": {
     "notice_id": { "type": "string", "format": "uuid" },
     "purpose_id": { "type": "string", "format": "uuid" },

@@ -28,7 +28,8 @@ export async function registerPostObject(app: FastifyInstance, deps: RouteDeps):
       },
     },
     async (request, reply) => {
-      const ctx = request.sfContext!;
+      const ctx = request.sfContext;
+      if (!ctx) throw new Cmp032Error('SF-AUTH-001');
       const body = request.body ?? {};
       const contentType = body.content_type;
       const contentBase64 = body.content_base64;

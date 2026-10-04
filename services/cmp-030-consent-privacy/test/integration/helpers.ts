@@ -237,18 +237,9 @@ export async function buildApp(h: Harness, authorizer = new ContractAuthorizer()
     authorizer,
     clock: () => new Date('2026-10-04T12:00:00.000Z'),
   });
-  fixtures.set(
-    'officer-t1',
-    ctx({ tenant_id: T1, actor: { type: 'OFFICER', id: ACTOR_OFFICER } }),
-  );
-  fixtures.set(
-    'officer-t2',
-    ctx({ tenant_id: T2, actor: { type: 'OFFICER', id: ACTOR_OFFICER } }),
-  );
-  fixtures.set(
-    'citizen-t1',
-    ctx({ tenant_id: T1, actor: { type: 'CITIZEN', id: ACTOR_CITIZEN } }),
-  );
+  fixtures.set('officer-t1', ctx({ tenant_id: T1, actor: { type: 'OFFICER', id: ACTOR_OFFICER } }));
+  fixtures.set('officer-t2', ctx({ tenant_id: T2, actor: { type: 'OFFICER', id: ACTOR_OFFICER } }));
+  fixtures.set('citizen-t1', ctx({ tenant_id: T1, actor: { type: 'CITIZEN', id: ACTOR_CITIZEN } }));
   return { app, authorizer };
 }
 

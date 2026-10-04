@@ -81,13 +81,18 @@ describe('CMP-030 privilege boundary (ADR-0006)', () => {
         [T1, purposeId, ACTOR_OFFICER],
       );
     });
-    const rows = await asTenant(h.rt, '22222222-2222-4222-8222-222222222222', ACTOR_OFFICER, async (c) => {
-      const res = await c.query(
-        `SELECT code FROM sf_consent_privacy.purpose WHERE purpose_id = $1`,
-        [purposeId],
-      );
-      return res.rows;
-    });
+    const rows = await asTenant(
+      h.rt,
+      '22222222-2222-4222-8222-222222222222',
+      ACTOR_OFFICER,
+      async (c) => {
+        const res = await c.query(
+          `SELECT code FROM sf_consent_privacy.purpose WHERE purpose_id = $1`,
+          [purposeId],
+        );
+        return res.rows;
+      },
+    );
     expect(rows).toEqual([]);
   });
 });

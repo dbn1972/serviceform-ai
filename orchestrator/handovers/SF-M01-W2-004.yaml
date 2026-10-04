@@ -120,10 +120,12 @@ completed_work:
   - pnpm-lock.yaml not committed
 
 unresolved_work:
-  - Phase B mount of CMP-003/030/032 after those PRs merge (same envelope/writer)
-  - Independent INT/SEC/EVD verification not run by this builder
-  - Lockfile reconcile by orchestrator required for new workspace importers + fastify-rate-limit alias on apps/api (see evidence/SF-M01-W2-004/ci-triage.md); frozen-lockfile CI expected red until then
-  - Default server entry does not auto-construct pool/OPA/security deps (mounts are optional via AppDependencies.wave1)
+  - Independent INT/SEC/EVD verification not run by this builder (orchestrator dispatches after stitch)
+  - Default server entry does not auto-construct pool/OPA/security deps (mounts are optional via AppDependencies.wave1 / wave2)
+
+stitch_followups_completed:
+  - Phase B mounts for CMP-003/030/032 on stitch branch cursor/m01-w2-stitch-e19b (apps/api/src/composition/wave2.ts)
+  - Lockfile reconcile on stitch (pnpm-lock.yaml); see evidence/SF-M01-W2-STITCH/
 
 changed_contracts: []
 changed_migrations: []

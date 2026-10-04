@@ -153,6 +153,59 @@ describe('CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-0
   });
 });
 
+describe('CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B)', () => {
+  it('mounts CMP-003/030/032 under /v1 with frozen deny envelopes', async () => {
+    app = await buildApp(config, {
+      logger: silentLogger(),
+      wave2: {
+        jurisdiction: {
+          pool: {} as never,
+          resolveContext: async () => CTX,
+          authorizer: { decide: async () => DENY },
+        },
+        consentPrivacy: {
+          pool: {} as never,
+          resolveContext: async () => CTX,
+          authorizer: { decide: async () => DENY },
+        },
+        storage: {
+          pool: {} as never,
+          resolveContext: async () => CTX,
+          authorizer: { decide: async () => DENY },
+        },
+      },
+    });
+    expect(app.wave2Mounted).toEqual(expect.arrayContaining(['CMP-003', 'CMP-030', 'CMP-032']));
+
+    const forged = await app.inject({
+      method: 'GET',
+      url: '/v1/jurisdiction-types',
+      headers: { 'x-tenant-id': '00000000-0000-4000-8000-000000000099' },
+    });
+    expect(forged.statusCode).toBe(403);
+    expect(validate('error-response', forged.json()).valid).toBe(true);
+    expect(forged.json()).toMatchObject({ error_code: 'SF-TEN-002' });
+
+    const jur = await app.inject({ method: 'GET', url: '/v1/jurisdiction-types' });
+    expect(jur.statusCode).toBe(403);
+    expect(validate('error-response', jur.json()).valid).toBe(true);
+    expect(jur.json()).toMatchObject({ error_code: 'SF-AUTH-002' });
+
+    const purposes = await app.inject({ method: 'GET', url: '/v1/purposes' });
+    expect(purposes.statusCode).toBe(403);
+    expect(validate('error-response', purposes.json()).valid).toBe(true);
+    expect(purposes.json()).toMatchObject({ error_code: 'SF-AUTH-002' });
+
+    const storage = await app.inject({
+      method: 'GET',
+      url: '/v1/storage/objects/11111111-1111-4111-8111-111111111111/access',
+    });
+    expect(storage.statusCode).toBe(403);
+    expect(validate('error-response', storage.json()).valid).toBe(true);
+    expect(storage.json()).toMatchObject({ error_code: 'SF-AUTH-002' });
+  });
+});
+
 describe('CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047)', () => {
   it('keeps logger redaction for nested secrets on the host logger', async () => {
     const lines: string[] = [];

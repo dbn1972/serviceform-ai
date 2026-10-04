@@ -23,7 +23,8 @@ export async function registerGetAccess(app: FastifyInstance, deps: RouteDeps): 
       },
     },
     async (request, reply) => {
-      const ctx = request.sfContext!;
+      const ctx = request.sfContext;
+      if (!ctx) throw new Cmp032Error('SF-AUTH-001');
       const objectId = request.params.id;
       if (!/^[0-9a-f-]{36}$/i.test(objectId)) throw new Cmp032Error('SF-SYS-003');
 

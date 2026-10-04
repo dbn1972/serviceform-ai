@@ -1,10 +1,6 @@
 import rateLimit from '@fastify/rate-limit';
 import { errorEntry, type ErrorResponse } from '@serviceform/contracts';
-import type {
-  ObjectStorePort,
-  StorageKmsPort,
-  StorageSecretsPort,
-} from '@serviceform/storage';
+import type { ObjectStorePort, StorageKmsPort, StorageSecretsPort } from '@serviceform/storage';
 import { SimulatedObjectStore } from '@serviceform/storage';
 import type { FastifyError, FastifyInstance, FastifyPluginAsync } from 'fastify';
 import fastifyRateLimit from 'fastify-rate-limit';

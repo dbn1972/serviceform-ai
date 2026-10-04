@@ -8,10 +8,7 @@ export {
   type StorageMode,
 } from './modes.js';
 export { buildObjectKey, newObjectId, contentHashPrefix } from './object-key.js';
-export {
-  createSimulatedPresign,
-  verifySimulatedPresign,
-} from './presign.js';
+export { createSimulatedPresign, verifySimulatedPresign } from './presign.js';
 export type {
   ObjectStorePort,
   PresignedAccess,

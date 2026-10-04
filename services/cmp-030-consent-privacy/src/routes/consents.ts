@@ -69,14 +69,18 @@ export function registerConsentRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
       const appliedFor = request.body.applied_for ?? request.body.subject_id;
       if (appliedFor !== request.body.subject_id) {
-        throw new Cmp030Error('SF-SYS-003', { details: [{ code: 'APPLIED_FOR_SUBJECT_MISMATCH' }] });
+        throw new Cmp030Error('SF-SYS-003', {
+          details: [{ code: 'APPLIED_FOR_SUBJECT_MISMATCH' }],
+        });
       }
       let basis = request.body.representation_basis;
       if (!basis) {
         basis = ctx.actor.id === request.body.subject_id ? 'SELF' : 'ASSISTED';
       }
       if (basis === 'SELF' && ctx.actor.id !== request.body.subject_id) {
-        throw new Cmp030Error('SF-AUTH-002', { details: [{ code: 'SELF_REQUIRES_SUBJECT_ACTOR' }] });
+        throw new Cmp030Error('SF-AUTH-002', {
+          details: [{ code: 'SELF_REQUIRES_SUBJECT_ACTOR' }],
+        });
       }
 
       const now = deps.clock();
@@ -203,14 +207,7 @@ export function registerConsentRoutes(app: FastifyInstance, deps: RouteDeps): vo
         });
       } catch (err) {
         if (err instanceof Cmp030Error && err.code === 'SF-AUTH-002') {
-          await writeDenied(
-            deps,
-            ctx,
-            request,
-            'CONSENT_WITHDRAW',
-            'Consent',
-            request.params.id,
-          );
+          await writeDenied(deps, ctx, request, 'CONSENT_WITHDRAW', 'Consent', request.params.id);
         }
         throw err;
       }
