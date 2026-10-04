@@ -1,19 +1,23 @@
-# M01 G4 exit plan (PLANNING ONLY)
+# M01 G4 exit plan (IMPLEMENTATION AUTHORIZED)
 
-**Decision token (split against CKV_SECRET_6):** family `M01_G4_EXIT_PLAN` + status `READY` (join with `_`).
+**Decision token (split against CKV_SECRET_6):** family `M01_G4_EXIT_PLAN` + status `READY` (join with `_`).  
+**Envelope state:** `IMPLEMENTATION_READY` for SF-M01-G4-001…005. Not dispatched. Not CERTIFIED.
 
 | Field | Value |
 |---|---|
 | Module | M01 Foundation, Tenancy, Jurisdiction, Security and Platform Backbone |
 | Exit gate (`specs/build-plan.yaml`) | `G4_SECURITY` + `_` + `VERIFIED` |
 | Exit record token (target) | `M01` + `_COMPLETE_` + `G4_SECURITY` + `_` + `VERIFIED` |
-| Planning baseline | `origin/main` @ `8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76` |
+| Implementation baseline | `origin/main` @ `c42c7c89aa75653d099883e7f28ece73cf2c7515` |
+| Planning baseline (historical) | `origin/main` @ `8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76` |
 | Wave 1 | `M01_WAVE1_MERGED_AND_CLOSED` (merge `37cbf203e18d8e072353139e368356a8dac00946`) |
 | Wave 2 | Gate-combine merged via PR #33 (merge `8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76`) |
+| G4 plan merge | PR #34 (merge `c42c7c89aa75653d099883e7f28ece73cf2c7515`) |
 | M01 components | CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055 (all on main) |
 | M01 Wave 3 feature wave | **None** (build-plan has no Wave 3 coding wave for M01) |
 | CERTIFIED / RELEASE CERTIFIED | **false** (out of scope; not G6) |
-| `implementation_authorized` | **false** |
+| `implementation_authorized` | **true** |
+| `m01_g4_exit_started` / `dispatched` | **false** (pre-dispatch promote only) |
 | M02 / M03 / CG-01 | **Blocked** until exit token issued by human/CI |
 | Frozen contracts altered | **none** |
 | Self-certified | **false** |
@@ -23,13 +27,14 @@
 1. Architecture Constitution (immutable constraints)
 2. Frozen shared contracts (`orchestrator/contracts-lock.yaml`, 13/13 MATCH)
 3. Confirmed sequencing: W1+W2 merged; no M01 Wave 3 feature coding; CG-01 (M02∥M03) only after M01 G4 exit
-4. Bounded G4 exit envelopes (`orchestrator/handovers/SF-M01-G4-00x.yaml`) — **PLANNING** only
-5. **Later, only if a human authorizes exit implementation:** isolated parallel exit envelopes
-6. Independent evidence bind
-7. Human / CI issues exit record token `M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED` (still **not** RELEASE CERTIFIED)
-8. Only then dispatch CG-01: M02 ∥ M03
+4. Bounded G4 exit envelopes (`orchestrator/handovers/SF-M01-G4-00x.yaml`) — plan accepted
+5. **Human authorized exit implementation** — envelopes promoted to `IMPLEMENTATION_READY` (`implementation_authorized: true`); builders not yet dispatched
+6. Isolated parallel exit envelopes (G4-A/B/C) when orchestrator dispatches
+7. Independent evidence bind
+8. Human / CI issues exit record token `M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED` (still **not** RELEASE CERTIFIED)
+9. Only then dispatch CG-01: M02 ∥ M03
 
-This planning pass stops at step 4.
+This promote pass completes step 5 (authorization + READY). No R-ENV-INT/regression/security code yet. No M02/M03.
 
 ## 2. Authoritative inputs
 
@@ -212,9 +217,9 @@ Until the exit record token (**`M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED`**) is i
 | ADR-0006-9 | Outbox `sf_app` grants | No | Accept residual **or** CCR (never silent edit) |
 | CMP-055-PKG | Missing `package.json` | No | Path-based INT or minimal packaging under exit scope |
 | BRANCH-PROT | Required checks before M02/M03 | No | Document + human configure |
-| AUTH-EXIT | Human auth for exit implementation | Blocks implementation | Flip `implementation_authorized` only when approved |
+| AUTH-EXIT | Human auth for exit implementation | Cleared | `implementation_authorized: true` (this promote) |
 
-**No blocking CCR/ADR required to accept this plan.**
+**No blocking CCR/ADR required to accept this plan.** Exit implementation authorized; builders await orchestrator dispatch.
 
 ## 10. Explicit non-goals
 
@@ -223,22 +228,26 @@ Until the exit record token (**`M01`/`COMPLETE`/`G4_SECURITY`/`VERIFIED`**) is i
 - No frozen-contract edits
 - No CERTIFIED / RELEASE CERTIFIED / G6 claim
 - No REAL infra or statutory invention
+- No R-ENV-INT/regression/security code in this promote PR (handovers/docs only)
 
 ## 11. Envelope index
 
 | File | State |
 |---|---|
-| `orchestrator/handovers/M01-G4-EXIT.yaml` | PLANNING index |
-| `orchestrator/handovers/SF-M01-G4-001.yaml` | PLANNING |
-| `orchestrator/handovers/SF-M01-G4-002.yaml` | PLANNING |
-| `orchestrator/handovers/SF-M01-G4-003.yaml` | PLANNING |
-| `orchestrator/handovers/SF-M01-G4-004.yaml` | PLANNING |
-| `orchestrator/handovers/SF-M01-G4-005.yaml` | PLANNING |
+| `orchestrator/handovers/M01-G4-EXIT.yaml` | IMPLEMENTATION_READY index |
+| `orchestrator/handovers/SF-M01-G4-001.yaml` | IMPLEMENTATION_READY |
+| `orchestrator/handovers/SF-M01-G4-002.yaml` | IMPLEMENTATION_READY |
+| `orchestrator/handovers/SF-M01-G4-003.yaml` | IMPLEMENTATION_READY |
+| `orchestrator/handovers/SF-M01-G4-004.yaml` | IMPLEMENTATION_READY |
+| `orchestrator/handovers/SF-M01-G4-005.yaml` | IMPLEMENTATION_READY |
+
+All five: `implementation_authorized: true`, `base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515`, `dispatched: false`, `certified: false`.
 
 ## 12. Confirmation
 
-- Planning only: **yes**
-- Implementation started: **no**
+- Planning only: **no** (authorized; not yet dispatched)
+- Implementation authorized: **true**
+- Implementation started / builders dispatched: **no**
 - M01 G4 exit started: **no**
 - Frozen contracts altered: **no**
 - CERTIFIED claimed: **no**

@@ -1,13 +1,13 @@
 # M01 G4 exit envelope — SF-M01-G4-003 Final security exit
-# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
 task_id: SF-M01-G4-003
 title: Final M01 security exit verification (G4)
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
+state: IMPLEMENTATION_READY
+planning_only: false
+implementation_authorized: true
 m01_g4_exit_started: false
 dispatched: false
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
@@ -22,13 +22,13 @@ builder_agent: serviceform-security-verifier
 model_route: opus
 model_release: claude-opus-5-5
 effort: xhigh
-base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
 branch: agent/M01-g4-security-SF-M01-G4-003
 worktree: ../wt-SF-M01-G4-003
 depends_on:
   - Prefer tip that includes SF-M01-G4-001 (generalized envelope-int)
   - May run parallel with SF-M01-G4-002 on same tip
-  - human authorization for M01 G4 exit implementation
+  - human authorization for M01 G4 exit implementation (granted)
 allowed_write_paths:
   - tests/security/**
   - evidence/SF-M01-G4-003/**
