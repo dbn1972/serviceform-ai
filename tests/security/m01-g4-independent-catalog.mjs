@@ -25,9 +25,22 @@ const pw = 'synth-g4-not-a-secret-' + randomBytes(16).toString('hex');
 const findings = [];
 const pass = [];
 
+function say(line) {
+  process.stdout.write(`${line}\n`);
+}
+
 function rec(ok, id, detail) {
   (ok ? pass : findings).push({ id, detail });
-  console.log(`${ok ? 'PASS' : 'FAIL'} ${id}: ${detail}`);
+  say(`${ok ? 'PASS' : 'FAIL'} ${id}: ${detail}`);
+}
+
+/** Build DDL via PG format(%I/%L); never interpolate identifiers into query templates. */
+async function fmtSql(client, fmt, params) {
+  const built = await client.query('SELECT format($1::text, VARIADIC $2::text[]) AS s', [
+    fmt,
+    params,
+  ]);
+  return built.rows[0]?.s ?? '';
 }
 
 function migrate() {
@@ -160,7 +173,7 @@ async function asTenant(cs, tenantId, fn) {
   });
 }
 
-console.log(`Migrating for tip ${TIP}...`);
+say('Migrating for tip ' + TIP + '...');
 migrate();
 const admin = new pg.Client({ connectionString: url });
 await admin.connect();
@@ -308,22 +321,41 @@ try {
   );
 
   const dbname = (await admin.query('SELECT current_database() AS d')).rows[0].d;
-  async function recreateLogin(login, inRolesSql) {
+  async function recreateLogin(login, membershipFmt, membershipParams) {
     await admin.query(
-      `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE usename = $1 AND pid <> pg_backend_pid()`,
+      'SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE usename = $1 AND pid <> pg_backend_pid()',
       [login],
     );
-    await admin.query(`REVOKE ALL ON DATABASE "${dbname}" FROM ${login}`).catch(() => {});
-    await admin.query(`DROP ROLE IF EXISTS ${login}`);
-    await admin.query(
-      `CREATE ROLE ${login} LOGIN PASSWORD '${pw}' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT IN ROLE ${inRolesSql}`,
+    const revokeSql = await fmtSql(admin, 'REVOKE ALL ON DATABASE %I FROM %I', [dbname, login]);
+    await admin.query(revokeSql).catch(() => {});
+    const dropSql = await fmtSql(
+      admin,
+      `DO $do$ BEGIN
+         IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %L) THEN
+           DROP OWNED BY %I;
+           DROP ROLE %I;
+         END IF;
+       END $do$`,
+      [login, login, login],
     );
-    await admin.query(`GRANT CONNECT ON DATABASE "${dbname}" TO ${login}`);
+    await admin.query(dropSql);
+    const createSql = await fmtSql(admin, membershipFmt, membershipParams);
+    await admin.query(createSql);
+    const grantSql = await fmtSql(admin, 'GRANT CONNECT ON DATABASE %I TO %I', [dbname, login]);
+    await admin.query(grantSql);
   }
   for (const comp of COMPONENTS) {
-    await recreateLogin(comp.login, `sf_app, ${comp.rw}`);
+    await recreateLogin(
+      comp.login,
+      'CREATE ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT IN ROLE sf_app, %I',
+      [comp.login, pw, comp.rw],
+    );
   }
-  await recreateLogin('sf_g4_pub', 'sf_outbox_publisher');
+  await recreateLogin(
+    'sf_g4_pub',
+    'CREATE ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS INHERIT IN ROLE sf_outbox_publisher',
+    ['sf_g4_pub', pw],
+  );
 
   for (const comp of COMPONENTS) {
     await withClient(roleUrl(comp.login), async (c) => {
@@ -353,7 +385,8 @@ try {
         rec(!m.rows[0].m, `${comp.id}.not_member.${other}`, String(m.rows[0].m));
         let setFailed = false;
         try {
-          await c.query(`SET ROLE ${other}`);
+          const setSql = await fmtSql(c, 'SET ROLE %I', [other]);
+          await c.query(setSql);
         } catch {
           setFailed = true;
         }
@@ -738,7 +771,7 @@ try {
     residualOutbox = true;
   } catch (e) {
     residualOutbox = false;
-    console.log('NOTE ADR-0006#9 probe did not insert:', e.code || e.message);
+    say('NOTE ADR-0006#9 probe did not insert: ' + (e.code || e.message));
   }
   rec(
     true,
@@ -763,7 +796,7 @@ try {
   };
   const outPath = process.env.CATALOG_SUMMARY || 'catalog-summary.json';
   writeFileSync(outPath, JSON.stringify(summary, null, 2));
-  console.log(JSON.stringify(summary, null, 2));
+  say(JSON.stringify(summary, null, 2));
   if (findings.length) process.exitCode = 1;
 } finally {
   await admin.end();
