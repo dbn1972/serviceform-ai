@@ -24,7 +24,7 @@ const config = loadConfig({
 const T1 = '11111111-1111-4111-8111-111111111111';
 const SUBJECT = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const CANARY = 'CANARY-PII-555-0100';
-const SECRET = 'otp-secret-not-for-logs';
+const BEARER_CANARY = 'otp-canary-not-for-logs';
 
 const CTX: RequestContext = {
   tenant_id: T1,
@@ -109,14 +109,14 @@ describe('SF-M02-SEC fail-closed / PII / SIMULATED (not CERTIFIED)', () => {
     const unauth = await app.inject({
       method: 'GET',
       url: '/v1/identity/me',
-      headers: { authorization: `Bearer ${SECRET}` },
+      headers: { authorization: `Bearer ${BEARER_CANARY}` },
     });
     expect(unauth.statusCode).toBe(401);
     expect(validate('error-response', unauth.json()).valid).toBe(true);
     expect(unauth.json()).toMatchObject({ error_code: 'SF-AUTH-001' });
-    expect(unauth.body).not.toContain(SECRET);
+    expect(unauth.body).not.toContain(BEARER_CANARY);
     expect((unauth.json() as { correlation_id: string }).correlation_id).toBeTruthy();
-    expect(JSON.stringify(unauth.json())).not.toContain(SECRET);
+    expect(JSON.stringify(unauth.json())).not.toContain(BEARER_CANARY);
 
     const denied = await app.inject({
       method: 'GET',
@@ -137,8 +137,8 @@ describe('SF-M02-SEC fail-closed / PII / SIMULATED (not CERTIFIED)', () => {
     expect(missingCtx.statusCode).toBeGreaterThanOrEqual(400);
     expect(validate('error-response', missingCtx.json()).valid).toBe(true);
     expect(missingCtx.body).not.toContain(CANARY);
-    expect(missingCtx.body).not.toContain(SECRET);
-    expect(lines.join('\n')).not.toContain(SECRET);
+    expect(missingCtx.body).not.toContain(BEARER_CANARY);
+    expect(lines.join('\n')).not.toContain(BEARER_CANARY);
     expect(lines.join('\n')).not.toContain(CANARY);
   });
 

@@ -513,7 +513,9 @@ try {
 
   await expectDenied('CLAIM.005.verified_downgrade_prep_denied_peer', () =>
     asTenant(roleUrl('sf_m02_004_rt'), T2, async (c) => {
-      await c.query(`UPDATE sf_citizen_profile.profile_claim SET verification_status = 'UNVERIFIED'`);
+      await c.query(
+        `UPDATE sf_citizen_profile.profile_claim SET verification_status = 'UNVERIFIED'`,
+      );
     }),
   );
 } finally {
