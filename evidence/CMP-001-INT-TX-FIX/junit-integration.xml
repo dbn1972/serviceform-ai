@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="2.922847495">
+    <testsuite name="test/integration/api-negative.int.test.ts" timestamp="2026-10-04T11:48:52.206Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.561095432">
+        <testcase classname="test/integration/api-negative.int.test.ts" name="CMP-001 API negatives / INT-013 &gt; forged tenant header is denied with zero leakage" time="0.066001538">
+        </testcase>
+        <testcase classname="test/integration/api-negative.int.test.ts" name="CMP-001 API negatives / INT-013 &gt; plugin refuses production critical SIMULATED bindings" time="0.002497862">
+        </testcase>
+        <testcase classname="test/integration/api-negative.int.test.ts" name="CMP-001 API negatives / INT-013 &gt; officer without tenant cannot hit offering commands" time="0.04700634">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T11:48:52.207Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.479759391">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-001 migration round-trip &gt; schema exists with FORCE RLS on tenant tables and no prosecdef" time="0.00908672">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T11:48:52.207Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="1.881992672">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-001 privilege boundary (ADR-0006) / INT-011 &gt; own-component DML succeeds; peer-component login is denied" time="0.018164314">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-001 privilege boundary (ADR-0006) / INT-011 &gt; wrong-tenant RLS returns zero rows and CROSS_TENANT_LEAKAGE=0" time="0.009731094">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-001 privilege boundary (ADR-0006) / INT-011 &gt; runtime login is not table owner, cannot SET ROLE peer rw, BYPASSRLS false" time="0.001454517">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-001 privilege boundary (ADR-0006) / INT-011 &gt; refuses mutation of insert-only offering versions and unpublished pin without marker" time="0.00689522">
+        </testcase>
+    </testsuite>
+</testsuites>
