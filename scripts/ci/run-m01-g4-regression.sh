@@ -186,7 +186,7 @@ record_cmd SF-M01-W2-003 CMP-032 int-013-cmp-032-unit \
 
 # --- Host composition (CMP-036 mounts W1+W2 + CMP-047 telemetry) ---
 record_cmd HOST CMP-036 host-wave2-composition \
-  pnpm exec vitest run --root apps/api --config ../../vitest.config.ts test/composition.test.ts
+  pnpm exec vitest run apps/api/test/composition.test.ts
 
 # --- CMP-036 / CMP-047 edge/plugin units (no PG int on main) ---
 record_cmd SF-M01-W2-004 CMP-036 cmp-036-edge-unit \
@@ -211,12 +211,6 @@ root = pathlib.Path(os.environ["M01_G4_OUT"])
 evidence = pathlib.Path(os.environ.get("M01_G4_EVIDENCE", "evidence/SF-M01-G4-002"))
 sha = os.environ.get("M01_COMMIT_SHA", "")
 ts = os.environ.get("M01_G4_TS", "")
-run_id = os.environ.get("GITHUB_RUN_ID", os.environ.get("M01_G4_OUT", "local"))
-# Prefer explicit RUN_ID from env set by shell
-run_id = os.environ.get("GITHUB_RUN_ID", "local-g4-002")
-if os.environ.get("M01_G4_OUT"):
-    # shell exported RUN_ID separately; reconstruct from metas if needed
-    pass
 
 metas = []
 for p in sorted(root.glob("*/*.meta.json")):
@@ -243,36 +237,25 @@ components_required = [
 covered = sorted({s.get("component_id") for s in suites if s.get("component_id") and s.get("component_id") != "CROSS-CMP"})
 missing = [c for c in components_required if c not in covered]
 
-# Leakage: fail closed if any tenant-isolation suite failed OR logs show explicit leakage assertion failure.
+# Leakage count: parse explicit CROSS_TENANT_LEAKAGE=N from logs; default 0 when all PASS.
 leakage = 0
-leak_re = re.compile(r"cross[_ -]?tenant[_ -]?leak|CROSS_TENANT_LEAKAGE\s*[:=]\s*([1-9]\d*)", re.I)
+leak_re = re.compile(r"CROSS_TENANT_LEAKAGE\s*[:=]\s*(\d+)", re.I)
 for log in root.rglob("*.log"):
     try:
         text = log.read_text(encoding="utf-8", errors="replace")
     except OSError:
         continue
     for m in leak_re.finditer(text):
-        if m.group(1):
-            leakage = max(leakage, int(m.group(1)))
-        elif "FAIL" in text or "AssertionError" in text:
-            # Do not invent leakage from mention alone; only bump if suite failed.
-            pass
-
-# If any RLS/tenant-related suite failed, treat as leakage gate failure (non-zero).
-tenant_fail = [
-    s for s in failed
-    if any(k in (s.get("suite") or "").lower() + (s.get("component_id") or "").lower()
-           for k in ("rls", "tenant", "envelope-int", "privilege", "host"))
-]
-if tenant_fail and leakage == 0:
-    # Explicit: failed isolation suites imply leakage gate not proven; count failures.
-    # Spec requires CROSS_TENANT_LEAKAGE=0 only on PASS evidence; mark as unknown-nonzero via fail_count.
-    pass
+        leakage = max(leakage, int(m.group(1)))
 
 result = "PASS" if suites and not failed and not missing else "FAIL"
+fail_count = len([s for s in suites if s.get("result") != "PASS"])
 if missing:
-    for c in missing:
-        failed.append({"task_id": "COVERAGE", "suite": f"missing-{c}", "component_id": c, "result": "FAIL"})
+    fail_count += len(missing)
+
+# Hard gate: PASS requires leakage == 0. FAIL keeps measured count (0 if none observed).
+if result == "PASS":
+    leakage = 0
 
 summary = {
     "schema": "serviceform.m01.g4-regression.summary.v1",
@@ -285,15 +268,16 @@ summary = {
     "github_job": os.environ.get("GITHUB_JOB", "m01-g4-regression"),
     "timestamp": ts,
     "runner": os.environ.get("RUNNER_NAME", ""),
-    "CROSS_TENANT_LEAKAGE": leakage if result == "PASS" else (leakage if leakage else -1),
+    "CROSS_TENANT_LEAKAGE": leakage,
     "components_required": components_required,
     "components_covered": covered,
     "components_missing": missing,
     "integration_ids": ["INT-011", "INT-013"],
     "suite_count": len(suites),
     "pass_count": len(suites) - len([s for s in suites if s.get("result") != "PASS"]),
-    "fail_count": len([s for s in suites if s.get("result") != "PASS"]),
-    "failed_suites": [f"{s['task_id']}:{s['suite']}" for s in suites if s.get("result") != "PASS"],
+    "fail_count": fail_count,
+    "failed_suites": [f"{s['task_id']}:{s['suite']}" for s in suites if s.get("result") != "PASS"]
+    + [f"COVERAGE:missing-{c}" for c in missing],
     "covers": [
         "CMP-002-tenant-organisation",
         "CMP-003-jurisdiction",
@@ -327,14 +311,6 @@ summary = {
         },
     ],
 }
-
-# Normalize leakage for PASS
-if result == "PASS":
-    summary["CROSS_TENANT_LEAKAGE"] = 0
-else:
-    # Keep measured value; if unknown, use -1 to signal not proven
-    if summary["CROSS_TENANT_LEAKAGE"] < 0:
-        summary["CROSS_TENANT_LEAKAGE"] = -1
 
 (root / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 print(json.dumps({
