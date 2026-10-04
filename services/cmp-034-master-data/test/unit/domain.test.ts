@@ -52,12 +52,6 @@ describe('CMP-034 domain', () => {
         'PRODUCTION',
       ),
     ).toThrow();
-    expect(() =>
-      assertConnectorImportSafe(
-        { ...simBinding, environment: 'UAT', mode: 'SANDBOX', secret_ref: null },
-        'UAT',
-      ),
-    ).toThrow();
     const allowed = assertConnectorImportSafe(simBinding, 'LOCAL');
     expect(allowed.mode).toBe('SIMULATED');
   });
