@@ -1,0 +1,22 @@
+
+> @serviceform/cmp-002-tenant-organisation@0.0.0 test:integration /workspace/services/cmp-002-tenant-organisation
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-002-tenant-organisation
+
+ ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 510ms
+ ✓ test/integration/api-negative.int.test.ts (14 tests) 668ms
+ ✓ test/integration/pool-reuse.int.test.ts (3 tests) 474ms
+ ✓ test/integration/rls-matrix.int.test.ts (3 tests) 536ms
+ ✓ test/integration/migration.int.test.ts (1 test) 498ms
+
+ Test Files  5 passed (5)
+      Tests  32 passed (32)
+   Start at  05:07:03
+   Duration  3.84s (tests 78%, import 15%, transform 6%)
+
+    Isolate  5 workers spawned · ~77ms startup each (spawn + environment, per file)
+             at least ~307ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/evidence/SF-M01-001/junit/integration.xml

@@ -1,0 +1,30 @@
+
+> @serviceform/cmp-038-event-bus@0.0.0 test:integration /workspace/services/cmp-038-event-bus
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-038-event-bus
+
+{"level":"warn","time":"2026-10-04T05:07:38.770Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"1bedd936-09b6-40a3-b33e-84ee3ce02615","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/kafka.int.test.ts (5 tests) 26185ms
+   ✓ real Kafka 4.1.0 (K1-K5, 004-29) (5)
+     ✓ K1 publish after commit and consume with inbox dedup 5713ms
+     ✓ K2 per-aggregate order is preserved on the broker 5115ms
+     ✓ K3 broker stop/start loses no committed outbox row 6521ms
+ ✓ test/integration/outbox.int.test.ts (5 tests) 2193ms
+   ✓ outbox atomicity, ordering, inbox, broker-outage (I1-I13) (5)
+     ✓ I7 broker down then up loses no committed events 1614ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 1162ms
+   ✓ migration / frozen template (I16, 004-30) (3)
+     ✓ round-trips down then up for this migration 1158ms
+ ✓ test/integration/security/privilege-boundary.int.test.ts (14 tests) 654ms
+ ✓ test/integration/security/relay-faults.int.test.ts (7 tests) 602ms
+ ✓ test/integration/security/operator-registry.int.test.ts (4 tests) 521ms
+ ✓ test/integration/security/producer-consumer.int.test.ts (8 tests) 553ms
+
+ Test Files  7 passed (7)
+      Tests  46 passed (46)
+   Start at  05:07:20
+   Duration  34.30s (tests 95%, import 4%, transform 1%)
+
+JUNIT report written to /workspace/services/cmp-038-event-bus/test-results/integration-junit.xml

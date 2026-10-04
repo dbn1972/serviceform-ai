@@ -1,0 +1,108 @@
+policy/opa/sf/authz/decision_test.rego:334:
+data.sf.authz_test.test_manifest_revision_matches_meta: PASS (207.9µs)
+
+policy/opa/sf/authz/tenant_test.rego:6:
+data.sf.authz_test.test_tenant_input_present_false_when_action_empty: PASS (243.483µs)
+
+policy/opa/system/log/mask_test.rego:6:
+data.system.log_test.test_mask_removes_user_and_workflow_fields: PASS (314.027µs)
+
+policy/opa/sf/authz/role_test.rego:5:
+data.sf.authz_test.test_role_office_mismatch: PASS (16.129223ms)
+
+policy/opa/sf/authz/workflow_test.rego:5:
+data.sf.authz_test.test_workflow_positive: PASS (16.311462ms)
+
+policy/opa/system/authz/authz_test.rego:6:
+data.system.authz_test.test_grant_publisher_sf_runtime: PASS (404.037µs)
+policy/opa/system/authz/authz_test.rego:10:
+data.system.authz_test.test_grant_publisher_cannot_write_tenants: PASS (192.524µs)
+policy/opa/system/authz/authz_test.rego:18:
+data.system.authz_test.test_unauthenticated_denied: PASS (126.183µs)
+policy/opa/system/authz/authz_test.rego:14:
+data.system.authz_test.test_pep_may_post_decision: PASS (321.225µs)
+
+policy/opa/sf/authz/jurisdiction_test.rego:5:
+data.sf.authz_test.test_assigned_only_positive: PASS (17.139137ms)
+
+policy/opa/sf/authz/privileged_test.rego:5:
+data.sf.authz_test.test_privileged_expired: PASS (17.166106ms)
+
+policy/opa/sf/authz/decision_test.rego:14:
+data.sf.authz_test.test_positive_view_allow: PASS (13.23106ms)
+policy/opa/sf/authz/decision_test.rego:21:
+data.sf.authz_test.test_r1_empty_input: PASS (12.557664ms)
+
+policy/opa/sf/authz/delegation_test.rego:5:
+data.sf.authz_test.test_delegation_not_started: PASS (16.321651ms)
+
+policy/opa/sf/authz/decision_test.rego:168:
+data.sf.authz_test.test_r10_time_missing_delegation: PASS (19.919593ms)
+policy/opa/sf/authz/decision_test.rego:27:
+data.sf.authz_test.test_r2_unknown_action: PASS (9.274156ms)
+policy/opa/sf/authz/decision_test.rego:40:
+data.sf.authz_test.test_r3_role_wrong_resource: PASS (7.260663ms)
+policy/opa/sf/authz/decision_test.rego:33:
+data.sf.authz_test.test_r3_role_lacks_action: PASS (12.21143ms)
+policy/opa/sf/authz/decision_test.rego:54:
+data.sf.authz_test.test_r4_null_subject_tenant: PASS (14.013504ms)
+policy/opa/sf/authz/decision_test.rego:61:
+data.sf.authz_test.test_r4_null_resource_tenant: PASS (14.300712ms)
+policy/opa/sf/authz/decision_test.rego:47:
+data.sf.authz_test.test_r4_wrong_tenant: PASS (18.765591ms)
+policy/opa/sf/authz/decision_test.rego:68:
+data.sf.authz_test.test_r5_tenant_data_absent: PASS (14.235105ms)
+policy/opa/sf/authz/decision_test.rego:95:
+data.sf.authz_test.test_r6_missing_jurisdiction: PASS (9.652333ms)
+policy/opa/sf/authz/decision_test.rego:84:
+data.sf.authz_test.test_r6_descendants_sibling: PASS (12.213113ms)
+policy/opa/sf/authz/decision_test.rego:105:
+data.sf.authz_test.test_r6_descendants_positive: PASS (10.935125ms)
+policy/opa/sf/authz/decision_test.rego:74:
+data.sf.authz_test.test_r6_assigned_only_child: PASS (18.652444ms)
+policy/opa/sf/authz/decision_test.rego:125:
+data.sf.authz_test.test_r8_service_out: PASS (8.611271ms)
+policy/opa/sf/authz/decision_test.rego:115:
+data.sf.authz_test.test_r7_org_mismatch: PASS (10.546481ms)
+policy/opa/sf/authz/decision_test.rego:135:
+data.sf.authz_test.test_r9_delegation_unknown: PASS (11.048532ms)
+policy/opa/sf/authz/decision_test.rego:142:
+data.sf.authz_test.test_r9_delegation_subject: PASS (10.660888ms)
+policy/opa/sf/authz/decision_test.rego:152:
+data.sf.authz_test.test_r9_delegation_expired: PASS (12.73882ms)
+policy/opa/sf/authz/decision_test.rego:289:
+data.sf.authz_test.test_002_12_global_write: PASS (10.811255ms)
+policy/opa/sf/authz/decision_test.rego:178:
+data.sf.authz_test.test_r11_no_grant: PASS (9.334672ms)
+policy/opa/sf/authz/decision_test.rego:162:
+data.sf.authz_test.test_r9_delegation_positive: PASS (15.665095ms)
+policy/opa/sf/authz/decision_test.rego:330:
+data.sf.authz_test.test_system_authz_pep_cannot_write_policy: PASS (221.572µs)
+policy/opa/sf/authz/decision_test.rego:185:
+data.sf.authz_test.test_r11_unapproved_grant: PASS (12.045553ms)
+policy/opa/sf/authz/decision_test.rego:202:
+data.sf.authz_test.test_r11_self_approved: PASS (13.498287ms)
+policy/opa/sf/authz/decision_test.rego:299:
+data.sf.authz_test.test_002_14_grant_wrong_user: PASS (13.625235ms)
+policy/opa/sf/authz/decision_test.rego:219:
+data.sf.authz_test.test_r11_grant_other_tenant: PASS (14.470045ms)
+policy/opa/sf/authz/decision_test.rego:236:
+data.sf.authz_test.test_r11_assurance: PASS (9.497558ms)
+policy/opa/sf/authz/decision_test.rego:322:
+data.sf.authz_test.test_system_authz_pep_decision: PASS (302.773µs)
+policy/opa/sf/authz/decision_test.rego:246:
+data.sf.authz_test.test_r11_positive_grant: PASS (11.785674ms)
+policy/opa/sf/authz/decision_test.rego:269:
+data.sf.authz_test.test_r13_output_shape: PASS (7.218311ms)
+policy/opa/sf/authz/decision_test.rego:316:
+data.sf.authz_test.test_undefined_input_action_null: PASS (13.576798ms)
+policy/opa/sf/authz/decision_test.rego:326:
+data.sf.authz_test.test_system_authz_unauth_put_denied: PASS (572.56µs)
+policy/opa/sf/authz/decision_test.rego:262:
+data.sf.authz_test.test_r12_workflow_mismatch: PASS (16.769979ms)
+policy/opa/sf/authz/decision_test.rego:276:
+data.sf.authz_test.test_002_12_role_in_other_tenant: PASS (8.674819ms)
+policy/opa/sf/authz/decision_test.rego:282:
+data.sf.authz_test.test_002_12_classification_absent: PASS (10.996715ms)
+--------------------------------------------------------------------------------
+PASS: 48/48
