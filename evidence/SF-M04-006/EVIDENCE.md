@@ -6,6 +6,7 @@
 |---|---|
 | Task | SF-M04-006 CMP-014 Document Intelligence / OCR |
 | Base | `origin/main` `2db721feb1303385a0c50c79de8629b2478064d9` |
+| Impl commit | `9e38d5a` (plus follow-up evidence/handover commit) |
 | Unit | 20 passed (`logs/unit.log`, `junit/unit.xml`) |
 | Integration (PG16) | 4 passed (`logs/integration.log`, `junit/integration.xml`) |
 | Typecheck | pass (`logs/typecheck.log`) |
