@@ -24,11 +24,11 @@ schema: sf_forms
 hard_serial_locks: [LOCK-4, LOCK-5]
 depends_on:
   - SF-M04-STITCH-A on origin/main
-  - SF-M04-001 CMP-008 on main
-  - SF-M04-002 CMP-011 on main
+  - SF-M04-002 CMP-008 on main
+  - SF-M04-003 CMP-011 on main
   - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
-  - services/cmp-009-forms/**
+  - services/cmp-009-dynamic-forms/**
   - db/migrations/*_cmp-009-*.sql
   - evidence/SF-M04-005/**
   - orchestrator/handovers/SF-M04-005.yaml
@@ -46,13 +46,13 @@ read_only_paths:
   - apps/web-citizen/**
   - apps/api/**
   - services/cmp-008-rules/**
-  - services/cmp-011-evidence/**
+  - services/cmp-011-evidence-requirements/**
   - services/cmp-054-ux4g/**
 wave_eligible_now: false
 serial_after:
   - SF-M04-STITCH-A
-  - SF-M04-001
   - SF-M04-002
+  - SF-M04-003
 builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true

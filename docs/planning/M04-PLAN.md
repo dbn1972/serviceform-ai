@@ -31,10 +31,10 @@ Machine-readable index: `orchestrator/handovers/SF-M04-PLAN.yaml`. Locks: `orche
 4. **This pass:** bounded M04 envelopes READY; builders OFF
 5. LOCK-1: planning PR merged; uniqueness/contracts/architecture green
 6. LOCK-2: Wave A parallel SF-M04-001 … 004 (later dispatch record required)
-7. LOCK-3: STITCH-A lockfile-only after immutable Wave A heads
+7. LOCK-3: STITCH-A mechanical/format/lockfile on Wave A paths after immutable heads
 8. LOCK-4: Wave B window after STITCH-A on `origin/main`
-9. LOCK-5: SF-M04-005 (CMP-009) after CMP-008 + CMP-011
-10. LOCK-6: SF-M04-006 (CMP-014) after CMP-039 + CMP-013
+9. LOCK-5: SF-M04-005 (CMP-009) after CMP-008 (SF-M04-002) + CMP-011 (SF-M04-003)
+10. LOCK-6: SF-M04-006 (CMP-014) after CMP-039 (SF-M04-001) + CMP-013 (SF-M04-004)
 11. LOCK-7: STITCH-B → single-writer SF-M04-007 (`apps/api`) → INT ∥ SEC → EVD
 12. Human/CI may later issue M04 `G3_INTEGRATION_VERIFIED` (still **not** CERTIFIED / G6)
 13. M05 remains OFF until that independent G3
@@ -45,10 +45,10 @@ Peer M04 engines consume each other through FROZEN contracts/ports, not unmerged
 
 | Task | CMP | Why Wave A |
 |---|---|---|
-| SF-M04-001 | CMP-008 Rules | GoRules metadata engine; peers 009/011 via ports |
-| SF-M04-002 | CMP-011 Evidence | Requirement engine; DigiLocker SIMULATED (INT-013) |
-| SF-M04-003 | CMP-013 Upload | Uses M01 CMP-032 on `main`; OCR is later |
-| SF-M04-004 | CMP-039 AI Gateway | Must exist before any model-calling component (CMP-014) |
+| SF-M04-001 | CMP-039 AI Gateway | Must exist before any model-calling component (CMP-014) |
+| SF-M04-002 | CMP-008 Rules | GoRules metadata engine; peers 009/011 via ports |
+| SF-M04-003 | CMP-011 Evidence | Requirement engine; DigiLocker SIMULATED (INT-013) |
+| SF-M04-004 | CMP-013 Upload | Uses M01 CMP-032 on `main`; OCR is later |
 
 Wave B:
 
@@ -68,11 +68,11 @@ Wave B:
                     |
         +-----------+-----------+-----------+
         |           |           |           |
-     001 CMP-008  002 CMP-011  003 CMP-013  004 CMP-039
+     001 CMP-039  002 CMP-008  003 CMP-011  004 CMP-013
         |           |           |           |
         +-----------+-----------+-----------+
                     |
-                 LOCK-3 STITCH-A (pnpm-lock.yaml only)
+                 LOCK-3 STITCH-A (Wave A paths + lockfile; mechanical only)
                     |
                  LOCK-4 STITCH-A on main
                     |

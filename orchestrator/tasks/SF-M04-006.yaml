@@ -24,8 +24,8 @@ schema: sf_docintel
 hard_serial_locks: [LOCK-4, LOCK-6]
 depends_on:
   - SF-M04-STITCH-A on origin/main
-  - SF-M04-004 CMP-039 on main
-  - SF-M04-003 CMP-013 on main
+  - SF-M04-001 CMP-039 on main
+  - SF-M04-004 CMP-013 on main
   - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
   - services/cmp-014-document-intelligence/**
@@ -48,8 +48,8 @@ read_only_paths:
 wave_eligible_now: false
 serial_after:
   - SF-M04-STITCH-A
+  - SF-M04-001
   - SF-M04-004
-  - SF-M04-003
 builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true

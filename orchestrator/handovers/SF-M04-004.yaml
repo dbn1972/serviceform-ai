@@ -1,51 +1,52 @@
-# M04 READY envelope — CMP-039 AI Gateway
+# M04 READY envelope — CMP-013 Document Upload Service
 # READY. Not dispatched. Not CERTIFIED. LOCK-2 Wave A.
 task_id: SF-M04-004
-title: AI Gateway
+title: Document Upload Service
 module_id: M04
-component_ids: [CMP-039]
+component_ids: [CMP-013]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
-  - Eng-v1.4-CMP-039
-  - AI-GOVERNANCE.md
+  - Eng-v1.4-CMP-013
   - ADR-0001-M04
-  - Constitution-no-LLM-statutory-decision
+  - INT-013
 agent_role: component_builder
-builder_agent: serviceform-ai-platform-builder
-model_route: sonnet
-model_release: claude-sonnet-5-5
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M04-ai-gateway-SF-M04-004
+branch: agent/M04-upload-SF-M04-004
 worktree: ../wt-SF-M04-004
 parallel_group: M04-A
-privilege_role: sf_cmp039_rw
-schema: sf_ai_gateway
+privilege_role: sf_cmp013_rw
+schema: sf_upload
 hard_serial_locks: [LOCK-1, LOCK-2]
 depends_on:
+  - M01 CMP-032 Storage on main
   - M02 G3_INTEGRATION_VERIFIED issued
   - M03 G3_INTEGRATION_VERIFIED issued
   - 13 shared contracts FROZEN
   - LOCK-1 planning PR on main
   - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
-  - services/cmp-039-ai-gateway/**
-  - db/migrations/*_cmp-039-*.sql
+  - services/cmp-013-document-upload/**
+  - db/migrations/*_cmp-013-*.sql
   - evidence/SF-M04-004/**
   - orchestrator/handovers/SF-M04-004.yaml
 allowed_write_notes:
   - package.json under service path may change; do not commit pnpm-lock.yaml
-  - All later model calls in M04 MUST use this gateway
-  - Gateway never issues statutory eligibility/approval/rejection
-  - SIMULATED provider adapters allowed; no production SIMULATED critical connector bypass
+  - Size/type policy from metadata; consume CMP-032 via ports only
+  - No REAL production object store in this module; SIMULATED/local + INT-013
+  - Do not implement OCR (SF-M04-006) or host mounts
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - specs/**
   - apps/**
+  - services/cmp-032-storage/**
   - services/cmp-014-document-intelligence/**
-  - AI-GOVERNANCE.md
+  - services/cmp-048-security-platform/**
 wave_eligible_now: true
 serial_after: []
 builders_dispatched_this_envelope: false
@@ -90,7 +91,7 @@ stop_conditions:
   - weaken cg01_path_uniqueness_gate.py
 
 acceptance_tests_planning:
-  - Allowlist/pin, redaction, audit of prompt/model/tool metadata
-  - Deny unapproved model/provider
-  - No PII/secrets in logs/prompts/test fixtures
+  - Upload session tenant-scoped; wrong-tenant denied
+  - Virus/type/size policy fail-closed
+  - No network calls inside authoritative DB transactions
   - Host mount deferred to SF-M04-007

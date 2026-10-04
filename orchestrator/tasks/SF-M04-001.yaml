@@ -1,25 +1,26 @@
-# M04 READY envelope — CMP-008 Eligibility / Rules Engine
+# M04 READY envelope — CMP-039 AI Gateway
 # READY. Not dispatched. Not CERTIFIED. LOCK-2 Wave A.
 task_id: SF-M04-001
-title: Eligibility / Rules Engine
+title: AI Gateway
 module_id: M04
-component_ids: [CMP-008]
-integration_ids: [INT-011]
+component_ids: [CMP-039]
+integration_ids: [INT-011, INT-013]
 requirement_ids:
-  - Eng-v1.4-CMP-008
-  - Constitution-OPA-GoRules-Temporal-separation
+  - Eng-v1.4-CMP-039
+  - AI-GOVERNANCE.md
   - ADR-0001-M04
+  - Constitution-no-LLM-statutory-decision
 agent_role: component_builder
-builder_agent: serviceform-forms-rules-builder
+builder_agent: serviceform-ai-platform-builder
 model_route: sonnet
 model_release: claude-sonnet-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M04-rules-SF-M04-001
+branch: agent/M04-ai-gateway-SF-M04-001
 worktree: ../wt-SF-M04-001
 parallel_group: M04-A
-privilege_role: sf_cmp008_rw
-schema: sf_rules
+privilege_role: sf_cmp039_rw
+schema: sf_ai_gateway
 hard_serial_locks: [LOCK-1, LOCK-2]
 depends_on:
   - M02 G3_INTEGRATION_VERIFIED issued
@@ -28,25 +29,23 @@ depends_on:
   - LOCK-1 planning PR on main
   - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
-  - services/cmp-008-rules/**
-  - db/migrations/*_cmp-008-*.sql
+  - services/cmp-039-ai-gateway/**
+  - db/migrations/*_cmp-039-*.sql
   - evidence/SF-M04-001/**
   - orchestrator/handovers/SF-M04-001.yaml
 allowed_write_notes:
   - package.json under service path may change; do not commit pnpm-lock.yaml
-  - GoRules executes deterministic metadata rules only; do not invent statute
-  - No LLM statutory decision; no named-service branching
-  - Consume CMP-009/011 through FROZEN ports; do not import sibling source
+  - All later model calls in M04 MUST use this gateway
+  - Gateway never issues statutory eligibility/approval/rejection
+  - SIMULATED provider adapters allowed; no production SIMULATED critical connector bypass
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - specs/**
   - apps/**
-  - packages/ui-ux4g/**
-  - services/cmp-009-forms/**
-  - services/cmp-011-evidence/**
-  - services/cmp-039-ai-gateway/**
+  - services/cmp-014-document-intelligence/**
+  - AI-GOVERNANCE.md
 wave_eligible_now: true
 serial_after: []
 builders_dispatched_this_envelope: false
@@ -91,7 +90,7 @@ stop_conditions:
   - weaken cg01_path_uniqueness_gate.py
 
 acceptance_tests_planning:
-  - Deterministic rule evaluation from published metadata only
-  - Unauthorized / wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
-  - No LLM path in eligibility decision
+  - Allowlist/pin, redaction, audit of prompt/model/tool metadata
+  - Deny unapproved model/provider
+  - No PII/secrets in logs/prompts/test fixtures
   - Host mount deferred to SF-M04-007

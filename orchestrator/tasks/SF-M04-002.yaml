@@ -1,12 +1,13 @@
-# M04 READY envelope — CMP-011 Evidence & Document Requirement Engine
+# M04 READY envelope — CMP-008 Eligibility / Rules Engine
 # READY. Not dispatched. Not CERTIFIED. LOCK-2 Wave A.
 task_id: SF-M04-002
-title: Evidence and Document Requirement Engine
+title: Eligibility / Rules Engine
 module_id: M04
-component_ids: [CMP-011]
-integration_ids: [INT-011, INT-013]
+component_ids: [CMP-008]
+integration_ids: [INT-011]
 requirement_ids:
-  - Eng-v1.4-CMP-011
+  - Eng-v1.4-CMP-008
+  - Constitution-OPA-GoRules-Temporal-separation
   - ADR-0001-M04
 agent_role: component_builder
 builder_agent: serviceform-forms-rules-builder
@@ -14,11 +15,11 @@ model_route: sonnet
 model_release: claude-sonnet-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M04-evidence-SF-M04-002
+branch: agent/M04-rules-SF-M04-002
 worktree: ../wt-SF-M04-002
 parallel_group: M04-A
-privilege_role: sf_cmp011_rw
-schema: sf_evidence
+privilege_role: sf_cmp008_rw
+schema: sf_rules
 hard_serial_locks: [LOCK-1, LOCK-2]
 depends_on:
   - M02 G3_INTEGRATION_VERIFIED issued
@@ -27,24 +28,25 @@ depends_on:
   - LOCK-1 planning PR on main
   - human planning/READY authorization granted (Debabrata Nayak)
 allowed_write_paths:
-  - services/cmp-011-evidence/**
-  - db/migrations/*_cmp-011-*.sql
+  - services/cmp-008-rules/**
+  - db/migrations/*_cmp-008-*.sql
   - evidence/SF-M04-002/**
   - orchestrator/handovers/SF-M04-002.yaml
 allowed_write_notes:
   - package.json under service path may change; do not commit pnpm-lock.yaml
-  - Alternative evidence sets from metadata; no statutory invention
-  - DigiLocker via INT-013 SIMULATED adapter only; CMP-012 is M07
-  - Upload/OCR consumed via ports; do not import sibling source
+  - GoRules executes deterministic metadata rules only; do not invent statute
+  - No LLM statutory decision; no named-service branching
+  - Consume CMP-009/011 through FROZEN ports; do not import sibling source
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - specs/**
   - apps/**
-  - services/cmp-008-rules/**
-  - services/cmp-013-document-upload/**
-  - services/cmp-012-digilocker/**
+  - packages/ui-ux4g/**
+  - services/cmp-009-dynamic-forms/**
+  - services/cmp-011-evidence-requirements/**
+  - services/cmp-039-ai-gateway/**
 wave_eligible_now: true
 serial_after: []
 builders_dispatched_this_envelope: false
@@ -89,7 +91,7 @@ stop_conditions:
   - weaken cg01_path_uniqueness_gate.py
 
 acceptance_tests_planning:
-  - Requirement resolution from TenantServiceBinding metadata
-  - Tenant-scoped tables ENABLE+FORCE RLS
-  - SIMULATED connector markers on INT-013 adapters
+  - Deterministic rule evaluation from published metadata only
+  - Unauthorized / wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
+  - No LLM path in eligibility decision
   - Host mount deferred to SF-M04-007

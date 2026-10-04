@@ -1,14 +1,14 @@
-# M04 READY — Wave A lockfile stitch (LOCK-3)
-# Lockfile-only after immutable Wave A heads. Not dispatched. Not CERTIFIED.
+# M04 READY — Wave A stitch (LOCK-3)
+# Mechanical/format/lockfile only after immutable Wave A heads. Not dispatched. Not CERTIFIED.
 task_id: SF-M04-STITCH-A
-title: M04 Wave A lockfile stitch
+title: M04 Wave A mechanical stitch and lockfile
 module_id: M04
 agent_role: integration_agent
 builder_agent: serviceform-integration-stitcher
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-component_ids: [CMP-008, CMP-011, CMP-013, CMP-039]
+component_ids: [CMP-039, CMP-008, CMP-011, CMP-013]
 integration_ids: [INT-011, INT-013]
 branch: agent/M04-stitch-a-SF-M04-STITCH-A
 worktree: ../wt-SF-M04-STITCH-A
@@ -22,20 +22,28 @@ depends_on:
   - SF-M04-004 immutable head
   - LOCK-2 complete
 allowed_write_paths:
+  - services/cmp-039-ai-gateway/**
+  - db/migrations/*_cmp-039-*.sql
+  - services/cmp-008-rules/**
+  - db/migrations/*_cmp-008-*.sql
+  - services/cmp-011-evidence-requirements/**
+  - db/migrations/*_cmp-011-*.sql
+  - services/cmp-013-document-upload/**
+  - db/migrations/*_cmp-013-*.sql
   - pnpm-lock.yaml
   - evidence/SF-M04-STITCH-A/**
   - orchestrator/handovers/SF-M04-STITCH-A.yaml
 allowed_write_notes:
-  - Lockfile-only product change; do not patch services/** apps/** contracts/**
+  - Mechanical/format/lockfile only; no semantic redesign of Wave A components
   - Admit Wave A workspace importers; do not weaken frozen-lockfile CI
+  - Serial after Wave A immutable heads; not concurrent with SF-M04-001..004
 explicit_cannot:
-  - patch component production code
+  - semantic redesign of Wave A component source
   - edit contracts/** or orchestrator/contracts-lock.yaml
   - self-certify
 read_only_paths:
   - contracts/**
   - orchestrator/contracts-lock.yaml
-  - services/**
   - apps/**
   - scripts/gates/cg01_path_uniqueness_gate.py
 wave_eligible_now: false
