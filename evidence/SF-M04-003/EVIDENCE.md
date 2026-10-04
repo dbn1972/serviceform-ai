@@ -8,7 +8,7 @@
 | Component / INT | CMP-011 / INT-011, INT-013 |
 | Base | `origin/main` `9ccc2b02f8ef64a0987b0c4793137511545ed3f7` |
 | Branch | `cursor/sf-m04-003-cmp-011-evidence-aa34` |
-| Implementation commit under test | see `logs/head-sha.txt` |
+| Implementation commit under test | `logs/head-sha.txt` (last source change; evidence-only commits follow) |
 | Environment | local VM, PostgreSQL 16 (apt), Node 22.14, pnpm 10.28 |
 | Connector modes | DigiLocker SIMULATED only (INT-013); upload/OCR/consent/binding/approval via test-double ports |
 | Frozen contracts | unchanged, 13/13 FROZEN (`logs/contracts-lock.log`) |
@@ -26,6 +26,7 @@
 | dependency-cruiser (no cross-component imports) | PASS | `logs/depcruise.log` |
 | `scripts/gates/run_all.py` | 10/10 PASS (migration lint, contracts lock 13/13, openapi/asyncapi, hardcoding, cg01 uniqueness unchanged) | `logs/gates.log` |
 | `check_scope.py` against the envelope | PASS | `logs/check-scope.log` |
+| semgrep (p/default, p/typescript, p/nodejsscan, p/secrets, .semgrep/) on the component | 0 findings (CI `SAST (semgrep)` initially flagged one `regex_dos` and a `vault://` fixture; both fixed) | `logs/semgrep-local.log` |
 | `pnpm --filter @serviceform/db test:integration` | 17 passed (all migrations apply; down/up of CMP-011 verified) | run in session |
 | Tables / RLS / owner | all 5 tenant-scoped tables ENABLE+FORCE RLS, owner `sf_migrator` | `logs/rls-roles.log` |
 | Runtime role | non-superuser, non-BYPASSRLS, not table owner, cannot DISABLE/NO FORCE RLS, DROP, TRUNCATE, DELETE | `privilege-boundary.int.test.ts` |

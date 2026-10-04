@@ -97,7 +97,7 @@ acceptance_tests_planning:
 builder_notes:
   branch: cursor/sf-m04-003-cmp-011-evidence-aa34
   base_commit_used: 9ccc2b02f8ef64a0987b0c4793137511545ed3f7
-  implementation_head: c56e5cbb (see evidence/SF-M04-003/logs/head-sha.txt for the full SHA under test)
+  implementation_head: see evidence/SF-M04-003/logs/head-sha.txt (last source commit; later commits are evidence-only)
   cmp_011_datastore: sf_evidence (Aurora PostgreSQL; privilege role sf_cmp011_rw NOLOGIN; FORCE RLS)
   migrations:
     - db/migrations/1759530110000_cmp-011-evidence.sql
