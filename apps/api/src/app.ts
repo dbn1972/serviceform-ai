@@ -6,6 +6,7 @@ import type { Logger } from '@serviceform/observability';
 import Fastify, { type FastifyBaseLogger, type FastifyInstance, LogController } from 'fastify';
 import type { AppConfig } from './config.js';
 import { registerM02Plugins, type M02PluginMounts } from './composition/m02.js';
+import { registerM03Plugins, type M03PluginMounts } from './composition/m03.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -29,9 +30,14 @@ export interface AppDependencies {
   wave2?: Wave2PluginMounts;
   /**
    * M02 component plugin mounts (CMP-004/005). Optional; tests supply doubles.
-   * M03 catalogue/studio mounts are owned by SF-M03-008 and are not registered here.
    */
   m02?: M02PluginMounts;
+  /**
+   * M03 mounts (CMP-001/033/034/051/052/053). Optional; tests supply doubles.
+   * CMP-050 Studio is not registered on this Fastify host.
+   * CMP-054 has no Fastify plugin on main (UX4G React package only).
+   */
+  m03?: M03PluginMounts;
 }
 
 /**
@@ -105,6 +111,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m02Mounted', [] as string[]);
   }
 
+  // Decorate only when mounts are supplied so existing M02 host tests still see
+  // `m03Mounted` as undefined (Wave A M03 was not registered in that suite).
+  if (deps.m03) {
+    const mounted = await registerM03Plugins(app, deps.m03);
+    app.decorate('m03Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -113,5 +126,6 @@ declare module 'fastify' {
     wave1Mounted: string[];
     wave2Mounted: string[];
     m02Mounted: string[];
+    m03Mounted?: string[];
   }
 }
