@@ -17,7 +17,7 @@ effort: high
 branch: cursor/m04-forms-sf-m04-005-a1bc
 pr_url: https://github.com/dbn1972/serviceform-ai/pull/74
 pr_number: 74
-result_commit: 4698f57b287e254a1858f5a88e80a426c967ad40
+result_commit: pending-semgrep-fix
 parallel_group: M04-B
 privilege_role: sf_cmp009_rw
 schema: sf_forms
@@ -64,12 +64,14 @@ completed_work:
   - ADR-0006: sf_cmp009_rw NOLOGIN; FORCE RLS; PUBLIC revoked; runtime not owner
   - Host mount deferred to SF-M04-007
   - pnpm-lock.yaml not committed
+  - Semgrep prototype-pollution-loop: readPath rejects __proto__/constructor/prototype; Object.hasOwn own-property lookup
 
 unresolved_work:
   - EXPECTED_STITCH_B_LOCKFILE_RESIDUAL (new workspace importer)
   - Independent STITCH-B / INT / SEC / EVD not started
   - Host mount SF-M04-007 not started
   - Do not consume SF-M04-006 as source of truth
+  - SAST (semgrep) prototype-pollution-loop remediating on this branch; wait for scanner green on new head
 
 changed_contracts: []
 changed_migrations:

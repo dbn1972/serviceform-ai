@@ -8,7 +8,7 @@
 | Component | CMP-009 |
 | Base | `origin/main` @ `2db721feb1303385a0c50c79de8629b2478064d9` |
 | Branch | `cursor/m04-forms-sf-m04-005-a1bc` |
-| Head SHA | `4698f57b287e254a1858f5a88e80a426c967ad40` |
+| Head SHA | pending-semgrep-fix |
 | PR | https://github.com/dbn1972/serviceform-ai/pull/74 (draft, do not merge) |
 | Privilege role | `sf_cmp009_rw` NOLOGIN |
 | Schema | `sf_forms` |
@@ -18,14 +18,14 @@
 
 | Check | Result |
 | --- | --- |
-| Unit + contract (29) | PASS (`junit/unit.xml`) |
+| Unit + contract (30) | PASS (`junit/unit.xml`) |
 | Integration RLS/privilege/migration (9) | PASS (`junit/integration.xml`) |
 | Architecture gates | 10/10 PASS (`logs/gates.log`) |
 | migration_lint | PASS |
 | eslint `services/cmp-009-dynamic-forms` | PASS `--max-warnings=0` |
 | `tsc --noEmit` | PASS |
 
-CodeQL `js/polynomial-redos` on `EMAIL_RE` (`schema.ts` line 173 at `10ea29d`) replaced with a linear `isEmailFormat` scan. Isolated frozen-lockfile CI red remains `EXPECTED_STITCH_B_LOCKFILE_RESIDUAL`.
+CodeQL `js/polynomial-redos` on `EMAIL_RE` (`schema.ts` at `10ea29d`/`96ea419`) replaced with a linear `isEmailFormat` scan. Semgrep `prototype-pollution-loop` on `readPath` (`ui-schema.ts`) closed: forbidden pointer segments `__proto__`/`constructor`/`prototype`; own-property lookup via `Object.hasOwn` + `getOwnPropertyDescriptor` (no prototype walk). Isolated frozen-lockfile CI red remains `EXPECTED_STITCH_B_LOCKFILE_RESIDUAL`.
 
 ## Tenant / RLS
 

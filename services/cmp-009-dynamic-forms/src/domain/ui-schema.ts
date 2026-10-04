@@ -49,7 +49,8 @@ function parseRule(raw: unknown): UiRule | undefined {
     uiFail('UI_RULE_CONDITION_INVALID');
   }
   const c = condition as Record<string, unknown>;
-  if (typeof c['scope'] !== 'string' || !isJsonPointerScope(c['scope'])) uiFail('UI_RULE_SCOPE_INVALID');
+  if (typeof c['scope'] !== 'string' || !isJsonPointerScope(c['scope']))
+    uiFail('UI_RULE_SCOPE_INVALID');
   if (typeof c['schema'] !== 'object' || c['schema'] === null || Array.isArray(c['schema'])) {
     uiFail('UI_RULE_SCHEMA_INVALID');
   }
@@ -119,13 +120,21 @@ export function walkControls(node: UiNode, visit: (node: UiNode) => void): void 
   for (const child of node.elements) walkControls(child, visit);
 }
 
+const FORBIDDEN_POINTER_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
+
+function ownValue(obj: object, key: string): unknown {
+  if (FORBIDDEN_POINTER_SEGMENTS.has(key)) return undefined;
+  if (!Object.hasOwn(obj, key)) return undefined;
+  return Object.getOwnPropertyDescriptor(obj, key)?.value;
+}
+
 function readPath(data: unknown, pointer: string): unknown {
   if (pointer === '' || pointer === '/') return data;
   const parts = pointer.split('/').filter(Boolean);
   let cur: unknown = data;
   for (const p of parts) {
     if (typeof cur !== 'object' || cur === null || Array.isArray(cur)) return undefined;
-    cur = (cur as Record<string, unknown>)[p];
+    cur = ownValue(cur, p);
   }
   return cur;
 }

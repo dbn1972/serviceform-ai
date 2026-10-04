@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { parseFormPackage } from '../../src/domain/pack.js';
 import { parseJsonSchema, validateAgainstSchema } from '../../src/domain/schema.js';
-import { evaluateVisibility, parseUiSchema } from '../../src/domain/ui-schema.js';
+import { evaluateVisibility, parseUiSchema, type UiNode } from '../../src/domain/ui-schema.js';
 import {
   resolveUx4gRenderer,
   UX4G_JSON_FORMS_RENDERERS,
@@ -94,6 +94,29 @@ describe('UI schema + conditional visibility + required fields', () => {
   it('rejects malformed UI schema', () => {
     expect(() => parseUiSchema({ type: 'Wizard' })).toThrow(Cmp009Error);
     expect(() => parseUiSchema({ type: 'Control', scope: 'given_name' })).toThrow(Cmp009Error);
+  });
+
+  it('does not walk Object.prototype via pointer segments', () => {
+    const shown = '#/properties/shown';
+    const layout = (ruleScope: string, data: unknown): boolean => {
+      const root: UiNode = {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: shown,
+            rule: { effect: 'SHOW', scope: ruleScope, schema: {} },
+            elements: [],
+          },
+        ],
+      };
+      return evaluateVisibility(root, data).visible.has(shown);
+    };
+    expect(layout('#/properties/constructor', {})).toBe(false);
+    expect(layout('#/properties/prototype', {})).toBe(false);
+    expect(layout('#/properties/__proto__', {})).toBe(false);
+    expect(layout('#/properties/has_prior', Object.create({ has_prior: true }))).toBe(false);
+    expect(layout('#/properties/has_prior', { has_prior: true })).toBe(true);
   });
 });
 
