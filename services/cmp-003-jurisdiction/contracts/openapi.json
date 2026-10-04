@@ -7,27 +7,54 @@
   },
   "paths": {
     "/v1/jurisdiction-types": {
-      "get": { "operationId": "listJurisdictionTypes", "responses": { "200": { "description": "OK" } } },
-      "post": { "operationId": "createJurisdictionType", "responses": { "201": { "description": "Created" } } }
+      "get": {
+        "operationId": "listJurisdictionTypes",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createJurisdictionType",
+        "responses": { "201": { "description": "Created" } }
+      }
     },
     "/v1/jurisdictions": {
-      "get": { "operationId": "listJurisdictions", "responses": { "200": { "description": "OK" } } },
-      "post": { "operationId": "createJurisdiction", "responses": { "201": { "description": "Created" } } }
+      "get": {
+        "operationId": "listJurisdictions",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createJurisdiction",
+        "responses": { "201": { "description": "Created" } }
+      }
     },
     "/v1/jurisdictions/{id}/children": {
-      "get": { "operationId": "listJurisdictionChildren", "responses": { "200": { "description": "OK" } } }
+      "get": {
+        "operationId": "listJurisdictionChildren",
+        "responses": { "200": { "description": "OK" } }
+      }
     },
     "/v1/jurisdictions/{id}/publish": {
-      "post": { "operationId": "publishJurisdictionVersion", "responses": { "200": { "description": "OK" } } }
+      "post": {
+        "operationId": "publishJurisdictionVersion",
+        "responses": { "200": { "description": "OK" } }
+      }
     },
     "/v1/jurisdictions/{id}/relations": {
-      "post": { "operationId": "changeJurisdictionBoundary", "responses": { "200": { "description": "OK" } } }
+      "post": {
+        "operationId": "changeJurisdictionBoundary",
+        "responses": { "200": { "description": "OK" } }
+      }
     },
     "/v1/jurisdiction-bindings": {
-      "post": { "operationId": "createJurisdictionBinding", "responses": { "201": { "description": "Created" } } }
+      "post": {
+        "operationId": "createJurisdictionBinding",
+        "responses": { "201": { "description": "Created" } }
+      }
     },
     "/v1/jurisdiction/resolve": {
-      "post": { "operationId": "resolveJurisdiction", "responses": { "200": { "description": "OK" } } }
+      "post": {
+        "operationId": "resolveJurisdiction",
+        "responses": { "200": { "description": "OK" } }
+      }
     }
   }
 }

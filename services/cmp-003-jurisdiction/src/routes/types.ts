@@ -72,13 +72,7 @@ export function registerTypeRoutes(app: FastifyInstance, deps: RouteDeps): void 
           `INSERT INTO sf_jurisdiction.jurisdiction_type (
              tenant_id, jurisdiction_type_id, type_code, display_label, status, created_by
            ) VALUES ($1,$2,$3,$4,'ACTIVE',$5)`,
-          [
-            ctx.tenant_id,
-            typeId,
-            request.body.type_code,
-            request.body.display_label,
-            ctx.actor.id,
-          ],
+          [ctx.tenant_id, typeId, request.body.type_code, request.body.display_label, ctx.actor.id],
         );
         await withWriteAudit(deps, ctx, tx, {
           action: 'JURISDICTION_TYPE_CREATE',

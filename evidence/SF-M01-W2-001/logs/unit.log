@@ -5,12 +5,16 @@
 
  RUN  v5.0.3 /workspace/services/cmp-003-jurisdiction
 
- ✓ test/unit/domain.test.ts (4 tests) 3ms
- ✓ test/contract/contracts.test.ts (4 tests) 52ms
+ ✓ test/unit/domain.test.ts (5 tests) 3ms
+ ✓ test/contract/contracts.test.ts (4 tests) 55ms
 
  Test Files  2 passed (2)
-      Tests  8 passed (8)
-   Start at  01:27:14
-   Duration  281ms (transform 51%, import 31%, tests 16%, worker 2%)
+      Tests  9 passed (9)
+   Start at  01:31:24
+   Duration  297ms (transform 56%, import 26%, tests 16%, worker 2%)
 
 JUNIT report written to /workspace/evidence/SF-M01-W2-001/junit/unit.xml
+
+> @serviceform/cmp-003-jurisdiction@0.0.0 typecheck /workspace/services/cmp-003-jurisdiction
+> tsc --noEmit -p tsconfig.json
+

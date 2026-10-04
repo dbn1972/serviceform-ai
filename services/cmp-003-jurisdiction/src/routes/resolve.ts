@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { RESOLVE_BODY } from '../schemas/http.js';
 import { currentClient, withContextTx } from '../db/tx.js';
+import { isUuid } from '../domain/uuid.js';
 import { Cmp003Error } from '../errors.js';
 import { decide, sendPrivate, type RouteDeps } from './helpers.js';
 
@@ -29,7 +30,7 @@ export function registerResolveRoutes(app: FastifyInstance, deps: RouteDeps): vo
       const client = currentClient();
       let jurisdictionId: string | null = null;
       if (request.body.mode === 'BY_ID') {
-        if (!/^[0-9a-f-]{36}$/i.test(request.body.value)) {
+        if (!isUuid(request.body.value)) {
           throw new Cmp003Error('SF-SYS-003', { details: [{ code: 'INVALID_ID' }] });
         }
         const found = await client.query<{ jurisdiction_id: string }>(
@@ -94,7 +95,8 @@ export function registerResolveRoutes(app: FastifyInstance, deps: RouteDeps): vo
         [jurisdictionId, asOf],
       );
       const row = detail.rows[0];
-      if (!row) throw new Cmp003Error('SF-SYS-002', { details: [{ code: 'JURISDICTION_NOT_FOUND' }] });
+      if (!row)
+        throw new Cmp003Error('SF-SYS-002', { details: [{ code: 'JURISDICTION_NOT_FOUND' }] });
       return row;
     });
     sendPrivate(reply);

@@ -6,6 +6,7 @@ import { auditEvent, type AuditRecorder } from '../audit.js';
 import { claimIdempotency, completeIdempotency } from '../db/idempotency.js';
 import { withContextTx } from '../db/tx.js';
 import { IDEMPOTENCY_KEY, requestFingerprint } from '../domain/fingerprint.js';
+import { isUuid } from '../domain/uuid.js';
 import { Cmp003Error } from '../errors.js';
 
 export interface RouteDeps {
@@ -85,7 +86,7 @@ export function decodeCursor(cursor: string | undefined): string | undefined {
     const parsed = JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8')) as {
       last?: unknown;
     };
-    if (typeof parsed.last !== 'string' || !/^[0-9a-f-]{36}$/i.test(parsed.last)) {
+    if (typeof parsed.last !== 'string' || !isUuid(parsed.last)) {
       throw new Error('bad');
     }
     return parsed.last;

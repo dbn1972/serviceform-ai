@@ -10,11 +10,7 @@ import {
 import { currentClient, withContextTx } from '../db/tx.js';
 import { envelopeOf, insertOutbox, TOPIC_DOMAIN } from '../db/outbox.js';
 import { Cmp003Error } from '../errors.js';
-import {
-  assertNoCycle,
-  lockTenantScope,
-  newId,
-} from '../repositories/jurisdiction.repo.js';
+import { assertNoCycle, lockTenantScope, newId } from '../repositories/jurisdiction.repo.js';
 import {
   decide,
   decodeCursor,
