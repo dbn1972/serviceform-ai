@@ -57,7 +57,7 @@ function parseScalarMap(raw: unknown, pointer: string): Record<string, Scalar> {
   if (!isRecord(raw)) bad('SCALAR_MAP_INVALID', pointer);
   const keys = Object.keys(raw);
   if (keys.length > MAX_FACTS) bad('SCALAR_MAP_TOO_LARGE', pointer);
-  const out: Record<string, Scalar> = {};
+  const entries = new Map<string, Scalar>();
   for (const key of keys) {
     const value = raw[key];
     const ok =
@@ -65,9 +65,9 @@ function parseScalarMap(raw: unknown, pointer: string): Record<string, Scalar> {
       (typeof value === 'number' && Number.isFinite(value)) ||
       (typeof value === 'string' && value.length <= 256);
     if (!KEY_RE.test(key) || !ok) bad('SCALAR_MAP_INVALID', `${pointer}/${key}`);
-    out[key] = value as Scalar;
+    entries.set(key, value as Scalar);
   }
-  return out;
+  return Object.fromEntries(entries);
 }
 
 export function parseCalculateBody(raw: unknown): CalculateBody {
@@ -315,12 +315,13 @@ async function gatherExternal(
       ) {
         bad('SIMULATION_MARKER_REQUIRED');
       }
+      const availability = new Map<string, boolean>();
       for (const typeCodes of refToType.values()) {
-        for (const code of typeCodes) result.availability[code] = false;
+        for (const code of typeCodes) availability.set(code, false);
       }
       for (const doc of fetched.documents) {
         for (const code of refToType.get(doc.document_type_ref) ?? []) {
-          result.availability[code] = true;
+          availability.set(code, true);
           result.held.push(
             ...normalizeHeld(
               [
@@ -340,6 +341,7 @@ async function gatherExternal(
           );
         }
       }
+      result.availability = Object.fromEntries(availability);
       result.digilocker = { status: 'OK', simulation: marker };
     } catch (err) {
       if (!(err instanceof Cmp011Error) || err.code === 'SF-SYS-004') {

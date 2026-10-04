@@ -444,6 +444,23 @@ describe('CMP-011 HTTP plugin (memory repository)', () => {
       ]);
     });
 
+    it('does not allow property injection through fact or rule keys', async () => {
+      const proto = await app.inject({
+        method: 'POST',
+        url: '/v1/evidence-requirements/calculate',
+        headers: { ...headers('t1', 'pp-1'), 'content-type': 'application/json' },
+        payload: `{"binding_id":"${BINDING_ID}","facts":{"__proto__":{"polluted":true}}}`,
+      });
+      expect(proto.statusCode).toBe(400);
+      const ctor = await calc('t1', {
+        ...baseBody,
+        facts: { constructor: 'x', 'applicant.category': 'P' },
+      });
+      expect(ctor.statusCode).toBe(200);
+      expect(({} as Record<string, unknown>)['polluted']).toBeUndefined();
+      expect(Object.keys(Object.prototype)).toEqual([]);
+    });
+
     it('requires a subject id to read uploads and tolerates an unconfigured classifier', async () => {
       const missing = await calc('t1', { ...baseBody, include_uploaded: true });
       expect(missing.json().details[0].code).toBe('SUBJECT_ID_REQUIRED');

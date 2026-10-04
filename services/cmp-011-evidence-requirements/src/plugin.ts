@@ -119,6 +119,9 @@ const pluginImpl: FastifyPluginAsync<EvidencePluginOptions> = async (app, opts) 
         .code(429)
         .send(errorBody(request.id, 'SF-RATE-001', errorEntry('SF-RATE-001').message));
     }
+    if (typeof fe.statusCode === 'number' && fe.statusCode >= 400 && fe.statusCode < 500) {
+      return reply.code(400).send(errorBody(request.id, 'SF-SYS-003', 'Request validation failed'));
+    }
     const mapped = mapPgError(error);
     if (mapped.code !== 'SF-SYS-001') {
       return reply
