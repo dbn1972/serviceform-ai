@@ -1,5 +1,5 @@
 # M01 G4 exit gate — machine-readable
-# PENDING_SIBLINGS: G4-001 + G4-004 READY; waiting SF-M01-G4-002..003.
+# PENDING_SIBLINGS: G4-001/002/004 READY; waiting SF-M01-G4-003.
 # Not CERTIFIED. Token not issued.
 
 module_id: M01
@@ -21,10 +21,7 @@ cg01_blocked: true
 baseline:
   origin_main: ab8359f0ffe96834bdf61318d1db7877433e7dcc
   promote_pr: 35
-  planning_baseline: c42c7c89aa75653d099883e7f28ece73cf2c7515
-  wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
   wave1_status: M01_WAVE1_MERGED_AND_CLOSED
-  wave2_merge_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
   wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
   m01_components_merged: 11
 
@@ -41,8 +38,8 @@ preconditions:
   wave2_closed: true
   all_m01_cmps_merged: true
   v1_v5_g4_pass: pending
-  cross_tenant_leakage: pending
-  frozen_contracts_13_13: pending
+  cross_tenant_leakage: pending_independent_g4_003
+  frozen_contracts_13_13: true
   residuals_register_explicit: true
   r_env_int_closed: true
   r_env_int_disposition: CLOSED_IN_CODE
@@ -53,17 +50,22 @@ siblings:
   SF-M01-G4-001:
     status: READY
     token: SF-M01-G4-001_READY
-    agent: bc-7c9a10ad-ae6d-57d8-9606-839bd1231573
     pr: 39
     tip: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
     residual_r_env_int: CLOSED_IN_CODE
-    job_name: M01 envelope integration (W1+W2 all CMPs)
   SF-M01-G4-002:
-    status: PENDING
-    agent: bc-fe36ce62-e42f-572c-9d90-e1d192101041
-    evidence: null
+    status: READY
+    token: SF-M01-G4-002_READY
+    result: M01_G4_REGRESSION_PASS
     pr: 38
-    note: harness draft; evidence not READY
+    tip: b1ebde69e8091adc53d8cf436a80df1aabf59c0f
+    harness_sha: 9696f48b9da62154493eef598f77cf94982f28de
+    fail_count: 0
+    suite_count: 22
+    CROSS_TENANT_LEAKAGE: 0
+    frozen_contracts: 13/13 MATCH
+    github_ci_run_id: "37178714591"
+    github_security_run_id: "37178714612"
   SF-M01-G4-003:
     status: PENDING
     agent: bc-c8fb9af2-5830-5244-a097-9e1c4c0d61a0
@@ -72,33 +74,22 @@ siblings:
   SF-M01-G4-004:
     status: READY
     token: SF-M01-G4-004_READY
-    agent: bc-8a2b6d60-a83b-5918-a5a0-cd33a9ccdc6d
     pr: 37
-    tip: 88d8b28669c0da4a70d53331224158dcecb1f810
-    residual_table: docs/verification/M01-G4-RESIDUALS.md
+    tip: 6352f44
     adr_0006_9: ACCEPTED_RESIDUAL
 
-residuals_summary:
-  r_env_int: CLOSED_IN_CODE
-  r_env_int_owner: SF-M01-G4-001
-  r_env_int_pr: 39
-  adr_0006_9: ACCEPTED_RESIDUAL
-  ccr_filed: false
-  frozen_contracts_altered: false
-
 gates_v1_v5_style:
-  V1: PENDING
+  V1: PASS
   V2: PENDING
-  V3: PENDING
-  V4: PENDING
+  V3: PASS
+  V4: PASS
   V5: PENDING
 
 recommendation: PENDING_SIBLINGS
 awaiting:
-  - SF-M01-G4-002
   - SF-M01-G4-003
 documents:
   repo_exit: docs/verification/M01-G4-EXIT.md
   store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
   evidence: evidence/SF-M01-G4-005/
-polled_at: "2026-10-04T05:07:00Z"
+polled_at: "2026-10-04T05:09:00Z"
