@@ -875,7 +875,7 @@ describe('CMP-011 HTTP plugin (memory repository)', () => {
           digiLockerBinding: {
             ...dlBinding(T1, 'REAL'),
             environment: 'UAT',
-            secret_ref: 'vault://x',
+            secret_ref: null,
           },
         }),
       ).rejects.toThrow();
