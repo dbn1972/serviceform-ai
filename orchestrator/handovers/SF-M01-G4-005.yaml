@@ -1,0 +1,87 @@
+# M01 G4 exit envelope — SF-M01-G4-005 Exit record token assembly
+# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+# Evidence agent recommends only; human/CI issues M01_COMPLETE_G4_SECURITY_VERIFIED.
+task_id: SF-M01-G4-005
+title: Assemble M01 G4 exit record (recommend token; not self-issue)
+module_id: M01
+wave: g4-exit
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+dispatched: false
+component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - M01_COMPLETE_G4_SECURITY_VERIFIED
+  - G4_SECURITY_VERIFIED
+  - not-RELEASE-CERTIFIED
+agent_role: verification_agent
+builder_agent: serviceform-evidence-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+branch: agent/M01-g4-exit-record-SF-M01-G4-005
+worktree: ../wt-SF-M01-G4-005
+depends_on:
+  - SF-M01-G4-001 evidence (R-ENV-INT closed)
+  - SF-M01-G4-002 evidence (full regression)
+  - SF-M01-G4-003 evidence (security exit; leakage=0)
+  - SF-M01-G4-004 residuals record
+  - human authorization for M01 G4 exit implementation
+allowed_write_paths:
+  - docs/verification/M01-G4-EXIT.md
+  - evidence/SF-M01-G4-005/**
+  - orchestrator/handovers/SF-M01-G4-005.yaml
+  - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
+allowed_write_notes:
+  - Recommend GATE_READY / BLOCKED and token readiness only
+  - Do not claim CERTIFIED, RELEASE CERTIFIED, or G6
+  - Do not flip m02_m03_blocked false without human/CI token issuance recorded
+read_only_paths:
+  - services/**
+  - apps/**
+  - packages/**
+  - contracts/**
+  - specs/**
+  - db/**
+  - .github/**
+explicit_cannot:
+  - certify release or module as RELEASE CERTIFIED
+  - self-certify builders
+  - dispatch CG-01 / M02 / M03
+  - alter frozen contracts
+exit_token_target: M01_COMPLETE_G4_SECURITY_VERIFIED
+exit_token_preconditions:
+  - wave1_closed: true
+  - wave2_closed: true
+  - all_m01_cmps_merged: true
+  - v1_v5_pass: true
+  - cross_tenant_leakage: 0
+  - frozen_contracts: 13/13 MATCH
+  - residuals_explicit: true
+  - r_env_int_closed: true
+  - certified: false
+  - release_certified: false
+acceptance_tests_planning:
+  - Bind commit SHAs and CI/security run IDs for exit tip
+  - Trace G4-001..004 evidence
+  - Confirm frozen 13/13 and leakage=0
+  - Record m02_m03_blocked until human/CI issues token
+  - Recommend only; human/CI issues M01_COMPLETE_G4_SECURITY_VERIFIED
+stop_conditions:
+  - missing envelope evidence
+  - CERTIFIED claim requested
+  - write outside allowed_write_paths
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+parallel_group: G4-C
+evidence_paths:
+  - evidence/SF-M01-G4-005/
+  - docs/verification/M01-G4-EXIT.md
+  - orchestrator/handovers/M01-G4-EXIT-GATE.yaml

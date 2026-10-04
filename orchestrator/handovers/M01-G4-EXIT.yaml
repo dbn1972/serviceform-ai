@@ -1,0 +1,107 @@
+# M01 G4 exit planning index (machine-readable)
+# PLANNING ONLY. Not CERTIFIED. Not RELEASE CERTIFIED.
+# M02/M03 (CG-01) blocked until M01_COMPLETE_G4_SECURITY_VERIFIED issued by human/CI.
+
+module_id: M01
+wave: g4-exit
+record: M01-G4-EXIT
+decision: M01_G4_EXIT_PLAN_READY
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+builders_dispatched: 0
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+frozen_contracts_altered: false
+m02_m03_blocked: true
+cg01_blocked: true
+
+baseline:
+  origin_main: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+  wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+  wave1_status: M01_WAVE1_MERGED_AND_CLOSED
+  wave2_merge_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+  wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
+  wave2_pr: 33
+  m01_components:
+    - CMP-002
+    - CMP-003
+    - CMP-030
+    - CMP-031
+    - CMP-032
+    - CMP-036
+    - CMP-037
+    - CMP-038
+    - CMP-047
+    - CMP-048
+    - CMP-055
+  exit_gate: G4_SECURITY_VERIFIED
+  exit_record_token_target: M01_COMPLETE_G4_SECURITY_VERIFIED
+  cross_tenant_leakage_prior: 0
+  frozen_contract_hashes: 13/13 MATCH
+
+documents:
+  repo_plan: docs/planning/M01-G4-EXIT-PLAN.md
+  store_plan: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-plan.md
+  store_envelopes: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-envelopes.md
+  sequencing_check: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-exit-sequencing-check.md
+
+governance_sequence:
+  - architecture_constitution
+  - frozen_contracts
+  - confirmed_sequencing_no_wave3_features
+  - bounded_g4_exit_envelopes
+  - exit_implementation_pending_authorization
+  - independent_evidence_bind
+  - human_ci_issues_exit_token
+  - cg01_m02_m03_unblocked_only_after_token
+
+exit_envelopes:
+  - SF-M01-G4-001
+  - SF-M01-G4-002
+  - SF-M01-G4-003
+  - SF-M01-G4-004
+  - SF-M01-G4-005
+
+scopes:
+  - id: R-ENV-INT
+    envelope: SF-M01-G4-001
+    action: fix_now
+  - id: M01_REGRESSION
+    envelope: SF-M01-G4-002
+    action: execute_on_main
+  - id: SECURITY_EXIT
+    envelope: SF-M01-G4-003
+    action: independent_verify
+  - id: RESIDUALS
+    envelope: SF-M01-G4-004
+    action: close_or_formal_carry
+  - id: EXIT_RECORD
+    envelope: SF-M01-G4-005
+    action: recommend_token_human_ci_issues
+
+residuals_policy:
+  R-ENV-INT: fix_now_via_G4-001
+  ADR-0006-9_outbox_sf_app_grants: accept_residual_or_ccr_never_silent_contract_edit
+  v5_evidence_provenance: formalize_headsha_bind
+  branch_protection_required_checks: confirm_before_m02_m03
+
+blockers_for_planning: []
+ccr_opened: []
+adr_opened: []
+residuals_non_blocking_for_planning:
+  - R-ENV-INT present on main (addressed by G4-001 when authorized)
+  - ADR-0006 #9 outbox sf_app GRANTs (accept or CCR)
+  - CMP-055 missing package.json on main (path-based INT or minimal packaging only)
+  - REAL S3/KMS/WAF deferred
+  - DPDP statutory anchors deferred
+
+explicit_non_goals:
+  - m01_wave3_feature_work
+  - m02_start
+  - m03_start
+  - frozen_contract_edits
+  - certified_or_release_certified_claim

@@ -1,0 +1,73 @@
+# M01 G4 exit envelope — SF-M01-G4-004 Residuals close or formal carry
+# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+task_id: SF-M01-G4-004
+title: Close or formally carry M01 residuals for G4 exit
+module_id: M01
+wave: g4-exit
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+dispatched: false
+component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - R-ENV-INT-disposition
+  - ADR-0006-9-outbox-grants-disposition
+  - evidence-provenance
+  - branch-protection-before-cg01
+agent_role: architecture_agent
+builder_agent: serviceform-architecture-guardian
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+branch: agent/M01-g4-residuals-SF-M01-G4-004
+worktree: ../wt-SF-M01-G4-004
+depends_on:
+  - human authorization for M01 G4 exit implementation
+  - R-ENV-INT close evidence from SF-M01-G4-001 when claiming closed
+allowed_write_paths:
+  - docs/verification/M01-G4-RESIDUALS.md
+  - evidence/SF-M01-G4-004/**
+  - orchestrator/handovers/SF-M01-G4-004.yaml
+allowed_write_notes:
+  - Documentation and evidence only by default
+  - If filing CCR for ADR-0006 #9, may add CCR draft under docs/adr/ or established CCR path — never edit frozen SF-CON-OUTBOX template
+  - Must not silently change contracts/**
+read_only_paths:
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - services/**
+  - apps/**
+  - packages/**
+  - db/**
+  - .github/workflows/**
+  - scripts/ci/run-m01-envelope-int.sh
+residuals_disposition_planning:
+  R-ENV-INT: fix_now_via_SF-M01-G4-001_then_close
+  ADR-0006-9_sf_app_grants: accept_residual_OR_open_ccr
+  v5_evidence_provenance: formalize_headsha_vs_merge_ref
+  branch_protection_required_checks: confirm_ci_and_security_before_m02_m03
+  REAL_S3_KMS_WAF: carry_deferred_adr
+  DPDP_statutory_anchors: carry_deferred_adr_if_needed
+  R-COV: carry_documented
+acceptance_tests_planning:
+  - Every residual is closed or formally carried with explicit language
+  - ADR-0006 #9 never silently edits frozen outbox grants
+  - Branch protection / required checks status documented before CG-01
+  - Provenance rule for exit evidence stated
+stop_conditions:
+  - silent frozen-contract edit proposed
+  - residual dropped without record
+  - write outside allowed_write_paths
+self_certified: false
+not_certified: true
+certified: false
+ccr_required: false
+ccr_optional: ADR-0006-9 outbox sf_app grants tightening
+parallel_group: G4-A
+evidence_paths:
+  - evidence/SF-M01-G4-004/
+  - docs/verification/M01-G4-RESIDUALS.md
