@@ -1,0 +1,52 @@
+{
+  "record": {
+    "family": "SF-M01-G4-005",
+    "kind": "token"
+  },
+  "token_issued": true,
+  "recording_agent_self_issued": false,
+  "exit_record_token": {
+    "module": "M01",
+    "completeness": "COMPLETE",
+    "gate": "G4_SECURITY",
+    "status": "VERIFIED",
+    "join_separator": "_",
+    "join_order": ["module", "completeness", "gate", "status"]
+  },
+  "issuer": "Debabrata Nayak",
+  "issuer_class": "human_or_ci",
+  "issuer_role": "human",
+  "issued_at": "2026-10-04T05:58:00Z",
+  "main_sha": {
+    "prefix": "436c3545",
+    "suffix": "cf31bc3a8ba9aaacfcb0b888a168bd90"
+  },
+  "post_merge_ci": {
+    "ci_run_id": "37180571888",
+    "security_run_id": "37180571882",
+    "developer_platform_run_id": "37180571899",
+    "conclusion": "SUCCESS"
+  },
+  "frozen_contracts": "13/13 MATCH",
+  "CROSS_TENANT_LEAKAGE": 0,
+  "r_env_int": "CLOSED",
+  "adr_0006_9": "ACCEPTED_RESIDUAL",
+  "r_branch_prot": "ACCEPTED_RESIDUAL",
+  "r_branch_prot_class": "OPS",
+  "r_branch_prot_probe": {
+    "at": "2026-10-04T05:58:00Z",
+    "protected": false,
+    "rulesets": [],
+    "protection_get": "403"
+  },
+  "certified": false,
+  "release_certified": false,
+  "self_certified": false,
+  "not_certified": true,
+  "m02_m03_blocked": false,
+  "cg01_blocked": false,
+  "cg01_started": false,
+  "m02_started": false,
+  "m03_started": false,
+  "cg01_requires_separate_human_authorization": true
+}

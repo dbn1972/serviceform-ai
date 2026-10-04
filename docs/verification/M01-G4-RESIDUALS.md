@@ -27,6 +27,7 @@ Envelope: `orchestrator/handovers/SF-M01-G4-004.yaml`.
 | **ACCEPTED_RESIDUAL** | Formally accepted for M01 G4 exit with explicit language; not silently dropped |
 | **CARRIED** | Deferred beyond M01 G4 with explicit owner/follow-up; not silent drop |
 | **OPS_CONFIRM** | Documented; human/ops must confirm GitHub settings before CG-01 |
+| **ACCEPTED_RESIDUAL** (OPS) | Formally accepted as ops residual for a named gate (e.g. exit token); not CLOSED_OPS |
 
 No residual may be omitted. Silent frozen-contract edits are forbidden.
 
@@ -39,7 +40,7 @@ No residual may be omitted. Silent frozen-contract edits are forbidden.
 | R-ENV-INT | GitHub job previously W1-only (`SF-M01-001..005`) | `evidence/SF-M01-W2-STITCH/RESIDUALS.md`; V5; G4 plan Scope 1; SF-M01-G4-001 + `READY` | **CLOSED_IN_CODE (pending merge).** Fix on PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) branch `cursor/m01-g4-r-env-int-1573` @ `6d3e495987bd7308596cbbd69ab65c46e242c7bf`. Job renamed to `M01 envelope integration (W1+W2 all CMPs)`; script covers all 11 M01 CMPs; fail-closed; evidence `evidence/SF-M01-G4-001/`. **Not merged to `main` yet** — exit-token checklist treats closed only after merge + tip re-bind. Not CERTIFIED. | **CLOSED_IN_CODE** | **Yes until #39 merges to `main`** | SF-M01-G4-001 → human merge |
 | R-OUTBOX-SF-APP | ADR-0006 condition **#9** / SF-CON-OUTBOX: frozen template grants `INSERT` (tenant outbox) and inbox `SELECT, INSERT` **TO `sf_app`**; publisher policies include frozen `USING true` read path for `sf_outbox_publisher` | ADR-0006; W1 closure; W2 V2 residual; `contracts/shared/sql/outbox.template.sql` | **Accepted residual for M01 G4 exit.** Outbox/inbox grants remain exactly as frozen. **No CCR filed in this task.** Tightening later requires an explicit CCR — **never** a silent edit to `contracts/**` or the outbox template. Tenant RLS on tenant outbox still holds; not counted as `CROSS_TENANT_LEAKAGE`. | **ACCEPTED_RESIDUAL** | **No** (accepted) | Optional future CCR (human/contract guardian); not G4-004 |
 | R-PROVENANCE | V5 suite-meta / `summary.json` may stamp ephemeral GitHub `pull_request` merge-ref SHAs while workflow `headSha` / `ARTIFACT-INDEX.json` bind the candidate tip | W1 V5 limitation; W2 V5 tip policy | **Formalized rule (below).** Exit evidence MUST bind authoritative `headSha` / `ARTIFACT-INDEX.json` `commit_sha`. Suite-meta merge-ref stamps are informational only and must not be used as the sole bind. | **CLOSED** (rule formalized) | **No** | G4-002/003/005 evidence writers must follow rule |
-| R-BRANCH-PROT | Branch protection / required status checks on `main` before M02/M03 dispatch | G4 plan Scope 4; CG-01 gate | **Documented ops note (below).** Integration token cannot read protection/rulesets (403 / empty). Human must confirm `ci` + `security` (including generalized envelope-int after G4-001) are required on `main` before CG-01. Gaps must not be invented as infra. | **OPS_CONFIRM** | **Yes for CG-01** (ops confirm before M02/M03); not a code residual | Human/repo admin before CG-01 |
+| R-BRANCH-PROT | Branch protection / required status checks on `main` before M02/M03 dispatch | G4 plan Scope 4; CG-01 gate; human Debabrata Nayak token auth | **ACCEPTED_RESIDUAL (OPS) for M01 G4 exit token.** Probe `2026-10-04T05:58Z`: `GET branches/main` → `protected:false`; rulesets `[]`; protection GET 403. Human authorized exit token with this residual; **CLOSED_OPS not required for token**. Enabling protection remains optional ops hygiene before CG-01 start (separate auth). Supersedes PR #42 blocked-enable docs. | **ACCEPTED_RESIDUAL** | **No for exit token** (accepted); CG-01 start still needs separate human authorization | Human authorized for token; optional ops enable before CG-01 |
 | R-COV | Global unit coverage excludes W2 int-only surfaces (CMP-003/030/032 routes/repos/db; CMP-055 CLI) | W2 stitch `RESIDUALS.md`; V4 | **Carried.** Component coverage + `*.int.test.ts` + independent INT remain authoritative. Do not weaken global thresholds to force inclusion. | **CARRIED** | **No** | Quality / later coverage hygiene |
 | R-INFRA | REAL S3 / KMS / WAF connectors | W2 stitch; V2 | **Carried** as deferred ADR/infra. CMP-032 remains SIMULATED/local for M01. No SIMULATED critical connector in production (separate production gate). | **CARRIED** | **No** | Future ADR / infra when production connectors required |
 | R-DPDP | Statutory DPDP / privacy content anchors | W2 plan Arch Verif M-09 | **Carried.** CMP-030 is platform consent/purpose machinery only. Stop + ADR if statutory interpretation would be required. No policy invention in exit docs. | **CARRIED** | **No** | ADR if/when statutory anchors demanded |
@@ -104,15 +105,16 @@ Observed frozen grants (illustrative; do not edit):
 | `ci` | format/lint/unit/contracts/build; architecture gates; migrations/tenant-isolation; **M01 envelope integration (W1+W2 all CMPs)** (name on PR #39; require this after merge); web shells; flutter; workflow validation | **Yes** |
 | `security` | gitleaks; semgrep; CodeQL; dependency audit; checkov | **Yes** |
 
-**Observed from this agent (2026-10-04):**
+**Observed probes (2026-10-04):**
 
 | Probe | Result |
 |---|---|
+| `GET /repos/dbn1972/serviceform-ai/branches/main` | **200** — `protected: false` (re-confirmed at token issuance `05:58Z`) |
 | `GET /repos/dbn1972/serviceform-ai/branches/main/protection` | **403** Resource not accessible by integration |
 | `GET /repos/dbn1972/serviceform-ai/rulesets` | **[]** empty (no rulesets visible to token) |
 | Repo permissions for integration | admin/maintain/push **false** |
 
-**Disposition:** **OPS_CONFIRM**. Do not invent branch-protection configuration in-repo. Human/repo admin confirms required checks before dispatching CG-01. M02/M03 remain blocked until G4 exit token **and** this ops confirmation.
+**Disposition (updated at token issuance):** **ACCEPTED_RESIDUAL** (OPS class; not CLOSED_OPS). Human Debabrata Nayak authorized the M01 G4 exit token with R-BRANCH-PROT accepted as an OPS residual while `main` remains unprotected from the Cursor API view. Do not invent branch-protection configuration in-repo. Enabling required checks remains optional ops hygiene before **starting** CG-01 (separate authorization). PR #42 (blocked enable attempt) is superseded by this disposition.
 
 ---
 
@@ -124,7 +126,7 @@ Observed frozen grants (illustrative; do not edit):
 | R-ENV-INT disposition tracks G4-001 without false main-closed claim | **PASS** — **CLOSED_IN_CODE** pending #39 merge |
 | ADR-0006 #9 accept-or-CCR resolved without silent contract edit | **PASS** — **ACCEPTED_RESIDUAL**, no CCR, contracts untouched |
 | Provenance rule formalized | **PASS** |
-| Branch protection / required checks noted before M02/M03 | **PASS** (OPS_CONFIRM) |
+| Branch protection / required checks noted before M02/M03 | **PASS** — later **ACCEPTED_RESIDUAL** for exit token (human) |
 | Frozen contracts 13/13 unchanged | **PASS** |
 | CERTIFIED claimed | **false** |
 | Write paths limited to envelope allow-list | **PASS** |
@@ -144,6 +146,8 @@ Observed frozen grants (illustrative; do not edit):
 |---|---|
 | Initial | R-ENV-INT = OPEN_DEPENDS on SF-M01-G4-001 |
 | After SF-M01-G4-001 + `READY` | R-ENV-INT → **CLOSED_IN_CODE** bound to PR #39 @ `6d3e495`; still not CERTIFIED |
+| `2026-10-04T05:58Z` token issuance | Human issued exit token; R-BRANCH-PROT → **ACCEPTED_RESIDUAL** (OPS; `protected:false`; CLOSED_OPS not required) |
+| Token PR #43 | Supersedes #42 blocked-enable attempt; residual disposition recorded with issuance |
 
 ## Sources consulted
 
