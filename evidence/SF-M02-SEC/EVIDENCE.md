@@ -10,7 +10,7 @@ Independent verifier recommendation only: **`V1_SECURITY_PASS`**.
 | Task | SF-M02-SEC |
 | Role | independent security verifier (identity/profile/tenant) |
 | Production SoT | `origin/main` `d2530008bdc04ee941ff8a16535168791a3b804f` (merge #63) |
-| Verifier / probe commit | `VERIFIER_SHA_PLACEHOLDER` |
+| Verifier / probe commit | `1baa64c77988b99740ccb0f1bab660209583635e` |
 | Components | CMP-004, CMP-005 |
 | INT | INT-001 (citizen auth → profile / DigiLocker binding fail-closed), INT-011 (tenant isolation) |
 | Unmerged siblings | M03-SEC #61 and M03-INT #59 **not** used as production source of truth; **not merged** |
