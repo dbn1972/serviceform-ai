@@ -1,0 +1,62 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-050 Administration and Service Designer Portal BFF",
+    "version": "0.1.0",
+    "description": "Session and allowlisted platform proxy for Studio/Admin (INT-002 UX). Component-local; not shared-frozen. Host APIs remain CMP-033/051/052/001."
+  },
+  "paths": {
+    "/api/session": {
+      "get": {
+        "operationId": "getPortalSession",
+        "responses": {
+          "200": { "description": "Current workforce session" },
+          "401": { "description": "Unauthenticated" }
+        }
+      },
+      "post": {
+        "operationId": "createPortalSession",
+        "responses": {
+          "201": { "description": "SIMULATED local session" },
+          "400": { "description": "Invalid" },
+          "403": { "description": "Production simulated forbidden" }
+        }
+      },
+      "delete": {
+        "operationId": "clearPortalSession",
+        "responses": { "204": { "description": "Cleared" } }
+      }
+    },
+    "/api/platform/{path}": {
+      "get": {
+        "operationId": "proxyPlatformGet",
+        "parameters": [
+          { "name": "path", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Upstream" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Path or tenant denied" },
+          "503": { "description": "API unavailable" }
+        }
+      },
+      "post": {
+        "operationId": "proxyPlatformPost",
+        "parameters": [
+          { "name": "path", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "201": { "description": "Upstream create" },
+          "503": { "description": "API unavailable" }
+        }
+      },
+      "patch": {
+        "operationId": "proxyPlatformPatch",
+        "parameters": [
+          { "name": "path", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Upstream patch" } }
+      }
+    }
+  }
+}
