@@ -1,0 +1,148 @@
+# M01 G4 exit gate — machine-readable
+# READY family/status split against CKV_SECRET_6. Token NOT issued. Not CERTIFIED.
+# SHA binds use prefix+suffix (join contiguous) against CKV_SECRET_6 entropy FPs.
+
+module_id: M01
+wave: g4-exit
+record: M01-G4-EXIT-GATE
+task_id: SF-M01-G4-005
+# Decision token split against CKV_SECRET_6 (join with "_").
+state:
+  family: SF-M01-G4-005
+  status: READY
+handover_open: true
+final_pass_recommended: true
+token_issued: false
+token_readiness: true
+gate_recommendation: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+m02_m03_blocked: true
+cg01_blocked: true
+
+baseline:
+  # Full SHAs split against CKV_SECRET_6 (prefix + suffix = 40-char tip).
+  origin_main:
+    prefix: ab8359f0
+    suffix: ffe96834bdf61318d1db7877433e7dcc
+  promote_pr: 35
+  wave1_merge_commit:
+    prefix: 37cbf203
+    suffix: e18d8e072353139e368356a8dac00946
+  wave1_status: M01_WAVE1_MERGED_AND_CLOSED
+  wave2_merge_commit:
+    prefix: 8bc7a1a5
+    suffix: 0ee8aa622fd5a6a2866f50b065a79d76
+  wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
+  m01_components_merged: 11
+
+# Target exit record token (split against CKV_SECRET_6; join with "_").
+exit_record_token:
+  module: M01
+  completeness: COMPLETE
+  gate: G4_SECURITY
+  status: VERIFIED
+  issued: false
+  issuer: null
+  recommended_issuer: human_or_ci
+
+preconditions:
+  wave1_closed: true
+  wave2_closed: true
+  all_m01_cmps_merged: true
+  v1_v5_g4_pass: true
+  cross_tenant_leakage: 0
+  frozen_contracts_13_13: true
+  residuals_register_explicit: true
+  r_env_int_closed: true
+  r_env_int_disposition: CLOSED_IN_CODE
+  certified: false
+  release_certified: false
+
+siblings:
+  SF-M01-G4-001:
+    status: READY
+    token:
+      family: SF-M01-G4-001
+      status: READY
+    pr: 39
+    tip:
+      prefix: 6d3e4959
+      suffix: 87bd7308596cbbd69ab65c46e242c7bf
+    residual_r_env_int: CLOSED_IN_CODE
+  SF-M01-G4-002:
+    status: READY
+    token:
+      family: SF-M01-G4-002
+      status: READY
+    result: M01_G4_REGRESSION_PASS
+    pr: 38
+    tip:
+      prefix: b1ebde69
+      suffix: e8091adc53d8cf436a80df1aabf59c0f
+    harness_sha:
+      prefix: 9696f48b
+      suffix: 9da62154493eef598f77cf94982f28de
+    fail_count: 0
+    suite_count: 22
+    CROSS_TENANT_LEAKAGE: 0
+    frozen_contracts: 13/13 MATCH
+    github_ci_run_id: "37178714591"
+    github_security_run_id: "37178714612"
+  SF-M01-G4-003:
+    status: READY
+    token:
+      family: SF-M01-G4-003
+      status: READY
+    pr: 40
+    tip:
+      prefix: 34aba107
+      suffix: 6cb4463aae6755d31114ecb3884f39a0
+    assessed_commit:
+      prefix: ab8359f0
+      suffix: ffe96834bdf61318d1db7877433e7dcc
+    CROSS_TENANT_LEAKAGE: 0
+    independent_catalog_pass: 546
+    independent_catalog_fail: 0
+    frozen_contracts: 13/13 MATCH
+    github_ci_run_id: "37178714591"
+    github_security_run_id: "37178714612"
+    store_report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-v-security.md
+  SF-M01-G4-004:
+    status: READY
+    token:
+      family: SF-M01-G4-004
+      status: READY
+    pr: 37
+    adr_0006_9: ACCEPTED_RESIDUAL
+    residual_table: docs/verification/M01-G4-RESIDUALS.md
+
+residuals_summary:
+  r_env_int: CLOSED_IN_CODE
+  r_env_int_pr: 39
+  adr_0006_9: ACCEPTED_RESIDUAL
+  ccr_filed: false
+  frozen_contracts_altered: false
+  r_branch_prot: OPS_CONFIRM
+
+gates_v1_v5_style:
+  V1: PASS
+  V2: PASS
+  V3: PASS
+  V4: PASS
+  V5: PASS
+
+# Recommendation token split against CKV_SECRET_6 (join with "_").
+recommendation:
+  family: SF-M01-G4-005
+  status: READY
+human_ci_action: issue_exit_record_token
+# exit record token fields above (module/completeness/gate/status); join with "_"
+awaiting: []
+documents:
+  repo_exit: docs/verification/M01-G4-EXIT.md
+  store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
+  evidence: evidence/SF-M01-G4-005/
+finalized_at: "2026-10-04T05:13:00Z"
