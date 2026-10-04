@@ -1,0 +1,96 @@
+# M04 READY envelope — CMP-039 AI Gateway
+# READY. Not dispatched. Not CERTIFIED. LOCK-2 Wave A.
+task_id: SF-M04-001
+title: AI Gateway
+module_id: M04
+component_ids: [CMP-039]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-039
+  - AI-GOVERNANCE.md
+  - ADR-0001-M04
+  - Constitution-no-LLM-statutory-decision
+agent_role: component_builder
+builder_agent: serviceform-ai-platform-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M04-ai-gateway-SF-M04-001
+worktree: ../wt-SF-M04-001
+parallel_group: M04-A
+privilege_role: sf_cmp039_rw
+schema: sf_ai_gateway
+hard_serial_locks: [LOCK-1, LOCK-2]
+depends_on:
+  - M02 G3_INTEGRATION_VERIFIED issued
+  - M03 G3_INTEGRATION_VERIFIED issued
+  - 13 shared contracts FROZEN
+  - LOCK-1 planning PR on main
+  - human planning/READY authorization granted (Debabrata Nayak)
+allowed_write_paths:
+  - services/cmp-039-ai-gateway/**
+  - db/migrations/*_cmp-039-*.sql
+  - evidence/SF-M04-001/**
+  - orchestrator/handovers/SF-M04-001.yaml
+allowed_write_notes:
+  - package.json under service path may change; do not commit pnpm-lock.yaml
+  - All later model calls in M04 MUST use this gateway
+  - Gateway never issues statutory eligibility/approval/rejection
+  - SIMULATED provider adapters allowed; no production SIMULATED critical connector bypass
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - specs/**
+  - apps/**
+  - services/cmp-014-document-intelligence/**
+  - AI-GOVERNANCE.md
+wave_eligible_now: true
+serial_after: []
+builders_dispatched_this_envelope: false
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: df6a4af1
+  suffix: fc7c300616b59a34cf363db80be642e4
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M04 code as source of truth
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - M05 start
+  - weaken cg01_path_uniqueness_gate.py
+
+acceptance_tests_planning:
+  - Allowlist/pin, redaction, audit of prompt/model/tool metadata
+  - Deny unapproved model/provider
+  - No PII/secrets in logs/prompts/test fixtures
+  - Host mount deferred to SF-M04-007

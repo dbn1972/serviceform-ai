@@ -1,0 +1,111 @@
+# M04 Forms, rules, evidence, upload, document intelligence, AI Gateway — READY index (pre-dispatch)
+# Planning/READY package only. Not dispatched. Not CERTIFIED. M05 OFF.
+module_id: M04
+record: SF-M04-PLAN
+name: Forms, Rules, Evidence, Upload, Document Intelligence and AI Gateway
+depends_on: [M02, M03]
+components: [CMP-008, CMP-009, CMP-011, CMP-013, CMP-014, CMP-039]
+integrations_owned: []
+integrations_reverify: [INT-011, INT-013]
+exit_gate:
+  id: G3_INTEGRATION
+  status: VERIFIED
+  issued: false
+  note: target module exit only; this package does not issue G3
+decision:
+  family: M04_PLANNING_READY
+  status: READY
+
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+m05_off: true
+builders_dispatched: 0
+m04_started: false
+wave_a_dispatch: HOLD_UNTIL_PLANNING_MERGED_AND_ORCHESTRATOR_RECORD
+base_commit:
+  prefix: df6a4af1
+  suffix: fc7c300616b59a34cf363db80be642e4
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection
+  - write outside allowed_write_paths
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - M05 start
+  - weaken cg01_path_uniqueness_gate.py
+hard_serial_locks:
+  LOCK-1: planning PR merged; uniqueness/contracts/architecture green; no spawn in this slice
+  LOCK-2: Wave A parallel SF-M04-001..004 only after LOCK-1 plus dispatch record
+  LOCK-3: STITCH-A mechanical/format/lockfile on Wave A paths after immutable heads
+  LOCK-4: Wave B window only after STITCH-A on origin/main
+  LOCK-5: SF-M04-005 (CMP-009) after CMP-008 (SF-M04-002) and CMP-011 (SF-M04-003)
+  LOCK-6: SF-M04-006 (CMP-014) after CMP-039 (SF-M04-001) and CMP-013 (SF-M04-004)
+  LOCK-7: STITCH-B then single-writer SF-M04-007 then INT parallel SEC then EVD
+wave_a_eligible_now: [SF-M04-001, SF-M04-002, SF-M04-003, SF-M04-004]
+wave_a_parallel: [SF-M04-001, SF-M04-002, SF-M04-003, SF-M04-004]
+wave_a_components:
+  SF-M04-001: CMP-039
+  SF-M04-002: CMP-008
+  SF-M04-003: CMP-011
+  SF-M04-004: CMP-013
+wave_b_after_stitch_a:
+  - SF-M04-005
+  - SF-M04-006
+sequencing:
+  SF-M04-STITCH-A_after: [SF-M04-001, SF-M04-002, SF-M04-003, SF-M04-004]
+  SF-M04-005_after: [SF-M04-STITCH-A, SF-M04-002, SF-M04-003]
+  SF-M04-006_after: [SF-M04-STITCH-A, SF-M04-001, SF-M04-004]
+  SF-M04-STITCH-B_after: [SF-M04-005, SF-M04-006, SF-M04-STITCH-A]
+  SF-M04-007_after: [SF-M04-STITCH-B]
+  SF-M04-INT_after: [SF-M04-007]
+  SF-M04-SEC_after: [SF-M04-007]
+  SF-M04-EVD_after: [SF-M04-INT, SF-M04-SEC]
+lockfile_owner: stitch_A_then_stitch_B
+uniqueness_gate: scripts/gates/cg01_path_uniqueness_gate.py
+uniqueness_gate_weakened: false
+ai_rule: all_model_calls_via_CMP-039
+documents:
+  repo_plan: docs/planning/M04-PLAN.md
+  repo_envelopes: docs/planning/M04-ENVELOPES.md
+  serial_locks: orchestrator/dispatch/M04-SERIAL-LOCKS.md
+  dispatch: orchestrator/dispatch/DISPATCH-PLAN-M04.md
+builder_envelopes:
+  - SF-M04-001
+  - SF-M04-002
+  - SF-M04-003
+  - SF-M04-004
+  - SF-M04-005
+  - SF-M04-006
+  - SF-M04-007
+stitch_envelopes:
+  - SF-M04-STITCH-A
+  - SF-M04-STITCH-B
+verifier_envelopes:
+  - SF-M04-INT
+  - SF-M04-SEC
+  - SF-M04-EVD

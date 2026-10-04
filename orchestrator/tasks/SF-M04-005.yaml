@@ -1,0 +1,100 @@
+# M04 READY envelope — CMP-009 Dynamic Forms Engine
+# READY. Not dispatched. Not CERTIFIED. LOCK-5 Wave B after 008+011 and STITCH-A on main.
+task_id: SF-M04-005
+title: Dynamic Forms Engine
+module_id: M04
+component_ids: [CMP-009]
+integration_ids: [INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-009
+  - UX4G-3.0
+  - DESIGN-SYSTEM.md
+  - ADR-0001-M04
+agent_role: component_builder
+builder_agent: serviceform-forms-rules-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M04-forms-SF-M04-005
+worktree: ../wt-SF-M04-005
+parallel_group: M04-B
+privilege_role: sf_cmp009_rw
+schema: sf_forms
+hard_serial_locks: [LOCK-4, LOCK-5]
+depends_on:
+  - SF-M04-STITCH-A on origin/main
+  - SF-M04-002 CMP-008 on main
+  - SF-M04-003 CMP-011 on main
+  - human planning/READY authorization granted (Debabrata Nayak)
+allowed_write_paths:
+  - services/cmp-009-dynamic-forms/**
+  - db/migrations/*_cmp-009-*.sql
+  - evidence/SF-M04-005/**
+  - orchestrator/handovers/SF-M04-005.yaml
+allowed_write_notes:
+  - JSON Forms is schema/runtime only; UX4G-backed renderers
+  - Do not fork packages/ui-ux4g primitives
+  - Do not commit pnpm-lock.yaml
+  - Conditional visibility from metadata; no named-service UI
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - packages/ui-ux4g/**
+  - apps/web-studio/**
+  - apps/web-citizen/**
+  - apps/api/**
+  - services/cmp-008-rules/**
+  - services/cmp-011-evidence-requirements/**
+  - services/cmp-054-ux4g/**
+wave_eligible_now: false
+serial_after:
+  - SF-M04-STITCH-A
+  - SF-M04-002
+  - SF-M04-003
+builders_dispatched_this_envelope: false
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: df6a4af1
+  suffix: fc7c300616b59a34cf363db80be642e4
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M04 code as source of truth
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - M05 start
+  - weaken cg01_path_uniqueness_gate.py
+
+acceptance_tests_planning:
+  - Schema/UI-schema validation without second design system
+  - Accessibility/keyboard semantics via UX4G renderers
+  - Host mount deferred to SF-M04-007

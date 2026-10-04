@@ -1,0 +1,95 @@
+# M04 READY — Wave A stitch (LOCK-3)
+# Mechanical/format/lockfile only after immutable Wave A heads. Not dispatched. Not CERTIFIED.
+task_id: SF-M04-STITCH-A
+title: M04 Wave A mechanical stitch and lockfile
+module_id: M04
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+component_ids: [CMP-039, CMP-008, CMP-011, CMP-013]
+integration_ids: [INT-011, INT-013]
+branch: agent/M04-stitch-a-SF-M04-STITCH-A
+worktree: ../wt-SF-M04-STITCH-A
+parallel_group: M04-STITCH-A
+hard_serial_locks: [LOCK-3]
+must_not_run_concurrent_with: [SF-M04-STITCH-B]
+depends_on:
+  - SF-M04-001 immutable head
+  - SF-M04-002 immutable head
+  - SF-M04-003 immutable head
+  - SF-M04-004 immutable head
+  - LOCK-2 complete
+allowed_write_paths:
+  - services/cmp-039-ai-gateway/**
+  - db/migrations/*_cmp-039-*.sql
+  - services/cmp-008-rules/**
+  - db/migrations/*_cmp-008-*.sql
+  - services/cmp-011-evidence-requirements/**
+  - db/migrations/*_cmp-011-*.sql
+  - services/cmp-013-document-upload/**
+  - db/migrations/*_cmp-013-*.sql
+  - pnpm-lock.yaml
+  - evidence/SF-M04-STITCH-A/**
+  - orchestrator/handovers/SF-M04-STITCH-A.yaml
+allowed_write_notes:
+  - Mechanical/format/lockfile only; no semantic redesign of Wave A components
+  - Admit Wave A workspace importers; do not weaken frozen-lockfile CI
+  - Serial after Wave A immutable heads; not concurrent with SF-M04-001..004
+explicit_cannot:
+  - semantic redesign of Wave A component source
+  - edit contracts/** or orchestrator/contracts-lock.yaml
+  - self-certify
+read_only_paths:
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - scripts/gates/cg01_path_uniqueness_gate.py
+wave_eligible_now: false
+serial_after:
+  - SF-M04-001
+  - SF-M04-002
+  - SF-M04-003
+  - SF-M04-004
+builders_dispatched_this_envelope: false
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: df6a4af1
+  suffix: fc7c300616b59a34cf363db80be642e4
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M04 code as source of truth
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - M05 start
+  - weaken cg01_path_uniqueness_gate.py
+
