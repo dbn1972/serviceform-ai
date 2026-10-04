@@ -96,3 +96,17 @@ acceptance_tests_planning:
   - Extracted fields remain non-authoritative until officer/rules confirm
   - No PII in logs/prompts
   - Host mount deferred to SF-M04-007
+
+# Builder completion (does not dispatch; does not certify)
+builder_completed: true
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+expected_stitch_b_lockfile_residual: true
+builder_notes: |
+  Implemented CMP-014 under allowed write paths from origin/main 2db721f.
+  All inference via AiGatewayPort (CMP-039). SIMULATED OCR INT-013 fail-closed in PRODUCTION.
+  Assistive-only CHECKs. Host mount SF-M04-007. STITCH-B lockfile residual expected.
+  Not CERTIFIED / Not G6 / M05 OFF.
+
