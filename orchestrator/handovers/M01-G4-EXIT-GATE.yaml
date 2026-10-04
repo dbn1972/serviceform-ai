@@ -1,6 +1,6 @@
 # M01 G4 exit gate — machine-readable
-# PENDING_SIBLINGS: G4-004 READY bound; waiting SF-M01-G4-001..003.
-# Not CERTIFIED. Token not issued. Evidence agent recommends only.
+# PENDING_SIBLINGS: G4-001 + G4-004 READY; waiting SF-M01-G4-002..003.
+# Not CERTIFIED. Token not issued.
 
 module_id: M01
 wave: g4-exit
@@ -44,22 +44,26 @@ preconditions:
   cross_tenant_leakage: pending
   frozen_contracts_13_13: pending
   residuals_register_explicit: true
-  r_env_int_closed: pending
+  r_env_int_closed: true
+  r_env_int_disposition: CLOSED_IN_CODE
   certified: false
   release_certified: false
 
 siblings:
   SF-M01-G4-001:
-    status: PENDING
+    status: READY
+    token: SF-M01-G4-001_READY
     agent: bc-7c9a10ad-ae6d-57d8-9606-839bd1231573
-    evidence: null
-    pr: null
+    pr: 39
+    tip: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
+    residual_r_env_int: CLOSED_IN_CODE
+    job_name: M01 envelope integration (W1+W2 all CMPs)
   SF-M01-G4-002:
     status: PENDING
     agent: bc-fe36ce62-e42f-572c-9d90-e1d192101041
     evidence: null
     pr: 38
-    note: harness draft only; evidence not READY
+    note: harness draft; evidence not READY
   SF-M01-G4-003:
     status: PENDING
     agent: bc-c8fb9af2-5830-5244-a097-9e1c4c0d61a0
@@ -72,13 +76,12 @@ siblings:
     pr: 37
     tip: 88d8b28669c0da4a70d53331224158dcecb1f810
     residual_table: docs/verification/M01-G4-RESIDUALS.md
-    store_mirror: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-residuals.md
     adr_0006_9: ACCEPTED_RESIDUAL
-    r_env_int: OPEN_DEPENDS
 
 residuals_summary:
-  r_env_int: OPEN_DEPENDS
+  r_env_int: CLOSED_IN_CODE
   r_env_int_owner: SF-M01-G4-001
+  r_env_int_pr: 39
   adr_0006_9: ACCEPTED_RESIDUAL
   ccr_filed: false
   frozen_contracts_altered: false
@@ -92,11 +95,10 @@ gates_v1_v5_style:
 
 recommendation: PENDING_SIBLINGS
 awaiting:
-  - SF-M01-G4-001
   - SF-M01-G4-002
   - SF-M01-G4-003
 documents:
   repo_exit: docs/verification/M01-G4-EXIT.md
   store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
   evidence: evidence/SF-M01-G4-005/
-polled_at: "2026-10-04T05:05:00Z"
+polled_at: "2026-10-04T05:07:00Z"

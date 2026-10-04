@@ -15,25 +15,31 @@
   "all_m01_cmps_merged": 11,
   "cross_tenant_leakage": null,
   "frozen_contracts": null,
+  "r_env_int": "CLOSED_IN_CODE",
   "siblings": {
-    "SF-M01-G4-001": "PENDING",
+    "SF-M01-G4-001": "READY",
     "SF-M01-G4-002": "PENDING",
     "SF-M01-G4-003": "PENDING",
     "SF-M01-G4-004": "READY"
+  },
+  "g4_001": {
+    "token": "SF-M01-G4-001_READY",
+    "pr": 39,
+    "tip": "6d3e495987bd7308596cbbd69ab65c46e242c7bf",
+    "residual_r_env_int": "CLOSED_IN_CODE",
+    "job_name": "M01 envelope integration (W1+W2 all CMPs)"
   },
   "g4_004": {
     "token": "SF-M01-G4-004_READY",
     "pr": 37,
     "tip": "88d8b28669c0da4a70d53331224158dcecb1f810",
-    "residual_table": "docs/verification/M01-G4-RESIDUALS.md",
-    "adr_0006_9": "ACCEPTED_RESIDUAL",
-    "r_env_int": "OPEN_DEPENDS"
+    "adr_0006_9": "ACCEPTED_RESIDUAL"
   },
-  "awaiting": ["SF-M01-G4-001", "SF-M01-G4-002", "SF-M01-G4-003"],
+  "awaiting": ["SF-M01-G4-002", "SF-M01-G4-003"],
   "documents": [
     "docs/verification/M01-G4-EXIT.md",
     "orchestrator/handovers/M01-G4-EXIT-GATE.yaml",
     "evidence/SF-M01-G4-005/EVIDENCE.md"
   ],
-  "polled_at": "2026-10-04T05:05:00Z"
+  "polled_at": "2026-10-04T05:07:00Z"
 }

@@ -30,22 +30,28 @@ planning_baseline: c42c7c89aa75653d099883e7f28ece73cf2c7515
 branch: cursor/m01-g4-exit-record-d5b7
 worktree: ../wt-SF-M01-G4-005
 depends_on:
-  - SF-M01-G4-001 evidence (R-ENV-INT closed) # PENDING
+  - SF-M01-G4-001 evidence (R-ENV-INT closed) # READY (PR #39 CLOSED_IN_CODE)
   - SF-M01-G4-002 evidence (full regression) # PENDING (PR #38 harness only)
   - SF-M01-G4-003 evidence (security exit; leakage=0) # PENDING
   - SF-M01-G4-004 residuals record # READY (PR #37)
   - human authorization for M01 G4 exit implementation (granted)
 sibling_status:
-  SF-M01-G4-001: PENDING
+  SF-M01-G4-001: READY
   SF-M01-G4-002: PENDING
   SF-M01-G4-003: PENDING
   SF-M01-G4-004: READY
+g4_001_bind:
+  token: SF-M01-G4-001_READY
+  pr: 39
+  tip: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
+  residual_r_env_int: CLOSED_IN_CODE
+  job_name: M01 envelope integration (W1+W2 all CMPs)
 g4_004_bind:
   token: SF-M01-G4-004_READY
   pr: 37
   tip: 88d8b28669c0da4a70d53331224158dcecb1f810
   adr_0006_9: ACCEPTED_RESIDUAL
-  r_env_int: OPEN_DEPENDS
+  r_env_int: CLOSED_IN_CODE_VIA_G4_001
 allowed_write_paths:
   - docs/verification/M01-G4-EXIT.md
   - evidence/SF-M01-G4-005/**
@@ -83,7 +89,7 @@ exit_token_preconditions:
   - cross_tenant_leakage: pending
   - frozen_contracts: pending
   - residuals_register_explicit: true
-  - r_env_int_closed: pending
+  - r_env_int_closed: true
   - certified: false
   - release_certified: false
 acceptance_tests_planning:
@@ -105,9 +111,9 @@ cg01_blocked: true
 ccr_required: false
 parallel_group: G4-C
 recommendation: PENDING_SIBLINGS
-awaiting: [SF-M01-G4-001, SF-M01-G4-002, SF-M01-G4-003]
+awaiting: [SF-M01-G4-002, SF-M01-G4-003]
 evidence_paths:
   - evidence/SF-M01-G4-005/
   - docs/verification/M01-G4-EXIT.md
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
-polled_at: "2026-10-04T05:05:00Z"
+polled_at: "2026-10-04T05:07:00Z"
