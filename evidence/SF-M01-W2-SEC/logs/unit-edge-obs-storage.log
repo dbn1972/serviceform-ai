@@ -1,0 +1,48 @@
+
+ RUN  v5.0.3 /tmp/w2-sec-verify
+
+ ✓ services/cmp-036-api-gateway/test/edge.test.ts (6 tests) 97ms
+ ✓ packages/storage/test/simulated-store.test.ts (3 tests) 40ms
+ ✓ apps/api/test/app.test.ts (14 tests) 229ms
+ ✓ packages/observability/test/redaction.test.ts (3 tests) 9ms
+ ✓ packages/observability/test/access-log.test.ts (3 tests) 7ms
+ ✓ services/cmp-047-observability/test/plugin.test.ts (2 tests) 51ms
+ ❯ apps/api/test/composition.test.ts (7 tests | 1 failed) 7200ms
+   ✓ CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) (5)
+     ✓ mounts Wave 1 plugin routes under /v1 with frozen error envelopes 282ms
+     ✓ rate-limits with SF-RATE-001 and no request leakage 14ms
+     ✓ strips query strings from access logs (G-10) 7ms
+     ✓ does not steal business logic: unknown /v1 route stays SF-SYS-002 7ms
+     ✓ mounts audit plugin path when deps are supplied 1881ms
+   ❯ CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) (1)
+     × mounts CMP-003/030/032 under /v1 with frozen deny envelopes 5004ms
+   ✓ CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047) (1)
+     ✓ keeps logger redaction for nested secrets on the host logger 1ms
+ ✓ packages/storage/test/modes.test.ts (4 tests) 3ms
+ ✓ packages/storage/test/simulation-marker.test.ts (2 tests) 44ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/api/test/composition.test.ts > CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) > mounts CMP-003/030/032 under /v1 with frozen deny envelopes
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ apps/api/test/composition.test.ts:157:3
+    155|
+    156| describe('CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, S…
+    157|   it('mounts CMP-003/030/032 under /v1 with frozen deny envelopes', as…
+       |   ^
+    158|     app = await buildApp(config, {
+    159|       logger: silentLogger(),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 43 passed (44)
+   Start at  01:54:30
+   Duration  9.26s (tests 74%, import 14%, transform 12%)
+
+    Isolate  9 workers spawned · ~1.62s startup each (spawn + environment, per file)
+             at least ~3.24s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /tmp/w2-sec-verify/test-results/unit/junit.xml
