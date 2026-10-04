@@ -75,7 +75,6 @@ export const LIMITS = {
   maxAgeDays: 36500,
 } as const;
 
-const CODE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
 const KEY_RE = /^[a-z][a-z0-9._-]{0,127}$/;
 const LABEL_RE = /^[a-z][a-z0-9._-]{1,127}$/;
 const REF_RE = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/;
@@ -94,8 +93,19 @@ function onlyKeys(obj: Record<string, unknown>, allowed: readonly string[], poin
   }
 }
 
+function isUpperCode(candidate: string): boolean {
+  if (candidate.length < 2 || candidate.length > 64) return false;
+  for (let i = 0; i < candidate.length; i += 1) {
+    const c = candidate.charCodeAt(i);
+    const upper = c >= 65 && c <= 90;
+    const digitOrUnderscore = (c >= 48 && c <= 57) || c === 95;
+    if (i === 0 ? !upper : !(upper || digitOrUnderscore)) return false;
+  }
+  return true;
+}
+
 function code(value: unknown, pointer: string): string {
-  if (typeof value !== 'string' || !CODE_RE.test(value)) fail('INVALID_CODE', pointer);
+  if (typeof value !== 'string' || !isUpperCode(value)) fail('INVALID_CODE', pointer);
   return value;
 }
 
