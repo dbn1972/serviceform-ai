@@ -1,0 +1,58 @@
+{
+  "schema": "serviceform.sf-m04-stitch-a.summary.v1",
+  "task_id": "SF-M04-STITCH-A",
+  "certified": false,
+  "release_certified": false,
+  "g6": false,
+  "m05": "off",
+  "draft_pr": 73,
+  "branch": "cursor/m04-stitch-a-7000",
+  "base_sha": "9ccc2b02f8ef64a0987b0c4793137511545ed3f7",
+  "historical_heads": {
+    "trees_integrate": "c45d2327be21dd0dcce6c598c9036b615f1ca235",
+    "lockfile": "6fd5d3f8dcdd50d80486a090e3316960d058130e",
+    "first_evidence": "a09530123b0af9189d0cfcba4e2cf2bfbac60cbe",
+    "previous_candidate": "50b65c8c1324132ec6f5fb802525a57c66b143a7",
+    "correction_harness": "bf35d1622ac3f4a7bc0b369d14d5b5d5b149c46f"
+  },
+  "frozen_inputs": {
+    "SF-M04-001": "6ff96acfda899549aa2b6c5212e94f73be6c041c",
+    "SF-M04-002": "ef4243f443fb6e81a9f6a7375c08dd7ea3dc74c2",
+    "SF-M04-003": "702682d2bdb7505ba7022b120545412d76f9d6d4",
+    "SF-M04-004": "9dbef93e106cb7b6bce1092fc4e6dfea02e05ec2"
+  },
+  "authoritative_head_sha": "ffa1d5ac04b65447a5608d2aa5fcbdb754b029ba",
+  "r_cmp008_down2": {
+    "class": "CLASS-A TEST HARNESS / MIGRATION ISOLATION",
+    "status": "CLOSED_TEST_HARNESS",
+    "cmp008_int": "14/14",
+    "skipped": false,
+    "method": "isolated database whose migrator dir contains only platform-baseline, shared-db-contracts, and the CMP-008 pair; combined catalog node-pg-migrate down N is not used",
+    "reconfirmed_at": "2026-10-04T17:09:58Z",
+    "cmp008_unit_reconfirm": 56,
+    "cmp008_int_reconfirm": 14
+  },
+  "component_floors": {
+    "CMP-039": {
+      "unit": 51,
+      "int": 10
+    },
+    "CMP-008": {
+      "unit": 56,
+      "int": 14
+    },
+    "CMP-011": {
+      "unit": 108,
+      "int": 13
+    },
+    "CMP-013": {
+      "unit": 66,
+      "int": 11
+    }
+  },
+  "contracts": "13/13 MATCH",
+  "cross_tenant_leakage": 0,
+  "correction_commit": "bf35d1622ac3f4a7bc0b369d14d5b5d5b149c46f",
+  "sha_stamp_commit": "ffa1d5ac04b65447a5608d2aa5fcbdb754b029ba",
+  "sha_bind_parent": "55d6e7df95e5c31636b3040593534b9f4d4a1285"
+}

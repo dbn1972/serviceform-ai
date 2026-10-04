@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="56" failures="0" errors="0" time="0.438628194">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T17:00:20.583Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.072512407">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-008 component contracts &gt; parses OpenAPI and AsyncAPI and declares only the CMP-008 surface" time="0.00222702">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-008 component contracts &gt; validates isolation declarations and matches the migration declarations" time="0.05962979">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-008 component contracts &gt; validates the RuleEvaluated envelope" time="0.007936407">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-008 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.001424732">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/config-ports.test.ts" timestamp="2026-10-04T17:00:20.585Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.074436675">
+        <testcase classname="test/unit/config-ports.test.ts" name="CMP-008 configuration (SF-CON-SIMULATION-MARKER, SF-CON-CONNECTOR-BINDING) &gt; defaults to OFF and refuses REAL, SANDBOX, unknown modes" time="0.00229877">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="CMP-008 configuration (SF-CON-SIMULATION-MARKER, SF-CON-CONNECTOR-BINDING) &gt; never admits SIMULATED in PRODUCTION, UAT or PREPROD" time="0.000645885">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="CMP-008 configuration (SF-CON-SIMULATION-MARKER, SF-CON-CONNECTOR-BINDING) &gt; refuses a simulated source unless configured SIMULATED, and empty test run ids" time="0.000408607">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="CMP-008 configuration (SF-CON-SIMULATION-MARKER, SF-CON-CONNECTOR-BINDING) &gt; reads numeric env limits with safe fallbacks" time="0.000281023">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="error and authorization helpers &gt; maps database errors without leaking detail" time="0.000315248">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="error and authorization helpers &gt; default-deny authorizer and cross-tenant subject/resource mismatch are refused" time="0.06904978">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/constitution.test.ts" timestamp="2026-10-04T17:00:20.585Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.008054353">
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; has no LLM / AI Gateway / model-client path in eligibility code" time="0.002349317">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; does not import sibling component source (consumes ports and HTTP contracts only)" time="0.001403368">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; keeps eligibility rules out of OPA: authorization is action names only, no Rego" time="0.001020908">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; contains no named-service, tenant, or legislation branching in domain code" time="0.000956151">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; performs no network or engine work inside the authoritative transaction callback" time="0.000310323">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; does not log or store raw inputs" time="0.000650535">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/engine.test.ts" timestamp="2026-10-04T17:00:20.586Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.017174325">
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; evaluates a published decision table and reports the matched rule id" time="0.006469214">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; is repeatable: identical pinned graph and inputs give identical results" time="0.004822741">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; does not mutate caller inputs" time="0.000832197">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; returns empty outputs (never a default decision) when no rule matches" time="0.000696895">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; evaluates expression nodes with caller-supplied as-of data only" time="0.000713124">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; fails safely (SF-RULE-001) when the graph cannot evaluate" time="0.001655653">
+        </testcase>
+        <testcase classname="test/unit/engine.test.ts" name="ZenRuleEngine (GoRules ZEN, deterministic) &gt; pins the engine version string to the dependency version" time="0.000557307">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/jdm.test.ts" timestamp="2026-10-04T17:00:20.587Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.015023458">
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; accepts the structural node kinds" time="0.003775095">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses functionNode" time="0.001393554">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses customNode" time="0.000315946">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses httpRequestNode" time="0.000284241">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses decisionNode" time="0.000214844">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses unknownNode" time="0.000194421">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call d()" time="0.000374685">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call date()" time="0.000242926">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call now()" time="0.000550225">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call today()" time="0.000344435">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call rand()" time="0.00021749">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call random( )" time="0.000159836">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call uuid()" time="0.000100436">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call time()" time="0.000125538">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses zero-argument clock/entropy call D ()" time="0.000130434">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; allows date functions that take an explicit input" time="0.000260464">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="JDM allow-list (deterministic metadata only) &gt; refuses structural defects" time="0.003516343">
+        </testcase>
+        <testcase classname="test/unit/jdm.test.ts" name="published RULES pack parsing &gt; requires the GoRules engine and a matching pack id" time="0.000670454">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-04T17:00:20.589Z" hostname="cursor" tests="15" failures="0" errors="0" skipped="0" time="0.251426976">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; evaluates a pinned published pack and returns deterministic reason codes" time="0.150652688">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; gives identical outputs, codes and hashes for identical pinned requests" time="0.01076328">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; replays the stored response for the same idempotency key and rejects a changed body" time="0.008456273">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; reads an evaluation back only within the caller tenant" time="0.00730257">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; denies wrong-tenant pack resolution (tenant 2 cannot use tenant 1 pack)" time="0.003616192">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; denies a port that returns another tenant pack (defence in depth)" time="0.007953563">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; fails closed on pin mismatch, draft status and non-published payloads" time="0.008426775">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; rejects packs whose graph is not deterministic metadata" time="0.003138279">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; rejects invalid outcome and reason code values from a pack" time="0.005722077">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; denies unauthorized callers and fails closed when the PDP is down" time="0.004778287">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; requires authentication and rejects tenant-identifying headers" time="0.003939255">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; validates the request body and idempotency key" time="0.011528848">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; fails closed when the published-pack source is down or denies" time="0.013448425">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; refuses SIMULATED packs in PRODUCTION and a missing evaluation" time="0.004791713">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-008 plugin HTTP (memory pool, real ZEN engine) &gt; refuses a stored snapshot whose digest differs (published pack mutated upstream)" time="0.004898189">
+        </testcase>
+    </testsuite>
+</testsuites>

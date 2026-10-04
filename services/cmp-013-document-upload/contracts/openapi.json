@@ -1,0 +1,353 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-013 Document Upload Service",
+    "version": "0.1.0",
+    "description": "Upload sessions issue short-lived direct-to-object-store targets via the CMP-032 storage port; bytes never pass through CMP-013 or PostgreSQL. Tenant context is server-derived; tenant headers, filenames and storage keys are never accepted from clients. Only AVAILABLE (integrity + policy + CLEAN scan) documents receive download access. Technical acceptance only; never business verification."
+  },
+  "paths": {
+    "/v1/upload-policies": {
+      "post": {
+        "operationId": "createUploadPolicyVersion",
+        "summary": "Insert a new immutable upload policy version (metadata-driven size/type/scan policy)",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadPolicyInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Policy version created"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/upload-policies/{code}": {
+      "get": {
+        "operationId": "getActiveUploadPolicy",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest policy version"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/upload-sessions": {
+      "post": {
+        "operationId": "createUploadSession",
+        "summary": "Create upload session and short-lived direct upload target",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadSessionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Session created; upload target issued outside the DB transaction"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/complete": {
+      "post": {
+        "operationId": "completeUpload",
+        "summary": "Verify size/checksum/content signature against declaration and pinned policy; queue malware scan",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document is SCAN_PENDING or later"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}": {
+      "get": {
+        "operationId": "getDocument",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document metadata (no object key, no URL)"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/documents/{id}/access": {
+      "get": {
+        "operationId": "getDocumentAccess",
+        "summary": "Short-lived download access for AVAILABLE documents only",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Download access"
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Error": {
+        "description": "SF-CON-ERROR-RESPONSE",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "https://contracts.serviceform.ai/error-response/v1"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "UploadPolicyInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "policy_code",
+          "allowed_content_types",
+          "max_bytes",
+          "session_ttl_seconds",
+          "max_scan_attempts",
+          "classification"
+        ],
+        "properties": {
+          "policy_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "allowed_content_types": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 16,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "application/pdf",
+                "image/png",
+                "image/jpeg",
+                "image/gif",
+                "image/tiff",
+                "image/webp"
+              ]
+            }
+          },
+          "max_bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5368709120
+          },
+          "session_ttl_seconds": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 86400
+          },
+          "max_scan_attempts": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          },
+          "classification": {
+            "type": "string",
+            "enum": ["TENANT_SCOPED", "CITIZEN_PRIVATE"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "RETIRED"]
+          }
+        }
+      },
+      "UploadSessionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_code", "content_type", "byte_size", "checksum_sha256"],
+        "properties": {
+          "policy_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "content_type": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5368709120
+          },
+          "checksum_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "application_ref": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

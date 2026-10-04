@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DocumentUploaded data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "policy_id",
+    "content_type",
+    "byte_size",
+    "checksum_sha256",
+    "classification"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "policy_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "content_type": {
+      "type": "string"
+    },
+    "byte_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "checksum_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["TENANT_SCOPED", "CITIZEN_PRIVATE"]
+    },
+    "application_ref": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}

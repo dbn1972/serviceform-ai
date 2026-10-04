@@ -1,0 +1,15 @@
+=== BYPASSRLS/SUPERUSER Wave A ===
+db/migrations/1759530400000_cmp-013-document-upload.sql:13:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530400000_cmp-013-document-upload.sql:22:    CREATE ROLE sf_cmp013_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530200000_cmp-008-rules.sql:11:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530200000_cmp-008-rules.sql:19:    CREATE ROLE sf_cmp008_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530110000_cmp-011-evidence.sql:11:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530110000_cmp-011-evidence.sql:19:    CREATE ROLE sf_cmp011_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:13:    CREATE ROLE sf_migrator NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+db/migrations/1759530039000_cmp-039-ai-gateway.sql:21:    CREATE ROLE sf_cmp039_rw NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOBYPASSRLS;
+=== contracts lock ===
+INFO  [contracts-lock] 13 contract(s) in lock, 13 FROZEN
+PASS [contracts-lock] 0 error(s), 0 warning(s)
+=== CROSS_TENANT in int logs ===
+evidence/SF-M04-STITCH-A/logs/cmp-039-int.log:8:stderr | test/integration/rls-api.int.test.ts > CMP-039 against PostgreSQL as the non-owner runtime role > CROSS_TENANT_LEAKAGE=0: tenant B cannot read, use or enumerate tenant A configuration or audit
+evidence/SF-M04-STITCH-A/logs/cmp-039-int.log:9:CROSS_TENANT_LEAKAGE=0

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="1.263302786">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-04T17:02:47.998Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.736307805">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-013 API over PostgreSQL FORCE RLS (runtime role sf_app + sf_cmp013_rw) &gt; happy path: session -&gt; direct PUT -&gt; complete -&gt; CLEAN scan -&gt; download" time="0.047212554">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-013 API over PostgreSQL FORCE RLS (runtime role sf_app + sf_cmp013_rw) &gt; idempotent session replay creates exactly one document row" time="0.009699805">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-013 API over PostgreSQL FORCE RLS (runtime role sf_app + sf_cmp013_rw) &gt; checksum mismatch and malware are rejected and never downloadable" time="0.035276029">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-013 API over PostgreSQL FORCE RLS (runtime role sf_app + sf_cmp013_rw) &gt; wrong tenant cannot read, complete or obtain download access; CROSS_TENANT_LEAKAGE=0" time="0.024419019">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-04T17:02:47.999Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.526994981">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; migration roles: NOLOGIN, NOSUPERUSER, NOBYPASSRLS; runtime login is not owner" time="0.017718628">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; column grants: runtime cannot rewrite identity/declared/object_ref columns" time="0.005271186">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; peer-component login is denied on sf_upload" time="0.00682221">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; wrong-tenant RLS returns zero rows; CROSS_TENANT_LEAKAGE=0" time="0.011024621">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; WITH CHECK blocks writing another tenant row and updating across tenants" time="0.003417714">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; DB guard: no AVAILABLE without CLEAN scan; terminal states final; insert-only rows" time="0.011499193">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-013 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; DB check refuses traversal object refs and SIMULATED rows without a marker" time="0.004371677">
+        </testcase>
+    </testsuite>
+</testsuites>

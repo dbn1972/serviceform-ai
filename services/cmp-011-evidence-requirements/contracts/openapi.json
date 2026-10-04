@@ -1,0 +1,183 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-011 Evidence & Document Requirement Engine",
+    "version": "0.1.0",
+    "description": "Evidence policy versions and deterministic requirement resolution pinned through TenantServiceBinding (INT-002, INT-011, INT-013). Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/evidence-policies": {
+      "post": {
+        "operationId": "createEvidencePolicy",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Draft created"
+          },
+          "400": {
+            "description": "Policy metadata invalid"
+          }
+        }
+      }
+    },
+    "/v1/evidence-policies/{id}": {
+      "get": {
+        "operationId": "getEvidencePolicy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "patchEvidencePolicy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Draft updated"
+          },
+          "400": {
+            "description": "Published versions are immutable"
+          }
+        }
+      }
+    },
+    "/v1/evidence-policies/{id}/publish": {
+      "post": {
+        "operationId": "publishEvidencePolicy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published immutable version"
+          },
+          "400": {
+            "description": "Checker approval required or already published"
+          }
+        }
+      }
+    },
+    "/v1/evidence-requirements/calculate": {
+      "post": {
+        "operationId": "calculateEvidenceRequirements",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deterministic checklist with decision trace"
+          },
+          "400": {
+            "description": "Invalid input or pin mismatch"
+          },
+          "403": {
+            "description": "Denied or consent required"
+          },
+          "404": {
+            "description": "Binding or policy version not found"
+          },
+          "503": {
+            "description": "Dependency unavailable"
+          }
+        }
+      }
+    },
+    "/v1/evidence-resolutions/{id}": {
+      "get": {
+        "operationId": "getEvidenceResolution",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stored resolution"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  }
+}

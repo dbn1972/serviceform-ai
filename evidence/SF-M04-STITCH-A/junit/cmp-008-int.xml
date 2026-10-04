@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="14" failures="0" errors="0" time="3.503184323">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T17:02:41.898Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.486185733">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-008 migration &gt; creates sf_rules, the NOLOGIN privilege role and FORCE RLS on every tenant table" time="0.010312516">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-008 migration &gt; PUBLIC has no privileges on the schema or tables" time="0.005248508">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T17:02:41.899Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.567193416">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-008 privilege boundary (ADR-0006) &gt; runtime is not SUPERUSER, not BYPASSRLS, and not a table owner" time="0.010670342">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-008 privilege boundary (ADR-0006) &gt; a peer component privilege role cannot DML into sf_rules" time="0.010267016">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-008 privilege boundary (ADR-0006) &gt; the runtime cannot UPDATE or DELETE immutable records and cannot TRUNCATE" time="0.012044392">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-008 privilege boundary (ADR-0006) &gt; the immutability trigger fires even for a superuser maintenance path (hint SF_RECORD_IMMUTABLE)" time="0.003545028">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-04T17:02:41.900Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="2.449805174">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; evaluates for tenant 1 and persists snapshot, evaluation, outbox and audit rows" time="0.11585165">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; CROSS_TENANT_LEAKAGE=0: tenant 2 cannot read, resolve, or reference tenant 1 data" time="0.012543828">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; without a tenant session the runtime sees no rows, and cannot write for another tenant" time="0.003502224">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; an evaluation cannot reference another tenant snapshot (composite FK)" time="0.002424806">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; replays by idempotency key without a second evaluation row" time="0.012884189">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; is deterministic and pinned: same pin and inputs -&gt; same result; no match gives no default decision" time="0.016741385">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; fails closed with nothing persisted for forbidden graphs and unauthorized callers" time="0.002465931">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-008 API + RLS integration (real PostgreSQL, real GoRules ZEN) &gt; down migration is reversible (schema removed, role retained) and up restores it" time="1.798903251">
+        </testcase>
+    </testsuite>
+</testsuites>

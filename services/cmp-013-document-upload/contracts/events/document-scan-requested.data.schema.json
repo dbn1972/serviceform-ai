@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DocumentScanRequested data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document_id", "attempt_no"],
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "attempt_no": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

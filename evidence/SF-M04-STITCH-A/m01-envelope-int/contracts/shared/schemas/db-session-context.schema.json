@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/db-session-context/v1",
+  "title": "DbSessionContext",
+  "description": "Transaction-local PostgreSQL settings every repository applies before its first statement (TI v1.0 s8, s8.1; Eng v1.4 'repository sets transaction-local tenant context'). Keys are PostgreSQL setting names. Values are derived only from the server-side RequestContext (or, for background workers, from the validated event envelope of the unit of work) and applied with set_config(name, value, true) inside the transaction, never at session level, because pooled connections are reused. RLS policies read the tenant through sf_platform.current_tenant_id(), never through current_setting('app.tenant_id', true)::uuid directly: after a SET LOCAL transaction ends, a reused session holds '' and the direct cast raises an error (see docs/audits/CONTRACT-REVIEW-001.md finding CR-01).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["app.cell_id", "app.actor_type", "app.actor_id", "app.correlation_id"],
+  "properties": {
+    "app.tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid",
+      "description": "Required for any transaction that touches TENANT_SCOPED or JURISDICTION_SCOPED tables or writes outbox_event/inbox_event. Omitted (not empty) for platform and citizen-only transactions; RLS then returns no tenant rows (fail closed)."
+    },
+    "app.cell_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/cellId" },
+    "app.actor_type": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType" },
+    "app.actor_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "app.correlation_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" }
+  }
+}

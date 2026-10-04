@@ -1,0 +1,20 @@
+
+> @serviceform/cmp-039-ai-gateway@0.0.0 test:integration /workspace/services/cmp-039-ai-gateway
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-039-ai-gateway
+
+stderr | test/integration/rls-api.int.test.ts > CMP-039 against PostgreSQL as the non-owner runtime role > CROSS_TENANT_LEAKAGE=0: tenant B cannot read, use or enumerate tenant A configuration or audit
+CROSS_TENANT_LEAKAGE=0
+
+ ✓ test/integration/rls-api.int.test.ts (4 tests) 725ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 545ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 522ms
+
+ Test Files  3 passed (3)
+      Tests  10 passed (10)
+   Start at  17:02:34
+   Duration  2.68s (tests 74%, import 16%, transform 9%)
+
+JUNIT report written to /workspace/services/cmp-039-ai-gateway/evidence/junit/integration.xml

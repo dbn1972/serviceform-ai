@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="0.133606132">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T17:03:58.676Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.062752322">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-032 component contracts &gt; parses OpenAPI and AsyncAPI" time="0.001633953">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-032 component contracts &gt; validates isolation declarations" time="0.050622894">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-032 component contracts &gt; validates ObjectStored envelope + simulation marker" time="0.008427356">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-032 component contracts &gt; outbox migration Up matches frozen template after substitution" time="0.000777304">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/modes-authz.test.ts" timestamp="2026-10-04T17:03:58.677Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.066269873">
+        <testcase classname="test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; refuses REAL storage mode" time="0.001886855">
+        </testcase>
+        <testcase classname="test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; loads default rate limits" time="0.000431919">
+        </testcase>
+        <testcase classname="test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; builds valid authz input and default deny" time="0.061531758">
+        </testcase>
+        <testcase classname="test/unit/modes-authz.test.ts" name="cmp-032 unit: modes and authz &gt; fails closed when PDP throws" time="0.001195606">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/store-service.test.ts" timestamp="2026-10-04T17:03:58.678Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.004583937">
+        <testcase classname="test/unit/store-service.test.ts" name="storeObject (unit doubles) &gt; KMS failure fails closed before store" time="0.003327721">
+        </testcase>
+    </testsuite>
+</testsuites>
