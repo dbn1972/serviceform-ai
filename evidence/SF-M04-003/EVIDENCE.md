@@ -27,6 +27,7 @@
 | `scripts/gates/run_all.py` | 10/10 PASS (migration lint, contracts lock 13/13, openapi/asyncapi, hardcoding, cg01 uniqueness unchanged) | `logs/gates.log` |
 | `check_scope.py` against the envelope | PASS | `logs/check-scope.log` |
 | semgrep (p/default, p/typescript, p/nodejsscan, p/secrets, .semgrep/) on the component | 0 findings (CI `SAST (semgrep)` initially flagged one `regex_dos` and a `vault://` fixture; both fixed) | `logs/semgrep-local.log` |
+| GitHub CodeQL `js/remote-property-injection` (resolve.ts) | fixed: Map-based construction + `Object.fromEntries`; regression test for `__proto__`/`constructor` keys; malformed-JSON client errors now return 400 | `unit.log` |
 | `pnpm --filter @serviceform/db test:integration` | 17 passed (all migrations apply; down/up of CMP-011 verified) | run in session |
 | Tables / RLS / owner | all 5 tenant-scoped tables ENABLE+FORCE RLS, owner `sf_migrator` | `logs/rls-roles.log` |
 | Runtime role | non-superuser, non-BYPASSRLS, not table owner, cannot DISABLE/NO FORCE RLS, DROP, TRUNCATE, DELETE | `privilege-boundary.int.test.ts` |

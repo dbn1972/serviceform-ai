@@ -1,225 +1,227 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="107" failures="0" errors="0" time="0.434857261">
-    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T15:22:31.844Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.063207175">
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; parses OpenAPI and AsyncAPI and lists the Eng v1.4 interfaces" time="0.002220624">
+<testsuites name="vitest tests" tests="108" failures="0" errors="0" time="0.449673991">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T15:29:25.224Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.064011005">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; parses OpenAPI and AsyncAPI and lists the Eng v1.4 interfaces" time="0.002191732">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; validates isolation declarations with FORCE RLS on every tenant-scoped entity" time="0.047753871">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; validates isolation declarations with FORCE RLS on every tenant-scoped entity" time="0.047930466">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; keeps the metadata schema aligned with the parser enumerations" time="0.000886622">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; keeps the metadata schema aligned with the parser enumerations" time="0.000852602">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; validates the published and resolved event envelopes" time="0.007181645">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; validates the published and resolved event envelopes" time="0.00699799">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.00053299">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.000538995">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; component source never imports sibling components or live connector packages" time="0.002813182">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; component source never imports sibling components or live connector packages" time="0.003617873">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; the migration declares the privilege role, FORCE RLS and no bypass" time="0.000452517">
-        </testcase>
-    </testsuite>
-    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-04T15:22:31.846Z" hostname="cursor" tests="26" failures="0" errors="0" skipped="0" time="0.338636438">
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; creates, patches, publishes and reads policy versions; published versions are immutable" time="0.140457985">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; validates metadata, keys and ids" time="0.011345736">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; requires checker approval to publish and degrades safely when approval is unavailable" time="0.008265659">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; versions: later publication does not change what an earlier pin resolves" time="0.014494052">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; resolves requirements from the pinned published policy, stores the outcome and replays idempotently" time="0.00849218">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; is deterministic: the same inputs and clock give the same decision hash" time="0.007235799">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; uses uploaded evidence from the upload port and keeps OCR suggestions advisory" time="0.013273937">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; requires a subject id to read uploads and tolerates an unconfigured classifier" time="0.010801024">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; fails closed when a consumed port is unavailable" time="0.006397592">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; rejects bad input, unpublished bindings and tampered pins" time="0.015129317">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; uses DigiLocker documents as verified evidence and tags the result as simulated" time="0.00852741">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; offers upload when DigiLocker has no document" time="0.005280539">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; does not satisfy from expired DigiLocker documents" time="0.005298977">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; degrades to upload options when the provider is down (no lost request)" time="0.005165364">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; rejects unknown scenarios and enforces consent" time="0.006219607">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; requires a subject id and a configured binding/consent port" time="0.014330223">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; refuses adapters that return no valid simulation marker" time="0.006244427">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; treats unexpected adapter failures as provider unavailable" time="0.006502881">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; hides policies, resolutions and bindings across tenants" time="0.006078816">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; rejects tenant-identifying headers, missing/unknown context and platform (null-tenant) actors" time="0.003458895">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; denies by default and on PDP failure (no data returned)" time="0.009367142">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; INT-013 production and mode guards &gt; refuses SIMULATED DigiLocker in PRODUCTION and REAL/SANDBOX modes in M04" time="0.007137238">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; INT-013 production and mode guards &gt; refuses non-SIMULATED, cross-tenant or malformed DigiLocker bindings per request" time="0.007226247">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; simulated adapter &gt; stamps a valid SimulationMarker and refuses non-simulation environments" time="0.002363983">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; simulated adapter &gt; refuses to run inside an open DB transaction" time="0.002218491">
-        </testcase>
-        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; rate limits per client" time="0.005116788">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-011 component contracts &gt; the migration declares the privilege role, FORCE RLS and no bypass" time="0.000483777">
         </testcase>
     </testsuite>
-    <testsuite name="test/unit/policy-predicate.test.ts" timestamp="2026-10-04T15:22:31.848Z" hostname="cursor" tests="42" failures="0" errors="0" skipped="0" time="0.012284408">
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; accepts the sample metadata and is stable under canonical hashing" time="0.00372924">
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-04T15:29:25.225Z" hostname="cursor" tests="27" failures="0" errors="0" skipped="0" time="0.340311316">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; creates, patches, publishes and reads policy versions; published versions are immutable" time="0.138935355">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown top-level field" time="0.000478552">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; validates metadata, keys and ids" time="0.011116616">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects schema version" time="0.000186677">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; requires checker approval to publish and degrades safely when approval is unavailable" time="0.008184626">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty types" time="0.000245008">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; versions: later publication does not change what an earlier pin resolves" time="0.014167074">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate type" time="0.000293175">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; resolves requirements from the pinned published policy, stores the outcome and replays idempotently" time="0.008262131">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad type code" time="0.000163141">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; is deterministic: the same inputs and clock give the same decision hash" time="0.006987233">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad label key" time="0.000227323">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; uses uploaded evidence from the upload port and keeps OCR suggestions advisory" time="0.012863596">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no sources" time="0.000217878">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; does not allow property injection through fact or rule keys" time="0.007544484">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown source" time="0.000419732">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; requires a subject id to read uploads and tolerates an unconfigured classifier" time="0.011420796">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate source" time="0.000250417">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; fails closed when a consumed port is unavailable" time="0.005050611">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects doc ref on upload" time="0.000177567">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; rejects bad input, unpublished bindings and tampered pins" time="0.011414087">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad doc ref" time="0.000094936">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; uses DigiLocker documents as verified evidence and tags the result as simulated" time="0.007979332">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad max age" time="0.000085053">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; offers upload when DigiLocker has no document" time="0.005528993">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad assurance" time="0.000066659">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; does not satisfy from expired DigiLocker documents" time="0.005454637">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad reusable" time="0.000061834">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; degrades to upload options when the provider is down (no lost request)" time="0.007303799">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no requirements" time="0.000117464">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; rejects unknown scenarios and enforces consent" time="0.005656605">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate requirement" time="0.00017087">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; requires a subject id and a configured binding/consent port" time="0.009887392">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects mandatory type" time="0.000084009">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; refuses adapters that return no valid simulation marker" time="0.00615145">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no sets" time="0.000076392">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; calculate &gt; DigiLocker via INT-013 SIMULATED adapter &gt; treats unexpected adapter failures as provider unavailable" time="0.006703592">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty set" time="0.000074833">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; hides policies, resolutions and bindings across tenants" time="0.008865085">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown type in set" time="0.000068799">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; rejects tenant-identifying headers, missing/unknown context and platform (null-tenant) actors" time="0.003688672">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate type in set" time="0.000190984">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; tenant isolation (negative) &gt; denies by default and on PDP failure (no data returned)" time="0.006919319">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate set" time="0.000086828">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; INT-013 production and mode guards &gt; refuses SIMULATED DigiLocker in PRODUCTION and REAL/SANDBOX modes in M04" time="0.007050203">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object set" time="0.000072203">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; INT-013 production and mode guards &gt; refuses non-SIMULATED, cross-tenant or malformed DigiLocker bindings per request" time="0.007417531">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects exemptions not array" time="0.000081307">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; simulated adapter &gt; stamps a valid SimulationMarker and refuses non-simulation environments" time="0.002667498">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad preference" time="0.000089158">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; simulated adapter &gt; refuses to run inside an open DB transaction" time="0.002806139">
         </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects dup preference" time="0.000082483">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad op" time="0.000082497">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad ref kind" time="0.0000787">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad ref key" time="0.000075247">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects missing value" time="0.000086653">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects exists with value" time="0.000080413">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects in without array" time="0.000076174">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects gt non-number" time="0.000076977">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty all" time="0.00018404">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object predicate" time="0.000109088">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects mixed predicate" time="0.000101656">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object policy and over-deep or over-large predicates" time="0.000627736">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; evaluates leaves" time="0.000432277">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; treats missing or mistyped inputs as UNKNOWN, never as false" time="0.00052444">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; combines with Kleene logic" time="0.000196696">
-        </testcase>
-        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; does not read prototype properties" time="0.000058401">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-011 HTTP plugin (memory repository) &gt; rate limits per client" time="0.008156998">
         </testcase>
     </testsuite>
-    <testsuite name="test/unit/resolver.test.ts" timestamp="2026-10-04T15:22:31.852Z" hostname="cursor" tests="32" failures="0" errors="0" skipped="0" time="0.02072924">
-        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; lists only requirements present in the policy (no hidden requirements)" time="0.003565417">
+    <testsuite name="test/unit/policy-predicate.test.ts" timestamp="2026-10-04T15:29:25.228Z" hostname="cursor" tests="42" failures="0" errors="0" skipped="0" time="0.016637127">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; accepts the sample metadata and is stable under canonical hashing" time="0.004233788">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; marks unmet mandatory requirements REQUIRED with a missing-evidence explanation" time="0.000823145">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown top-level field" time="0.000491467">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; recommends the alternative set with the fewest missing items, ties go to the first" time="0.001203822">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects schema version" time="0.000208923">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; first alternative satisfies" time="0.000440445">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty types" time="0.000311747">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; second alternative satisfies" time="0.000363383">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate type" time="0.000317878">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; multi-item alternative needs every item (AND within a set, OR across sets)" time="0.000387446">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad type code" time="0.000219648">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; prefers the earliest satisfied set when several are satisfied" time="0.000263612">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad label key" time="0.000234845">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; reports PROVIDED_PENDING_VERIFICATION for unverified uploads" time="0.00035927">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no sources" time="0.000275198">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; complete only when every mandatory requirement is satisfied" time="0.000570881">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown source" time="0.000499094">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; recommends DigiLocker first when preferred and available" time="0.000345862">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate source" time="0.000299061">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; falls back to upload when DigiLocker is unavailable, and reports UNKNOWN when unchecked" time="0.000439448">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects doc ref on upload" time="0.000239031">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; honours the requirement source_preference over declaration order" time="0.000250328">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad doc ref" time="0.000132543">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; accepts DigiLocker-sourced evidence as satisfying" time="0.000173692">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad max age" time="0.000230832">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects expired evidence without satisfying" time="0.000790753">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad assurance" time="0.000189257">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects invalid expiry evidence without satisfying" time="0.000237501">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad reusable" time="0.000117296">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects stale evidence without satisfying" time="0.000177961">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no requirements" time="0.000238497">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects unknown issue date evidence without satisfying" time="0.000170787">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate requirement" time="0.00025023">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects weak assurance evidence without satisfying" time="0.000225829">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects mandatory type" time="0.000156831">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects no assurance evidence without satisfying" time="0.00014946">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects no sets" time="0.000098177">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects not reusable profile evidence evidence without satisfying" time="0.000119632">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty set" time="0.000135278">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects advisory only evidence without satisfying" time="0.000152206">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects unknown type in set" time="0.000144065">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects source not accepted evidence without satisfying" time="0.004104313">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate type in set" time="0.000360141">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; lets reusable profile evidence satisfy a requirement" time="0.000220038">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects duplicate set" time="0.000151632">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; never lets advisory (OCR/AI) evidence satisfy, and surfaces it separately" time="0.000201891">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object set" time="0.000150052">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; ignores held evidence for types outside the policy" time="0.000137064">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects exemptions not array" time="0.000144594">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; exempts with a policy-defined reason code" time="0.000221639">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad preference" time="0.000137803">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; does not exempt on unknown input and reports the unresolved fact" time="0.000159739">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects dup preference" time="0.000140731">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; applies conditional requirements from rule outcomes" time="0.000197591">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad op" time="0.00019482">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; reports UNDETERMINED when applicability inputs are missing" time="0.000197554">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad ref kind" time="0.000152484">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; keeps the trace free of input values" time="0.000269359">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects bad ref key" time="0.000176816">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="determinism and version pinning &gt; is replay-deterministic for identical inputs" time="0.001133369">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects missing value" time="0.000181732">
         </testcase>
-        <testcase classname="test/unit/resolver.test.ts" name="determinism and version pinning &gt; a changed policy version changes the outcome without altering the pinned version" time="0.000780762">
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects exists with value" time="0.000180571">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects in without array" time="0.000169025">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects gt non-number" time="0.000163124">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects empty all" time="0.000257865">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object predicate" time="0.000150258">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects mixed predicate" time="0.00021676">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="policy definition parser &gt; rejects non-object policy and over-deep or over-large predicates" time="0.000911496">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; evaluates leaves" time="0.00066155">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; treats missing or mistyped inputs as UNKNOWN, never as false" time="0.000548806">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; combines with Kleene logic" time="0.000295302">
+        </testcase>
+        <testcase classname="test/unit/policy-predicate.test.ts" name="predicate evaluation (three-valued) &gt; does not read prototype properties" time="0.000110315">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/resolver.test.ts" timestamp="2026-10-04T15:29:25.232Z" hostname="cursor" tests="32" failures="0" errors="0" skipped="0" time="0.028714543">
+        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; lists only requirements present in the policy (no hidden requirements)" time="0.004283286">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; marks unmet mandatory requirements REQUIRED with a missing-evidence explanation" time="0.000852566">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="requirement resolution driven by published metadata &gt; recommends the alternative set with the fewest missing items, ties go to the first" time="0.001136821">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; first alternative satisfies" time="0.000422144">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; second alternative satisfies" time="0.000304548">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; multi-item alternative needs every item (AND within a set, OR across sets)" time="0.005717115">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; prefers the earliest satisfied set when several are satisfied" time="0.000352134">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; reports PROVIDED_PENDING_VERIFICATION for unverified uploads" time="0.000381236">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="alternative evidence sets cover every branch &gt; complete only when every mandatory requirement is satisfied" time="0.000582949">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; recommends DigiLocker first when preferred and available" time="0.000379983">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; falls back to upload when DigiLocker is unavailable, and reports UNKNOWN when unchecked" time="0.000430595">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; honours the requirement source_preference over declaration order" time="0.000196099">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="DigiLocker versus upload options &gt; accepts DigiLocker-sourced evidence as satisfying" time="0.000160527">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects expired evidence without satisfying" time="0.000808976">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects invalid expiry evidence without satisfying" time="0.001483204">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects stale evidence without satisfying" time="0.000219555">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects unknown issue date evidence without satisfying" time="0.000178871">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects weak assurance evidence without satisfying" time="0.000253603">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects no assurance evidence without satisfying" time="0.000158274">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects not reusable profile evidence evidence without satisfying" time="0.000129913">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects advisory only evidence without satisfying" time="0.000160149">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; rejects source not accepted evidence without satisfying" time="0.000299046">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; lets reusable profile evidence satisfy a requirement" time="0.000179115">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; never lets advisory (OCR/AI) evidence satisfy, and surfaces it separately" time="0.00018629">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="evidence constraints &gt; ignores held evidence for types outside the policy" time="0.000125999">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; exempts with a policy-defined reason code" time="0.000177368">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; does not exempt on unknown input and reports the unresolved fact" time="0.004829678">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; applies conditional requirements from rule outcomes" time="0.000260144">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; reports UNDETERMINED when applicability inputs are missing" time="0.000166821">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="conditions, exemptions and unknown inputs &gt; keeps the trace free of input values" time="0.000233966">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="determinism and version pinning &gt; is replay-deterministic for identical inputs" time="0.000870312">
+        </testcase>
+        <testcase classname="test/unit/resolver.test.ts" name="determinism and version pinning &gt; a changed policy version changes the outcome without altering the pinned version" time="0.0006942">
         </testcase>
     </testsuite>
 </testsuites>
