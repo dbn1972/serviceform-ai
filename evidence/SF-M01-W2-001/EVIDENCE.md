@@ -42,6 +42,6 @@ pnpm --filter @serviceform/cmp-003-jurisdiction run typecheck
 
 ## Residuals
 
-- `pnpm-lock.yaml` importer for `@serviceform/cmp-003-jurisdiction` needs orchestrator regen (envelope read-only). Local install used `--config.minimumReleaseAge=0`.
+- See `CI-RESIDUAL.md`: five install-gated CI jobs fail solely on frozen `pnpm-lock.yaml` missing the cmp-003 importer (orchestrator stitch). Semgrep ReDoS fixed in-scope.
 - Wave 2 envelope INT CI job (W1-only today) not extended here (owned by SF-M01-W2-005).
 - Not CERTIFIED.

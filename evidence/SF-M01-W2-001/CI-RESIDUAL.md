@@ -1,15 +1,18 @@
 # SF-M01-W2-001 CI residual (lockfile)
 
-## Failed checks on tip `5abef0a` (PR #26)
+## Confirmed on tip `e503822` (PR #26) — run `37168289537` / security `37168289485`
 
-| Check | Root cause |
+| Check | Status / root cause |
 |---|---|
+| SAST (semgrep) | **PASS** (ReDoS fix on tip `1dd0d76`+) |
+| SAST (CodeQL), gitleaks, checkov, architecture gates, flutter, workflows | **PASS** |
 | format/lint/typecheck/unit/contracts/build | `ERR_PNPM_OUTDATED_LOCKFILE` — missing importer for `services/cmp-003-jurisdiction/package.json` |
 | migrations and tenant-isolation harness | same frozen-lockfile install failure |
 | M01 envelope integration | same frozen-lockfile install failure |
 | web shells smoke/accessibility | same frozen-lockfile install failure |
 | dependency audit | same frozen-lockfile install failure |
-| SAST (semgrep) | **in-scope fix applied** — ReDoS rule on UUID regex in `resolve.ts` |
+
+**No further in-scope builder code changes available.** Remaining red is 100% lockfile stitch.
 
 ## Builder action
 

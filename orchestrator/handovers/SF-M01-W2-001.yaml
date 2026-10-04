@@ -113,13 +113,12 @@ evidence_paths:
   - evidence/SF-M01-W2-001/logs/integration.log
 pr_url: https://github.com/dbn1972/serviceform-ai/pull/26
 head_sha: 1dd0d7625d3c2dd872c939e96467b6518d797bc5
-ci_status: RED_LOCKFILE_ONLY_AFTER_SEMGREP_FIX
+ci_status: RED_LOCKFILE_ONLY
+ci_confirmed_tip: e503822d90e52538602267deea68c54cdab6cf23
 ci_fixable_in_scope:
-  - semgrep regex_dos in resolve.ts / helpers cursor decode → isUuid linear check
+  - semgrep regex_dos → PASS on tip e503822
 ci_residual_orchestrator:
-  - pnpm-lock.yaml workspace importer for @serviceform/cmp-003-jurisdiction
+  - pnpm-lock.yaml workspace importer for @serviceform/cmp-003-jurisdiction (5 install-gated jobs)
 builder_result: SF-M01-W2-001_READY
-self_certified: false
-not_certified: true
-# Lockfile not committed. Semgrep finding fixed in-scope.
+# Lockfile not committed. No further in-scope CI fixes.
 
