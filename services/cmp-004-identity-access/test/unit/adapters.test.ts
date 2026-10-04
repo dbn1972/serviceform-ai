@@ -9,6 +9,7 @@ import { Cmp004Error } from '../../src/errors.js';
 import { authorize, denyAllAuthorization } from '../../src/authz.js';
 import { assertNoTenantIdentifyingHeaders, isForbiddenHeaderName } from '../../src/context.js';
 import { hmacHex, sha256Hex, fingerprintRequest } from '../../src/hashing.js';
+import { identityRateLimitOptions } from '../../src/http/rate-limit.js';
 
 const OTP_ID = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const IDP_ID = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
@@ -125,5 +126,8 @@ describe('authz and headers', () => {
     expect(sha256Hex('a')).toHaveLength(64);
     expect(hmacHex('p', 'v')).toHaveLength(64);
     expect(fingerprintRequest({ channel_hash: 'ab' })).toMatch(/^sha256:/);
+    const opts = identityRateLimitOptions(60, 60_000);
+    expect(opts.max).toBe(60);
+    expect(opts.hook).toBe('onRequest');
   });
 });

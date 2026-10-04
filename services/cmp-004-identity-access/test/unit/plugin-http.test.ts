@@ -139,6 +139,7 @@ describe('CMP-004 HTTP and domain (memory)', () => {
       verifier: new IdentityPrincipalVerifier(directory),
       resolveContext: new IdentityContextResolver(directory, 'cell-01'),
       cellId: 'cell-01',
+      rateLimitMax: 10_000,
     });
   });
 
@@ -275,5 +276,67 @@ describe('CMP-004 HTTP and domain (memory)', () => {
 
   it('does not invent statutory eligibility', () => {
     expect(platformCtx().auth_assurance).toBe('NONE');
+  });
+});
+
+describe('CMP-004 authorization rate limit (CodeQL js/missing-rate-limiting)', () => {
+  it('returns 429 SF-RATE-001 after the cap', async () => {
+    const store = emptyIdentityStore();
+    const pool = createMemoryIdentityPool(store);
+    const directory = new MemoryDirectory(store);
+    const commands = new IdentityService({
+      pool,
+      pepper: PEPPER,
+      otp: new SimulatedOtpAdapter(
+        simulatedBinding({ id: OTP_ID, connector_type: 'OTP', simulator_version: 'otp-sim-1' }),
+        PEPPER,
+      ),
+      idp: new SimulatedIdpAdapter(
+        simulatedBinding({
+          id: IDP_ID,
+          connector_type: 'DEPARTMENT_API',
+          simulator_version: 'idp-sim-1',
+        }),
+        PEPPER,
+      ),
+      digilocker: new SimulatedDigiLockerIdentityAdapter(
+        simulatedBinding({
+          id: DL_ID,
+          connector_type: 'DIGILOCKER',
+          simulator_version: 'dl-sim-1',
+        }),
+        PEPPER,
+      ),
+      authorizer: new ContractAuthorizer(),
+      audit: { append: async () => undefined },
+      clock: () => new Date('2026-10-04T12:00:00.000Z'),
+      testRunId: 'rate-run',
+    });
+    const limited = Fastify({ logger: false });
+    await registerIdentityAccess(limited, {
+      prefix: '/v1',
+      commands,
+      verifier: new IdentityPrincipalVerifier(directory),
+      resolveContext: new IdentityContextResolver(directory, 'cell-01'),
+      cellId: 'cell-01',
+      rateLimitMax: 1,
+      rateLimitWindowMs: 60_000,
+    });
+    const first = await limited.inject({
+      method: 'POST',
+      url: '/v1/identity/citizen/otp/challenges',
+      payload: { channel: '+10000000003' },
+      headers: { 'idempotency-key': randomUUID() },
+    });
+    expect(first.statusCode).toBe(200);
+    const second = await limited.inject({
+      method: 'POST',
+      url: '/v1/identity/citizen/otp/challenges',
+      payload: { channel: '+10000000004' },
+      headers: { 'idempotency-key': randomUUID() },
+    });
+    expect(second.statusCode).toBe(429);
+    expect(second.json()).toMatchObject({ error_code: 'SF-RATE-001' });
+    await limited.close();
   });
 });

@@ -13,6 +13,8 @@
     "test:integration": "vitest run --root . --config vitest.integration.config.ts"
   },
   "dependencies": {
+    "@fastify/rate-limit": "11.2.0",
+    "fastify-rate-limit": "npm:@fastify/rate-limit@11.2.0",
     "@serviceform/contracts": "workspace:*",
     "@serviceform/observability": "workspace:*",
     "@serviceform/security": "workspace:*",

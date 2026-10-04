@@ -13,4 +13,5 @@ export { SimulatedOtpAdapter } from './adapters/otp.js';
 export { SimulatedIdpAdapter, mintSimulatedIdpAssertion } from './adapters/idp.js';
 export { SimulatedDigiLockerIdentityAdapter } from './adapters/digilocker.js';
 export { simulatedBinding, assertBindingAllowed } from './bindings.js';
+export { identityRateLimitOptions } from './http/rate-limit.js';
 export { dbSessionSettings } from '@serviceform/contracts';

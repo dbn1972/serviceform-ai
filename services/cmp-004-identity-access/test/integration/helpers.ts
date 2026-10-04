@@ -250,6 +250,7 @@ export async function buildApp(h: Harness) {
     verifier: new IdentityPrincipalVerifier(directory),
     resolveContext: new IdentityContextResolver(directory, 'cell-01'),
     cellId: 'cell-01',
+    rateLimitMax: 10_000,
   });
   return { app, commands };
 }
