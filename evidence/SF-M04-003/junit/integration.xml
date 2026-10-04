@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="1.728593715">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-04T15:14:13.595Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.472749304">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-011 migration &gt; creates sf_evidence, the NOLOGIN privilege role and FORCE RLS on every tenant-scoped table" time="0.01021198">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-011 migration &gt; keeps every sf_evidence table covered by an isolation declaration class" time="0.001841575">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-011 migration &gt; grants the privilege role least privilege (no DELETE on policy/resolution, no PUBLIC access)" time="0.002014608">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T15:14:13.596Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.51048948">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-011 privilege boundary (ADR-0006) &gt; runtime login is non-superuser, non-BYPASSRLS and owns no sf_evidence table" time="0.009555845">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-011 privilege boundary (ADR-0006) &gt; runtime cannot weaken RLS or alter tables it does not own" time="0.00626396">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-011 privilege boundary (ADR-0006) &gt; peer privilege role cannot DML into sf_evidence" time="0.007483784">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-011 privilege boundary (ADR-0006) &gt; runtime cannot DELETE policies or resolutions, or re-home rows by updating tenant_id" time="0.006110581">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-04T15:14:13.597Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.745354931">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; requires checker approval to publish" time="0.135594012">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; resolves from the pinned published version; published rows and outcomes are immutable" time="0.041600161">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; a second published version does not alter what the first pin resolves" time="0.021876723">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; uses DigiLocker only through the SIMULATED adapter and persists the simulated flag" time="0.024104035">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; tenant-negative: T2 cannot read, resolve against or write T1 rows; CROSS_TENANT_LEAKAGE=0" time="0.030522686">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-011 on PostgreSQL: publish, pin, resolve, isolate &gt; writes outbox and audit events in the same transaction, scoped to the tenant" time="0.00159503">
+        </testcase>
+    </testsuite>
+</testsuites>

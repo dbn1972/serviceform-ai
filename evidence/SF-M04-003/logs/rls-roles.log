@@ -1,0 +1,17 @@
+   rolname    | rolsuper | rolbypassrls | rolcanlogin 
+--------------+----------+--------------+-------------
+ sf_cmp011_rw | f        | f            | f
+ sf_t011_rt   | f        | f            | t
+(2 rows)
+
+        relname        | rls | force |    owner    
+-----------------------+-----+-------+-------------
+ evidence_policy       | t   | t     | sf_migrator
+ evidence_resolution   | t   | t     | sf_migrator
+ idempotency_record    | t   | t     | sf_migrator
+ inbox_event           | t   | t     | sf_migrator
+ inbox_event_platform  | f   | f     | sf_migrator
+ outbox_event          | t   | t     | sf_migrator
+ outbox_event_platform | f   | f     | sf_migrator
+(7 rows)
+
