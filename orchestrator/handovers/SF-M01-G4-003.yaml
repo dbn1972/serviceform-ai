@@ -1,0 +1,82 @@
+# M01 G4 exit envelope — SF-M01-G4-003 Final security exit
+# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+task_id: SF-M01-G4-003
+title: Final M01 security exit verification (G4)
+module_id: M01
+wave: g4-exit
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+dispatched: false
+component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
+integration_ids: [INT-011]
+requirement_ids:
+  - exit-gate-G4-SECURITY
+  - CROSS_TENANT_LEAKAGE=0
+  - ADR-0006-privilege-boundary
+  - Constitution-tenant-isolation
+agent_role: security_agent
+builder_agent: serviceform-security-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: xhigh
+base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+branch: agent/M01-g4-security-SF-M01-G4-003
+worktree: ../wt-SF-M01-G4-003
+depends_on:
+  - Prefer tip that includes SF-M01-G4-001 (generalized envelope-int)
+  - May run parallel with SF-M01-G4-002 on same tip
+  - human authorization for M01 G4 exit implementation
+allowed_write_paths:
+  - tests/security/**
+  - evidence/SF-M01-G4-003/**
+  - orchestrator/handovers/SF-M01-G4-003.yaml
+allowed_write_notes:
+  - Additive security/negative tests and evidence only
+  - Do not waive Critical/High
+  - Do not edit production services or frozen contracts
+read_only_paths:
+  - services/**
+  - apps/**
+  - packages/**
+  - contracts/**
+  - db/**
+  - policy/**
+  - specs/**
+  - .github/**
+  - scripts/**
+explicit_cannot:
+  - waive Critical/High security findings
+  - self-certify
+  - edit frozen contracts
+  - claim CERTIFIED or RELEASE CERTIFIED
+hard_gates:
+  - cross_tenant_leakage: 0
+  - no_superuser_bypassrls: true
+  - force_rls_on_tenant_tables: true
+  - no_raw_x_tenant_id_trust: true
+  - no_cross_component_sql: true
+  - no_pii_secrets_in_observability: true
+  - frozen_contracts_match: 13/13
+acceptance_tests_planning:
+  - CROSS_TENANT_LEAKAGE=0 on exit tip
+  - Runtime roles not SUPERUSER/BYPASSRLS
+  - Tenant-scoped tables ENABLE+FORCE RLS
+  - Forged X-Tenant-ID at edge denied
+  - Cross-component SQL denied
+  - Observability samples free of PII/secrets
+  - Frozen contracts 13/13 MATCH
+stop_conditions:
+  - unresolved Critical/High
+  - leakage != 0
+  - frozen contract change required
+  - write outside allowed_write_paths
+self_certified: false
+not_certified: true
+certified: false
+ccr_required: false
+parallel_group: G4-B
+evidence_paths:
+  - evidence/SF-M01-G4-003/

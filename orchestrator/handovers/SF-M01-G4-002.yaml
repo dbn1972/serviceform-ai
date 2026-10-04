@@ -1,0 +1,83 @@
+# M01 G4 exit envelope — SF-M01-G4-002 Full M01 regression on main
+# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+task_id: SF-M01-G4-002
+title: Complete M01 regression on main (all CMPs + platform seams)
+module_id: M01
+wave: g4-exit
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+dispatched: false
+component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - M01-full-regression
+  - INT-011
+  - INT-013
+  - ci-security-sast-deps
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+branch: agent/M01-g4-regression-SF-M01-G4-002
+worktree: ../wt-SF-M01-G4-002
+depends_on:
+  - SF-M01-G4-001 merged or tip contains generalized envelope-int
+  - human authorization for M01 G4 exit implementation
+allowed_write_paths:
+  - scripts/ci/run-m01-g4-regression.sh
+  - tests/integration/m01-g4/**
+  - evidence/SF-M01-G4-002/**
+  - orchestrator/handovers/SF-M01-G4-002.yaml
+allowed_write_notes:
+  - Additive regression harness and evidence only
+  - Do not patch production services to force green
+  - Do not edit .github/workflows/ci.yml (owned by G4-001)
+read_only_paths:
+  - .github/workflows/**
+  - scripts/ci/run-m01-envelope-int.sh
+  - contracts/**
+  - services/**
+  - apps/**
+  - packages/**
+  - db/**
+  - policy/**
+  - specs/**
+  - pnpm-lock.yaml
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+acceptance_tests_planning:
+  - All 11 M01 CMPs covered in executed regression evidence
+  - RLS/tenant/OPA/hub-sim/storage-sim/host/audit-outbox-inbox PASS
+  - GitHub ci + security SUCCESS on bound main/candidate SHA
+  - SAST and deps graph gates PASS
+  - Evidence commit_sha binds tip under test
+  - Cannot self-certify; not CERTIFIED
+stop_conditions:
+  - production code patch required to force green (report residual)
+  - frozen contract change required
+  - write outside allowed_write_paths
+  - M02/M03 scope creep
+self_certified: false
+not_certified: true
+certified: false
+ccr_required: false
+parallel_group: G4-B
+evidence_paths:
+  - evidence/SF-M01-G4-002/

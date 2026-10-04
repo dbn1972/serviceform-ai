@@ -1,0 +1,83 @@
+# M01 G4 exit envelope — SF-M01-G4-001 Fix R-ENV-INT
+# PLANNING ONLY. implementation_authorized: false. Not CERTIFIED.
+task_id: SF-M01-G4-001
+title: Generalize M01 envelope-int CI beyond SF-M01-001..005
+module_id: M01
+wave: g4-exit
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+m01_g4_exit_started: false
+dispatched: false
+component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - R-ENV-INT
+  - build-plan-M01-exit_gate-G4_SECURITY
+  - ci-envelope-int-full-M01
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+base_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+branch: agent/M01-g4-env-int-SF-M01-G4-001
+worktree: ../wt-SF-M01-G4-001
+depends_on:
+  - origin/main @ 8bc7a1a (W1+W2 merged)
+  - human authorization for M01 G4 exit implementation
+allowed_write_paths:
+  - .github/workflows/ci.yml
+  - scripts/ci/run-m01-envelope-int.sh
+  - evidence/SF-M01-G4-001/**
+  - orchestrator/handovers/SF-M01-G4-001.yaml
+allowed_write_notes:
+  - Only generalize m01-envelope-int job and runner script; do not weaken fail-closed semantics
+  - Do not disable other CI jobs or security gates
+  - CMP-055 path-based vitest allowed; no new CMP-055 product features
+  - Minimal package.json for CMP-055 only if required for pnpm filter; no feature scope
+read_only_paths:
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - specs/**
+  - services/**
+  - apps/**
+  - packages/**
+  - db/**
+  - policy/**
+  - infra/**
+  - pnpm-lock.yaml
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+acceptance_tests_planning:
+  - Job and script execute W1 SF-M01-001..005 suites unchanged in strength
+  - Job and script execute W2 CMP-003/030/032 INT suites
+  - Host composition and/or CMP-036/047 suites included as owned by W2 INT pattern
+  - CMP-055 unit/path suites included or residual explicitly documented with rationale
+  - ARTIFACT-INDEX tasks list covers full M01; commit_sha binds tip under test
+  - No continue-on-error; integration failure fails the job
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - request to weaken W1 envelope-int coverage
+  - M02/M03 or Wave 3 feature scope creep
+  - write outside allowed_write_paths
+self_certified: false
+not_certified: true
+certified: false
+ccr_required: false
+parallel_group: G4-A
+evidence_paths:
+  - evidence/SF-M01-G4-001/
