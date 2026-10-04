@@ -1,0 +1,66 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-034 Master Data Service",
+    "version": "0.1.0",
+    "description": "Generic versioned code sets. Host mount deferred to CMP-036 / SF-M03-008."
+  },
+  "paths": {
+    "/v1/code-sets": {
+      "get": {
+        "operationId": "listCodeSets",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createCodeSet",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/code-sets/{id}": {
+      "get": {
+        "operationId": "getCodeSet",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/code-sets/{id}/versions": {
+      "get": {
+        "operationId": "listCodeSetVersions",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createCodeSetVersion",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/code-sets/{id}/versions/{version}/values": {
+      "post": {
+        "operationId": "addCodeValues",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/code-sets/{id}/versions/{version}/import": {
+      "post": {
+        "operationId": "importCodeValues",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/v1/code-sets/{id}/versions/{version}/publish": {
+      "post": {
+        "operationId": "publishCodeSetVersion",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/code-sets/{id}/resolve": {
+      "get": {
+        "operationId": "resolveCodeSet",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/v1/code-set-bindings": {
+      "post": {
+        "operationId": "createCodeSetBinding",
+        "responses": { "201": { "description": "Created" } }
+      }
+    }
+  }
+}
