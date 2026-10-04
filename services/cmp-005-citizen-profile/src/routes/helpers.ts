@@ -20,6 +20,8 @@ export interface RouteDeps {
   digiLocker: DigiLockerPort;
   deploymentEnvironment: DeploymentEnvironment;
   digiLockerBinding: ConnectorBinding;
+  rateLimitMax: number;
+  rateLimitWindowMs: number;
 }
 
 export async function decide(

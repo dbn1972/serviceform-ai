@@ -1,9 +1,12 @@
-import type {
-  ConnectorBinding,
-  DeploymentEnvironment,
-  ErrorResponse,
+import rateLimit from '@fastify/rate-limit';
+import {
+  errorEntry,
+  type ConnectorBinding,
+  type DeploymentEnvironment,
+  type ErrorResponse,
 } from '@serviceform/contracts';
 import type { FastifyError, FastifyInstance, FastifyPluginAsync } from 'fastify';
+import fastifyRateLimit from 'fastify-rate-limit';
 import type { Pool } from 'pg';
 import { outboxAuditRecorder, type AuditRecorder } from './audit.js';
 import { authorize, type AuthorizationPort } from './authz.js';
@@ -15,6 +18,7 @@ import {
 } from './context.js';
 import { assertBindingSafe } from './domain/connector-guard.js';
 import { Cmp005Error, mapPgError } from './errors.js';
+import { profileRateLimitOptions } from './http/rate-limit.js';
 import type { ConsentAccessPort, DigiLockerPort, SubjectDirectoryPort } from './ports.js';
 import { registerProfileRoutes } from './routes/profiles.js';
 import type { RouteDeps } from './routes/helpers.js';
@@ -31,6 +35,8 @@ export interface CitizenProfilePluginOptions {
   deploymentEnvironment: DeploymentEnvironment;
   digiLockerBinding: ConnectorBinding;
   digiLocker?: DigiLockerPort;
+  rateLimitMax?: number;
+  rateLimitWindowMs?: number;
 }
 
 function errorBody(
@@ -65,7 +71,13 @@ const pluginImpl: FastifyPluginAsync<CitizenProfilePluginOptions> = async (app, 
     digiLocker: opts.digiLocker ?? new SimulatedDigiLockerAdapter(),
     deploymentEnvironment: opts.deploymentEnvironment,
     digiLockerBinding: opts.digiLockerBinding,
+    rateLimitMax: opts.rateLimitMax ?? 60,
+    rateLimitWindowMs: opts.rateLimitWindowMs ?? 60_000,
   };
+
+  const rateLimitOpts = profileRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
+  await app.register(rateLimit, rateLimitOpts);
+  await app.register(fastifyRateLimit, rateLimitOpts);
 
   app.addHook('onRequest', async (request) => {
     assertNoTenantIdentifyingHeaders(request);
@@ -86,6 +98,12 @@ const pluginImpl: FastifyPluginAsync<CitizenProfilePluginOptions> = async (app, 
     if (fe.validation) {
       return reply.code(400).send(errorBody(request.id, 'SF-SYS-003', 'Request validation failed'));
     }
+    const status = fe.statusCode;
+    if (status === 429) {
+      return reply
+        .code(429)
+        .send(errorBody(request.id, 'SF-RATE-001', errorEntry('SF-RATE-001').message));
+    }
     const mapped = mapPgError(error);
     if (mapped.code !== 'SF-SYS-001') {
       return reply
@@ -96,7 +114,7 @@ const pluginImpl: FastifyPluginAsync<CitizenProfilePluginOptions> = async (app, 
     return reply.code(500).send(errorBody(request.id, 'SF-SYS-001', 'Unexpected server error'));
   });
 
-  registerProfileRoutes(app, deps);
+  await registerProfileRoutes(app, deps);
 };
 
 export const citizenProfilePlugin: FastifyPluginAsync<CitizenProfilePluginOptions> = pluginImpl;

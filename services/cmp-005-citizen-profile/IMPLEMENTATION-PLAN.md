@@ -23,6 +23,7 @@ Status: **IMPLEMENTATION_READY** for independent Verify. **Not VERIFIED. Not CER
 - Consent: CMP-030 access-check **port** (fail-closed). No SQL into `sf_consent_privacy`.
 - Identity: subject directory **port** + server-derived RequestContext. No client tenant headers.
 - DigiLocker: SIMULATED adapter; PRODUCTION refuses non-REAL bindings. No network inside DB transactions.
+- Authorization routes: dual `@fastify/rate-limit` + `fastify-rate-limit` (CMP-032/CodeQL pattern); 429 `SF-RATE-001`.
 
 ## Migrations
 

@@ -228,3 +228,41 @@ describe('production fail-closed', () => {
     await app.close();
   });
 });
+
+describe('authorization rate limit (CodeQL js/missing-rate-limiting)', () => {
+  it('returns 429 SF-RATE-001 after the cap', async () => {
+    fixtures.set('officer', ctx({ tenant_id: T1, actor: { type: 'OFFICER', id: ACTOR_OFFICER } }));
+    const app = Fastify({
+      logger: false,
+      ajv: { customOptions: { coerceTypes: false, removeAdditional: false } },
+    });
+    await registerCitizenProfile(app, {
+      prefix: '/v1',
+      pool: createMemoryPool(emptyStore()),
+      resolveContext: fixtureResolver,
+      authorizer: new ContractAuthorizer(),
+      consentAccess: new AllowConsent(),
+      subjectDirectory: new AlwaysSubject(),
+      clock: frozenClock('2026-10-04T12:00:00.000Z'),
+      deploymentEnvironment: 'CI',
+      digiLockerBinding: BINDING,
+      rateLimitMax: 1,
+      rateLimitWindowMs: 60_000,
+    });
+    const url = `/v1/profiles/${ACTOR_CITIZEN}?purpose_code=PROFILE_ACCESS`;
+    const first = await app.inject({
+      method: 'GET',
+      url,
+      headers: { authorization: 'Bearer officer' },
+    });
+    expect([200, 404]).toContain(first.statusCode);
+    const second = await app.inject({
+      method: 'GET',
+      url,
+      headers: { authorization: 'Bearer officer' },
+    });
+    expect(second.statusCode).toBe(429);
+    expect(second.json()).toMatchObject({ error_code: 'SF-RATE-001' });
+    await app.close();
+  });
+});

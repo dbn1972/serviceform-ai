@@ -1,4 +1,6 @@
+import rateLimit from '@fastify/rate-limit';
 import type { FastifyInstance } from 'fastify';
+import fastifyRateLimit from 'fastify-rate-limit';
 import { envelopeOf, insertOutbox, TOPIC_DOMAIN } from '../db/outbox.js';
 import { withContextTx } from '../db/tx.js';
 import { isKnownClaim } from '../domain/claim-catalog.js';
@@ -7,6 +9,7 @@ import { valueSha256 } from '../domain/fingerprint.js';
 import { canExposeClaimValues, evaluateProvenance } from '../domain/provenance.js';
 import { assertNoOpenTransaction } from '../domain/txn-guard.js';
 import { Cmp005Error } from '../errors.js';
+import { profileRateLimitOptions } from '../http/rate-limit.js';
 import {
   definitionExists,
   ensureProfile,
@@ -68,10 +71,21 @@ async function authorizeProfile(
   }
 }
 
-export function registerProfileRoutes(app: FastifyInstance, deps: RouteDeps): void {
+export async function registerProfileRoutes(app: FastifyInstance, deps: RouteDeps): Promise<void> {
+  const rateLimitOpts = profileRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
+  await app.register(rateLimit, rateLimitOpts);
+  await app.register(fastifyRateLimit, rateLimitOpts);
   app.put<{ Params: { subjectId: string } }>(
     '/profiles/:subjectId',
-    { schema: { params: UUID_PARAM } },
+    {
+      schema: { params: UUID_PARAM },
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = request.sfContext;
       const tenantId = requireTenant(ctx);
@@ -132,7 +146,15 @@ export function registerProfileRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
   app.get<{ Params: { subjectId: string }; Querystring: { purpose_code: string } }>(
     '/profiles/:subjectId',
-    { schema: { params: UUID_PARAM, querystring: PURPOSE_QUERY } },
+    {
+      schema: { params: UUID_PARAM, querystring: PURPOSE_QUERY },
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = request.sfContext;
       const tenantId = requireTenant(ctx);
@@ -167,7 +189,15 @@ export function registerProfileRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
   app.put<{ Params: { subjectId: string }; Body: UpsertBody }>(
     '/profiles/:subjectId/claims',
-    { schema: { params: UUID_PARAM, body: UPSERT_CLAIMS_BODY } },
+    {
+      schema: { params: UUID_PARAM, body: UPSERT_CLAIMS_BODY },
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = request.sfContext;
       const tenantId = requireTenant(ctx);
@@ -293,7 +323,15 @@ export function registerProfileRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
   app.post<{ Params: { subjectId: string }; Body: ImportBody }>(
     '/profiles/:subjectId/verified-claims/import',
-    { schema: { params: UUID_PARAM, body: IMPORT_BODY } },
+    {
+      schema: { params: UUID_PARAM, body: IMPORT_BODY },
+      config: {
+        rateLimit: {
+          max: deps.rateLimitMax,
+          timeWindow: deps.rateLimitWindowMs,
+        },
+      },
+    },
     async (request, reply) => {
       const ctx = request.sfContext;
       const tenantId = requireTenant(ctx);

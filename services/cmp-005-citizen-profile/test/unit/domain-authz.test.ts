@@ -15,6 +15,7 @@ import { isKnownClaim } from '../../src/domain/claim-catalog.js';
 import { canExposeClaimValues, evaluateProvenance } from '../../src/domain/provenance.js';
 import { assertBindingSafe, requireSimulationMarker } from '../../src/domain/connector-guard.js';
 import { assertNoOpenTransaction, runWithTxnFlag } from '../../src/domain/txn-guard.js';
+import { profileRateLimitOptions } from '../../src/http/rate-limit.js';
 import { SimulatedDigiLockerAdapter } from '../../src/connectors/digilocker-simulated.js';
 import { BINDING, T1 } from './memory-pool.js';
 
@@ -212,5 +213,7 @@ describe('INT-013 DigiLocker SIMULATED fail-closed', () => {
       test_run_id: 't',
     });
     expect(empty.claims).toEqual([]);
+    expect(profileRateLimitOptions(60, 60_000).max).toBe(60);
+    expect(profileRateLimitOptions(60, 60_000).hook).toBe('onRequest');
   });
 });

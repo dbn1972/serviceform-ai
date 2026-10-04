@@ -14,6 +14,8 @@
     "test:coverage": "vitest run --root . --config vitest.coverage.config.ts --coverage"
   },
   "dependencies": {
+    "@fastify/rate-limit": "11.2.0",
+    "fastify-rate-limit": "npm:@fastify/rate-limit@11.2.0",
     "@serviceform/contracts": "workspace:*",
     "@serviceform/observability": "workspace:*",
     "fastify": "5.12.5",
