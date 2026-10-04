@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="18" failures="0" errors="0" time="3.276101795">
+    <testsuite name="test/integration/decision-latency.int.test.ts" timestamp="2026-10-04T01:53:32.422Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.055598325">
+        <testcase classname="test/integration/decision-latency.int.test.ts" name="local decision latency (evidence, not a gate) &gt; records p99 of 500 local decisions" time="0.054637086">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration-roundtrip.int.test.ts" timestamp="2026-10-04T01:53:32.422Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="2.237310468">
+        <testcase classname="test/integration/migration-roundtrip.int.test.ts" name="migration round trip (D13) &gt; up / down / up leaves sf_security and sf_cmp048_rw" time="2.235440394">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/opa-bundle.int.test.ts" timestamp="2026-10-04T01:53:32.423Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.030375206">
+        <testcase classname="test/integration/opa-bundle.int.test.ts" name="OPA bundle static (002-16) &gt; no committed tenant/user/sf_runtime JSON; no http.send; roots sf + system/log" time="0.029495451">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/pep-opa.int.test.ts" timestamp="2026-10-04T01:53:32.423Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.13686324">
+        <testcase classname="test/integration/pep-opa.int.test.ts" name="real OPA 002-15 / fail-closed &gt; unauthenticated Data API writes are denied" time="0.004381596">
+        </testcase>
+        <testcase classname="test/integration/pep-opa.int.test.ts" name="real OPA 002-15 / fail-closed &gt; PEP token may decide; unknown action denies" time="0.065896374">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-04T01:53:32.423Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.40687799">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-01..04 catalogue: NOLOGIN, membership, no bypass, owner sf_migrator" time="0.013610476">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-05 own authorized INSERT/SELECT succeeds" time="0.004768619">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-06 wrong tenant / unset is isolated on one backend" time="0.004382787">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-07/11 peer sf_app-only login is denied DML on authoritative tables" time="0.00783183">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-08/09 SET ROLE into other _rw roles fails" time="0.000977609">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-10 GRANT sibling role as runtime fails" time="0.000667386">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-12/13 PUBLIC empty; sf_app has no DML on authoritative tables" time="0.001810417">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="ADR-0006 privilege-boundary (PB-01..PB-15) &gt; PB-15 runtime cannot own or disable RLS" time="0.000899384">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-negative.int.test.ts" timestamp="2026-10-04T01:53:32.426Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.409076566">
+        <testcase classname="test/integration/rls-negative.int.test.ts" name="CMP-048 RLS and state machine (002-01..002-08) &gt; 002-01 H1 identity" time="0.008194894">
+        </testcase>
+        <testcase classname="test/integration/rls-negative.int.test.ts" name="CMP-048 RLS and state machine (002-01..002-08) &gt; 002-06 insert APPROVED is refused; self-approval refused" time="0.006207076">
+        </testcase>
+        <testcase classname="test/integration/rls-negative.int.test.ts" name="CMP-048 RLS and state machine (002-01..002-08) &gt; 002-07 window and immutability" time="0.002419365">
+        </testcase>
+        <testcase classname="test/integration/rls-negative.int.test.ts" name="CMP-048 RLS and state machine (002-01..002-08) &gt; 002-08 policy activation maker-checker and one ACTIVE" time="0.003596807">
+        </testcase>
+        <testcase classname="test/integration/rls-negative.int.test.ts" name="CMP-048 RLS and state machine (002-01..002-08) &gt; 002-04 FORCE RLS and no prosecdef" time="0.001772039">
+        </testcase>
+    </testsuite>
+</testsuites>

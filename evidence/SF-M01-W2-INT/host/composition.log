@@ -1,0 +1,16 @@
+
+ RUN  v5.0.3 /tmp/m01-w2-int/apps/api
+
+ ✓ test/composition.test.ts > CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) > mounts Wave 1 plugin routes under /v1 with frozen error envelopes 207ms
+ ✓ test/composition.test.ts > CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) > rate-limits with SF-RATE-001 and no request leakage 14ms
+ ✓ test/composition.test.ts > CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) > strips query strings from access logs (G-10) 9ms
+ ✓ test/composition.test.ts > CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) > does not steal business logic: unknown /v1 route stays SF-SYS-002 7ms
+ ✓ test/composition.test.ts > CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) > mounts audit plugin path when deps are supplied 95ms
+ ✓ test/composition.test.ts > CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) > mounts CMP-003/030/032 under /v1 with frozen deny envelopes 231ms
+ ✓ test/composition.test.ts > CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047) > keeps logger redaction for nested secrets on the host logger 1ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  01:53:10
+   Duration  1.14s (tests 53%, import 27%, transform 19%)
+
