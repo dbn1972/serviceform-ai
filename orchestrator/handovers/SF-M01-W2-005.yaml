@@ -4,7 +4,7 @@ title: Developer Platform
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: IMPLEMENTATION_COMPLETE_PENDING_VERIFY
+state: IMPLEMENTATION_COMPLETE_CI_GREEN_HOLD_FOR_STITCH
 planning_only: false
 implementation_authorized: true
 wave_2_started: true
@@ -25,7 +25,7 @@ verifiers:
   - serviceform-evidence-verifier (opus, high)
   - serviceform-architecture-guardian (opus, high) # reviews gate/.github deltas
 implementation_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
-branch_tip: 66851822484f72d88f1c4b0829bc2dddc4833362
+branch_tip: 870e0ef812291e4d103a61bc584b2f2807040888
 result_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
 tested_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
 base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
@@ -108,3 +108,10 @@ evidence:
 ci_remediation:
   - eslint no-console / no-non-null-assertion
   - semgrep sf-no-console-log + regex_dos on SHA validation
+
+ci_green: true
+ci_checks: 15/15
+ready_for_review: true
+merged: false
+hold_for: Wave 2 stitch/orchestrator
+github_ci_tip: 870e0ef812291e4d103a61bc584b2f2807040888
