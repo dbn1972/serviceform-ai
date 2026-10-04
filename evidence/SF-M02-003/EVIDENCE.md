@@ -9,6 +9,7 @@
 | Integrations | INT-011 (forged tenant-header denial; CROSS_TENANT_LEAKAGE=0 canary). INT-001 not exercised (SIMULATED adapters remain inside CMP-004/005). |
 | Base | `origin/main` `d66a94c3fba19d00f2c881bd257e90beb922322f` |
 | Branch | `cursor/m02-host-sf-m02-003-b16e` |
+| Head | `e3f15a1bcd0650c118dfae9e6ca6ca953bd523db` |
 | Frozen contracts | unchanged (13/13 MATCH; no CCR) |
 | `pnpm-lock.yaml` | not committed |
 | `apps/api/package.json` | not modified (envelope write path); plugins load via package specifier then workspace file URL |
