@@ -1,0 +1,24 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-038-event-bus
+
+ ✓ test/integration/outbox.int.test.ts (5 tests) 2123ms
+   ✓ outbox atomicity, ordering, inbox, broker-outage (I1-I13) (5)
+     ✓ I7 broker down then up loses no committed events 1550ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 1153ms
+   ✓ migration / frozen template (I16, 004-30) (3)
+     ✓ round-trips down then up for this migration 1150ms
+ ✓ test/integration/security/privilege-boundary.int.test.ts (14 tests) 632ms
+ ✓ test/integration/security/relay-faults.int.test.ts (7 tests) 582ms
+{"level":"warn","time":"2026-10-04T05:07:14.483Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"0a5cd2d0-35dd-44a7-8c71-380f1cb0ec71","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+ ✓ test/integration/security/operator-registry.int.test.ts (4 tests) 559ms
+ ✓ test/integration/security/producer-consumer.int.test.ts (8 tests) 493ms
+
+ Test Files  6 passed (6)
+      Tests  41 passed (41)
+   Start at  05:07:07
+   Duration  7.46s (tests 80%, import 16%, transform 3%)
+
+    Isolate  6 workers spawned · ~80ms startup each (spawn + environment, per file)
+             at least ~398ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/services/cmp-038-event-bus/test-results/integration-junit.xml

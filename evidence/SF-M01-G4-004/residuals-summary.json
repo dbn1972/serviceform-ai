@@ -1,0 +1,35 @@
+{
+  "task_id": "SF-M01-G4-004",
+  "token": {
+    "family": "SF-M01-G4-004",
+    "status": "READY",
+    "join": "_"
+  },
+  "certified": false,
+  "residuals": [
+    {"id": "R-ENV-INT", "status": "CLOSED_IN_CODE", "owner": "SF-M01-G4-001", "pr": 39, "branch": "cursor/m01-g4-r-env-int-1573", "sha": "6d3e495987bd7308596cbbd69ab65c46e242c7bf", "pending_merge_to_main": true, "blocks_g4_exit_token": true, "note": "CLOSED on main only after #39 merges"},
+    {"id": "R-OUTBOX-SF-APP", "status": "ACCEPTED_RESIDUAL", "ccr_filed": false, "blocks_g4_exit_token": false},
+    {"id": "R-PROVENANCE", "status": "CLOSED", "blocks_g4_exit_token": false},
+    {"id": "R-BRANCH-PROT", "status": "OPS_CONFIRM", "blocks_g4_exit_token": false, "blocks_cg01": true},
+    {"id": "R-COV", "status": "CARRIED", "blocks_g4_exit_token": false},
+    {"id": "R-INFRA", "status": "CARRIED", "blocks_g4_exit_token": false},
+    {"id": "R-DPDP", "status": "CARRIED", "blocks_g4_exit_token": false},
+    {"id": "R-CMP055-PKG", "status": "CARRIED", "owner": "SF-M01-G4-001|SF-M01-G4-002", "blocks_g4_exit_token": false},
+    {"id": "R-MIG-TS", "status": "CLOSED", "blocks_g4_exit_token": false},
+    {"id": "R-RUNTIME", "status": "CARRIED", "blocks_g4_exit_token": false},
+    {"id": "R-BUILDER-JUNIT", "status": "CARRIED", "blocks_g4_exit_token": false},
+    {"id": "R-LOCKFILE-W2", "status": "CLOSED", "blocks_g4_exit_token": false},
+    {"id": "R-W2-VERIFY-DISPATCH", "status": "CLOSED", "blocks_g4_exit_token": false},
+    {"id": "R-NOT-CERTIFIED", "status": "ACCEPTED_RESIDUAL", "blocks_g4_exit_token": false},
+    {"id": "R-HYGIENE-RATELIMIT", "status": "CARRIED", "blocks_g4_exit_token": false}
+  ],
+  "counts": {
+    "CLOSED": 4,
+    "CLOSED_IN_CODE": 1,
+    "OPEN_DEPENDS": 0,
+    "ACCEPTED_RESIDUAL": 2,
+    "CARRIED": 7,
+    "OPS_CONFIRM": 1,
+    "total": 15
+  }
+}

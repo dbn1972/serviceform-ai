@@ -1,15 +1,15 @@
 # M01 G4 exit envelope — SF-M01-G4-003 Final security exit
-# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
+# Independent verification bound. Not CERTIFIED. Do not waive Critical/High.
 task_id: SF-M01-G4-003
 title: Final M01 security exit verification (G4)
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: IMPLEMENTATION_READY
+state: VERIFICATION_COMPLETE
 planning_only: false
 implementation_authorized: true
-m01_g4_exit_started: false
-dispatched: false
+m01_g4_exit_started: true
+dispatched: true
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011]
 requirement_ids:
@@ -22,8 +22,9 @@ builder_agent: serviceform-security-verifier
 model_route: opus
 model_release: claude-opus-5-5
 effort: xhigh
-base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
-branch: agent/M01-g4-security-SF-M01-G4-003
+base_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+assessed_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+branch: cursor/m01-g4-003-security-61a0
 worktree: ../wt-SF-M01-G4-003
 depends_on:
   - Prefer tip that includes SF-M01-G4-001 (generalized envelope-int)
@@ -73,6 +74,17 @@ stop_conditions:
   - leakage != 0
   - frozen contract change required
   - write outside allowed_write_paths
+verifier_result:
+  verdict: SF-M01-G4-003_READY
+  CROSS_TENANT_LEAKAGE: 0
+  commit_sha: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+  evidence_path: evidence/SF-M01-G4-003/
+  github_security_run_id: "37178714612"
+  github_ci_run_id: "37178714591"
+  independent_catalog_pass: 546
+  independent_catalog_fail: 0
+  frozen_contracts: 13/13 MATCH
+  unresolved_critical_high: 0
 self_certified: false
 not_certified: true
 certified: false

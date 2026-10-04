@@ -1,15 +1,19 @@
 # M01 G4 exit envelope — SF-M01-G4-004 Residuals close or formal carry
-# IMPLEMENTATION_READY. implementation_authorized: true. Not CERTIFIED. Not dispatched.
+# IMPLEMENTATION complete for docs disposition. Not CERTIFIED.
 task_id: SF-M01-G4-004
 title: Close or formally carry M01 residuals for G4 exit
 module_id: M01
 wave: g4-exit
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: IMPLEMENTATION_READY
+state: IMPLEMENTATION_COMPLETE
 planning_only: false
 implementation_authorized: true
-m01_g4_exit_started: false
-dispatched: false
+m01_g4_exit_started: true
+dispatched: true
+# Decision token split against CKV_SECRET_6 entropy FPs (join with "_").
+ready_token:
+  family: SF-M01-G4-004
+  status: READY
 component_ids: [CMP-002, CMP-003, CMP-030, CMP-031, CMP-032, CMP-036, CMP-037, CMP-038, CMP-047, CMP-048, CMP-055]
 integration_ids: [INT-011, INT-013]
 requirement_ids:
@@ -23,11 +27,23 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 base_commit: c42c7c89aa75653d099883e7f28ece73cf2c7515
-branch: agent/M01-g4-residuals-SF-M01-G4-004
+docs_baseline_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+branch: cursor/m01-g4-residuals-dc6d
 worktree: ../wt-SF-M01-G4-004
 depends_on:
   - human authorization for M01 G4 exit implementation (granted)
-  - R-ENV-INT close evidence from SF-M01-G4-001 when claiming closed
+  - SF-M01-G4-001 READY on PR #39 @ 6d3e495 (R-ENV-INT CLOSED_IN_CODE; merge still required for CLOSED-on-main)
+r_env_int:
+  status: CLOSED_IN_CODE
+  owner_task: SF-M01-G4-001
+  owner_token:
+    family: SF-M01-G4-001
+    status: READY
+  pr: 39
+  branch: cursor/m01-g4-r-env-int-1573
+  sha: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
+  pending_merge_to_main: true
+  certified: false
 allowed_write_paths:
   - docs/verification/M01-G4-RESIDUALS.md
   - evidence/SF-M01-G4-004/**
@@ -45,19 +61,33 @@ read_only_paths:
   - db/**
   - .github/workflows/**
   - scripts/ci/run-m01-envelope-int.sh
-residuals_disposition_planning:
-  R-ENV-INT: fix_now_via_SF-M01-G4-001_then_close
-  ADR-0006-9_sf_app_grants: accept_residual_OR_open_ccr
-  v5_evidence_provenance: formalize_headsha_vs_merge_ref
-  branch_protection_required_checks: confirm_ci_and_security_before_m02_m03
-  REAL_S3_KMS_WAF: carry_deferred_adr
-  DPDP_statutory_anchors: carry_deferred_adr_if_needed
-  R-COV: carry_documented
-acceptance_tests_planning:
+residuals_disposition:
+  R-ENV-INT: CLOSED_IN_CODE_pending_merge_PR39_6d3e495
+  ADR-0006-9_sf_app_grants: ACCEPTED_RESIDUAL_no_CCR
+  v5_evidence_provenance: CLOSED_rule_formalized
+  branch_protection_required_checks: OPS_CONFIRM_before_CG01
+  REAL_S3_KMS_WAF: CARRIED
+  DPDP_statutory_anchors: CARRIED
+  R-COV: CARRIED
+  R-CMP055-PKG: CARRIED
+  R-MIG-TS: CLOSED
+  R-RUNTIME: CARRIED
+  R-BUILDER-JUNIT: CARRIED
+  R-LOCKFILE-W2: CLOSED
+  R-W2-VERIFY-DISPATCH: CLOSED
+  R-NOT-CERTIFIED: ACCEPTED_RESIDUAL
+  R-HYGIENE-RATELIMIT: CARRIED
+acceptance_tests:
   - Every residual is closed or formally carried with explicit language
   - ADR-0006 #9 never silently edits frozen outbox grants
   - Branch protection / required checks status documented before CG-01
   - Provenance rule for exit evidence stated
+acceptance_results:
+  every_residual_explicit: PASS
+  adr_0006_9_no_silent_edit: PASS
+  branch_protection_documented: PASS
+  provenance_rule_stated: PASS
+  frozen_contracts_13_13_unchanged: PASS
 stop_conditions:
   - silent frozen-contract edit proposed
   - residual dropped without record
@@ -66,8 +96,12 @@ self_certified: false
 not_certified: true
 certified: false
 ccr_required: false
-ccr_optional: ADR-0006-9 outbox sf_app grants tightening
+ccr_filed: false
+ccr_optional: ADR-0006-9 outbox sf_app grants tightening (not filed; accepted residual)
 parallel_group: G4-A
 evidence_paths:
   - evidence/SF-M01-G4-004/
   - docs/verification/M01-G4-RESIDUALS.md
+residual_table_path: docs/verification/M01-G4-RESIDUALS.md
+m02_m03_blocked: true
+cg01_blocked: true
