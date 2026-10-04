@@ -1,0 +1,121 @@
+# M03 G3 module-exit gate record (machine-readable)
+# Human/CI issued G3_INTEGRATION_VERIFIED as M03 module-exit only.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# Uniqueness: this file is not a CG-01 implementation envelope.
+
+module_id: M03
+record: M03-GATE
+gate_id: G3_INTEGRATION
+recommended_gate: G3_INTEGRATION_VERIFIED
+gate_issued: true
+gate_ready: true
+gate_passed: true
+lifecycle: MODULE_EXIT_G3_INTEGRATION_VERIFIED
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+human_or_ci_issued: true
+recording_agent_self_issued: false
+issuer_class: human_or_ci
+issuer_role: human
+issued_at: "2026-10-04T13:12:35Z"
+merged: false
+m02_g3_in_scope: false
+m02_g3_pending: true
+m04_blocked: true
+m04_started: false
+m02_int_sec_evd_started: false
+production_rewritten: false
+
+# Implementation task envelopes remain pre-dispatch uniqueness snapshot.
+dispatched: false
+orchestration_task_state: READY
+state: READY
+
+production_sot:
+  ref: origin/main
+  sha: "7424235592824d5ceda9dcac55380a78c05cb6c5"
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/57
+  note: production code SoT; #60 landed test-only INT split on main
+
+test_fix_landed:
+  pr: https://github.com/dbn1972/serviceform-ai/pull/60
+  pr_number: 60
+  pr_head: "4f784b936ab8e3bc1a5e43226ce9310269463299"
+  merge_sha: "bd5799b5a784e0e7e6360040cba1c2eda1522c6d"
+  production_change: false
+  scope: test-only
+
+evidence_summary:
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contract_hashes_match: 13
+  frozen_contract_hashes_total: 13
+  frozen_contracts: 13/13
+  cmp001_envelope_int_passed: 8
+  cmp001_envelope_int_total: 8
+  pin_insert_fresh_txn: "42501"
+  production_untouched: true
+  tx_split_test_only: true
+
+verifiers:
+  INT:
+    task_id: SF-M03-INT
+    pr: https://github.com/dbn1972/serviceform-ai/pull/59
+    pr_number: 59
+    head: "facb0fe72aa674364f14a3f372591866929d54e7"
+    catalog_sha: "9a782b8a6ea4b03aad7ccd31b246231ab2c7ea24"
+    local_run_id: local-m03-int-rerun
+    result: V1_INTEGRATION_PASS
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    github_ci_run_id: "37200362505"
+    github_security_run_id: "37200362502"
+    github_developer_platform_run_id: "37200362494"
+    github_jobs: 15
+    github_jobs_success: 15
+  SEC:
+    task_id: SF-M03-SEC
+    pr: https://github.com/dbn1972/serviceform-ai/pull/61
+    pr_number: 61
+    head: "8c859f25113cef4590d79886c8a77e1e7e8e4b3d"
+    probe_commit: "1efeac0030bf86a0861661c5ddeb2ba3b909a580"
+    result: V1_SECURITY_PASS
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    vitest: 11/11
+    catalog_pass: 309
+    catalog_fail: 0
+    github_ci_run_id: "37201419195"
+    github_security_run_id: "37201419196"
+    github_developer_platform_run_id: "37201419200"
+    github_jobs: 15
+    github_jobs_success: 15
+  TX_SPLIT:
+    pr: https://github.com/dbn1972/serviceform-ai/pull/60
+    pr_number: 60
+    head: "4f784b936ab8e3bc1a5e43226ce9310269463299"
+    merge_sha: "bd5799b5a784e0e7e6360040cba1c2eda1522c6d"
+    production_change: false
+    included_in_int_rerun: true
+    github_ci_run_id: "37200105236"
+    github_security_run_id: "37200105240"
+    github_developer_platform_run_id: "37200105282"
+    github_jobs: 15
+    github_jobs_success: 15
+
+recommendation_doc: docs/verification/M03-G3-RECOMMENDATION.md
+evidence_root: evidence/SF-M03-EVD
+unmerged_evidence_refs: [59, 61]
+superseded_recommendation_pr: 62
+
+human_ci_action: module_exit_gate_issuance_recorded
+awaiting:
+  - M02_G3_INTEGRATION_VERIFIED
+  - M04_remains_blocked_until_M02_and_M03_G3
