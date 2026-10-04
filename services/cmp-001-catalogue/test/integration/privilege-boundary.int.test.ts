@@ -143,6 +143,8 @@ describe('CMP-001 privilege boundary (ADR-0006) / INT-011', () => {
         [serviceId, categoryId, ACTOR_OFFICER],
       );
     });
+    // Transaction A: seed offering + version and COMMIT. A later 42501 must not
+    // abort this work or poison the pin-guard INSERT (PostgreSQL 25P02).
     await asTenant(h.rt, T1, ACTOR_OFFICER, async (c) => {
       await c.query(
         `INSERT INTO sf_catalogue.offering (
@@ -156,17 +158,25 @@ describe('CMP-001 privilege boundary (ADR-0006) / INT-011', () => {
          ) VALUES ($1,$2,1,'Name','DRAFT','{}',now(),$3)`,
         [T1, offeringId, ACTOR_OFFICER],
       );
-      await expect(
-        c.query(`UPDATE sf_catalogue.offering_version SET local_name = 'mutated'`),
-      ).rejects.toMatchObject({ code: '42501' });
-      await expect(
-        c.query(
+    });
+
+    // Transaction B: immutable UPDATE is rejected; this transaction rolls back.
+    await expect(
+      asTenant(h.rt, T1, ACTOR_OFFICER, async (c) => {
+        await c.query(`UPDATE sf_catalogue.offering_version SET local_name = 'mutated'`);
+      }),
+    ).rejects.toMatchObject({ code: '42501' });
+
+    // Transaction C: unpublished pin INSERT without privileged marker; independent 42501.
+    await expect(
+      asTenant(h.rt, T1, ACTOR_OFFICER, async (c) => {
+        await c.query(
           `INSERT INTO sf_catalogue.offering_version (
              tenant_id, offering_id, version_no, local_name, status, tags, published_pin_ref, valid_from, created_by
            ) VALUES ($1,$2,2,'Name','DRAFT','{}','pin-1',now(),$3)`,
           [T1, offeringId, ACTOR_OFFICER],
-        ),
-      ).rejects.toMatchObject({ code: '42501' });
-    });
+        );
+      }),
+    ).rejects.toMatchObject({ code: '42501' });
   });
 });
