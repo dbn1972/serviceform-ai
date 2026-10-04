@@ -1,0 +1,42 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-051 Maker-Checker Events",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "sf.makerchecker.events.v1": {
+      "address": "sf.makerchecker.events.v1",
+      "messages": {
+        "PublicationRequestCreated": {
+          "payload": { "$ref": "#/components/schemas/RequestLifecycle" }
+        },
+        "PublicationRequestSubmitted": {
+          "payload": { "$ref": "#/components/schemas/RequestLifecycle" }
+        },
+        "PublicationRequestApproved": {
+          "payload": { "$ref": "#/components/schemas/RequestLifecycle" }
+        },
+        "PublicationRequestRejected": {
+          "payload": { "$ref": "#/components/schemas/RequestLifecycle" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RequestLifecycle": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["request_id", "subject_type", "subject_id", "proposed_hash", "status"],
+        "properties": {
+          "request_id": { "type": "string", "format": "uuid" },
+          "subject_type": { "type": "string" },
+          "subject_id": { "type": "string", "format": "uuid" },
+          "proposed_hash": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    }
+  }
+}

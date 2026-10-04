@@ -1,0 +1,115 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-051 Maker-Checker / Publishing Service",
+    "version": "0.1.0",
+    "description": "Maker submit and checker approval before publication (INT-002). Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/publication-requests": {
+      "post": {
+        "operationId": "createPublicationRequest",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Draft request created" },
+          "400": { "description": "Validation failed" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Denied" }
+        }
+      }
+    },
+    "/v1/publication-requests/{id}": {
+      "get": {
+        "operationId": "getPublicationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Request" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/v1/publication-requests/{id}/submit": {
+      "post": {
+        "operationId": "submitPublicationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Submitted" },
+          "400": { "description": "Invalid transition" }
+        }
+      }
+    },
+    "/v1/publication-requests/{id}/approve": {
+      "post": {
+        "operationId": "approvePublicationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Approved" },
+          "403": { "description": "Maker cannot approve" }
+        }
+      }
+    },
+    "/v1/publication-requests/{id}/reject": {
+      "post": {
+        "operationId": "rejectPublicationRequest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Rejected" },
+          "403": { "description": "Maker cannot reject" }
+        }
+      }
+    }
+  }
+}
