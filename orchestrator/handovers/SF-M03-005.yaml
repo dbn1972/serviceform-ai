@@ -1,0 +1,75 @@
+# M03 PLANNING envelope — SF-M03-005
+task_id: SF-M03-005
+title: Localization Service
+module_id: M03
+concurrency_group: CG-01
+component_ids: [CMP-053]
+integration_ids: [INT-002, INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-053
+agent_role: component_builder
+builder_agent: serviceform-studio-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: medium
+branch: agent/M03-i18n-SF-M03-005
+worktree: ../wt-SF-M03-005
+parallel_group: M03-A
+privilege_role: sf_cmp053_rw
+schema: sf_localization
+depends_on:
+  - M01 G4 exit token issued
+  - 13 shared contracts FROZEN
+  - later human implementation authorization (NOT granted)
+allowed_write_paths:
+  - services/cmp-053-localization/**
+  - db/migrations/*_cmp-053-*.sql
+allowed_write_notes:
+  - Do not commit pnpm-lock.yaml
+  - No named-service branching; metadata/generic only
+  - Do not mutate published versions
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/api/**
+  - packages/ui-ux4g/**
+
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNED
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: cc49843e
+  suffix: b70246842f5ea3c1c16257a5450432a2
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling CG-01 code as source of truth
+  - implementation started without later human authorization
+  - CERTIFIED or RELEASE CERTIFIED claim
+
+
