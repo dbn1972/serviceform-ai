@@ -29,7 +29,15 @@ branch: cursor/m01-g4-residuals-dc6d
 worktree: ../wt-SF-M01-G4-004
 depends_on:
   - human authorization for M01 G4 exit implementation (granted)
-  - R-ENV-INT close evidence from SF-M01-G4-001 when claiming closed
+  - SF-M01-G4-001_READY on PR #39 @ 6d3e495 (R-ENV-INT CLOSED_IN_CODE; merge still required for CLOSED-on-main)
+r_env_int:
+  status: CLOSED_IN_CODE
+  owner_task: SF-M01-G4-001
+  pr: 39
+  branch: cursor/m01-g4-r-env-int-1573
+  sha: 6d3e495987bd7308596cbbd69ab65c46e242c7bf
+  pending_merge_to_main: true
+  certified: false
 allowed_write_paths:
   - docs/verification/M01-G4-RESIDUALS.md
   - evidence/SF-M01-G4-004/**
@@ -48,7 +56,7 @@ read_only_paths:
   - .github/workflows/**
   - scripts/ci/run-m01-envelope-int.sh
 residuals_disposition:
-  R-ENV-INT: OPEN_DEPENDS_SF-M01-G4-001
+  R-ENV-INT: CLOSED_IN_CODE_pending_merge_PR39_6d3e495
   ADR-0006-9_sf_app_grants: ACCEPTED_RESIDUAL_no_CCR
   v5_evidence_provenance: CLOSED_rule_formalized
   branch_protection_required_checks: OPS_CONFIRM_before_CG01

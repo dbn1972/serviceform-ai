@@ -27,7 +27,7 @@
 
 | ID | Status |
 |---|---|
-| R-ENV-INT | OPEN_DEPENDS → SF-M01-G4-001 |
+| R-ENV-INT | **CLOSED_IN_CODE** — PR [#39](https://github.com/dbn1972/serviceform-ai/pull/39) @ `6d3e495` (`SF-M01-G4-001_READY`); pending merge to `main` |
 | R-OUTBOX-SF-APP (ADR-0006 #9) | ACCEPTED_RESIDUAL (no CCR; no silent contract edit) |
 | R-PROVENANCE | CLOSED (formalized headSha rule) |
 | R-BRANCH-PROT | OPS_CONFIRM before CG-01 |
@@ -39,6 +39,6 @@
 
 - Wrote only envelope allow-list paths
 - Did not edit `contracts/**` or `orchestrator/contracts-lock.yaml`
-- Did not claim R-ENV-INT closed
+- Did not claim R-ENV-INT CLOSED on `main` (only CLOSED_IN_CODE)
 - Did not issue M01 G4 exit token
 - Did not start M02/M03

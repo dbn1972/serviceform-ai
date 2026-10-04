@@ -3,7 +3,7 @@
   "token": "SF-M01-G4-004_READY",
   "certified": false,
   "residuals": [
-    {"id": "R-ENV-INT", "status": "OPEN_DEPENDS", "owner": "SF-M01-G4-001", "blocks_g4_exit_token": true},
+    {"id": "R-ENV-INT", "status": "CLOSED_IN_CODE", "owner": "SF-M01-G4-001", "pr": 39, "branch": "cursor/m01-g4-r-env-int-1573", "sha": "6d3e495987bd7308596cbbd69ab65c46e242c7bf", "pending_merge_to_main": true, "blocks_g4_exit_token": true, "note": "CLOSED on main only after #39 merges"},
     {"id": "R-OUTBOX-SF-APP", "status": "ACCEPTED_RESIDUAL", "ccr_filed": false, "blocks_g4_exit_token": false},
     {"id": "R-PROVENANCE", "status": "CLOSED", "blocks_g4_exit_token": false},
     {"id": "R-BRANCH-PROT", "status": "OPS_CONFIRM", "blocks_g4_exit_token": false, "blocks_cg01": true},
@@ -21,7 +21,8 @@
   ],
   "counts": {
     "CLOSED": 4,
-    "OPEN_DEPENDS": 1,
+    "CLOSED_IN_CODE": 1,
+    "OPEN_DEPENDS": 0,
     "ACCEPTED_RESIDUAL": 2,
     "CARRIED": 7,
     "OPS_CONFIRM": 1,
