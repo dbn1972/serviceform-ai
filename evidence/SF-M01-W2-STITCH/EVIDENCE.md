@@ -7,7 +7,7 @@
 |---|---|
 | Task | SF-M01-W2-STITCH |
 | Branch | `cursor/m01-w2-stitch-e19b` |
-| Tip SHA | `e7881584ba3a032261dbdae898b0e3d6ed98b8e9` |
+| Tip SHA | `347fe74cb0221cbc0b8542bb187aa6adc752405c` |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/30 |
 | Base | `origin/main` `f397e1319fdf5005b4dfd44e0813d25c5b695ecf` |
 | Integrated PRs | #25 #26 #27 #28 #29 |
@@ -44,6 +44,7 @@ Merges were clean (ort, no conflict resolution inventing policy).
 | `pnpm lint` | PASS | `logs/lint-root.log` |
 | `pnpm run typecheck` | PASS | `logs/typecheck-root.log` |
 | Unit + component contract vitest (81) | PASS | `logs/unit-contract.log` |
+| `pnpm test:coverage` (global thresholds) | PASS after int-surface exclude | `logs/coverage-root.log` |
 | CMP-055 unit (9) | PASS | `logs/cmp-055-unit.log` |
 | `contracts:validate` | PASS | `logs/contracts-validate.log` |
 | `contracts_lock_gate.py` | PASS 13/13 | `logs/contracts-lock.log` |
@@ -53,7 +54,7 @@ Merges were clean (ort, no conflict resolution inventing policy).
 
 ## Residuals (non-blocking for STITCH_READY)
 
-See `RESIDUALS.md`.
+See `RESIDUALS.md`. Notable for INT/orchestrator: GitHub CI job `M01 envelope integration (SF-M01-001..005)` remains **Wave 1–only** (tasks `SF-M01-001`…`005`). Gates are not weakened here; any additive W2 envelope INT job is a follow-up outside this docs bind.
 
 ## Explicit non-claims
 
