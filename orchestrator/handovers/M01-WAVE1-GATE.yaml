@@ -1,0 +1,114 @@
+# M01 Wave 1 independent verification gate (machine-readable)
+# Source: V1–V5 r1 reports under Project store internal/verification/
+# Not CERTIFIED. Human/CI approval required before merge. No Wave 2.
+
+module_id: M01
+wave: 1
+record: M01-WAVE1-INDEPENDENT-VERIFICATION
+gate_decision: M01_WAVE1_GATE_READY
+gate_ready: true
+self_certified: false
+not_certified: true
+not_verified_as_certified: true
+wave2_started: false
+merge_authorized: false
+human_approval_required: true
+
+candidate:
+  pr: https://github.com/dbn1972/serviceform-ai/pull/22
+  pr_number: 22
+  branch: cursor/m01-w1-remediation-r1
+  sha: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+  sha_short: 7a571ce
+
+baseline:
+  pr: https://github.com/dbn1972/serviceform-ai/pull/21
+  pr_number: 21
+  sha: d33601a5c2c332548530897df1bd35702317df44
+  sha_short: d33601a
+  immutable: true
+  historical_only: true
+
+tip_ignored_for_code_assessment:
+  sha: 379c9fbf85489f939bef25330b585ad0a7475efc
+  sha_short: 379c9fb
+  reason: docs_handover_bind_only
+
+runs:
+  github_ci_run_id: '37163807120'
+  github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807120
+  github_ci_conclusion: SUCCESS
+  github_security_run_id: '37163807119'
+  github_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37163807119
+  github_security_conclusion: SUCCESS
+  envelope_artifact: m01-envelope-int-d270a4fc51ca317062d14127a53bba419e87b341
+
+evidence_summary:
+  independent_int_pass_count: 7
+  independent_int_fail_count: 0
+  cross_tenant_leakage: 0
+  frozen_contract_hashes_match: 13
+  frozen_contract_hashes_total: 13
+  coverage:
+    statements_pct: 92.19
+    functions_pct: 93.97
+    lines_pct: 94.22
+    branches_pct: 82.91
+  vtqs: 95.0
+  v5_documented_limitation: >
+    Suite meta stamp commit_sha=d270a4fc (PR merge ref) vs
+    ARTIFACT-INDEX / workflow headSha=7a571ce; authoritative bind is headSha.
+
+verifiers:
+  V1:
+    agent_id: bc-412ee224-476d-5925-b9c2-8e561d947f5f
+    result: V1_INTEGRATION_PASS
+    pass: true
+    report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/internal/verification/r1-v1-integration.md
+  V2:
+    agent_id: bc-e22725da-8ddc-5e09-a250-d0ad5550a6c0
+    result: V2_SECURITY_PASS
+    pass: true
+    cross_tenant_leakage: 0
+    report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/internal/verification/r1-v2-security.md
+  V3:
+    agent_id: bc-4bb27dc4-7f9f-50eb-b859-b584ec608c49
+    result: V3_ARCHITECTURE_PASS
+    pass: true
+    frozen_hashes: 13/13
+    report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/internal/verification/r1-v3-architecture.md
+  V4:
+    agent_id: bc-920d9e99-e22a-53e3-bc3b-b4288efac866
+    result: V4_QUALITY_PASS
+    pass: true
+    coverage:
+      statements_pct: 92.19
+      functions_pct: 93.97
+      lines_pct: 94.22
+      branches_pct: 82.91
+    report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/internal/verification/r1-v4-quality.md
+  V5:
+    agent_id: bc-e70b491e-f9d4-50fb-ba57-7b9dd23f9c79
+    result: V5_EVIDENCE_PASS
+    pass: true
+    evidence_recommendation: GATE_READY_WITH_DOCUMENTED_LIMITATION
+    report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/internal/verification/r1-v5-evidence.md
+
+residuals:
+  - id: ADR-0006-9
+    summary: sf_app outbox/inbox GRANTs remain frozen-template; tightening needs CCR
+    blocking: false
+  - id: NOT_CERTIFIED
+    summary: Gate ready is not CERTIFIED release/module certification
+    blocking: false
+  - id: HUMAN_APPROVAL
+    summary: Human/CI approval required before merge of PR #22
+    blocking: true_for_merge
+  - id: NO_WAVE2
+    summary: Wave 2 must not be started from this gate record
+    blocking: false
+
+documents:
+  repo_gate_record: docs/verification/M01-WAVE1-INDEPENDENT-VERIFICATION.md
+  store_mirror: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave1-independent-verification.md
+  remediation_evidence: docs/verification/M01-WAVE1-REMEDIATION-EVIDENCE.md
