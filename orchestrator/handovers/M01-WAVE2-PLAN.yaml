@@ -1,0 +1,61 @@
+# M01 Wave 2 planning index (machine-readable)
+# PLANNING ONLY. Not dispatched. No builders started. Not CERTIFIED.
+
+module_id: M01
+wave: 2
+record: M01-WAVE2-PLAN
+decision: M01_WAVE2_PLAN_READY
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+builders_dispatched: 0
+self_certified: false
+not_certified: true
+certified: false
+frozen_contracts_altered: false
+
+baseline:
+  origin_main: 1c9a650abc439610badd21d927c7a53d27d3fd12
+  wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+  wave1_status: M01_WAVE1_MERGED_AND_CLOSED
+  wave1_v1_v5: PASS
+  cross_tenant_leakage: 0
+  frozen_contract_hashes: 13/13 MATCH
+
+documents:
+  repo_plan: docs/planning/M01-WAVE2-PLAN.md
+  store_plan: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-plan.md
+  store_envelopes: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave2-envelopes.md
+  wave1_closure: docs/verification/M01-WAVE1-CLOSURE.md
+
+governance_sequence:
+  - architecture_constitution
+  - frozen_contracts
+  - dependency_aware_wave2_scope
+  - bounded_task_envelopes_planning
+  - later_if_authorized_isolated_parallel_builders
+  - integration
+  - security_verification
+  - evidence_verification
+  - human_gate
+
+builder_envelopes:
+  - SF-M01-W2-001
+  - SF-M01-W2-002
+  - SF-M01-W2-003
+  - SF-M01-W2-004
+  - SF-M01-W2-005
+
+verifier_envelopes:
+  - SF-M01-W2-INT
+  - SF-M01-W2-SEC
+  - SF-M01-W2-EVD
+
+blockers_for_planning: []
+ccr_opened: []
+adr_opened: []
+residuals_non_blocking:
+  - ADR-0006-9 outbox sf_app GRANTs (CCR if tightening)
+  - DPDP statutory anchors deferred; CMP-030 platform-only without inventing statute
+  - REAL S3/KMS/WAF infra requires later ADR; W2 uses SIMULATED/local + ports

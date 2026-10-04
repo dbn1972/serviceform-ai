@@ -1,0 +1,110 @@
+# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+task_id: SF-M01-W2-002
+title: Consent and Privacy Service
+module_id: M01
+wave: 2
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-030]
+integration_ids: [INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-030
+  - Constitution-21
+  - Constitution-36
+  - ADR-0006-Option-A
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+verifiers:
+  - serviceform-security-verifier (opus, xhigh)
+  - serviceform-evidence-verifier (opus, high)
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-cmp-030-consent-privacy-SF-M01-W2-002
+worktree: ../wt-SF-M01-W2-002
+depends_on:
+  - M01 Wave 1 MERGED (CMP-002, CMP-031, CMP-048 on main)
+  - 13 shared contracts FROZEN
+  - human implementation authorization (not granted)
+allowed_write_paths:
+  - services/cmp-030-consent-privacy/**
+  - db/migrations/*_cmp-030-*.sql
+allowed_write_notes:
+  - package.json under service path may change; do not commit pnpm-lock.yaml
+  - evidence/SF-M01-W2-002/** and this handover update allowed at evidence time
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - specs/**
+  - apps/**
+  - packages/**
+  - policy/**
+  - .github/**
+  - scripts/gates/**
+  - infra/**
+  - services/cmp-002-tenant-organisation/**
+  - services/cmp-003-jurisdiction/**
+  - services/cmp-032-storage/**
+  - services/cmp-031-audit-ledger/**
+  - services/cmp-037-integration-hub/**
+  - services/cmp-038-event-bus/**
+  - services/cmp-048-security-platform/**
+  - services/cmp-036-api-gateway/**
+  - services/cmp-047-observability/**
+  - services/cmp-055-developer-platform/**
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+eng_interfaces:
+  - POST /consents
+  - GET /consents
+  - POST /consents/{id}/withdraw
+  - POST /privacy/access-check
+eng_events:
+  - ConsentGranted
+  - ConsentWithdrawn
+  - PrivacyNoticeUpdated
+authoritative_tables_planned:
+  - consent
+  - purpose
+  - privacy_notice
+  - consent_event
+privilege_role: sf_cmp030_rw
+scope_notes:
+  - Platform consent/purpose/notice/access-check machinery only
+  - Do not invent DPDP Act / State statutory content; stop for ADR if required
+  - CMP-004/005/049 are peers/later; use ports + frozen request context, not unmerged code
+  - Does not delete data outside retention rules; does not act as IdP
+acceptance_tests_planning:
+  - Deny when purpose/consent required but missing
+  - Withdrawal is auditable and idempotent under repeated Idempotency-Key
+  - Wrong-tenant / unauthorized zero leakage
+  - ADR-0006 privilege-boundary and FORCE RLS on tenant-scoped tables
+  - Outbox template unchanged; audit events on grant/withdraw/notice update
+  - Host mount deferred to SF-M01-W2-004
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory privacy interpretation required without owner ADR
+  - write outside allowed_write_paths
+  - dependency on unmerged M02 identity/profile code
+  - implementation_authorized remains false (do not code)
+self_certified: false
+not_certified: true
+blockers: []
+ccr_required: false
+parallel_group: W2-A

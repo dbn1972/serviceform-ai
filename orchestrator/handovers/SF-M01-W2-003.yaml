@@ -1,0 +1,117 @@
+# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+task_id: SF-M01-W2-003
+title: Storage Service
+module_id: M01
+wave: 2
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-032]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-032
+  - ADR-0001-CMP-032-in-M01
+  - ADR-0006-Option-A
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+verifiers:
+  - serviceform-security-verifier (opus, xhigh)
+  - serviceform-integration-stitcher (opus, high)
+  - serviceform-evidence-verifier (opus, high)
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-cmp-032-storage-SF-M01-W2-003
+worktree: ../wt-SF-M01-W2-003
+depends_on:
+  - M01 Wave 1 MERGED (CMP-031, CMP-048 on main)
+  - 13 shared contracts FROZEN
+  - human implementation authorization (not granted)
+allowed_write_paths:
+  - services/cmp-032-storage/**
+  - packages/storage/**
+  - db/migrations/*_cmp-032-*.sql
+allowed_write_notes:
+  - package.json under service/package paths may change; do not commit pnpm-lock.yaml
+  - Local/SIMULATED object-store adapter only; no infra/** writes
+  - evidence/SF-M01-W2-003/** and this handover update allowed at evidence time
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - specs/**
+  - apps/**
+  - packages/contracts/**
+  - packages/observability/**
+  - packages/security/**
+  - packages/outbox/**
+  - packages/audit-client/**
+  - packages/connector-sdk/**
+  - packages/ui-ux4g/**
+  - policy/**
+  - .github/**
+  - scripts/gates/**
+  - infra/**
+  - services/cmp-002-tenant-organisation/**
+  - services/cmp-003-jurisdiction/**
+  - services/cmp-030-consent-privacy/**
+  - services/cmp-031-audit-ledger/**
+  - services/cmp-037-integration-hub/**
+  - services/cmp-038-event-bus/**
+  - services/cmp-048-security-platform/**
+  - services/cmp-036-api-gateway/**
+  - services/cmp-047-observability/**
+  - services/cmp-055-developer-platform/**
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-SIMULATION-MARKER
+eng_interfaces:
+  - POST /storage/objects
+  - GET /storage/objects/{id}/access
+  - POST /storage/objects/{id}/archive
+eng_events:
+  - ObjectStored
+  - ObjectArchived
+  - ObjectDeleted
+authoritative_tables_planned:
+  - object_metadata
+  - storage_policy
+privilege_role: sf_cmp032_rw
+scope_notes:
+  - Object key generation, encryption policy metadata, presigned access, checksums
+  - Does not implement evidence business rules (CMP-013 later)
+  - No local pod filesystem as durable storage
+  - REAL S3/KMS cloud resources need a separate infra ADR; W2 uses SIMULATED/local + CMP-048 ports
+  - Promoting shared storage schemas requires CCR; prefer component-local contracts first
+acceptance_tests_planning:
+  - Tenant/cell ownership in metadata; wrong-tenant access denied
+  - KMS/secret port failure fails closed
+  - Simulation marker present for SIMULATED mode (INT-013)
+  - Duplicate store command does not duplicate durable side effects
+  - ADR-0006 privilege-boundary; outbox template unchanged
+  - Host mount deferred to SF-M01-W2-004
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - new cloud infrastructure required without ADR
+  - write outside allowed_write_paths
+  - dependency on unmerged CMP-013/049 code
+  - implementation_authorized remains false (do not code)
+self_certified: false
+not_certified: true
+blockers: []
+ccr_required: false
+parallel_group: W2-A

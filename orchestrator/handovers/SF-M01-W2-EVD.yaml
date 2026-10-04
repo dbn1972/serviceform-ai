@@ -1,0 +1,46 @@
+# M01 Wave 2 evidence verifier envelope — PLANNING ONLY. Not dispatched.
+task_id: SF-M01-W2-EVD
+title: Wave 2 independent evidence verification and gate recommendation
+module_id: M01
+wave: 2
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-003, CMP-030, CMP-032, CMP-036, CMP-047, CMP-055]
+integration_ids: [INT-011, INT-013]
+agent_role: verification_agent
+builder_agent: serviceform-evidence-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-wave2-evidence-SF-M01-W2-EVD
+worktree: ../wt-SF-M01-W2-EVD
+depends_on:
+  - SF-M01-W2-INT and SF-M01-W2-SEC executed evidence available
+allowed_write_paths:
+  - evidence/**
+  - docs/verification/M01-WAVE2-*
+  - orchestrator/handovers/SF-M01-W2-EVD.yaml
+  - orchestrator/handovers/M01-WAVE2-GATE.yaml
+read_only_paths:
+  - services/**
+  - apps/**
+  - packages/**
+  - contracts/**
+  - specs/**
+explicit_cannot:
+  - certify release or module (no CERTIFIED claim)
+  - self-certify builder work
+  - flip wave_2_started or implementation_authorized
+acceptance_tests_planning:
+  - Bind commit SHAs and CI run IDs for exact candidate
+  - Trace SF-M01-W2-001..005 + INT/SEC evidence
+  - Confirm frozen contracts still 13/13 MATCH
+  - Recommend GATE_READY / BLOCKED only; human/CI decides
+self_certified: false
+not_certified: true
+certified: false
+parallel_group: W2-VERIFY

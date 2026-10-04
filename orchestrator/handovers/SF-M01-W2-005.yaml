@@ -1,0 +1,90 @@
+# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+task_id: SF-M01-W2-005
+title: Developer Platform
+module_id: M01
+wave: 2
+build_plan: specs/build-plan.yaml (ADR-0001)
+state: PLANNING
+planning_only: true
+implementation_authorized: false
+wave_2_started: false
+dispatched: false
+component_ids: [CMP-055]
+integration_ids: []
+requirement_ids:
+  - Eng-v1.4-CMP-055
+  - Constitution-agent-guardrails
+  - CONTRACT-REVIEW-001-CR-13
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+verifiers:
+  - serviceform-evidence-verifier (opus, high)
+  - serviceform-architecture-guardian (opus, high) # reviews gate/.github deltas
+base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
+branch: agent/M01-cmp-055-developer-platform-SF-M01-W2-005
+worktree: ../wt-SF-M01-W2-005
+depends_on:
+  - M00 G1_BUILD_READY tooling baseline
+  - M01 Wave 1 evidence/CI patterns on main
+  - human implementation authorization (not granted)
+allowed_write_paths:
+  - services/cmp-055-developer-platform/**
+  - scripts/gates/**
+  - .github/workflows/**
+allowed_write_notes:
+  - Additive CI/gate improvements only; never weaken security/lint/test gates to go green
+  - Align migration_lint scan paths with db/migrations (CR-13) without bypassing contracts_lock_gate
+  - Do not commit secrets; do not silently change architecture docs/contracts
+  - package.json under services/cmp-055-developer-platform may change; do not commit pnpm-lock.yaml
+  - evidence/SF-M01-W2-005/** and this handover update allowed at evidence time
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - specs/**
+  - apps/**
+  - packages/**
+  - policy/**
+  - infra/**
+  - db/migrations/**
+  - ARCHITECTURE-CONSTITUTION.md
+  - AGENTS.md
+  - orchestrator/contracts-lock.yaml
+  - services/cmp-002-tenant-organisation/**
+  - services/cmp-003-jurisdiction/**
+  - services/cmp-030-consent-privacy/**
+  - services/cmp-032-storage/**
+  - services/cmp-031-audit-ledger/**
+  - services/cmp-037-integration-hub/**
+  - services/cmp-038-event-bus/**
+  - services/cmp-048-security-platform/**
+  - services/cmp-036-api-gateway/**
+  - services/cmp-047-observability/**
+eng_responsibilities:
+  - Repo/CI conventions and quality gates
+  - OpenAPI/AsyncAPI pipeline helpers (no frozen contract mutation)
+  - AI agent instruction packaging under approved paths only
+  - Provenance/SBOM hooks where applicable
+explicit_non_responsibilities:
+  - Does not silently change architecture
+  - Does not let generated code bypass tests/security gates
+  - Does not own domain services
+acceptance_tests_planning:
+  - Existing gates still pass on baseline after additive changes
+  - New workflow jobs are pin-safe and secret-free
+  - Scope check + contracts_lock_gate remain mandatory
+  - No architecture constitution or frozen hash drift
+stop_conditions:
+  - FROZEN contract or constitution change required
+  - gate weakening requested to pass CI
+  - write outside allowed_write_paths
+  - implementation_authorized remains false (do not code)
+self_certified: false
+not_certified: true
+blockers: []
+ccr_required: false
+parallel_group: W2-A
+guardian_controlled_paths: true
