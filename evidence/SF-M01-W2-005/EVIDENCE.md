@@ -5,7 +5,7 @@
 | Task | SF-M01-W2-005 |
 | Component | CMP-055 |
 | Baseline SHA | `f397e1319fdf5005b4dfd44e0813d25c5b695ecf` |
-| Result commit | _(filled after commit)_ |
+| Result commit | `e1d2896d91bfb123fede704b49bfd6d7d4c46563` |
 | Self-certified | **false** |
 | CERTIFIED | **false** |
 | Recommended gate | READY_FOR_INDEPENDENT_VERIFY |
