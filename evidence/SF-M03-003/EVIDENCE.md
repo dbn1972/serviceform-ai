@@ -38,4 +38,12 @@ python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M03-003.ya
 
 JUnit: `evidence/SF-M03-003/junit/unit.xml`, `evidence/SF-M03-003/junit/integration.xml`.
 
+## CI residual (PR #46, not CERTIFIED)
+
+| Check | Result | Owner |
+|---|---|---|
+| SAST (semgrep) `node_secret` on `vault://x` fixture | Fixed in-scope (removed) | this envelope |
+| `pnpm install --frozen-lockfile` (quality/db/m01-int/ui/audit/cmp-055) | Fail: lockfile missing `@serviceform/cmp-034-master-data` importer | orchestrator regen; builders must not commit `pnpm-lock.yaml` |
+| architecture gates | PASS | — |
+
 Recommended gate: **IMPLEMENTATION_READY** for independent Verify. Human/CI only.

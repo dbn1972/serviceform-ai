@@ -58,10 +58,7 @@ export function registerImportRoutes(app: FastifyInstance, deps: RouteDeps): voi
       let simulation: unknown = null;
 
       if (request.body.connector_binding) {
-        const binding = assertConnectorImportSafe(
-          request.body.connector_binding,
-          deps.environment,
-        );
+        const binding = assertConnectorImportSafe(request.body.connector_binding, deps.environment);
         const fetched = await deps.importPort.fetch(
           binding,
           request.body.scenario ?? 'code_list_success',

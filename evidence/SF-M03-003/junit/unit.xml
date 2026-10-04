@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.156727481">
-    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T07:21:27.215Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.056856983">
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; parses OpenAPI and AsyncAPI JSON with Eng interfaces" time="0.001281697">
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.177091566">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T07:27:39.368Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.063687871">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; parses OpenAPI and AsyncAPI JSON with Eng interfaces" time="0.001337038">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; validates domain event envelopes and audit" time="0.053594313">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; validates domain event envelopes and audit" time="0.060273849">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.000488569">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; outbox migration Up matches the frozen template after substitution" time="0.000511092">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; schema migration declares isolation and privilege role without named services" time="0.000506251">
-        </testcase>
-    </testsuite>
-    <testsuite name="test/unit/authz-context.test.ts" timestamp="2026-10-04T07:21:27.216Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.051505381">
-        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies when PDP throws or returns allow=false" time="0.05020723">
-        </testcase>
-        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies subject/resource tenant mismatch before PDP" time="0.000357506">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-034 component contracts &gt; schema migration declares isolation and privilege role without named services" time="0.000536837">
         </testcase>
     </testsuite>
-    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-04T07:21:27.217Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.048365117">
-        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; accepts generic set/value codes without named-service branching" time="0.001325751">
+    <testsuite name="test/unit/authz-context.test.ts" timestamp="2026-10-04T07:27:39.369Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.054676196">
+        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies when PDP throws or returns allow=false" time="0.053331991">
         </testcase>
-        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; fingerprints requests canonically" time="0.000610078">
+        <testcase classname="test/unit/authz-context.test.ts" name="authorize fail-closed &gt; denies subject/resource tenant mismatch before PDP" time="0.000372504">
         </testcase>
-        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; rejects tenant-identifying headers" time="0.0001587">
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-04T07:27:39.370Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.058727499">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; accepts generic set/value codes without named-service branching" time="0.001413221">
         </testcase>
-        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; validates UUID shape without ambiguous regex quantifiers" time="0.000224099">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; fingerprints requests canonically" time="0.000693528">
         </testcase>
-        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; INT-013 fail-closed: PRODUCTION SIMULATED import binding is refused" time="0.045061157">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; rejects tenant-identifying headers" time="0.000167511">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; validates UUID shape without ambiguous regex quantifiers" time="0.000268194">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-034 domain &gt; INT-013 fail-closed: PRODUCTION SIMULATED import binding is refused" time="0.055141897">
         </testcase>
     </testsuite>
 </testsuites>

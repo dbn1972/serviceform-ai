@@ -1,8 +1,4 @@
-import {
-  validate,
-  type ConnectorBinding,
-  type SimulationMarker,
-} from '@serviceform/contracts';
+import { validate, type ConnectorBinding, type SimulationMarker } from '@serviceform/contracts';
 import { Cmp034Error } from '../errors.js';
 
 export interface CodeValueInput {

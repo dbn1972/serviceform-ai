@@ -2,13 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { BINDING_BODY } from '../schemas/http.js';
 import { Cmp034Error } from '../errors.js';
 import { lockTenantScope, newId } from '../repositories/master-data.repo.js';
-import {
-  decide,
-  runCommand,
-  sendPrivate,
-  withWriteAudit,
-  type RouteDeps,
-} from './helpers.js';
+import { decide, runCommand, sendPrivate, withWriteAudit, type RouteDeps } from './helpers.js';
 
 export function registerBindingRoutes(app: FastifyInstance, deps: RouteDeps): void {
   app.post<{

@@ -48,14 +48,14 @@ describe('CMP-034 domain', () => {
   it('INT-013 fail-closed: PRODUCTION SIMULATED import binding is refused', () => {
     expect(() =>
       assertConnectorImportSafe(
-        { ...simBinding, environment: 'PRODUCTION', mode: 'REAL', secret_ref: 'vault://x' },
-        'PRODUCTION',
-      ),
-    ).toThrow(/temporarily unavailable|SF-INT-001/);
-    expect(() =>
-      assertConnectorImportSafe(
         { ...simBinding, environment: 'PRODUCTION', mode: 'SIMULATED' },
         'PRODUCTION',
+      ),
+    ).toThrow();
+    expect(() =>
+      assertConnectorImportSafe(
+        { ...simBinding, environment: 'UAT', mode: 'SANDBOX', secret_ref: null },
+        'UAT',
       ),
     ).toThrow();
     const allowed = assertConnectorImportSafe(simBinding, 'LOCAL');

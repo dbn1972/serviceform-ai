@@ -5,13 +5,7 @@ import {
 } from '@serviceform/contracts';
 import { Cmp034Error } from '../errors.js';
 
-const SIM_ENVIRONMENTS = new Set<string>([
-  'LOCAL',
-  'CI',
-  'DEVELOPMENT',
-  'SIT',
-  'PERFORMANCE',
-]);
+const SIM_ENVIRONMENTS = new Set<string>(['LOCAL', 'CI', 'DEVELOPMENT', 'SIT', 'PERFORMANCE']);
 
 export function assertConnectorImportSafe(
   binding: unknown,
