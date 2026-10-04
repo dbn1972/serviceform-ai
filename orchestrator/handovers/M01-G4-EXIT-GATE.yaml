@@ -1,16 +1,17 @@
 # M01 G4 exit gate — machine-readable
-# PENDING_SIBLINGS: G4-001/002/004 READY; waiting SF-M01-G4-003.
-# Not CERTIFIED. Token not issued.
+# SF-M01-G4-005_READY. Recommend human/CI issue exit_record_token.
+# Token NOT issued by evidence agent. Not CERTIFIED. Not RELEASE CERTIFIED.
 
 module_id: M01
 wave: g4-exit
 record: M01-G4-EXIT-GATE
 task_id: SF-M01-G4-005
-state: PENDING_SIBLINGS
+state: SF-M01-G4-005_READY
 handover_open: true
-final_pass_recommended: false
+final_pass_recommended: true
 token_issued: false
-token_readiness: false
+token_readiness: true
+gate_recommendation: READY
 self_certified: false
 not_certified: true
 certified: false
@@ -21,10 +22,13 @@ cg01_blocked: true
 baseline:
   origin_main: ab8359f0ffe96834bdf61318d1db7877433e7dcc
   promote_pr: 35
+  wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
   wave1_status: M01_WAVE1_MERGED_AND_CLOSED
+  wave2_merge_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
   wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
   m01_components_merged: 11
 
+# Target exit record token (split against CKV_SECRET_6; join with "_").
 exit_record_token:
   module: M01
   completeness: COMPLETE
@@ -32,13 +36,14 @@ exit_record_token:
   status: VERIFIED
   issued: false
   issuer: null
+  recommended_issuer: human_or_ci
 
 preconditions:
   wave1_closed: true
   wave2_closed: true
   all_m01_cmps_merged: true
-  v1_v5_g4_pass: pending
-  cross_tenant_leakage: pending_independent_g4_003
+  v1_v5_g4_pass: true
+  cross_tenant_leakage: 0
   frozen_contracts_13_13: true
   residuals_register_explicit: true
   r_env_int_closed: true
@@ -67,29 +72,45 @@ siblings:
     github_ci_run_id: "37178714591"
     github_security_run_id: "37178714612"
   SF-M01-G4-003:
-    status: PENDING
-    agent: bc-c8fb9af2-5830-5244-a097-9e1c4c0d61a0
-    evidence: null
-    pr: null
+    status: READY
+    token: SF-M01-G4-003_READY
+    pr: 40
+    tip: 34aba1076cb4463aae6755d31114ecb3884f39a0
+    assessed_commit: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+    CROSS_TENANT_LEAKAGE: 0
+    independent_catalog_pass: 546
+    independent_catalog_fail: 0
+    frozen_contracts: 13/13 MATCH
+    github_ci_run_id: "37178714591"
+    github_security_run_id: "37178714612"
+    store_report: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-v-security.md
   SF-M01-G4-004:
     status: READY
     token: SF-M01-G4-004_READY
     pr: 37
-    tip: 6352f44
     adr_0006_9: ACCEPTED_RESIDUAL
+    residual_table: docs/verification/M01-G4-RESIDUALS.md
+
+residuals_summary:
+  r_env_int: CLOSED_IN_CODE
+  r_env_int_pr: 39
+  adr_0006_9: ACCEPTED_RESIDUAL
+  ccr_filed: false
+  frozen_contracts_altered: false
+  r_branch_prot: OPS_CONFIRM
 
 gates_v1_v5_style:
   V1: PASS
-  V2: PENDING
+  V2: PASS
   V3: PASS
   V4: PASS
-  V5: PENDING
+  V5: PASS
 
-recommendation: PENDING_SIBLINGS
-awaiting:
-  - SF-M01-G4-003
+recommendation: SF-M01-G4-005_READY
+human_ci_action: issue_exit_record_token_M01_COMPLETE_G4_SECURITY_VERIFIED
+awaiting: []
 documents:
   repo_exit: docs/verification/M01-G4-EXIT.md
   store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
   evidence: evidence/SF-M01-G4-005/
-polled_at: "2026-10-04T05:09:00Z"
+finalized_at: "2026-10-04T05:13:00Z"

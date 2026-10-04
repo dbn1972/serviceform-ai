@@ -1,27 +1,42 @@
 {
-  "result": "PENDING_SIBLINGS",
-  "recommendation": "BLOCKED",
-  "exit_record_token_ready": false,
+  "result": "SF-M01-G4-005_READY",
+  "recommendation": "READY",
+  "final_pass_recommended": true,
+  "exit_record_token_ready": true,
   "exit_record_token_issued": false,
+  "exit_record_token": {
+    "module": "M01",
+    "completeness": "COMPLETE",
+    "gate": "G4_SECURITY",
+    "status": "VERIFIED"
+  },
   "certified": false,
   "release_certified": false,
-  "CROSS_TENANT_LEAKAGE": "pending_independent_g4_003",
+  "CROSS_TENANT_LEAKAGE": 0,
   "frozen_contracts": "13/13 MATCH",
+  "wave1_status": "M01_WAVE1_MERGED_AND_CLOSED",
+  "wave2_status": "M01_WAVE2_GATE_COMBINE_MERGED",
+  "m01_cmps_merged": 11,
   "siblings": {
     "SF-M01-G4-001": "READY",
     "SF-M01-G4-002": "READY",
-    "SF-M01-G4-003": "PENDING",
+    "SF-M01-G4-003": "READY",
     "SF-M01-G4-004": "READY"
+  },
+  "residuals": {
+    "register": "SF-M01-G4-004_READY",
+    "adr_0006_9": "ACCEPTED_RESIDUAL",
+    "r_env_int": "CLOSED_IN_CODE"
   },
   "v1_v5_g4": {
     "V1": "PASS",
-    "V2": "PENDING",
+    "V2": "PASS",
     "V3": "PASS",
     "V4": "PASS",
-    "V5": "PENDING"
+    "V5": "PASS"
   },
   "baseline_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
   "m02_m03_blocked": true,
   "cg01_blocked": true,
-  "awaiting": ["SF-M01-G4-003"]
+  "human_ci_action": "issue_exit_record_token"
 }

@@ -1,20 +1,38 @@
 {
   "task_id": "SF-M01-G4-005",
-  "result": "PENDING_SIBLINGS",
+  "result": "SF-M01-G4-005_READY",
+  "gate_recommendation": "READY",
+  "final_pass_recommended": true,
   "commit_sha_baseline_main": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
   "token_issued": false,
-  "final_pass_recommended": false,
+  "token_readiness": true,
+  "exit_record_token": {
+    "module": "M01",
+    "completeness": "COMPLETE",
+    "gate": "G4_SECURITY",
+    "status": "VERIFIED",
+    "issued": false,
+    "recommended_issuer": "human_or_ci"
+  },
   "certified": false,
   "release_certified": false,
   "self_certified": false,
+  "not_certified": true,
   "m02_m03_blocked": true,
   "cg01_blocked": true,
   "handover_open": true,
+  "wave1_closed": true,
+  "wave2_closed": true,
+  "all_m01_cmps_merged": 11,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "frozen_contracts": "13/13 MATCH",
   "r_env_int": "CLOSED_IN_CODE",
+  "residuals_explicit": true,
+  "adr_0006_9": "ACCEPTED_RESIDUAL",
   "siblings": {
     "SF-M01-G4-001": "READY",
     "SF-M01-G4-002": "READY",
-    "SF-M01-G4-003": "PENDING",
+    "SF-M01-G4-003": "READY",
     "SF-M01-G4-004": "READY"
   },
   "g4_001": {
@@ -26,11 +44,20 @@
     "token": "SF-M01-G4-002_READY",
     "result": "M01_G4_REGRESSION_PASS",
     "pr": 38,
-    "tip": "b1ebde69e8091adc53d8cf436a80df1aabf59c0f",
-    "harness_sha": "9696f48b9da62154493eef598f77cf94982f28de",
+    "CROSS_TENANT_LEAKAGE": 0,
     "fail_count": 0,
     "suite_count": 22,
+    "github_ci_run_id": "37178714591",
+    "github_security_run_id": "37178714612"
+  },
+  "g4_003": {
+    "token": "SF-M01-G4-003_READY",
+    "pr": 40,
+    "tip": "34aba1076cb4463aae6755d31114ecb3884f39a0",
+    "assessed_commit": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
     "CROSS_TENANT_LEAKAGE": 0,
+    "independent_catalog_pass": 546,
+    "independent_catalog_fail": 0,
     "frozen_contracts": "13/13 MATCH",
     "github_ci_run_id": "37178714591",
     "github_security_run_id": "37178714612"
@@ -38,9 +65,19 @@
   "g4_004": {
     "token": "SF-M01-G4-004_READY",
     "pr": 37,
-    "tip": "6352f44",
     "adr_0006_9": "ACCEPTED_RESIDUAL"
   },
-  "awaiting": ["SF-M01-G4-003"],
-  "polled_at": "2026-10-04T05:09:00Z"
+  "gates_v1_v5_style": {
+    "V1": "PASS",
+    "V2": "PASS",
+    "V3": "PASS",
+    "V4": "PASS",
+    "V5": "PASS"
+  },
+  "documents": [
+    "docs/verification/M01-G4-EXIT.md",
+    "orchestrator/handovers/M01-G4-EXIT-GATE.yaml",
+    "evidence/SF-M01-G4-005/EVIDENCE.md"
+  ],
+  "finalized_at": "2026-10-04T05:13:00Z"
 }

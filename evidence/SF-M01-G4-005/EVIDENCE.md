@@ -1,21 +1,29 @@
 # SF-M01-G4-005 evidence index
 
-**Result: `PENDING_SIBLINGS`**
+**Result: `SF-M01-G4-005_READY`**  
+**Gate recommendation: `READY`**  
+**Token issued: `false`** (recommend human/CI issue)  
+**CERTIFIED: `false`**
 
 | Field | Value |
 |---|---|
-| Baseline | `ab8359f0ffe96834bdf61318d1db7877433e7dcc` |
-| Token issued | **false** |
-| CERTIFIED | **false** |
-| FINAL PASS | **false** (await G4-003) |
+| Baseline tip | `ab8359f0ffe96834bdf61318d1db7877433e7dcc` |
+| Wave1+Wave2 | closed |
+| M01 CMPs | 11/11 merged |
+| `CROSS_TENANT_LEAKAGE` | **0** |
+| Frozen contracts | **13/13 MATCH** |
+| Residuals | explicit (G4-004) |
+| M02/M03/CG-01 | **blocked** until human issues token |
 
 ## Sibling binds
 
 | Envelope | Status |
 |---|---|
-| G4-001 | **READY** PR #39 — R-ENV-INT CLOSED_IN_CODE |
-| G4-002 | **READY** PR #38 — `M01_G4_REGRESSION_PASS`; 22/22; leakage=0; frozen 13/13 |
-| G4-003 | **PENDING** |
-| G4-004 | **READY** PR #37 — ADR-0006 #9 ACCEPTED_RESIDUAL |
+| G4-001 | READY #39 — R-ENV-INT CLOSED_IN_CODE |
+| G4-002 | READY #38 — M01_G4_REGRESSION_PASS; leakage=0 |
+| G4-003 | READY #40 — LOGIN 546/0; leakage=0 |
+| G4-004 | READY #37 — ADR-0006 #9 ACCEPTED_RESIDUAL |
 
-Not CERTIFIED. M02/M03/CG-01 blocked. Handover open.
+## Explicit
+
+Not CERTIFIED. Not RELEASE CERTIFIED. Token not self-issued.
