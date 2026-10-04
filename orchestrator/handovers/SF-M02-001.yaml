@@ -1,0 +1,97 @@
+# M02 PLANNING envelope — CMP-004 Identity & Access
+# Not READY. implementation_authorized: false. Not CERTIFIED.
+task_id: SF-M02-001
+title: Identity and Access Service
+module_id: M02
+concurrency_group: CG-01
+build_plan: specs/build-plan.yaml (ADR-0001)
+component_ids: [CMP-004]
+integration_ids: [INT-001, INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-004
+  - INT-001
+  - Constitution-6
+  - Constitution-7
+  - ADR-0006-Option-A
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M02-identity-SF-M02-001
+worktree: ../wt-SF-M02-001
+parallel_group: M02-A
+privilege_role: sf_cmp004_rw
+schema: sf_identity
+depends_on:
+  - M01 G4 exit token issued
+  - origin/main tip in base_commit
+  - 13 shared contracts FROZEN
+  - later human implementation authorization (NOT granted)
+allowed_write_paths:
+  - services/cmp-004-identity-access/**
+  - db/migrations/*_cmp-004-*.sql
+allowed_write_notes:
+  - package.json under service path may change; do not commit pnpm-lock.yaml
+  - SIMULATED OTP/IdP/DigiLocker ports only; CMP-012 is M07
+  - Implement PrincipalVerifier port consumed by CMP-048; do not fork SF-CON-REQUEST-CONTEXT
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - specs/**
+  - apps/**
+  - packages/**
+  - policy/**
+  - infra/**
+  - services/cmp-005-citizen-profile/**
+  - services/cmp-002-tenant-organisation/**
+  - services/cmp-048-security-platform/**
+  - services/cmp-030-consent-privacy/**
+
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNED
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: cc49843e
+  suffix: b70246842f5ea3c1c16257a5450432a2
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling CG-01 code as source of truth
+  - implementation started without later human authorization
+  - CERTIFIED or RELEASE CERTIFIED claim
+
+acceptance_tests_planning:
+  - Officer token validation and citizen OTP/session are platform machinery only
+  - No statutory eligibility decisions
+  - Tenant-scoped tables ENABLE+FORCE RLS
+  - Unauthorized / wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
+  - DigiLocker via INT-013 SIMULATED adapter contract; no CMP-012 product
+  - Host mount deferred to SF-M02-003
+

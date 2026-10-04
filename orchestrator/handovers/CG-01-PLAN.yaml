@@ -1,0 +1,103 @@
+# CG-01 concurrency gate index — PLANNING ONLY
+# Not READY. Not dispatched. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# Decision token split against CKV_SECRET_6: family + status (do not join to READY).
+record: CG-01-PLAN
+concurrency_group: CG-01
+after_modules: [M01]
+parallel_modules: [M02, M03]
+decision:
+  family: CG01_M02_M03_PLAN
+  status: PLANNING
+
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNED
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: cc49843e
+  suffix: b70246842f5ea3c1c16257a5450432a2
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling CG-01 code as source of truth
+  - implementation started without later human authorization
+  - CERTIFIED or RELEASE CERTIFIED claim
+
+m01_exit_token:
+  module: M01
+  completeness: COMPLETE
+  gate: G4_SECURITY
+  status: VERIFIED
+  issued: true
+  issuer: Debabrata Nayak
+  issuer_class: human_or_ci
+m01_g4_combine:
+  pr: 41
+  prefix: 436c3545
+  suffix: cf31bc3a8ba9aaacfcb0b888a168bd90
+m01_token_pr: 43
+planning_authorization:
+  human: Debabrata Nayak
+  scope: planning_only
+implementation_authorization:
+  granted: false
+builders_dispatched: 0
+m02_started: false
+m03_started: false
+cg01_started: false
+m01_wave3_feature_work: false
+frozen_contract_hashes: 13/13 MATCH
+documents:
+  repo_plan: docs/planning/CG-01-M02-M03-PLAN.md
+  repo_envelopes: docs/planning/CG-01-M02-M03-ENVELOPES.md
+  store_plan: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/cg01-m02-m03-plan.md
+  store_envelopes: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/cg01-m02-m03-envelopes.md
+  m01_g4_exit: docs/verification/M01-G4-EXIT.md
+  m01_g4_residuals: docs/verification/M01-G4-RESIDUALS.md
+  m01_g4_gate: orchestrator/handovers/M01-G4-EXIT-GATE.yaml
+residuals_carry_forward:
+  adr_0006_9: ACCEPTED_RESIDUAL
+  r_branch_prot: ACCEPTED_RESIDUAL
+  r_branch_prot_class: OPS
+  r_env_int: CLOSED_IN_CODE
+  r_not_certified: ACCEPTED_RESIDUAL
+serialized_paths:
+  - apps/api/src/app.ts
+  - pnpm-lock.yaml
+verifiers_independent: true
+awaiting:
+  - later_human_authorization_for_implementation
+blockers_for_planning: []
+adr_opened: []
+ccr_opened: []
+explicit_non_goals:
+  - m01_wave3_feature_work
+  - m02_implementation
+  - m03_implementation
+  - frozen_contract_edits
+  - certified_or_release_certified_claim
+  - envelope_ready_flip
+
