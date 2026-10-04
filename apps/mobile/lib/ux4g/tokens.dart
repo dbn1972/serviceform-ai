@@ -24,4 +24,3 @@ abstract final class SfTokens {
   static const double radiusLg = 12.0;
   static const String fontFamily = 'Noto Sans';
 }
-

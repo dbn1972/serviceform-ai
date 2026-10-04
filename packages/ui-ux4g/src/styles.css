@@ -6,6 +6,13 @@
  */
 :where(html) {
   box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: clip;
+}
+:where(*),
+:where(*::before),
+:where(*::after) {
+  box-sizing: border-box;
 }
 :where(img) {
   display: block;
@@ -16,6 +23,7 @@
   background-color: var(--ux4g-bg-neutral-elevated);
   color: var(--ux4g-text-neutral-primary);
   font-family: var(--ux4g-font-family-base, 'Noto Sans', system-ui, sans-serif);
+  margin: 0;
   max-width: 100%;
   overflow-x: clip;
 }
@@ -8131,30 +8139,45 @@
 
 .sf-skip-link {
   position: absolute;
-  left: -10000px;
   width: 1px;
   height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .sf-skip-link:focus {
   position: static;
-  left: auto;
   width: auto;
   height: auto;
+  margin: 0;
   overflow: visible;
+  clip: auto;
+  white-space: normal;
   outline: var(--ux4g-border-width-md) solid var(--ux4g-border-color-neutral-focus);
 }
 
 .sf-app {
   min-height: 100vh;
+  max-width: 100%;
+  min-width: 0;
   color: var(--ux4g-text-neutral-primary);
   background: var(--ux4g-bg-neutral-elevated);
   font-family: var(--ux4g-font-family-base);
+  overflow-wrap: var(--ux4g-overflow-wrap-anywhere);
 }
 
 .sf-header,
 .sf-footer,
 .sf-main {
+  max-width: 100%;
+  min-width: 0;
   padding: var(--ux4g-padding-m) var(--ux4g-padding-l);
+}
+
+.sf-product {
+  overflow-wrap: var(--ux4g-overflow-wrap-anywhere);
 }

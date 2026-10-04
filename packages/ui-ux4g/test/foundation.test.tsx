@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import {
@@ -224,5 +225,16 @@ describe('security headers (G-04 nonce path)', () => {
     expect(csp).toContain("'nonce-abc123'");
     expect(csp).not.toContain('unsafe-inline');
     expect(csp).not.toContain('unsafe-eval');
+  });
+});
+
+describe('WCAG 1.4.10 reflow (320 CSS px)', () => {
+  const css = readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+
+  it('uses border-box and clips html overflow instead of off-screen skip-link offset', () => {
+    expect(css).toContain('box-sizing: border-box');
+    expect(css).toContain('overflow-x: clip');
+    expect(css).not.toContain('-10000px');
+    expect(css).toContain('overflow-wrap: var(--ux4g-overflow-wrap-anywhere)');
   });
 });

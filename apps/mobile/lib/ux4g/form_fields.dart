@@ -49,11 +49,7 @@ Ux4gRendererId resolveUx4gRenderer({
 /// Accessible labelled control using UX4G tokens only.
 class Ux4gTextField extends StatelessWidget {
   /// Creates a labelled text field.
-  const Ux4gTextField({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const Ux4gTextField({super.key, required this.label, required this.value});
 
   /// Field caption.
   final String label;
