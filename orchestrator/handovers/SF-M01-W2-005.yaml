@@ -1,14 +1,14 @@
-# M01 Wave 2 task envelope — PLANNING ONLY. Not dispatched.
+# M01 Wave 2 task envelope — CMP-055 Developer Platform (SF-M01-W2-005)
 task_id: SF-M01-W2-005
 title: Developer Platform
 module_id: M01
 wave: 2
 build_plan: specs/build-plan.yaml (ADR-0001)
-state: PLANNING
-planning_only: true
-implementation_authorized: false
-wave_2_started: false
-dispatched: false
+state: IMPLEMENTATION_COMPLETE_CI_GREEN_HOLD_FOR_STITCH
+planning_only: false
+implementation_authorized: true
+wave_2_started: true
+dispatched: true
 component_ids: [CMP-055]
 integration_ids: []
 requirement_ids:
@@ -17,20 +17,24 @@ requirement_ids:
   - CONTRACT-REVIEW-001-CR-13
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-model_route: opus
-model_release: claude-opus-5-5
+model_route: composer
+resolved_model: composer
 effort: high
 verifier_model_route: opus
 verifiers:
   - serviceform-evidence-verifier (opus, high)
   - serviceform-architecture-guardian (opus, high) # reviews gate/.github deltas
-base_commit: 1c9a650abc439610badd21d927c7a53d27d3fd12
-branch: agent/M01-cmp-055-developer-platform-SF-M01-W2-005
-worktree: ../wt-SF-M01-W2-005
+implementation_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
+branch_tip: 870e0ef812291e4d103a61bc584b2f2807040888
+result_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
+tested_commit: e1d2896d91bfb123fede704b49bfd6d7d4c46563
+base_commit: f397e1319fdf5005b4dfd44e0813d25c5b695ecf
+pr_url: https://github.com/dbn1972/serviceform-ai/pull/25
+branch: cursor/m01-w2-cmp-055-0fa8
 depends_on:
   - M00 G1_BUILD_READY tooling baseline
   - M01 Wave 1 evidence/CI patterns on main
-  - human implementation authorization (not granted)
+  - human implementation authorization (granted)
 allowed_write_paths:
   - services/cmp-055-developer-platform/**
   - scripts/gates/**
@@ -72,19 +76,42 @@ explicit_non_responsibilities:
   - Does not silently change architecture
   - Does not let generated code bypass tests/security gates
   - Does not own domain services
-acceptance_tests_planning:
-  - Existing gates still pass on baseline after additive changes
-  - New workflow jobs are pin-safe and secret-free
-  - Scope check + contracts_lock_gate remain mandatory
-  - No architecture constitution or frozen hash drift
-stop_conditions:
-  - FROZEN contract or constitution change required
-  - gate weakening requested to pass CI
-  - write outside allowed_write_paths
-  - implementation_authorized remains false (do not code)
+completed_work:
+  - services/cmp-055-developer-platform sources: OpenAPI/AsyncAPI lint helpers, agent packaging path allowlist, evidence-manifest builder (certified/self_certified always false)
+  - package.json deferred (envelope forbids builder pnpm-lock.yaml commit); typecheck/vitest via path configs
+  - CR-13: migration_lint defaults to db/migrations only; refuses services/*/migrations
+  - Additive gates: openapi_asyncapi_gate.py, workflow_pin_gate.py wired into run_all.py
+  - Additive workflow: .github/workflows/developer-platform.yml (pinned actions, no secrets)
+  - Gate self-tests for CR-13, OpenAPI/AsyncAPI, workflow pins
+  - contracts_lock_gate remains mandatory and unchanged in strength
+unresolved_work:
+  - Optional later: add package.json + orchestrator lockfile reconcile for workspace filter scripts
+  - Independent architecture-guardian review of gate/.github deltas
+  - Independent evidence verifier binding
+  - Q14 simulator coverage include remains a follow-up (vitest.config.ts read-only for this envelope)
 self_certified: false
 not_certified: true
+certified: false
 blockers: []
 ccr_required: false
 parallel_group: W2-A
 guardian_controlled_paths: true
+changed_contracts: []
+changed_migrations: []
+architecture_change_required: false
+frozen_contracts_edited: false
+constitution_edited: false
+evidence:
+  - evidence/SF-M01-W2-005/PLAN.md
+  - evidence/SF-M01-W2-005/EVIDENCE.md
+
+ci_remediation:
+  - eslint no-console / no-non-null-assertion
+  - semgrep sf-no-console-log + regex_dos on SHA validation
+
+ci_green: true
+ci_checks: 15/15
+ready_for_review: true
+merged: false
+hold_for: Wave 2 stitch/orchestrator
+github_ci_tip: 870e0ef812291e4d103a61bc584b2f2807040888

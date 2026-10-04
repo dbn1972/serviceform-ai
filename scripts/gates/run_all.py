@@ -21,6 +21,9 @@ GATES = [
     ("contracts-lock", "contracts_lock_gate.py"),
     ("agent-rules", "agent_rules_gate.py"),
     ("codeowners", "codeowners_gate.py"),
+    # CMP-055 additive gates (never weaken the set above)
+    ("openapi-asyncapi", "openapi_asyncapi_gate.py"),
+    ("workflow-pin", "workflow_pin_gate.py"),
 ]
 
 

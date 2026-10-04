@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Migration lint gate (db/README.md; Constitution #24; TI v1.0 s7, s8, s8.1).
 
-Usage: migration_lint.py [paths...]   (default: db/migrations and services/*/migrations)
+Usage: migration_lint.py [paths...]   (default: db/migrations only; CR-13)
+
+CONTRACT-REVIEW-001 CR-13: the migrator applies only db/migrations. Component-local
+services/*/migrations files are refused so they cannot silently diverge from applied SQL.
 """
 from __future__ import annotations
 
@@ -99,10 +102,17 @@ def main(argv: list[str]) -> int:
     if argv:
         files = [pathlib.Path(a).resolve() for a in argv]
     else:
-        files = sorted((ROOT / "db/migrations").glob("*.sql")) + sorted(ROOT.glob("services/*/migrations/*.sql"))
+        # CR-13 / CMP-055: authoritative scan path matches the migrator (db/migrations only).
+        files = sorted((ROOT / "db/migrations").glob("*.sql"))
+        misplaced = sorted(ROOT.glob("services/*/migrations/*.sql"))
+        for m in misplaced:
+            r.error(
+                f"{rel(m)}: migrations must live under db/migrations "
+                "(migrator does not apply services/*/migrations; CONTRACT-REVIEW-001 CR-13)"
+            )
     for f in files:
         lint_file(f, r)
-    r.note(f"{len(files)} migration file(s) checked")
+    r.note(f"{len(files)} migration file(s) checked under db/migrations (or explicit paths)")
     return r.finish()
 
 

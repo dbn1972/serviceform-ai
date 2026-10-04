@@ -74,6 +74,70 @@ def test_repository_migrations_pass():
     assert migration_lint.main([]) == 0
 
 
+def test_migration_lint_refuses_services_migrations_directory(tmp_path, monkeypatch, capsys):
+    """CR-13 / CMP-055: migrator applies db/migrations only."""
+    import _common
+
+    db = tmp_path / "db" / "migrations"
+    db.mkdir(parents=True)
+    good = (FIX / "1700000000001_good-tenant-table.sql").read_text(encoding="utf-8")
+    (db / "1700000000001_good-tenant-table.sql").write_text(good, encoding="utf-8")
+    misplaced = tmp_path / "services" / "cmp-999-example" / "migrations"
+    misplaced.mkdir(parents=True)
+    (misplaced / "1700000000099_misplaced.sql").write_text(good, encoding="utf-8")
+    monkeypatch.setattr(_common, "ROOT", tmp_path)
+    monkeypatch.setattr(migration_lint, "ROOT", tmp_path)
+    assert migration_lint.main([]) == 1
+    captured = capsys.readouterr().out
+    assert "services/cmp-999-example/migrations/1700000000099_misplaced.sql" in captured
+    assert "CR-13" in captured
+
+
+def test_openapi_asyncapi_gate_passes_repo_component_contracts():
+    import openapi_asyncapi_gate
+
+    assert openapi_asyncapi_gate.main() == 0
+
+
+def test_openapi_asyncapi_gate_rejects_empty_paths(tmp_path, monkeypatch):
+    import _common
+    import openapi_asyncapi_gate
+
+    contracts = tmp_path / "services" / "cmp-055-developer-platform" / "contracts"
+    contracts.mkdir(parents=True)
+    (tmp_path / "contracts" / "shared").mkdir(parents=True)
+    (contracts / "openapi.json").write_text(
+        '{"openapi":"3.1.0","info":{"title":"t","version":"1"},"paths":{}}',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(_common, "ROOT", tmp_path)
+    monkeypatch.setattr(openapi_asyncapi_gate, "ROOT", tmp_path)
+    assert openapi_asyncapi_gate.main() == 1
+
+
+def test_workflow_pin_gate_rejects_unpinned_action(tmp_path, monkeypatch):
+    import _common
+    import workflow_pin_gate
+
+    wf = tmp_path / ".github" / "workflows"
+    wf.mkdir(parents=True)
+    (wf / "bad.yml").write_text(
+        "name: bad\non: push\njobs:\n  x:\n    runs-on: ubuntu-24.04\n    steps:\n"
+        "      - uses: actions/checkout@v4\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(_common, "ROOT", tmp_path)
+    monkeypatch.setattr(workflow_pin_gate, "ROOT", tmp_path)
+    assert workflow_pin_gate.main() == 1
+
+
+def test_workflow_pin_gate_passes_repository_workflows():
+    import workflow_pin_gate
+
+    assert workflow_pin_gate.main() == 0
+
+
+
 def test_scope_allows_envelope_paths_and_refuses_others():
     env = {
         "task_id": "SF-M01-001",
