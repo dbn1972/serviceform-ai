@@ -217,7 +217,6 @@ try {
     `);
   }
 
-
   const groupRoles = ['sf_app', 'sf_migrator', 'sf_outbox_publisher', ...ALL_RW];
   const roles = await admin.query(
     `SELECT rolname, rolsuper, rolbypassrls, rolcanlogin
