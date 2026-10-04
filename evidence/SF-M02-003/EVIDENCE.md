@@ -54,6 +54,7 @@ Logs: `evidence/SF-M02-003/logs/`. JUnit: `evidence/SF-M02-003/junit/unit.xml`. 
 - Default process entry (`server.ts`) still does not auto-wire DB/OPA; tests supply doubles.
 - Independent SF-M02-INT / SF-M02-SEC / SF-M02-EVD not run by this builder.
 - SF-M03-008 remains serialized after this single-writer window.
+- Envelope YAML stays `state: READY` / `dispatched: false` to match `orchestrator/tasks/SF-M02-003.yaml` and `cg01_path_uniqueness_gate` (promote copy). Recommended develop status below is not an envelope state flip.
 
 ## Recommended gate status
 
