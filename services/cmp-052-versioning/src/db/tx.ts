@@ -1,7 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { dbSessionSettings, type RequestContext } from '@serviceform/contracts';
 import type { Pool, PoolClient } from 'pg';
-import { Cmp052Error } from '../errors.js';
 
 const txAls = new AsyncLocalStorage<PoolClient>();
 

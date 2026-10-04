@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { validate } from '@serviceform/contracts';
 import { authzInput, authorize, denyAllAuthz } from '../../src/authz.js';
-import { assertConnectorModeAllowed, loadConfig } from '../../src/config.js';
+import { assertConnectorModeAllowed } from '../../src/config.js';
 import { artifactHash, parsePins } from '../../src/domain/pins.js';
 import { Cmp052Error } from '../../src/errors.js';
 import { ContractAuthorizer } from '../doubles/authorizer.js';
