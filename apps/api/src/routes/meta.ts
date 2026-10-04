@@ -12,6 +12,7 @@ export async function metaRoutes(app: FastifyInstance, opts: { config: AppConfig
   app.get(
     '/v1/meta',
     {
+      config: { sfPublic: true },
       schema: {
         response: {
           200: {

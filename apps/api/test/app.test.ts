@@ -133,13 +133,30 @@ describe('API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 e
     });
   });
 
-  it('does not log client network identifiers', async () => {
+  it('does not log client network identifiers or query strings', async () => {
     const lines: string[] = [];
     const a = await build([], lines);
-    await a.inject({ url: '/v1/meta', remoteAddress: '203.0.113.7' });
+    await a.inject({
+      url: '/v1/meta?mobile=9000000000',
+      remoteAddress: '203.0.113.7',
+    });
     const text = lines.join('');
     expect(text).toContain('incoming request');
     expect(text).not.toContain('203.0.113.7');
+    expect(text).not.toContain('mobile=');
+    expect(text).not.toContain('9000000000');
+  });
+
+  it('denies forged tenant headers at the edge with SF-TEN-002', async () => {
+    const res = await (
+      await build()
+    ).inject({
+      url: '/v1/meta',
+      headers: { 'x-sf-tenant': 'forged' },
+    });
+    expect(res.statusCode).toBe(403);
+    expect(validate('error-response', res.json()).valid).toBe(true);
+    expect(res.json()).toMatchObject({ error_code: 'SF-TEN-002' });
   });
 
   it('hides internal error details and stack traces', async () => {
