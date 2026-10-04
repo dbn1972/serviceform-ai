@@ -130,6 +130,7 @@ describe('INT-001 HTTP stitch (CMP-004 session → CMP-005 profile/DigiLocker)',
 
     app = Fastify({
       logger: false,
+      genReqId: () => randomUUID(),
       ajv: { customOptions: { coerceTypes: false, removeAdditional: false } },
     });
     await registerIdentityAccess(app, {

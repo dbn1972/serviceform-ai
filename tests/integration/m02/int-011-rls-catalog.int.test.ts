@@ -112,11 +112,12 @@ describe('INT-011 M02 LOGIN RLS catalog (independent)', () => {
   });
 
   it('tenant-scoped M02 tables hide T1 rows from T2 LOGIN sessions', async () => {
-    const officerId = OFFICER_T1;
+    const officerId = randomUUID();
     await asTenant(p004, T1, officerId, async (c) => {
       await c.query(
         `INSERT INTO sf_identity.officer_principal (tenant_id, officer_id, idp_subject_hash, status)
-         VALUES ($1,$2,$3,'ACTIVE')`,
+         VALUES ($1,$2,$3,'ACTIVE')
+         ON CONFLICT (tenant_id, officer_id) DO NOTHING`,
         [T1, officerId, 'aa'.repeat(32)],
       );
     });
