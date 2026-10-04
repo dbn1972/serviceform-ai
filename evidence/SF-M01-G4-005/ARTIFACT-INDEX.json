@@ -1,7 +1,7 @@
 {
   "task_id": "SF-M01-G4-005",
   "result": "PENDING_SIBLINGS",
-  "commit_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
+  "commit_sha_baseline_main": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
   "token_issued": false,
   "final_pass_recommended": false,
   "certified": false,
@@ -19,12 +19,21 @@
     "SF-M01-G4-001": "PENDING",
     "SF-M01-G4-002": "PENDING",
     "SF-M01-G4-003": "PENDING",
-    "SF-M01-G4-004": "PENDING"
+    "SF-M01-G4-004": "READY"
   },
+  "g4_004": {
+    "token": "SF-M01-G4-004_READY",
+    "pr": 37,
+    "tip": "88d8b28669c0da4a70d53331224158dcecb1f810",
+    "residual_table": "docs/verification/M01-G4-RESIDUALS.md",
+    "adr_0006_9": "ACCEPTED_RESIDUAL",
+    "r_env_int": "OPEN_DEPENDS"
+  },
+  "awaiting": ["SF-M01-G4-001", "SF-M01-G4-002", "SF-M01-G4-003"],
   "documents": [
     "docs/verification/M01-G4-EXIT.md",
     "orchestrator/handovers/M01-G4-EXIT-GATE.yaml",
     "evidence/SF-M01-G4-005/EVIDENCE.md"
   ],
-  "polled_at": "2026-10-04T05:02:00Z"
+  "polled_at": "2026-10-04T05:05:00Z"
 }

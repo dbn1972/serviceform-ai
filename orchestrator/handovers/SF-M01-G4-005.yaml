@@ -31,15 +31,21 @@ branch: cursor/m01-g4-exit-record-d5b7
 worktree: ../wt-SF-M01-G4-005
 depends_on:
   - SF-M01-G4-001 evidence (R-ENV-INT closed) # PENDING
-  - SF-M01-G4-002 evidence (full regression) # PENDING
+  - SF-M01-G4-002 evidence (full regression) # PENDING (PR #38 harness only)
   - SF-M01-G4-003 evidence (security exit; leakage=0) # PENDING
-  - SF-M01-G4-004 residuals record # PENDING
+  - SF-M01-G4-004 residuals record # READY (PR #37)
   - human authorization for M01 G4 exit implementation (granted)
 sibling_status:
   SF-M01-G4-001: PENDING
   SF-M01-G4-002: PENDING
   SF-M01-G4-003: PENDING
-  SF-M01-G4-004: PENDING
+  SF-M01-G4-004: READY
+g4_004_bind:
+  token: SF-M01-G4-004_READY
+  pr: 37
+  tip: 88d8b28669c0da4a70d53331224158dcecb1f810
+  adr_0006_9: ACCEPTED_RESIDUAL
+  r_env_int: OPEN_DEPENDS
 allowed_write_paths:
   - docs/verification/M01-G4-EXIT.md
   - evidence/SF-M01-G4-005/**
@@ -76,7 +82,7 @@ exit_token_preconditions:
   - v1_v5_pass: pending
   - cross_tenant_leakage: pending
   - frozen_contracts: pending
-  - residuals_explicit: pending
+  - residuals_register_explicit: true
   - r_env_int_closed: pending
   - certified: false
   - release_certified: false
@@ -99,8 +105,9 @@ cg01_blocked: true
 ccr_required: false
 parallel_group: G4-C
 recommendation: PENDING_SIBLINGS
+awaiting: [SF-M01-G4-001, SF-M01-G4-002, SF-M01-G4-003]
 evidence_paths:
   - evidence/SF-M01-G4-005/
   - docs/verification/M01-G4-EXIT.md
   - orchestrator/handovers/M01-G4-EXIT-GATE.yaml
-polled_at: "2026-10-04T05:02:00Z"
+polled_at: "2026-10-04T05:05:00Z"

@@ -8,23 +8,29 @@
 | Baseline | `ab8359f0ffe96834bdf61318d1db7877433e7dcc` |
 | Token issued | **false** |
 | CERTIFIED | **false** |
-| FINAL PASS | **false** (siblings incomplete) |
+| FINAL PASS | **false** (await 001–003 READY) |
 
-## Sibling binds (empty this pass)
+## Sibling binds
 
-| Envelope | Path | Status |
+| Envelope | Path / PR | Status |
 |---|---|---|
-| G4-001 | `evidence/SF-M01-G4-001/` | missing |
-| G4-002 | `evidence/SF-M01-G4-002/` | missing |
-| G4-003 | `evidence/SF-M01-G4-003/` | missing |
-| G4-004 | `evidence/SF-M01-G4-004/` + `docs/verification/M01-G4-RESIDUALS.md` | missing |
+| G4-001 | `evidence/SF-M01-G4-001/` | missing — **PENDING** |
+| G4-002 | draft [#38](https://github.com/dbn1972/serviceform-ai/pull/38) harness; no executed evidence | **PENDING** (not READY) |
+| G4-003 | `evidence/SF-M01-G4-003/` | missing — **PENDING** |
+| G4-004 | [#37](https://github.com/dbn1972/serviceform-ai/pull/37) @ `88d8b28`; `docs/verification/M01-G4-RESIDUALS.md` | **`SF-M01-G4-004_READY`** |
+
+### G4-004 key dispositions
+
+- ADR-0006 #9 / R-OUTBOX-SF-APP: **ACCEPTED_RESIDUAL** (no CCR)
+- R-ENV-INT: **OPEN_DEPENDS** on SF-M01-G4-001 (blocks exit token)
+- Frozen contracts: 13/13 unchanged per G4-004
 
 ## Deliverables this pass
 
-- `docs/verification/M01-G4-EXIT.md`
-- `orchestrator/handovers/M01-G4-EXIT-GATE.yaml`
+- Updated `docs/verification/M01-G4-EXIT.md`
+- Updated `orchestrator/handovers/M01-G4-EXIT-GATE.yaml`
 - Store `docs/m01-g4-exit-record.md`
-- Updated `orchestrator/handovers/SF-M01-G4-005.yaml` (handover open)
+- Handover remains open
 
 ## Explicit
 

@@ -10,6 +10,18 @@
   "wave1_status": "M01_WAVE1_MERGED_AND_CLOSED",
   "wave2_status": "M01_WAVE2_GATE_COMBINE_MERGED",
   "m01_cmps_merged": 11,
+  "siblings": {
+    "SF-M01-G4-001": "PENDING",
+    "SF-M01-G4-002": "PENDING",
+    "SF-M01-G4-003": "PENDING",
+    "SF-M01-G4-004": "READY"
+  },
+  "residuals": {
+    "register": "SF-M01-G4-004_READY",
+    "pr": 37,
+    "adr_0006_9": "ACCEPTED_RESIDUAL",
+    "r_env_int": "OPEN_DEPENDS"
+  },
   "v1_v5_g4": {
     "V1": "PENDING",
     "V2": "PENDING",
@@ -19,5 +31,6 @@
   },
   "baseline_sha": "ab8359f0ffe96834bdf61318d1db7877433e7dcc",
   "m02_m03_blocked": true,
-  "cg01_blocked": true
+  "cg01_blocked": true,
+  "awaiting": ["SF-M01-G4-001", "SF-M01-G4-002", "SF-M01-G4-003"]
 }
