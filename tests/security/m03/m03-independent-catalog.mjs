@@ -180,6 +180,43 @@ try {
       END LOOP;
     END $$;
   `);
+  const present = await admin.query(
+    `SELECT nspname FROM pg_namespace WHERE nspname = ANY($1::text[])`,
+    [COMPONENT_SCHEMAS],
+  );
+  if (present.rowCount === COMPONENT_SCHEMAS.length) {
+    await admin.query(`
+      TRUNCATE TABLE
+        sf_catalogue.offering_binding,
+        sf_catalogue.offering_version,
+        sf_catalogue.offering,
+        sf_catalogue.idempotency_record,
+        sf_catalogue.outbox_event,
+        sf_catalogue.inbox_event,
+        sf_metadata.metadata_bundle,
+        sf_metadata.metadata_document,
+        sf_metadata.idempotency_record,
+        sf_master_data.code_set_binding,
+        sf_master_data.code_value,
+        sf_master_data.code_set_version,
+        sf_master_data.code_set,
+        sf_master_data.import_job,
+        sf_master_data.idempotency_record,
+        sf_maker_checker.publication_request,
+        sf_maker_checker.idempotency_record,
+        sf_versioning.artifact_version,
+        sf_versioning.tenant_service_binding,
+        sf_versioning.idempotency_record,
+        sf_localization.message,
+        sf_localization.format_profile,
+        sf_localization.catalog_version,
+        sf_localization.catalog,
+        sf_localization.locale,
+        sf_localization.idempotency_record
+      RESTART IDENTITY CASCADE
+    `);
+  }
+
 
   const groupRoles = ['sf_app', 'sf_migrator', 'sf_outbox_publisher', ...ALL_RW];
   const roles = await admin.query(

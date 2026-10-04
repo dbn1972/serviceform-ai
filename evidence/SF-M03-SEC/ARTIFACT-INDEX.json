@@ -1,0 +1,19 @@
+{
+  "schema": "serviceform.m03.security.artifact-index.v1",
+  "task_id": "SF-M03-SEC",
+  "production_base": "7424235592824d5ceda9dcac55380a78c05cb6c5",
+  "production_base_note": "origin/main merge #57",
+  "probe_commit": "1efeac0030bf86a0861661c5ddeb2ba3b909a580",
+  "components": ["CMP-001", "CMP-033", "CMP-034", "CMP-050", "CMP-051", "CMP-052", "CMP-053"],
+  "integrations": ["INT-002", "INT-011"],
+  "CROSS_TENANT_LEAKAGE": 0,
+  "frozen_contracts": "13/13 MATCH",
+  "certified": false,
+  "self_certified": false,
+  "recommended_gate": "V1_SECURITY_PASS",
+  "not": ["G3", "CERTIFIED", "G6", "RELEASE CERTIFIED"],
+  "production_untouched": true,
+  "contracts_untouched": true,
+  "unmerged_siblings_not_sot": ["#59", "#60"],
+  "evd_started": false
+}

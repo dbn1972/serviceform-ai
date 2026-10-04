@@ -1,0 +1,14 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/security/m03/forged-tenant-http.test.ts (2 tests) 506ms
+   ✓ SF-M03-SEC INT-011 forged-tenant HTTP (not CERTIFIED) (2)
+     ✓ rejects client-controlled tenant headers on all M03 Fastify mounts with zero leakage 454ms
+ ✓ tests/security/m03/static-isolation.test.ts (6 tests) 183ms
+ ✓ tests/security/m03/studio-ux4g-boundary.test.ts (3 tests) 40ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  12:07:53
+   Duration  1.54s (tests 55%, import 25%, transform 19%, worker 1%)
+

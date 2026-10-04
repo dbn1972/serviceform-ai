@@ -1,0 +1,16 @@
+{
+  "task_id": "SF-M03-SEC",
+  "role": "independent security verifier",
+  "production_base": "7424235592824d5ceda9dcac55380a78c05cb6c5",
+  "probe_commit": "1efeac0030bf86a0861661c5ddeb2ba3b909a580",
+  "vitest": { "files": 3, "tests": 11, "failed": 0 },
+  "catalog": { "pass": 309, "fail": 0, "CROSS_TENANT_LEAKAGE": 0 },
+  "pin_insert_fresh_txn": "42501",
+  "frozen_contracts": "13/13 MATCH",
+  "uniqueness_envelope": { "state": "READY", "dispatched": false },
+  "studio_on_fastify": false,
+  "ux4g_api_plugin": false,
+  "certified": false,
+  "recommended_gate": "V1_SECURITY_PASS",
+  "assessed_at": "2026-10-04T12:07:56.168Z"
+}
