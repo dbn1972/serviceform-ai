@@ -1,0 +1,81 @@
+# M01 G4 exit gate — machine-readable
+# Scaffold: PENDING_SIBLINGS. Not CERTIFIED. Token not issued.
+# Evidence agent recommends only; human/CI issues exit_record_token.
+
+module_id: M01
+wave: g4-exit
+record: M01-G4-EXIT-GATE
+task_id: SF-M01-G4-005
+state: PENDING_SIBLINGS
+handover_open: true
+final_pass_recommended: false
+token_issued: false
+token_readiness: false
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+m02_m03_blocked: true
+cg01_blocked: true
+
+baseline:
+  origin_main: ab8359f0ffe96834bdf61318d1db7877433e7dcc
+  promote_pr: 35
+  planning_baseline: c42c7c89aa75653d099883e7f28ece73cf2c7515
+  wave1_merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+  wave1_status: M01_WAVE1_MERGED_AND_CLOSED
+  wave2_merge_commit: 8bc7a1a50ee8aa622fd5a6a2866f50b065a79d76
+  wave2_status: M01_WAVE2_GATE_COMBINE_MERGED
+  m01_components_merged: 11
+
+exit_record_token:
+  module: M01
+  completeness: COMPLETE
+  gate: G4_SECURITY
+  status: VERIFIED
+  issued: false
+  issuer: null
+
+preconditions:
+  wave1_closed: true
+  wave2_closed: true
+  all_m01_cmps_merged: true
+  v1_v5_g4_pass: pending
+  cross_tenant_leakage: pending
+  frozen_contracts_13_13: pending
+  residuals_explicit: pending
+  r_env_int_closed: pending
+  certified: false
+  release_certified: false
+
+siblings:
+  SF-M01-G4-001:
+    status: PENDING
+    agent: bc-7c9a10ad-ae6d-57d8-9606-839bd1231573
+    evidence: null
+  SF-M01-G4-002:
+    status: PENDING
+    agent: bc-fe36ce62-e42f-572c-9d90-e1d192101041
+    evidence: null
+  SF-M01-G4-003:
+    status: PENDING
+    agent: bc-c8fb9af2-5830-5244-a097-9e1c4c0d61a0
+    evidence: null
+  SF-M01-G4-004:
+    status: PENDING
+    agent: bc-8a2b6d60-a83b-5918-a5a0-cd33a9ccdc6d
+    evidence: null
+
+gates_v1_v5_style:
+  V1: PENDING
+  V2: PENDING
+  V3: PENDING
+  V4: PENDING
+  V5: PENDING
+
+recommendation: PENDING_SIBLINGS
+documents:
+  repo_exit: docs/verification/M01-G4-EXIT.md
+  store_exit: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-g4-exit-record.md
+  evidence: evidence/SF-M01-G4-005/
+polled_at: "2026-10-04T05:02:00Z"
