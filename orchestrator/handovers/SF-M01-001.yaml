@@ -4,7 +4,12 @@ module_id: M01
 component_ids: [CMP-002]
 integration_ids: [INT-011]
 agent_role: component_builder
-state: REMEDIATION_CI_GREEN
+state: MERGED
+merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+gate_record_commit: 4aad559abd6c1726d56e49bae7e79c2bf4be97ca
+verified_candidate_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+lifecycle: MERGED_GATE_PASSED
+merged: true
 branch: cursor/m01-w1-remediation-r1
 remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
 pr: https://github.com/dbn1972/serviceform-ai/pull/14
@@ -20,7 +25,7 @@ github_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/3716380712
 github_security_run_id: '37163807119'
 github_ci_run_id: '37163807120'
 self_certified: false
-recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
+recommended_gate: GATE_PASSED
 not_verified: true
 not_certified: true
 wave2_started: false

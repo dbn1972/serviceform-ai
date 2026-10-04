@@ -1,18 +1,25 @@
-# M01 Wave 1 independent verification gate (machine-readable)
-# Source: V1–V5 r1 reports under Project store internal/verification/
-# Not CERTIFIED. Human/CI approval required before merge. No Wave 2.
+# M01 Wave 1 post-merge gate (machine-readable)
+# Source: V1–V5 r1 reports + PR #22 merge to main.
+# GATE_PASSED / MERGED. Not CERTIFIED. No Wave 2.
 
 module_id: M01
 wave: 1
-record: M01-WAVE1-INDEPENDENT-VERIFICATION
-gate_decision: M01_WAVE1_GATE_READY
+record: M01-WAVE1-CLOSURE
+gate_decision: M01_WAVE1_GATE_PASSED
 gate_ready: true
+gate_passed: true
+lifecycle: MERGED_GATE_PASSED
 self_certified: false
 not_certified: true
 not_verified_as_certified: true
 wave2_started: false
-merge_authorized: false
-human_approval_required: true
+merged: true
+merge_authorized: true
+human_approval_required: false
+human_merge_approved: true
+merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+merge_pr: https://github.com/dbn1972/serviceform-ai/pull/22
+gate_record_commit: 4aad559abd6c1726d56e49bae7e79c2bf4be97ca
 
 candidate:
   pr: https://github.com/dbn1972/serviceform-ai/pull/22
@@ -102,13 +109,43 @@ residuals:
     summary: Gate ready is not CERTIFIED release/module certification
     blocking: false
   - id: HUMAN_APPROVAL
-    summary: Human/CI approval required before merge of PR #22
-    blocking: true_for_merge
+    summary: Human approved and merged PR #22 to main (satisfied)
+    blocking: false
+    satisfied: true
   - id: NO_WAVE2
     summary: Wave 2 must not be started from this gate record
     blocking: false
 
+post_merge:
+  merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+  verified_candidate_sha: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+  gate_record_sha: 4aad559abd6c1726d56e49bae7e79c2bf4be97ca
+  historical_failed_baseline_pr21: d33601a5c2c332548530897df1bd35702317df44
+  historical_failed_baseline_immutable: true
+  main_ci_run_id: '37165664149'
+  main_ci_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37165664149
+  main_security_run_id: '37165664207'
+  main_security_url: https://github.com/dbn1972/serviceform-ai/actions/runs/37165664207
+  main_ci_conclusion: SUCCESS
+  main_security_conclusion: SUCCESS
+  main_ci_status_at_closure_write: SUCCESS
+  wave2_started: false
+  obsolete_prs:
+    closed_or_merged:
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 21
+    closed_superseded:
+      - 19
+  successful_baseline: PR22_7a571ce
+  historical_failed_baseline: PR21_d33601a
+
 documents:
+  repo_closure_record: docs/verification/M01-WAVE1-CLOSURE.md
+  store_closure_mirror: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave1-closure.md
   repo_gate_record: docs/verification/M01-WAVE1-INDEPENDENT-VERIFICATION.md
   store_mirror: /cursor/stores/bc-1e78e82c-97d0-4244-ab49-3bcc7891e193/docs/m01-wave1-independent-verification.md
   remediation_evidence: docs/verification/M01-WAVE1-REMEDIATION-EVIDENCE.md

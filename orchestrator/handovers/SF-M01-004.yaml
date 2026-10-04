@@ -3,11 +3,17 @@ component_id: CMP-038
 integration_ids: [INT-011, INT-013]
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-status: IMPLEMENTATION_READY
-state: REMEDIATION_CI_GREEN
-recommended_gate_status: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
+status: MERGED
+state: MERGED
+merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+gate_record_commit: 4aad559abd6c1726d56e49bae7e79c2bf4be97ca
+verified_candidate_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+lifecycle: MERGED_GATE_PASSED
+self_certified: false
+not_certified: true
+recommended_gate_status: GATE_PASSED
 certified: false
-merged: false
+merged: true
 wave_2_started: false
 branch: cursor/m01-w1-remediation-r1
 remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22

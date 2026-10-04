@@ -7,7 +7,11 @@ component_ids: [CMP-048]
 integration_ids: [INT-011]
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
-state: REMEDIATION_CI_GREEN
+state: MERGED
+merge_commit: 37cbf203e18d8e072353139e368356a8dac00946
+gate_record_commit: 4aad559abd6c1726d56e49bae7e79c2bf4be97ca
+verified_candidate_commit: 7a571ced96a233f9f233b7af730e4645dccbd1a4
+lifecycle: MERGED_GATE_PASSED
 branch: cursor/m01-w1-remediation-r1
 remediation_pr: https://github.com/dbn1972/serviceform-ai/pull/22
 pr: https://github.com/dbn1972/serviceform-ai/pull/17
@@ -26,10 +30,11 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 resolved_model: claude-opus-5-5
-recommended_gate: REMEDIATION_READY_FOR_INDEPENDENT_VERIFICATION
+recommended_gate: GATE_PASSED
 self_certified: false
+not_certified: true
 wave_2_started: false
-merged: false
+merged: true
 
 completed_work:
   - 'Migration db/migrations/1759500200000_cmp-048-security-platform.sql: schema sf_security, FORCE RLS, isolation comments, frozen outbox/inbox copy'
