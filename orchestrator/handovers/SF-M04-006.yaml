@@ -1,0 +1,98 @@
+# M04 READY envelope — CMP-014 Document Intelligence / OCR
+# READY. Not dispatched. Not CERTIFIED. LOCK-6 Wave B after 039+013 and STITCH-A on main.
+task_id: SF-M04-006
+title: Document Intelligence / OCR Service
+module_id: M04
+component_ids: [CMP-014]
+integration_ids: [INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-014
+  - AI-GOVERNANCE.md
+  - ADR-0001-M04
+  - Constitution-no-LLM-statutory-decision
+agent_role: component_builder
+builder_agent: serviceform-ai-platform-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M04-ocr-SF-M04-006
+worktree: ../wt-SF-M04-006
+parallel_group: M04-B
+privilege_role: sf_cmp014_rw
+schema: sf_docintel
+hard_serial_locks: [LOCK-4, LOCK-6]
+depends_on:
+  - SF-M04-STITCH-A on origin/main
+  - SF-M04-004 CMP-039 on main
+  - SF-M04-003 CMP-013 on main
+  - human planning/READY authorization granted (Debabrata Nayak)
+allowed_write_paths:
+  - services/cmp-014-document-intelligence/**
+  - db/migrations/*_cmp-014-*.sql
+  - evidence/SF-M04-006/**
+  - orchestrator/handovers/SF-M04-006.yaml
+allowed_write_notes:
+  - All model calls MUST go through CMP-039; no direct provider SDK in this service
+  - Extraction is assistive; never a statutory decision
+  - Do not commit pnpm-lock.yaml
+  - SIMULATED OCR adapter via INT-013 until a later REAL connector ADR
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - services/cmp-039-ai-gateway/**
+  - services/cmp-013-document-upload/**
+  - AI-GOVERNANCE.md
+wave_eligible_now: false
+serial_after:
+  - SF-M04-STITCH-A
+  - SF-M04-004
+  - SF-M04-003
+builders_dispatched_this_envelope: false
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: df6a4af1
+  suffix: fc7c300616b59a34cf363db80be642e4
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+stop_conditions:
+  - FROZEN contract change required (CCR)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M04 code as source of truth
+  - builder dispatch without uniqueness PASS / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - M05 start
+  - weaken cg01_path_uniqueness_gate.py
+
+acceptance_tests_planning:
+  - No model call bypassing CMP-039
+  - Extracted fields remain non-authoritative until officer/rules confirm
+  - No PII in logs/prompts
+  - Host mount deferred to SF-M04-007
