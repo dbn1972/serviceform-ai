@@ -47,5 +47,6 @@
 - Independent INT / SEC / EVD verifiers not executed by this builder
 - Host composition deferred to SF-M01-W2-004
 - DPDP statutory anchors not invented (platform mechanics only)
-- `pnpm-lock.yaml` not modified (orchestrator regen)
+- **CI_GREEN blocked solely by frozen lockfile / missing CMP-030 importer** — see `ci-lockfile-residual.md` (orchestrator stitch owns `pnpm-lock.yaml`; builder must not commit it)
+- PR #27 tip `9f8d737`: five install-time reds (`ERR_PNPM_OUTDATED_LOCKFILE`); no CMP-030 code path executed in those jobs
 - Module/release **not CERTIFIED**

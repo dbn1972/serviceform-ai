@@ -104,9 +104,19 @@ stop_conditions:
   - dependency on unmerged M02 identity/profile code
 self_certified: false
 not_certified: true
-blockers: []
+blockers:
+  - id: PNPM_LOCKFILE_IMPORTER
+    owner: orchestrator_stitch
+    blocks: CI_GREEN
+    detail: >
+      PR #27 tip 9f8d737 — five checks fail only at pnpm install --frozen-lockfile
+      (ERR_PNPM_OUTDATED_LOCKFILE) because services/cmp-030-consent-privacy/package.json
+      is absent from pnpm-lock.yaml. Envelope forbids builder committing the lockfile.
+      See evidence/SF-M01-W2-002/ci-lockfile-residual.md.
 ccr_required: false
 parallel_group: W2-A
+pr: https://github.com/dbn1972/serviceform-ai/pull/27
+ci_status: RED_LOCKFILE_ONLY
 completed_work:
   - CMP-030 Fastify plugin under services/cmp-030-consent-privacy
   - Migrations 1759500700000 (schema/roles/tables) and 1759500700001 (outbox template)
@@ -114,16 +124,18 @@ completed_work:
   - Purpose/notice support routes + Eng consents/access-check
   - Unit, contract, integration, privilege-boundary, tenant-negative, idempotency tests
   - Evidence under evidence/SF-M01-W2-002
+  - CI residual documented for orchestrator lockfile stitch (no write-path expansion)
 unresolved_work:
+  - Orchestrator regen of pnpm-lock.yaml for CMP-030 importer (blocks CI_GREEN)
   - Independent integration stitcher / security verifier / evidence verifier
   - CMP-036 host mount (SF-M01-W2-004)
-  - pnpm-lock.yaml workspace entry (orchestrator regen)
 changed_contracts: []
 changed_migrations:
   - db/migrations/1759500700000_cmp-030-consent-privacy.sql
   - db/migrations/1759500700001_cmp-030-outbox.sql
 evidence:
   - evidence/SF-M01-W2-002/EVIDENCE.md
+  - evidence/SF-M01-W2-002/ci-lockfile-residual.md
   - evidence/SF-M01-W2-002/junit/unit.xml
   - evidence/SF-M01-W2-002/junit/integration.xml
   - evidence/SF-M01-W2-002/coverage-summary.json
@@ -133,4 +145,5 @@ tests:
   unit_contract: 12 passed
   integration: 6 passed
   coverage_lines_pct: 84.36
-recommended_gate: READY_FOR_INDEPENDENT_VERIFY
+recommended_gate: READY_FOR_INDEPENDENT_VERIFY_AFTER_LOCKFILE_STITCH
+
