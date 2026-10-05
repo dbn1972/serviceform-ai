@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-015/events/request-recorded/v1",
+  "title": "ApplicationRequestRecorded data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "application_id",
+    "kind",
+    "status",
+    "case_state",
+    "case_aggregate_version",
+    "authz_decision_id",
+    "authz_policy_revision"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "application_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["WITHDRAWAL", "CANCELLATION"]
+    },
+    "status": {
+      "const": "SUBMITTED"
+    },
+    "case_state": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "READY_TO_SUBMIT",
+        "SUBMITTED",
+        "PAYMENT_PENDING",
+        "RECEIVED",
+        "UNDER_SCRUTINY",
+        "DEFICIENCY_RAISED",
+        "CITIZEN_RESPONSE",
+        "VERIFICATION",
+        "DECISION_PENDING",
+        "APPROVED",
+        "REJECTED",
+        "SIGNING_PENDING",
+        "ISSUED",
+        "CLOSED",
+        "WITHDRAWN",
+        "CANCELLED"
+      ]
+    },
+    "case_aggregate_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "authz_decision_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "authz_policy_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    }
+  }
+}

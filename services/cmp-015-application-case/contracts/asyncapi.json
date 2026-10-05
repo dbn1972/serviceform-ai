@@ -1,0 +1,155 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-015 Application / Case Events",
+    "version": "0.1.0",
+    "description": "Produced only through the CMP-015 transactional outbox in the same PostgreSQL transaction as the state change (SF-CON-OUTBOX). Payloads carry ids, states, pins and policy revisions only: no applicant PII, documents or credentials. CMP-016 consumes ApplicationStateChanged to advance Temporal after the domain commit."
+  },
+  "channels": {
+    "sf.application-case.events.v1": {
+      "address": "sf.application-case.events.v1",
+      "messages": {
+        "ApplicationDraftCreated": {
+          "$ref": "#/components/messages/ApplicationDraftCreated"
+        },
+        "ApplicationStateChanged": {
+          "$ref": "#/components/messages/ApplicationStateChanged"
+        },
+        "ApplicationRequestRecorded": {
+          "$ref": "#/components/messages/ApplicationRequestRecorded"
+        },
+        "ApplicationRequestStatusChanged": {
+          "$ref": "#/components/messages/ApplicationRequestStatusChanged"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "$ref": "#/components/messages/AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "operations": {
+    "publishApplicationCaseEvents": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/sf.application-case.events.v1"
+      }
+    },
+    "publishAuditEvents": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/sf.audit.ingest.v1"
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "ApplicationDraftCreated": {
+        "name": "ApplicationDraftCreated",
+        "payload": {
+          "allOf": [
+            {
+              "$ref": "https://contracts.serviceform.ai/event-envelope/v1"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "event_type": {
+                  "const": "ApplicationDraftCreated"
+                },
+                "data": {
+                  "$ref": "./events/draft-created.data.schema.json"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ApplicationStateChanged": {
+        "name": "ApplicationStateChanged",
+        "payload": {
+          "allOf": [
+            {
+              "$ref": "https://contracts.serviceform.ai/event-envelope/v1"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "event_type": {
+                  "const": "ApplicationStateChanged"
+                },
+                "data": {
+                  "$ref": "./events/state-changed.data.schema.json"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ApplicationRequestRecorded": {
+        "name": "ApplicationRequestRecorded",
+        "payload": {
+          "allOf": [
+            {
+              "$ref": "https://contracts.serviceform.ai/event-envelope/v1"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "event_type": {
+                  "const": "ApplicationRequestRecorded"
+                },
+                "data": {
+                  "$ref": "./events/request-recorded.data.schema.json"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "ApplicationRequestStatusChanged": {
+        "name": "ApplicationRequestStatusChanged",
+        "payload": {
+          "allOf": [
+            {
+              "$ref": "https://contracts.serviceform.ai/event-envelope/v1"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "event_type": {
+                  "const": "ApplicationRequestStatusChanged"
+                },
+                "data": {
+                  "$ref": "./events/request-status-changed.data.schema.json"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "AuditEventSubmitted": {
+        "name": "AuditEventSubmitted",
+        "payload": {
+          "allOf": [
+            {
+              "$ref": "https://contracts.serviceform.ai/event-envelope/v1"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "https://contracts.serviceform.ai/audit-event/v1"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
