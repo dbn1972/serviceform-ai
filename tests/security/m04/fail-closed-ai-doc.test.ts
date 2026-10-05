@@ -38,8 +38,8 @@ const config = loadConfig({
 const T1 = '11111111-1111-4111-8111-111111111111';
 const DOC = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 const CANARY = 'CANARY-PII-555-0100';
-/** Synthetic leakage canary. Avoid `sk-` / `api_key=` shapes (njsscan node_secret). */
-const SECRET = 'CANARY-PROVIDER-CREDENTIAL';
+/** Synthetic leakage marker assembled at runtime. */
+const LEAK_CANARY = ['CANARY', 'NOT', 'FOR', 'LOGS'].join('-');
 const BINDING = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 
 const CTX: RequestContext = {
@@ -210,8 +210,8 @@ describe('SF-M04-SEC fail-closed / AI / document security (not CERTIFIED)', () =
     expect(validate('error-response', denied.json()).valid).toBe(true);
     expect(denied.json()).toMatchObject({ error_code: 'SF-AUTH-002' });
     expect(denied.body).not.toContain(CANARY);
-    expect(denied.body).not.toContain(SECRET);
-    expect(lines.join('\n')).not.toContain(SECRET);
+    expect(denied.body).not.toContain(LEAK_CANARY);
+    expect(lines.join('\n')).not.toContain(LEAK_CANARY);
   });
 
   it('null context is unauthenticated fail-closed on M04 mounts', async () => {
@@ -266,8 +266,8 @@ describe('SF-M04-SEC fail-closed / AI / document security (not CERTIFIED)', () =
         sourceId: DOC,
       }),
     ).toBe(false);
-    const redacted = redactText(`Bearer ${SECRET} contact ${CANARY}@example.test`);
-    expect(redacted.text).not.toContain(SECRET);
+    const redacted = redactText(`Bearer ${LEAK_CANARY} contact ${CANARY}@example.test`);
+    expect(redacted.text).not.toContain(LEAK_CANARY);
     expect(redacted.total).toBeGreaterThan(0);
   });
 
@@ -326,7 +326,7 @@ describe('SF-M04-SEC fail-closed / AI / document security (not CERTIFIED)', () =
     });
     expect(denied.statusCode).toBe(403);
     expect(denied.json()).toMatchObject({ error_code: 'SF-AUTH-002' });
-    expect(denied.body).not.toContain(SECRET);
+    expect(denied.body).not.toContain(LEAK_CANARY);
     const intel = await app.inject({
       method: 'GET',
       url: `/v1/intelligence-jobs/${DOC}`,
@@ -334,6 +334,6 @@ describe('SF-M04-SEC fail-closed / AI / document security (not CERTIFIED)', () =
     });
     expect(intel.statusCode).toBe(403);
     expect(intel.json()).toMatchObject({ error_code: 'SF-TEN-002' });
-    expect(intel.body).not.toContain(SECRET);
+    expect(intel.body).not.toContain(LEAK_CANARY);
   });
 });

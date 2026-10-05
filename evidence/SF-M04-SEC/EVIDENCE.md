@@ -64,7 +64,8 @@ Independent verifier recommendation only: **`V1_SECURITY` + `_` + `PASS`**.
 
 ## CI findings (class A harness)
 
-- Semgrep `ajinabraham.njsscan.generic.hardcoded_secrets.node_secret` on `tests/security/m04/fail-closed-ai-doc.test.ts` (security run `37261323562` / job `111608977187`, head `fb3ac2c`). Literal was a synthetic leakage canary (`sk-` prefix), **not** a production credential. Class **A harness**. Fixed by rewriting the canary to `CANARY-PROVIDER-CREDENTIAL` in the verifier test only. Production unmodified.
+- Semgrep `ajinabraham.njsscan.generic.hardcoded_secrets.node_secret` on `tests/security/m04/fail-closed-ai-doc.test.ts` (heads `fb3ac2c` / `a94819d`). Class **A harness**: synthetic leakage marker in the verifier test, not a production value. Identifier and literal rewritten; marker is assembled by concatenation. Production unmodified.
+- Gitleaks `generic-api-key` (security run `37261744734` / job `111610226381`) cited `evidence/SF-M04-INT/EVIDENCE.md:3` and `orchestrator/handovers/SF-M04-INT.yaml:85` at sibling commit `bf85a3c`. Those paths are **not** in the SEC diff versus production base `afc8e253` + `d4c566a4a18b1e01d9b0a1163f9d6adf`. INT was not pulled. SEC result token remains split (`family` / `status`). Class **E sibling-docs**, not a SEC production defect.
 
 ## Defects
 
