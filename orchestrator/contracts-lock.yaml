@@ -4,10 +4,12 @@ version: "2.5"
 # including to a companion file, needs a Contract Change Request; scripts/gates/contracts_lock_gate.py
 # fails on a hash mismatch.
 # Reconfirmed 3 Oct 2026 on PR #6: 13/13 hashes match files. ADR-0006 does not change these hashes.
+# Reconfirmed 5 Oct 2026 on PR #85 freeze candidate: 19/19 hashes match files. Original 13 unchanged.
 # A builder that needs a frozen-contract change must STOP and open a Contract Change Request.
 verified:
-  date: 2026-10-03
-  result: 13_FROZEN_HASHES_MATCH
+  date: 2026-10-05
+  result: 19_FROZEN_HASHES_MATCH
+  original_13_unchanged: true
   adr_0006_changes_hashes: false
 contracts:
   - id: SF-CON-AUDIT-EVENT
