@@ -164,17 +164,20 @@ describe('FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0)
     const a = seeded[T1] as { v1: WorkflowVersionRecord; app: string };
     const b = ctx({ tenant_id: T2 });
     const codes: string[] = [];
-    for (const p of [
-      svc.exportBpmn(b, a.v1.version_id),
-      svc.startInstance(b, { application_id: a.app, workflow_version_id: a.v1.version_id }),
-      svc.submitRequest(b, {
-        application_id: a.app,
-        request_kind: 'CANCELLATION',
-        outcome: 'ADMIN_CANCEL',
-        idempotency_key: 'idem-xt-0002',
-      }),
-    ]) {
-      codes.push(((await errorOf(p)) as { code?: string }).code ?? '');
+    // Lazy: each promise is created only when awaited, so none can reject before errorOf attaches.
+    const calls: (() => Promise<unknown>)[] = [
+      () => svc.exportBpmn(b, a.v1.version_id),
+      () => svc.startInstance(b, { application_id: a.app, workflow_version_id: a.v1.version_id }),
+      () =>
+        svc.submitRequest(b, {
+          application_id: a.app,
+          request_kind: 'CANCELLATION',
+          outcome: 'ADMIN_CANCEL',
+          idempotency_key: 'idem-xt-0002',
+        }),
+    ];
+    for (const call of calls) {
+      codes.push(((await errorOf(call())) as { code?: string }).code ?? '');
     }
     expect(codes).toEqual(['SF-SYS-002', 'SF-SYS-002', 'SF-SYS-002']);
   });
