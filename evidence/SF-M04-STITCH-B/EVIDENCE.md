@@ -7,9 +7,9 @@ Do **not** merge this stitch as a certification. Do **not** merge builder PRs #7
 | Field | Value |
 |---|---|
 | Task | SF-M04-STITCH-B |
-| Draft PR | *(bound after open)* |
+| Draft PR | *(bound after PR open)* |
 | Branch | `cursor/m04-stitch-b-5c67` |
-| Authoritative immutable head | *(SHA stamp; git tip is child after bind commit)* |
+| Authoritative immutable head |  |
 | **actual_stitch_base** (execution) | `922509ee78892029a27268078f2dfdaef2f52cce` |
 | Historical planning base (envelope only; not execution) | `2db721feb1303385a0c50c79de8629b2478064d9` |
 | Frozen contracts altered | **none** (13/13 MATCH) |
