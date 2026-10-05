@@ -114,3 +114,19 @@ acceptance_tests_planning:
   - Clock does not mutate case state; CMP-015 remains authoritative
   - No notification provider implementation
   - Host mount deferred to SF-M05-009
+
+# Builder completion (does not dispatch; does not certify; independent verifier route is separate)
+builder_completed: true
+builder_model_actual: claude-sonnet-5-5
+builder_effort_actual: high
+impl_commit: 99765b4dbbf0da105b9ee900ad01e01e88d24d10
+authorized_base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+lockfile_residual: none_declared_dependencies_empty
+builder_notes: |
+  Implemented CMP-029 under allowed write paths from authorized base 6e9f0481.
+  Server-authoritative time only; pause/resume explicit and policy-gated; deadline changes only
+  through resume (DB trigger); insert-only clock history with deterministic replay/verify.
+  INT-009 DeficiencyClockPort provided for CMP-019 (Wave B). Breach notification is the CMP-025
+  port only; no SMS/e-mail/push/provider code. No case-state mutation. No apps/api mount.
+  pnpm-lock.yaml, contracts/** and orchestrator/contracts-lock.yaml untouched (19/19 hashes match).
+  Not CERTIFIED / Not G4 / Not G6. STITCH-A and other M05 tasks not started.
