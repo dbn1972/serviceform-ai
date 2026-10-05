@@ -1,5 +1,5 @@
 /**
- * Validate PROPOSED M05 schemas without mutating packages/contracts or the frozen lock.
+ * Validate FROZEN M05 schemas without mutating packages/contracts.
  * Usage: node evidence/SF-M05-CG-001/validate-m05-schemas.mjs
  */
 import { createRequire } from 'node:module';

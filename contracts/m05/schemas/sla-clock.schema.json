@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/m05/sla-clock/v1",
   "title": "SlaClock",
-  "description": "PROPOSED NOT_FROZEN. SF-CON-SLA-CLOCK. CMP-029. Start and completion anchors, calendar/version, deadline, pause/resume, breach, escalation (Constitution #16; AWS v1.7 CMP-029; INT-009). Pause only under the published SLA policy. Resume only from a valid PAUSED clock. Clients must not supply a clock-now used as authoritative time. Notification emission is an M06 port (CMP-025), not implemented here.",
+  "description": "FROZEN. SF-CON-SLA-CLOCK. CMP-029. Start and completion anchors, calendar/version, deadline, pause/resume, breach, escalation (Constitution #16; AWS v1.7 CMP-029; INT-009). Pause only under the published SLA policy. Resume only from a valid PAUSED clock. Clients must not supply a clock-now used as authoritative time. Notification emission is an M06 port (CMP-025), not implemented here.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -27,10 +27,10 @@
       "const": "SF-CON-SLA-CLOCK"
     },
     "contract_status": {
-      "const": "PROPOSED"
+      "const": "FROZEN"
     },
     "freeze_status": {
-      "const": "NOT_FROZEN"
+      "const": "FROZEN"
     },
     "owner_component": {
       "const": "CMP-029"

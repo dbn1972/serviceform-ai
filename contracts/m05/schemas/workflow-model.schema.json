@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/m05/workflow-model/v1",
   "title": "CanonicalWorkflowModel",
-  "description": "PROPOSED NOT_FROZEN. SF-CON-WORKFLOW-MODEL. CMP-016. Temporal is the durable runtime. BPMN 2.0 is an import/export interoperability profile over this graph, not a second runtime (Constitution #33). Published versions are immutable. Assignment is role + organisation + jurisdiction + scope, never a named officer (Constitution #3, #19). PAYMENT, SIGN, ISSUE, NOTIFY are port node kinds; M05 does not implement M06/M07 providers. Includes withdrawal/cancellation request/review nodes (ADR-0003 ACCEPTED).",
+  "description": "FROZEN. SF-CON-WORKFLOW-MODEL. CMP-016. Temporal is the durable runtime. BPMN 2.0 is an import/export interoperability profile over this graph, not a second runtime (Constitution #33). Published versions are immutable. Assignment is role + organisation + jurisdiction + scope, never a named officer (Constitution #3, #19). PAYMENT, SIGN, ISSUE, NOTIFY are port node kinds; M05 does not implement M06/M07 providers. Includes withdrawal/cancellation request/review nodes (ADR-0003 ACCEPTED).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -23,10 +23,10 @@
       "const": "SF-CON-WORKFLOW-MODEL"
     },
     "contract_status": {
-      "const": "PROPOSED"
+      "const": "FROZEN"
     },
     "freeze_status": {
-      "const": "NOT_FROZEN"
+      "const": "FROZEN"
     },
     "owner_component": {
       "const": "CMP-016"

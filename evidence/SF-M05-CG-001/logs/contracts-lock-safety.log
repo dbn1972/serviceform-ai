@@ -1,12 +1,11 @@
-lock_entries=13 frozen=13
-PASS frozen_count=13
-PASS hashes_changed=0
-note contracts/shared file_count=47 (lock gate, not lock membership)
-PASS no M05 contract ids in contracts-lock.yaml
-proposed_schema_sha256:
-  application-case-sm.schema.json c00ce6c337c6b03244a927286eb37358fc5e2bc31f6eb3588b1ab78315fd341f
-  command-transition.schema.json c5bbc1dd28e6d096fea08c5aad76931a504818eee53f10d6b28c459c893bdb19
-  human-task.schema.json 679f005b5b018c1887af6a083a35ee86c69f692bea23f944bb136d1c4e6a9f1f
-  sla-clock.schema.json f1b10d2ddf5ccf09e23cc3e8beb1dd2175721cf4c19ff40662cff39e5feed450
-  version-pinning.schema.json e641adf23379096e6f68a2e082926b829f57e1f3ba848630d00fbbb2a36ae019
-  workflow-model.schema.json d11ba54a6c74c1cc6117fd19106a84c3ad7a6a17031cc8e64239858016ab49a0
+lock_entries=19 frozen=19
+PASS lock 19/19 FROZEN
+PASS original_13 hashes_changed=0
+note contracts/shared file_count=47
+PASS m05 SF-CON-APPLICATION-CASE-SM 9b9fb73750a258d3f8f0bccb3182961f54b41f0b6da0570ea954a53aaf4e9ed7
+PASS m05 SF-CON-WORKFLOW-MODEL 71b20b1803525991a72c3983de0b0c7f7efa8cb76e37c31089f3978e994e2015
+PASS m05 SF-CON-COMMAND-TRANSITION 07b05c9398cf38883d1c7eac20623633ab977d9d5c1b394d3f247fe842ecdd35
+PASS m05 SF-CON-HUMAN-TASK 2413c7af61453379920bbacc9635388c836262d6df46873497258efbe049ead2
+PASS m05 SF-CON-SLA-CLOCK 7a710d662ea77559cc52ec91d45e93f35d96fefc61a3b40903e4cd9cf1249d40
+PASS m05 SF-CON-VERSION-PINNING 54e69aa1250b776eba8bb764f8d14e0e2d16cd5e088200ba31613eaa280720f8
+PASS M05 six NEW FROZEN rows; hashes recalculated

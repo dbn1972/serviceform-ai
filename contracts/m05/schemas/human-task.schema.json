@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/m05/human-task/v1",
   "title": "HumanTask",
-  "description": "PROPOSED NOT_FROZEN. SF-CON-HUMAN-TASK. CMP-017. Lifecycle operations: create, claim, unclaim, reassign, complete, cancel-close. Assignment criteria are role + organisation + jurisdiction + scope. OPA authorizes each operation. Tenant-bound. Published workflow must not name an officer (Constitution #19). Human-task rows are PostgreSQL domain records; Temporal is signaled after domain commit.",
+  "description": "FROZEN. SF-CON-HUMAN-TASK. CMP-017. Lifecycle operations: create, claim, unclaim, reassign, complete, cancel-close. Assignment criteria are role + organisation + jurisdiction + scope. OPA authorizes each operation. Tenant-bound. Published workflow must not name an officer (Constitution #19). Human-task rows are PostgreSQL domain records; Temporal is signaled after domain commit.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -24,10 +24,10 @@
       "const": "SF-CON-HUMAN-TASK"
     },
     "contract_status": {
-      "const": "PROPOSED"
+      "const": "FROZEN"
     },
     "freeze_status": {
-      "const": "NOT_FROZEN"
+      "const": "FROZEN"
     },
     "owner_component": {
       "const": "CMP-017"
