@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/isolation-declaration/v1",
+  "title": "IsolationDeclaration",
+  "description": "Per-entity isolation class declaration required before a table/collection is created (TI v1.0 s7, Constitution #24). Enforced for SQL migrations by scripts/gates/migration_lint.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["entity", "owner_component", "isolation_class"],
+  "properties": {
+    "entity": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "owner_component": {
+      "type": "string",
+      "pattern": "^CMP-0(0[1-9]|[1-5][0-9]|6[01])$"
+    },
+    "isolation_class": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/isolationClass"
+    },
+    "rls": {
+      "type": "string",
+      "enum": ["FORCE", "NOT_APPLICABLE"]
+    },
+    "justification": {
+      "type": "string",
+      "maxLength": 500
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "isolation_class": {
+            "enum": ["TENANT_SCOPED", "JURISDICTION_SCOPED"]
+          }
+        }
+      },
+      "then": {
+        "required": ["rls"],
+        "properties": {
+          "rls": {
+            "const": "FORCE"
+          }
+        }
+      }
+    }
+  ]
+}

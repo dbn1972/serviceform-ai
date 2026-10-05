@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/outbox-record/v1",
+  "title": "OutboxRecord",
+  "description": "Row of a component's transactional outbox (AWS v1.7 s4.3, s13.2; Eng v1.4 s3 'consumers assume at-least-once delivery and must deduplicate'; Constitution #11). The normative table, inbox and grant layout is contracts/shared/sql/outbox.template.sql. Each component owns <schema>.outbox_event (tenant events) and <schema>.outbox_event_platform (events whose envelope tenant_id is null) in its own schema, inserts rows in the same transaction as its state change, and never updates them. A publisher process from packages/outbox (CMP-038) runs under the sf_outbox_publisher role, claims rows with a lease in one short transaction, publishes outside any transaction, and marks them in another. That role is the explicitly approved cross-tenant event service TI v1.0 s13 requires; it can read and update outbox tables only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "seq",
+    "event_id",
+    "topic",
+    "partition_key",
+    "event_type",
+    "schema_version",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_version",
+    "envelope",
+    "status",
+    "attempts",
+    "next_attempt_at",
+    "created_at"
+  ],
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "PUBLISHED" } } },
+      "then": { "required": ["published_at"] }
+    },
+    {
+      "if": { "properties": { "status": { "const": "DEAD_LETTERED" } } },
+      "then": { "required": ["last_error_code"] }
+    }
+  ],
+  "properties": {
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Per-table publication order. Rows sharing a partition_key are published strictly in seq order."
+    },
+    "event_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid",
+      "description": "Present in outbox_event (NOT NULL, RLS-enforced); absent in outbox_event_platform."
+    },
+    "topic": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9._-]{3,249}$",
+      "description": "Kafka topic name; must exist in the CMP-038 topic registry."
+    },
+    "partition_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "The aggregate_id unless the topic registry declares another key for the topic."
+    },
+    "event_type": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]{2,79}$" },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "aggregate_type": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/resourceType" },
+    "aggregate_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "aggregate_version": { "type": "integer", "minimum": 0 },
+    "envelope": {
+      "$ref": "https://contracts.serviceform.ai/event-envelope/v1",
+      "description": "The complete event as published. Validated against SF-CON-EVENT-ENVELOPE before insert; its event_id, tenant_id, event_type, schema_version and aggregate fields equal the row columns. At most 262144 bytes serialised."
+    },
+    "status": { "type": "string", "enum": ["PENDING", "PUBLISHED", "DEAD_LETTERED"] },
+    "attempts": { "type": "integer", "minimum": 0 },
+    "next_attempt_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "lease_owner": { "type": "string", "maxLength": 200 },
+    "lease_expires_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "last_error_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "created_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" },
+    "published_at": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp" }
+  }
+}

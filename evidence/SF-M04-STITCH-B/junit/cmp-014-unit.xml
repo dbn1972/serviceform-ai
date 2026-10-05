@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="0" errors="0" time="0.57347518">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-05T00:53:58.517Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.208368801">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 component contracts &gt; OpenAPI exposes orchestration interfaces; AsyncAPI lists every emitted event" time="0.002375715">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 component contracts &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION" time="0.04980342">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 component contracts &gt; emitted event data conforms to component-local schemas (hashes, not values)" time="0.151867231">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.000592098">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 component contracts &gt; schema migration: own role, FORCE RLS, no BYPASSRLS/SUPERUSER, no cross-schema refs" time="0.000695515">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 static hard checks &gt; never calls Bedrock/OpenAI/Anthropic/OCR provider SDKs; inference is CMP-039 port only" time="0.000694733">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 static hard checks &gt; does not import CMP-013/CMP-039 services or query their schemas" time="0.000327773">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-014 static hard checks &gt; no named-service/jurisdiction branching and no statutory decision writes" time="0.000336835">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/intelligence-http.test.ts" timestamp="2026-10-05T00:53:58.519Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.365106379">
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 OCR/classification/extraction (assistive) &gt; runs simulated OCR, classifies, extracts via CMP-039, and records provenance" time="0.16505538">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 OCR/classification/extraction (assistive) &gt; never calls OCR or the gateway inside an authoritative transaction" time="0.030261384">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 OCR/classification/extraction (assistive) &gt; sends low-confidence extraction to human review; review stays assistive" time="0.020991309">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 failure paths &gt; rejects malformed and unsupported documents without a gateway call" time="0.017527802">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 failure paths &gt; maps CMP-039 failure and timeout, and unauthorized model/prompt denials" time="0.023947884">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 failure paths &gt; refuses binding/statutory language from the gateway" time="0.017298467">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 INT-011 / INT-013 / privacy &gt; denies the wrong tenant and keeps CROSS_TENANT_LEAKAGE=0" time="0.017969536">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 INT-011 / INT-013 / privacy &gt; fail-closes PRODUCTION + SIMULATED critical OCR" time="0.016949929">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 INT-011 / INT-013 / privacy &gt; redacts PII before the gateway and keeps it out of log-safe records" time="0.016317984">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 domain guards &gt; enforces deterministic status transitions" time="0.012230548">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 domain guards &gt; classifies from OCR tokens and parses only assistive fields" time="0.012861328">
+        </testcase>
+        <testcase classname="test/unit/intelligence-http.test.ts" name="CMP-014 domain guards &gt; refuses SIMULATED OCR outside allowed environments" time="0.011523419">
+        </testcase>
+    </testsuite>
+</testsuites>

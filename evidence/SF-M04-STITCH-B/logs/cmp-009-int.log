@@ -1,0 +1,19 @@
+
+> @serviceform/cmp-009-dynamic-forms@0.0.0 test:integration /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-009-dynamic-forms
+> vitest run --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/home/ubuntu/wt-SF-M04-STITCH-B/evidence/SF-M04-STITCH-B/junit/cmp-009-int.xml
+
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-009-dynamic-forms
+
+ ✓ test/integration/rls-api.int.test.ts (4 tests) 2367ms
+   ✓ CMP-009 API + RLS integration (real PostgreSQL) (4)
+     ✓ isolated CMP-009 pair migrates up and down 1627ms
+ ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 601ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 632ms
+
+ Test Files  3 passed (3)
+      Tests  9 passed (9)
+   Start at  00:54:07
+   Duration  4.56s (tests 84%, import 10%, transform 6%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-009-dynamic-forms/evidence/junit/integration.xml

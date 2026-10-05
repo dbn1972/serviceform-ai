@@ -1,0 +1,45 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-014 Document Intelligence / OCR",
+    "version": "0.1.0",
+    "description": "Assistive OCR orchestration, classification and structured extraction. All model inference goes through CMP-039. Outputs never establish statutory eligibility, approval, rejection, evidence satisfaction or entitlement. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/extraction-policies": {
+      "post": {
+        "operationId": "createExtractionPolicy",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+          }
+        ]
+      }
+    },
+    "/v1/intelligence-jobs": {
+      "post": {
+        "operationId": "createIntelligenceJob",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+          }
+        ]
+      }
+    },
+    "/v1/intelligence-jobs/{id}": {
+      "get": { "operationId": "getIntelligenceJob" }
+    },
+    "/v1/intelligence-jobs/{id}/process": {
+      "post": { "operationId": "processIntelligenceJob" }
+    },
+    "/v1/intelligence-jobs/{id}/review": {
+      "post": { "operationId": "reviewIntelligenceJob" }
+    }
+  }
+}

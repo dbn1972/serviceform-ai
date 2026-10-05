@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/simulation-marker/v1",
+  "title": "SimulationMarker",
+  "description": "Markings carried by every simulated transaction (Eng v1.4 s10.4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["simulation", "scenario", "test_run_id", "connector_binding_id", "environment"],
+  "properties": {
+    "simulation": { "const": true },
+    "scenario": { "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$" },
+    "test_run_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "connector_binding_id": { "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid" },
+    "environment": {
+      "type": "string",
+      "enum": ["LOCAL", "CI", "DEVELOPMENT", "SIT", "PERFORMANCE"]
+    }
+  }
+}

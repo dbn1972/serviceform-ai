@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="2.600856499">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T00:56:24.461Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.857782156">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-032 migration &gt; creates sf_storage schema, privilege role, FORCE RLS tables" time="0.017580634">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-05T00:56:24.462Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.730552055">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-032 privilege boundary (ADR-0006) &gt; runtime is non-superuser sf_app member and not table owner" time="0.016590168">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-032 privilege boundary (ADR-0006) &gt; peer privilege role cannot DML into sf_storage" time="0.017457362">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-05T00:56:24.462Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="1.012522288">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-032 RLS + API (INT-011/013) &gt; stores object with simulation marker; idempotent replay; wrong tenant denied" time="0.219614394">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-032 RLS + API (INT-011/013) &gt; fails closed when KMS or secrets ports fail" time="0.033323864">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-032 RLS + API (INT-011/013) &gt; RLS hides T1 object from T2 session" time="0.022534944">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="0.02629475">
+    <testsuite name="services/cmp-055-developer-platform/test/agent-packaging.test.ts" timestamp="2026-10-05T00:56:37.156Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.008951311">
+        <testcase classname="services/cmp-055-developer-platform/test/agent-packaging.test.ts" name="agent-packaging &gt; allows approved instruction surfaces" time="0.003527417">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/agent-packaging.test.ts" name="agent-packaging &gt; refuses frozen shared contracts and arbitrary domain paths" time="0.001343415">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" timestamp="2026-10-05T00:56:37.159Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.012138994">
+        <testcase classname="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" name="openapi-pipeline &gt; accepts a minimal OpenAPI 3 document" time="0.002703178">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" name="openapi-pipeline &gt; rejects OpenAPI without paths" time="0.000685361">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" name="openapi-pipeline &gt; accepts AsyncAPI channels" time="0.000406504">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" name="openapi-pipeline &gt; parses JSON-shaped yaml text" time="0.000679507">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/openapi-pipeline.test.ts" name="openapi-pipeline &gt; lints existing component-local contracts without touching shared" time="0.005005821">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-055-developer-platform/test/provenance.test.ts" timestamp="2026-10-05T00:56:37.173Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.005204445">
+        <testcase classname="services/cmp-055-developer-platform/test/provenance.test.ts" name="provenance &gt; builds a non-certified evidence manifest" time="0.00256019">
+        </testcase>
+        <testcase classname="services/cmp-055-developer-platform/test/provenance.test.ts" name="provenance &gt; refuses self-certification claims" time="0.001142213">
+        </testcase>
+    </testsuite>
+</testsuites>

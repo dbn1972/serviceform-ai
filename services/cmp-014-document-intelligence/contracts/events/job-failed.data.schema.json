@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Intelligence job failed/rejected data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "job_id",
+    "source_document_id",
+    "source_checksum_sha256",
+    "status",
+    "advisory_only",
+    "statutory_decision",
+    "rejection_code"
+  ],
+  "properties": {
+    "job_id": { "type": "string", "format": "uuid" },
+    "source_document_id": { "type": "string", "format": "uuid" },
+    "source_checksum_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "type": "string" },
+    "advisory_only": { "const": true },
+    "statutory_decision": { "const": false },
+    "rejection_code": { "type": "string" }
+  }
+}
