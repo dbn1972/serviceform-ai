@@ -7,6 +7,7 @@ PASS compile human-task.schema.json $id=https://contracts.serviceform.ai/m05/hum
 PASS compile sla-clock.schema.json $id=https://contracts.serviceform.ai/m05/sla-clock/v1
 PASS compile workflow-model.schema.json $id=https://contracts.serviceform.ai/m05/workflow-model/v1
 PASS compile command-transition.schema.json $id=https://contracts.serviceform.ai/m05/command-transition/v1
+PASS valid/application-case-sm.cancellation-commit.json -> application-case-sm
 PASS valid/application-case-sm.json -> application-case-sm
 PASS valid/application-case-sm.withdrawal-commit.json -> application-case-sm
 PASS valid/command-transition.json -> command-transition
@@ -15,7 +16,12 @@ PASS valid/sla-clock.json -> sla-clock
 PASS valid/sla-clock.pause-int009.json -> sla-clock
 PASS valid/version-pinning.json -> version-pinning
 PASS valid/workflow-model.json -> workflow-model
+PASS invalid/application-case-sm.cancellation-requested-as-state.json -> application-case-sm
+PASS invalid/application-case-sm.cancellation-uncommitted.json -> application-case-sm
+PASS invalid/application-case-sm.cancelled-always-legal.json -> application-case-sm
 PASS invalid/application-case-sm.requested-as-state.json -> application-case-sm
+PASS invalid/application-case-sm.withdrawal-uncommitted.json -> application-case-sm
+PASS invalid/application-case-sm.withdrawn-always-legal.json -> application-case-sm
 PASS invalid/command-transition.network-in-txn.json -> command-transition
 PASS invalid/command-transition.temporal-before-commit.json -> command-transition
 PASS invalid/human-task.named-officer-field.json -> human-task

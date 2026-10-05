@@ -71,9 +71,34 @@ if re.search(r"^implementation_authorized:\s*true\s*$", ht, re.M):
 if re.search(r"^wave_a_eligible:\s*true\s*$", ht, re.M):
     fail += 1
     log("FAIL handover wave_a_eligible true")
-if re.search(r"^(adr_0003_status|adr_0005_status):\s*ACCEPTED\s*$", ht, re.M):
+if not re.search(r"^adr_0003_status:\s*ACCEPTED\s*$", ht, re.M):
     fail += 1
-    log("FAIL handover represents ADR as ACCEPTED")
+    log("FAIL handover adr_0003_status must be ACCEPTED")
+if not re.search(r"^adr_0005_status:\s*ACCEPTED\s*$", ht, re.M):
+    fail += 1
+    log("FAIL handover adr_0005_status must be ACCEPTED")
+if re.search(r"^freeze_status:\s*FROZEN\s*$", ht, re.M):
+    fail += 1
+    log("FAIL handover freeze_status FROZEN")
+
+import json
+
+sm = json.loads((ROOT / "contracts/m05/schemas/application-case-sm.schema.json").read_text())
+always = sm["$defs"]["alwaysLegalTransitionKey"]["enum"]
+gated_w = sm["$defs"]["policyGatedWithdrawalKey"]["enum"]
+gated_c = sm["$defs"]["policyGatedCancellationKey"]["enum"]
+bad_always = [k for k in always if k.endswith(">WITHDRAWN") or k.endswith(">CANCELLED")]
+if bad_always:
+    fail += 1
+    log(f"FAIL alwaysLegalTransitionKey contains policy outcomes: {bad_always}")
+missing_w = [k for k in gated_w if not k.endswith(">WITHDRAWN")]
+missing_c = [k for k in gated_c if not k.endswith(">CANCELLED")]
+if missing_w or missing_c:
+    fail += 1
+    log(f"FAIL policy-gated key sets mix non-outcome keys w={missing_w} c={missing_c}")
+if not set(always).isdisjoint(set(gated_w) | set(gated_c)):
+    fail += 1
+    log("FAIL overlap between ALWAYS_LEGAL and policy-gated keys")
 
 if fail == 0:
     log("PASS static scans")

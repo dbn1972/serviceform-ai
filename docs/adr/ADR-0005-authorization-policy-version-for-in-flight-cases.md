@@ -2,15 +2,15 @@
 
 | Field | Value |
 |---|---|
-| Status | **PROPOSED** (not ACCEPTED; human-only acceptance) |
-| Accepted by | _pending authorized human approver_ |
+| Status | **ACCEPTED** |
+| Accepted by | Debabrata Nayak (owner), 5 October 2026 |
 | Date | 5 October 2026 |
 | Proposed by | Architecture & Contract Guardian (SF-M05-CG-001 pre-freeze decision package) |
 | Source | ARCHITECTURE-VERIFICATION-001 finding M-03; AWS v1.7 §20.11, §20.15; Constitution #8, #9, #35 |
 | Changes | Separates runtime authorization revision from pinned statutory/config graph. **No change** to the existing 13 frozen shared contracts, including SF-CON-AUTHZ-DECISION. |
-| Artifacts | `contracts/m05/` SF-CON-VERSION-PINNING, SF-CON-COMMAND-TRANSITION (all **PROPOSED**, **NOT_FROZEN**) |
+| Artifacts | `contracts/m05/` SF-CON-VERSION-PINNING, SF-CON-COMMAND-TRANSITION (all **PROPOSED**, **NOT_FROZEN**; contracts freeze is a later authorized step) |
 
-This ADR is **not** accepted by this package. Only a human approver can set status to ACCEPTED.
+Accepted by Debabrata Nayak. M05 contracts remain **PROPOSED / NOT_FROZEN**. This acceptance does **not** freeze contracts, change SF-CON-AUTHZ-DECISION, or start Wave A. `ccr_required` remains false.
 
 ## Context
 
@@ -18,7 +18,7 @@ AWS v1.7 §20.11 places `authorization_policy_version_id` on the TenantServiceBi
 
 If runtime OPA used only the submit-time authorization bundle, a revoked role or tightened deny would not apply to in-flight officer actions. If execution unpinned form/rules/workflow/SLA whenever authorization moved, in-flight statutory reproduction would break (Constitution #8, #9, #35).
 
-## Decision (PROPOSED)
+## Decision
 
 1. **Runtime authorization is NOW.** Each protected action is authorized against the **current effective published** authorization policy. Submit-time freeze of authorization **decision** policy is **not** used.
 2. Record, per existing frozen audit and authorization contracts (do not extend them in this package):
@@ -34,7 +34,7 @@ If runtime OPA used only the submit-time authorization bundle, a revoked role or
 
 ### Frozen-contract impact (blocking)
 
-SF-CON-AUTHZ-DECISION already carries `policy_revision` on the decision output. SF-CON-AUDIT-EVENT already carries actor, action, resource, timestamp, result, and reason (when `action_class` requires it). **This proposed ADR does not require a semantic change to any of the existing 13 frozen contracts.** Therefore this package records `ccr_required: false`.
+SF-CON-AUTHZ-DECISION already carries `policy_revision` on the decision output. SF-CON-AUDIT-EVENT already carries actor, action, resource, timestamp, result, and reason (when `action_class` requires it). **This accepted ADR does not require a semantic change to any of the existing 13 frozen contracts.** Therefore this package records `ccr_required: false`.
 
 If a later design needs new fields on SF-CON-AUTHZ-DECISION (or any other of the 13): **STOP**, file a Contract Change Request, and do not patch the frozen file.
 
@@ -45,6 +45,6 @@ If a later design needs new fields on SF-CON-AUTHZ-DECISION (or any other of the
 - Reproduction of a past action uses the audit/`policy_revision` recorded for that action, not a reconstructed “submit-time OPA bundle” as the live PDP input.
 - This ADR does not freeze M05 contracts and does not append `orchestrator/contracts-lock.yaml`.
 
-## Recommendation to the human approver
+## Acceptance record
 
-**Recommend ACCEPT** as written (current effective published authorization; statutory config remains pinned). Alternative (freeze authorization at submit for the whole case) is **not** recommended: it conflicts with AWS v1.7 §20.15 fail-closed officer-loss and policy-update behavior.
+Accepted 5 October 2026 by Debabrata Nayak. Every protected action uses the current effective published authorization policy and records the exact `policy_revision`. Execution pins (TSB / form / rule / workflow / evidence-policy / SLA / other statutory config) remain immutable; no silent repoint. TSB `authorization_policy_version_id` is publication/provenance only. Frozen SF-CON-AUTHZ-DECISION is unchanged.

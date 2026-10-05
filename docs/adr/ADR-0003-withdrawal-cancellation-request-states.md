@@ -2,15 +2,15 @@
 
 | Field | Value |
 |---|---|
-| Status | **PROPOSED** (not ACCEPTED; human-only acceptance) |
-| Accepted by | _pending authorized human approver_ |
+| Status | **ACCEPTED** |
+| Accepted by | Debabrata Nayak (owner), 5 October 2026 |
 | Date | 5 October 2026 |
 | Proposed by | Architecture & Contract Guardian (SF-M05-CG-001 pre-freeze decision package) |
 | Source | ARCHITECTURE-VERIFICATION-001 finding M-02; AWS v1.7 §12.1; Eng v1.4 §11.1; Constitution #10, #17 |
 | Changes | Interprets request vs success for withdrawal/cancellation. No frozen shared-contract change. No Constitution rule rewrite. |
-| Artifacts | `contracts/m05/` SF-CON-APPLICATION-CASE-SM, SF-CON-WORKFLOW-MODEL, SF-CON-HUMAN-TASK (all **PROPOSED**, **NOT_FROZEN**) |
+| Artifacts | `contracts/m05/` SF-CON-APPLICATION-CASE-SM, SF-CON-WORKFLOW-MODEL, SF-CON-HUMAN-TASK (all **PROPOSED**, **NOT_FROZEN**; contracts freeze is a later authorized step) |
 
-This ADR is **not** accepted by this package. Only a human approver can set status to ACCEPTED.
+Accepted by Debabrata Nayak. M05 contracts remain **PROPOSED / NOT_FROZEN**. This acceptance does **not** freeze contracts or start Wave A.
 
 ## Context
 
@@ -18,7 +18,7 @@ AWS v1.7 §12.1 lists `WITHDRAWN` and `CANCELLED` as canonical application lifec
 
 Constitution #10: application/case state is authoritative in the Application/Case domain; Temporal must not advance an authoritative state change before the domain commit succeeds. Constitution #17: withdrawal/cancellation after submission is service-policy driven and may require an authorized workflow; it is not universally available.
 
-## Decision (PROPOSED)
+## Decision
 
 1. `WITHDRAWAL_REQUESTED` and `CANCELLATION_REQUESTED` are **not** authoritative CMP-015 states. They are **workflow / request constructs** (human-task and workflow-node kinds) owned by CMP-016/CMP-017 metadata and records.
 2. While a withdrawal or cancellation request is under evaluation, the **authoritative CMP-015 state is unchanged**.
@@ -36,7 +36,7 @@ Constitution #10: application/case state is authoritative in the Application/Cas
 ### MUST (implementation, after human acceptance and a later freeze)
 
 - No named-service, named-officer, named-jurisdiction, or named-tenant branching in domain logic.
-- OPA authorizes every protected action (current effective published policy; see ADR-0005, also PROPOSED).
+- OPA authorizes every protected action (current effective published policy; see ADR-0005).
 - GoRules evaluates deterministic eligibility for whether withdrawal/cancellation is offered; it does not commit CMP-015 state.
 - Temporal sequences the review process only.
 - CMP-015 is the **sole** owner of the final `WITHDRAWN` / `CANCELLED` transition.
@@ -49,8 +49,9 @@ Constitution #10: application/case state is authoritative in the Application/Cas
 - SF-CON-APPLICATION-CASE-SM enumerates AWS v1.7 §12.1 legal states only; the two `*_REQUESTED` tokens are forbidden as `application_state`.
 - SF-CON-WORKFLOW-MODEL includes canonical nodes for withdrawal/cancellation **request** and **review**.
 - Builders must not persist `WITHDRAWAL_REQUESTED` / `CANCELLATION_REQUESTED` on the case row.
-- This ADR does not freeze contracts. Freeze is a later, separately authorized SF-M05-CG-001 step after human acceptance.
+- This ADR does not freeze contracts. Freeze is a later, separately authorized SF-M05-CG-001 step.
+- Every CMP-015 transition whose `to_state` is `WITHDRAWN` or `CANCELLED` is **policy-gated** (published service policy + authorized workflow/request commit). None is `ALWAYS_LEGAL`.
 
-## Recommendation to the human approver
+## Acceptance record
 
-**Recommend ACCEPT** as written. Do not treat Eng v1.4 §11.1 request labels as extra CMP-015 states. Alternative (make them first-class case states) is **not** recommended: it conflicts with Constitution #10 and creates rollback on denial.
+Accepted 5 October 2026 by Debabrata Nayak. `WITHDRAWAL_REQUESTED` / `CANCELLATION_REQUESTED` are workflow/request constructs, not CMP-015 states. While pending, CMP-015 state is unchanged. Only after configured policy/workflow resolution may CMP-015 commit `WITHDRAWN` or `CANCELLED`. A rejected or expired request leaves case state unchanged. Temporal orchestrates; CMP-015 is the sole authoritative owner.

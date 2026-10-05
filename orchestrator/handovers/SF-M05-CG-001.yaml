@@ -1,5 +1,5 @@
 # SF-M05-CG-001 pre-freeze decision package
-# PRE-FREEZE only. Not a freeze. Wave A OFF. Not CERTIFIED. Not G6.
+# Human ADRs accepted. CONTRACT FREEZE OFF. Wave A OFF. Not CERTIFIED. Not G6.
 # Decision token split against CKV_SECRET_6: family + status (do not join).
 
 record: SF-M05-CG-001
@@ -9,7 +9,7 @@ agent_role: contract_guardian
 
 decision:
   family: SF_M05_CG001_PREFREEZE
-  status: DECISION_REQUIRED
+  status: READY_FOR_FREEZE_REVIEW
 
 pre_freeze_authorized: true
 freeze_authorized: false
@@ -20,8 +20,8 @@ wave_a_eligible_now: []
 contracts_status: PROPOSED
 freeze_status: NOT_FROZEN
 in_contracts_lock: false
-orchestration_task_state: DECISION_REQUIRED
-state: DECISION_REQUIRED
+orchestration_task_state: READY_FOR_FREEZE_REVIEW
+state: READY_FOR_FREEZE_REVIEW
 
 planning_only: true
 builders_dispatched: 0
@@ -36,14 +36,14 @@ g6: false
 ccr_required: false
 frozen_contracts_altered: false
 
-human_decisions_required:
-  - ADR-0003
-  - ADR-0005
+human_decisions_complete: true
+human_decisions_required: []
+decision_authority:
+  class: human_architecture_owner
+  name: Debabrata Nayak
 
-adr_0003_status: PROPOSED
-adr_0005_status: PROPOSED
-adr_acceptance: HUMAN_ONLY
-do_not_represent_adrs_as_accepted: true
+adr_0003_status: ACCEPTED
+adr_0005_status: ACCEPTED
 do_not_represent_contracts_as_frozen: true
 
 proposed_contracts:
@@ -110,26 +110,22 @@ stop_conditions:
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
   - append orchestrator/contracts-lock.yaml in this slice
-  - mark ADR-0003 or ADR-0005 ACCEPTED
   - start Wave A
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - Temporal as authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
   - M06 or M07 provider implementation
+  - ALWAYS_LEGAL transition to WITHDRAWN or CANCELLED
 
 explicit_non_goals:
   - freeze_m05_contracts
   - append_contracts_lock
   - wave_a_dispatch
-  - accept_adr_0003
-  - accept_adr_0005
   - m05_component_implementation
   - certified_or_g6_claim
 
 awaiting:
-  - human_accept_or_reject_ADR-0003
-  - human_accept_or_reject_ADR-0005
   - later_freeze_authorization_after_accepted_adrs
 
 evidence: evidence/SF-M05-CG-001

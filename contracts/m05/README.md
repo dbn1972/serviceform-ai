@@ -4,7 +4,7 @@ Status of every artifact in this directory: **PROPOSED**, **NOT_FROZEN**.
 
 This is the SF-M05-CG-001 **pre-freeze decision package**. It does **not** freeze these
 contracts. It does **not** append `orchestrator/contracts-lock.yaml`. Wave A is **not**
-eligible. ADR-0003 and ADR-0005 are **PROPOSED** only (human-only acceptance).
+eligible. ADR-0003 and ADR-0005 are **ACCEPTED** (Debabrata Nayak, 5 October 2026).
 
 The existing 13 shared contracts under `contracts/shared/` remain FROZEN and unmodified.
 
