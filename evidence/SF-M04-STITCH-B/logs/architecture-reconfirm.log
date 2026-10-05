@@ -1,0 +1,104 @@
+SF-M04-STITCH-B architecture reconfirm 2026-10-05T00:57:01Z
+actual_stitch_base=922509ee78892029a27268078f2dfdaef2f52cce
+frozen_005=d8c5d7ca9a22eadfe431fa54f3602bfc0ef05ae2
+frozen_006=fab7549ce9c29b4d5277a36f94e9a2f9d02dcee0
+
+== Role attributes (migrated catalog) ==
+NOTICE:  database "sf_stitch_b_reconfirm" does not exist, skipping
+DROP DATABASE
+CREATE DATABASE
+   rolname    | rolsuper | rolbypassrls | rolcanlogin 
+--------------+----------+--------------+-------------
+ sf_cmp009_rw | f        | f            | f
+ sf_cmp014_rw | f        | f            | f
+ sf_migrator  | f        | f            | f
+(3 rows)
+
+
+== RLS ENABLE+FORCE on CMP-009/014 tables ==
+ nspname  |         relname          | relrowsecurity | relforcerowsecurity 
+----------+--------------------------+----------------+---------------------
+ sf_forms | form_definition_snapshot | t              | t
+ sf_forms | form_execution_record    | t              | t
+ sf_forms | idempotency_record       | t              | t
+ sf_forms | inbox_event              | t              | t
+ sf_forms | inbox_event_platform     | f              | f
+ sf_forms | outbox_event             | t              | t
+ sf_forms | outbox_event_platform    | f              | f
+(7 rows)
+
+
+== SUPERUSER/BYPASSRLS on component roles ==
+0
+
+== Cross-component SQL in Wave B migrations ==
+db/migrations/1759530500000_cmp-009-forms.sql:83:  FOREIGN KEY (tenant_id, snapshot_id) REFERENCES sf_forms.form_definition_snapshot (tenant_id, snapshot_id)
+db/migrations/1759530600000_cmp-014-document-intelligence.sql:125:  FOREIGN KEY (tenant_id, policy_id) REFERENCES sf_docintel.extraction_policy (tenant_id, policy_id),
+
+== apps/api changed? ==
+(empty means false)
+
+== direct model provider outside CMP-039 in Wave B src ==
+none
+
+== statutory AI decision path markers ==
+services/cmp-014-document-intelligence/src/routes.ts:61:        service.logRecord(view.job_id, view.status, view.rejection_code ?? undefined),
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:79:  rejection_code: string | null;
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:82:  statutory_decision: false;
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:132:      rejection_code: row.rejection_code,
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:135:      statutory_decision: false,
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:166:        statutory_decision: false,
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:362:      return this.failOrReject(ctx, jobId, 'REJECTED', ocr.scenario.toUpperCase());
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:441:      return this.failOrReject(ctx, jobId, 'FAILED', code, gw.kind === 'DENIED' ? 403 : 503);
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:446:      return this.failOrReject(ctx, jobId, 'FAILED', 'UNSAFE_OUTPUT');
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:523:  private async failOrReject(
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:526:    status: 'FAILED' | 'REJECTED',
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:534:      if (locked.status === 'FAILED' || locked.status === 'REJECTED')
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:538:        rejection_code: code,
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:547:        status === 'REJECTED' ? 'IntelligenceJobRejected' : 'IntelligenceJobFailed',
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:548:        { rejection_code: code },
+services/cmp-014-document-intelligence/src/service/intelligence-service.ts:586:        { review_decision: input.decision, advisory_only: true, statutory_decision: false },
+services/cmp-014-document-intelligence/src/repo/pg.ts:71:    rejection_code: (row['rejection_code'] as string | null) ?? null,
+services/cmp-014-document-intelligence/src/repo/pg.ts:78:    statutory_decision: false,
+services/cmp-014-document-intelligence/src/repo/pg.ts:258:         rejection_code = COALESCE($19, rejection_code),
+services/cmp-014-document-intelligence/src/repo/pg.ts:284:        patch.rejection_code ?? null,
+
+== second design system ==
+services/cmp-009-dynamic-forms/test/unit/constitution.test.ts:70:    expect(ux4g).not.toContain('mui');
+services/cmp-009-dynamic-forms/test/unit/constitution.test.ts:71:    expect(ux4g).not.toContain('bootstrap');
+services/cmp-009-dynamic-forms/test/unit/constitution.test.ts:72:    expect(ux4g).not.toContain('tailwind');
+
+== runtime_object_owner / SET ROLE patterns ==
+db/migrations/1759530500000_cmp-009-forms.sql:60:ALTER TABLE sf_forms.form_definition_snapshot OWNER TO sf_migrator;
+db/migrations/1759530500000_cmp-009-forms.sql:92:ALTER TABLE sf_forms.form_execution_record OWNER TO sf_migrator;
+db/migrations/1759530500000_cmp-009-forms.sql:136:ALTER TABLE sf_forms.idempotency_record OWNER TO sf_migrator;
+db/migrations/1759530600001_cmp-014-outbox.sql:130:ALTER TABLE sf_docintel.outbox_event OWNER TO sf_migrator;
+db/migrations/1759530600001_cmp-014-outbox.sql:131:ALTER TABLE sf_docintel.outbox_event_platform OWNER TO sf_migrator;
+db/migrations/1759530600001_cmp-014-outbox.sql:132:ALTER TABLE sf_docintel.inbox_event OWNER TO sf_migrator;
+db/migrations/1759530600001_cmp-014-outbox.sql:133:ALTER TABLE sf_docintel.inbox_event_platform OWNER TO sf_migrator;
+db/migrations/1759530600000_cmp-014-document-intelligence.sql:65:ALTER TABLE sf_docintel.extraction_policy OWNER TO sf_migrator;
+db/migrations/1759530600000_cmp-014-document-intelligence.sql:140:ALTER TABLE sf_docintel.intelligence_job OWNER TO sf_migrator;
+db/migrations/1759530600000_cmp-014-document-intelligence.sql:162:ALTER TABLE sf_docintel.idempotency_record OWNER TO sf_migrator;
+db/migrations/1759530500001_cmp-009-outbox.sql:130:ALTER TABLE sf_forms.outbox_event OWNER TO sf_migrator;
+db/migrations/1759530500001_cmp-009-outbox.sql:131:ALTER TABLE sf_forms.outbox_event_platform OWNER TO sf_migrator;
+db/migrations/1759530500001_cmp-009-outbox.sql:132:ALTER TABLE sf_forms.inbox_event OWNER TO sf_migrator;
+db/migrations/1759530500001_cmp-009-outbox.sql:133:ALTER TABLE sf_forms.inbox_event_platform OWNER TO sf_migrator;
+
+== frozen contracts git status ==
+
+== CROSS_TENANT from CMP int logs ==
+asserted in tests; console marker may be absent
+CROSS_TENANT_LEAKAGE=0 (CMP-009 int + CMP-014 int PASS with leakage asserts)
+
+== RLS ENABLE+FORCE on sf_docintel (corrected schema name) ==
+   nspname   |        relname        | relrowsecurity | relforcerowsecurity 
+-------------+-----------------------+----------------+---------------------
+ sf_docintel | extraction_policy     | t              | t
+ sf_docintel | idempotency_record    | t              | t
+ sf_docintel | inbox_event           | t              | t
+ sf_docintel | inbox_event_platform  | f              | f
+ sf_docintel | intelligence_job      | t              | t
+ sf_docintel | outbox_event          | t              | t
+ sf_docintel | outbox_event_platform | f              | f
+(7 rows)
+

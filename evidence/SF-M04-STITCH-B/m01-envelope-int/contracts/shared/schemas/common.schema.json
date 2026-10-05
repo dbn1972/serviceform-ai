@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/common/v1",
+  "title": "ServiceForm common definitions",
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp (RFC 3339)."
+    },
+    "cellId": {
+      "type": "string",
+      "pattern": "^cell-[a-z0-9-]{1,40}$",
+      "description": "Execution/data cell identity (AWS v1.7 s2, TI v1.0 layer 4)."
+    },
+    "actorType": {
+      "type": "string",
+      "enum": ["CITIZEN", "OFFICER", "SYSTEM", "INTEGRATION", "PRIVILEGED_ADMIN"],
+      "description": "AWS v1.7 s14.3 actor_type values."
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/actorType"
+        },
+        "id": {
+          "$ref": "#/$defs/uuid"
+        }
+      }
+    },
+    "errorCode": {
+      "type": "string",
+      "pattern": "^SF-(AUTH|TEN|FORM|RULE|APP|EVD|PAY|WF|CRED|INT|RATE|AI|SYS)-[0-9]{3}$",
+      "description": "Stable machine-readable SF-* error code (AWS v1.7 s13.3, specs/error-codes.yaml)."
+    },
+    "isolationClass": {
+      "type": "string",
+      "enum": [
+        "GLOBAL",
+        "TENANT_SCOPED",
+        "JURISDICTION_SCOPED",
+        "CITIZEN_PRIVATE",
+        "PLATFORM_OPERATIONAL"
+      ],
+      "description": "Mandatory isolation class (AWS v1.7 s14.1, TI v1.0 s7, Constitution #24)."
+    },
+    "roleCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$",
+      "description": "Stable role code (AWS v1.7 s20.4 role_definition)."
+    },
+    "actionCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$",
+      "description": "Stable action code (AWS v1.7 s14.3, s20.3)."
+    },
+    "resourceType": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]{1,63}$",
+      "description": "Resource/aggregate type name in PascalCase."
+    },
+    "authAssurance": {
+      "type": "string",
+      "enum": ["NONE", "OTP", "PASSWORD", "MFA", "WORKLOAD_IDENTITY"],
+      "description": "Authentication assurance of the principal (AWS v1.7 s20.3 subject.assurance)."
+    },
+    "purposeCode": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$",
+      "description": "Declared processing/integration purpose (TI v1.0 s6 service accounts; AWS v1.7 s14.2 purpose)."
+    },
+    "traceId": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{32}$",
+      "description": "W3C trace-context trace id."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="3.599714909">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T00:54:12.090Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.6317739">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-009 migration &gt; creates sf_forms, the NOLOGIN privilege role and FORCE RLS on every tenant table" time="0.012961173">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-009 migration &gt; PUBLIC has no privileges on the schema or tables" time="0.006762279">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-05T00:54:12.091Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.601319053">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-009 privilege boundary (ADR-0006) &gt; runtime is not SUPERUSER, not BYPASSRLS, and not a table owner" time="0.013131543">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-009 privilege boundary (ADR-0006) &gt; a peer component privilege role cannot DML into sf_forms" time="0.012776981">
+        </testcase>
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-009 privilege boundary (ADR-0006) &gt; the runtime cannot UPDATE or DELETE immutable records and cannot TRUNCATE" time="0.007437682">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-api.int.test.ts" timestamp="2026-10-05T00:54:12.092Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="2.366621956">
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-009 API + RLS integration (real PostgreSQL) &gt; validates for tenant 1 and persists snapshot, execution, outbox and audit rows" time="0.126977396">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-009 API + RLS integration (real PostgreSQL) &gt; CROSS_TENANT_LEAKAGE=0: tenant 2 cannot read or resolve tenant 1 data" time="0.012342014">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-009 API + RLS integration (real PostgreSQL) &gt; without a tenant session the runtime sees no rows, and cannot write for another tenant" time="0.003452479">
+        </testcase>
+        <testcase classname="test/integration/rls-api.int.test.ts" name="CMP-009 API + RLS integration (real PostgreSQL) &gt; isolated CMP-009 pair migrates up and down" time="1.626614737">
+        </testcase>
+    </testsuite>
+</testsuites>

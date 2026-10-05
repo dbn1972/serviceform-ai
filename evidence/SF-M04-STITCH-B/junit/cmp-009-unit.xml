@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="0.383535285">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-05T00:53:56.822Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.061834833">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-009 component contracts &gt; parses OpenAPI and AsyncAPI and declares only the CMP-009 surface" time="0.0020895">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-009 component contracts &gt; validates isolation declarations and matches the migration declarations" time="0.049897726">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-009 component contracts &gt; validates the FormValidated envelope" time="0.007564919">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-009 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.000849997">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/config-ports.test.ts" timestamp="2026-10-05T00:53:56.823Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.077527776">
+        <testcase classname="test/unit/config-ports.test.ts" name="config and ports &gt; refuses SIMULATED in PRODUCTION and REAL form sources" time="0.002093813">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="config and ports &gt; denies forged tenant-identifying headers and missing context" time="0.00053439">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="config and ports &gt; authorization fail-closes" time="0.072639417">
+        </testcase>
+        <testcase classname="test/unit/config-ports.test.ts" name="config and ports &gt; identity localization echoes keys and deny form port fails closed" time="0.00075736">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/constitution.test.ts" timestamp="2026-10-05T00:53:56.823Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.009391224">
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; does not import sibling component source or UX4G primitives to fork them" time="0.003583284">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; contains no named-service, tenant, or legislation branching in domain code" time="0.001329514">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; performs no network or localization/form-source work inside the authoritative transaction" time="0.000342664">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; does not log instance field values and has no LLM path" time="0.001809645">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards (static, executed) &gt; declares JSON Forms as schema/runtime only (no second design system)" time="0.000368922">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-05T00:53:56.824Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.219206938">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; authoritatively validates a pinned published form" time="0.159418157">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; rejects missing required fields with SF-FORM-002" time="0.008554312">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; rejects unpublished forms and version pin mismatches" time="0.006167358">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; rejects malformed metadata payloads" time="0.004364574">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; wrong-tenant cannot execute another tenant pin and CROSS_TENANT_LEAKAGE=0" time="0.008656725">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; localizes labels via the CMP-053 port contract" time="0.005390818">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; forged tenant headers are denied" time="0.003834133">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; unauthorized and failing form source fail closed" time="0.015533183">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-009 plugin HTTP (memory pool) &gt; replays idempotent executions" time="0.004964815">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/runtime.test.ts" timestamp="2026-10-05T00:53:56.825Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.015574514">
+        <testcase classname="test/unit/runtime.test.ts" name="JSON Schema runtime &gt; accepts a valid object schema and rejects invalid schemas" time="0.002102614">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="JSON Schema runtime &gt; validates instance data without echoing values" time="0.000762238">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="JSON Schema runtime &gt; validates email format with a linear scan (no backtracking regex)" time="0.00083171">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="UI schema + conditional visibility + required fields &gt; interprets controls and hides prior_ref unless has_prior is true" time="0.008689415">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="UI schema + conditional visibility + required fields &gt; rejects malformed UI schema" time="0.000235764">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="UI schema + conditional visibility + required fields &gt; does not walk Object.prototype via pointer segments" time="0.000344536">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="UX4G renderer compatibility (CMP-054, no fork) &gt; matches frozen UX4G renderer ids and classes" time="0.000533604">
+        </testcase>
+        <testcase classname="test/unit/runtime.test.ts" name="UX4G renderer compatibility (CMP-054, no fork) &gt; emits accessibility contract semantics used by UX4G primitives" time="0.000608595">
+        </testcase>
+    </testsuite>
+</testsuites>

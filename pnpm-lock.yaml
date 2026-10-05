@@ -516,6 +516,25 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  services/cmp-009-dynamic-forms:
+    dependencies:
+      '@fastify/rate-limit':
+        specifier: 11.2.0
+        version: 11.2.0
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
   services/cmp-011-evidence-requirements:
     dependencies:
       '@fastify/rate-limit':
@@ -543,6 +562,22 @@ importers:
       '@serviceform/storage':
         specifier: workspace:*
         version: link:../../packages/storage
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
+  services/cmp-014-document-intelligence:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       fastify:
         specifier: 5.12.5
         version: 5.12.5

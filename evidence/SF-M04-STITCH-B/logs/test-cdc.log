@@ -1,0 +1,17 @@
+
+> serviceform-ai@ test:cdc /home/ubuntu/wt-SF-M04-STITCH-B
+> vitest run --config tests/cdc/vitest.config.ts
+
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M04-STITCH-B
+
+ ✓ tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts (5 tests) 5ms
+ ✓ tests/cdc/audit-ingest-envelopes.cdc.test.ts (7 tests) 77ms
+ ✓ tests/cdc/cmp-038-topic-compat.cdc.test.ts (7 tests) 85ms
+
+ Test Files  3 passed (3)
+      Tests  19 passed (19)
+   Start at  00:53:19
+   Duration  537ms (transform 58%, import 21%, tests 19%, worker 1%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M04-STITCH-B/test-results/cdc/junit.xml

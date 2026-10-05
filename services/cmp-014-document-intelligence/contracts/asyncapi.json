@@ -1,0 +1,65 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-014 Document Intelligence Events",
+    "version": "0.1.0",
+    "description": "Events carry ids, hashes, confidence and reason codes. No document content, raw PII or credentials."
+  },
+  "channels": {
+    "sf.docintel.events.v1": {
+      "address": "sf.docintel.events.v1",
+      "messages": {
+        "IntelligenceJobAccepted": { "$ref": "#/components/messages/IntelligenceJobAccepted" },
+        "IntelligenceJobClassified": { "$ref": "#/components/messages/IntelligenceJobClassified" },
+        "IntelligenceJobExtracted": { "$ref": "#/components/messages/IntelligenceJobExtracted" },
+        "IntelligenceJobNeedsReview": {
+          "$ref": "#/components/messages/IntelligenceJobNeedsReview"
+        },
+        "IntelligenceJobCompleted": { "$ref": "#/components/messages/IntelligenceJobCompleted" },
+        "IntelligenceJobFailed": { "$ref": "#/components/messages/IntelligenceJobFailed" },
+        "IntelligenceJobRejected": { "$ref": "#/components/messages/IntelligenceJobRejected" },
+        "IntelligenceJobReviewed": { "$ref": "#/components/messages/IntelligenceJobReviewed" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": { "AuditEventSubmitted": { "name": "AuditEventSubmitted" } }
+    }
+  },
+  "components": {
+    "messages": {
+      "IntelligenceJobAccepted": {
+        "name": "IntelligenceJobAccepted",
+        "payload": { "$ref": "./events/job-accepted.data.schema.json" }
+      },
+      "IntelligenceJobClassified": {
+        "name": "IntelligenceJobClassified",
+        "payload": { "$ref": "./events/job-classified.data.schema.json" }
+      },
+      "IntelligenceJobExtracted": {
+        "name": "IntelligenceJobExtracted",
+        "payload": { "$ref": "./events/job-extracted.data.schema.json" }
+      },
+      "IntelligenceJobNeedsReview": {
+        "name": "IntelligenceJobNeedsReview",
+        "payload": { "$ref": "./events/job-status.data.schema.json" }
+      },
+      "IntelligenceJobCompleted": {
+        "name": "IntelligenceJobCompleted",
+        "payload": { "$ref": "./events/job-status.data.schema.json" }
+      },
+      "IntelligenceJobFailed": {
+        "name": "IntelligenceJobFailed",
+        "payload": { "$ref": "./events/job-failed.data.schema.json" }
+      },
+      "IntelligenceJobRejected": {
+        "name": "IntelligenceJobRejected",
+        "payload": { "$ref": "./events/job-failed.data.schema.json" }
+      },
+      "IntelligenceJobReviewed": {
+        "name": "IntelligenceJobReviewed",
+        "payload": { "$ref": "./events/job-reviewed.data.schema.json" }
+      }
+    }
+  }
+}

@@ -1,18 +1,15 @@
-# M04 READY — Wave B mechanical stitch (LOCK-7 start)
-# Integrate exact immutable CMP-009/#74 + CMP-014/#75 trees + migrations; lockfile importer reconcile only.
-# Planning envelope corrected to STITCH-A pattern. Product STITCH-B NOT dispatched. Not CERTIFIED.
+# SF-M04-STITCH-B product integration handover (draft PR only). Not CERTIFIED.
+# Mechanical stitch of exact immutable CMP-009/#74 + CMP-014/#75 trees + migrations + Wave B lockfile.
 task_id: SF-M04-STITCH-B
 title: M04 Wave B mechanical stitch and lockfile
 module_id: M04
 agent_role: integration_agent
 builder_agent: serviceform-integration-stitcher
-model_route: opus
-model_release: claude-opus-5-5
-effort: high
+model_route: composer
 component_ids: [CMP-009, CMP-014]
 integration_ids: [INT-011, INT-013]
-branch: agent/M04-stitch-b-SF-M04-STITCH-B
-worktree: ../wt-SF-M04-STITCH-B
+branch: cursor/m04-stitch-b-5c67
+worktree: /home/ubuntu/wt-SF-M04-STITCH-B
 parallel_group: M04-STITCH-B
 hard_serial_locks: [LOCK-7]
 must_not_run_concurrent_with: [SF-M04-STITCH-A]
@@ -20,6 +17,7 @@ depends_on:
   - SF-M04-005 immutable head
   - SF-M04-006 immutable head
   - SF-M04-STITCH-A on origin/main
+  - SF-M04-STITCH-B envelope on origin/main
 allowed_write_paths:
   - services/cmp-009-dynamic-forms/**
   - db/migrations/*_cmp-009-*.sql
@@ -28,78 +26,93 @@ allowed_write_paths:
   - pnpm-lock.yaml
   - evidence/SF-M04-STITCH-B/**
   - orchestrator/handovers/SF-M04-STITCH-B.yaml
-allowed_write_notes:
-  - Component paths are for integrating the two exact immutable builder trees only; no semantic redesign
-  - Mechanical/format/lockfile only; admit Wave B workspace importers; do not weaken frozen-lockfile CI
-  - Serial after Wave B immutable heads; not concurrent with SF-M04-STITCH-A
-  - Do NOT merge builder PRs #74/#75; copy/integrate exact SHA-pinned trees
-explicit_cannot:
-  - semantic redesign of CMP-009 or CMP-014 component source
-  - modify contracts/**, apps/**, other services/**, or existing non-Wave-B migrations
-  - invent new dependencies or broaden lockfile refresh/upgrades
-  - weaken frozen-lockfile / supply-chain controls (minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml)
-  - edit contracts/** or orchestrator/contracts-lock.yaml
-  - self-certify
-read_only_paths:
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - apps/**
-  - scripts/gates/cg01_path_uniqueness_gate.py
-stitch_rule:
-  must:
-    - start from current main
-    - copy/integrate exact immutable CMP-009 tree + migrations from SF-M04-005 / PR #74
-    - copy/integrate exact immutable CMP-014 tree + migrations from SF-M04-006 / PR #75
-    - reconcile only canonical pnpm-lock.yaml importer entries (two new workspace importer sections)
-    - formatting / mechanical reconciliation only
-    - create STITCH-B evidence under evidence/SF-M04-STITCH-B/**
-  must_not:
-    - change CMP-009 / CMP-014 semantics
-    - modify contracts/**, apps/**, other services/**, or existing migrations outside Wave B globs
-    - invent new deps or alter canonical resolutions beyond admitting the two importers
-    - weaken frozen-lockfile / supply-chain
-    - self-certify
-  semantic_conflict: STOP and return to owning builder
-lockfile_expectation:
-  cmp_009_importer_pins:
-    - "@fastify/rate-limit@11.2.0"
-    - "@serviceform/contracts@workspace:*"
-    - "fastify@5.12.5"
-    - "pg@8.23.1"
-    - "@types/pg@8.23.1"
-  cmp_014_importer_pins:
-    - "@serviceform/contracts@workspace:*"
-    - "fastify@5.12.5"
-    - "pg@8.23.1"
-    - "@types/pg@8.23.1"
-  notes:
-    - Versions already in repo graph — add only two new workspace importer sections
-    - Reuse canonical resolutions; no broad refresh/upgrades; keep those pins
-    - Do not alter minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml
 frozen_inputs:
   SF-M04-005: d8c5d7ca9a22eadfe431fa54f3602bfc0ef05ae2
   SF-M04-006: fab7549ce9c29b4d5277a36f94e9a2f9d02dcee0
+actual_stitch_base: 922509ee78892029a27268078f2dfdaef2f52cce
+historical_planning_base: 2db721feb1303385a0c50c79de8629b2478064d9
+draft_pr: null
+authoritative_head_sha: 6d2e386cfd62ee0e50c243056190ce549aca1f52
+immutable_candidate_head: 23a0a7020876146a528360e0b084b73d40b2a6a5
+tree_integrity:
+  byte_identical: true
+  semantic_edits: false
+  formatting_corrections: false
+  cmp009_aggregate_sha256: 7e3abd1cb67621f67c1629c15a49d8c307d931be1ecc36a18ccc7511c3d7941c
+  cmp014_aggregate_sha256: 25c42d34ef6bd5c07173502b77ffd5a152d72ec78d90f237741835291e1a34c0
+lockfile:
+  importers_added:
+    - services/cmp-009-dynamic-forms
+    - services/cmp-014-document-intelligence
+  packages_snapshots_unchanged: true
+  new_third_party_resolutions: false
+  unrelated_upgrades: false
+  frozen_lockfile_install: PASS
+component_floors:
+  CMP-009: { unit_contract: 30, int: 9 }
+  CMP-014: { unit_contract: 20, int: 4 }
+combined_validation:
+  frozen_lockfile: PASS
+  format_check: PASS
+  lint: PASS
+  typecheck: PASS
+  test_coverage: PASS
+  contracts_validate: PASS
+  contracts_lock: PASS
+  test_cdc: PASS
+  deps_graph: PASS
+  build: PASS
+  migration_lint: PASS
+  db_test: PASS
+  tenant_isolation_harness: PASS
+  m01_envelope: PASS
+  architecture_gates: PASS
+security_reconfirm:
+  contracts: 13/13 MATCH
+  frozen_contract_change: false
+  CROSS_TENANT_LEAKAGE: 0
+  runtime_object_owner: false
+  SUPERUSER: false
+  BYPASSRLS: false
+  cross_component_SQL: false
+  apps_api_changed: false
+  direct_model_provider_outside_CMP039: false
+  statutory_AI_decision_path: false
+  second_design_system: false
+migrations_preserved:
+  - 1759530500000_cmp-009-forms.sql
+  - 1759530500001_cmp-009-outbox.sql
+  - 1759530600000_cmp-014-document-intelligence.sql
+  - 1759530600001_cmp-014-outbox.sql
+residuals:
+  EXPECTED_STITCH_B_LOCKFILE_RESIDUAL: CLOSED
+  open:
+    - DO_NOT_MERGE_WITHOUT_AUTH
+    - BUILDERS_74_75_UNMERGED
+    - SF-M04-007_OFF
+    - SF-M04-INT_SEC_EVD_OFF
+    - M04_G3_NOT_ISSUED
+    - M05_OFF
+stitch_executed: true
+envelope_correction: false
+product_stitch_b_hold: true
+do_not_merge: true
+builders_merged: false
 wave_eligible_now: false
-serial_after:
-  - SF-M04-005
-  - SF-M04-006
-  - SF-M04-STITCH-A
-builders_dispatched_this_envelope: false
-planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_FROZEN_PENDING_CI
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g6: false
+m05: off
+m04_g3: false
+recommended_gate: none
 ccr_required: false
 frozen_contracts_altered: false
-base_commit:
-  prefix: 2db721fe
-  suffix: b1303385a0c50c79de8629b2478064d9
-join_separator: "_"
 contract_locks:
   - SF-CON-COMMON
   - SF-CON-REQUEST-CONTEXT
@@ -116,20 +129,9 @@ contract_locks:
   - SF-CON-SIMULATION-MARKER
 stop_conditions:
   - FROZEN contract change required (CCR)
-  - statutory / policy invention required
-  - LLM final statutory eligibility/approval/rejection
-  - write outside allowed_write_paths
-  - dependency on unmerged sibling M04 code as source of truth (except exact frozen_inputs SHA trees for copy/integrate)
-  - semantic conflict with immutable builder trees → STOP and return to owning builder
-  - builder dispatch without uniqueness PASS / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - M05 start
-  - weaken cg01_path_uniqueness_gate.py
+  - merge without separate authorization
+  - start SF-M04-007 / INT / SEC / EVD / M05
   - merge builder PRs #74 or #75
-
-# Envelope correction record (planning-only). Product stitch NOT executed. Not CERTIFIED.
-stitch_executed: false
-envelope_correction: true
-product_stitch_b_hold: true
-m05: off
-recommended_gate: none
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - amend immutable head after checks green
+evidence_root: evidence/SF-M04-STITCH-B

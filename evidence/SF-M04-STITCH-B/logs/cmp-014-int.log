@@ -1,0 +1,16 @@
+
+> @serviceform/cmp-014-document-intelligence@0.0.0 test:integration /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-014-document-intelligence
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/home/ubuntu/wt-SF-M04-STITCH-B/evidence/SF-M04-STITCH-B/junit/cmp-014-int.xml
+
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-014-document-intelligence
+
+ ✓ test/integration/privilege-rls.int.test.ts (3 tests) 646ms
+ ✓ test/integration/api-flow.int.test.ts (1 test) 875ms
+
+ Test Files  2 passed (2)
+      Tests  4 passed (4)
+   Start at  00:54:13
+   Duration  2.28s (tests 74%, import 14%, transform 12%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M04-STITCH-B/evidence/SF-M04-006/junit/integration.xml

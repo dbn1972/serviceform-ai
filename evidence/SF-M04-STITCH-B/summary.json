@@ -1,0 +1,90 @@
+{
+  "schema": "serviceform.sf-m04-stitch-b.summary.v1",
+  "task_id": "SF-M04-STITCH-B",
+  "certified": false,
+  "release_certified": false,
+  "g6": false,
+  "m05": "off",
+  "m04_g3": false,
+  "draft_pr": null,
+  "branch": "cursor/m04-stitch-b-5c67",
+  "actual_stitch_base": "922509ee78892029a27268078f2dfdaef2f52cce",
+  "historical_planning_base": "2db721feb1303385a0c50c79de8629b2478064d9",
+  "historical_heads": {
+    "note": "planning envelope base is historical only; execution base is actual_stitch_base"
+  },
+  "frozen_inputs": {
+    "SF-M04-005": "d8c5d7ca9a22eadfe431fa54f3602bfc0ef05ae2",
+    "SF-M04-006": "fab7549ce9c29b4d5277a36f94e9a2f9d02dcee0"
+  },
+  "authoritative_head_sha": "6d2e386cfd62ee0e50c243056190ce549aca1f52",
+  "tree_integrity": {
+    "byte_identical": true,
+    "cmp009_match_count": 51,
+    "cmp014_match_count": 52,
+    "cmp009_aggregate_sha256": "7e3abd1cb67621f67c1629c15a49d8c307d931be1ecc36a18ccc7511c3d7941c",
+    "cmp014_aggregate_sha256": "25c42d34ef6bd5c07173502b77ffd5a152d72ec78d90f237741835291e1a34c0",
+    "semantic_edits": false,
+    "formatting_corrections": false
+  },
+  "lockfile": {
+    "importers_added": [
+      "services/cmp-009-dynamic-forms",
+      "services/cmp-014-document-intelligence"
+    ],
+    "packages_snapshots_unchanged": true,
+    "new_third_party_resolutions": false,
+    "unrelated_upgrades": false,
+    "frozen_lockfile_install": "PASS",
+    "supply_chain_controls_unchanged": true
+  },
+  "component_floors": {
+    "CMP-009": {
+      "unit_contract": 30,
+      "int": 9,
+      "floor_unit": 30,
+      "floor_int": 9
+    },
+    "CMP-014": {
+      "unit_contract": 20,
+      "int": 4,
+      "floor_unit": 20,
+      "floor_int": 4
+    }
+  },
+  "root_regression": {
+    "coverage_tests": 856,
+    "cdc_tests": 19,
+    "db_tests": 17,
+    "m01_envelope_suites": "16/16",
+    "architecture_gates": "10/10",
+    "migration_lint_files": 45
+  },
+  "contracts": "13/13 MATCH",
+  "frozen_contract_change": false,
+  "cross_tenant_leakage": 0,
+  "security_reconfirm": {
+    "runtime_object_owner": false,
+    "SUPERUSER": false,
+    "BYPASSRLS": false,
+    "cross_component_SQL": false,
+    "apps_api_changed": false,
+    "direct_model_provider_outside_CMP039": false,
+    "statutory_AI_decision_path": false,
+    "second_design_system": false
+  },
+  "residuals": {
+    "EXPECTED_STITCH_B_LOCKFILE_RESIDUAL": "CLOSED",
+    "open": [
+      "DO_NOT_MERGE_WITHOUT_AUTH",
+      "BUILDERS_74_75_UNMERGED",
+      "SF-M04-007_OFF",
+      "SF-M04-INT_SEC_EVD_OFF",
+      "M04_G3_NOT_ISSUED",
+      "M05_OFF"
+    ]
+  },
+  "self_certified": false,
+  "sha_stamp_commit": "6d2e386cfd62ee0e50c243056190ce549aca1f52",
+  "immutable_candidate_head": "23a0a7020876146a528360e0b084b73d40b2a6a5"
+}

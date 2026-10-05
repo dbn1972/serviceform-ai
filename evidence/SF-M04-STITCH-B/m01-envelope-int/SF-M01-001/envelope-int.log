@@ -1,0 +1,18 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M04-STITCH-B/services/cmp-002-tenant-organisation
+
+ ✓ test/integration/rls-matrix.int.test.ts (3 tests) 1062ms
+ ✓ test/integration/privilege-boundary.int.test.ts (11 tests) 852ms
+ ✓ test/integration/api-negative.int.test.ts (14 tests) 1213ms
+ ✓ test/integration/migration.int.test.ts (1 test) 661ms
+ ✓ test/integration/pool-reuse.int.test.ts (3 tests) 728ms
+
+ Test Files  5 passed (5)
+      Tests  32 passed (32)
+   Start at  00:55:10
+   Duration  6.34s (tests 79%, import 14%, transform 7%)
+
+    Isolate  5 workers spawned · ~109ms startup each (spawn + environment, per file)
+             at least ~435ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /home/ubuntu/wt-SF-M04-STITCH-B/evidence/SF-M04-STITCH-B/m01-envelope-int/SF-M01-001/junit/envelope-int.xml

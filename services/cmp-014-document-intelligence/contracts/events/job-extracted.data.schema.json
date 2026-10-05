@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IntelligenceJobExtracted data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "job_id",
+    "source_document_id",
+    "source_checksum_sha256",
+    "status",
+    "advisory_only",
+    "statutory_decision",
+    "field_count",
+    "overall_confidence",
+    "ocr_text_hash",
+    "model_id",
+    "model_version",
+    "prompt_id",
+    "prompt_version",
+    "prompt_hash",
+    "fields"
+  ],
+  "properties": {
+    "job_id": { "type": "string", "format": "uuid" },
+    "source_document_id": { "type": "string", "format": "uuid" },
+    "source_checksum_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": { "type": "string" },
+    "advisory_only": { "const": true },
+    "statutory_decision": { "const": false },
+    "field_count": { "type": "integer" },
+    "overall_confidence": { "type": "number" },
+    "ocr_text_hash": { "type": "string" },
+    "model_id": { "type": "string" },
+    "model_version": { "type": "string" },
+    "prompt_id": { "type": "string" },
+    "prompt_version": { "type": "integer" },
+    "prompt_hash": { "type": "string" },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value_hash", "confidence"],
+        "properties": {
+          "name": { "type": "string" },
+          "value_hash": { "type": "string" },
+          "confidence": { "type": "number" }
+        }
+      }
+    }
+  }
+}
