@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Cmp016Error } from '../errors.js';
-import { UUID_RE } from '../domain/model.js';
+import { isUuid } from '../domain/model.js';
 import type { WorkflowContext } from '../ports.js';
 import type { SqlClient } from './tx.js';
 
@@ -61,11 +61,11 @@ export function envelopeOf<T extends object>(
 
 function assertEnvelope(env: EventEnvelope<object>): void {
   const ok =
-    UUID_RE.test(env.event_id) &&
-    UUID_RE.test(env.tenant_id) &&
-    UUID_RE.test(env.aggregate_id) &&
-    UUID_RE.test(env.correlation_id) &&
-    UUID_RE.test(env.actor.id) &&
+    isUuid(env.event_id) &&
+    isUuid(env.tenant_id) &&
+    isUuid(env.aggregate_id) &&
+    isUuid(env.correlation_id) &&
+    isUuid(env.actor.id) &&
     /^[A-Z][A-Za-z0-9]{2,79}$/.test(env.event_type) &&
     /^[A-Z][A-Za-z0-9]{1,63}$/.test(env.aggregate_type) &&
     /^cell-[a-z0-9-]{1,40}$/.test(env.cell_id) &&

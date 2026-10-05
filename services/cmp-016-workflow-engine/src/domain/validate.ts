@@ -7,7 +7,7 @@ import {
   NODE_ID_RE,
   NODE_KINDS,
   RULE_REF_RE,
-  UUID_RE,
+  isUuid,
   incoming,
   isPortKind,
   isRequestKind,
@@ -80,21 +80,21 @@ function parseAssignment(raw: unknown, pointer: string): Assignment {
   if (typeof role_code !== 'string' || !CODE_RE.test(role_code)) {
     throw invalid('ASSIGNMENT_ROLE_REQUIRED', `${pointer}/role_code`);
   }
-  if (typeof organisation_id !== 'string' || !UUID_RE.test(organisation_id)) {
+  if (typeof organisation_id !== 'string' || !isUuid(organisation_id)) {
     throw invalid('ASSIGNMENT_ORGANISATION_REQUIRED', `${pointer}/organisation_id`);
   }
-  if (typeof jurisdiction_id !== 'string' || !UUID_RE.test(jurisdiction_id)) {
+  if (typeof jurisdiction_id !== 'string' || !isUuid(jurisdiction_id)) {
     throw invalid('ASSIGNMENT_JURISDICTION_REQUIRED', `${pointer}/jurisdiction_id`);
   }
   const out: Assignment = { role_code, organisation_id, jurisdiction_id };
   if (office_id !== undefined) {
-    if (typeof office_id !== 'string' || !UUID_RE.test(office_id)) {
+    if (typeof office_id !== 'string' || !isUuid(office_id)) {
       throw invalid('ASSIGNMENT_OFFICE_INVALID', `${pointer}/office_id`);
     }
     out.office_id = office_id;
   }
   if (service_scope_id !== undefined) {
-    if (typeof service_scope_id !== 'string' || !UUID_RE.test(service_scope_id)) {
+    if (typeof service_scope_id !== 'string' || !isUuid(service_scope_id)) {
       throw invalid('ASSIGNMENT_SCOPE_INVALID', `${pointer}/service_scope_id`);
     }
     out.service_scope_id = service_scope_id;
@@ -303,7 +303,7 @@ export function parseCanonicalModel(raw: unknown): CanonicalWorkflowModel {
     if (raw[key] !== value) throw invalid('MODEL_CONSTANT_INVALID', `/${key}`);
   }
   const versionId = raw['workflow_version_id'];
-  if (typeof versionId !== 'string' || !UUID_RE.test(versionId)) {
+  if (typeof versionId !== 'string' || !isUuid(versionId)) {
     throw invalid('WORKFLOW_VERSION_ID_INVALID', '/workflow_version_id');
   }
   const hash = raw['graph_hash'];

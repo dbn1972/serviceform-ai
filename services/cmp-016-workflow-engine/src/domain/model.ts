@@ -75,7 +75,21 @@ export interface CanonicalWorkflowModel extends WorkflowGraph {
   bpmn_role: 'IMPORT_EXPORT_PROFILE_ONLY';
 }
 
-export const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const HEX = '0123456789abcdefABCDEF';
+
+/** RFC 9562 UUID (versions 1-8, RFC variant). Fixed-length character check; no regex. */
+export function isUuid(value: unknown): value is string {
+  if (typeof value !== 'string' || value.length !== 36) return false;
+  for (let i = 0; i < 36; i += 1) {
+    const c = value[i] as string;
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      if (c !== '-') return false;
+    } else if (!HEX.includes(c)) {
+      return false;
+    }
+  }
+  return '12345678'.includes(value[14] as string) && '89abAB'.includes(value[19] as string);
+}
 export const NODE_ID_RE = /^[A-Z][A-Z0-9_]{0,63}$/;
 export const CODE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
 export const RULE_REF_RE = /^[A-Za-z0-9_.:-]{1,200}$/;

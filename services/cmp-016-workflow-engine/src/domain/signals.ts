@@ -1,4 +1,4 @@
-import { CODE_RE, NODE_ID_RE, UUID_RE } from './model.js';
+import { CODE_RE, NODE_ID_RE, isUuid } from './model.js';
 import { reject } from '../errors.js';
 
 /**
@@ -86,7 +86,7 @@ export function assertCommitted(signal: CommittedSignal): void {
   if (signal.domain_committed !== true || signal.phase !== 'DOMAIN_COMMITTED') {
     throw reject('ADVANCE_BEFORE_DOMAIN_COMMIT', '/domain_committed');
   }
-  if (typeof signal.outbox_event_id !== 'string' || !UUID_RE.test(signal.outbox_event_id)) {
+  if (typeof signal.outbox_event_id !== 'string' || !isUuid(signal.outbox_event_id)) {
     throw reject('ADVANCE_WITHOUT_OUTBOX', '/outbox_event_id');
   }
   if (signal.source_component !== 'CMP-015' && signal.source_component !== 'CMP-016') {
@@ -99,7 +99,7 @@ export function assertCommitted(signal: CommittedSignal): void {
     'workflow_version_id',
     'command_id',
   ] as const) {
-    if (typeof signal[key] !== 'string' || !UUID_RE.test(signal[key])) {
+    if (typeof signal[key] !== 'string' || !isUuid(signal[key])) {
       throw reject('SIGNAL_FIELD_INVALID', `/${key}`);
     }
   }

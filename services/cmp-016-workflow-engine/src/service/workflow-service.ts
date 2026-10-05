@@ -7,7 +7,7 @@ import { Cmp016Error, invalid, mapPgError, reject } from '../errors.js';
 import { canonicalJson, sha256 } from '../domain/hash.js';
 import { activeNodes, type InstanceState } from '../domain/interpreter.js';
 import { validatePlan, type MigrationPlan } from '../domain/migration.js';
-import { CODE_RE, UUID_RE, nodeIndex, outgoing, type NodeKind } from '../domain/model.js';
+import { CODE_RE, isUuid, nodeIndex, outgoing, type NodeKind } from '../domain/model.js';
 import {
   assertCommitted,
   signalFromCommandTransition,
@@ -55,7 +55,7 @@ export interface AdvanceResult {
 }
 
 function requireUuid(value: unknown, pointer: string): string {
-  if (typeof value !== 'string' || !UUID_RE.test(value)) throw invalid('UUID_REQUIRED', pointer);
+  if (typeof value !== 'string' || !isUuid(value)) throw invalid('UUID_REQUIRED', pointer);
   return value;
 }
 

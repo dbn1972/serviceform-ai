@@ -122,6 +122,31 @@ describe('BPMN 2.0 import/export interoperability profile (Constitution #33)', (
     expect(code(() => importBpmn(xml))).toBe('BPMN_XML_MALFORMED');
   });
 
+  it('NEGATIVE: comment handling is linear and cannot hide markup', () => {
+    expect(code(() => importBpmn(`${HEAD}<!-- never closed ${TAIL}`))).toBe('BPMN_XML_MALFORMED');
+    const hostile = `${HEAD}${'<!--'.repeat(200_000)}${TAIL}`;
+    const t0 = performance.now();
+    expect(code(() => importBpmn(hostile))).toBe('BPMN_XML_MALFORMED');
+    expect(performance.now() - t0).toBeLessThan(500);
+    const many = doc(`${'<!-- x --><!---->'.repeat(20_000)}${MINIMAL}`);
+    const t1 = performance.now();
+    expect(importBpmn(many).graph.nodes).toHaveLength(3);
+    expect(performance.now() - t1).toBeLessThan(500);
+    expect(code(() => importBpmn(`${HEAD}<!-- a --><!DOCTYPE x>${TAIL}`))).toBe(
+      'BPMN_XML_DTD_FORBIDDEN',
+    );
+  });
+
+  it('NEGATIVE: rejects markup characters inside attribute values and missing attribute separators', () => {
+    expect(code(() => importBpmn(doc('<bpmn:startEvent id="a<b"/>')))).toBe('BPMN_XML_MALFORMED');
+    expect(code(() => importBpmn(doc('<bpmn:startEvent id="a"name="b"/>')))).toBe(
+      'BPMN_XML_MALFORMED',
+    );
+    expect(code(() => importBpmn(doc('<bpmn:startEvent id="&unknown;"/>')))).toBe(
+      'BPMN_XML_ENTITY_FORBIDDEN',
+    );
+  });
+
   it('NEGATIVE: rejects more than one root element', () => {
     expect(code(() => importBpmn(`${HEAD}${TAIL}<bpmn:definitions/>`))).toBe(
       'BPMN_XML_MULTIPLE_ROOTS',
