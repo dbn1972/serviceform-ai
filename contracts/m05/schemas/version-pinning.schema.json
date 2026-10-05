@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/version-pinning/v1",
+  "title": "ApplicationVersionPinning",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-VERSION-PINNING. Pinned execution graph versus runtime authorization policy_revision (ADR-0005 ACCEPTED). TSB, workflow, form, rules, evidence-policy, SLA and other statutory config stay immutable unless a governed migration repoints them (Constitution #8 #9 #35). No silent config repoint. TSB authorization_policy_version_id if present is publication provenance only; runtime decision policy_revision is authoritative for the protected action. Does not modify SF-CON-AUTHZ-DECISION.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "application_id",
+    "pin_graph",
+    "runtime_authz_policy_revision",
+    "silent_repoint_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-VERSION-PINNING"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "pin_graph": {
+      "$ref": "#/$defs/pinGraph"
+    },
+    "runtime_authz_policy_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "OPA output policy_revision for the current action (SF-CON-AUTHZ-DECISION)."
+    },
+    "runtime_authz_decision_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "silent_repoint_forbidden": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "$defs": {
+    "pinGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tenant_service_binding_id",
+        "form_version_id",
+        "rule_version_id",
+        "workflow_version_id",
+        "evidence_policy_version_id",
+        "sla_policy_version_id"
+      ],
+      "properties": {
+        "tenant_service_binding_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "form_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "rule_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "workflow_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "evidence_policy_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "fee_policy_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "sla_policy_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "credential_template_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "notification_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "authorization_policy_version_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid",
+          "description": "Optional TSB publication/provenance. Do not remove or mutate if present. Not the runtime authorization decision revision (ADR-0005 ACCEPTED)."
+        }
+      }
+    }
+  }
+}

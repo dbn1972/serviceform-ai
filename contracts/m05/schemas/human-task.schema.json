@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/human-task/v1",
+  "title": "HumanTask",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-HUMAN-TASK. CMP-017. Lifecycle operations: create, claim, unclaim, reassign, complete, cancel-close. Assignment criteria are role + organisation + jurisdiction + scope. OPA authorizes each operation. Tenant-bound. Published workflow must not name an officer (Constitution #19). Human-task rows are PostgreSQL domain records; Temporal is signaled after domain commit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "owner_component",
+    "tenant_id",
+    "task_id",
+    "application_id",
+    "operation",
+    "task_state",
+    "assignment",
+    "authz_decision_id",
+    "idempotency_key"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-HUMAN-TASK"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "owner_component": {
+      "const": "CMP-017"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "task_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "workflow_node_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["CREATE", "CLAIM", "UNCLAIM", "REASSIGN", "COMPLETE", "CANCEL_CLOSE"]
+    },
+    "task_state": {
+      "type": "string",
+      "enum": ["OPEN", "CLAIMED", "COMPLETED", "CANCELLED_CLOSED"]
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_code", "organisation_id", "jurisdiction_id"],
+      "properties": {
+        "role_code": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/roleCode"
+        },
+        "organisation_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "office_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "jurisdiction_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "service_scope_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "claimed_principal_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        }
+      }
+    },
+    "authz_decision_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "outcome": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+    }
+  }
+}

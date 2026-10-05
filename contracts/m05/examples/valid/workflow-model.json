@@ -1,0 +1,97 @@
+{
+  "contract_id": "SF-CON-WORKFLOW-MODEL",
+  "contract_status": "PROPOSED",
+  "freeze_status": "NOT_FROZEN",
+  "owner_component": "CMP-016",
+  "workflow_version_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+  "graph_hash": "sha256:abababababababababababababababababababababababababababababababab",
+  "immutable": true,
+  "runtime": "TEMPORAL",
+  "bpmn_role": "IMPORT_EXPORT_PROFILE_ONLY",
+  "nodes": [
+    {
+      "node_id": "START",
+      "kind": "START"
+    },
+    {
+      "node_id": "SCRUTINY",
+      "kind": "HUMAN_TASK",
+      "assignment": {
+        "role_code": "SCRUTINY_OFFICER",
+        "organisation_id": "66666666-6666-4666-8666-666666666666",
+        "office_id": "19191919-1919-4191-8191-191919191919",
+        "jurisdiction_id": "77777777-7777-4777-8777-777777777777",
+        "service_scope_id": "18181818-1818-4181-8181-181818181818",
+        "claim_mode": "CLAIM"
+      }
+    },
+    {
+      "node_id": "WITHDRAW_REQ",
+      "kind": "WITHDRAWAL_REQUEST"
+    },
+    {
+      "node_id": "WITHDRAW_REV",
+      "kind": "WITHDRAWAL_REVIEW"
+    },
+    {
+      "node_id": "CANCEL_REQ",
+      "kind": "CANCELLATION_REQUEST"
+    },
+    {
+      "node_id": "CANCEL_REV",
+      "kind": "CANCELLATION_REVIEW"
+    },
+    {
+      "node_id": "NOTIFY_PORT",
+      "kind": "NOTIFY",
+      "port_only": true
+    },
+    {
+      "node_id": "END",
+      "kind": "END"
+    }
+  ],
+  "edges": [
+    {
+      "from_node": "START",
+      "to_node": "SCRUTINY"
+    },
+    {
+      "from_node": "SCRUTINY",
+      "to_node": "WITHDRAW_REQ",
+      "outcome": "CITIZEN_WITHDRAW"
+    },
+    {
+      "from_node": "WITHDRAW_REQ",
+      "to_node": "WITHDRAW_REV"
+    },
+    {
+      "from_node": "WITHDRAW_REV",
+      "to_node": "END",
+      "outcome": "COMMIT_WITHDRAWAL"
+    },
+    {
+      "from_node": "SCRUTINY",
+      "to_node": "CANCEL_REQ",
+      "outcome": "ADMIN_CANCEL"
+    },
+    {
+      "from_node": "CANCEL_REQ",
+      "to_node": "CANCEL_REV"
+    },
+    {
+      "from_node": "CANCEL_REV",
+      "to_node": "END",
+      "outcome": "COMMIT_CANCELLATION"
+    },
+    {
+      "from_node": "SCRUTINY",
+      "to_node": "NOTIFY_PORT",
+      "outcome": "NOTIFY_CITIZEN"
+    },
+    {
+      "from_node": "NOTIFY_PORT",
+      "to_node": "END"
+    }
+  ]
+}

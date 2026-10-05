@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/application-case-sm/v1",
+  "title": "ApplicationCaseStateMachine",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-APPLICATION-CASE-SM. CMP-015 is the sole owner of authoritative application/case state (Constitution #10; AWS v1.7 s12.1; ADR-0003 ACCEPTED). WITHDRAWAL_REQUESTED and CANCELLATION_REQUESTED are not authoritative states: they are workflow/request constructs. Every transition whose to_state is WITHDRAWN or CANCELLED is POLICY-GATED (published service policy + committed request construct). None is ALWAYS_LEGAL. Service availability is not invented here; it stays in published policy/rules. Mutations require tenant context, OPA allow, idempotency, expected-state, outbox, and audit. AI cannot approve or reject. Instance rule: expected_state MUST equal from_state; mismatches are SF-APP-001.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "owner_component",
+    "tenant_id",
+    "application_id",
+    "command",
+    "from_state",
+    "to_state",
+    "transition_key",
+    "transition_class",
+    "expected_state",
+    "aggregate_version",
+    "idempotency_key",
+    "authz_decision_id",
+    "correlation_id",
+    "actor_type",
+    "actor_id"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-APPLICATION-CASE-SM"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "owner_component": {
+      "const": "CMP-015"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "command": {
+      "type": "string",
+      "enum": [
+        "CREATE_DRAFT",
+        "MARK_READY_TO_SUBMIT",
+        "RETURN_TO_DRAFT",
+        "SUBMIT",
+        "ENTER_PAYMENT_PENDING",
+        "MARK_RECEIVED",
+        "ENTER_SCRUTINY",
+        "RAISE_DEFICIENCY",
+        "RECORD_CITIZEN_RESPONSE",
+        "ENTER_VERIFICATION",
+        "ENTER_DECISION_PENDING",
+        "RECORD_APPROVED",
+        "RECORD_REJECTED",
+        "ENTER_SIGNING_PENDING",
+        "RECORD_ISSUED",
+        "CLOSE",
+        "COMMIT_WITHDRAWAL",
+        "COMMIT_CANCELLATION"
+      ]
+    },
+    "from_state": {
+      "$ref": "#/$defs/legalState"
+    },
+    "to_state": {
+      "$ref": "#/$defs/legalState"
+    },
+    "transition_key": {
+      "type": "string",
+      "enum": [
+        "DRAFT>READY_TO_SUBMIT",
+        "READY_TO_SUBMIT>SUBMITTED",
+        "READY_TO_SUBMIT>DRAFT",
+        "SUBMITTED>PAYMENT_PENDING",
+        "SUBMITTED>RECEIVED",
+        "PAYMENT_PENDING>RECEIVED",
+        "RECEIVED>UNDER_SCRUTINY",
+        "UNDER_SCRUTINY>DEFICIENCY_RAISED",
+        "UNDER_SCRUTINY>VERIFICATION",
+        "UNDER_SCRUTINY>DECISION_PENDING",
+        "DEFICIENCY_RAISED>CITIZEN_RESPONSE",
+        "CITIZEN_RESPONSE>UNDER_SCRUTINY",
+        "VERIFICATION>UNDER_SCRUTINY",
+        "VERIFICATION>DECISION_PENDING",
+        "DECISION_PENDING>APPROVED",
+        "DECISION_PENDING>REJECTED",
+        "APPROVED>SIGNING_PENDING",
+        "APPROVED>ISSUED",
+        "REJECTED>CLOSED",
+        "SIGNING_PENDING>ISSUED",
+        "ISSUED>CLOSED",
+        "DRAFT>WITHDRAWN",
+        "READY_TO_SUBMIT>WITHDRAWN",
+        "SUBMITTED>WITHDRAWN",
+        "PAYMENT_PENDING>WITHDRAWN",
+        "RECEIVED>WITHDRAWN",
+        "UNDER_SCRUTINY>WITHDRAWN",
+        "DEFICIENCY_RAISED>WITHDRAWN",
+        "CITIZEN_RESPONSE>WITHDRAWN",
+        "VERIFICATION>WITHDRAWN",
+        "DECISION_PENDING>WITHDRAWN",
+        "PAYMENT_PENDING>CANCELLED",
+        "DEFICIENCY_RAISED>CANCELLED",
+        "SUBMITTED>CANCELLED",
+        "RECEIVED>CANCELLED",
+        "UNDER_SCRUTINY>CANCELLED",
+        "CITIZEN_RESPONSE>CANCELLED",
+        "VERIFICATION>CANCELLED",
+        "DECISION_PENDING>CANCELLED"
+      ]
+    },
+    "transition_class": {
+      "type": "string",
+      "enum": ["ALWAYS_LEGAL", "POLICY_GATED_WITHDRAWAL", "POLICY_GATED_CANCELLATION"]
+    },
+    "expected_state": {
+      "$ref": "#/$defs/legalState"
+    },
+    "aggregate_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "authz_decision_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "actor_type": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actorType"
+    },
+    "actor_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "reason_code": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+    },
+    "outbox_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "request_construct": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Workflow/request construct (ADR-0003 ACCEPTED). Must not be stored as application_state. Authoritative case state stays from_state until CMP-015 commits.",
+      "required": ["kind", "status"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["WITHDRAWAL", "CANCELLATION"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["SUBMITTED", "UNDER_REVIEW", "REJECTED", "EXPIRED", "COMMITTED"]
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "transition_class": {
+            "const": "ALWAYS_LEGAL"
+          }
+        },
+        "required": ["transition_class"]
+      },
+      "then": {
+        "properties": {
+          "transition_key": {
+            "$ref": "#/$defs/alwaysLegalTransitionKey"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "transition_class": {
+            "const": "POLICY_GATED_WITHDRAWAL"
+          }
+        },
+        "required": ["transition_class"]
+      },
+      "then": {
+        "required": ["request_construct"],
+        "properties": {
+          "transition_key": {
+            "$ref": "#/$defs/policyGatedWithdrawalKey"
+          },
+          "request_construct": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "status"],
+            "properties": {
+              "kind": {
+                "const": "WITHDRAWAL"
+              },
+              "status": {
+                "const": "COMMITTED"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "transition_class": {
+            "const": "POLICY_GATED_CANCELLATION"
+          }
+        },
+        "required": ["transition_class"]
+      },
+      "then": {
+        "required": ["request_construct"],
+        "properties": {
+          "transition_key": {
+            "$ref": "#/$defs/policyGatedCancellationKey"
+          },
+          "request_construct": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "status"],
+            "properties": {
+              "kind": {
+                "const": "CANCELLATION"
+              },
+              "status": {
+                "const": "COMMITTED"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "legalState": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "READY_TO_SUBMIT",
+        "SUBMITTED",
+        "PAYMENT_PENDING",
+        "RECEIVED",
+        "UNDER_SCRUTINY",
+        "DEFICIENCY_RAISED",
+        "CITIZEN_RESPONSE",
+        "VERIFICATION",
+        "DECISION_PENDING",
+        "APPROVED",
+        "REJECTED",
+        "SIGNING_PENDING",
+        "ISSUED",
+        "CLOSED",
+        "WITHDRAWN",
+        "CANCELLED"
+      ],
+      "description": "AWS v1.7 s12.1 canonical states only. Forbidden as application_state: WITHDRAWAL_REQUESTED, CANCELLATION_REQUESTED"
+    },
+    "forbiddenAuthoritativeState": {
+      "type": "string",
+      "enum": ["WITHDRAWAL_REQUESTED", "CANCELLATION_REQUESTED"],
+      "description": "Not CMP-015 states (ADR-0003 ACCEPTED)."
+    },
+    "alwaysLegalTransitionKey": {
+      "type": "string",
+      "enum": [
+        "DRAFT>READY_TO_SUBMIT",
+        "READY_TO_SUBMIT>SUBMITTED",
+        "READY_TO_SUBMIT>DRAFT",
+        "SUBMITTED>PAYMENT_PENDING",
+        "SUBMITTED>RECEIVED",
+        "PAYMENT_PENDING>RECEIVED",
+        "RECEIVED>UNDER_SCRUTINY",
+        "UNDER_SCRUTINY>DEFICIENCY_RAISED",
+        "UNDER_SCRUTINY>VERIFICATION",
+        "UNDER_SCRUTINY>DECISION_PENDING",
+        "DEFICIENCY_RAISED>CITIZEN_RESPONSE",
+        "CITIZEN_RESPONSE>UNDER_SCRUTINY",
+        "VERIFICATION>UNDER_SCRUTINY",
+        "VERIFICATION>DECISION_PENDING",
+        "DECISION_PENDING>APPROVED",
+        "DECISION_PENDING>REJECTED",
+        "APPROVED>SIGNING_PENDING",
+        "APPROVED>ISSUED",
+        "REJECTED>CLOSED",
+        "SIGNING_PENDING>ISSUED",
+        "ISSUED>CLOSED"
+      ]
+    },
+    "policyGatedWithdrawalKey": {
+      "type": "string",
+      "enum": [
+        "DRAFT>WITHDRAWN",
+        "READY_TO_SUBMIT>WITHDRAWN",
+        "SUBMITTED>WITHDRAWN",
+        "PAYMENT_PENDING>WITHDRAWN",
+        "RECEIVED>WITHDRAWN",
+        "UNDER_SCRUTINY>WITHDRAWN",
+        "DEFICIENCY_RAISED>WITHDRAWN",
+        "CITIZEN_RESPONSE>WITHDRAWN",
+        "VERIFICATION>WITHDRAWN",
+        "DECISION_PENDING>WITHDRAWN"
+      ]
+    },
+    "policyGatedCancellationKey": {
+      "type": "string",
+      "enum": [
+        "PAYMENT_PENDING>CANCELLED",
+        "DEFICIENCY_RAISED>CANCELLED",
+        "SUBMITTED>CANCELLED",
+        "RECEIVED>CANCELLED",
+        "UNDER_SCRUTINY>CANCELLED",
+        "CITIZEN_RESPONSE>CANCELLED",
+        "VERIFICATION>CANCELLED",
+        "DECISION_PENDING>CANCELLED"
+      ]
+    }
+  }
+}

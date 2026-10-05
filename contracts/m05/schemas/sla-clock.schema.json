@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/sla-clock/v1",
+  "title": "SlaClock",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-SLA-CLOCK. CMP-029. Start and completion anchors, calendar/version, deadline, pause/resume, breach, escalation (Constitution #16; AWS v1.7 CMP-029; INT-009). Pause only under the published SLA policy. Resume only from a valid PAUSED clock. Clients must not supply a clock-now used as authoritative time. Notification emission is an M06 port (CMP-025), not implemented here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "owner_component",
+    "tenant_id",
+    "application_id",
+    "clock_id",
+    "sla_policy_version_id",
+    "calendar_version_id",
+    "start_anchor",
+    "completion_anchor",
+    "clock_status",
+    "deadline_at",
+    "server_computed_deadline",
+    "notification_port"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-SLA-CLOCK"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "owner_component": {
+      "const": "CMP-029"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "clock_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "sla_policy_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "calendar_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "start_anchor": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_RECEIVED",
+        "PAYMENT_CONFIRMED",
+        "SCRUTINY_STARTED",
+        "DEFICIENCY_CLOSED",
+        "PUBLISHED_POLICY_ANCHOR"
+      ]
+    },
+    "completion_anchor": {
+      "type": "string",
+      "enum": ["DECISION_RECORDED", "CREDENTIAL_ISSUED", "CASE_CLOSED", "PUBLISHED_POLICY_ANCHOR"]
+    },
+    "clock_status": {
+      "type": "string",
+      "enum": ["NOT_STARTED", "RUNNING", "PAUSED", "COMPLETED", "BREACHED"]
+    },
+    "deadline_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "server_computed_deadline": {
+      "type": "boolean",
+      "const": true
+    },
+    "pause_reason_code": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+    },
+    "pause_allowed_by_published_sla": {
+      "type": "boolean"
+    },
+    "escalation_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "breach_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "notification_port": {
+      "const": "M06_CMP025"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["START", "PAUSE", "RESUME", "COMPLETE", "BREACH", "ESCALATE"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "PAUSE"
+          }
+        },
+        "required": ["operation"]
+      },
+      "then": {
+        "required": ["pause_reason_code", "pause_allowed_by_published_sla"],
+        "properties": {
+          "pause_allowed_by_published_sla": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "RESUME"
+          }
+        },
+        "required": ["operation"]
+      },
+      "then": {
+        "properties": {
+          "clock_status": {
+            "const": "PAUSED"
+          }
+        }
+      }
+    }
+  ]
+}

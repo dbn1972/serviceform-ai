@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/workflow-model/v1",
+  "title": "CanonicalWorkflowModel",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-WORKFLOW-MODEL. CMP-016. Temporal is the durable runtime. BPMN 2.0 is an import/export interoperability profile over this graph, not a second runtime (Constitution #33). Published versions are immutable. Assignment is role + organisation + jurisdiction + scope, never a named officer (Constitution #3, #19). PAYMENT, SIGN, ISSUE, NOTIFY are port node kinds; M05 does not implement M06/M07 providers. Includes withdrawal/cancellation request/review nodes (ADR-0003 ACCEPTED).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "owner_component",
+    "workflow_version_id",
+    "graph_hash",
+    "immutable",
+    "runtime",
+    "bpmn_role",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-WORKFLOW-MODEL"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "owner_component": {
+      "const": "CMP-016"
+    },
+    "workflow_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "graph_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "immutable": {
+      "type": "boolean",
+      "const": true
+    },
+    "runtime": {
+      "const": "TEMPORAL"
+    },
+    "bpmn_role": {
+      "const": "IMPORT_EXPORT_PROFILE_ONLY"
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    }
+  },
+  "$defs": {
+    "nodeKind": {
+      "type": "string",
+      "enum": [
+        "START",
+        "HUMAN_TASK",
+        "RULE_GATE",
+        "SERVICE_ACTIVITY",
+        "PAYMENT",
+        "WAIT",
+        "TIMER",
+        "DEFICIENCY",
+        "DECISION",
+        "PARALLEL",
+        "SIGN",
+        "ISSUE",
+        "NOTIFY",
+        "END",
+        "WITHDRAWAL_REQUEST",
+        "WITHDRAWAL_REVIEW",
+        "CANCELLATION_REQUEST",
+        "CANCELLATION_REVIEW"
+      ]
+    },
+    "portNodeKind": {
+      "type": "string",
+      "enum": ["PAYMENT", "SIGN", "ISSUE", "NOTIFY"],
+      "description": "Declared ports; no M06/M07 provider implementation in M05."
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_code", "organisation_id", "jurisdiction_id"],
+      "properties": {
+        "role_code": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/roleCode"
+        },
+        "organisation_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "office_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "jurisdiction_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "service_scope_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        "claim_mode": {
+          "type": "string",
+          "enum": ["CLAIM", "PUSH", "POOL"]
+        }
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "kind"],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+        },
+        "kind": {
+          "$ref": "#/$defs/nodeKind"
+        },
+        "assignment": {
+          "$ref": "#/$defs/assignment"
+        },
+        "port_only": {
+          "type": "boolean",
+          "description": "True for PAYMENT/SIGN/ISSUE/NOTIFY in M05."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "HUMAN_TASK"
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "required": ["assignment"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["PAYMENT", "SIGN", "ISSUE", "NOTIFY"]
+              }
+            },
+            "required": ["kind"]
+          },
+          "then": {
+            "properties": {
+              "port_only": {
+                "const": true
+              }
+            },
+            "required": ["port_only"]
+          }
+        }
+      ]
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from_node", "to_node"],
+      "properties": {
+        "from_node": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+        },
+        "to_node": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+        },
+        "condition_rule_ref": {
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[A-Za-z0-9_.:-]{1,200}$"
+        },
+        "outcome": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+        }
+      }
+    }
+  }
+}
