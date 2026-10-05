@@ -114,3 +114,28 @@ acceptance_tests_planning:
   - BPMN artifacts cannot execute without canonical workflow model
   - Published version mutation denied
   - Host mount deferred to SF-M05-009
+
+# Builder completion (does not dispatch; does not certify; does not merge)
+builder_completed: true
+builder_branch: agent/M05-workflow-SF-M05-002
+builder_base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+builder_pr: https://github.com/dbn1972/serviceform-ai/pull/89
+builder_evidence: evidence/SF-M05-002/EVIDENCE.md
+builder_migrations:
+  - db/migrations/1759540160000_cmp-016-workflow-engine.sql
+  - db/migrations/1759540160001_cmp-016-outbox.sql
+builder_lockfile_changed: false
+builder_contracts_changed: false
+builder_ccr_required: false
+expected_stitch_a_items:
+  - Workspace importer services/cmp-016-workflow-engine (zero dependencies; frozen-lockfile already passes)
+  - Temporal SDK worker binding (@temporalio/*) needs lockfile admission; not added by this builder
+  - Coordinate CMP-016 migration repoint with CMP-015 pin graph (SF-CON-VERSION-PINNING)
+builder_notes: |
+  CMP-016 canonical workflow model (SF-CON-WORKFLOW-MODEL) with immutable published versions,
+  deterministic interpreter, Temporal sequencing adapter (start/signal only; refuses calls inside
+  an open domain transaction), BPMN 2.0 import/export profile only (imports become drafts; never
+  executed). Advancement only on committed SF-CON-COMMAND-TRANSITION records (domain commit ->
+  outbox -> Temporal). Assignment is role + organisation/office + jurisdiction + scope; named
+  officers rejected. sf_workflow FORCE RLS; sf_cmp016_rw NOLOGIN; no cross-component SQL.
+  Host mount deferred to SF-M05-009. Not CERTIFIED / Not G4 / Not G6. STITCH-A OFF.
