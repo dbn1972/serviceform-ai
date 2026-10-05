@@ -32,14 +32,22 @@ allowed_write_paths:
   - evidence/SF-M05-CG-001/**
 planned_freeze_write_paths:
   - contracts/m05/**
-  - note: append-only NEW rows on orchestrator/contracts-lock.yaml after freeze authorization; never mutate existing 13 hashes
+  - orchestrator/contracts-lock.yaml
+  - evidence/SF-M05-CG-001/**
+  - orchestrator/handovers/SF-M05-CG-001.yaml
+planned_freeze_constraints:
+  contracts_lock_mode: APPEND_NEW_M05_ROWS_ONLY
+  existing_13_frozen_contracts_mutable: false
+  ccr_required_if_existing_contract_change: true
 allowed_write_notes:
   - Identify application/case SM, workflow model/DSL, command/transition, Human Task, SLA clock, version pinning
-  - Do not freeze in the planning PR
-  - MUST NOT silently modify existing 13 frozen shared contracts
+  - Do not freeze in the planning PR; freeze_authorized remains false
+  - Future freeze may append NEW M05 rows to orchestrator/contracts-lock.yaml only
+  - contracts/shared/** READ-ONLY; existing 13 frozen contracts immutable
   - CCR+STOP if those 13 must change
 read_only_paths:
   - contracts/shared/**
+  - orchestrator/contracts-lock.yaml
   - pnpm-lock.yaml
   - services/**
   - apps/**

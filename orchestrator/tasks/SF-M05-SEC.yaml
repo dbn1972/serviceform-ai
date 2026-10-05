@@ -10,7 +10,7 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: xhigh
 component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
-integration_ids: [INT-004, INT-005, INT-011, INT-013]
+integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
 branch: agent/M05-sec-SF-M05-SEC
 worktree: ../wt-SF-M05-SEC
 parallel_group: M05-VERIFY
@@ -84,8 +84,12 @@ stop_conditions:
   - BPMN as a second runtime
 
 acceptance_tests_planning:
-  - CROSS_TENANT_LEAKAGE equals 0
-  - No SUPERUSER or BYPASSRLS on runtime roles
-  - OPA on case/task/appeal commands; RLS tenant boundary
-  - AI cannot approve/reject/penalty via copilot paths
-  - No PII or secrets in logs
+  - Independent security verifier only; do not patch production code
+  - "APPLICATION/CASE (CMP-015 / INT-004): FORCE RLS; tenant isolation on case rows; OPA on commands"
+  - "WORKFLOW/TEMPORAL (CMP-016 / INT-005): Temporal cannot skip CMP-015 commit; no Temporal-authoritative case write"
+  - "TASKS (CMP-017 / INT-005): OPA on claim/unclaim/reassign/complete; assignment not named-officer"
+  - "INT-006 inspection+evidence (CMP-018): SIMULATED DigiLocker/storage path; production-critical SIMULATED fail-closed"
+  - "INT-009 deficiency+SLA (CMP-019 / CMP-029): pause/resume cannot bypass OPA/RLS or mutate case tables"
+  - "GRIEVANCE (CMP-027): tenant-scoped rows; no statutory close by AI"
+  - "APPEAL (CMP-028): OPA on appeal actions; no rewrite of original case except via CMP-015 commands"
+  - "COMMON probes: FORCE RLS; SUPERUSER=0; BYPASSRLS=0; ownership=0; cross-component SQL=0; secret/PII=0; statutory AI=0; CROSS_TENANT_LEAKAGE=0"

@@ -37,6 +37,16 @@ Proposed IDs are placeholders for guardian review. Paths under `contracts/m05/**
 
 ## Freeze rules for SF-M05-CG-001 (later; not this PR)
 
+`freeze_authorized: false` in this planning package. Future legal write scope is machine-readable on the CG-001 envelopes (`planned_freeze_write_paths` + `planned_freeze_constraints`); this PR does not write those paths.
+
+| Field | Value |
+|---|---|
+| `planned_freeze_write_paths` | `contracts/m05/**`; `orchestrator/contracts-lock.yaml`; `evidence/SF-M05-CG-001/**`; `orchestrator/handovers/SF-M05-CG-001.yaml` |
+| `contracts_lock_mode` | `APPEND_NEW_M05_ROWS_ONLY` |
+| `existing_13_frozen_contracts_mutable` | **false** |
+| `ccr_required_if_existing_contract_change` | **true** |
+| `contracts/shared/**` | READ-ONLY |
+
 1. OpenAPI / JSON Schema / events for the six NEW IDs (or guardian-approved subset) under `contracts/m05/**`.
 2. May **append** new rows to `orchestrator/contracts-lock.yaml` for those NEW IDs only. Existing 13 hashes stay byte-identical.
 3. MUST NOT edit files of the 13 frozen shared contracts. MUST NOT weaken compatibility of event-envelope, outbox, authz-decision, isolation, simulation-marker.

@@ -19,7 +19,7 @@ Wave A is **not** eligible now. CG-001 freeze is **not** authorized in this PR.
 - SF-M05-005 … 008 after STITCH-A on `origin/main` (LOCK-5). Parallel; non-overlapping writes.
 - SF-M05-STITCH-B after 005–008 immutable heads (Wave B service/migration paths + `pnpm-lock.yaml`; mechanical only).
 - **Hard serial host:** SF-M05-009 after STITCH-B; single writer `apps/api/src/app.ts`; additive `composition/m05.ts`; preserve M01–M04 mounts.
-- SF-M05-INT ∥ SF-M05-SEC after 009; SF-M05-EVD after both. EVD recommends G4 only; cannot issue G4.
+- SF-M05-INT ∥ SF-M05-SEC after 009; SF-M05-EVD after both. EVD recommends G4 only; cannot issue G4. SF-M05-SEC covers APPLICATION/CASE, WORKFLOW/TEMPORAL, TASKS, INT-006 inspection+evidence, INT-009 deficiency+SLA, GRIEVANCE, APPEAL, plus COMMON probes (FORCE RLS, SUPERUSER=0, BYPASSRLS=0, ownership=0, cross-component SQL=0, secret/PII=0, statutory AI=0, CROSS_TENANT_LEAKAGE=0).
 
 Builders/host/INT/SEC/EVD must not write `pnpm-lock.yaml`, existing `contracts/shared/**`, or `orchestrator/contracts-lock.yaml`. STITCH-A and STITCH-B must not run concurrent (`must_not_run_concurrent_with`). Uniqueness gate for CG-01 is unchanged and still requires M02/M03 envelopes `READY` / `dispatched: false`.
 
@@ -51,7 +51,7 @@ STITCH-A may rewrite Wave A trees only **after** 001–004 are immutable (not co
 
 | ID | CMP / purpose | Writes | Wave / lock |
 |---|---|---|---|
-| SF-M05-CG-001 | NEW M05 contract identify/freeze (later) | `contracts/m05/**` (later freeze only), evidence/handover | LOCK-2 |
+| SF-M05-CG-001 | NEW M05 contract identify/freeze (later) | Future freeze only: `contracts/m05/**`, `orchestrator/contracts-lock.yaml` (APPEND_NEW_M05_ROWS_ONLY), evidence/handover. `contracts/shared/**` READ-ONLY. `freeze_authorized: false` now. | LOCK-2 |
 | SF-M05-001 | CMP-015 Case | `services/cmp-015-application-case/**`, `db/migrations/*_cmp-015-*.sql` | A / LOCK-3 |
 | SF-M05-002 | CMP-016 Workflow | `services/cmp-016-workflow-engine/**`, `db/migrations/*_cmp-016-*.sql` | A / LOCK-3 |
 | SF-M05-003 | CMP-017 Human Task | `services/cmp-017-work-queue-tasks/**`, `db/migrations/*_cmp-017-*.sql` | A / LOCK-3 |
@@ -64,5 +64,5 @@ STITCH-A may rewrite Wave A trees only **after** 001–004 are immutable (not co
 | SF-M05-STITCH-B | Wave B mechanical stitch | Wave B service/migration paths + `pnpm-lock.yaml` | LOCK-6 |
 | SF-M05-009 | API host M05 mounts | `apps/api/src/composition/m05.ts`, serialized `app.ts` | LOCK-7 |
 | SF-M05-INT | INT-004/005/006/009 + INT-011/013 | `tests/integration/m05/**`, `evidence/SF-M05-INT/**` | LOCK-8 |
-| SF-M05-SEC | tenant/OPA/RLS/case isolation | `tests/security/m05/**`, `evidence/SF-M05-SEC/**` | LOCK-8 |
+| SF-M05-SEC | independent security verifier (INT-004/005/006/009 + INT-011/013) | `tests/security/m05/**`, `evidence/SF-M05-SEC/**` | LOCK-8 |
 | SF-M05-EVD | recommend G4 only | `evidence/SF-M05-EVD/**`, `docs/verification/M05-G4-RECOMMENDATION.md` | LOCK-9 |

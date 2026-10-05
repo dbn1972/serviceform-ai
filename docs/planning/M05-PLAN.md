@@ -31,13 +31,13 @@ Machine-readable index: `orchestrator/handovers/SF-M05-PLAN.yaml`. Locks: `orche
 3. M04 module-exit G3 record on `main` (#82; green CI/security/developer-platform)
 4. **This pass:** bounded M05 envelopes PLANNING; builders OFF; **no freeze**
 5. LOCK-1: planning PR merged; uniqueness/contracts/architecture green; still no builders
-6. LOCK-2: **SF-M05-CG-001** (mandatory) identifies and later freezes **NEW** M05 contracts only — after planning merge, **before Wave A**. Status now: `PROPOSED` / `CONTRACT-GUARDIAN-REVIEW-REQUIRED`. **Not this PR.**
+6. LOCK-2: **SF-M05-CG-001** (mandatory) identifies and later freezes **NEW** M05 contracts only — after planning merge, **before Wave A**. Status now: `PROPOSED` / `CONTRACT-GUARDIAN-REVIEW-REQUIRED`. `freeze_authorized: false`. Future freeze write scope: `contracts/m05/**` plus append-only NEW rows on `orchestrator/contracts-lock.yaml`; `contracts/shared/**` READ-ONLY. **Not this PR.**
 7. LOCK-3: Wave A parallel SF-M05-001 ∥ 002 ∥ 003 ∥ 004
 8. LOCK-4: STITCH-A mechanical/format/lockfile on Wave A trees + migrations after immutable heads
 9. LOCK-5: Wave B parallel SF-M05-005 ∥ 006 ∥ 007 ∥ 008 after STITCH-A on `origin/main`
 10. LOCK-6: STITCH-B Wave B trees + lockfile
 11. LOCK-7: SF-M05-009 sole `apps/api` writer (preserve M01–M04 mounts)
-12. LOCK-8: INT ∥ SEC
+12. LOCK-8: INT ∥ SEC (SEC = independent verifier; INT-004/005/006/009 owned + INT-011/013 re-verify)
 13. LOCK-9: EVD recommend G4 only → human/CI may later issue M05 `G4_SECURITY_VERIFIED` (still **not** CERTIFIED / G6)
 14. M06 and M08 remain OFF until independent later authorization (CG-02 after M05 exit)
 

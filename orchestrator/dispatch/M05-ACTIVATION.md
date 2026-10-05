@@ -9,7 +9,7 @@ This document is a **hold**, not an activation.
 | `dispatched` | false | false | false | still requires orchestrator record |
 | `m05_started` | false | false | false | false until Wave A spawn |
 | `m05_dispatched` | false | false | false | true only when Wave A spawn recorded |
-| Contract freeze | **not this PR** | SF-M05-CG-001 may start (later auth) | Wave A may become eligible later | builders |
+| Contract freeze | **not this PR**; `freeze_authorized: false` | SF-M05-CG-001 may start (later auth); future paths `contracts/m05/**` + lockfile APPEND_NEW_M05_ROWS_ONLY | Wave A may become eligible later | builders |
 | M06 / M08 | OFF | OFF | OFF | OFF until CG-02 |
 
 ## Do not
@@ -24,5 +24,5 @@ This document is a **hold**, not an activation.
 
 1. Human/CI merge this **draft** planning PR (separate authorization; planning agent does not merge).
 2. Confirm uniqueness / contracts 13/13 / architecture gates / exact-head ci+security+developer-platform SUCCESS.
-3. **SF-M05-CG-001** freeze of NEW M05 contracts (separate authorization).
+3. **SF-M05-CG-001** freeze of NEW M05 contracts (separate authorization). `contracts/shared/**` remains READ-ONLY; existing 13 hashes immutable; CCR+STOP if they must change.
 4. Only then a later READY/dispatch record may set Wave A `wave_eligible_now`.
