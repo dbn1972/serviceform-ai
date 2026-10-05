@@ -1,9 +1,13 @@
 # M04 envelope summary (READY, not dispatched)
 
 `planning_only: false`. `implementation_authorized: true`. `state: READY`. `dispatched: false`.  
-`base_commit` prefix `df6a4af1` + suffix `fc7c300616b59a34cf363db80be642e4`. Not CERTIFIED. Builders OFF. M05 OFF.
+STITCH-B envelope base: prefix `2db721fe` + suffix `b1303385a0c50c79de8629b2478064d9` (post STITCH-A main). Not CERTIFIED. Product STITCH-B HOLD. M05 OFF.
 
 Machine-readable copies: `orchestrator/handovers/SF-M04-*.yaml` and `orchestrator/tasks/` mirrors. Plan: `docs/planning/M04-PLAN.md`. Locks: `orchestrator/dispatch/M04-SERIAL-LOCKS.md`.
+
+## Normative topology (wording)
+
+Wave A `001∥002∥003∥004` → STITCH-A → Wave B `005∥006` → STITCH-B → `007` → `INT∥SEC` → EVD.
 
 ## Wave A eligible now (dispatch still HOLD)
 
@@ -14,7 +18,7 @@ SF-M04-001, SF-M04-002, SF-M04-003, SF-M04-004 (`wave_eligible_now: true`). Do *
 - SF-M04-STITCH-A after 001–004 immutable heads (Wave A service/migration paths + `pnpm-lock.yaml`; mechanical/format/lockfile only).
 - SF-M04-005 after STITCH-A on `main` **and** CMP-008 (SF-M04-002) + CMP-011 (SF-M04-003).
 - SF-M04-006 after STITCH-A on `main` **and** CMP-039 (SF-M04-001) + CMP-013 (SF-M04-004).
-- SF-M04-STITCH-B after 005 + 006 immutable heads (lockfile-only).
+- SF-M04-STITCH-B after 005 + 006 immutable heads (Wave B service/migration paths + `pnpm-lock.yaml`; mechanical/format/lockfile only — STITCH-A pattern; **not** lockfile-only). Frozen inputs: SF-M04-005 `d8c5d7ca9a22eadfe431fa54f3602bfc0ef05ae2`, SF-M04-006 `fab7549ce9c29b4d5277a36f94e9a2f9d02dcee0`. Do **not** merge builder PRs #74/#75.
 - **Hard serial host:** SF-M04-007 after STITCH-B; single writer `apps/api/src/app.ts`.
 - SF-M04-INT ∥ SF-M04-SEC after 007; SF-M04-EVD after both.
 
@@ -29,7 +33,7 @@ SF-M04-001, SF-M04-002, SF-M04-003, SF-M04-004 (`wave_eligible_now: true`). Do *
 | SF-M04-STITCH-A | Wave A mechanical stitch | Wave A service/migration paths + `pnpm-lock.yaml` (no semantic redesign) | LOCK-3 |
 | SF-M04-005 | CMP-009 Forms | `services/cmp-009-dynamic-forms/**`, `db/migrations/*_cmp-009-*.sql` | B / LOCK-5 |
 | SF-M04-006 | CMP-014 OCR | `services/cmp-014-document-intelligence/**`, `db/migrations/*_cmp-014-*.sql` | B / LOCK-6 |
-| SF-M04-STITCH-B | Wave B lockfile | `pnpm-lock.yaml` only (plus stitch evidence/handover) | LOCK-7 |
+| SF-M04-STITCH-B | Wave B mechanical stitch | Wave B service/migration paths + `pnpm-lock.yaml` (exact immutable #74/#75 trees; no semantic redesign) | LOCK-7 |
 | SF-M04-007 | API host M04 mounts | composition `m04` + serialized `app.ts` | LOCK-7 |
 | SF-M04-INT | INT-011 / INT-013 re-verify | `tests/integration/m04/**`, `evidence/SF-M04-INT/**` | LOCK-7 |
 | SF-M04-SEC | tenant/AI isolation | `tests/security/m04/**`, `evidence/SF-M04-SEC/**` | LOCK-7 |
