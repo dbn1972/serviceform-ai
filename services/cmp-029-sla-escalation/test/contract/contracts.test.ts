@@ -309,7 +309,7 @@ describe('boundary: no providers, no case-state writes, no host mount', () => {
     ).toEqual([]);
     const importLines = srcText
       .split('\n')
-      .filter((l) => /^\s*(import|export)\b.*\bfrom\b|require\(/.test(l));
+      .filter((l) => /^\s*(?:import|export)\b.*\bfrom\b/.test(l) || /^.*\brequire\(/.test(l));
     for (const line of importLines) {
       expect(line).not.toMatch(
         /nodemailer|twilio|sendgrid|@aws-sdk|aws-sdk|firebase|apn|msg91|smtp|node:(http|https|net|tls|dgram)/i,
