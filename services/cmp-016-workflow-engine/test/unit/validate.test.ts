@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import {
   Cmp016Error,
@@ -6,6 +7,7 @@ import {
   graphHash,
   parseCanonicalModel,
   parseGraph,
+  sha256,
   toCanonicalModel,
   type WorkflowGraph,
 } from '../../src/index.js';
@@ -177,6 +179,22 @@ describe('canonical workflow model validation (SF-CON-WORKFLOW-MODEL)', () => {
       edges: [{ ...m.edges[1], outcome: 'REJECT' }, m.edges[0]],
     } as typeof m;
     expect(detail(() => assertHashIntegrity(tampered as never))).toBe('GRAPH_HASH_MISMATCH');
+  });
+
+  it('sandbox-safe SHA-256 matches node:crypto exactly', () => {
+    for (const text of [
+      '',
+      'abc',
+      'é✓ unicode',
+      'x'.repeat(55),
+      'x'.repeat(56),
+      'y'.repeat(1000),
+      canonicalJson(richGraph()),
+    ]) {
+      expect(sha256(text)).toBe(
+        `sha256:${createHash('sha256').update(text, 'utf8').digest('hex')}`,
+      );
+    }
   });
 
   it('rejects model envelope tampering', () => {

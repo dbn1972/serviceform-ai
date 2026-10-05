@@ -29,6 +29,7 @@ import {
   committed,
   model,
   richGraph,
+  startInput,
 } from '../fixtures/models.js';
 
 async function code(p: Promise<unknown>): Promise<string | undefined> {
@@ -56,17 +57,7 @@ function executable(): ExecutableVersion {
   );
 }
 
-function input(): WorkflowStartInput {
-  const m = model();
-  return {
-    tenant_id: T1,
-    cell_id: 'cell-local-1',
-    application_id: APP,
-    workflow_version_id: V1,
-    graph_hash: m.graph_hash,
-    model: m,
-  };
-}
+const input = (): WorkflowStartInput => startInput();
 
 describe('Temporal sequencing adapter: never authoritative case state', () => {
   it('exposes no operation that writes CMP-015 case state', () => {

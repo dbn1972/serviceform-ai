@@ -38,12 +38,36 @@ describe('Architecture Constitution guards for CMP-016 (static)', () => {
     for (const f of sources) {
       const imports = [...f.text.matchAll(/from\s+'([^']+)'/g)].map((m) => m[1] as string);
       for (const spec of imports) {
-        expect(spec.startsWith('.') || spec.startsWith('node:'), `${f.path} imports ${spec}`).toBe(
-          true,
-        );
-        expect(spec).not.toMatch(/services\/|apps\/|cmp-0(?!16)\d\d/);
+        const sdkAllowed = spec.startsWith('@temporalio/') && f.path.includes('src/temporal/sdk/');
+        expect(
+          spec.startsWith('.') || spec.startsWith('node:') || sdkAllowed,
+          `${f.path} imports ${spec}`,
+        ).toBe(true);
+        expect(spec).not.toMatch(/services\/|apps\/|cmp-0(?!16)\d\d|^pg$/);
       }
     }
+  });
+
+  it('Temporal workflow sandbox module is deterministic and executes only the canonical model', () => {
+    const wfText =
+      sources.find((f) => f.path.endsWith('src/temporal/sdk/workflows.ts'))?.text ?? '';
+    const wf = wfText.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
+    expect(wf).not.toMatch(
+      /setTimeout|setInterval|Date\.now|new Date|Math\.random|from 'node:|bpmn/i,
+    );
+    const runtimeImports = [...wf.matchAll(/^import (?!type)[^;]*from '([^']+)'/gm)].map(
+      (m) => m[1],
+    );
+    expect(runtimeImports.sort()).toEqual([
+      '../../errors.js',
+      '../workflow.js',
+      './activity-types.js',
+      '@temporalio/workflow',
+    ]);
+    const exportedWorkflows = [...wf.matchAll(/^export async function (\w+)/gm)].map((m) => m[1]);
+    expect(exportedWorkflows).toEqual(['serviceformCanonicalWorkflow']);
+    expect(wf).toContain('sleep(ms)');
+    expect(wf).toContain('await condition(');
   });
 
   it('NEGATIVE: Temporal cannot update CMP-015 state - no port or effect can write case state', () => {
@@ -84,11 +108,23 @@ describe('Architecture Constitution guards for CMP-016 (static)', () => {
     for (const f of sources) {
       expect(f.text, f.path).not.toMatch(/openai|anthropic|ai-gateway|\bllm\b/i);
     }
-    const pkg = JSON.parse(readFileSync(join(SERVICE, 'package.json'), 'utf8')) as Record<
-      string,
-      unknown
-    >;
-    expect(pkg['dependencies']).toBeUndefined();
+    const pkg = JSON.parse(readFileSync(join(SERVICE, 'package.json'), 'utf8')) as {
+      dependencies: Record<string, string>;
+      devDependencies: Record<string, string>;
+    };
+    expect(Object.keys(pkg.dependencies).sort()).toEqual([
+      '@temporalio/activity',
+      '@temporalio/client',
+      '@temporalio/common',
+      '@temporalio/worker',
+      '@temporalio/workflow',
+    ]);
+    expect(Object.keys(pkg.devDependencies)).toEqual(['@temporalio/testing']);
+    const versions = new Set([
+      ...Object.values(pkg.dependencies),
+      ...Object.values(pkg.devDependencies),
+    ]);
+    expect([...versions]).toEqual(['1.24.0']);
   });
 
   it('migrations: FORCE RLS on every tenant table, NOLOGIN role, no SUPERUSER/BYPASSRLS grant', () => {

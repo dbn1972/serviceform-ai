@@ -7,6 +7,7 @@ import {
   type CanonicalWorkflowModel,
   type CommittedSignal,
   type WorkflowGraph,
+  type WorkflowStartInput,
 } from '../../src/index.js';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
@@ -130,5 +131,25 @@ export function committed(
     domain_committed: true,
     outbox_event_id: uuid(),
     ...overrides,
+  };
+}
+
+export const CORRELATION = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+export const TRACE = '0af7651916cd43dd8448eb211c80319c';
+
+export function startInput(
+  m: CanonicalWorkflowModel = model(),
+  over: Partial<WorkflowStartInput> = {},
+): WorkflowStartInput {
+  return {
+    tenant_id: T1,
+    cell_id: 'cell-local-1',
+    correlation_id: CORRELATION,
+    trace_id: TRACE,
+    application_id: APP,
+    workflow_version_id: m.workflow_version_id,
+    graph_hash: m.graph_hash,
+    model: m,
+    ...over,
   };
 }
