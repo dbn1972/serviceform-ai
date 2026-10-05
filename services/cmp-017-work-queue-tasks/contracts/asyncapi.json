@@ -1,0 +1,95 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-017 Human Task Events",
+    "version": "0.1.0",
+    "description": "Event data is an SF-CON-HUMAN-TASK instance (task_state is the state AFTER the operation). Temporal is signaled by CMP-016 from these committed events, never before the domain commit. No PII; principals are opaque ids."
+  },
+  "channels": {
+    "sf.tasks.events.v1": {
+      "address": "sf.tasks.events.v1",
+      "messages": {
+        "HumanTaskCreated": {
+          "$ref": "#/components/messages/HumanTaskCreated"
+        },
+        "HumanTaskClaimed": {
+          "$ref": "#/components/messages/HumanTaskClaimed"
+        },
+        "HumanTaskUnclaimed": {
+          "$ref": "#/components/messages/HumanTaskUnclaimed"
+        },
+        "HumanTaskReassigned": {
+          "$ref": "#/components/messages/HumanTaskReassigned"
+        },
+        "HumanTaskCompleted": {
+          "$ref": "#/components/messages/HumanTaskCompleted"
+        },
+        "HumanTaskCancelledClosed": {
+          "$ref": "#/components/messages/HumanTaskCancelledClosed"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "operations": {
+    "publishHumanTaskEvents": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/sf.tasks.events.v1"
+      }
+    },
+    "publishAudit": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/sf.audit.ingest.v1"
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "HumanTaskCreated": {
+        "name": "HumanTaskCreated",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      },
+      "HumanTaskClaimed": {
+        "name": "HumanTaskClaimed",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      },
+      "HumanTaskUnclaimed": {
+        "name": "HumanTaskUnclaimed",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      },
+      "HumanTaskReassigned": {
+        "name": "HumanTaskReassigned",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      },
+      "HumanTaskCompleted": {
+        "name": "HumanTaskCompleted",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      },
+      "HumanTaskCancelledClosed": {
+        "name": "HumanTaskCancelledClosed",
+        "payload": {
+          "$ref": "./events/human-task-event.data.schema.json"
+        }
+      }
+    }
+  }
+}
