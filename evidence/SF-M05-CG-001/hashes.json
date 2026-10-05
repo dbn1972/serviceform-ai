@@ -1,0 +1,50 @@
+{
+  "task": "SF-M05-CG-001",
+  "package": "PRE_FREEZE_DECISION",
+  "freeze_status": "NOT_FROZEN",
+  "ccr_required": false,
+  "existing_frozen": {
+    "count": 13,
+    "hashes_changed": 0,
+    "shared_files_changed": 0,
+    "result": "MATCH"
+  },
+  "proposed": [
+    {
+      "id": "SF-CON-APPLICATION-CASE-SM",
+      "file": "contracts/m05/schemas/application-case-sm.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/application-case-sm/v1",
+      "sha256": "8e475d333071873be65bc0e75e108fad36bfab62577c450ec7164966e8a6e3b0"
+    },
+    {
+      "id": "SF-CON-WORKFLOW-MODEL",
+      "file": "contracts/m05/schemas/workflow-model.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/workflow-model/v1",
+      "sha256": "26747955f9e199d32a2d26358f05eeb4608465c89e884a2ce0eb6a2832585173"
+    },
+    {
+      "id": "SF-CON-COMMAND-TRANSITION",
+      "file": "contracts/m05/schemas/command-transition.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/command-transition/v1",
+      "sha256": "b605ef5cf0ee8bac382f1d2fcdfcd0e1eb0426f6bd1441dfff3cd92c6fc1e0a2"
+    },
+    {
+      "id": "SF-CON-HUMAN-TASK",
+      "file": "contracts/m05/schemas/human-task.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/human-task/v1",
+      "sha256": "679f005b5b018c1887af6a083a35ee86c69f692bea23f944bb136d1c4e6a9f1f"
+    },
+    {
+      "id": "SF-CON-SLA-CLOCK",
+      "file": "contracts/m05/schemas/sla-clock.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/sla-clock/v1",
+      "sha256": "f1b10d2ddf5ccf09e23cc3e8beb1dd2175721cf4c19ff40662cff39e5feed450"
+    },
+    {
+      "id": "SF-CON-VERSION-PINNING",
+      "file": "contracts/m05/schemas/version-pinning.schema.json",
+      "$id": "https://contracts.serviceform.ai/m05/version-pinning/v1",
+      "sha256": "68b84d6a218b9f2f8f8043fa6eea6295d7817161523519851089b799aa6531fd"
+    }
+  ]
+}

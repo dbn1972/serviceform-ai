@@ -1,0 +1,27 @@
+{
+  "contract_id": "SF-CON-WORKFLOW-MODEL",
+  "contract_status": "PROPOSED",
+  "freeze_status": "NOT_FROZEN",
+  "owner_component": "CMP-016",
+  "workflow_version_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+  "graph_hash": "sha256:efefefefefefefefefefefefefefefefefefefefefefefefefefefefefefefef",
+  "immutable": true,
+  "runtime": "BPMN_ENGINE",
+  "bpmn_role": "IMPORT_EXPORT_PROFILE_ONLY",
+  "nodes": [
+    {
+      "node_id": "START",
+      "kind": "START"
+    },
+    {
+      "node_id": "END",
+      "kind": "END"
+    }
+  ],
+  "edges": [
+    {
+      "from_node": "START",
+      "to_node": "END"
+    }
+  ]
+}

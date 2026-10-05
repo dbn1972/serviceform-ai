@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m05/command-transition/v1",
+  "title": "CommandTransition",
+  "description": "PROPOSED NOT_FROZEN. SF-CON-COMMAND-TRANSITION. Domain commit before Temporal advance (Constitution #10, #11; Eng v1.4 s11.1). Order: authorize -> validate pins/state -> short PostgreSQL transaction -> CMP-015 change -> outbox -> commit -> then Temporal. No Temporal network call inside an open domain transaction. Idempotent and retry-safe.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "application_id",
+    "command_id",
+    "command_type",
+    "phase",
+    "expected_state",
+    "pin_set",
+    "authz_decision_id",
+    "authz_policy_revision",
+    "idempotency_key",
+    "domain_committed",
+    "temporal_advanced",
+    "open_domain_txn_has_temporal_network"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-COMMAND-TRANSITION"
+    },
+    "contract_status": {
+      "const": "PROPOSED"
+    },
+    "freeze_status": {
+      "const": "NOT_FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "command_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "command_type": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/actionCode"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "AUTHORIZE",
+        "VALIDATE_PINS_STATE",
+        "DOMAIN_TXN",
+        "CASE_MUTATED",
+        "OUTBOX_WRITTEN",
+        "DOMAIN_COMMITTED",
+        "TEMPORAL_ADVANCE"
+      ]
+    },
+    "expected_state": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "READY_TO_SUBMIT",
+        "SUBMITTED",
+        "PAYMENT_PENDING",
+        "RECEIVED",
+        "UNDER_SCRUTINY",
+        "DEFICIENCY_RAISED",
+        "CITIZEN_RESPONSE",
+        "VERIFICATION",
+        "DECISION_PENDING",
+        "APPROVED",
+        "REJECTED",
+        "SIGNING_PENDING",
+        "ISSUED",
+        "CLOSED",
+        "WITHDRAWN",
+        "CANCELLED"
+      ]
+    },
+    "pin_set": {
+      "$ref": "https://contracts.serviceform.ai/m05/version-pinning/v1#/$defs/pinGraph"
+    },
+    "authz_decision_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "authz_policy_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Runtime OPA policy_revision for this action (ADR-0005 PROPOSED; SF-CON-AUTHZ-DECISION)."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "domain_committed": {
+      "type": "boolean"
+    },
+    "temporal_advanced": {
+      "type": "boolean"
+    },
+    "open_domain_txn_has_temporal_network": {
+      "type": "boolean",
+      "const": false,
+      "description": "Must remain false. No Temporal I/O in the open PostgreSQL transaction."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "temporal_advanced": {
+            "const": true
+          }
+        },
+        "required": ["temporal_advanced"]
+      },
+      "then": {
+        "properties": {
+          "domain_committed": {
+            "const": true
+          }
+        },
+        "required": ["domain_committed"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "TEMPORAL_ADVANCE"
+          }
+        },
+        "required": ["phase"]
+      },
+      "then": {
+        "properties": {
+          "domain_committed": {
+            "const": true
+          },
+          "temporal_advanced": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

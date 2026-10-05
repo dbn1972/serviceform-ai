@@ -1,0 +1,37 @@
+{
+  "contract_id": "SF-CON-WORKFLOW-MODEL",
+  "contract_status": "PROPOSED",
+  "freeze_status": "NOT_FROZEN",
+  "owner_component": "CMP-016",
+  "workflow_version_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+  "graph_hash": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+  "immutable": true,
+  "runtime": "TEMPORAL",
+  "bpmn_role": "IMPORT_EXPORT_PROFILE_ONLY",
+  "nodes": [
+    {
+      "node_id": "START",
+      "kind": "START"
+    },
+    {
+      "node_id": "SCRUTINY",
+      "kind": "HUMAN_TASK",
+      "assignment": {
+        "role_code": "SCRUTINY_OFFICER",
+        "organisation_id": "66666666-6666-4666-8666-666666666666",
+        "jurisdiction_id": "77777777-7777-4777-8777-777777777777",
+        "officer_name": "A Named Officer"
+      }
+    },
+    {
+      "node_id": "END",
+      "kind": "END"
+    }
+  ],
+  "edges": [
+    {
+      "from_node": "START",
+      "to_node": "SCRUTINY"
+    }
+  ]
+}
