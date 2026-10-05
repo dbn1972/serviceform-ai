@@ -1,0 +1,36 @@
+{
+  "schema": "serviceform.m04.independent-evd.residual-disposition.v1",
+  "task_id": "SF-M04-EVD",
+  "blocking_residual": false,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "rows": [
+    {
+      "residual": "INT REAL/SANDBOX provider adapters absent",
+      "class": "D",
+      "disposition": "NON_BLOCKING_FOR_M04_G3",
+      "leakage": false,
+      "authority": "authorization SF-M04-EVD"
+    },
+    {
+      "residual": "SF-CON-OUTBOX publisher USING true / sf_app INSERT templates",
+      "class": "ACCEPTED_FROZEN_RESIDUAL",
+      "disposition": "NON_BLOCKING_FOR_M04_G3",
+      "leakage": false,
+      "authority": "ADR-0006 #9"
+    },
+    {
+      "residual": "CMP-014 empty-repository stub may 500 after authz",
+      "class": "A",
+      "disposition": "NON_BLOCKING_FOR_M04_G3",
+      "leakage": false,
+      "authority": "authorization SF-M04-EVD"
+    },
+    {
+      "residual": "SEC EVIDENCE.md stamps older head d2286fe2… while PR freeze is 6c4b0a41…",
+      "class": "CLASS_E_EVIDENCE_HEAD_BINDING",
+      "disposition": "NON_BLOCKING_FOR_M04_G3",
+      "leakage": false,
+      "authority": "authorization SF-M04-EVD; do not rewrite #79"
+    }
+  ]
+}
