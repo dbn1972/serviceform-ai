@@ -149,3 +149,58 @@ builder_notes: |
   outbox -> Temporal). Assignment is role + organisation/office + jurisdiction + scope; named
   officers rejected. sf_workflow FORCE RLS; sf_cmp016_rw NOLOGIN; no cross-component SQL.
   Host mount deferred to SF-M05-009. Not CERTIFIED / Not G4 / Not G6. STITCH-A OFF.
+
+# R-CMP016-DOWN2 remediation (Track A; human-authorized; test harness only; does not certify or merge)
+remediation_r_cmp016_down2:
+  authorized_by: human (Track A only)
+  previous_head: 50f56aff9cc1e46c927b881f30c249cb9e1955d2
+  code_sha: b01ed4cce98078a17f19f35f4c9118c085f4acb9
+  base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+  root_cause: >-
+    migration.int.test.ts assumed the CMP-016 pair is the global migration tail (slice(-2) and
+    global down 2). On the combined Wave A chain CMP-017/029 sort after CMP-016, so down 2 rolled
+    back CMP-029. Test defect; not a product or migration defect.
+  pattern: services/cmp-008-rules/test/integration/helpers.ts (withIsolatedCmp008Database)
+  files_changed:
+    - services/cmp-016-workflow-engine/test/integration/helpers.ts
+    - services/cmp-016-workflow-engine/test/integration/migration.int.test.ts
+  isolated_chain:
+    - 1759482000000_platform-baseline.sql
+    - 1759490000000_shared-db-contracts.sql
+    - 1759540160000_cmp-016-workflow-engine.sql
+    - 1759540160001_cmp-016-outbox.sql
+  isolated_db_pattern: sf_cmp016_rev_<8 hex>
+  combined_chain_global_down: false
+  combined_chain_tail_assertion: false
+  src_changed: false
+  migrations_changed: false
+  package_json_changed: false
+  lockfile_changed: false
+  contracts_changed: false
+  temporal_semantics_changed: false
+  semantic_diff_vs_previous_head: 0
+  results:
+    cmp016_unit_contract: PASS 136/136
+    cmp016_postgres_integration: PASS 21/21
+    cmp016_postgres_integration_combined_wave_a: PASS 21/21 (overlay from 2135940, not committed)
+    cmp016_postgres_integration_combined_wave_a_old_tests: FAIL 2/21 (reproduces R-CMP016-DOWN2)
+    cmp016_temporal_sdk: PASS 12/12
+    db_test: PASS 17/17
+    migration_lint: PASS
+    gates_run_all: 10/10
+    contracts_lock: 19/19 MATCH
+    write_scope: PASS
+    cross_tenant_leakage: 0
+  ccr_required: false
+  expected_stitch_lockfile_admission: true
+  residuals:
+    - id: R-CMP016-UNHANDLED-REJECTION
+      note: >-
+        Pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts
+        (unchanged since 50f56af; 3/8 runs with the original test files). All 21 tests pass.
+        Outside the Track A allowed write paths; needs separate authorization.
+  evidence: evidence/SF-M05-002/EVIDENCE.md
+  stitch_a: OFF
+  certified: false
+  g4: false
+  g6: false
