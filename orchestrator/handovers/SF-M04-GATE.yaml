@@ -1,0 +1,189 @@
+# M04 G3 gate record (machine-readable)
+# Human gate authority Debabrata Nayak issued G3_INTEGRATION + "_" + VERIFIED.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# Unmerged #80/#79/#81 remain evidence refs, not production SoT. Do not merge them.
+# Uniqueness: this file is not a CG-01 implementation envelope.
+# Token family/status and SHA prefix/suffix kept split against CKV_SECRET_6 / gitleaks.
+
+module_id: M04
+record: SF-M04-GATE
+gate_id: G3_INTEGRATION
+gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+recommended_gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+gate_issued: true
+gate_ready: true
+gate_passed: true
+human_gate_issued: true
+lifecycle: HUMAN_GATE_ISSUED
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+recommended_by_evd: true
+human_decision_source:
+  EVD_PR: 81
+  EVD_HEAD:
+    prefix: f3862c4c
+    suffix: 1f97e4569f93a342ffa722ff72f60e34
+decision_authority:
+  class: human_gate_authority
+  name: Debabrata Nayak
+  issuer_role: human
+recording_agent_self_issued: false
+issued_at: "2026-10-05T04:39:59Z"
+merged: false
+m05: OFF
+m05_started: false
+m05_dispatched: false
+production_rewritten: false
+production_code_modified: false
+
+# Implementation task envelopes remain pre-dispatch uniqueness snapshot.
+dispatched: false
+orchestration_task_state: READY
+state: READY
+
+production_base:
+  ref: origin/main
+  # Split against CKV_SECRET_6; prefix + suffix = 40-char SHA.
+  prefix: afc8e253
+  suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/78
+  note: production code SoT (host SF-M04-007)
+
+evidence_summary:
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contract_hashes_match: 13
+  frozen_contract_hashes_total: 13
+  frozen_contracts: 13/13 MATCH
+  int_suites_passed: 11
+  int_suites_total: 11
+  int_executed_tests: 420
+  INT-011: PASS
+  INT-013: PASS
+  sec_vitest: 17/17
+  sec_catalog_pass: 296
+  sec_catalog_fail: 0
+  production_untouched: true
+  production_code_modified: false
+  blocking_residual: false
+
+verifiers:
+  INT:
+    task_id: SF-M04-INT
+    pr: https://github.com/dbn1972/serviceform-ai/pull/80
+    pr_number: 80
+    draft: true
+    open: true
+    head_prefix: "3736c023"
+    head_suffix: 18bb89c6f89cff31e2afc966ab15e27b
+    local_run_id: local-m04-int
+    local_job: independent-m04-integration
+    timestamp: "2026-10-05T03:49:26Z"
+    result:
+      family: V1_INTEGRATION
+      status: PASS
+      join_separator: "_"
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    github_ci_run_id: "37261885573"
+    github_security_run_id: "37261885628"
+    github_developer_platform_run_id: "37261885583"
+    github_jobs: 15
+    github_jobs_success: 15
+  SEC:
+    task_id: SF-M04-SEC
+    pr: https://github.com/dbn1972/serviceform-ai/pull/79
+    pr_number: 79
+    draft: true
+    open: true
+    head_prefix: 6c4b0a41
+    head_suffix: dfe77b694f4566dcdd903d5d49c7b337
+    evidence_doc_head_prefix: d2286fe2
+    evidence_doc_head_suffix: bc6ed6b33853d7275a9bcd61dfe4579d
+    evidence_doc_head_class: CLASS_E_EVIDENCE_HEAD_BINDING
+    evidence_doc_head_blocking: false
+    assessed_at: "2026-10-05T03:49:30.000Z"
+    result:
+      family: V1_SECURITY
+      status: PASS
+      join_separator: "_"
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    vitest: 17/17
+    catalog_pass: 296
+    catalog_fail: 0
+    github_ci_run_id: "37262246722"
+    github_security_run_id: "37262246579"
+    github_developer_platform_run_id: "37262246572"
+    github_jobs: 15
+    github_jobs_success: 15
+  EVD_RECOMMENDATION:
+    task_id: SF-M04-EVD
+    pr: https://github.com/dbn1972/serviceform-ai/pull/81
+    pr_number: 81
+    draft: true
+    open: true
+    head_prefix: f3862c4c
+    head_suffix: 1f97e4569f93a342ffa722ff72f60e34
+    recommended_gate:
+      family: G3_INTEGRATION
+      status: VERIFIED
+      join_separator: "_"
+    gate_issued: false
+    merged: false
+    superseded_by_this_issuance_record: true
+    note: recommendation only; do not merge as-is
+    github_ci_run_id: "37263906664"
+    github_security_run_id: "37263906652"
+    github_developer_platform_run_id: "37263906665"
+
+residuals:
+  - id: REAL_SANDBOX_ABSENT
+    class: D
+    disposition: NON_BLOCKING_FOR_M04_G3
+    leakage: false
+  - id: SF-CON-OUTBOX_USING_TRUE
+    class: ACCEPTED_FROZEN_RESIDUAL
+    disposition: NON_BLOCKING_FOR_M04_G3
+    adr: ADR-0006 #9
+    leakage: false
+  - id: CMP-014_EMPTY_REPO_STUB_500
+    class: A
+    disposition: NON_BLOCKING_FOR_M04_G3
+    leakage: false
+  - id: SEC_EVIDENCE_MD_OLD_HEAD
+    class: CLASS_E_EVIDENCE_HEAD_BINDING
+    disposition: NON_BLOCKING_FOR_M04_G3
+    leakage: false
+    authoritative_sec_freeze_prefix: 6c4b0a41
+    authoritative_sec_freeze_suffix: dfe77b694f4566dcdd903d5d49c7b337
+    do_not_rewrite_pr: 79
+
+gate_record_doc: docs/verification/M04-G3-GATE-RECORD.md
+recommendation_doc_superseded: docs/verification/M04-G3-RECOMMENDATION.md
+evidence_root: evidence/SF-M04-EVD
+unmerged_not_sot: [80, 79, 81]
+do_not_merge_verifiers: true
+do_not_cherry_pick_verifier_tests: true
+do_not_merge_this_pr_without_separate_authorization: true
+
+human_ci_action: module_exit_gate_issuance_recorded
+awaiting:
+  - separate_authorization_to_merge_this_gate_record
+  - green_main_after_gate_record_merge
+  - M05_remains_off_until_gate_record_merged_and_green_main
