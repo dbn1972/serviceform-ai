@@ -124,17 +124,27 @@ builder_evidence: evidence/SF-M05-002/EVIDENCE.md
 builder_migrations:
   - db/migrations/1759540160000_cmp-016-workflow-engine.sql
   - db/migrations/1759540160001_cmp-016-outbox.sql
+builder_previous_frozen_head: e60ca7cb4bb6b4e481b81d47ce39d29f71995644
+builder_temporal_sdk:
+  "@temporalio/activity": 1.24.0
+  "@temporalio/client": 1.24.0
+  "@temporalio/common": 1.24.0
+  "@temporalio/worker": 1.24.0
+  "@temporalio/workflow": 1.24.0
+  "@temporalio/testing": 1.24.0 (devDependency)
+expected_stitch_lockfile_admission: true
 builder_lockfile_changed: false
 builder_contracts_changed: false
 builder_ccr_required: false
 expected_stitch_a_items:
-  - Workspace importer services/cmp-016-workflow-engine (zero dependencies; frozen-lockfile already passes)
-  - Temporal SDK worker binding (@temporalio/*) needs lockfile admission; not added by this builder
+  - Admit importer services/cmp-016-workflow-engine with the six @temporalio/* 1.24.0 specifiers (frozen-lockfile red solely for this)
+  - Existing locked pg-cloudflare@1.4.1 and @next/swc-* fail minimumReleaseAge on non-frozen resolution; STITCH-A must resolve without weakening policy
   - Coordinate CMP-016 migration repoint with CMP-015 pin graph (SF-CON-VERSION-PINNING)
 builder_notes: |
   CMP-016 canonical workflow model (SF-CON-WORKFLOW-MODEL) with immutable published versions,
   deterministic interpreter, Temporal sequencing adapter (start/signal only; refuses calls inside
-  an open domain transaction), BPMN 2.0 import/export profile only (imports become drafts; never
+  an open domain transaction) bound to the production Temporal TypeScript SDK (client, worker,
+  sandboxed workflow with signals/durable timers/port-only activities), BPMN 2.0 import/export profile only (imports become drafts; never
   executed). Advancement only on committed SF-CON-COMMAND-TRANSITION records (domain commit ->
   outbox -> Temporal). Assignment is role + organisation/office + jurisdiction + scope; named
   officers rejected. sf_workflow FORCE RLS; sf_cmp016_rw NOLOGIN; no cross-component SQL.
