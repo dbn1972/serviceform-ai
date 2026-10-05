@@ -1,0 +1,26 @@
+1759540150000_cmp-015-application-case.sql
+1759540150001_cmp-015-outbox.sql
+1759540160000_cmp-016-workflow-engine.sql
+1759540160001_cmp-016-outbox.sql
+1759540170000_cmp-017-work-queue-tasks.sql
+1759540170001_cmp-017-outbox.sql
+1759540400000_cmp-029-sla-escalation.sql
+1759540400001_cmp-029-outbox.sql
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:integration /workspace/services/cmp-016-workflow-engine
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/integration/migration.int.test.ts (3 tests) 4376ms
+   ✓ CMP-016 migrations are reversible and ordered (3)
+     ✓ isolated chain: down 2 removes sf_workflow, up re-applies cleanly, combined catalogue unchanged 2426ms
+ ✓ test/integration/db-isolation.int.test.ts (18 tests) 676ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  15:29:07
+   Duration  5.49s (tests 95%, transform 3%, import 2%)
+
+JUNIT report written to /workspace/services/cmp-016-workflow-engine/evidence/junit/integration.xml

@@ -1,0 +1,23 @@
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:unit /workspace/services/cmp-016-workflow-engine
+> vitest run --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/unit/bpmn.test.ts (26 tests) 38ms
+ ✓ test/unit/temporal.test.ts (11 tests) 45ms
+ ✓ test/unit/service.test.ts (19 tests) 84ms
+ ✓ test/unit/validate.test.ts (33 tests) 35ms
+ ✓ test/unit/versioning-migration.test.ts (8 tests) 62ms
+ ✓ test/unit/interpreter.test.ts (19 tests) 27ms
+ ✓ test/contract/contracts.test.ts (8 tests) 30ms
+ ✓ test/unit/temporal-sdk.test.ts (5 tests) 19ms
+ ✓ test/unit/constitution.test.ts (7 tests) 21ms
+
+ Test Files  9 passed (9)
+      Tests  136 passed (136)
+   Start at  14:02:07
+   Duration  978ms (import 40%, transform 38%, tests 20%, worker 2%)
+
+JUNIT report written to /workspace/services/cmp-016-workflow-engine/evidence/junit/unit.xml

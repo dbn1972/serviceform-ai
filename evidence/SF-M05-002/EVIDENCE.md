@@ -1,79 +1,89 @@
-# SF-M05-002 — CMP-016 Workflow Engine: builder evidence (Temporal SDK binding)
+# SF-M05-002 — CMP-016 Workflow Engine: builder evidence (R-CMP016-DOWN2 test-harness remediation)
 
-Builder evidence only. **Not CERTIFIED. Not G4. Not G6. Builder does not self-certify.**
+Builder evidence only. **Not CERTIFIED. Not G4. Not G6. STITCH-A OFF. Builder does not self-certify.**
 Independent INT / SEC / EVD verification is still required.
 
 | Field | Value |
 |---|---|
 | Task / component | SF-M05-002 / CMP-016 (INT-005, INT-011) |
-| Base SHA | `6e9f0481eb3007dedee5580838cab59ceea66f03` |
-| Previous frozen head | `e60ca7cb4bb6b4e481b81d47ce39d29f71995644` (evidence archived in `history/bb667e4/`) |
-| Code SHA under test | `4ea552d16345f066460524fd01d8121c4ac4f7c4` (`logs/commit-sha.txt`) |
+| Residual | R-CMP016-DOWN2 (raised by STITCH-A [#91](https://github.com/dbn1972/serviceform-ai/pull/91) @ `2135940`, frozen; not modified) |
+| Base SHA | `6e9f0481eb3007dedee5580838cab59ceea66f03` (unchanged; no rebase) |
+| Previous head | `50f56aff9cc1e46c927b881f30c249cb9e1955d2` (evidence for code `4ea552d` archived in `history/4ea552d/`) |
+| Code SHA under test | `b01ed4cce98078a17f19f35f4c9118c085f4acb9` (`logs/commit-sha.txt`) |
 | PR | [#89](https://github.com/dbn1972/serviceform-ai/pull/89) (draft, do not merge) |
-| Temporal SDK | `@temporalio/{activity,client,common,worker,workflow}` 1.24.0, `@temporalio/testing` 1.24.0 (dev); exact pins, published 2026-09-15 (clears the 7-day `minimumReleaseAge`) |
-| Environment | Local: Node 22.14.0, pnpm 10.28.0, PostgreSQL 16, Temporal time-skipping test server (via `@temporalio/testing`) |
+| Environment | Local: Node 22.14.0, pnpm 10.28.0, PostgreSQL 16 (apt), Temporal time-skipping test server via `@temporalio/testing` 1.24.0 |
 | Model | claude-opus-5-5 (high), builder role |
 
-## EXPECTED_STITCH_LOCKFILE_ADMISSION = yes
+## Root cause (test defect, not product/migration defect)
 
-`pnpm install --frozen-lockfile` fails, and the only failure reason is the new importer specifiers. From `logs/install-frozen.log`:
-"6 dependencies were added: @temporalio/testing@1.24.0, @temporalio/activity@1.24.0, @temporalio/client@1.24.0, @temporalio/common@1.24.0, @temporalio/worker@1.24.0, @temporalio/workflow@1.24.0".
-`pnpm-lock.yaml`, `pnpm-workspace.yaml`, frozen-lockfile, audit and trustPolicy are unchanged. The lockfile is STITCH-A owned.
+`test/integration/migration.int.test.ts` at `50f56af` assumed the CMP-016 pair is the global tail of
+`db/migrations`: it asserted `applied().slice(-2) == MIGRATIONS` and ran a global `node-pg-migrate down 2`.
+On the combined Wave A chain CMP-017 (`1759540170000/1`) and CMP-029 (`1759540400000/1`) sort after CMP-016,
+so the tail assertion saw CMP-029 and `down 2` rolled back **CMP-029**, leaving `sf_workflow` in place.
+Reproduced locally with the 50f56af test files on the combined chain: 2 failed / 19 passed
+(`logs/combined-wave-a-old-test-repro.log`: expected `cmp-016-*`, received `cmp-029-*`; `sf_workflow` still present after `down 2`).
 
-How the SDK was installed for local testing:
-- A non-frozen workspace install fails on the existing repo policy. Already-locked `pg-cloudflare@1.4.1` and `@next/swc-*` versions fail the `minimumReleaseAge` re-check. STITCH-A will hit the same condition.
-- So the six packages were installed with npm into an isolated prefix outside the repo (`/tmp/temporal-deps`), then symlinked into the gitignored `services/cmp-016-workflow-engine/node_modules/@temporalio` (`logs/relink-local-temporal.log`).
-- Nothing outside the allowed write paths was committed.
+## Change (test harness only; 2 files)
 
-## Executed checks (`logs/exit-codes.txt`)
+| File | Change |
+|---|---|
+| `test/integration/helpers.ts` | `CMP016_MIGRATION_FILES`, `CMP016_ISOLATED_CHAIN`, `withIsolatedCmp016Database(...)`, `snapshotCombinedCatalog(...)` mirroring the accepted CMP-008 pattern (`services/cmp-008-rules/test/integration/helpers.ts`). Combined-chain `migrate()` is now typed `up` only. |
+| `test/integration/migration.int.test.ts` | Combined chain: presence + order only (no tail assertion, no global down). Reversibility: isolated DB only. Test count unchanged (3; suite 21). |
+
+Isolated chain (throwaway DB `sf_cmp016_rev_<8 hex>`, name allowlisted by regex, temp migrations dir via `mkdtemp`):
+
+1. `1759482000000_platform-baseline.sql` — creates `sf_app`
+2. `1759490000000_shared-db-contracts.sql` — `sf_platform.current_tenant_id()` and `sf_outbox_publisher`
+3. `1759540160000_cmp-016-workflow-engine.sql`
+4. `1759540160001_cmp-016-outbox.sql`
+
+No other prerequisite: the CMP-016 pair references only `sf_app`, `sf_platform.current_tenant_id()`,
+`sf_outbox_publisher` and its own `sf_workflow` objects, and creates `sf_migrator` / `sf_cmp016_rw` itself
+(grep of both files). Up on the 4-file chain succeeds; that is the executed proof.
+
+Cleanup: `try/finally` closes the client, then `DROP DATABASE IF EXISTS … WITH (FORCE)`, then (in a nested
+`finally`) removes the temp dir, so the dir is removed even if the drop fails. The test asserts release on the
+success path **and** on an injected-failure path (DB absent in `pg_database`, temp dir absent, zero
+`sf_cmp016_rev_*` databases left).
+
+## Assertions now made
+
+| Scope | Assertion |
+|---|---|
+| Combined chain | Both CMP-016 migrations applied, `cmp-016-outbox` after `cmp-016-workflow-engine`, both after `shared-db-contracts`; `sf_workflow` exists with 10 tables; RLS + FORCE RLS on the 8 tenant tables (the 2 `*_platform` tables are PLATFORM_OPERATIONAL by the shared outbox contract). Later migrations may follow. |
+| Isolated up | Applied list equals the 4-file chain; `sf_workflow` exists; 10 tables |
+| Isolated down 2 | `sf_workflow` gone; both CMP-016 names removed; applied list equals baseline + shared-db-contracts; `sf_cmp016_rw` retained |
+| Isolated up again | Pair re-applied; 10 tables owned by `sf_migrator`; RLS + FORCE on tenant tables; table/FORCE list, `pg_policies` and the full `sf_workflow` grant matrix **equal to the combined DB's**; `sf_cmp016_rw` NOLOGIN/NOBYPASSRLS/NOSUPERUSER; PUBLIC grants 0 |
+| Combined catalogue | Snapshot (migration names, `sf_workflow` tables incl. `relfilenode`, policies, grants) identical before and after the isolated run and after the failure-path run |
+
+## Executed checks (`logs/exit-codes.txt`, code SHA `b01ed4c`)
 
 | Step | Result |
 |---|---|
-| frozen install | rc=1, EXPECTED_STITCH_LOCKFILE_ADMISSION (sole reason: 6 `@temporalio/*` specifiers) |
+| frozen install | rc=1, EXPECTED_STITCH_LOCKFILE_ADMISSION (sole reason: 6 `@temporalio/*` specifiers; `logs/install-frozen.log`) |
 | format:check / lint / typecheck (recursive) | rc=0 / rc=0 / rc=0 |
-| root `test:coverage` | rc=0, 171 files / 1002 tests, thresholds met |
+| root `test:coverage` | rc=0, 171 files / 1002 tests; CMP-016 src lines 93.44%, branches 88.09% (identical to prior run) |
 | contracts:validate / test:cdc / deps:graph / build | rc=0 each |
-| gate self-tests / `run_all.py` | rc=0 (25 passed) / 10/10 |
-| migration lint / contracts lock / write scope | PASS / 19/19 MATCH / PASS |
-| `pnpm db:test` | rc=0, 17/17 |
+| gate self-tests / `run_all.py` | 25 passed / 10/10 PASS (incl. cg01-path-uniqueness, workflow-pin, agent-rules) |
+| migration lint / contracts lock / write scope | PASS (47 files) / 19/19 FROZEN MATCH / PASS (106 files vs `origin/main`, envelope SF-M05-002) |
+| `pnpm db:test` | rc=0, 17/17 (single-database cluster; see note 2) |
 | CMP-016 unit + contract | rc=0, 9 files / 136 tests (`junit/unit.xml`) |
-| CMP-016 Postgres integration (real LOGIN roles) | rc=0, 21/21 (`junit/integration.xml`) |
-| CMP-016 Temporal SDK suite (real Worker + time-skipping server + Postgres) | rc=0, 12/12 (`junit/temporal.xml`) |
+| CMP-016 Postgres integration, #89 tree | rc=0, **21/21** (`junit/integration.xml`) |
+| CMP-016 Postgres integration, **combined Wave A chain** | rc=0, **21/21** (`junit/integration-combined-wave-a.xml`); post-conditions in `logs/combined-wave-a-postconditions.log`: CMP-015/016/017/029 all still applied, `sf_tasks`/`sf_sla` present, 0 leftover isolated DBs / temp dirs |
+| CMP-016 Temporal SDK suite | rc=0, **12/12** (`junit/temporal.xml`) |
 
-CMP-016 `src/**` coverage in the root unit run: lines 93.4%, branches 88.1%. The SDK workflow module is exercised by the Temporal suite, not by the root unit run.
-Local semgrep 1.179.0 (CI rule packs) on the CMP-016 tree: 0 findings.
-
-## Temporal binding
-
-| Concern | Implementation |
-|---|---|
-| Client | `src/temporal/sdk/client.ts` `TemporalSdkClient`: canonical type only, configured task queue, `sf-wf:<tenant>:<application>` ids, `REJECT_DUPLICATE` + `FAIL`, only `sf.committedTransition` / `sf.migrate`, fail-closed error mapping |
-| Worker | `src/temporal/sdk/worker.ts` `createCanonicalWorker` / `bundleCanonicalWorkflows` (workflow type `serviceformCanonicalWorkflow`) |
-| Workflow binding | `src/temporal/sdk/workflows.ts`: `canonicalWorkflow(host, input)` wired to `defineSignal` handlers, `condition()` waits, `sleep()` durable timers in `CancellationScope`, `proxyActivities`, `sf.state` query. No clock, random, Node built-ins or network. |
-| Activities | `src/temporal/sdk/activities.ts`: createHumanTask, closeHumanTask, evaluateRule, invokeActivity, invokePort, timerDuration, recordProgress. Published ports plus CMP-016's own projection; idempotency keys stable across retries. |
-| Sandbox safety | Pure SHA-256 (verified equal to `node:crypto`) and JSON state clone, so graph-hash integrity runs inside the workflow |
-
-## Required Temporal tests (`test/temporal/sdk-worker.int.test.ts`, SDK-backed)
-
-| Requirement | Evidence |
-|---|---|
-| Start uses the canonical type | `describe()` type `serviceformCanonicalWorkflow`, task queue matches |
-| Workflow id is tenant + application | `sf-wf:<T1>:<app>`; duplicate start → `WORKFLOW_ALREADY_STARTED` (client) and SF-APP-002 (DB) |
-| Committed/migrate signals reach the running workflow | Signaled events; tokens advance; `sf.migrate` re-pins to v2, then a v2-pinned commit advances |
-| No Temporal call inside a domain transaction | `TEMPORAL_CALL_INSIDE_DOMAIN_TXN`; 0 signaled events |
-| Durable wait | After `env.sleep('4 days')` the workflow is still RUNNING at SCRUTINY, then completes on commit |
-| Temporal timers | TimerStarted with 259200 s; TimerFired after the skip; TimerCanceled on withdrawal termination; no setTimeout in the workflow (static test) |
-| Activity retry-safe / idempotent | Injected CMP-017 failure → 2 attempts with an identical idempotency key; 1 scheduled activity |
-| Duplicate committed signal | 2 signaled events, 1 closeHumanTask, 1 port close; `seen_signals` holds one id |
-| Failed CMP-015 commit cannot advance | Service rejects with `ADVANCE_BEFORE_DOMAIN_COMMIT` (0 signals); a raw uncommitted signal leaves the workflow state unchanged |
-| Temporal cannot update CMP-015 DB | The activity surface is ports plus the projection; the worker DB login has 0 UPDATE/DELETE grants outside `sf_workflow` |
-| BPMN import not a second engine | Imported draft → `VERSION_NOT_PUBLISHED` and no execution; `bpmnProcess` type refused; raw BPMN XML → `MODEL_INVALID`; `runtime: BPMN_ENGINE` → `BPMN_RUNTIME_FORBIDDEN` |
-| Named officer rejected | Service `NAMED_OFFICER_FORBIDDEN`; the worker fails the execution with the same code |
-| Cross-tenant signal | Signal with another tenant → rejected in the workflow (state unchanged); adapter SF-TEN-002 |
+Combined chain = CMP-015/017/029 migration files copied read-only from STITCH-A head `2135940` into the
+working tree for the run and deleted afterwards (`logs/worktree-after.log` empty). CMP-016 migration files are
+blob-identical between this branch and `2135940`. Nothing from the overlay was committed.
 
 ## Preserved
 
-- CROSS_TENANT_LEAKAGE = 0 (Postgres suite).
-- ADR-0006 privilege boundary and FORCE RLS: unchanged migrations, all suites green.
-- contracts lock 19/19 MATCH; CCR false.
-- No changes to `pnpm-lock.yaml`, `contracts/**` or `orchestrator/contracts-lock.yaml`.
+- CROSS_TENANT_LEAKAGE = 0 (`db-isolation.int.test.ts` FORCE-RLS suite, both runs).
+- Semantic diff vs `50f56af` outside the two test files = 0: `src/**`, `db/migrations/**`, `package.json`, vitest configs, `contracts/**`, `orchestrator/contracts-lock.yaml`, `pnpm-lock.yaml`, `apps/**` untouched.
+- contracts lock 19/19 MATCH; CCR_REQUIRED false. No Temporal semantic change; no dependency change.
+
+## Notes / residuals (not fixed here; outside allowed write paths)
+
+1. **R-CMP016-UNHANDLED-REJECTION (pre-existing, intermittent).** `db-isolation.int.test.ts` test "service layer: tenant B cannot export, start, signal or request on tenant A data" builds three service promises eagerly and awaits them one by one, so a later rejection can be reported by vitest as an unhandled rejection (`Errors 1`, rc=1) while all 21 tests pass. Frequency with the **unchanged 50f56af test files**: 3/8 runs (`logs/unhandled-frequency-old-files-m89-only.log`); with the remediated files: 1/8 (`…-new-files-m89-only.log`), 2/6 on the combined chain (`…-new-files-combined.log`); file alone: 0/8. The file is byte-identical to `50f56af`. Fix (lazy thunks or `Promise.allSettled`) needs authorization to edit that file. The canonical evidence runs above had 0 occurrences.
+2. **`db:test` on a shared cluster.** The first `db:test` attempt ran on a cluster that also held the combined-chain test DBs; its global `down 47` could not drop the cluster-wide role `sf_cmp013_rw` because objects in those other DBs depend on it (`logs/db-test-multidb-cluster-artifact.log`). Re-run on a single-database cluster (as in CI): 17/17. The CMP-016 isolated DB is always dropped, so it leaves no such dependency (asserted).
+3. EXPECTED_STITCH_LOCKFILE_ADMISSION unchanged; lockfile is STITCH-A owned.

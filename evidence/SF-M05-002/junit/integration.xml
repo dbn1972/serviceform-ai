@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="2.853908395">
-    <testsuite name="test/integration/db-isolation.int.test.ts" timestamp="2026-10-05T14:02:12.541Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.835409025">
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; every sf_workflow tenant table has RLS enabled and forced" time="0.004153186">
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="4.976229187">
+    <testsuite name="test/integration/db-isolation.int.test.ts" timestamp="2026-10-05T15:28:58.818Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.692248892">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; every sf_workflow tenant table has RLS enabled and forced" time="0.004037642">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; each tenant sees only its own rows in every table; leakage count is zero" time="0.007398646">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; each tenant sees only its own rows in every table; leakage count is zero" time="0.005949877">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; without tenant context every table returns nothing (fail closed)" time="0.00264933">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; without tenant context every table returns nothing (fail closed)" time="0.00190653">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; IDOR: tenant A cannot read, update or bind to tenant B records by id" time="0.002705239">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; IDOR: tenant A cannot read, update or bind to tenant B records by id" time="0.002172101">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; refuses writing a row for another tenant (WITH CHECK)" time="0.00100684">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; refuses writing a row for another tenant (WITH CHECK)" time="0.00108031">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; service layer: tenant B cannot export, start, signal or request on tenant A data" time="0.00852686">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; service layer: tenant B cannot export, start, signal or request on tenant A data" time="0.008773393">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; runtime login is not superuser, cannot bypass RLS and inherits only sf_app + sf_cmp016_rw" time="0.001612559">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; runtime login is not superuser, cannot bypass RLS and inherits only sf_app + sf_cmp016_rw" time="0.002325082">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; runtime login owns no sf_workflow table, schema or function" time="0.00162969">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; runtime login owns no sf_workflow table, schema or function" time="0.001397282">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; own authorized DML succeeds through the real login" time="0.001075905">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; own authorized DML succeeds through the real login" time="0.001267849">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: cross-component authoritative SQL is denied (CMP-016 -&gt; other schemas)" time="0.051257523">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: cross-component authoritative SQL is denied (CMP-016 -&gt; other schemas)" time="0.044025323">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: runtime login cannot SET ROLE into another component role" time="0.000764075">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: runtime login cannot SET ROLE into another component role" time="0.000770722">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: another component login cannot read or write sf_workflow authoritative tables" time="0.011112606">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: another component login cannot read or write sf_workflow authoritative tables" time="0.00971604">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: CMP-016 cannot run DDL in its schema" time="0.00085807">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="ADR-0006 privilege boundary for the CMP-016 runtime login &gt; NEGATIVE: CMP-016 cannot run DDL in its schema" time="0.000601963">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: a published version model/hash cannot be mutated even by direct SQL" time="0.006797539">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: a published version model/hash cannot be mutated even by direct SQL" time="0.004604718">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: an instance cannot start on a draft or with a mismatched graph hash" time="0.012788495">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: an instance cannot start on a draft or with a mismatched graph hash" time="0.008276821">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: the pinned version cannot be silently retargeted without an approved plan" time="0.008661333">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; NEGATIVE: the pinned version cannot be silently retargeted without an approved plan" time="0.006716439">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; a migration plan cannot target an unpublished or foreign-definition version" time="0.007456102">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; a migration plan cannot target an unpublished or foreign-definition version" time="0.007605721">
         </testcase>
-        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; a resolved workflow request and a terminal instance cannot be reopened" time="0.004444376">
+        <testcase classname="test/integration/db-isolation.int.test.ts" name="DB trigger negatives: immutability and no silent version retarget &gt; a resolved workflow request and a terminal instance cannot be reopened" time="0.003758827">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T14:02:12.545Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="2.01849937">
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; applies both CMP-016 migrations as the tail of the chain" time="0.02488299">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T15:28:58.821Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="4.283980295">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; combined chain: both CMP-016 migrations are applied in order and sf_workflow exists" time="0.023445988">
         </testcase>
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; down 2 removes sf_workflow completely and up re-applies cleanly" time="1.105688438">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; isolated chain: down 2 removes sf_workflow, up re-applies cleanly, combined catalogue unchanged" time="2.39668732">
         </testcase>
-        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; PUBLIC holds no privilege on sf_workflow tables" time="0.004792284">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-016 migrations are reversible and ordered &gt; PUBLIC holds no privilege on sf_workflow tables" time="0.00296777">
         </testcase>
     </testsuite>
 </testsuites>

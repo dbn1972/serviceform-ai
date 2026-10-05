@@ -2,25 +2,10 @@
   "schema": "serviceform.builder.evidence.v1",
   "task_id": "SF-M05-002",
   "component_id": "CMP-016",
-  "remediation": "R-CMP016-DOWN2",
-  "remediation_scope": "test harness only",
   "base_sha": "6e9f0481eb3007dedee5580838cab59ceea66f03",
-  "previous_head": "50f56aff9cc1e46c927b881f30c249cb9e1955d2",
-  "code_sha": "b01ed4cce98078a17f19f35f4c9118c085f4acb9",
+  "previous_head": "e60ca7cb4bb6b4e481b81d47ce39d29f71995644",
+  "code_sha": "4ea552d16345f066460524fd01d8121c4ac4f7c4",
   "pr": "https://github.com/dbn1972/serviceform-ai/pull/89",
-  "files_changed_vs_previous_head_code": [
-    "services/cmp-016-workflow-engine/test/integration/helpers.ts",
-    "services/cmp-016-workflow-engine/test/integration/migration.int.test.ts"
-  ],
-  "semantic_source_migration_diff_vs_previous_head": 0,
-  "isolated_chain": [
-    "1759482000000_platform-baseline.sql",
-    "1759490000000_shared-db-contracts.sql",
-    "1759540160000_cmp-016-workflow-engine.sql",
-    "1759540160001_cmp-016-outbox.sql"
-  ],
-  "isolated_db_pattern": "sf_cmp016_rev_<8 hex>",
-  "combined_chain_overlay_source": "2135940f9d25b2ac3145a1ff74bb1992f4c7b91f (read-only, not committed)",
   "temporal_sdk": {
     "@temporalio/activity": "1.24.0",
     "@temporalio/client": "1.24.0",
@@ -48,19 +33,43 @@
     "db_test": "PASS (17)",
     "cmp016_unit_contract": "PASS (136)",
     "cmp016_postgres_integration": "PASS (21)",
-    "cmp016_postgres_integration_combined_wave_a": "PASS (21)",
-    "cmp016_postgres_integration_combined_wave_a_old_tests": "FAIL (2 of 21) - reproduces R-CMP016-DOWN2",
-    "cmp016_temporal_sdk": "PASS (12)"
-  },
-  "residuals": {
-    "R-CMP016-UNHANDLED-REJECTION": "pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts (unchanged since 50f56af); 21/21 tests pass; outside allowed write paths"
+    "cmp016_temporal_sdk": "PASS (12)",
+    "semgrep_local_cmp016": "0 findings"
   },
   "cross_tenant_leakage": 0,
   "lockfile_changed": false,
   "contracts_changed": false,
-  "migrations_changed": false,
-  "src_changed": false,
   "ccr_required": false,
+  "coverage": {
+    "cmp016_src": {
+      "lines": {
+        "covered": 1040,
+        "total": 1113,
+        "pct": 93.44
+      },
+      "branches": {
+        "covered": 710,
+        "total": 806,
+        "pct": 88.09
+      },
+      "functions": {
+        "covered": 211,
+        "total": 232,
+        "pct": 90.95
+      },
+      "statements": {
+        "covered": 1188,
+        "total": 1304,
+        "pct": 91.1
+      }
+    },
+    "global_pct": {
+      "lines": 88.37,
+      "branches": 74.08,
+      "functions": 90.43,
+      "statements": 84.7
+    }
+  },
   "certified": false,
   "self_certified": false,
   "g4": false,

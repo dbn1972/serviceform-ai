@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="4.228743852">
-    <testsuite name="test/temporal/sdk-worker.int.test.ts" timestamp="2026-10-05T14:02:18.132Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="4.228743852">
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; start uses the canonical workflow type, task queue and a tenant+application workflow id" time="0.189811723">
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="6.152760877">
+    <testsuite name="test/temporal/sdk-worker.int.test.ts" timestamp="2026-10-05T15:29:06.300Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="6.152760877">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; start uses the canonical workflow type, task queue and a tenant+application workflow id" time="0.234319665">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; committed CMP-015 transition reaches the running workflow; duplicate delivery has no duplicate effects" time="0.199326856">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; committed CMP-015 transition reaches the running workflow; duplicate delivery has no duplicate effects" time="0.19918241">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: a failed CMP-015 commit cannot advance Temporal (service path and raw signal)" time="0.12555011">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: a failed CMP-015 commit cannot advance Temporal (service path and raw signal)" time="0.130988665">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: no Temporal call inside an open domain transaction" time="0.065963147">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: no Temporal call inside an open domain transaction" time="0.067697023">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: a signal scoped to another tenant or application is rejected inside the workflow" time="0.124513815">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: a signal scoped to another tenant or application is rejected inside the workflow" time="0.128881787">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; durable wait and durable Temporal timers (no setTimeout): survives skipped days, fires, then completes" time="0.209252919">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; durable wait and durable Temporal timers (no setTimeout): survives skipped days, fires, then completes" time="0.239835512">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; withdrawal: CMP-016 request record -&gt; review -&gt; CMP-015 commit terminates and cancels the durable timer" time="0.151301324">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; withdrawal: CMP-016 request record -&gt; review -&gt; CMP-015 commit terminates and cancels the durable timer" time="0.162190502">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; sf.migrate reaches the running workflow only through an approved, committed plan" time="0.191579055">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; sf.migrate reaches the running workflow only through an approved, committed plan" time="0.201999534">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key" time="1.057360439">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key" time="1.115776606">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: Temporal cannot update CMP-015 state - activities are ports + own projection only" time="0.004213686">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: Temporal cannot update CMP-015 state - activities are ports + own projection only" time="0.004146901">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: BPMN import is not a second engine" time="0.05219373">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: BPMN import is not a second engine" time="0.05713013">
         </testcase>
-        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: named officer assignment is still rejected (service and inside the worker)" time="0.01457762">
+        <testcase classname="test/temporal/sdk-worker.int.test.ts" name="Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) &gt; NEGATIVE: named officer assignment is still rejected (service and inside the worker)" time="0.014070511">
         </testcase>
     </testsuite>
 </testsuites>

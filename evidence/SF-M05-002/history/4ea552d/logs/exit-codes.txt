@@ -1,0 +1,21 @@
+install-frozen rc=1 seconds=0
+install-frozen: EXPECTED_STITCH_LOCKFILE_ADMISSION if rc!=0 (Temporal importer deps not in committed pnpm-lock.yaml)
+relink-local-temporal rc=0 seconds=0
+format-check rc=0 seconds=15
+lint rc=0 seconds=11
+typecheck rc=0 seconds=58
+test-coverage rc=0 seconds=26
+contracts-validate rc=0 seconds=1
+test-cdc rc=0 seconds=1
+deps-graph rc=0 seconds=3
+build rc=0 seconds=16
+gate-selftests rc=0 seconds=0
+gates-run-all rc=0 seconds=1
+migration-lint rc=0 seconds=1
+contracts-lock rc=0 seconds=0
+check-scope rc=0 seconds=0
+db-test rc=0 seconds=10
+cmp016-unit rc=0 seconds=2
+cmp016-integration rc=0 seconds=4
+cmp016-temporal-sdk rc=0 seconds=6
+DONE
