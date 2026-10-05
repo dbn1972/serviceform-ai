@@ -18,11 +18,13 @@ import { M05, ROOT, V1, frozenExample, model, richGraph } from '../fixtures/mode
 
 // Frozen schemas are validated with the repository's pinned Ajv (as SF-M05-CG-001 does),
 // resolved through packages/contracts so this component adds no dependency.
-const require = createRequire(join(ROOT, 'packages/contracts/package.json'));
-const { Ajv2020 } = require('ajv/dist/2020.js') as { Ajv2020: new (o: object) => AjvLike };
-const addFormatsModule = require('ajv-formats') as { default?: (a: AjvLike) => void } & ((
-  a: AjvLike,
-) => void);
+const requireFromContracts = createRequire(join(ROOT, 'packages/contracts/package.json'));
+const { Ajv2020 } = requireFromContracts('ajv/dist/2020.js') as {
+  Ajv2020: new (o: object) => AjvLike;
+};
+const addFormatsModule = requireFromContracts('ajv-formats') as {
+  default?: (a: AjvLike) => void;
+} & ((a: AjvLike) => void);
 const addFormats = addFormatsModule.default ?? addFormatsModule;
 
 interface AjvLike {

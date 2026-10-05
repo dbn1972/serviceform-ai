@@ -2,6 +2,12 @@ import type { SqlClient, SqlPool, SqlPoolClient, SqlResult } from '../../src/ind
 
 type Row = Record<string, unknown>;
 
+function pgError(message: string, code: string): Error {
+  const e = new Error(message) as Error & { code: string };
+  e.code = code;
+  return e;
+}
+
 /**
  * Scripted in-memory stand-in for the sf_workflow schema (unit tests only). It emulates
  * tenant scoping from the transaction-local app.tenant_id and records BEGIN/COMMIT/ROLLBACK
@@ -56,8 +62,7 @@ export class FakeDb implements SqlPool {
       query: async (text: string, params: unknown[] = []) => {
         const sql = text.replace(/\s+/g, ' ').trim();
         this.statements.push(sql);
-        if (this.failOn?.test(sql))
-          throw Object.assign(new Error('injected failure'), { code: '40001' });
+        if (this.failOn?.test(sql)) throw pgError('injected failure', '40001');
         const p = params as string[];
         if (sql === 'BEGIN') {
           this.log.push('BEGIN');
@@ -81,7 +86,7 @@ export class FakeDb implements SqlPool {
           if (
             this.definitions.some((d) => d['tenant_id'] === p[1] && d['definition_key'] === p[3])
           ) {
-            throw Object.assign(new Error('dup'), { code: '23505' });
+            throw pgError('dup', '23505');
           }
           this.definitions.push({ definition_id: p[0], tenant_id: p[1], definition_key: p[3] });
           return result([], 1);
@@ -126,21 +131,23 @@ export class FakeDb implements SqlPool {
           const v = scoped(this.versions).find(
             (x) => x['version_id'] === p[0] && x['status'] === 'DRAFT',
           );
-          if (v)
-            Object.assign(v, {
-              status: 'PUBLISHED',
-              model: JSON.parse(p[1] as string),
-              published_by: p[3],
-              publication_approval_ref: p[4],
-              published_at: p[5],
-            });
+          if (v) {
+            v['status'] = 'PUBLISHED';
+            v['model'] = JSON.parse(p[1] as string);
+            v['published_by'] = p[3];
+            v['publication_approval_ref'] = p[4];
+            v['published_at'] = p[5];
+          }
           return result([], v ? 1 : 0);
         }
         if (sql.startsWith("UPDATE sf_workflow.workflow_version SET status = 'RETIRED'")) {
           const v = scoped(this.versions).find(
             (x) => x['version_id'] === p[0] && x['status'] === 'PUBLISHED',
           );
-          if (v) Object.assign(v, { status: 'RETIRED', retired_at: p[1] });
+          if (v) {
+            v['status'] = 'RETIRED';
+            v['retired_at'] = p[1];
+          }
           return result([], v ? 1 : 0);
         }
         if (sql.startsWith('INSERT INTO sf_workflow.migration_plan')) {
@@ -162,7 +169,7 @@ export class FakeDb implements SqlPool {
         }
         if (sql.startsWith('INSERT INTO sf_workflow.workflow_instance')) {
           if (this.instances.some((i) => i['tenant_id'] === p[1] && i['application_id'] === p[3])) {
-            throw Object.assign(new Error('dup'), { code: '23505' });
+            throw pgError('dup', '23505');
           }
           this.instances.push({
             instance_id: p[0],
@@ -183,18 +190,20 @@ export class FakeDb implements SqlPool {
         }
         if (sql.startsWith('UPDATE sf_workflow.workflow_instance SET status')) {
           const i = scoped(this.instances).find((x) => x['instance_id'] === p[0]);
-          if (i)
-            Object.assign(i, {
-              status: p[1],
-              active_nodes: JSON.parse(p[2] as string),
-              last_signal_id: p[3],
-            });
+          if (i) {
+            i['status'] = p[1];
+            i['active_nodes'] = JSON.parse(p[2] as string);
+            i['last_signal_id'] = p[3];
+          }
           return result([], i ? 1 : 0);
         }
         if (sql.startsWith('UPDATE sf_workflow.workflow_instance SET workflow_version_id')) {
           const i = scoped(this.instances).find((x) => x['instance_id'] === p[0]);
-          if (i)
-            Object.assign(i, { workflow_version_id: p[1], graph_hash: p[2], migration_id: p[3] });
+          if (i) {
+            i['workflow_version_id'] = p[1];
+            i['graph_hash'] = p[2];
+            i['migration_id'] = p[3];
+          }
           return result([], i ? 1 : 0);
         }
         if (sql.startsWith('INSERT INTO sf_workflow.workflow_request')) {
@@ -226,7 +235,7 @@ export class FakeDb implements SqlPool {
           return result([], 1);
         }
         if (sql.startsWith('INSERT INTO sf_workflow.outbox_event')) {
-          if (p[1] !== tenant) throw Object.assign(new Error('rls'), { code: '42501' });
+          if (p[1] !== tenant) throw pgError('rls', '42501');
           this.outbox.push({
             event_id: p[0],
             tenant_id: p[1],
