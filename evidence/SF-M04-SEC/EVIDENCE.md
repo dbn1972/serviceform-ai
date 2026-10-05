@@ -11,7 +11,7 @@ Independent verifier recommendation only: **`V1_SECURITY_PASS`**.
 | Task | SF-M04-SEC |
 | Role | independent security verifier (tenant / AI / document) |
 | Production base | `afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf` (merge #78 host SF-M04-007) |
-| Verifier head | see `summary.json` `immutable_verifier_head` |
+| Verifier head | `cf23d8672f3fceafb5f23484e10e0973ab9c8bee` |
 | Components | CMP-008, CMP-009, CMP-011, CMP-013, CMP-014, CMP-039 |
 | INT | INT-011 (tenant isolation), INT-013 (upload/OCR simulation fail-closed) |
 | Unmerged siblings | SF-M04-INT **not** consumed as production source of truth |

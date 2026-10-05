@@ -2,7 +2,7 @@
   "task_id": "SF-M04-SEC",
   "result_token": "V1_SECURITY_PASS",
   "production_base": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
-  "immutable_verifier_head": "PENDING_COMMIT",
+  "immutable_verifier_head": "cf23d8672f3fceafb5f23484e10e0973ab9c8bee",
   "production_code_modified": false,
   "CROSS_TENANT_LEAKAGE": 0,
   "SUPERUSER": 0,
@@ -19,11 +19,21 @@
     "nologin_checks": 9,
     "owner_checks": 45
   },
-  "force_rls_probes": { "enable": 33, "force": 33 },
+  "force_rls_probes": {
+    "enable": 33,
+    "force": 33
+  },
   "cross_tenant_probes": 17,
   "cross_component_sql_probes": 8,
-  "vitest": { "files": 3, "tests": 17, "failed": 0 },
-  "catalog": { "pass": 296, "fail": 0 },
+  "vitest": {
+    "files": 3,
+    "tests": 17,
+    "failed": 0
+  },
+  "catalog": {
+    "pass": 296,
+    "fail": 0
+  },
   "certified": false,
   "evd_started": false,
   "m04_g3_issued": false,
@@ -32,5 +42,6 @@
     "SF-CON-OUTBOX publisher USING true (frozen ADR-0006 #9 residual, not leakage)",
     "CMP-014 empty-repository stub may 500 after authz on some GET mounts (harness class A; forged-tenant/deny paths remain fail-closed)"
   ],
-  "assessed_at": "2026-10-05T03:49:30.000Z"
+  "assessed_at": "2026-10-05T03:49:30.000Z",
+  "evidence_package_commit": "cf23d8672f3fceafb5f23484e10e0973ab9c8bee"
 }
