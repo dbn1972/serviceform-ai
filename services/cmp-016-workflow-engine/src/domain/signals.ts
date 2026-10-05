@@ -64,7 +64,6 @@ export function signalFromCommandTransition(
   if (record.open_domain_txn_has_temporal_network !== false) {
     throw reject('TEMPORAL_CALL_INSIDE_DOMAIN_TXN', '/open_domain_txn_has_temporal_network');
   }
-  if (record.temporal_advanced !== false) throw reject('ALREADY_ADVANCED', '/temporal_advanced');
   const signal: CommittedSignal = {
     signal_id: record.command_id,
     source_component: 'CMP-015',
@@ -78,6 +77,7 @@ export function signalFromCommandTransition(
     outbox_event_id: outboxEventId,
   };
   assertCommitted(signal);
+  if (record.temporal_advanced !== false) throw reject('ALREADY_ADVANCED', '/temporal_advanced');
   return signal;
 }
 

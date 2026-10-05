@@ -27,6 +27,7 @@ export {
   type SqlClient,
   type SqlPool,
   type SqlPoolClient,
+  type SqlResult,
 } from './db/tx.js';
 export { TOPIC_AUDIT, TOPIC_DOMAIN, DOMAIN_EVENT_TYPES } from './db/outbox.js';
 export * from './temporal/adapter.js';
