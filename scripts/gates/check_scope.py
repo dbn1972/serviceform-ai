@@ -7,8 +7,12 @@ Usage (CI, on a PR branch whose head commit names the task, or explicitly):
   python scripts/gates/check_scope.py --envelope ENV.yaml --files a.ts b.ts     # explicit list
 
 Allowed for every task: `allowed_write_paths`, plus `orchestrator/handovers/<task>.yaml` and
-`evidence/<task>/**`. Always refused: `read_only_paths`, `pnpm-lock.yaml` (orchestrator/integration
-owned), and other `orchestrator/**` paths.
+`evidence/<task>/**`. Always refused: `read_only_paths`, any nested `*/pnpm-lock.yaml`, and other
+`orchestrator/**` paths.
+The root `pnpm-lock.yaml` is orchestrator/integration owned. It is refused unless the envelope
+itself grants it: `agent_role: integration_agent`, the exact entry `pnpm-lock.yaml` in
+`allowed_write_paths` (a glob such as `**` does not count), and not listed in `read_only_paths`.
+The branch name never grants it.
 A change with no envelope (orchestrator or guardian work) is governed by CODEOWNERS instead.
 """
 from __future__ import annotations
@@ -30,17 +34,32 @@ def matches(path: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatch(path, p) or path.startswith(p.rstrip("*").rstrip("/") + "/") for p in patterns if p)
 
 
+ROOT_LOCKFILE = "pnpm-lock.yaml"
+LOCKFILE_ROLE = "integration_agent"
+
+
 def violations(envelope: dict, files: list[str]) -> list[str]:
     task = envelope["task_id"]
-    allowed = list(envelope.get("allowed_write_paths") or [])
-    allowed += [f"orchestrator/handovers/{task}.yaml", f"evidence/{task}/**"]
+    declared = list(envelope.get("allowed_write_paths") or [])
+    allowed = declared + [f"orchestrator/handovers/{task}.yaml", f"evidence/{task}/**"]
     read_only = list(envelope.get("read_only_paths") or [])
+    allow_root_lockfile = (
+        envelope.get("agent_role") == LOCKFILE_ROLE
+        and ROOT_LOCKFILE in declared
+        and not matches(ROOT_LOCKFILE, read_only)
+    )
     out = []
     for f in files:
         if matches(f, read_only):
             out.append(f"{f}: read-only for {task}")
-        elif f == "pnpm-lock.yaml" or f.endswith("/pnpm-lock.yaml"):
-            out.append(f"{f}: lockfile is orchestrator/integration owned; builders must not commit it")
+        elif f.endswith("/pnpm-lock.yaml"):
+            out.append(f"{f}: nested lockfiles are not permitted; only the root pnpm-lock.yaml exists")
+        elif f == ROOT_LOCKFILE:
+            if not allow_root_lockfile:
+                out.append(
+                    f"{f}: lockfile is orchestrator/integration owned; only an {LOCKFILE_ROLE} envelope "
+                    f"listing exactly `{ROOT_LOCKFILE}` in allowed_write_paths may commit it"
+                )
         elif f.startswith("orchestrator/") and f != f"orchestrator/handovers/{task}.yaml":
             out.append(f"{f}: only the orchestrator writes orchestrator/**")
         elif not matches(f, allowed):

@@ -152,6 +152,48 @@ def test_scope_allows_envelope_paths_and_refuses_others():
     assert lockfile and "lockfile" in lockfile[0]
 
 
+def _lockfile_env(role: str, allowed: list[str], read_only: list[str] | None = None) -> dict:
+    return {
+        "task_id": "SF-MXX-STITCH",
+        "agent_role": role,
+        "allowed_write_paths": allowed,
+        "read_only_paths": read_only or ["contracts/**"],
+    }
+
+
+def test_scope_refuses_lockfile_for_component_builder_even_if_listed():
+    env = _lockfile_env("component_builder", ["services/cmp-015-application-case/**", "pnpm-lock.yaml"])
+    out = check_scope.violations(env, ["pnpm-lock.yaml"])
+    assert len(out) == 1 and "lockfile" in out[0]
+
+
+def test_scope_refuses_lockfile_for_integration_agent_without_exact_entry():
+    for allowed in (["services/cmp-015-application-case/**"], ["**"], ["*.yaml"], ["pnpm-lock.yaml/**"]):
+        out = check_scope.violations(_lockfile_env("integration_agent", allowed), ["pnpm-lock.yaml"])
+        assert len(out) == 1 and "lockfile" in out[0], allowed
+
+
+def test_scope_allows_root_lockfile_for_integration_agent_with_exact_entry():
+    env = _lockfile_env("integration_agent", ["services/cmp-015-application-case/**", "pnpm-lock.yaml"])
+    files = ["pnpm-lock.yaml", "services/cmp-015-application-case/package.json", "evidence/SF-MXX-STITCH/EVIDENCE.md"]
+    assert check_scope.violations(env, files) == []
+    bad = check_scope.violations(env, ["orchestrator/work-queue.yaml", "contracts/shared/x.json", "apps/api/a.ts"])
+    assert len(bad) == 3
+
+
+def test_scope_refuses_lockfile_for_integration_agent_when_read_only():
+    for read_only in (["pnpm-lock.yaml"], ["*.yaml"]):
+        env = _lockfile_env("integration_agent", ["pnpm-lock.yaml"], read_only)
+        out = check_scope.violations(env, ["pnpm-lock.yaml"])
+        assert len(out) == 1 and "read-only" in out[0], read_only
+
+
+def test_scope_refuses_nested_lockfile_for_integration_agent():
+    env = _lockfile_env("integration_agent", ["services/foo/**", "pnpm-lock.yaml", "services/foo/pnpm-lock.yaml"])
+    out = check_scope.violations(env, ["services/foo/pnpm-lock.yaml"])
+    assert len(out) == 1 and "nested" in out[0]
+
+
 def test_plan_validator_flags_duplicate_and_missing_owners(tmp_path, monkeypatch):
     plan = tmp_path / "plan.yaml"
     plan.write_text(
