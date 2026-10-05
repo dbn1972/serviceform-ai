@@ -9,7 +9,7 @@ model_release: claude-opus-5-5
 effort: high
 component_ids: [CMP-008, CMP-009, CMP-011, CMP-013, CMP-014, CMP-039]
 integration_ids: [INT-011, INT-013]
-branch: agent/M04-evd-SF-M04-EVD
+branch: cursor/m04-evd-sf-m04-evd-c61d
 worktree: ../wt-SF-M04-EVD
 parallel_group: M04-VERIFY
 hard_serial_locks: [LOCK-7]
@@ -45,8 +45,8 @@ release_certified: false
 ccr_required: false
 frozen_contracts_altered: false
 base_commit:
-  prefix: df6a4af1
-  suffix: fc7c300616b59a34cf363db80be642e4
+  prefix: afc8e253
+  suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
 join_separator: "_"
 contract_locks:
   - SF-CON-COMMON
@@ -73,3 +73,33 @@ stop_conditions:
   - M05 start
   - weaken cg01_path_uniqueness_gate.py
 
+# Evidence bind (recommendation only). Uniqueness fields above MUST stay READY / dispatched false.
+evidence_bind:
+  recommended_gate:
+    family: G3_INTEGRATION
+    status: VERIFIED
+    join_separator: "_"
+  gate_issued: false
+  gate_passed: false
+  gate_ready: false
+  human_gate_issued: false
+  human_or_ci_decides: true
+  certified: false
+  self_certified: false
+  release_certified: false
+  g6_claimed: false
+  m05: OFF
+  production_base_prefix: afc8e253
+  production_base_suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
+  int_pr: 80
+  int_head_prefix: "3736c023"
+  int_head_suffix: 18bb89c6f89cff31e2afc966ab15e27b
+  sec_pr: 79
+  sec_head_prefix: 6c4b0a41
+  sec_head_suffix: dfe77b694f4566dcdd903d5d49c7b337
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contracts: 13/13 MATCH
+  production_code_modified: false
+  blocking_residual: false
+  do_not_merge_verifiers: true
+  assessed_at: "2026-10-05T04:30:25Z"

@@ -1,0 +1,66 @@
+{
+  "schema": "serviceform.m04.independent-evd.summary.v1",
+  "task_id": "SF-M04-EVD",
+  "production_base": {
+    "prefix": "afc8e253",
+    "suffix": "d4c566a4a18b1e01d9b0a1163f9d6adf"
+  },
+  "recommended_gate": {
+    "family": "G3_INTEGRATION",
+    "status": "VERIFIED",
+    "join_separator": "_"
+  },
+  "gate_issued": false,
+  "gate_ready": false,
+  "gate_passed": false,
+  "human_gate_issued": false,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "frozen_contracts_match": 13,
+  "frozen_contracts_total": 13,
+  "production_code_modified": false,
+  "int_recommended": {
+    "family": "V1_INTEGRATION",
+    "status": "PASS",
+    "join_separator": "_"
+  },
+  "int_suites_passed": 11,
+  "int_suites_total": 11,
+  "int_executed_tests": 420,
+  "INT-011": "PASS",
+  "INT-013": "PASS",
+  "sec_recommended": {
+    "family": "V1_SECURITY",
+    "status": "PASS",
+    "join_separator": "_"
+  },
+  "sec_vitest": "17/17",
+  "sec_catalog_pass": 296,
+  "sec_catalog_fail": 0,
+  "int_pr": 80,
+  "int_head": {
+    "prefix": "3736c023",
+    "suffix": "18bb89c6f89cff31e2afc966ab15e27b"
+  },
+  "sec_pr": 79,
+  "sec_head": {
+    "prefix": "6c4b0a41",
+    "suffix": "dfe77b694f4566dcdd903d5d49c7b337"
+  },
+  "sec_evidence_doc_head": {
+    "prefix": "d2286fe2",
+    "suffix": "bc6ed6b33853d7275a9bcd61dfe4579d",
+    "class": "CLASS_E_EVIDENCE_HEAD_BINDING",
+    "blocking": false,
+    "note": "Authoritative freeze is sec_head 6c4b0a41…; do not rewrite #79"
+  },
+  "certified": false,
+  "self_certified": false,
+  "g6_claimed": false,
+  "release_certified": false,
+  "envelope_state": "READY",
+  "envelope_dispatched": false,
+  "m05": "OFF",
+  "m05_started": false,
+  "blocking_residual": false,
+  "assessed_at": "2026-10-05T04:30:25Z"
+}
