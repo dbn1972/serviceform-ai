@@ -1,7 +1,9 @@
 {
   "task": "SF-M05-CG-001",
-  "package": "PRE_FREEZE_DECISION",
-  "freeze_status": "NOT_FROZEN",
+  "package": "FREEZE_PREPARED",
+  "freeze_status": "PENDING_MERGE",
+  "contracts_status": "FROZEN_CANDIDATE",
+  "repository_freeze_effective": false,
   "ccr_required": false,
   "adr_0003_status": "ACCEPTED",
   "adr_0005_status": "ACCEPTED",
@@ -11,42 +13,46 @@
     "shared_files_changed": 0,
     "result": "MATCH"
   },
-  "proposed": [
+  "lock": {
+    "entries": 19,
+    "frozen": 19
+  },
+  "frozen": [
     {
       "id": "SF-CON-APPLICATION-CASE-SM",
       "file": "contracts/m05/schemas/application-case-sm.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/application-case-sm/v1",
-      "sha256": "c00ce6c337c6b03244a927286eb37358fc5e2bc31f6eb3588b1ab78315fd341f"
+      "sha256": "9b9fb73750a258d3f8f0bccb3182961f54b41f0b6da0570ea954a53aaf4e9ed7"
     },
     {
       "id": "SF-CON-WORKFLOW-MODEL",
       "file": "contracts/m05/schemas/workflow-model.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/workflow-model/v1",
-      "sha256": "d11ba54a6c74c1cc6117fd19106a84c3ad7a6a17031cc8e64239858016ab49a0"
+      "sha256": "71b20b1803525991a72c3983de0b0c7f7efa8cb76e37c31089f3978e994e2015"
     },
     {
       "id": "SF-CON-COMMAND-TRANSITION",
       "file": "contracts/m05/schemas/command-transition.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/command-transition/v1",
-      "sha256": "c5bbc1dd28e6d096fea08c5aad76931a504818eee53f10d6b28c459c893bdb19"
+      "sha256": "07b05c9398cf38883d1c7eac20623633ab977d9d5c1b394d3f247fe842ecdd35"
     },
     {
       "id": "SF-CON-HUMAN-TASK",
       "file": "contracts/m05/schemas/human-task.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/human-task/v1",
-      "sha256": "679f005b5b018c1887af6a083a35ee86c69f692bea23f944bb136d1c4e6a9f1f"
+      "sha256": "2413c7af61453379920bbacc9635388c836262d6df46873497258efbe049ead2"
     },
     {
       "id": "SF-CON-SLA-CLOCK",
       "file": "contracts/m05/schemas/sla-clock.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/sla-clock/v1",
-      "sha256": "f1b10d2ddf5ccf09e23cc3e8beb1dd2175721cf4c19ff40662cff39e5feed450"
+      "sha256": "7a710d662ea77559cc52ec91d45e93f35d96fefc61a3b40903e4cd9cf1249d40"
     },
     {
       "id": "SF-CON-VERSION-PINNING",
       "file": "contracts/m05/schemas/version-pinning.schema.json",
       "$id": "https://contracts.serviceform.ai/m05/version-pinning/v1",
-      "sha256": "e641adf23379096e6f68a2e082926b829f57e1f3ba848630d00fbbb2a36ae019"
+      "sha256": "54e69aa1250b776eba8bb764f8d14e0e2d16cd5e088200ba31613eaa280720f8"
     }
   ]
 }

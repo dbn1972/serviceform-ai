@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/m05/version-pinning/v1",
   "title": "ApplicationVersionPinning",
-  "description": "PROPOSED NOT_FROZEN. SF-CON-VERSION-PINNING. Pinned execution graph versus runtime authorization policy_revision (ADR-0005 ACCEPTED). TSB, workflow, form, rules, evidence-policy, SLA and other statutory config stay immutable unless a governed migration repoints them (Constitution #8 #9 #35). No silent config repoint. TSB authorization_policy_version_id if present is publication provenance only; runtime decision policy_revision is authoritative for the protected action. Does not modify SF-CON-AUTHZ-DECISION.",
+  "description": "FROZEN. SF-CON-VERSION-PINNING. Pinned execution graph versus runtime authorization policy_revision (ADR-0005 ACCEPTED). TSB, workflow, form, rules, evidence-policy, SLA and other statutory config stay immutable unless a governed migration repoints them (Constitution #8 #9 #35). No silent config repoint. TSB authorization_policy_version_id if present is publication provenance only; runtime decision policy_revision is authoritative for the protected action. Does not modify SF-CON-AUTHZ-DECISION.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,10 +20,10 @@
       "const": "SF-CON-VERSION-PINNING"
     },
     "contract_status": {
-      "const": "PROPOSED"
+      "const": "FROZEN"
     },
     "freeze_status": {
-      "const": "NOT_FROZEN"
+      "const": "FROZEN"
     },
     "tenant_id": {
       "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"

@@ -1,10 +1,10 @@
 {
-  "status": "PROPOSED",
-  "freeze_status": "NOT_FROZEN",
-  "in_contracts_lock": false,
+  "status": "FROZEN",
+  "freeze_status": "FROZEN",
+  "in_contracts_lock": true,
   "module": "M05",
   "task": "SF-M05-CG-001",
-  "note": "Human ADRs accepted. Contracts remain PROPOSED / NOT_FROZEN. Do not start Wave A. Do not append contracts-lock.",
+  "note": "SF-M05-CG-001 freeze preparation. Candidate until origin/main merge. Wave A OFF. Do not start SF-M05-001..004.",
   "adrs": [
     {
       "id": "ADR-0003",
@@ -20,43 +20,43 @@
       "id": "SF-CON-APPLICATION-CASE-SM",
       "path": "contracts/m05/schemas/application-case-sm.schema.json",
       "owner": "CMP-015",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     },
     {
       "id": "SF-CON-WORKFLOW-MODEL",
       "path": "contracts/m05/schemas/workflow-model.schema.json",
       "owner": "CMP-016",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     },
     {
       "id": "SF-CON-COMMAND-TRANSITION",
       "path": "contracts/m05/schemas/command-transition.schema.json",
       "owner": "CMP-015",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     },
     {
       "id": "SF-CON-HUMAN-TASK",
       "path": "contracts/m05/schemas/human-task.schema.json",
       "owner": "CMP-017",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     },
     {
       "id": "SF-CON-SLA-CLOCK",
       "path": "contracts/m05/schemas/sla-clock.schema.json",
       "owner": "CMP-029",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     },
     {
       "id": "SF-CON-VERSION-PINNING",
       "path": "contracts/m05/schemas/version-pinning.schema.json",
       "owner": "CMP-015",
-      "status": "PROPOSED",
-      "freeze_status": "NOT_FROZEN"
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
     }
   ]
 }

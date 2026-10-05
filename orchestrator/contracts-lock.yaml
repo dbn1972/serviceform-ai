@@ -160,3 +160,72 @@ contracts:
       - path: contracts/shared/sql/outbox.template.sql
         sha256: 4e1ad97dadf15e30a21db789c1d1bc4c32c4f45d6dae8e65515cc2c5d695fa21
     change_request: null
+  # SF-M05-CG-001 freeze preparation. APPEND-ONLY six NEW FROZEN rows.
+  # Existing 13 rows above are unchanged. A change to those 13 needs a Contract Change Request.
+  # Candidate until origin/main merge. Wave A remains OFF until then.
+  - id: SF-CON-APPLICATION-CASE-SM
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 s12.1; ADR-0003"
+    path: contracts/m05/schemas/application-case-sm.schema.json
+    schema_hash: 9b9fb73750a258d3f8f0bccb3182961f54b41f0b6da0570ea954a53aaf4e9ed7
+    producers: [CMP-015]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-WORKFLOW-MODEL
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "Constitution #33; AWS v1.7 CMP-016"
+    path: contracts/m05/schemas/workflow-model.schema.json
+    schema_hash: 71b20b1803525991a72c3983de0b0c7f7efa8cb76e37c31089f3978e994e2015
+    producers: [CMP-016]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-COMMAND-TRANSITION
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "Constitution #10, #11; Eng v1.4 s11.1"
+    path: contracts/m05/schemas/command-transition.schema.json
+    schema_hash: 07b05c9398cf38883d1c7eac20623633ab977d9d5c1b394d3f247fe842ecdd35
+    producers: [CMP-015]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-HUMAN-TASK
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-017; Constitution #19"
+    path: contracts/m05/schemas/human-task.schema.json
+    schema_hash: 2413c7af61453379920bbacc9635388c836262d6df46873497258efbe049ead2
+    producers: [CMP-017]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-SLA-CLOCK
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-029; INT-009; Constitution #16"
+    path: contracts/m05/schemas/sla-clock.schema.json
+    schema_hash: 7a710d662ea77559cc52ec91d45e93f35d96fefc61a3b40903e4cd9cf1249d40
+    producers: [CMP-029]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-VERSION-PINNING
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "Constitution #8, #9, #35; ADR-0005"
+    path: contracts/m05/schemas/version-pinning.schema.json
+    schema_hash: 54e69aa1250b776eba8bb764f8d14e0e2d16cd5e088200ba31613eaa280720f8
+    producers: [CMP-015]
+    consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null

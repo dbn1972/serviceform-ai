@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://contracts.serviceform.ai/m05/application-case-sm/v1",
   "title": "ApplicationCaseStateMachine",
-  "description": "PROPOSED NOT_FROZEN. SF-CON-APPLICATION-CASE-SM. CMP-015 is the sole owner of authoritative application/case state (Constitution #10; AWS v1.7 s12.1; ADR-0003 ACCEPTED). WITHDRAWAL_REQUESTED and CANCELLATION_REQUESTED are not authoritative states: they are workflow/request constructs. Every transition whose to_state is WITHDRAWN or CANCELLED is POLICY-GATED (published service policy + committed request construct). None is ALWAYS_LEGAL. Service availability is not invented here; it stays in published policy/rules. Mutations require tenant context, OPA allow, idempotency, expected-state, outbox, and audit. AI cannot approve or reject. Instance rule: expected_state MUST equal from_state; mismatches are SF-APP-001.",
+  "description": "FROZEN. SF-CON-APPLICATION-CASE-SM. CMP-015 is the sole owner of authoritative application/case state (Constitution #10; AWS v1.7 s12.1; ADR-0003 ACCEPTED). WITHDRAWAL_REQUESTED and CANCELLATION_REQUESTED are not authoritative states: they are workflow/request constructs. Every transition whose to_state is WITHDRAWN or CANCELLED is POLICY-GATED (published service policy + committed request construct). None is ALWAYS_LEGAL. Service availability is not invented here; it stays in published policy/rules. Mutations require tenant context, OPA allow, idempotency, expected-state, outbox, and audit. AI cannot approve or reject. Instance rule: expected_state MUST equal from_state; mismatches are SF-APP-001.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -30,10 +30,10 @@
       "const": "SF-CON-APPLICATION-CASE-SM"
     },
     "contract_status": {
-      "const": "PROPOSED"
+      "const": "FROZEN"
     },
     "freeze_status": {
-      "const": "NOT_FROZEN"
+      "const": "FROZEN"
     },
     "owner_component": {
       "const": "CMP-015"
