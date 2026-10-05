@@ -7,6 +7,7 @@ import Fastify, { type FastifyBaseLogger, type FastifyInstance, LogController } 
 import type { AppConfig } from './config.js';
 import { registerM02Plugins, type M02PluginMounts } from './composition/m02.js';
 import { registerM03Plugins, type M03PluginMounts } from './composition/m03.js';
+import { registerM04Plugins, type M04PluginMounts } from './composition/m04.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -38,6 +39,11 @@ export interface AppDependencies {
    * CMP-054 has no Fastify plugin on main (UX4G React package only).
    */
   m03?: M03PluginMounts;
+  /**
+   * M04 mounts (CMP-039/008/011/013/009/014). Optional; tests supply doubles.
+   * CMP-036 remains registered above composition — do not remount it via m04.
+   */
+  m04?: M04PluginMounts;
 }
 
 /**
@@ -118,6 +124,11 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m03Mounted', mounted);
   }
 
+  if (deps.m04) {
+    const mounted = await registerM04Plugins(app, deps.m04);
+    app.decorate('m04Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -127,5 +138,6 @@ declare module 'fastify' {
     wave2Mounted: string[];
     m02Mounted: string[];
     m03Mounted?: string[];
+    m04Mounted?: string[];
   }
 }
