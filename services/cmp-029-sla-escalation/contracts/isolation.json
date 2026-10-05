@@ -1,0 +1,60 @@
+{
+  "entities": [
+    {
+      "entity": "sf_sla.sla_calendar",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.sla_policy",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.sla_clock",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.sla_clock_event",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.idempotency_record",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.outbox_event",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.inbox_event",
+      "owner_component": "CMP-029",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_sla.outbox_event_platform",
+      "owner_component": "CMP-029",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-029 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_sla.inbox_event_platform",
+      "owner_component": "CMP-029",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-029 consumes no tenant-less events."
+    }
+  ]
+}

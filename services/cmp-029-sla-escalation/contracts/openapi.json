@@ -1,0 +1,708 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-029 SLA & Escalation Engine",
+    "version": "0.1.0",
+    "description": "SLA clocks with start/completion anchors, pinned calendar and policy versions, explicit pause/resume, breach and escalation. Time is server-authoritative: no request member may carry a clock value. CMP-029 never mutates case state (CMP-015 remains authoritative) and requests breach notifications only through the CMP-025 port. Clock projection conforms to FROZEN SF-CON-SLA-CLOCK. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/sla-calendars": {
+      "post": {
+        "operationId": "createSlaCalendar",
+        "summary": "Register an immutable calendar version",
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "calendar_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "utc_offset_minutes": {
+                    "type": "integer",
+                    "minimum": -720,
+                    "maximum": 840
+                  },
+                  "working_weekdays": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 7
+                    },
+                    "minItems": 1,
+                    "maxItems": 7
+                  },
+                  "window_start_minute": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1439
+                  },
+                  "window_end_minute": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1440
+                  },
+                  "holidays": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                },
+                "required": [
+                  "calendar_code",
+                  "utc_offset_minutes",
+                  "working_weekdays",
+                  "window_start_minute",
+                  "window_end_minute"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-policies": {
+      "post": {
+        "operationId": "createSlaPolicy",
+        "summary": "Register a published SLA policy version",
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "policy_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "publication_ref": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  },
+                  "start_anchor": {
+                    "type": "string"
+                  },
+                  "completion_anchor": {
+                    "type": "string"
+                  },
+                  "calendar_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "duration_basis": {
+                    "enum": ["WORKING_MINUTES", "CALENDAR_MINUTES"]
+                  },
+                  "duration_minutes": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "warning_before_minutes": {
+                    "type": ["integer", "null"]
+                  },
+                  "allowed_pause_reason_codes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                    }
+                  },
+                  "escalation_schedule": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "level": {
+                          "type": "integer"
+                        },
+                        "after_deadline_minutes": {
+                          "type": "integer"
+                        },
+                        "action_code": {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "policy_code",
+                  "publication_ref",
+                  "start_anchor",
+                  "completion_anchor",
+                  "calendar_id",
+                  "duration_basis",
+                  "duration_minutes"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-policies/{policy_id}/retire": {
+      "post": {
+        "operationId": "retireSlaPolicy",
+        "summary": "Retire a published policy version (existing clocks stay pinned)",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-clocks": {
+      "post": {
+        "operationId": "startSlaClock",
+        "summary": "Start a clock; the deadline is computed on the server",
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "application_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "policy_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "stage_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "start_anchor": {
+                    "type": "string"
+                  },
+                  "anchor_event_ref": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": ["application_id", "policy_id", "start_anchor"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-clocks/{clock_id}": {
+      "get": {
+        "operationId": "getSlaClock",
+        "summary": "Read a clock (SF-CON-SLA-CLOCK projection)",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/sla-clocks/{clock_id}/history": {
+      "get": {
+        "operationId": "getSlaClockHistory",
+        "summary": "Insert-only clock history for deterministic replay",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/sla-clocks/{clock_id}/pause": {
+      "post": {
+        "operationId": "pauseSlaClock",
+        "summary": "Pause for a reason listed by the published SLA policy",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "reason_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  }
+                },
+                "required": ["reason_code"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-clocks/{clock_id}/resume": {
+      "post": {
+        "operationId": "resumeSlaClock",
+        "summary": "Resume a PAUSED clock; deadline recomputed from remaining time",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-clocks/{clock_id}/complete": {
+      "post": {
+        "operationId": "completeSlaClock",
+        "summary": "Record the published completion anchor",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "completion_anchor": {
+                    "type": "string"
+                  }
+                },
+                "required": ["completion_anchor"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sla-clocks/{clock_id}/evaluate": {
+      "post": {
+        "operationId": "evaluateSlaClock",
+        "summary": "Server-time evaluation of warning, breach and escalation (timer wakeup)",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "clock_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/applications/{application_id}/sla-clocks": {
+      "get": {
+        "operationId": "listApplicationSlaClocks",
+        "summary": "Clocks for an application",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (including CLIENT_TIME_NOT_AUTHORITATIVE)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition / SF-APP-002 idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

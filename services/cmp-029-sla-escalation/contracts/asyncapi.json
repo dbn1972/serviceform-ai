@@ -1,0 +1,90 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-029 SLA Events",
+    "version": "0.1.0",
+    "description": "Events carry identifiers, statuses, reason/action codes and server-computed timestamps. No PII, recipients, channels or notification content. Breach notification is requested from CMP-025 through a port, not emitted as a delivery command."
+  },
+  "channels": {
+    "sf.sla.events.v1": {
+      "address": "sf.sla.events.v1",
+      "messages": {
+        "SlaClockStarted": {
+          "$ref": "#/components/messages/SlaClockStarted"
+        },
+        "SlaClockPaused": {
+          "$ref": "#/components/messages/SlaClockPaused"
+        },
+        "SlaClockResumed": {
+          "$ref": "#/components/messages/SlaClockResumed"
+        },
+        "SlaClockCompleted": {
+          "$ref": "#/components/messages/SlaClockCompleted"
+        },
+        "SlaBreachApproaching": {
+          "$ref": "#/components/messages/SlaBreachApproaching"
+        },
+        "SlaBreached": {
+          "$ref": "#/components/messages/SlaBreached"
+        },
+        "EscalationTriggered": {
+          "$ref": "#/components/messages/EscalationTriggered"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "SlaClockStarted": {
+        "name": "SlaClockStarted",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "SlaClockPaused": {
+        "name": "SlaClockPaused",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "SlaClockResumed": {
+        "name": "SlaClockResumed",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "SlaClockCompleted": {
+        "name": "SlaClockCompleted",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "SlaBreachApproaching": {
+        "name": "SlaBreachApproaching",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "SlaBreached": {
+        "name": "SlaBreached",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      },
+      "EscalationTriggered": {
+        "name": "EscalationTriggered",
+        "payload": {
+          "$ref": "./events/sla-clock-event.data.schema.json"
+        }
+      }
+    }
+  }
+}
