@@ -1,0 +1,134 @@
+
+> serviceform-ai@ build /workspace/wt-SF-M04-007
+> pnpm -r --workspace-concurrency=2 run build
+
+Scope: 38 of 39 workspace projects
+packages/contracts build$ tsc -p tsconfig.json --noEmit
+packages/observability build$ tsc --noEmit -p tsconfig.json
+packages/contracts build: Done
+packages/ui-ux4g build$ tsc --noEmit -p tsconfig.json
+packages/observability build: Done
+packages/ui-ux4g build: Done
+apps/web-admin build$ next build
+apps/web-citizen build$ next build
+apps/web-admin build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-citizen build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-admin build: ✓ Running next.config.ts took 20ms
+apps/web-citizen build: ✓ Running next.config.ts took 17ms
+apps/web-admin build: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+apps/web-admin build: This information is used to shape Next.js' roadmap and prioritize features.
+apps/web-admin build: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+apps/web-admin build: https://nextjs.org/telemetry
+apps/web-citizen build: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+apps/web-citizen build: This information is used to shape Next.js' roadmap and prioritize features.
+apps/web-citizen build: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+apps/web-citizen build: https://nextjs.org/telemetry
+apps/web-admin build:   Creating an optimized production build ...
+apps/web-citizen build:   Creating an optimized production build ...
+apps/web-citizen build: ✓ Compiled successfully in 5.1s
+apps/web-citizen build:   Running TypeScript ...
+apps/web-admin build: ✓ Compiled successfully in 5.5s
+apps/web-admin build:   Running TypeScript ...
+apps/web-citizen build:   Finished TypeScript in 1810ms ...
+apps/web-citizen build:   Collecting page data using 3 workers ...
+apps/web-citizen build:   Generating static pages using 3 workers (0/4) ...
+apps/web-citizen build:   Generating static pages using 3 workers (1/4) 
+apps/web-citizen build:   Generating static pages using 3 workers (2/4) 
+apps/web-citizen build:   Generating static pages using 3 workers (3/4) 
+apps/web-citizen build: ✓ Generating static pages using 3 workers (4/4) in 135ms
+apps/web-citizen build:   Finalizing page optimization ...
+apps/web-citizen build: Route (app)
+apps/web-citizen build: ┌ ○ /
+apps/web-citizen build: ├ ○ /_not-found
+apps/web-citizen build: └ ○ /api/health
+apps/web-citizen build: ○  (Static)  prerendered as static content
+apps/web-citizen build: Done
+apps/web-officer build$ next build
+apps/web-admin build:   Finished TypeScript in 2.1s ...
+apps/web-admin build:   Collecting page data using 3 workers ...
+apps/web-officer build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-officer build: ✓ Running next.config.ts took 23ms
+apps/web-officer build:   Creating an optimized production build ...
+apps/web-admin build:   Generating static pages using 3 workers (0/8) ...
+apps/web-admin build:   Generating static pages using 3 workers (2/8) 
+apps/web-admin build:   Generating static pages using 3 workers (4/8) 
+apps/web-admin build:   Generating static pages using 3 workers (6/8) 
+apps/web-admin build: ✓ Generating static pages using 3 workers (8/8) in 182ms
+apps/web-admin build:   Finalizing page optimization ...
+apps/web-admin build: Route (app)
+apps/web-admin build: ┌ ○ /
+apps/web-admin build: ├ ○ /_not-found
+apps/web-admin build: ├ ○ /api/health
+apps/web-admin build: ├ ƒ /api/platform/[...path]
+apps/web-admin build: ├ ƒ /api/session
+apps/web-admin build: ├ ○ /bindings
+apps/web-admin build: ├ ○ /branding
+apps/web-admin build: ├ ○ /reviews
+apps/web-admin build: └ ○ /session
+apps/web-admin build: ○  (Static)   prerendered as static content
+apps/web-admin build: ƒ  (Dynamic)  server-rendered on demand
+apps/web-admin build: Done
+apps/web-studio build$ next build
+apps/web-studio build: ▲ Next.js 16.3.8 (Turbopack)
+apps/web-studio build: ✓ Running next.config.ts took 24ms
+apps/web-studio build:   Creating an optimized production build ...
+apps/web-officer build: ✓ Compiled successfully in 4.2s
+apps/web-officer build:   Running TypeScript ...
+apps/web-studio build: ✓ Compiled successfully in 5.0s
+apps/web-studio build:   Running TypeScript ...
+apps/web-officer build:   Finished TypeScript in 2.2s ...
+apps/web-officer build:   Collecting page data using 3 workers ...
+apps/web-officer build:   Generating static pages using 3 workers (0/4) ...
+apps/web-officer build:   Generating static pages using 3 workers (1/4) 
+apps/web-officer build:   Generating static pages using 3 workers (2/4) 
+apps/web-officer build:   Generating static pages using 3 workers (3/4) 
+apps/web-officer build: ✓ Generating static pages using 3 workers (4/4) in 165ms
+apps/web-officer build:   Finalizing page optimization ...
+apps/web-officer build: Route (app)
+apps/web-officer build: ┌ ○ /
+apps/web-officer build: ├ ○ /_not-found
+apps/web-officer build: └ ○ /api/health
+apps/web-officer build: ○  (Static)  prerendered as static content
+apps/web-officer build: Done
+packages/audit-client build$ tsc --noEmit -p tsconfig.json
+apps/web-studio build:   Finished TypeScript in 2.0s ...
+apps/web-studio build:   Collecting page data using 3 workers ...
+apps/web-studio build:   Generating static pages using 3 workers (0/7) ...
+packages/audit-client build: Done
+packages/connector-sdk build$ tsc --noEmit -p tsconfig.json
+apps/web-studio build:   Generating static pages using 3 workers (1/7) 
+apps/web-studio build:   Generating static pages using 3 workers (3/7) 
+apps/web-studio build:   Generating static pages using 3 workers (5/7) 
+apps/web-studio build: ✓ Generating static pages using 3 workers (7/7) in 219ms
+apps/web-studio build:   Finalizing page optimization ...
+apps/web-studio build: Route (app)
+apps/web-studio build: ┌ ○ /
+apps/web-studio build: ├ ○ /_not-found
+apps/web-studio build: ├ ○ /api/health
+apps/web-studio build: ├ ƒ /api/platform/[...path]
+apps/web-studio build: ├ ƒ /api/session
+apps/web-studio build: ├ ○ /metadata
+apps/web-studio build: ├ ○ /publication
+apps/web-studio build: └ ○ /session
+apps/web-studio build: ○  (Static)   prerendered as static content
+apps/web-studio build: ƒ  (Dynamic)  server-rendered on demand
+apps/web-studio build: Done
+packages/outbox build$ tsc --noEmit -p tsconfig.json
+packages/connector-sdk build: Done
+packages/security build$ tsc --noEmit -p tsconfig.json
+packages/outbox build: Done
+packages/storage build$ tsc --noEmit -p tsconfig.json
+packages/security build: Done
+services/cmp-036-api-gateway build$ tsc --noEmit -p tsconfig.json
+packages/storage build: Done
+services/cmp-047-observability build$ tsc --noEmit -p tsconfig.json
+services/cmp-036-api-gateway build: Done
+services/cmp-047-observability build: Done
+services/cmp-037-integration-hub build$ tsc --noEmit -p tsconfig.json
+services/cmp-038-event-bus build$ tsc --noEmit -p tsconfig.json
+services/cmp-038-event-bus build: Done
+services/cmp-037-integration-hub build: Done
+apps/api build$ node scripts/build.mjs
+apps/api build: dist/server.js built; 19 external runtime packages, all declared
+apps/api build: Done
+BUILD:0

@@ -1,0 +1,17 @@
+
+> serviceform-ai@ db:test /workspace/wt-SF-M04-007
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /workspace/wt-SF-M04-007/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/wt-SF-M04-007/db
+
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  02:25:54
+   Duration  6.21s (tests 98%, import 1%, transform 1%)
+
