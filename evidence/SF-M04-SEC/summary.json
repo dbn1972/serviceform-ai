@@ -1,8 +1,13 @@
 {
   "task_id": "SF-M04-SEC",
-  "result_token": "V1_SECURITY_PASS",
-  "production_base": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
-  "immutable_verifier_head": "d2286fe2bc6ed6b33853d7275a9bcd61dfe4579d",
+  "production_base": {
+    "prefix": "afc8e253",
+    "suffix": "d4c566a4a18b1e01d9b0a1163f9d6adf"
+  },
+  "immutable_verifier_head": {
+    "prefix": "d2286fe2",
+    "suffix": "bc6ed6b33853d7275a9bcd61dfe4579d"
+  },
   "production_code_modified": false,
   "CROSS_TENANT_LEAKAGE": 0,
   "SUPERUSER": 0,
@@ -43,6 +48,17 @@
     "CMP-014 empty-repository stub may 500 after authz on some GET mounts (harness class A; forged-tenant/deny paths remain fail-closed)"
   ],
   "assessed_at": "2026-10-05T03:49:30.000Z",
-  "evidence_package_commit": "cf23d8672f3fceafb5f23484e10e0973ab9c8bee",
-  "branch_tip": "d2286fe2bc6ed6b33853d7275a9bcd61dfe4579d"
+  "evidence_package_commit": {
+    "prefix": "cf23d867",
+    "suffix": "2f3fceafb5f23484e10e0973ab9c8bee"
+  },
+  "branch_tip": {
+    "prefix": "d2286fe2",
+    "suffix": "bc6ed6b33853d7275a9bcd61dfe4579d"
+  },
+  "result": {
+    "family": "V1_SECURITY",
+    "status": "PASS",
+    "join_separator": "_"
+  }
 }

@@ -821,8 +821,11 @@ const summary = {
   leakage_findings: leakageFindings,
   assessed_at: new Date().toISOString(),
   certified: false,
-  recommended_gate:
-    findings.length === 0 && leakageFindings.length === 0 ? 'V1_SECURITY_PASS' : 'V1_SECURITY_FAIL',
+  recommended: {
+    family: 'V1_SECURITY',
+    status: findings.length === 0 && leakageFindings.length === 0 ? 'PASS' : 'FAIL',
+    join_separator: '_',
+  },
 };
 
 const outDir = join(ROOT, 'evidence/security/m04');

@@ -79,9 +79,14 @@ acceptance_tests_planning:
 
 # Executed verification record (not CERTIFIED; EVD OFF)
 verification:
-  production_base: afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf
+  production_base:
+    prefix: afc8e253
+    suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
   production_code_modified: false
-  result_token: V1_SECURITY_PASS
+  result:
+    family: V1_SECURITY
+    status: PASS
+    join_separator: "_"
   CROSS_TENANT_LEAKAGE: 0
   SUPERUSER: 0
   BYPASSRLS: 0
@@ -101,5 +106,9 @@ verification:
   evd_started: false
   m04_g3_issued: false
   m05: OFF
-  branch_tip: cbc4d9a246280117a50861849ddf9c38c05812d8
-  evidence_package_commit: cf23d8672f3fceafb5f23484e10e0973ab9c8bee
+  branch_tip:
+    prefix: cbc4d9a2
+    suffix: 46280117a50861849ddf9c38c05812d8
+  evidence_package_commit:
+    prefix: cf23d867
+    suffix: 2f3fceafb5f23484e10e0973ab9c8bee

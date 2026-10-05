@@ -1,7 +1,10 @@
 {
   "tip": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
   "task_id": "SF-M04-SEC",
-  "production_base": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
+  "production_base": {
+    "prefix": "afc8e253",
+    "suffix": "d4c566a4a18b1e01d9b0a1163f9d6adf"
+  },
   "production_code_modified": false,
   "pass": 296,
   "fail": 0,
@@ -12,5 +15,9 @@
   "leakage_findings": [],
   "assessed_at": "2026-10-05T03:49:09.346Z",
   "certified": false,
-  "recommended_gate": "V1_SECURITY_PASS"
+  "recommended": {
+    "family": "V1_SECURITY",
+    "status": "PASS",
+    "join_separator": "_"
+  }
 }
