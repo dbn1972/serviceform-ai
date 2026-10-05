@@ -1,0 +1,98 @@
+# M05 PLANNING envelope — Grievance and Feedback Service (Wave B)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-007
+title: Grievance and Feedback Service
+module_id: M05
+component_ids: [CMP-027]
+integration_ids: [INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-027
+agent_role: component_builder
+builder_agent: serviceform-case-execution-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M05-grievance-SF-M05-007
+worktree: ../wt-SF-M05-007
+parallel_group: M05-B
+privilege_role: sf_cmp027_rw
+schema: sf_grievance
+hard_serial_locks: [LOCK-5]
+depends_on:
+  - SF-M05-STITCH-A on origin/main
+  - Wave A CMP-015/016/017/029 on main
+  - later orchestrator dispatch record
+allowed_write_paths:
+  - services/cmp-027-grievance-feedback/**
+  - db/migrations/*_cmp-027-*.sql
+  - evidence/SF-M05-007/**
+  - orchestrator/handovers/SF-M05-007.yaml
+allowed_write_notes:
+  - Generic grievance routing via workflow/task ports; no named-service branching
+  - Notification port only
+  - Do not commit pnpm-lock.yaml
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - apps/**
+  - services/cmp-016-workflow-engine/**
+  - services/cmp-017-work-queue-tasks/**
+wave_eligible_now: false
+serial_after:
+  - SF-M05-STITCH-A
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - Tenant-scoped grievance rows ENABLE+FORCE RLS
+  - AI cannot close a grievance as statutory outcome
+  - Host mount deferred to SF-M05-009

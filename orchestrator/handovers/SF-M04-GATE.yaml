@@ -39,8 +39,24 @@ decision_authority:
   issuer_role: human
 recording_agent_self_issued: false
 issued_at: "2026-10-05T04:39:59Z"
-merged: false
-m05: OFF
+merged: true
+repository_recorded: true
+# Operational post-merge status only. Do not treat as a change to the issued G3 decision.
+post_merge_main:
+  ref: origin/main
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+post_merge:
+  ci:
+    run_id: "37265198756"
+    result: SUCCESS
+  security:
+    run_id: "37265198732"
+    result: SUCCESS
+  developer_platform:
+    run_id: "37265198749"
+    result: SUCCESS
+m05: PLANNING
 m05_started: false
 m05_dispatched: false
 production_rewritten: false
@@ -184,6 +200,7 @@ do_not_merge_this_pr_without_separate_authorization: true
 
 human_ci_action: module_exit_gate_issuance_recorded
 awaiting:
-  - separate_authorization_to_merge_this_gate_record
-  - green_main_after_gate_record_merge
-  - M05_remains_off_until_gate_record_merged_and_green_main
+  - M05_PLANNING_AUTHORIZED
+  - M05_IMPLEMENTATION_NOT_AUTHORIZED
+  - M05_CG_001_FREEZE_NOT_THIS_PR
+  - M05_builders_remain_off

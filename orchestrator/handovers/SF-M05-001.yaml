@@ -1,0 +1,105 @@
+# M05 PLANNING envelope — Application / Case Management Service (Wave A)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-001
+title: Application / Case Management Service
+module_id: M05
+component_ids: [CMP-015]
+integration_ids: [INT-004, INT-005, INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-015
+  - Constitution-10-case-authoritative
+  - INT-004
+agent_role: component_builder
+builder_agent: serviceform-case-execution-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M05-case-SF-M05-001
+worktree: ../wt-SF-M05-001
+parallel_group: M05-A
+privilege_role: sf_cmp015_rw
+schema: sf_application_case
+hard_serial_locks: [LOCK-2, LOCK-3]
+depends_on:
+  - SF-M05-CG-001 freeze on origin/main
+  - 13 shared contracts FROZEN unchanged
+  - LOCK-1 planning PR on main
+  - later orchestrator dispatch record
+allowed_write_paths:
+  - services/cmp-015-application-case/**
+  - db/migrations/*_cmp-015-*.sql
+  - evidence/SF-M05-001/**
+  - orchestrator/handovers/SF-M05-001.yaml
+allowed_write_notes:
+  - CMP-015 owns authoritative case state; Temporal must not commit first
+  - Short PG txn + outbox; no external I/O in txn; idempotent
+  - Pin published TSB/workflow/rule/form/evidence versions
+  - Payment/notification/DigiLocker are ports only
+  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M05-009
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - services/cmp-016-workflow-engine/**
+  - services/cmp-021-payment/**
+wave_eligible_now: false
+serial_after:
+  - SF-M05-CG-001
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - State machine enforced in CMP-015; Temporal cannot skip domain commit
+  - INT-004 hot path uses outbox; no network in txn
+  - Wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
+  - Host mount deferred to SF-M05-009

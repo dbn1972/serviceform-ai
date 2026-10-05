@@ -1,0 +1,108 @@
+# M05 PLANNING envelope — Wave B mechanical stitch and lockfile (LOCK-6)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-STITCH-B
+title: M05 Wave B mechanical stitch and lockfile
+module_id: M05
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+component_ids: [CMP-018, CMP-019, CMP-027, CMP-028]
+integration_ids: [INT-006, INT-009, INT-011, INT-013]
+branch: agent/M05-stitch-b-SF-M05-STITCH-B
+worktree: ../wt-SF-M05-STITCH-B
+parallel_group: M05-STITCH-B
+hard_serial_locks: [LOCK-6]
+must_not_run_concurrent_with: [SF-M05-STITCH-A, SF-M05-005, SF-M05-006, SF-M05-007, SF-M05-008]
+depends_on:
+  - SF-M05-005 immutable head
+  - SF-M05-006 immutable head
+  - SF-M05-007 immutable head
+  - SF-M05-008 immutable head
+  - SF-M05-STITCH-A on origin/main
+allowed_write_paths:
+  - services/cmp-018-inspection-verification/**
+  - db/migrations/*_cmp-018-*.sql
+  - services/cmp-019-deficiency/**
+  - db/migrations/*_cmp-019-*.sql
+  - services/cmp-027-grievance-feedback/**
+  - db/migrations/*_cmp-027-*.sql
+  - services/cmp-028-appeal-review/**
+  - db/migrations/*_cmp-028-*.sql
+  - pnpm-lock.yaml
+  - evidence/SF-M05-STITCH-B/**
+  - orchestrator/handovers/SF-M05-STITCH-B.yaml
+allowed_write_notes:
+  - Mechanical/format/lockfile only; Wave B trees only
+  - Admit Wave B workspace importers; do not weaken frozen-lockfile CI
+explicit_cannot:
+  - semantic redesign of Wave B component source
+  - modify Wave A services, apps/**, or existing 13 frozen shared contracts
+  - invent new dependencies or broaden lockfile refresh
+  - self-certify
+read_only_paths:
+  - contracts/shared/**
+  - apps/**
+  - scripts/gates/cg01_path_uniqueness_gate.py
+  - services/cmp-015-application-case/**
+  - services/cmp-016-workflow-engine/**
+  - services/cmp-017-work-queue-tasks/**
+  - services/cmp-029-sla-escalation/**
+wave_eligible_now: false
+serial_after:
+  - SF-M05-005
+  - SF-M05-006
+  - SF-M05-007
+  - SF-M05-008
+  - SF-M05-STITCH-A
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime

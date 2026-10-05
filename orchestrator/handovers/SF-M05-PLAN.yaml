@@ -1,0 +1,146 @@
+# M05 Application, case, workflow, tasks, verification, deficiency, SLA, grievance, appeal — PLANNING index
+# Planning package only. Not dispatched. Implementation OFF. Not CERTIFIED. M06/M08 OFF.
+module_id: M05
+record: SF-M05-PLAN
+name: Application, Case, Workflow, Tasks, Verification, Deficiency, SLA, Grievance and Appeal
+depends_on: [M04]
+components: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integrations_owned: [INT-004, INT-005, INT-006, INT-009]
+integrations_reverify: [INT-011, INT-013]
+integrations_owner_note: INT-011 and INT-013 remain M01-owned; M05 re-verifies layers it adds
+exit_gate:
+  id: G4_SECURITY
+  status: VERIFIED
+  issued: false
+  note: target module exit only; this package does not issue G4; EVD cannot issue G4
+decision:
+  family: M05_PLANNING
+  status: PLANNING
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+m06_off: true
+m07_off: true
+m08_off: true
+builders_dispatched: 0
+m05_started: false
+m05_dispatched: false
+wave_a_dispatch: HOLD_UNTIL_CG001_FREEZE_AND_ORCHESTRATOR_RECORD
+hard_serial_locks:
+  LOCK-1: planning PR merged; uniqueness/contracts/architecture green; no spawn; no freeze in this slice
+  LOCK-2: SF-M05-CG-001 NEW M05 contracts only after LOCK-1 plus later freeze authorization
+  LOCK-3: Wave A parallel SF-M05-001..004 only after LOCK-2 freeze on origin/main plus dispatch record
+  LOCK-4: STITCH-A mechanical/format/lockfile on Wave A paths after immutable heads
+  LOCK-5: Wave B parallel SF-M05-005..008 only after STITCH-A on origin/main
+  LOCK-6: STITCH-B mechanical/format/lockfile on Wave B paths after immutable heads
+  LOCK-7: single-writer SF-M05-009 apps/api after STITCH-B; preserve M01-M04 mounts
+  LOCK-8: INT parallel SEC after 009
+  LOCK-9: EVD recommend G4 only; human/CI may later issue G4
+wave_a_eligible_now: []
+wave_a_parallel: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+wave_a_components:
+  SF-M05-001: CMP-015
+  SF-M05-002: CMP-016
+  SF-M05-003: CMP-017
+  SF-M05-004: CMP-029
+wave_b_after_stitch_a:
+  - SF-M05-005
+  - SF-M05-006
+  - SF-M05-007
+  - SF-M05-008
+wave_b_components:
+  SF-M05-005: CMP-018
+  SF-M05-006: CMP-019
+  SF-M05-007: CMP-027
+  SF-M05-008: CMP-028
+sequencing:
+  SF-M05-CG-001_after: [LOCK-1]
+  SF-M05-001_after: [SF-M05-CG-001]
+  SF-M05-002_after: [SF-M05-CG-001]
+  SF-M05-003_after: [SF-M05-CG-001]
+  SF-M05-004_after: [SF-M05-CG-001]
+  SF-M05-STITCH-A_after: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+  SF-M05-005_after: [SF-M05-STITCH-A]
+  SF-M05-006_after: [SF-M05-STITCH-A]
+  SF-M05-007_after: [SF-M05-STITCH-A]
+  SF-M05-008_after: [SF-M05-STITCH-A]
+  SF-M05-STITCH-B_after: [SF-M05-005, SF-M05-006, SF-M05-007, SF-M05-008, SF-M05-STITCH-A]
+  SF-M05-009_after: [SF-M05-STITCH-B]
+  SF-M05-INT_after: [SF-M05-009]
+  SF-M05-SEC_after: [SF-M05-009]
+  SF-M05-EVD_after: [SF-M05-INT, SF-M05-SEC]
+lockfile_owner: stitch_A_wave_A_only_then_stitch_B_wave_B_only
+uniqueness_gate: scripts/gates/cg01_path_uniqueness_gate.py
+uniqueness_gate_weakened: false
+documents:
+  repo_plan: docs/planning/M05-PLAN.md
+  repo_envelopes: docs/planning/M05-ENVELOPES.md
+  contract_prereqs: docs/planning/M05-CONTRACT-PREREQUISITES.md
+  serial_locks: orchestrator/dispatch/M05-SERIAL-LOCKS.md
+  lockfile: orchestrator/dispatch/M05-LOCKFILE.md
+  activation: orchestrator/dispatch/M05-ACTIVATION.md
+builder_envelopes:
+  - SF-M05-001
+  - SF-M05-002
+  - SF-M05-003
+  - SF-M05-004
+  - SF-M05-005
+  - SF-M05-006
+  - SF-M05-007
+  - SF-M05-008
+  - SF-M05-009
+stitch_envelopes:
+  - SF-M05-STITCH-A
+  - SF-M05-STITCH-B
+guardian_envelopes:
+  - SF-M05-CG-001
+verifier_envelopes:
+  - SF-M05-INT
+  - SF-M05-SEC
+  - SF-M05-EVD

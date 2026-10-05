@@ -1,0 +1,111 @@
+# M05 PLANNING envelope — NEW M05 contract identification / later freeze
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-CG-001
+title: M05 NEW contract identify and later freeze
+module_id: M05
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-004, INT-005, INT-006, INT-009]
+requirement_ids:
+  - Constitution-10-case-authoritative
+  - Constitution-11-short-txn-outbox
+  - Constitution-33-temporal-bpmn-import-export
+  - docs/planning/M05-CONTRACT-PREREQUISITES.md
+agent_role: contract_guardian
+builder_agent: serviceform-architecture-guardian
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+branch: agent/M05-cg-SF-M05-CG-001
+worktree: ../wt-SF-M05-CG-001
+parallel_group: M05-CG
+hard_serial_locks: [LOCK-1, LOCK-2]
+freeze_authorized: false
+proposed_contract_status: PROPOSED
+guardian_review: CONTRACT-GUARDIAN-REVIEW-REQUIRED
+depends_on:
+  - M04 G3_INTEGRATION_VERIFIED issued and recorded on main
+  - LOCK-1 planning PR on main
+  - later freeze authorization (not this planning PR)
+allowed_write_paths:
+  - orchestrator/handovers/SF-M05-CG-001.yaml
+  - evidence/SF-M05-CG-001/**
+planned_freeze_write_paths:
+  - contracts/m05/**
+  - orchestrator/contracts-lock.yaml
+  - evidence/SF-M05-CG-001/**
+  - orchestrator/handovers/SF-M05-CG-001.yaml
+planned_freeze_constraints:
+  contracts_lock_mode: APPEND_NEW_M05_ROWS_ONLY
+  existing_13_frozen_contracts_mutable: false
+  ccr_required_if_existing_contract_change: true
+allowed_write_notes:
+  - Identify application/case SM, workflow model/DSL, command/transition, Human Task, SLA clock, version pinning
+  - Do not freeze in the planning PR; freeze_authorized remains false
+  - Future freeze may append NEW M05 rows to orchestrator/contracts-lock.yaml only
+  - contracts/shared/** READ-ONLY; existing 13 frozen contracts immutable
+  - CCR+STOP if those 13 must change
+read_only_paths:
+  - contracts/shared/**
+  - orchestrator/contracts-lock.yaml
+  - pnpm-lock.yaml
+  - services/**
+  - apps/**
+  - specs/build-plan.yaml
+  - ARCHITECTURE-CONSTITUTION.md
+wave_eligible_now: false
+serial_after: []
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - Proposed NEW contract catalog matches docs/planning/M05-CONTRACT-PREREQUISITES.md
+  - Existing 13 frozen hashes unchanged
+  - No Wave A spawn until freeze on origin/main
