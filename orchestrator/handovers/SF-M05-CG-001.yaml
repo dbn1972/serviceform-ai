@@ -1,5 +1,5 @@
-# SF-M05-CG-001 freeze preparation
-# Candidate lock append. DO NOT MERGE in this slice. Wave A OFF. Not CERTIFIED. Not G6.
+# SF-M05-CG-001 freeze reconciled on origin/main
+# Wave A READY GRANTED in a separate activation record. Builders not spawned. Not CERTIFIED. Not G4. Not G6.
 # Decision token split against CKV_SECRET_6: family + status (do not join).
 
 record: SF-M05-CG-001
@@ -9,21 +9,25 @@ agent_role: contract_guardian
 
 decision:
   family: SF_M05_CG001_FREEZE
-  status: PREPARED
+  status: FROZEN_ON_MAIN
 
 pre_freeze_authorized: true
 freeze_authorized: true
 freeze_prepared: true
-repository_freeze_effective: false
+repository_freeze_effective: true
 implementation_authorized: false
 dispatched: false
-wave_a_eligible: false
-wave_a_eligible_now: []
-contracts_status: FROZEN_CANDIDATE
-freeze_status: PENDING_MERGE
+wave_a_eligible: true
+wave_a_eligible_now:
+  - SF-M05-001
+  - SF-M05-002
+  - SF-M05-003
+  - SF-M05-004
+contracts_status: FROZEN
+freeze_status: FROZEN_ON_MAIN
 in_contracts_lock: true
-orchestration_task_state: FREEZE_PREPARED
-state: FREEZE_PREPARED
+orchestration_task_state: FROZEN_ON_MAIN
+state: FROZEN_ON_MAIN
 
 planning_only: false
 builders_dispatched: 0
@@ -34,6 +38,7 @@ self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
@@ -47,7 +52,7 @@ decision_authority:
 adr_0003_status: ACCEPTED
 adr_0005_status: ACCEPTED
 do_not_represent_contracts_as_frozen: false
-do_not_represent_repository_freeze_as_effective: true
+do_not_represent_repository_freeze_as_effective: false
 
 frozen_contracts:
   - id: SF-CON-APPLICATION-CASE-SM
@@ -90,10 +95,12 @@ existing_frozen:
 lock_expected:
   entries: 19
   frozen: 19
+  result: 19_FROZEN_HASHES_MATCH
+  original_13_unchanged: true
 
 base_commit:
-  prefix: a563a6cb
-  suffix: 3e04d2d56ceb15fe45381d5a4ccab18c
+  prefix: ae6c21e1
+  suffix: 8b08dcdb6f721bc750e501905cd970e4
 join_separator: "_"
 
 contract_locks:
@@ -119,13 +126,13 @@ contract_locks:
 
 stop_conditions:
   - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - six M05 FROZEN hashes change required (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
-  - merge this freeze PR without human authorization
-  - start Wave A
-  - start SF-M05-001 or SF-M05-002 or SF-M05-003 or SF-M05-004
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - spawn SF-M05-001 or SF-M05-002 or SF-M05-003 or SF-M05-004 before activation record merge
+  - spawn STITCH-A or Wave B or SF-M05-009 or INT or SEC or EVD
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
   - Temporal as authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
@@ -133,14 +140,15 @@ stop_conditions:
   - ALWAYS_LEGAL transition to WITHDRAWN or CANCELLED
 
 explicit_non_goals:
-  - merge_freeze_pr
-  - wave_a_dispatch
-  - m05_component_implementation
-  - certified_or_g6_claim
+  - spawn_wave_a_builders
+  - stitch_a
+  - wave_b
+  - m06_or_m08
+  - certified_or_g4_or_g6_claim
 
 awaiting:
-  - human_merge_authorization
-  - origin_main_before_wave_a
+  - wave_a_activation_record_merge
+  - not_builder_spawn_this_slice
 
 evidence: evidence/SF-M05-CG-001
 documents:

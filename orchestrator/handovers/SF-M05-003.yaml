@@ -1,5 +1,6 @@
-# M05 PLANNING envelope — Work Queue and Human Task (Wave A)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# M05 READY envelope — Work Queue and Human Task (Wave A)
+# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G4. Not G6.
+# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
 
 task_id: SF-M05-003
 title: Work Queue and Human Task
@@ -22,10 +23,12 @@ privilege_role: sf_cmp017_rw
 schema: sf_tasks
 hard_serial_locks: [LOCK-2, LOCK-3]
 depends_on:
-  - SF-M05-CG-001 freeze on origin/main
-  - 13 shared contracts FROZEN unchanged
+  - SF-M05-CG-001 FROZEN_ON_MAIN on origin/main at/after prefix ae6c21e1
+  - 19 FROZEN contracts MATCH (original 13 unchanged + six M05 hash-verified)
   - LOCK-1 planning PR on main
-  - later orchestrator dispatch record
+  - LOCK-2 freeze merged
+  - human Wave A READY authorization granted (Debabrata Nayak)
+  - uniqueness PASS; builder spawn pending activation record merge
 allowed_write_paths:
   - services/cmp-017-work-queue-tasks/**
   - db/migrations/*_cmp-017-*.sql
@@ -36,32 +39,34 @@ allowed_write_notes:
   - Dynamic assignment role+org+jurisdiction+scope
   - Do not hard-code named officers in published workflow
   - Do not commit pnpm-lock.yaml
+  - ADR-0003 / ADR-0005 remain binding
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - apps/**
   - services/cmp-016-workflow-engine/**
-wave_eligible_now: false
+wave_eligible_now: true
 serial_after:
   - SF-M05-CG-001
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
 base_commit:
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+  prefix: ae6c21e1
+  suffix: 8b08dcdb6f721bc750e501905cd970e4
 join_separator: "_"
 contract_locks:
   - SF-CON-COMMON
@@ -77,20 +82,27 @@ contract_locks:
   - SF-CON-OUTBOX
   - SF-CON-CONNECTOR-BINDING
   - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
 
 stop_conditions:
   - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - six M05 FROZEN hashes change required (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
   - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - spawn builders before activation record merge / uniqueness PASS
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
   - M06 or M08 start
   - SMS/email/DigiLocker/payment implementation
   - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
+  - mutate FROZEN contracts or orchestrator/contracts-lock.yaml
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime

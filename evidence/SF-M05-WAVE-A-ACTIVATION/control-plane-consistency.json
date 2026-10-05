@@ -1,0 +1,322 @@
+{
+  "result": "PASS",
+  "errors": [],
+  "envelopes": {
+    "SF-M05-001": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-015-application-case/**",
+          "db/migrations/*_cmp-015-*.sql",
+          "evidence/SF-M05-001/**",
+          "orchestrator/handovers/SF-M05-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-015-application-case/**",
+          "db/migrations/*_cmp-015-*.sql",
+          "evidence/SF-M05-001/**",
+          "orchestrator/handovers/SF-M05-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "match": true
+    },
+    "SF-M05-002": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-016-workflow-engine/**",
+          "db/migrations/*_cmp-016-*.sql",
+          "evidence/SF-M05-002/**",
+          "orchestrator/handovers/SF-M05-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-016-workflow-engine/**",
+          "db/migrations/*_cmp-016-*.sql",
+          "evidence/SF-M05-002/**",
+          "orchestrator/handovers/SF-M05-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "match": true
+    },
+    "SF-M05-003": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-017-work-queue-tasks/**",
+          "db/migrations/*_cmp-017-*.sql",
+          "evidence/SF-M05-003/**",
+          "orchestrator/handovers/SF-M05-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-017-work-queue-tasks/**",
+          "db/migrations/*_cmp-017-*.sql",
+          "evidence/SF-M05-003/**",
+          "orchestrator/handovers/SF-M05-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "match": true
+    },
+    "SF-M05-004": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-029-sla-escalation/**",
+          "db/migrations/*_cmp-029-*.sql",
+          "evidence/SF-M05-004/**",
+          "orchestrator/handovers/SF-M05-004.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-029-sla-escalation/**",
+          "db/migrations/*_cmp-029-*.sql",
+          "evidence/SF-M05-004/**",
+          "orchestrator/handovers/SF-M05-004.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-CG-001"
+        ],
+        "ccr_required": false
+      },
+      "match": true
+    }
+  }
+}

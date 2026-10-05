@@ -1,28 +1,31 @@
-# M05 activation (HOLD)
+# M05 activation (Wave A READY GRANTED)
 
-This document is a **hold**, not an activation.
+CG-001 is **SATISFIED** on `origin/main` (prefix `ae6c21e1`). This record **grants Wave A READY**. Builder spawn is **PENDING ACTIVATION RECORD MERGE**. Not CERTIFIED. Not G4. Not G6.
 
-| Switch | This planning PR | After planning merge | After SF-M05-CG-001 freeze on main | After later dispatch record |
-|---|---|---|---|---|
-| `planning_only` | true | true until READY promote (separate) | still no builders unless authorized | per later READY package |
-| `implementation_authorized` | **false** | **false** | **false** until READY/dispatch | true only on explicit READY slice |
-| `dispatched` | false | false | false | still requires orchestrator record |
-| `m05_started` | false | false | false | false until Wave A spawn |
-| `m05_dispatched` | false | false | false | true only when Wave A spawn recorded |
-| Contract freeze | **not this PR**; `freeze_authorized: false` | SF-M05-CG-001 may start (later auth); future paths `contracts/m05/**` + lockfile APPEND_NEW_M05_ROWS_ONLY | Wave A may become eligible later | builders |
-| M06 / M08 | OFF | OFF | OFF | OFF until CG-02 |
+| Switch | Planning PR | After planning merge | After SF-M05-CG-001 freeze on main | This Wave A READY package | After this record merges |
+|---|---|---|---|---|---|
+| `planning_only` | true | true until READY promote | true until this package | **false** on 001–004 only | false on 001–004 |
+| `implementation_authorized` | false | false | false until this package | **true** on 001–004 only | true on 001–004 |
+| `wave_eligible_now` | false | false | false until this package | **true** on 001–004 only | true on 001–004 |
+| `dispatched` | false | false | false | **false** | still false until spawn |
+| `m05_started` | false | false | false | **false** | false until Wave A spawn |
+| `m05_dispatched` | false | false | false | **false** | true only when Wave A spawn recorded |
+| Contract freeze | not planning | CG-001 later | **SATISFIED** 19/19 FROZEN | do not mutate lock/contracts | frozen |
+| STITCH-A / Wave B / 009 / INT / SEC / EVD | OFF | OFF | OFF | **OFF** | OFF until later auth |
+| M06 / M08 | OFF | OFF | OFF | **OFF** | OFF until CG-02 |
 
 ## Do not
 
-- Spawn builders from this PR or from planning merge alone.
-- Freeze contracts in the planning PR.
+- Spawn SF-M05-001..004 builders from this PR before it merges (spawn remains a later orchestrator action).
+- Spawn STITCH-A, Wave B, host, INT, SEC, or EVD.
+- Mutate `contracts/**` or `orchestrator/contracts-lock.yaml`.
 - Treat EVD as G4 issuer.
 - Pull M06/M07/M08 product work.
-- Merge builder PRs individually in a later wave (stitch/host/orchestrator integration remains the merge path, same as M04).
+- Claim CERTIFIED / G4 / G6.
 
-## Required order after this PR is merged (still not implementation)
+## Required order after this draft PR
 
-1. Human/CI merge this **draft** planning PR (separate authorization; planning agent does not merge).
-2. Confirm uniqueness / contracts 13/13 / architecture gates / exact-head ci+security+developer-platform SUCCESS.
-3. **SF-M05-CG-001** freeze of NEW M05 contracts (separate authorization). `contracts/shared/**` remains READ-ONLY; existing 13 hashes immutable; CCR+STOP if they must change.
-4. Only then a later READY/dispatch record may set Wave A `wave_eligible_now`.
+1. Human/CI merge this **draft** activation PR (this agent does not merge).
+2. Confirm uniqueness 0 overlaps / 0 forbidden writers / contracts 19/19 / original 13 MATCH / architecture gates / exact-head ci+security+developer-platform SUCCESS.
+3. Only then a later orchestrator spawn may dispatch **001 \|\| 002 \|\| 003 \|\| 004**.
+4. STITCH-A remains OFF until 001–004 immutable heads exist.
