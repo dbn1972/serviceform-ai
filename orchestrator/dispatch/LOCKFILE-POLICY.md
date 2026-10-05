@@ -4,9 +4,12 @@
 
 - Builders may change `package.json` (and other manifests) only inside `allowed_write_paths` when the task needs a dependency.
 - Builders must not commit `pnpm-lock.yaml`. If `pnpm install` dirties it, restore it before commit.
-- `check_scope.py` always refuses `pnpm-lock.yaml` on `agent/*` branches.
+- Component builders must never commit the root `pnpm-lock.yaml`.
+- `check_scope.py` allows the root `pnpm-lock.yaml` only when the task envelope has **all** of: `agent_role: integration_agent`; the exact root entry `pnpm-lock.yaml` in `allowed_write_paths` (globs such as `**` or `*.yaml` do not count); and `pnpm-lock.yaml` not matched by `read_only_paths`. Every other envelope is refused.
+- Nested `pnpm-lock.yaml` files (`*/pnpm-lock.yaml`) are always refused, even when listed.
+- Branch names never grant lockfile write authority. Only the envelope fields above do.
 - Root `pnpm-workspace.yaml` stays read-only for Wave 1 (`services/*` / `packages/*` already include new component packages).
-- **Orchestrator/integration** regenerates one canonical lockfile. Builders do not weaken `--frozen-lockfile`, gitleaks, Semgrep, CodeQL, or audit jobs.
+- Canonical lockfile regeneration remains an **orchestrator/integration** responsibility: one canonical lockfile. Builders do not weaken `--frozen-lockfile`, gitleaks, Semgrep, CodeQL, or audit jobs.
 
 ## Isolated Wave 1 PRs (expected)
 
