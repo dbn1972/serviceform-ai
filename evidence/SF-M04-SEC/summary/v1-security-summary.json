@@ -1,0 +1,33 @@
+{
+  "task_id": "SF-M04-SEC",
+  "role": "independent security verifier",
+  "production_base": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
+  "production_code_modified": false,
+  "immutable_verifier_head": "PENDING_COMMIT",
+  "vitest": { "files": 3, "tests": 17, "failed": 0 },
+  "catalog": {
+    "pass": 296,
+    "fail": 0,
+    "CROSS_TENANT_LEAKAGE": 0,
+    "SUPERUSER_findings": 0,
+    "BYPASSRLS_findings": 0,
+    "runtime_ownership_violations": 0,
+    "force_rls_enable_probes": 33,
+    "force_rls_force_probes": 33,
+    "cross_tenant_probes": 17,
+    "cross_component_sql_probes": 8
+  },
+  "direct_provider_bypasses": 0,
+  "statutory_ai_paths": 0,
+  "secret_pii_leakage": 0,
+  "blocking_high_critical": 0,
+  "frozen_contracts": "13/13 MATCH",
+  "uniqueness_envelope": { "state": "READY", "dispatched": false },
+  "cmp036_duplicate": 0,
+  "certified": false,
+  "evd_started": false,
+  "m04_g3_issued": false,
+  "m05": "OFF",
+  "recommended_gate": "V1_SECURITY_PASS",
+  "assessed_at": "2026-10-05T03:49:30.000Z"
+}

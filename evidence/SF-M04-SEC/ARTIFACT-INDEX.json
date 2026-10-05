@@ -1,0 +1,25 @@
+{
+  "task_id": "SF-M04-SEC",
+  "role": "independent security verifier",
+  "production_base": "afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf",
+  "production_code_modified": false,
+  "artifacts": [
+    "EVIDENCE.md",
+    "summary.json",
+    "summary/catalog-summary.json",
+    "summary/run-meta.txt",
+    "summary/v1-security-summary.json",
+    "logs/vitest.log",
+    "logs/catalog.log",
+    "logs/contracts-lock.log",
+    "logs/scope-check.log",
+    "logs/uniqueness-gate.log",
+    "../security/m04/catalog-summary.json",
+    "../security/m04/README.md"
+  ],
+  "recommended_gate": "V1_SECURITY_PASS",
+  "certified": false,
+  "evd_started": false,
+  "m04_g3_issued": false,
+  "m05": "OFF"
+}

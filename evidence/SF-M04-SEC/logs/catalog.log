@@ -1,0 +1,298 @@
+Migrating for tip afc8e253d4c566a4a18b1e01d9b0a1163f9d6adf...
+PASS role.super.sf_app: rolsuper=false
+PASS role.bypass.sf_app: rolbypassrls=false
+PASS role.nologin.sf_app: rolcanlogin=false
+PASS role.super.sf_cmp008_rw: rolsuper=false
+PASS role.bypass.sf_cmp008_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp008_rw: rolcanlogin=false
+PASS role.super.sf_cmp009_rw: rolsuper=false
+PASS role.bypass.sf_cmp009_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp009_rw: rolcanlogin=false
+PASS role.super.sf_cmp011_rw: rolsuper=false
+PASS role.bypass.sf_cmp011_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp011_rw: rolcanlogin=false
+PASS role.super.sf_cmp013_rw: rolsuper=false
+PASS role.bypass.sf_cmp013_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp013_rw: rolcanlogin=false
+PASS role.super.sf_cmp014_rw: rolsuper=false
+PASS role.bypass.sf_cmp014_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp014_rw: rolcanlogin=false
+PASS role.super.sf_cmp039_rw: rolsuper=false
+PASS role.bypass.sf_cmp039_rw: rolbypassrls=false
+PASS role.nologin.sf_cmp039_rw: rolcanlogin=false
+PASS role.super.sf_migrator: rolsuper=false
+PASS role.bypass.sf_migrator: rolbypassrls=false
+PASS role.nologin.sf_migrator: rolcanlogin=false
+PASS role.super.sf_outbox_publisher: rolsuper=false
+PASS role.bypass.sf_outbox_publisher: rolbypassrls=false
+PASS role.nologin.sf_outbox_publisher: rolcanlogin=false
+PASS role.catalog.complete: found=9
+PASS owner.sf_ai_gateway.ai_policy: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.ai_policy: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.ai_policy: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.ai_request_metadata: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.ai_request_metadata: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.ai_request_metadata: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.inbox_event: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.inbox_event: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_ai_gateway.model_registry: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.model_registry: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.model_registry: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_ai_gateway.outbox_event: relrowsecurity=true
+PASS rls.force.sf_ai_gateway.outbox_event: relforcerowsecurity=true
+PASS owner.sf_ai_gateway.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_docintel.extraction_policy: owner=sf_migrator
+PASS rls.enable.sf_docintel.extraction_policy: relrowsecurity=true
+PASS rls.force.sf_docintel.extraction_policy: relforcerowsecurity=true
+PASS owner.sf_docintel.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_docintel.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_docintel.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_docintel.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_docintel.inbox_event: relrowsecurity=true
+PASS rls.force.sf_docintel.inbox_event: relforcerowsecurity=true
+PASS owner.sf_docintel.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_docintel.intelligence_job: owner=sf_migrator
+PASS rls.enable.sf_docintel.intelligence_job: relrowsecurity=true
+PASS rls.force.sf_docintel.intelligence_job: relforcerowsecurity=true
+PASS owner.sf_docintel.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_docintel.outbox_event: relrowsecurity=true
+PASS rls.force.sf_docintel.outbox_event: relforcerowsecurity=true
+PASS owner.sf_docintel.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_evidence.evidence_policy: owner=sf_migrator
+PASS rls.enable.sf_evidence.evidence_policy: relrowsecurity=true
+PASS rls.force.sf_evidence.evidence_policy: relforcerowsecurity=true
+PASS owner.sf_evidence.evidence_resolution: owner=sf_migrator
+PASS rls.enable.sf_evidence.evidence_resolution: relrowsecurity=true
+PASS rls.force.sf_evidence.evidence_resolution: relforcerowsecurity=true
+PASS owner.sf_evidence.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_evidence.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_evidence.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_evidence.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_evidence.inbox_event: relrowsecurity=true
+PASS rls.force.sf_evidence.inbox_event: relforcerowsecurity=true
+PASS owner.sf_evidence.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_evidence.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_evidence.outbox_event: relrowsecurity=true
+PASS rls.force.sf_evidence.outbox_event: relforcerowsecurity=true
+PASS owner.sf_evidence.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_forms.form_definition_snapshot: owner=sf_migrator
+PASS rls.enable.sf_forms.form_definition_snapshot: relrowsecurity=true
+PASS rls.force.sf_forms.form_definition_snapshot: relforcerowsecurity=true
+PASS owner.sf_forms.form_execution_record: owner=sf_migrator
+PASS rls.enable.sf_forms.form_execution_record: relrowsecurity=true
+PASS rls.force.sf_forms.form_execution_record: relforcerowsecurity=true
+PASS owner.sf_forms.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_forms.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_forms.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_forms.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_forms.inbox_event: relrowsecurity=true
+PASS rls.force.sf_forms.inbox_event: relforcerowsecurity=true
+PASS owner.sf_forms.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_forms.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_forms.outbox_event: relrowsecurity=true
+PASS rls.force.sf_forms.outbox_event: relforcerowsecurity=true
+PASS owner.sf_forms.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_rules.evaluation_record: owner=sf_migrator
+PASS rls.enable.sf_rules.evaluation_record: relrowsecurity=true
+PASS rls.force.sf_rules.evaluation_record: relforcerowsecurity=true
+PASS owner.sf_rules.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_rules.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_rules.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_rules.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_rules.inbox_event: relrowsecurity=true
+PASS rls.force.sf_rules.inbox_event: relforcerowsecurity=true
+PASS owner.sf_rules.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_rules.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_rules.outbox_event: relrowsecurity=true
+PASS rls.force.sf_rules.outbox_event: relforcerowsecurity=true
+PASS owner.sf_rules.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_rules.rule_pack_snapshot: owner=sf_migrator
+PASS rls.enable.sf_rules.rule_pack_snapshot: relrowsecurity=true
+PASS rls.force.sf_rules.rule_pack_snapshot: relforcerowsecurity=true
+PASS owner.sf_upload.document_metadata: owner=sf_migrator
+PASS rls.enable.sf_upload.document_metadata: relrowsecurity=true
+PASS rls.force.sf_upload.document_metadata: relforcerowsecurity=true
+PASS owner.sf_upload.document_scan_status: owner=sf_migrator
+PASS rls.enable.sf_upload.document_scan_status: relrowsecurity=true
+PASS rls.force.sf_upload.document_scan_status: relforcerowsecurity=true
+PASS owner.sf_upload.idempotency_record: owner=sf_migrator
+PASS rls.enable.sf_upload.idempotency_record: relrowsecurity=true
+PASS rls.force.sf_upload.idempotency_record: relforcerowsecurity=true
+PASS owner.sf_upload.inbox_event: owner=sf_migrator
+PASS rls.enable.sf_upload.inbox_event: relrowsecurity=true
+PASS rls.force.sf_upload.inbox_event: relforcerowsecurity=true
+PASS owner.sf_upload.inbox_event_platform: owner=sf_migrator
+PASS owner.sf_upload.outbox_event: owner=sf_migrator
+PASS rls.enable.sf_upload.outbox_event: relrowsecurity=true
+PASS rls.force.sf_upload.outbox_event: relforcerowsecurity=true
+PASS owner.sf_upload.outbox_event_platform: owner=sf_migrator
+PASS owner.sf_upload.upload_policy: owner=sf_migrator
+PASS rls.enable.sf_upload.upload_policy: relrowsecurity=true
+PASS rls.force.sf_upload.upload_policy: relforcerowsecurity=true
+PASS owner.sf_upload.upload_session: owner=sf_migrator
+PASS rls.enable.sf_upload.upload_session: relrowsecurity=true
+PASS rls.force.sf_upload.upload_session: relforcerowsecurity=true
+PASS rls.force.count: force=33
+PASS policy.public.sf_ai_gateway.model_registry.model_registry_tenant: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.model_registry.model_registry_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_ai_gateway.ai_policy.ai_policy_tenant: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.ai_policy.ai_policy_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_ai_gateway.ai_request_metadata.ai_request_metadata_tenant: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.ai_request_metadata.ai_request_metadata_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_ai_gateway.idempotency_record.idempotency_tenant: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.idempotency_record.idempotency_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_ai_gateway.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_ai_gateway.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_ai_gateway.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_ai_gateway.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_ai_gateway.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_evidence.evidence_policy.evidence_policy_tenant: roles={sf_app}
+PASS policy.accessor.sf_evidence.evidence_policy.evidence_policy_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_evidence.evidence_resolution.evidence_resolution_tenant: roles={sf_app}
+PASS policy.accessor.sf_evidence.evidence_resolution.evidence_resolution_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_evidence.idempotency_record.idempotency_tenant: roles={sf_app}
+PASS policy.accessor.sf_evidence.idempotency_record.idempotency_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_evidence.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_evidence.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_evidence.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_evidence.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_evidence.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_evidence.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_rules.rule_pack_snapshot.rule_pack_snapshot_tenant: roles={sf_app}
+PASS policy.accessor.sf_rules.rule_pack_snapshot.rule_pack_snapshot_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_rules.evaluation_record.evaluation_record_tenant: roles={sf_app}
+PASS policy.accessor.sf_rules.evaluation_record.evaluation_record_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_rules.idempotency_record.idempotency_tenant: roles={sf_app}
+PASS policy.accessor.sf_rules.idempotency_record.idempotency_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_rules.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_rules.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_rules.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_rules.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_rules.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_rules.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.upload_policy.upload_policy_isolation: roles={sf_app}
+PASS policy.accessor.sf_upload.upload_policy.upload_policy_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.document_metadata.document_metadata_isolation: roles={sf_app}
+PASS policy.accessor.sf_upload.document_metadata.document_metadata_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.upload_session.upload_session_isolation: roles={sf_app}
+PASS policy.accessor.sf_upload.upload_session.upload_session_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.document_scan_status.document_scan_status_isolation: roles={sf_app}
+PASS policy.accessor.sf_upload.document_scan_status.document_scan_status_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.idempotency_record.idempotency_record_isolation: roles={sf_app}
+PASS policy.accessor.sf_upload.idempotency_record.idempotency_record_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_upload.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_upload.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_upload.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_upload.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_upload.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_forms.form_definition_snapshot.form_definition_snapshot_tenant: roles={sf_app}
+PASS policy.accessor.sf_forms.form_definition_snapshot.form_definition_snapshot_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_forms.form_execution_record.form_execution_record_tenant: roles={sf_app}
+PASS policy.accessor.sf_forms.form_execution_record.form_execution_record_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_forms.idempotency_record.idempotency_tenant: roles={sf_app}
+PASS policy.accessor.sf_forms.idempotency_record.idempotency_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_forms.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_forms.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_forms.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_forms.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_forms.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_forms.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_docintel.extraction_policy.extraction_policy_isolation: roles={sf_app}
+PASS policy.accessor.sf_docintel.extraction_policy.extraction_policy_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_docintel.intelligence_job.intelligence_job_isolation: roles={sf_app}
+PASS policy.accessor.sf_docintel.intelligence_job.intelligence_job_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_docintel.idempotency_record.idempotency_record_isolation: roles={sf_app}
+PASS policy.accessor.sf_docintel.idempotency_record.idempotency_record_isolation: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_docintel.outbox_event.outbox_event_tenant_insert: roles={sf_app}
+PASS policy.accessor.sf_docintel.outbox_event.outbox_event_tenant_insert:  (tenant_id = sf_platform.current_tenant_id())
+PASS policy.public.sf_docintel.outbox_event.outbox_event_publisher: roles={sf_outbox_publisher}
+PASS policy.publisher_residual.sf_docintel.outbox_event.outbox_event_publisher: USING true (SF-CON-OUTBOX residual)
+PASS policy.public.sf_docintel.inbox_event.inbox_event_tenant: roles={sf_app}
+PASS policy.accessor.sf_docintel.inbox_event.inbox_event_tenant: (tenant_id = sf_platform.current_tenant_id()) (tenant_id = sf_platform.current_tenant_id())
+PASS public.table.acl.m04: rows=0
+PASS sf_app.no_authoritative_dml.m04: none
+PASS statutory.check.present: constraints=2
+PASS statutory.check.sf_ai_gateway.ai_request_metadata: CHECK ((NOT statutory_decision))
+PASS statutory.check.sf_docintel.intelligence_job: CHECK ((NOT statutory_decision))
+PASS CMP-039.identity: {"session_user":"sf_m04_039_rt","current_user":"sf_m04_039_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-039.session_eq_current: sf_m04_039_rt/sf_m04_039_rt
+PASS CMP-039.not_owner: false
+PASS CMP-039.set_role.sf_cmp008_rw: denied
+PASS CMP-039.set_role.sf_cmp011_rw: denied
+PASS CMP-039.set_role.sf_cmp013_rw: denied
+PASS CMP-039.set_role.sf_cmp009_rw: denied
+PASS CMP-039.set_role.sf_cmp014_rw: denied
+PASS CMP-008.identity: {"session_user":"sf_m04_008_rt","current_user":"sf_m04_008_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-008.session_eq_current: sf_m04_008_rt/sf_m04_008_rt
+PASS CMP-008.not_owner: false
+PASS CMP-008.set_role.sf_cmp039_rw: denied
+PASS CMP-008.set_role.sf_cmp011_rw: denied
+PASS CMP-008.set_role.sf_cmp013_rw: denied
+PASS CMP-008.set_role.sf_cmp009_rw: denied
+PASS CMP-008.set_role.sf_cmp014_rw: denied
+PASS CMP-011.identity: {"session_user":"sf_m04_011_rt","current_user":"sf_m04_011_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-011.session_eq_current: sf_m04_011_rt/sf_m04_011_rt
+PASS CMP-011.not_owner: false
+PASS CMP-011.set_role.sf_cmp039_rw: denied
+PASS CMP-011.set_role.sf_cmp008_rw: denied
+PASS CMP-011.set_role.sf_cmp013_rw: denied
+PASS CMP-011.set_role.sf_cmp009_rw: denied
+PASS CMP-011.set_role.sf_cmp014_rw: denied
+PASS CMP-013.identity: {"session_user":"sf_m04_013_rt","current_user":"sf_m04_013_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-013.session_eq_current: sf_m04_013_rt/sf_m04_013_rt
+PASS CMP-013.not_owner: false
+PASS CMP-013.set_role.sf_cmp039_rw: denied
+PASS CMP-013.set_role.sf_cmp008_rw: denied
+PASS CMP-013.set_role.sf_cmp011_rw: denied
+PASS CMP-013.set_role.sf_cmp009_rw: denied
+PASS CMP-013.set_role.sf_cmp014_rw: denied
+PASS CMP-009.identity: {"session_user":"sf_m04_009_rt","current_user":"sf_m04_009_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-009.session_eq_current: sf_m04_009_rt/sf_m04_009_rt
+PASS CMP-009.not_owner: false
+PASS CMP-009.set_role.sf_cmp039_rw: denied
+PASS CMP-009.set_role.sf_cmp008_rw: denied
+PASS CMP-009.set_role.sf_cmp011_rw: denied
+PASS CMP-009.set_role.sf_cmp013_rw: denied
+PASS CMP-009.set_role.sf_cmp014_rw: denied
+PASS CMP-014.identity: {"session_user":"sf_m04_014_rt","current_user":"sf_m04_014_rt","rolsuper":false,"rolbypassrls":false}
+PASS CMP-014.session_eq_current: sf_m04_014_rt/sf_m04_014_rt
+PASS CMP-014.not_owner: false
+PASS CMP-014.set_role.sf_cmp039_rw: denied
+PASS CMP-014.set_role.sf_cmp008_rw: denied
+PASS CMP-014.set_role.sf_cmp011_rw: denied
+PASS CMP-014.set_role.sf_cmp013_rw: denied
+PASS CMP-014.set_role.sf_cmp009_rw: denied
+PASS XCOMP.039.select.008: 42501
+PASS XCOMP.008.select.039: 42501
+PASS XCOMP.011.select.013: 42501
+PASS XCOMP.013.select.011: 42501
+PASS XCOMP.009.select.014: 42501
+PASS XCOMP.014.select.009: 42501
+PASS XCOMP.014.select.039: 42501
+PASS XCOMP.039.select.014: 42501
+PASS TI.008.wrong_tenant_select: count=0
+PASS TI.008.wrong_tenant_insert: 42501
+PASS TI.009.wrong_tenant_select: count=0
+PASS TI.011.wrong_tenant_select: count=0
+PASS TI.011.wrong_tenant_update: updated=0
+PASS TI.013.wrong_tenant_select: count=0
+PASS TI.013.wrong_tenant_insert: 42501
+PASS TI.013.traversal_object_ref: 23514
+PASS TI.014.wrong_tenant_select: count=0
+PASS TI.014.statutory_true: P0001
+PASS TI.039.wrong_tenant_select: count=0
+PASS TI.039.wrong_tenant_insert: 42501
+PASS TI.039.statutory_task_kind: 23514
+PASS TI.039.floating_latest_pin: 23514
+PASS TI.039.unset_tenant_zero: n=0
+PASS TI.013.unset_tenant_zero: n=0
+PASS TI.008.unset_tenant_zero: n=0
+{"CROSS_TENANT_LEAKAGE":0,"fail":0,"pass":296,"SUPERUSER":0,"BYPASSRLS":0}
