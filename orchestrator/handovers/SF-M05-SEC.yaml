@@ -1,0 +1,91 @@
+# M05 PLANNING envelope — independent security and tenant isolation
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-SEC
+title: M05 independent security and tenant isolation
+module_id: M05
+agent_role: security_agent
+builder_agent: serviceform-security-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: xhigh
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-004, INT-005, INT-011, INT-013]
+branch: agent/M05-sec-SF-M05-SEC
+worktree: ../wt-SF-M05-SEC
+parallel_group: M05-VERIFY
+hard_serial_locks: [LOCK-8]
+depends_on:
+  - SF-M05-009 on origin/main
+allowed_write_paths:
+  - tests/security/m05/**
+  - evidence/security/m05/**
+  - evidence/SF-M05-SEC/**
+  - orchestrator/handovers/SF-M05-SEC.yaml
+explicit_cannot:
+  - waive security findings
+  - self-certify
+  - issue G4
+read_only_paths:
+  - services/**
+  - contracts/**
+  - pnpm-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M05-009
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - CROSS_TENANT_LEAKAGE equals 0
+  - No SUPERUSER or BYPASSRLS on runtime roles
+  - OPA on case/task/appeal commands; RLS tenant boundary
+  - AI cannot approve/reject/penalty via copilot paths
+  - No PII or secrets in logs

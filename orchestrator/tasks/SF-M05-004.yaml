@@ -1,0 +1,102 @@
+# M05 PLANNING envelope — SLA and Escalation Service (Wave A)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-004
+title: SLA and Escalation Service
+module_id: M05
+component_ids: [CMP-029]
+integration_ids: [INT-009, INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-029
+  - Constitution-16-sla-clock
+agent_role: component_builder
+builder_agent: serviceform-case-execution-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M05-sla-SF-M05-004
+worktree: ../wt-SF-M05-004
+parallel_group: M05-A
+privilege_role: sf_cmp029_rw
+schema: sf_sla
+hard_serial_locks: [LOCK-2, LOCK-3]
+depends_on:
+  - SF-M05-CG-001 freeze on origin/main
+  - 13 shared contracts FROZEN unchanged
+  - LOCK-1 planning PR on main
+  - later orchestrator dispatch record
+allowed_write_paths:
+  - services/cmp-029-sla-escalation/**
+  - db/migrations/*_cmp-029-*.sql
+  - evidence/SF-M05-004/**
+  - orchestrator/handovers/SF-M05-004.yaml
+allowed_write_notes:
+  - SLA clock with start/completion anchors, calendar, pause/resume, breach
+  - INT-009 pause/resume consumed by deficiency via port after Wave B
+  - Notification of breach is a port to CMP-025 (M06); no SMS/email here
+  - Do not commit pnpm-lock.yaml
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - services/cmp-025-notification/**
+wave_eligible_now: false
+serial_after:
+  - SF-M05-CG-001
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - Pause/resume is explicit and auditable
+  - Clock does not mutate case state; CMP-015 remains authoritative
+  - No notification provider implementation
+  - Host mount deferred to SF-M05-009

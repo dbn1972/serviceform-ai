@@ -1,0 +1,95 @@
+# M05 PLANNING envelope — serialized API host mounts (LOCK-7)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-009
+title: API host composition for M05 services
+module_id: M05
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029, CMP-036]
+integration_ids: [INT-004, INT-011]
+requirement_ids:
+  - host-mount-m05
+  - PLAN-REVIEW-single-writer-apps-api
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+branch: agent/M05-host-SF-M05-009
+worktree: ../wt-SF-M05-009
+parallel_group: M05-HOST
+hard_serial_locks: [LOCK-7]
+must_not_run_concurrent_with: [SF-M02-003, SF-M03-008, SF-M04-007]
+depends_on:
+  - SF-M05-STITCH-B on origin/main
+  - M05 Wave A and Wave B services on main
+allowed_write_paths:
+  - apps/api/src/composition/m05.ts
+  - apps/api/src/app.ts
+  - apps/api/test/composition-m05.test.ts
+  - evidence/SF-M05-009/**
+  - orchestrator/handovers/SF-M05-009.yaml
+allowed_write_notes:
+  - Time-isolated single writer for apps/api/src/app.ts
+  - Additive plugin mounts only; preserve M01/M02/M03/M04 composition
+  - Do not commit pnpm-lock.yaml
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - services/**
+  - packages/ui-ux4g/**
+wave_eligible_now: false
+serial_after:
+  - SF-M05-STITCH-B
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - M05 plugins mount under /v1 without cross-component SQL
+  - Existing M01/M02/M03/M04 mounts remain

@@ -1,0 +1,89 @@
+# M05 PLANNING envelope — evidence bind (recommend G4 only)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-EVD
+title: M05 evidence bind (recommend G4 only)
+module_id: M05
+agent_role: verification_agent
+builder_agent: serviceform-evidence-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
+branch: agent/M05-evd-SF-M05-EVD
+worktree: ../wt-SF-M05-EVD
+parallel_group: M05-VERIFY
+hard_serial_locks: [LOCK-9]
+depends_on:
+  - SF-M05-INT
+  - SF-M05-SEC
+allowed_write_paths:
+  - evidence/SF-M05-EVD/**
+  - docs/verification/M05-G4-RECOMMENDATION.md
+  - orchestrator/handovers/SF-M05-EVD.yaml
+explicit_cannot:
+  - certify own work or release
+  - issue G4 or G6 or CERTIFIED
+  - start M06 or M08
+read_only_paths:
+  - contracts/**
+  - services/**
+  - pnpm-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M05-INT
+  - SF-M05-SEC
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - Bind executed INT+SEC evidence; recommend G4_SECURITY_VERIFIED only
+  - Cannot issue G4; human/CI issues later

@@ -1,0 +1,93 @@
+# M05 PLANNING envelope — independent integration (owned INT-004/005/006/009; re-verify INT-011/013)
+# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M05-INT
+title: M05 independent integration
+module_id: M05
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
+branch: agent/M05-int-SF-M05-INT
+worktree: ../wt-SF-M05-INT
+parallel_group: M05-VERIFY
+hard_serial_locks: [LOCK-8]
+depends_on:
+  - SF-M05-009 on origin/main
+allowed_write_paths:
+  - tests/integration/m05/**
+  - evidence/integration/m05/**
+  - evidence/SF-M05-INT/**
+  - orchestrator/handovers/SF-M05-INT.yaml
+explicit_cannot:
+  - patch component production code to force green
+  - self-certify
+  - issue G4
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - pnpm-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M05-009
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+base_commit:
+  prefix: b286ed95
+  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+
+stop_conditions:
+  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - LLM final statutory eligibility/approval/rejection/penalty
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M05 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G4 (EVD recommend only; human/CI issues)
+  - M06 or M08 start
+  - SMS/email/DigiLocker/payment implementation
+  - weaken cg01_path_uniqueness_gate.py
+  - freeze contracts in the planning PR
+  - Temporal authoritative case state
+  - named officer in published workflow
+  - BPMN as a second runtime
+
+acceptance_tests_planning:
+  - INT-004 submission hot path txn/outbox
+  - INT-005 Temporal sequences after CMP-015 commit; OPA on officer action
+  - INT-006 evidence/storage/OCR/verification; DigiLocker SIMULATED only
+  - INT-009 deficiency pause/resume
+  - Independently re-verify INT-011 and INT-013 layers added here
+  - SIMULATED adapters fail-closed if marked production-critical
