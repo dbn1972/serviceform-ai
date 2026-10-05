@@ -1,0 +1,87 @@
+
+> @serviceform/cmp-017-work-queue-tasks@0.0.0 test:unit services/cmp-017-work-queue-tasks
+> vitest run --root . --config vitest.unit.config.ts --reporter=verbose
+
+
+ RUN  v5.0.3 services/cmp-017-work-queue-tasks
+
+ ✓ test/unit/lifecycle.test.ts > create > creates an OPEN, unclaimed task with criteria only and emits event + audit via outbox 143ms
+ ✓ test/unit/negative.test.ts > wrong tenant is denied and leaks nothing (CROSS_TENANT_LEAKAGE=0) > hides, refuses and never mutates tenant A tasks for tenant B principals 139ms
+ ✓ test/unit/lifecycle.test.ts > create > refuses a second active task for the same application node 3ms
+ ✓ test/unit/lifecycle.test.ts > create > rejects client-supplied tenant and extra fields 1ms
+ ✓ test/unit/lifecycle.test.ts > claim / unclaim / complete > walks OPEN -> CLAIMED -> OPEN -> CLAIMED -> COMPLETED with history and runtime claim record 6ms
+ ✓ test/unit/lifecycle.test.ts > claim / unclaim / complete > is idempotent: replaying a key returns the stored response without a second transition 2ms
+ ✓ test/unit/lifecycle.test.ts > claim / unclaim / complete > lets a supervisor release another officer claim only through TASK_FORCE_UNCLAIM 2ms
+ ✓ test/unit/lifecycle.test.ts > claim / unclaim / complete > sends role, organisation, jurisdiction and task state to OPA and records ADR-0005 policy_revision 2ms
+ ✓ test/unit/lifecycle.test.ts > reassign and cancel/close > reassigns by criteria, clears the runtime claim and returns the task to OPEN 2ms
+ ✓ test/unit/lifecycle.test.ts > reassign and cancel/close > rejects reassignment to identical criteria and to a named officer 2ms
+ ✓ test/unit/lifecycle.test.ts > reassign and cancel/close > cancels/closes OPEN and CLAIMED tasks with an outcome code 1ms
+ ✓ test/unit/lifecycle.test.ts > availability > lists only OPEN tasks the caller currently covers 2ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > serves the lifecycle and every error body matches SF-CON-ERROR-RESPONSE 168ms
+ ✓ test/unit/negative.test.ts > wrong tenant is denied and leaks nothing (CROSS_TENANT_LEAKAGE=0) > a tenant-null or non-contract authorization request fails closed before the PDP 5ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > denies, leaves the task OPEN, writes no history, and audits the denial with policy_revision 3ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > denies a principal outside the assignment even when OPA allows (assignment resolution) 4ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > an officer who lost the role mid-task is denied on the next action (ADR-0005) 2ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > only the claimant completes, even if OPA allows 2ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > a second officer cannot claim an already claimed task 2ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > fails closed when the PDP is unavailable or returns a malformed decision 1ms
+ ✓ test/unit/negative.test.ts > unauthorized claim is denied (OPA) > a denial stands even when the audit write fails 1ms
+ ✓ test/unit/negative.test.ts > unauthorized reassignment is denied > denies when OPA refuses the action 1ms
+ ✓ test/unit/negative.test.ts > unauthorized reassignment is denied > denies when OPA allows the source but refuses the target organisation 1ms
+ ✓ test/unit/negative.test.ts > named officer in published assignment is rejected > on create 0ms
+ ✓ test/unit/negative.test.ts > named officer in published assignment is rejected > on create top-level 0ms
+ ✓ test/unit/negative.test.ts > named officer in published assignment is rejected > persists nothing and never calls the PDP for a rejected template 0ms
+ ✓ test/unit/negative.test.ts > completed or closed tasks cannot be reclaimed > COMPLETED task refuses every further operation 3ms
+ ✓ test/unit/negative.test.ts > completed or closed tasks cannot be reclaimed > CANCELLED_CLOSED task refuses every further operation 2ms
+ ✓ test/unit/negative.test.ts > completed or closed tasks cannot be reclaimed > a stale decision made before a concurrent claim cannot overwrite it 1ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > exposes reassign and cancel routes 7ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > refuses tenant-identifying headers before touching context or service 1ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > rejects client tenant in the body, missing/invalid idempotency keys, unknown routes and bad ids 1ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > requires an authenticated server-derived tenant context 0ms
+ ✓ test/unit/handler.test.ts > transport-neutral handler > maps unexpected failures to a safe SF-SYS-001 without internals 1ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > runs each unit in one transaction with transaction-local, server-derived session settings 8ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > rolls back, releases and maps failures without driver text 2ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > refuses SQL that names another component schema before it reaches the driver 1ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > executes every write statement against sf_tasks only, with tenant bound as $1 2ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > replays a stored idempotent response and rejects fingerprint mismatch 1ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > availability binds the principal scope arrays; a stale update raises a conflict; outbox keys by aggregate 2ms
+ ✓ test/unit/pg-repository.test.ts > PgTaskRepository > row mappers normalise driver values 1ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: SELECT * FROM sf_workflow.instance 3ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: UPDATE sf_cases.application SET state = $1 1ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: INSERT INTO sf_audit.audit_ledger VALUES ($1) 0ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: SELECT 1 FROM sf_tenant_org.tenant 0ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: select * from SF_Docintel.intelligence_job 0ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > guard refuses: SELECT * FROM sf_tasks.human_task t JOIN sf_workflow.node n ON true 0ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > allows the component schema and shared session accessor only 1ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > source never names another schema, imports another component, a driver, or the network 5ms
+ ✓ test/contract/boundaries.test.ts > cross-component direct SQL is rejected > migration references no foreign schema, grants nothing to PUBLIC, and no DML to sf_app 2ms
+ ✓ test/contract/boundaries.test.ts > migration safety (ADR-0006, Constitution #6, #19) > uses NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS and policies on current_tenant_id() 1ms
+ ✓ test/contract/boundaries.test.ts > migration safety (ADR-0006, Constitution #6, #19) > has no column that can hold a named officer in published assignment metadata 1ms
+ ✓ test/contract/boundaries.test.ts > migration safety (ADR-0006, Constitution #6, #19) > service tests and fixtures stay free of secrets and personal data 6ms
+ ✓ test/contract/contracts.test.ts > SF-CON-HUMAN-TASK (FROZEN, read-only) > is cataloged FROZEN and owned by CMP-017 3ms
+ ✓ test/contract/contracts.test.ts > SF-CON-HUMAN-TASK (FROZEN, read-only) > accepts the frozen valid example and refuses the named-officer example 2ms
+ ✓ test/contract/contracts.test.ts > SF-CON-HUMAN-TASK (FROZEN, read-only) > every event emitted by every operation is a valid SF-CON-HUMAN-TASK instance 82ms
+ ✓ test/contract/contracts.test.ts > component-local contracts > OpenAPI documents every handler route; AsyncAPI lists every emitted event 1ms
+ ✓ test/contract/contracts.test.ts > component-local contracts > isolation declarations validate and match the migration tables exactly (Constitution #24) 4ms
+ ✓ test/contract/contracts.test.ts > component-local contracts > outbox migration is the frozen SF-CON-OUTBOX template with schema/component replacements only 1ms
+ ✓ test/unit/domain.test.ts > state machine > allows only the frozen lifecycle edges 2ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > accepts role + organisation/office + jurisdiction + service scope only 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key named_officer with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key officer_id with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key assignee with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key assigned_to_user with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key employee_code with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key claimed_principal_id with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key email with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects person-identifying key principal_id with NAMED_OFFICER_FORBIDDEN 0ms
+ ✓ test/unit/domain.test.ts > assignment metadata (Constitution #19) > rejects unknown, null and malformed criteria 1ms
+ ✓ test/unit/domain.test.ts > assignment resolution > matches on role, organisation, office and jurisdiction 0ms
+ ✓ test/unit/domain.test.ts > assignment resolution > reports every failing dimension without personal data 1ms
+ ✓ test/unit/domain.test.ts > assignment resolution > requires service scope only when the task is scoped, and widens via owning-component ports 0ms
+ ✓ test/unit/domain.test.ts > request fingerprint > is order-insensitive for objects and binds method and endpoint 1ms
+
+ Test Files  7 passed (7)
+      Tests  74 passed (74)
+   Start at  12:47:33
+   Duration  1.18s (transform 35%, import 32%, tests 32%, worker 2%)
+

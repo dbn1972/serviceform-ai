@@ -57,7 +57,7 @@ Resource attributes sent: `task_id`, `application_id`, `organisation_id`, `juris
 ## Tests
 
 ```bash
-pnpm exec vitest run --root services/cmp-017-work-queue-tasks --config services/cmp-017-work-queue-tasks/vitest.unit.config.ts
+pnpm --dir services/cmp-017-work-queue-tasks test:unit
 DATABASE_URL=... pnpm --dir services/cmp-017-work-queue-tasks test:integration   # needs PostgreSQL 16
 ```
 
