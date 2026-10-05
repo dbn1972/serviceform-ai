@@ -5,7 +5,7 @@
 
  RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
 
-2026-10-05T15:29:03.446Z [INFO] asset workflow-bundle-9da4bc6de219da9f2be6.js 1.75 MiB [emitted] [immutable] (name: main)
+2026-10-05T16:45:23.703Z [INFO] asset workflow-bundle-9da4bc6de219da9f2be6.js 1.75 MiB [emitted] [immutable] (name: main)
 runtime modules 883 bytes 4 modules
 modules by path ../../../tmp/temporal-deps/node_modules/@temporalio/ 388 KiB
   modules by path ../../../tmp/temporal-deps/node_modules/@temporalio/common/lib/ 165 KiB 36 modules
@@ -20,48 +20,48 @@ optional modules 30 bytes [optional]
   __temporal_custom_failure_converter (ignored) 15 bytes [optional] [built] [code generated]
 ../../../tmp/temporal-deps/node_modules/long/umd/index.js 49.8 KiB [built] [code generated]
 ../../../tmp/temporal-deps/node_modules/ms/dist/index.cjs 3.41 KiB [built] [code generated]
-webpack 5.111.1 compiled successfully in 635 ms
-2026-10-05T15:29:03.453Z [INFO] Workflow bundle created { size: '1.75MB' }
-2026-10-05T15:29:03.651662Z  WARN temporalio_sdk_core::worker: Temporal Server 1.16.0 or newer is required to guarantee that the latest heartbeat details are preserved when an activity fails; the server did not advertise the activity_failure_include_heartbeat capability, so heartbeat details may be lost on failure
-2026-10-05T15:29:03.653Z [INFO] Worker state changed {
+webpack 5.111.1 compiled successfully in 490 ms
+2026-10-05T16:45:23.710Z [INFO] Workflow bundle created { size: '1.75MB' }
+2026-10-05T16:45:23.877017Z  WARN temporalio_sdk_core::worker: Temporal Server 1.16.0 or newer is required to guarantee that the latest heartbeat details are preserved when an activity fails; the server did not advertise the activity_failure_include_heartbeat capability, so heartbeat details may be lost on failure
+2026-10-05T16:45:23.878Z [INFO] Worker state changed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   state: 'RUNNING'
 }
-2026-10-05T15:29:03.655Z [INFO] No Nexus services registered, not polling for Nexus tasks { sdkComponent: 'worker', taskQueue: 'sf-workflow-sdk-test' }
-2026-10-05T15:29:04.209Z [WARN] workflow event rejected {
+2026-10-05T16:45:23.879Z [INFO] No Nexus services registered, not polling for Nexus tasks { sdkComponent: 'worker', taskQueue: 'sf-workflow-sdk-test' }
+2026-10-05T16:45:24.350Z [WARN] workflow event rejected {
   sdkComponent: 'workflow',
   taskQueue: 'sf-workflow-sdk-test',
   namespace: 'default',
-  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:553fe83d-eb30-4459-bfee-cd03d9d90565',
-  runId: '4f456948-1866-4d8b-9d0e-5e7e694ad036',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:2bdfe652-502d-4cf6-b630-17f85f68f0b6',
+  runId: '6bd4f33e-f487-4467-b7ac-b3ff8b89440e',
   workflowType: 'serviceformCanonicalWorkflow',
   event: 'COMMITTED',
   code: 'SF-WF-001',
   detail: 'ADVANCE_BEFORE_DOMAIN_COMMIT'
 }
-2026-10-05T15:29:04.409Z [WARN] workflow event rejected {
+2026-10-05T16:45:24.536Z [WARN] workflow event rejected {
   sdkComponent: 'workflow',
   taskQueue: 'sf-workflow-sdk-test',
   namespace: 'default',
-  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:f4698cb8-9dd5-437a-96d0-5704ceb28e8c',
-  runId: '5de4afc1-78f7-4fc1-99d2-a4c5f5e57bc1',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:b7f835c7-5af4-4a1b-8054-32d4d8063671',
+  runId: 'ed6ecb02-f3b8-4702-ae33-862ccb312d0b',
   workflowType: 'serviceformCanonicalWorkflow',
   event: 'COMMITTED',
   code: 'SF-TEN-002',
   detail: 'SIGNAL_SCOPE_MISMATCH'
 }
-2026-10-05T15:29:05.104Z [WARN] Activity failed {
+2026-10-05T16:45:25.139Z [WARN] Activity failed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   isLocal: false,
   attempt: 1,
   namespace: 'default',
-  taskToken: 'AAdkZWZhdWx0AE9zZi13ZjoxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTE6NzliOTdiZmMtNTdhNi00MmQxLWIzYmUtNzg0YzI0MThiOTUzACRjMzZkMjlmZC04YTA5LTQ1NTctODMwOS02NWFjMTFmZGRiYjQAAAAAAAAAEQAAAAE=',
+  taskToken: 'AAdkZWZhdWx0AE9zZi13ZjoxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTE6OThmNDBiMzUtMTRiOC00ZTJhLWEyNjktZjZjNjEzN2M5OGYyACQ4Yzg4NmZmMC1lOWI1LTQzODktYWZhMy02MzkxMTJiNGUwMTcAAAAAAAAAEQAAAAE=',
   activityId: '3',
   activityType: 'createHumanTask',
-  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:79b97bfc-57a6-42d1-b3be-784c2418b953',
-  workflowRunId: 'c36d29fd-8a09-4557-8309-65ac11fddbb4',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:98f40b35-14b8-4e2a-a269-f6c6137c98f2',
+  workflowRunId: '8c886ff0-e9b5-4389-afa3-639112b4e017',
   workflowType: 'serviceformCanonicalWorkflow',
   error: Error: CMP-017 temporarily unavailable
       at Object.create (/workspace/services/cmp-016-workflow-engine/test/temporal/sdk-worker.int.test.ts:77:13)
@@ -76,12 +76,12 @@ webpack 5.111.1 compiled successfully in 635 ms
       at Activity.executeWithClient (/tmp/temporal-deps/node_modules/@temporalio/worker/lib/activity.js:151:33),
   durationMs: 0
 }
-2026-10-05T15:29:06.213Z [WARN] Workflow failed {
+2026-10-05T16:45:26.188Z [WARN] Workflow failed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   namespace: 'default',
-  workflowId: 'raw-bpmn-27e3248c-d9cc-442b-9577-36fbc89c714f',
-  runId: 'baef3e38-5d88-4777-ab50-43f7b5641f15',
+  workflowId: 'raw-bpmn-ea333820-7ffa-4d4f-89ba-736df9972eed',
+  runId: '47393a5d-e5f2-41bb-b79b-1cc114dd2c58',
   workflowType: 'serviceformCanonicalWorkflow',
   error: ApplicationFailure: MODEL_INVALID
       at Function.nonRetryable (/tmp/temporal-deps/node_modules/@temporalio/common/src/failure.ts:254:11)
@@ -97,12 +97,12 @@ webpack 5.111.1 compiled successfully in 635 ms
     [cause]: undefined
   }
 }
-2026-10-05T15:29:06.223Z [WARN] Workflow failed {
+2026-10-05T16:45:26.197Z [WARN] Workflow failed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   namespace: 'default',
-  workflowId: 'raw-engine-27e3248c-d9cc-442b-9577-36fbc89c714f',
-  runId: 'd61d23ec-49c1-495b-8cbd-d53a700ef6c7',
+  workflowId: 'raw-engine-ea333820-7ffa-4d4f-89ba-736df9972eed',
+  runId: '95e2f97b-c6c3-49e3-bce9-3cd24a3ee5e6',
   workflowType: 'serviceformCanonicalWorkflow',
   error: ApplicationFailure: BPMN_RUNTIME_FORBIDDEN
       at Function.nonRetryable (/tmp/temporal-deps/node_modules/@temporalio/common/src/failure.ts:254:11)
@@ -118,12 +118,12 @@ webpack 5.111.1 compiled successfully in 635 ms
     [cause]: undefined
   }
 }
-2026-10-05T15:29:06.259Z [WARN] Workflow failed {
+2026-10-05T16:45:26.227Z [WARN] Workflow failed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   namespace: 'default',
-  workflowId: 'raw-officer-e52d8c9f-8f1d-4be9-8cf8-3823ce0f1a3d',
-  runId: '43b0c7e5-3f99-4156-a95e-9dafda1ff2b4',
+  workflowId: 'raw-officer-12f65469-4874-43e2-8987-54889e65360c',
+  runId: '5bbe0ed2-82bb-456e-9b38-a28d8226bdf3',
   workflowType: 'serviceformCanonicalWorkflow',
   error: ApplicationFailure: NAMED_OFFICER_FORBIDDEN
       at Function.nonRetryable (/tmp/temporal-deps/node_modules/@temporalio/common/src/failure.ts:254:11)
@@ -139,33 +139,33 @@ webpack 5.111.1 compiled successfully in 635 ms
     [cause]: undefined
   }
 }
-2026-10-05T15:29:06.262Z [INFO] Worker state changed {
+2026-10-05T16:45:26.229Z [INFO] Worker state changed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   state: 'STOPPING'
 }
-2026-10-05T15:29:06.262Z [INFO] Worker state changed {
+2026-10-05T16:45:26.229Z [INFO] Worker state changed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   state: 'DRAINING'
 }
-2026-10-05T15:29:06.267Z [INFO] Worker state changed {
+2026-10-05T16:45:26.234Z [INFO] Worker state changed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   state: 'DRAINED'
 }
-2026-10-05T15:29:06.267Z [INFO] Worker state changed {
+2026-10-05T16:45:26.234Z [INFO] Worker state changed {
   sdkComponent: 'worker',
   taskQueue: 'sf-workflow-sdk-test',
   state: 'STOPPED'
 }
- ✓ test/temporal/sdk-worker.int.test.ts (12 tests) 6153ms
+ ✓ test/temporal/sdk-worker.int.test.ts (12 tests) 4091ms
    ✓ Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) (12)
-     ✓ activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key 1116ms
+     ✓ activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key 1048ms
 
  Test Files  1 passed (1)
       Tests  12 passed (12)
-   Start at  15:28:59
-   Duration  6.69s (tests 93%, import 4%, transform 2%)
+   Start at  16:45:21
+   Duration  4.58s (tests 91%, import 6%, transform 3%)
 
 JUNIT report written to /workspace/services/cmp-016-workflow-engine/evidence/junit/temporal.xml

@@ -1,0 +1,12 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/integration/zz-a2-probe-new.int.test.ts (18 tests) 1237ms
+   ✓ FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) (6)
+     ✓ service layer: tenant B cannot export, start, signal or request on tenant A data 611ms
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+   Start at  16:37:00
+   Duration  1.49s (tests 87%, transform 10%, import 3%)
+

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# usage: run-int-loop.sh <label> <port> <runs> <outdir>
+set -u
+label=$1; port=$2; runs=$3; out=$4
+mkdir -p "$out/runs"
+summary="$out/$label.log"
+: > "$summary"
+export DATABASE_URL="$(printenv "LOCAL_DB_URL_${port}")"
+cd /workspace/services/cmp-016-workflow-engine
+for i in $(seq 1 "$runs"); do
+  sudo -u postgres psql -p "$port" -qc "DROP DATABASE IF EXISTS serviceform_test WITH (FORCE)" >/dev/null
+  sudo -u postgres psql -p "$port" -qtAc "SELECT rolname FROM pg_roles WHERE rolname NOT LIKE 'pg\\_%' AND rolname NOT IN ('postgres','ci')" \
+    | while read -r r; do [ -n "$r" ] && sudo -u postgres psql -p "$port" -qc "DROP ROLE IF EXISTS \"$r\"" >/dev/null; done
+  sudo -u postgres psql -p "$port" -qc "CREATE DATABASE serviceform_test OWNER ci" >/dev/null
+  log="$out/runs/$label-run$i.log"
+  pnpm run test:integration > "$log" 2>&1
+  rc=$?
+  tests=$(grep -E '^ +Tests ' "$log" | sed -E 's/\x1b\[[0-9;]*m//g' | tr -s ' ' | sed 's/^ //')
+  unh=$(grep -cE 'Unhandled Rejection|Unhandled Error|unhandled error|unhandled rejection|PromiseRejectionHandledWarning' "$log")
+  errs=$(grep -E '^ +Errors ' "$log" | sed -E 's/\x1b\[[0-9;]*m//g' | tr -s ' ' | sed 's/^ //')
+  echo "$label run$i rc=$rc tests=\"$tests\" unhandled_mentions=$unh errors=\"${errs:-none}\"" | tee -a "$summary"
+done

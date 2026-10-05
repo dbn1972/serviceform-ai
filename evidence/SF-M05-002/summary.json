@@ -2,25 +2,30 @@
   "schema": "serviceform.builder.evidence.v1",
   "task_id": "SF-M05-002",
   "component_id": "CMP-016",
-  "remediation": "R-CMP016-DOWN2",
+  "remediation": "R-CMP016-UNHANDLED-REJECTION",
+  "remediation_track": "A2",
   "remediation_scope": "test harness only",
   "base_sha": "6e9f0481eb3007dedee5580838cab59ceea66f03",
-  "previous_head": "50f56aff9cc1e46c927b881f30c249cb9e1955d2",
-  "code_sha": "b01ed4cce98078a17f19f35f4c9118c085f4acb9",
+  "previous_head": "83811c74ca2be3856de4c99f343b0ad03da4d65e",
+  "code_sha": "b0924d2501f00bdf033f18f2951eea8884bca2ff",
   "pr": "https://github.com/dbn1972/serviceform-ai/pull/89",
   "files_changed_vs_previous_head_code": [
-    "services/cmp-016-workflow-engine/test/integration/helpers.ts",
-    "services/cmp-016-workflow-engine/test/integration/migration.int.test.ts"
+    "services/cmp-016-workflow-engine/test/integration/db-isolation.int.test.ts"
   ],
+  "fix": "lazy thunks: each rejecting service promise is created inside errorOf(call()), so its handler attaches immediately",
+  "suppression_used": false,
   "semantic_source_migration_diff_vs_previous_head": 0,
-  "isolated_chain": [
-    "1759482000000_platform-baseline.sql",
-    "1759490000000_shared-db-contracts.sql",
-    "1759540160000_cmp-016-workflow-engine.sql",
-    "1759540160001_cmp-016-outbox.sql"
-  ],
-  "isolated_db_pattern": "sf_cmp016_rev_<8 hex>",
   "combined_chain_overlay_source": "2135940f9d25b2ac3145a1ff74bb1992f4c7b91f (read-only, not committed)",
+  "mechanism_probe": {
+    "old_pattern_with_200ms_window": { "runs": 3, "rc": [1, 1, 1], "tests": "18/18", "unhandled_per_run": 3 },
+    "new_pattern_with_200ms_window": { "runs": 3, "rc": [0, 0, 0], "tests": "18/18", "unhandled_per_run": 0 },
+    "committed": false
+  },
+  "baseline_unchanged_83811c7_m89_tree": { "runs": 10, "passed_21_of_21": 10, "unhandled_total": 0 },
+  "stability": {
+    "m89_tree": { "consecutive_runs": 20, "passed_21_of_21": 20, "rc0": 20, "unhandled_total": 0 },
+    "combined_wave_a": { "consecutive_runs": 20, "passed_21_of_21": 20, "rc0": 20, "unhandled_total": 0 }
+  },
   "temporal_sdk": {
     "@temporalio/activity": "1.24.0",
     "@temporalio/client": "1.24.0",
@@ -49,12 +54,9 @@
     "cmp016_unit_contract": "PASS (136)",
     "cmp016_postgres_integration": "PASS (21)",
     "cmp016_postgres_integration_combined_wave_a": "PASS (21)",
-    "cmp016_postgres_integration_combined_wave_a_old_tests": "FAIL (2 of 21) - reproduces R-CMP016-DOWN2",
     "cmp016_temporal_sdk": "PASS (12)"
   },
-  "residuals": {
-    "R-CMP016-UNHANDLED-REJECTION": "pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts (unchanged since 50f56af); 21/21 tests pass; outside allowed write paths"
-  },
+  "residuals": {},
   "cross_tenant_leakage": 0,
   "lockfile_changed": false,
   "contracts_changed": false,

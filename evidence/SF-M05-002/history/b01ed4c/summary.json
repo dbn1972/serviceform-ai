@@ -1,0 +1,68 @@
+{
+  "schema": "serviceform.builder.evidence.v1",
+  "task_id": "SF-M05-002",
+  "component_id": "CMP-016",
+  "remediation": "R-CMP016-DOWN2",
+  "remediation_scope": "test harness only",
+  "base_sha": "6e9f0481eb3007dedee5580838cab59ceea66f03",
+  "previous_head": "50f56aff9cc1e46c927b881f30c249cb9e1955d2",
+  "code_sha": "b01ed4cce98078a17f19f35f4c9118c085f4acb9",
+  "pr": "https://github.com/dbn1972/serviceform-ai/pull/89",
+  "files_changed_vs_previous_head_code": [
+    "services/cmp-016-workflow-engine/test/integration/helpers.ts",
+    "services/cmp-016-workflow-engine/test/integration/migration.int.test.ts"
+  ],
+  "semantic_source_migration_diff_vs_previous_head": 0,
+  "isolated_chain": [
+    "1759482000000_platform-baseline.sql",
+    "1759490000000_shared-db-contracts.sql",
+    "1759540160000_cmp-016-workflow-engine.sql",
+    "1759540160001_cmp-016-outbox.sql"
+  ],
+  "isolated_db_pattern": "sf_cmp016_rev_<8 hex>",
+  "combined_chain_overlay_source": "2135940f9d25b2ac3145a1ff74bb1992f4c7b91f (read-only, not committed)",
+  "temporal_sdk": {
+    "@temporalio/activity": "1.24.0",
+    "@temporalio/client": "1.24.0",
+    "@temporalio/common": "1.24.0",
+    "@temporalio/worker": "1.24.0",
+    "@temporalio/workflow": "1.24.0",
+    "@temporalio/testing": "1.24.0 (dev)"
+  },
+  "expected_stitch_lockfile_admission": true,
+  "results": {
+    "frozen_install": "FAIL (EXPECTED_STITCH_LOCKFILE_ADMISSION: 6 @temporalio specifiers only)",
+    "format": "PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "root_unit_coverage": "PASS (1002)",
+    "contracts_validate": "PASS",
+    "cdc": "PASS",
+    "deps_graph": "PASS",
+    "build": "PASS",
+    "gate_selftests": "PASS (25)",
+    "gates_run_all": "10/10",
+    "migration_lint": "PASS",
+    "contracts_lock": "19/19 MATCH",
+    "write_scope": "PASS",
+    "db_test": "PASS (17)",
+    "cmp016_unit_contract": "PASS (136)",
+    "cmp016_postgres_integration": "PASS (21)",
+    "cmp016_postgres_integration_combined_wave_a": "PASS (21)",
+    "cmp016_postgres_integration_combined_wave_a_old_tests": "FAIL (2 of 21) - reproduces R-CMP016-DOWN2",
+    "cmp016_temporal_sdk": "PASS (12)"
+  },
+  "residuals": {
+    "R-CMP016-UNHANDLED-REJECTION": "pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts (unchanged since 50f56af); 21/21 tests pass; outside allowed write paths"
+  },
+  "cross_tenant_leakage": 0,
+  "lockfile_changed": false,
+  "contracts_changed": false,
+  "migrations_changed": false,
+  "src_changed": false,
+  "ccr_required": false,
+  "certified": false,
+  "self_certified": false,
+  "g4": false,
+  "g6": false
+}

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Full required check suite for the #89 tree. Logs to /tmp/a2/logs, exit codes to exit-codes.txt.
+set -u
+L=/tmp/a2/logs
+mkdir -p "$L"
+EC="$L/exit-codes.txt"
+: > "$EC"
+cd /workspace
+step() {
+  local name=$1; shift
+  local t0=$SECONDS
+  ( "$@" ) > "$L/$name.log" 2>&1
+  local rc=$?
+  echo "$name rc=$rc seconds=$((SECONDS - t0))" | tee -a "$EC"
+}
+reset_db() {
+  local port=$1
+  sudo -u postgres psql -p "$port" -qc "DROP DATABASE IF EXISTS serviceform_test WITH (FORCE)" >/dev/null
+  sudo -u postgres psql -p "$port" -qtAc "SELECT rolname FROM pg_roles WHERE rolname NOT LIKE 'pg\\_%' AND rolname NOT IN ('postgres','ci')" \
+    | while read -r r; do [ -n "$r" ] && sudo -u postgres psql -p "$port" -qc "DROP ROLE IF EXISTS \"$r\"" >/dev/null; done
+  sudo -u postgres psql -p "$port" -qc "CREATE DATABASE serviceform_test OWNER ci" >/dev/null
+}
+
+git rev-parse HEAD > "$L/commit-sha.txt"
+step install-frozen pnpm install --frozen-lockfile
+step format-check pnpm format:check
+step lint pnpm lint
+step typecheck pnpm typecheck
+step test-coverage pnpm test:coverage
+step contracts-validate pnpm contracts:validate
+step test-cdc pnpm test:cdc
+step deps-graph pnpm deps:graph
+step build pnpm build
+step gate-selftests python3 -m pytest scripts/gates/tests -q
+step gates-run-all python3 scripts/gates/run_all.py
+step migration-lint python3 scripts/gates/migration_lint.py
+step contracts-lock python3 scripts/gates/contracts_lock_gate.py
+step check-scope python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M05-002.yaml --base origin/main
+
+reset_db 5443
+step db-test env DATABASE_URL="$LOCAL_DB_URL_5443" pnpm db:test
+
+cd /workspace/services/cmp-016-workflow-engine
+step cmp016-unit pnpm run test:unit
+cp evidence/junit/unit.xml /tmp/a2/junit/unit.xml 2>/dev/null
+reset_db 5441
+step cmp016-integration env DATABASE_URL="$LOCAL_DB_URL_5441" pnpm run test:integration
+cp evidence/junit/integration.xml /tmp/a2/junit/integration.xml 2>/dev/null
+step cmp016-temporal-sdk pnpm run test:temporal
+cp evidence/junit/temporal.xml /tmp/a2/junit/temporal.xml 2>/dev/null
+echo DONE | tee -a "$EC"

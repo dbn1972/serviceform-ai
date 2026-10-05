@@ -1,0 +1,87 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+(node:9030) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 1)
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9030) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 2)
+(node:9030) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 3)
+ ✓ test/integration/zz-a2-probe-old.int.test.ts (18 tests) 1239ms
+   ✓ FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) (6)
+     ✓ service layer: tenant B cannot export, start, signal or request on tenant A data 602ms
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 3 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Cmp016Error: Resource or route not found
+ ❯ WorkflowService.loadVersion src/service/workflow-service.ts:98:19
+     96|   ): Promise<WorkflowVersionRecord> {
+     97|     const v = await repo.getVersion(c, versionId, { forUpdate });
+     98|     if (!v) throw new Cmp016Error('SF-SYS-002');
+       |                   ^
+     99|     return v;
+    100|   }
+ ❯ processTicksAndRejections node:internal/process/task_queues:105:5
+ ❯ withTenantTx src/db/tx.ts:53:20
+ ❯ WorkflowService.tx src/service/workflow-service.ts:86:14
+ ❯ WorkflowService.exportBpmn src/service/workflow-service.ts:190:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SF-SYS-002', statusCode: 404, details: [], hasDetail: 'Function<hasDetail>' }
+This error originated in "test/integration/zz-a2-probe-old.int.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "service layer: tenant B cannot export, start, signal or request on tenant A data". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Cmp016Error: Resource or route not found
+ ❯ WorkflowService.loadVersion src/service/workflow-service.ts:98:19
+     96|   ): Promise<WorkflowVersionRecord> {
+     97|     const v = await repo.getVersion(c, versionId, { forUpdate });
+     98|     if (!v) throw new Cmp016Error('SF-SYS-002');
+       |                   ^
+     99|     return v;
+    100|   }
+ ❯ processTicksAndRejections node:internal/process/task_queues:105:5
+ ❯ src/service/workflow-service.ts:300:36
+ ❯ withTenantTx src/db/tx.ts:53:20
+ ❯ WorkflowService.tx src/service/workflow-service.ts:86:14
+ ❯ WorkflowService.startInstance src/service/workflow-service.ts:299:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SF-SYS-002', statusCode: 404, details: [], hasDetail: 'Function<hasDetail>' }
+This error originated in "test/integration/zz-a2-probe-old.int.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "service layer: tenant B cannot export, start, signal or request on tenant A data". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Cmp016Error: Resource or route not found
+ ❯ src/service/workflow-service.ts:422:28
+    420|       }
+    421|       const instance = await repo.getInstanceByApplication(c, applicat…
+    422|       if (!instance) throw new Cmp016Error('SF-SYS-002');
+       |                            ^
+    423|       if (instance.status !== 'RUNNING') throw reject('INSTANCE_NOT_RU…
+    424|       const version = await this.loadVersion(c, instance.workflow_vers…
+ ❯ processTicksAndRejections node:internal/process/task_queues:105:5
+ ❯ withTenantTx src/db/tx.ts:53:20
+ ❯ WorkflowService.tx src/service/workflow-service.ts:86:14
+ ❯ WorkflowService.submitRequest src/service/workflow-service.ts:413:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'SF-SYS-002', statusCode: 404, details: [], hasDetail: 'Function<hasDetail>' }
+This error originated in "test/integration/zz-a2-probe-old.int.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "service layer: tenant B cannot export, start, signal or request on tenant A data". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 passed (1)
+      Tests  18 passed (18)
+     Errors  3 errors
+   Start at  16:36:54
+   Duration  1.51s (tests 87%, transform 11%, import 3%)
+
