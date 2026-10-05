@@ -84,3 +84,7 @@ stop_conditions:
 acceptance_tests_planning:
   - M04 plugins mount under /v1 without cross-component SQL
   - Existing M01/M02/M03 mounts remain
+
+# Implementation note (does not change uniqueness keys / READY / dispatched).
+# Draft PR #78. Branch cursor/m04-host-sf-m04-007-a839. Base main d9776b564d5bab6b71a8c1efed3ec06c8d7dc699.
+# Not CERTIFIED. Do not merge. M04 G3 not issued. M05 OFF.
