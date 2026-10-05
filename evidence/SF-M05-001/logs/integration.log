@@ -1,0 +1,17 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-015-application-case
+
+ ✓ test/integration/migration.int.test.ts (3 tests) 2025ms
+   ✓ CMP-015 migrations (isolated database; up -> down -> up) (3)
+     ✓ applies on top of the platform baseline + shared DB contracts only (no cross-component dependency) 462ms
+     ✓ rolls back both CMP-015 migrations cleanly and keeps the NOLOGIN role 393ms
+     ✓ re-applies after rollback 762ms
+ ✓ test/integration/service-flow.int.test.ts (13 tests) 1332ms
+ ✓ test/integration/privilege-rls.int.test.ts (11 tests) 545ms
+
+ Test Files  3 passed (3)
+      Tests  27 passed (27)
+   Start at  12:53:50
+   Duration  4.34s (tests 95%, transform 3%, import 2%)
+
+JUNIT report written to /workspace/evidence/SF-M05-001/junit/integration.xml

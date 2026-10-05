@@ -116,3 +116,38 @@ acceptance_tests_planning:
   - INT-004 hot path uses outbox; no network in txn
   - Wrong-tenant denied; CROSS_TENANT_LEAKAGE remains 0
   - Host mount deferred to SF-M05-009
+
+# Builder handover (SF-M05-001). Builder evidence only; not CERTIFIED; orchestration state unchanged.
+builder_handover:
+  builder: serviceform-case-execution-builder
+  model_release: claude-opus-5-5
+  effort: high
+  branch: agent/M05-case-SF-M05-001
+  base_commit_authorized:
+    prefix: 6e9f0481
+    suffix: eb3007dedee5580838cab59ceea66f03
+  changed_paths:
+    - services/cmp-015-application-case/**
+    - db/migrations/1759540150000_cmp-015-application-case.sql
+    - db/migrations/1759540150001_cmp-015-outbox.sql
+    - evidence/SF-M05-001/**
+    - orchestrator/handovers/SF-M05-001.yaml
+  schema: sf_application_case
+  privilege_role: sf_cmp015_rw
+  pnpm_lock_changed: false
+  frozen_contracts_altered: false
+  contracts_lock: 19_FROZEN_MATCH
+  ccr_required: false
+  cross_tenant_leakage: 0
+  local_results:
+    unit_contract_tests: 125_PASS
+    postgres_integration_tests: 27_PASS
+    root_test_coverage: 991_PASS
+    db_test: 17_PASS
+    architecture_gates: 10_OF_10_PASS
+    check_scope: PASS
+  ci_executed: false
+  ci_blocker: GITHUB_401_ON_PUSH_AND_GH
+  host_mount: DEFERRED_SF_M05_009
+  evidence: evidence/SF-M05-001/EVIDENCE.md
+  self_certified: false
