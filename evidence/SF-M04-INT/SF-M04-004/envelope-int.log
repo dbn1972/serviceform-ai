@@ -1,0 +1,16 @@
+
+> @serviceform/cmp-013-document-upload@0.0.0 test:integration /tmp/wt/SF-M04-INT/services/cmp-013-document-upload
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/tmp/wt/SF-M04-INT/evidence/SF-M04-INT/SF-M04-004/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT/services/cmp-013-document-upload
+
+ ✓ test/integration/privilege-rls.int.test.ts (7 tests) 501ms
+ ✓ test/integration/api-flow.int.test.ts (4 tests) 658ms
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  03:49:43
+   Duration  1.66s (tests 77%, import 12%, transform 11%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/evidence/SF-M04-004/junit/integration.xml

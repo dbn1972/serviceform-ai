@@ -1,0 +1,16 @@
+
+> @serviceform/cmp-014-document-intelligence@0.0.0 test:unit /tmp/wt/SF-M04-INT/services/cmp-014-document-intelligence
+> vitest run --root . --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/tmp/wt/SF-M04-INT/evidence/SF-M04-INT/INT-013/junit/cmp-014-unit.xml
+
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT/services/cmp-014-document-intelligence
+
+ ✓ test/contract/contracts.test.ts (8 tests) 123ms
+ ✓ test/unit/intelligence-http.test.ts (12 tests) 267ms
+
+ Test Files  2 passed (2)
+      Tests  20 passed (20)
+   Start at  03:50:00
+   Duration  566ms (tests 47%, transform 31%, import 21%, worker 1%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/evidence/SF-M04-006/junit/unit.xml

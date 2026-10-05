@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-039-ai-gateway@0.0.0 test:unit /tmp/wt/SF-M04-INT/services/cmp-039-ai-gateway
+> vitest run --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/tmp/wt/SF-M04-INT/evidence/SF-M04-INT/INT-013/junit/cmp-039-unit.xml
+
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT/services/cmp-039-ai-gateway
+
+ ✓ test/contract/contracts.test.ts (4 tests) 45ms
+ ✓ test/unit/guards-config.test.ts (10 tests) 45ms
+ ✓ test/unit/redaction.test.ts (14 tests) 64ms
+ ✓ test/unit/gateway.test.ts (23 tests) 372ms
+
+ Test Files  4 passed (4)
+      Tests  51 passed (51)
+   Start at  03:49:54
+   Duration  744ms (tests 45%, transform 33%, import 21%, worker 1%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/services/cmp-039-ai-gateway/evidence/junit/unit.xml

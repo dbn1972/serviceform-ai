@@ -75,3 +75,41 @@ stop_conditions:
 acceptance_tests_planning:
   - No numbered INT owned by M04 in build-plan; independently verify INT-011 and INT-013 layers added here
   - SIMULATED adapters fail-closed if marked production-critical
+
+# Independent verification record (not certification). Envelope remains READY.
+verification_record:
+  production_base:
+    prefix: afc8e253
+    suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
+  production_code_modified: false
+  verifier_branch: cursor/m04-int-verify-32e8
+  result:
+    family: V1_INTEGRATION
+    status: PASS
+    join_separator: "_"
+  CROSS_TENANT_LEAKAGE: 0
+  contracts_lock: 13/13 MATCH
+  INT-011: PASS
+  INT-013: PASS
+  executed_test_count: 420
+  suite_count: 11
+  pass_count: 11
+  fail_count: 0
+  github_ci: PENDING
+  github_security: PENDING
+  github_developer_platform: PENDING
+  evd_started: false
+  m04_g3_issued: false
+  certified: false
+  release_certified: false
+  g6: false
+  m05_started: false
+  sf_m04_sec_consumed: false
+  defects_patched_in_production: false
+  residuals:
+    - class: D
+      note: REAL/SANDBOX provider OCR storage scanner DigiLocker adapters not shipped in M04; PRODUCTION fail-closed verified
+    - class: E
+      note: component default JUnit paths gitignored; independent copies under evidence/SF-M04-INT
+  merge: DO_NOT_MERGE
+  draft_pr_only: true

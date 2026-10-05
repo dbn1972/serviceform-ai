@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-011-evidence-requirements@0.0.0 test:integration /tmp/wt/SF-M04-INT/services/cmp-011-evidence-requirements
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/tmp/wt/SF-M04-INT/evidence/SF-M04-INT/SF-M04-003/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT/services/cmp-011-evidence-requirements
+
+ ✓ test/integration/rls-api.int.test.ts (6 tests) 639ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 427ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 459ms
+
+ Test Files  3 passed (3)
+      Tests  13 passed (13)
+   Start at  03:49:40
+   Duration  2.22s (tests 76%, import 15%, transform 9%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/services/cmp-011-evidence-requirements/evidence/junit/integration.xml

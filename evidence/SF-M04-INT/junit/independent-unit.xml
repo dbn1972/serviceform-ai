@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.534286905">
+    <testsuite name="tests/integration/m04/int-011-host.test.ts" timestamp="2026-10-05T03:49:28.215Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.486103687">
+        <testcase classname="tests/integration/m04/int-011-host.test.ts" name="INT-011 host M04 mounts (independent stitcher) &gt; mounts all six together; CMP-036 is single-mounted; forged X-Tenant-ID is SF-TEN-002" time="0.426538116">
+        </testcase>
+        <testcase classname="tests/integration/m04/int-011-host.test.ts" name="INT-011 host M04 mounts (independent stitcher) &gt; tenant context is server-derived; unauthenticated M04 routes stay deny-by-default" time="0.058039151">
+        </testcase>
+        <testcase classname="tests/integration/m04/int-011-host.test.ts" name="INT-011 host M04 mounts (independent stitcher) &gt; M04 composition has no SQL, no provider SDK, and CMP-014 uses AiGatewayPort only" time="0.000508641">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m04/int-013-modes.test.ts" timestamp="2026-10-05T03:49:28.217Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.048183218">
+        <testcase classname="tests/integration/m04/int-013-modes.test.ts" name="INT-013 M04 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-039/008/009 SIMULATED allowed in CI; PRODUCTION SIMULATED fail-closed" time="0.040967933">
+        </testcase>
+        <testcase classname="tests/integration/m04/int-013-modes.test.ts" name="INT-013 M04 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-011 DigiLocker SIMULATED allowed in CI; PRODUCTION / REAL / SANDBOX fail-closed" time="0.00499865">
+        </testcase>
+        <testcase classname="tests/integration/m04/int-013-modes.test.ts" name="INT-013 M04 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-013 storage/scanner SIMULATED critical refuse PRODUCTION; CI admits with marker" time="0.00053366">
+        </testcase>
+        <testcase classname="tests/integration/m04/int-013-modes.test.ts" name="INT-013 M04 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-014 OCR SIMULATED critical refuse PRODUCTION; gateway port is the only inference path" time="0.000685009">
+        </testcase>
+    </testsuite>
+</testsuites>

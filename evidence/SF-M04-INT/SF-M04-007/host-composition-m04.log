@@ -1,0 +1,14 @@
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT
+
+ ✓ apps/api/test/composition-m04.test.ts (10 tests) 1465ms
+   ✓ CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) (9)
+     ✓ mounts each M04 component independently 505ms
+     ✓ keeps M01/M02/M03 mount lists unchanged when M04 is registered 598ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  03:49:28
+   Duration  2.00s (tests 76%, import 14%, transform 9%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/evidence/SF-M04-INT/SF-M04-007/junit/host-composition-m04.xml

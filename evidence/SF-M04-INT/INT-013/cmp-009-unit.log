@@ -1,0 +1,19 @@
+
+> @serviceform/cmp-009-dynamic-forms@0.0.0 test:unit /tmp/wt/SF-M04-INT/services/cmp-009-dynamic-forms
+> vitest run --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/tmp/wt/SF-M04-INT/evidence/SF-M04-INT/INT-013/junit/cmp-009-unit.xml
+
+
+ RUN  v5.0.3 /tmp/wt/SF-M04-INT/services/cmp-009-dynamic-forms
+
+ ✓ test/unit/runtime.test.ts (8 tests) 7ms
+ ✓ test/contract/contracts.test.ts (4 tests) 46ms
+ ✓ test/unit/constitution.test.ts (5 tests) 7ms
+ ✓ test/unit/config-ports.test.ts (4 tests) 62ms
+ ✓ test/unit/plugin-http.test.ts (9 tests) 143ms
+
+ Test Files  5 passed (5)
+      Tests  30 passed (30)
+   Start at  03:49:59
+   Duration  474ms (transform 41%, tests 29%, import 29%, worker 2%)
+
+JUNIT report written to /tmp/wt/SF-M04-INT/services/cmp-009-dynamic-forms/evidence/junit/unit.xml
