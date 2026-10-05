@@ -1,6 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
+import { copyFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { SqlPool } from '../../src/index.js';
 import { ROOT } from '../fixtures/models.js';
@@ -26,11 +28,32 @@ export interface PgPool {
   connect(): Promise<PgClient>;
   end(): Promise<void>;
 }
-const pg = requireFromDb('pg') as { Pool: new (cfg: object) => PgPool };
+export interface PgConnection {
+  query<R = Record<string, unknown>>(text: string, params?: unknown[]): Promise<QueryResult<R>>;
+  connect(): Promise<void>;
+  end(): Promise<void>;
+}
+const pg = requireFromDb('pg') as {
+  Pool: new (cfg: object) => PgPool;
+  Client: new (cfg: object) => PgConnection;
+};
 
 export const RUNTIME_ROLE = 'sf_t016_rt';
 export const PEER_ROLE = 'sf_t016_peer';
 export const MIGRATIONS = ['1759540160000_cmp-016-workflow-engine', '1759540160001_cmp-016-outbox'];
+
+/** CMP-016 pair only. Isolated reversibility must not assume these are the global tail. */
+export const CMP016_MIGRATION_FILES = MIGRATIONS.map((m) => `${m}.sql`);
+
+/**
+ * Platform prerequisites of the CMP-016 pair: sf_app (baseline), sf_platform.current_tenant_id()
+ * and sf_outbox_publisher (shared DB contracts). The pair creates sf_migrator / sf_cmp016_rw itself.
+ */
+export const CMP016_ISOLATED_CHAIN = [
+  '1759482000000_platform-baseline.sql',
+  '1759490000000_shared-db-contracts.sql',
+  ...CMP016_MIGRATION_FILES,
+] as const;
 
 export function adminUrl(): string {
   const url = process.env['DATABASE_URL'];
@@ -38,7 +61,12 @@ export function adminUrl(): string {
   return url;
 }
 
-export function migrate(direction: 'up' | 'down', count?: number): string {
+function runMigrate(
+  migrationsDir: string,
+  env: NodeJS.ProcessEnv,
+  direction: 'up' | 'down',
+  count?: number,
+): string {
   return execFileSync(
     'pnpm',
     [
@@ -47,7 +75,7 @@ export function migrate(direction: 'up' | 'down', count?: number): string {
       direction,
       ...(count === undefined ? [] : [String(count)]),
       '--migrations-dir',
-      'migrations',
+      migrationsDir,
       '--migrations-table',
       'sf_schema_migrations',
       '--migrations-schema',
@@ -55,8 +83,102 @@ export function migrate(direction: 'up' | 'down', count?: number): string {
       '--create-migrations-schema',
       '--check-order',
     ],
-    { cwd: DB_DIR, encoding: 'utf8', env: process.env },
+    { cwd: DB_DIR, encoding: 'utf8', env },
   );
+}
+
+/** Combined chain is `up` only: later migrations may sort after CMP-016, so `down N` is unsafe. */
+export function migrate(direction: 'up'): string {
+  return runMigrate('migrations', process.env, direction);
+}
+
+export interface CombinedCatalogSnapshot {
+  migrationNames: string[];
+  workflowTables: { relname: string; relfilenode: string; force: boolean }[];
+  workflowPolicies: string[];
+  workflowGrants: string[];
+}
+
+export async function snapshotCombinedCatalog(
+  admin: Pick<PgPool, 'query'>,
+): Promise<CombinedCatalogSnapshot> {
+  const migrations = await admin.query<{ name: string }>(
+    'SELECT name FROM sf_platform.sf_schema_migrations ORDER BY name',
+  );
+  const tables = await admin.query<{ relname: string; relfilenode: string; force: boolean }>(
+    `SELECT c.relname, c.relfilenode::text AS relfilenode, c.relforcerowsecurity AS force
+       FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'sf_workflow' AND c.relkind = 'r'
+      ORDER BY 1`,
+  );
+  const policies = await admin.query<{ p: string }>(
+    `SELECT tablename || '.' || policyname AS p FROM pg_policies
+      WHERE schemaname = 'sf_workflow' ORDER BY 1`,
+  );
+  const grants = await admin.query<{ g: string }>(
+    `SELECT grantee || ':' || table_name || ':' || privilege_type AS g
+       FROM information_schema.role_table_grants
+      WHERE table_schema = 'sf_workflow' ORDER BY 1`,
+  );
+  return {
+    migrationNames: migrations.rows.map((r) => r.name),
+    workflowTables: tables.rows,
+    workflowPolicies: policies.rows.map((r) => r.p),
+    workflowGrants: grants.rows.map((r) => r.g),
+  };
+}
+
+export interface IsolatedDatabase {
+  name: string;
+  migrationsDir: string;
+}
+
+/**
+ * Throwaway database whose migration directory holds only CMP016_ISOLATED_CHAIN, so `down 2`
+ * reverses exactly the CMP-016 pair whatever sorts after it in the combined chain. The temp
+ * directory, database and connection are released on every path, including failures.
+ */
+export async function withIsolatedCmp016Database<T>(
+  admin: PgPool,
+  fn: (
+    iso: PgConnection,
+    migrateIso: (direction: 'up' | 'down', count?: number) => string,
+    info: IsolatedDatabase,
+  ) => Promise<T>,
+): Promise<T> {
+  const name = `sf_cmp016_rev_${randomBytes(4).toString('hex')}`;
+  if (!/^sf_cmp016_rev_[0-9a-f]{8}$/.test(name)) {
+    throw new Error('isolated database name failed allowlist');
+  }
+  const tmp = mkdtempSync(join(tmpdir(), 'cmp016-rev-'));
+  const parsed = new URL(adminUrl());
+  parsed.pathname = `/${name}`;
+  const isoUrl = parsed.toString();
+  const isoEnv = { ...process.env, DATABASE_URL: isoUrl };
+  const createSql = `CREATE DATABASE ${name} TEMPLATE template0`;
+  const dropSql = `DROP DATABASE IF EXISTS ${name} WITH (FORCE)`;
+  try {
+    for (const file of CMP016_ISOLATED_CHAIN) {
+      copyFileSync(join(DB_DIR, 'migrations', file), join(tmp, file));
+    }
+    await admin.query(createSql);
+    const iso = new pg.Client({ connectionString: isoUrl });
+    await iso.connect();
+    try {
+      return await fn(iso, (direction, count) => runMigrate(tmp, isoEnv, direction, count), {
+        name,
+        migrationsDir: tmp,
+      });
+    } finally {
+      await iso.end();
+    }
+  } finally {
+    try {
+      await admin.query(dropSql);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  }
 }
 
 export interface Harness {
