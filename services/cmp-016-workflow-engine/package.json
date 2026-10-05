@@ -1,0 +1,15 @@
+{
+  "name": "@serviceform/cmp-016-workflow-engine",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-016 Workflow Engine: canonical ServiceForm Workflow Model, Temporal sequencing adapter, BPMN import/export profile",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
+  }
+}
