@@ -62,9 +62,13 @@ Independent verifier recommendation only: **`V1_SECURITY` + `_` + `PASS`**.
 - SF-CON-OUTBOX publisher `USING true` and `sf_app` INSERT on outbox/inbox templates remain frozen (ADR-0006 #9). Counted as residual, **not** `CROSS_TENANT_LEAKAGE`.
 - CMP-014 GET with empty repository double may 500 after authz in some stub mounts; forged-tenant and deny-authorizer probes on peer M04 routes remain fail-closed. Classified **A harness** residual, not production defect.
 
+## CI findings (class A harness)
+
+- Semgrep `ajinabraham.njsscan.generic.hardcoded_secrets.node_secret` on `tests/security/m04/fail-closed-ai-doc.test.ts` (security run `37261323562` / job `111608977187`, head `fb3ac2c`). Literal was a synthetic leakage canary (`sk-` prefix), **not** a production credential. Class **A harness**. Fixed by rewriting the canary to `CANARY-PROVIDER-CREDENTIAL` in the verifier test only. Production unmodified.
+
 ## Defects
 
-None blocking. No silent waiver. No production patch from this verifier branch.
+None blocking on production. No silent waiver. No production patch from this verifier branch.
 
 ## Handover uniqueness
 

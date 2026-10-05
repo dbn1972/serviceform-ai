@@ -38,7 +38,8 @@ const config = loadConfig({
 const T1 = '11111111-1111-4111-8111-111111111111';
 const DOC = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 const CANARY = 'CANARY-PII-555-0100';
-const SECRET = 'sk-sec-canary-not-for-logs';
+/** Synthetic leakage canary. Avoid `sk-` / `api_key=` shapes (njsscan node_secret). */
+const SECRET = 'CANARY-PROVIDER-CREDENTIAL';
 const BINDING = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 
 const CTX: RequestContext = {
