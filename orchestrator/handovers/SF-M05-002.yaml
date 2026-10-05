@@ -199,6 +199,53 @@ remediation_r_cmp016_down2:
         Pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts
         (unchanged since 50f56af; 3/8 runs with the original test files). All 21 tests pass.
         Outside the Track A allowed write paths; needs separate authorization.
+      addressed_by: remediation_r_cmp016_unhandled_rejection
+  evidence: evidence/SF-M05-002/history/b01ed4c/EVIDENCE.md
+  stitch_a: OFF
+  certified: false
+  g4: false
+  g6: false
+
+# R-CMP016-UNHANDLED-REJECTION remediation (Track A2; human-authorized; test harness only; does not certify or merge)
+remediation_r_cmp016_unhandled_rejection:
+  authorized_by: human (Track A2 only)
+  previous_head: 83811c74ca2be3856de4c99f343b0ad03da4d65e
+  code_sha: b0924d2501f00bdf033f18f2951eea8884bca2ff
+  base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+  root_cause: >-
+    db-isolation.int.test.ts "service layer: tenant B cannot export, start, signal or request on
+    tenant A data" built three rejecting service promises together and awaited errorOf(p) one by
+    one, so a later promise could reject before its handler attached. Test timing; not a domain
+    defect (every call correctly returned SF-SYS-002).
+  fix: lazy thunks; each promise is created inside errorOf(call()) so its handler attaches immediately
+  suppression_used: false
+  files_changed:
+    - services/cmp-016-workflow-engine/test/integration/db-isolation.int.test.ts
+  src_changed: false
+  helpers_changed: false
+  migrations_changed: false
+  package_json_changed: false
+  lockfile_changed: false
+  contracts_changed: false
+  semantic_diff_vs_previous_head: 0
+  mechanism_probe: >-
+    Uncommitted copies with a 200 ms window before each errorOf: old pattern rc=1 with 3 unhandled
+    rejections in 3/3 runs (18/18 tests pass); new pattern rc=0 with 0 in 3/3 runs.
+  results:
+    stability_m89_tree: 20 consecutive runs, 21/21 each, rc=0 20/20, unhandled 0
+    stability_combined_wave_a: 20 consecutive runs, 21/21 each, rc=0 20/20, unhandled 0 (overlay from 2135940, not committed)
+    cmp016_unit_contract: PASS 136/136
+    cmp016_postgres_integration: PASS 21/21
+    cmp016_temporal_sdk: PASS 12/12
+    db_test: PASS 17/17
+    migration_lint: PASS
+    gates_run_all: 10/10
+    contracts_lock: 19/19 MATCH
+    write_scope: PASS
+    cross_tenant_leakage: 0
+  ccr_required: false
+  expected_stitch_lockfile_admission: true
+  residuals: []
   evidence: evidence/SF-M05-002/EVIDENCE.md
   stitch_a: OFF
   certified: false
