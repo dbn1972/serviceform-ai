@@ -6,21 +6,25 @@ import { requestFingerprint } from '../../src/domain/fingerprint.js';
 import { scopeFromContext } from '../../src/domain/resolution.js';
 import type { RepoContext } from '../../src/repo/types.js';
 
+const CONTROL_PREFIXES = ['BEGIN', 'COMMIT', 'ROLLBACK', 'SELECT set_config'];
+
 class FakeClient implements SqlClient {
   statements: { text: string; values: readonly unknown[] | undefined }[] = [];
   released = 0;
   results: Record<string, unknown>[][] = [];
   rowCounts: number[] = [];
-  failOn: RegExp | null = null;
+  failOn: string | null = null;
 
   async query<R>(text: string, values?: readonly unknown[]) {
     this.statements.push({ text, values });
-    if (/^(BEGIN|COMMIT|ROLLBACK|SELECT set_config)/.test(text))
+    if (CONTROL_PREFIXES.some((prefix) => text.startsWith(prefix))) {
       return { rows: [] as R[], rowCount: 0 };
-    if (/^INSERT INTO sf_tasks\.idempotency_record/.test(text)) {
+    }
+    if (text.startsWith('INSERT INTO sf_tasks.idempotency_record')) {
       return { rows: [] as R[], rowCount: this.rowCounts.shift() ?? 0 };
     }
-    if (this.failOn?.test(text)) throw Object.assign(new Error('boom'), { code: 'P0001' });
+    if (this.failOn !== null && text.includes(this.failOn))
+      throw Object.assign(new Error('boom'), { code: 'P0001' });
     return { rows: (this.results.shift() ?? []) as R[], rowCount: this.rowCounts.shift() ?? 0 };
   }
   release() {
@@ -80,7 +84,7 @@ describe('PgTaskRepository', () => {
 
   it('rolls back, releases and maps failures without driver text', async () => {
     const { client, repo, ctx } = setup();
-    client.failOn = /FROM sf_tasks\.human_task/;
+    client.failOn = 'FROM sf_tasks.human_task';
     await expect(repo.read(ctx, (tx) => tx.getTask(uuid(7)))).rejects.toMatchObject({
       code: 'SF-APP-001',
     });
@@ -189,16 +193,17 @@ describe('PgTaskRepository', () => {
       });
       await tx.lockTask(uuid(7));
     });
-    const data = client.statements.filter((s) => /sf_tasks\./.test(s.text));
+    const data = client.statements.filter((s) => s.text.includes('sf_tasks.'));
     expect(data.length).toBeGreaterThanOrEqual(6);
     for (const s of data.filter(
       (x) =>
-        !/INSERT INTO sf_tasks\.human_task|INSERT INTO sf_tasks\.idempotency_record/.test(x.text),
+        !x.text.includes('INSERT INTO sf_tasks.human_task') &&
+        !x.text.includes('INSERT INTO sf_tasks.idempotency_record'),
     )) {
       expect(s.text).toMatch(/tenant_id = \$1/);
       expect(s.values?.[0]).toBe(TENANT_A);
     }
-    expect(client.statements.some((s) => /FOR UPDATE/.test(s.text))).toBe(true);
+    expect(client.statements.some((s) => s.text.includes('FOR UPDATE'))).toBe(true);
   });
 
   it('replays a stored idempotent response and rejects fingerprint mismatch', async () => {
@@ -283,7 +288,7 @@ describe('PgTaskRepository', () => {
     const scope = scopeFromContext(ctx);
     const rows = await repo.read(ctx, (tx) => tx.listAvailable(scope, 10));
     expect(rows).toHaveLength(1);
-    const q = client.statements.find((s) => /task_state = 'OPEN'/.test(s.text));
+    const q = client.statements.find((s) => s.text.includes("task_state = 'OPEN'"));
     expect(q?.values?.slice(1, 6)).toEqual([
       scope.roles,
       scope.organisation_ids,
@@ -334,7 +339,7 @@ describe('PgTaskRepository', () => {
         'sf.tasks.events.v1',
       ),
     );
-    const ob = client.statements.find((s) => /INSERT INTO sf_tasks\.outbox_event/.test(s.text));
+    const ob = client.statements.find((s) => s.text.includes('INSERT INTO sf_tasks.outbox_event'));
     expect(ob?.values?.[3]).toBe(uuid(7));
   });
 
