@@ -11,6 +11,7 @@ export const ERROR_CODES = {
   'SF-SYS-001': { message: 'Unexpected server error', http: 500 },
   'SF-SYS-002': { message: 'Resource or route not found', http: 404 },
   'SF-SYS-003': { message: 'Request validation failed', http: 400 },
+  'SF-SYS-004': { message: 'Service temporarily unavailable', http: 503 },
 } as const;
 
 export type ErrorCode = keyof typeof ERROR_CODES;

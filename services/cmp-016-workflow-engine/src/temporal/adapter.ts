@@ -14,6 +14,8 @@ export const SIGNAL_MIGRATE = 'sf.migrate';
 export interface WorkflowStartInput {
   tenant_id: string;
   cell_id: string;
+  correlation_id: string;
+  trace_id: string;
   application_id: string;
   workflow_version_id: string;
   graph_hash: string;
@@ -59,6 +61,8 @@ export class TemporalSequencingAdapter {
     const input: WorkflowStartInput = {
       tenant_id: ctx.tenant_id,
       cell_id: ctx.cell_id,
+      correlation_id: ctx.correlation_id,
+      trace_id: ctx.trace_id,
       application_id: applicationId,
       workflow_version_id: version.version_id,
       graph_hash: model.graph_hash,

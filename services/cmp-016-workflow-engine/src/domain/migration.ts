@@ -1,6 +1,6 @@
 import { Cmp016Error, invalid, reject } from '../errors.js';
 import { NODE_ID_RE, nodeIndex, type CanonicalWorkflowModel } from './model.js';
-import { atSafeBoundary, type Effect, type InstanceState } from './interpreter.js';
+import { atSafeBoundary, cloneState, type Effect, type InstanceState } from './interpreter.js';
 import type { ExecutableVersion } from './versioning.js';
 
 /**
@@ -94,7 +94,7 @@ export function migrateState(
   });
   return {
     state: {
-      ...structuredClone(state),
+      ...cloneState(state),
       workflow_version_id: to.version_id,
       graph_hash: to.model.graph_hash,
       tokens,

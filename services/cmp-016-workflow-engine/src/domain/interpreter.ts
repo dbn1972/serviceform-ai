@@ -68,6 +68,11 @@ export type ResultKind = 'RULE' | 'ACTIVITY' | 'PORT';
 
 const SEEN_SIGNAL_WINDOW = 256;
 
+/** JSON clone: state is plain data, and structuredClone is not guaranteed in the workflow sandbox. */
+export function cloneState(state: InstanceState): InstanceState {
+  return JSON.parse(JSON.stringify(state)) as InstanceState;
+}
+
 class Run {
   readonly state: InstanceState;
   readonly effects: Effect[] = [];
@@ -78,7 +83,7 @@ class Run {
     private readonly model: CanonicalWorkflowModel,
     state: InstanceState,
   ) {
-    this.state = structuredClone(state);
+    this.state = cloneState(state);
     this.byId = nodeIndex(model);
   }
 

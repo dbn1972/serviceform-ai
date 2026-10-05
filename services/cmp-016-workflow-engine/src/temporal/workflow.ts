@@ -59,6 +59,12 @@ export async function canonicalWorkflow(
 ): Promise<InstanceState> {
   let model = parseCanonicalModel(input.model);
   assertHashIntegrity(model);
+  if (
+    model.workflow_version_id !== input.workflow_version_id ||
+    model.graph_hash !== input.graph_hash
+  ) {
+    throw new Cmp016Error('SF-WF-001', [{ code: 'PINNED_VERSION_MISMATCH' }]);
+  }
   let step: Step = startInstance(model);
   for (;;) {
     for (const effect of step.effects) await host.dispatch(effect, input);
@@ -75,6 +81,13 @@ export async function canonicalWorkflow(
         model = target;
         step = migrated;
       } else {
+        if (
+          ev.type === 'COMMITTED' &&
+          (ev.signal.tenant_id !== input.tenant_id ||
+            ev.signal.application_id !== input.application_id)
+        ) {
+          throw new Cmp016Error('SF-TEN-002', [{ code: 'SIGNAL_SCOPE_MISMATCH' }]);
+        }
         step = apply(model, step.state, ev);
       }
     } catch (err) {
