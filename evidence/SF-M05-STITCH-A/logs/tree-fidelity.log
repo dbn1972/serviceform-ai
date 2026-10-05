@@ -1,0 +1,17 @@
+# Tree fidelity: stitch code head 2d06259aacd3a8d4abebe48d8b97de63ef952063 vs accepted heads (git object ids)
+services/cmp-015-application-case tree stitch=833df9108df93a4a79fb1706dec866890e19cbc3 head(2d68e37)=833df9108df93a4a79fb1706dec866890e19cbc3 MATCH
+services/cmp-016-workflow-engine tree stitch=a0dbc83e13f7a0a17849de91457b00ba594fb815 head(50f56af)=a0dbc83e13f7a0a17849de91457b00ba594fb815 MATCH
+services/cmp-017-work-queue-tasks tree stitch=6aa43295fc5a26ca5511620d24950ce2eb511bb1 head(8641c75)=6aa43295fc5a26ca5511620d24950ce2eb511bb1 MATCH
+services/cmp-029-sla-escalation tree stitch=20edf2c2957cfa8840311e32ee868c9346d2ca1e head(5c4d8ac)=20edf2c2957cfa8840311e32ee868c9346d2ca1e MATCH
+db/migrations/1759540150000_cmp-015-application-case.sql blob stitch=1a4b12f848a0dcc10b2948ce3eaacceb4766a0f5 head(2d68e37)=1a4b12f848a0dcc10b2948ce3eaacceb4766a0f5 MATCH
+db/migrations/1759540150001_cmp-015-outbox.sql blob stitch=4d6af8a7423a113ddb914067e28caddd130e1a55 head(2d68e37)=4d6af8a7423a113ddb914067e28caddd130e1a55 MATCH
+db/migrations/1759540160000_cmp-016-workflow-engine.sql blob stitch=d7cb511063797a54885b2a406187280471bc7a83 head(50f56af)=d7cb511063797a54885b2a406187280471bc7a83 MATCH
+db/migrations/1759540160001_cmp-016-outbox.sql blob stitch=ce95893ed0fd25ab6e39a6d003859e3a4e051df9 head(50f56af)=ce95893ed0fd25ab6e39a6d003859e3a4e051df9 MATCH
+db/migrations/1759540170000_cmp-017-work-queue-tasks.sql blob stitch=1d1fdfd5a9303e477aeaa755a2e76d18f86246ec head(8641c75)=1d1fdfd5a9303e477aeaa755a2e76d18f86246ec MATCH
+db/migrations/1759540170001_cmp-017-outbox.sql blob stitch=51c15d2d9b29b0f02cb105138b328f55e15e12e6 head(8641c75)=51c15d2d9b29b0f02cb105138b328f55e15e12e6 MATCH
+db/migrations/1759540400000_cmp-029-sla-escalation.sql blob stitch=e38c18d06465070c4e89b882d23992a57ba4d932 head(5c4d8ac)=e38c18d06465070c4e89b882d23992a57ba4d932 MATCH
+db/migrations/1759540400001_cmp-029-outbox.sql blob stitch=c3f6f17e3db7010f42096b5cedb4466e09696813 head(5c4d8ac)=c3f6f17e3db7010f42096b5cedb4466e09696813 MATCH
+# Paths changed vs base outside the four service trees, their migrations and pnpm-lock.yaml: 0
+# contracts/** + orchestrator/contracts-lock.yaml diff vs base: 0 files
+# .npmrc / pnpm-workspace.yaml / package.json diff vs base: 0 files
+# Builder evidence/handovers copied: 0

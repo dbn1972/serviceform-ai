@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="4.50582697">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-05T14:39:18.655Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.637711902">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; runs create -&gt; claim -&gt; unclaim -&gt; claim -&gt; complete with history, outbox, audit and policy_revision" time="0.111801332">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; a completed task cannot be reclaimed, reassigned, completed again or cancelled; row stays COMPLETED" time="0.022271156">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; exactly one of two concurrent claimants wins; the other gets a conflict" time="0.013265069">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; idempotent replay returns the stored response; a different body with the same key conflicts" time="0.009278137">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; wrong tenant: tenant B principals cannot see, list, or act on tenant A tasks (CROSS_TENANT_LEAKAGE=0)" time="0.019201721">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; unauthorized claim and reassignment are denied and audited; the row is unchanged" time="0.010195869">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; a named officer in published assignment metadata is rejected and nothing is stored" time="0.000821792">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-017 over PostgreSQL with real RLS and a least-privilege login &gt; reassignment by criteria returns a claimed task to the queue of the new role/org/jurisdiction scope" time="0.014853148">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T14:39:18.658Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="1.30559484">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-017 migrations on PostgreSQL &gt; creates sf_tasks tables, all FORCE ROW LEVEL SECURITY, owned by sf_migrator (not a runtime role)" time="0.010297231">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-017 migrations on PostgreSQL &gt; role sf_cmp017_rw is NOLOGIN, not superuser, no BYPASSRLS; runtime login has neither either" time="0.00147467">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-017 migrations on PostgreSQL &gt; PUBLIC holds nothing in sf_tasks; sf_app holds no DML on authoritative tables" time="0.004308241">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-017 migrations on PostgreSQL &gt; down then up is reversible and leaves the role in place" time="0.844525106">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-05T14:39:18.660Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="2.562520228">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="tenant isolation (FORCE RLS) for the component runtime login &gt; own-tenant DML succeeds; cross-tenant read/update/delete see nothing; cross-tenant insert fails" time="0.023261184">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="tenant isolation (FORCE RLS) for the component runtime login &gt; history, idempotency and outbox rows are tenant-bound too" time="0.004031367">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; another component login cannot SELECT/INSERT/UPDATE/DELETE CMP-017 tables" time="0.011922179">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; the CMP-017 login gains nothing beyond sf_app on any other component table" time="0.045751109">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; membership or SET ROLE into another component rw role is unavailable; no BYPASSRLS; not the owner" time="0.013599068">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database-enforced task invariants &gt; completed and cancelled/closed tasks are immutable and cannot be reclaimed or deleted" time="0.01747791">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database-enforced task invariants &gt; refuses illegal transitions, silent assignment change, version skips and identity edits" time="0.006270432">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database-enforced task invariants &gt; assignment is criteria only: person-like role codes and a named_officer column are impossible" time="0.001505533">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database-enforced task invariants &gt; task history is append-only and a second active task for a node is refused" time="0.004526785">
+        </testcase>
+    </testsuite>
+</testsuites>

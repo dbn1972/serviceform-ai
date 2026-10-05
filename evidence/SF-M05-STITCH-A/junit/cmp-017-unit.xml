@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="74" failures="0" errors="0" time="0.379515879">
+    <testsuite name="test/contract/boundaries.test.ts" timestamp="2026-10-05T14:38:50.408Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.014112833">
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT * FROM sf_workflow.instance" time="0.00185256">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: UPDATE sf_cases.application SET state = $1" time="0.000309468">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: INSERT INTO sf_audit.audit_ledger VALUES ($1)" time="0.000221048">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT 1 FROM sf_tenant_org.tenant" time="0.000217218">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: select * from SF_Docintel.intelligence_job" time="0.000182555">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT * FROM sf_tasks.human_task t JOIN sf_workflow.node n ON true" time="0.000171751">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; allows the component schema and shared session accessor only" time="0.000521141">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; source never names another schema, imports another component, a driver, or the network" time="0.002628588">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; migration references no foreign schema, grants nothing to PUBLIC, and no DML to sf_app" time="0.001026306">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="migration safety (ADR-0006, Constitution #6, #19) &gt; uses NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS and policies on current_tenant_id()" time="0.001531441">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="migration safety (ADR-0006, Constitution #6, #19) &gt; has no column that can hold a named officer in published assignment metadata" time="0.000482103">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="migration safety (ADR-0006, Constitution #6, #19) &gt; service tests and fixtures stay free of secrets and personal data" time="0.003424146">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-05T14:38:50.410Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.05617262">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-HUMAN-TASK (FROZEN, read-only) &gt; is cataloged FROZEN and owned by CMP-017" time="0.001836102">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-HUMAN-TASK (FROZEN, read-only) &gt; accepts the frozen valid example and refuses the named-officer example" time="0.001055348">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-HUMAN-TASK (FROZEN, read-only) &gt; every event emitted by every operation is a valid SF-CON-HUMAN-TASK instance" time="0.047952525">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI documents every handler route; AsyncAPI lists every emitted event" time="0.000673615">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation declarations validate and match the migration tables exactly (Constitution #24)" time="0.002822161">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; outbox migration is the frozen SF-CON-OUTBOX template with schema/component replacements only" time="0.000440935">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-05T14:38:50.410Z" hostname="cursor" tests="15" failures="0" errors="0" skipped="0" time="0.007242155">
+        <testcase classname="test/unit/domain.test.ts" name="state machine &gt; allows only the frozen lifecycle edges" time="0.001476081">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; accepts role + organisation/office + jurisdiction + service scope only" time="0.000320621">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key named_officer with NAMED_OFFICER_FORBIDDEN" time="0.000371461">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key officer_id with NAMED_OFFICER_FORBIDDEN" time="0.00031264">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key assignee with NAMED_OFFICER_FORBIDDEN" time="0.000141181">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key assigned_to_user with NAMED_OFFICER_FORBIDDEN" time="0.000167251">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key employee_code with NAMED_OFFICER_FORBIDDEN" time="0.000153329">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key claimed_principal_id with NAMED_OFFICER_FORBIDDEN" time="0.000137498">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key email with NAMED_OFFICER_FORBIDDEN" time="0.000397558">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects person-identifying key principal_id with NAMED_OFFICER_FORBIDDEN" time="0.000151585">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment metadata (Constitution #19) &gt; rejects unknown, null and malformed criteria" time="0.000404318">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment resolution &gt; matches on role, organisation, office and jurisdiction" time="0.000209094">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment resolution &gt; reports every failing dimension without personal data" time="0.000502644">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="assignment resolution &gt; requires service scope only when the task is scoped, and widens via owning-component ports" time="0.000281603">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request fingerprint &gt; is order-insensitive for objects and binds method and endpoint" time="0.000757191">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/handler.test.ts" timestamp="2026-10-05T14:38:50.412Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.091571778">
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; serves the lifecycle and every error body matches SF-CON-ERROR-RESPONSE" time="0.08586483">
+        </testcase>
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; exposes reassign and cancel routes" time="0.002040751">
+        </testcase>
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; refuses tenant-identifying headers before touching context or service" time="0.000713178">
+        </testcase>
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; rejects client tenant in the body, missing/invalid idempotency keys, unknown routes and bad ids" time="0.00081967">
+        </testcase>
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; requires an authenticated server-derived tenant context" time="0.000298274">
+        </testcase>
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; maps unexpected failures to a safe SF-SYS-001 without internals" time="0.000420511">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/lifecycle.test.ts" timestamp="2026-10-05T14:38:50.412Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.100266135">
+        <testcase classname="test/unit/lifecycle.test.ts" name="create &gt; creates an OPEN, unclaimed task with criteria only and emits event + audit via outbox" time="0.082124076">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="create &gt; refuses a second active task for the same application node" time="0.002057824">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="create &gt; rejects client-supplied tenant and extra fields" time="0.000579379">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="claim / unclaim / complete &gt; walks OPEN -&gt; CLAIMED -&gt; OPEN -&gt; CLAIMED -&gt; COMPLETED with history and runtime claim record" time="0.005198409">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="claim / unclaim / complete &gt; is idempotent: replaying a key returns the stored response without a second transition" time="0.001260233">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="claim / unclaim / complete &gt; lets a supervisor release another officer claim only through TASK_FORCE_UNCLAIM" time="0.001075894">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="claim / unclaim / complete &gt; sends role, organisation, jurisdiction and task state to OPA and records ADR-0005 policy_revision" time="0.000916448">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="reassign and cancel/close &gt; reassigns by criteria, clears the runtime claim and returns the task to OPEN" time="0.001188354">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="reassign and cancel/close &gt; rejects reassignment to identical criteria and to a named officer" time="0.001200661">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="reassign and cancel/close &gt; cancels/closes OPEN and CLAIMED tasks with an outcome code" time="0.000850235">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="availability &gt; lists only OPEN tasks the caller currently covers" time="0.002410029">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/negative.test.ts" timestamp="2026-10-05T14:38:50.413Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.101214951">
+        <testcase classname="test/unit/negative.test.ts" name="wrong tenant is denied and leaks nothing (CROSS_TENANT_LEAKAGE=0) &gt; hides, refuses and never mutates tenant A tasks for tenant B principals" time="0.082201764">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="wrong tenant is denied and leaks nothing (CROSS_TENANT_LEAKAGE=0) &gt; a tenant-null or non-contract authorization request fails closed before the PDP" time="0.002141618">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; denies, leaves the task OPEN, writes no history, and audits the denial with policy_revision" time="0.001567485">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; denies a principal outside the assignment even when OPA allows (assignment resolution)" time="0.002459263">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; an officer who lost the role mid-task is denied on the next action (ADR-0005)" time="0.002084337">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; only the claimant completes, even if OPA allows" time="0.000968718">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; a second officer cannot claim an already claimed task" time="0.000929403">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; fails closed when the PDP is unavailable or returns a malformed decision" time="0.000721849">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized claim is denied (OPA) &gt; a denial stands even when the audit write fails" time="0.000870517">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized reassignment is denied &gt; denies when OPA refuses the action" time="0.000627649">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="unauthorized reassignment is denied &gt; denies when OPA allows the source but refuses the target organisation" time="0.000716526">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="named officer in published assignment is rejected &gt; on create" time="0.000266559">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="named officer in published assignment is rejected &gt; on create top-level" time="0.000163077">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="named officer in published assignment is rejected &gt; persists nothing and never calls the PDP for a rejected template" time="0.000232369">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="completed or closed tasks cannot be reclaimed &gt; COMPLETED task refuses every further operation" time="0.001769363">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="completed or closed tasks cannot be reclaimed &gt; CANCELLED_CLOSED task refuses every further operation" time="0.001082705">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="completed or closed tasks cannot be reclaimed &gt; a stale decision made before a concurrent claim cannot overwrite it" time="0.000813047">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-repository.test.ts" timestamp="2026-10-05T14:38:50.414Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.008935407">
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; runs each unit in one transaction with transaction-local, server-derived session settings" time="0.002728972">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; rolls back, releases and maps failures without driver text" time="0.001423356">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; refuses SQL that names another component schema before it reaches the driver" time="0.000376721">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; executes every write statement against sf_tasks only, with tenant bound as $1" time="0.001354964">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; replays a stored idempotent response and rejects fingerprint mismatch" time="0.000735356">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; availability binds the principal scope arrays; a stale update raises a conflict; outbox keys by aggregate" time="0.000769372">
+        </testcase>
+        <testcase classname="test/unit/pg-repository.test.ts" name="PgTaskRepository &gt; row mappers normalise driver values" time="0.000452262">
+        </testcase>
+    </testsuite>
+</testsuites>

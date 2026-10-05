@@ -1,0 +1,168 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+2026-10-05T14:39:10.120Z [INFO] asset workflow-bundle-991ce94b3719767a61af.js 1.77 MiB [emitted] [immutable] (name: main)
+runtime modules 883 bytes 4 modules
+modules by path ../../node_modules/.pnpm/ 464 KiB
+  modules by path ../../node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporal...(truncated) 165 KiB 36 modules
+  modules by path ../../node_modules/.pnpm/@temporalio+workflow@1.24.0/node_modules/@tempor...(truncated) 223 KiB 29 modules
+  modules by path ../../node_modules/.pnpm/nexus-rpc@0.0.3/node_modules/nexus-rpc/lib/ 22.3 KiB 13 modules
+  + 2 modules
+modules by path ./src/ 52.8 KiB
+  modules by path ./src/domain/*.ts 40.6 KiB 6 modules
+  modules by path ./src/temporal/ 8.77 KiB
+    modules by path ./src/temporal/sdk/*.ts 4.63 KiB 2 modules
+    + 2 modules
+  ./src/errors.ts 3.43 KiB [built] [code generated]
+optional modules 30 bytes [optional]
+  __temporal_custom_payload_converter (ignored) 15 bytes [optional] [built] [code generated]
+  __temporal_custom_failure_converter (ignored) 15 bytes [optional] [built] [code generated]
+webpack 5.111.1 compiled successfully in 521 ms
+2026-10-05T14:39:10.128Z [INFO] Workflow bundle created { size: '1.77MB' }
+2026-10-05T14:39:10.315783Z  WARN temporalio_sdk_core::worker: Temporal Server 1.16.0 or newer is required to guarantee that the latest heartbeat details are preserved when an activity fails; the server did not advertise the activity_failure_include_heartbeat capability, so heartbeat details may be lost on failure
+2026-10-05T14:39:10.316Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'RUNNING'
+}
+2026-10-05T14:39:10.318Z [INFO] No Nexus services registered, not polling for Nexus tasks { sdkComponent: 'worker', taskQueue: 'sf-workflow-sdk-test' }
+2026-10-05T14:39:10.792Z [WARN] workflow event rejected {
+  sdkComponent: 'workflow',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:656d9353-46ba-4f3c-b9a0-3f102db9909b',
+  runId: '883bf64e-39ba-465a-8258-beeaefaf61dc',
+  workflowType: 'serviceformCanonicalWorkflow',
+  event: 'COMMITTED',
+  code: 'SF-WF-001',
+  detail: 'ADVANCE_BEFORE_DOMAIN_COMMIT'
+}
+2026-10-05T14:39:10.975Z [WARN] workflow event rejected {
+  sdkComponent: 'workflow',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:6c600fbe-90e7-4aa8-90c9-9710832c89c3',
+  runId: '9980c1fa-1d42-45ae-91bf-18af4bd0841f',
+  workflowType: 'serviceformCanonicalWorkflow',
+  event: 'COMMITTED',
+  code: 'SF-TEN-002',
+  detail: 'SIGNAL_SCOPE_MISMATCH'
+}
+2026-10-05T14:39:11.606Z [WARN] Activity failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  isLocal: false,
+  attempt: 1,
+  namespace: 'default',
+  taskToken: 'AAdkZWZhdWx0AE9zZi13ZjoxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTE6NmI4Njg4MWItMTNiYy00NjYxLTg4ODMtNTllZDJhNTk5MWRhACQ4MjVmMzk0MC0zZDg4LTRmZGEtYmM4Zi00OGQyZDdiNTBlNzYAAAAAAAAAEQAAAAE=',
+  activityId: '3',
+  activityType: 'createHumanTask',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:6b86881b-13bc-4661-8883-59ed2a5991da',
+  workflowRunId: '825f3940-3d88-4fda-bc8f-48d2d7b50e76',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: Error: CMP-017 temporarily unavailable
+      at Object.create (/workspace/services/cmp-016-workflow-engine/test/temporal/sdk-worker.int.test.ts:77:13)
+      at performEffect (/workspace/services/cmp-016-workflow-engine/src/temporal/activities.ts:49:30)
+      at createHumanTask (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/activities.ts:47:13)
+      at executeNextHandler (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/activity.js:102:54)
+      at Activity.execute (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/activity.js:104:26)
+      at /workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/activity.js:152:29
+      at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14)
+      at NativeConnection.withAbortSignal (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/connection.js:172:46)
+      at Client.withAbortSignal (/workspace/node_modules/.pnpm/@temporalio+client@1.24.0/node_modules/@temporalio/client/lib/base-client.js:65:38)
+      at Activity.executeWithClient (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/activity.js:151:33),
+  durationMs: 0
+}
+2026-10-05T14:39:12.710Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-bpmn-663e5d3c-b473-460a-ac0e-01a8fbffb456',
+  runId: '1e7ea108-a440-4fe8-bef7-7bdc67439c4e',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: MODEL_INVALID
+      at Function.nonRetryable (/workspace/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-10-05T14:39:12.719Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-engine-663e5d3c-b473-460a-ac0e-01a8fbffb456',
+  runId: '7619a1d1-a597-475e-b2fc-ccbfb16623aa',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: BPMN_RUNTIME_FORBIDDEN
+      at Function.nonRetryable (/workspace/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-10-05T14:39:12.750Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-officer-df21283b-73b5-492a-97ac-c32978025786',
+  runId: '395be57c-11b9-44f0-bcef-67fe958a37e0',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: NAMED_OFFICER_FORBIDDEN
+      at Function.nonRetryable (/workspace/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/workspace/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/workspace/node_modules/.pnpm/@temporalio+worker@1.24.0/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-10-05T14:39:12.753Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'STOPPING'
+}
+2026-10-05T14:39:12.753Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'DRAINING'
+}
+2026-10-05T14:39:12.757Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'DRAINED'
+}
+2026-10-05T14:39:12.757Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'STOPPED'
+}
+ ✓ test/temporal/sdk-worker.int.test.ts (12 tests) 6312ms
+   ✓ Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) (12)
+     ✓ activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key 1100ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  14:39:05
+   Duration  6.80s (tests 94%, import 4%, transform 2%)
+
+JUNIT report written to /workspace/evidence/SF-M05-STITCH-A/junit/cmp-016-temporal-sdk.xml

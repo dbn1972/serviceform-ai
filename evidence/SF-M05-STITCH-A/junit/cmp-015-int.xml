@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="27" failures="0" errors="0" time="6.490203526">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-05T14:38:59.462Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="2.015374404">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-015 migrations (isolated database; up -&gt; down -&gt; up) &gt; applies on top of the platform baseline + shared DB contracts only (no cross-component dependency)" time="0.465003784">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-015 migrations (isolated database; up -&gt; down -&gt; up) &gt; rolls back both CMP-015 migrations cleanly and keeps the NOLOGIN role" time="0.38285745">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-015 migrations (isolated database; up -&gt; down -&gt; up) &gt; re-applies after rollback" time="0.825005745">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-05T14:38:59.464Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.58781007">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; runtime login is not SUPERUSER, not BYPASSRLS, owns no table and cannot create in the schema" time="0.011883659">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; sf_cmp015_rw is NOLOGIN, NOSUPERUSER, NOBYPASSRLS; every TENANT_SCOPED table has FORCE RLS" time="0.007913259">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; own authorized DML succeeds under tenant context" time="0.006340551">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; NEGATIVE: wrong-tenant rows are invisible, cross-tenant insert fails, no context reads nothing" time="0.005824341">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; NEGATIVE: a peer component login cannot SELECT/INSERT/UPDATE/DELETE CMP-015 tables" time="0.014815359">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; NEGATIVE: sf_app alone holds no DML on CMP-015 authoritative tables" time="0.007830247">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 privilege boundary (ADR-0006 condition 10) &gt; NEGATIVE: runtime cannot SET ROLE into another component role nor TRUNCATE / DELETE cases" time="0.004338045">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 database-enforced state machine (defence in depth) &gt; NEGATIVE: WITHDRAWAL_REQUESTED / CANCELLATION_REQUESTED are refused as a case state by the CHECK" time="0.011801109">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 database-enforced state machine (defence in depth) &gt; NEGATIVE: a case can only be created as DRAFT v1; illegal transitions and version skips are refused" time="0.006708753">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 database-enforced state machine (defence in depth) &gt; NEGATIVE: WITHDRAWN without a committed, consumed request construct is refused by the trigger" time="0.014370256">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-015 database-enforced state machine (defence in depth) &gt; NEGATIVE: pinned versions and identity are immutable; transitions are append-only" time="0.013461706">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/service-flow.int.test.ts" timestamp="2026-10-05T14:38:59.466Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="3.887019052">
+        <testcase classname="test/integration/service-flow.int.test.ts" name="INT-004 submission hot path over PostgreSQL (state + outbox in one short transaction) &gt; golden path DRAFT -&gt; CLOSED: one transition, one domain event and one audit row per step" time="0.146801107">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="INT-004 submission hot path over PostgreSQL (state + outbox in one short transaction) &gt; NEGATIVE: outbox failure rolls the state change back (atomic state + outbox)" time="0.07759531">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="INT-004 submission hot path over PostgreSQL (state + outbox in one short transaction) &gt; NEGATIVE: network I/O inside the open transaction is refused and rolled back" time="0.073800575">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="INT-004 submission hot path over PostgreSQL (state + outbox in one short transaction) &gt; NEGATIVE: Temporal advance before domain commit is impossible (commit failure =&gt; no signal, no state)" time="0.108153601">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="optimistic concurrency and idempotency over PostgreSQL &gt; NEGATIVE: stale expected_state / expected_version rejected; DB unchanged" time="0.047706703">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="optimistic concurrency and idempotency over PostgreSQL &gt; NEGATIVE: two concurrent commands on the same version =&gt; exactly one commits, the other is SF-APP-001" time="0.058096919">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="optimistic concurrency and idempotency over PostgreSQL &gt; NEGATIVE: duplicate idempotency key (sequential and concurrent) is safe: one transition, same response" time="0.074937657">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="INT-011 tenant isolation over PostgreSQL (CROSS_TENANT_LEAKAGE=0) &gt; NEGATIVE: wrong tenant is denied on every operation and observes zero rows" time="0.086735299">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="policy-gated withdrawal / cancellation over PostgreSQL (ADR-0003) &gt; NEGATIVE: WITHDRAWN / CANCELLED without a committed request are rejected; request registration leaves state" time="0.124991078">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="policy-gated withdrawal / cancellation over PostgreSQL (ADR-0003) &gt; commits WITHDRAWN with a committed request + permitting policy; the request is consumed exactly once" time="0.126800386">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="policy-gated withdrawal / cancellation over PostgreSQL (ADR-0003) &gt; NEGATIVE: policy deny keeps the case and the committed request untouched" time="0.09706161">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="AI decision boundary and ADR-0005 over PostgreSQL &gt; NEGATIVE: AI cannot final-approve/reject; decision rows record HUMAN officer only" time="0.098826311">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="AI decision boundary and ADR-0005 over PostgreSQL &gt; records the runtime OPA policy_revision per action while the pin graph is unchanged" time="0.050152551">
+        </testcase>
+    </testsuite>
+</testsuites>

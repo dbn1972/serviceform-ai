@@ -1,0 +1,61 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/integration/db-isolation.int.test.ts (18 tests) 3409ms
+ ❯ test/integration/migration.int.test.ts (3 tests | 2 failed) 1179ms
+   ❯ CMP-016 migrations are reversible and ordered (3)
+     × applies both CMP-016 migrations as the tail of the chain 24ms
+     × down 2 removes sf_workflow completely and up re-applies cleanly 365ms
+     ✓ PUBLIC holds no privilege on sf_workflow tables 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/integration/migration.int.test.ts > CMP-016 migrations are reversible and ordered > applies both CMP-016 migrations as the tail of the chain
+AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]
+
+- Expected
++ Received
+
+  [
+-   "1759540160000_cmp-016-workflow-engine",
+-   "1759540160001_cmp-016-outbox",
++   "1759540400000_cmp-029-sla-escalation",
++   "1759540400001_cmp-029-outbox",
+  ]
+
+ ❯ test/integration/migration.int.test.ts:36:41
+     34| describe('CMP-016 migrations are reversible and ordered', () => {
+     35|   it('applies both CMP-016 migrations as the tail of the chain', async…
+     36|     expect((await applied()).slice(-2)).toEqual(MIGRATIONS);
+       |                                         ^
+     37|     expect(await schemaExists()).toBe(true);
+     38|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/integration/migration.int.test.ts > CMP-016 migrations are reversible and ordered > down 2 removes sf_workflow completely and up re-applies cleanly
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/integration/migration.int.test.ts:42:34
+     40|   it('down 2 removes sf_workflow completely and up re-applies cleanly'…
+     41|     migrate('down', 2);
+     42|     expect(await schemaExists()).toBe(false);
+       |                                  ^
+     43|     expect(await applied()).not.toContain(MIGRATIONS[0]);
+     44|     const role = await admin.query(`SELECT 1 FROM pg_roles WHERE rolna…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 19 passed (21)
+   Start at  14:39:00
+   Duration  4.95s (tests 96%, transform 3%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M05-STITCH-A/junit/cmp-016-int.xml
