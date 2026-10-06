@@ -1,14 +1,18 @@
-# SF-M05-STITCH-A READY — control-plane evidence
+# SF-M05-STITCH-A READY — execution-base refresh evidence
 
-State: **READY_CONTROL_PLANE**. STITCH-A execution **not started** (`stitch_execution_started: false`). Not CERTIFIED. G4 NOT ISSUED. G6 false.
+State: **READY_CONTROL_PLANE** (execution-base refresh). STITCH-A execution **not started** (`stitch_execution_started: false`). Not CERTIFIED. G4 NOT ISSUED. G6 false.
 
-## Base
+## Base refresh
 
-- Authoritative `origin/main` at start: `20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f` (merge of scope-gate PR #92). Verified before branching.
-- `actual_stitch_base` = `20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f`. `historical_planning_base` = `b286ed95…` (labelled, not executable).
-- Main CI at base: ci / security / developer-platform = success.
+- Authoritative `origin/main` at start: `f9f986585db2662474d760fdbf4fb8cf8e32fc4c` (merge of READY PR #93). Verified before branching (`SHA_GUARD_PASS`).
+- `actual_stitch_base` refreshed **FROM** `20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f` **TO** `f9f986585db2662474d760fdbf4fb8cf8e32fc4c`.
+- `base_commit` reconstructs exactly: prefix `f9f98658` + suffix `5db2662474d760fdbf4fb8cf8e32fc4c` → `f9f986585db2662474d760fdbf4fb8cf8e32fc4c`.
+- Exactly **ONE** executable base: `actual_stitch_base` = `f9f98658…`.
+- `ready_control_plane_base`: `20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f` — note: base used to prepare PR #93 before READY record merged.
+- `historical_planning_base` = `b286ed956755b936f73bc2856c9db2c68d8ca64c` (labelled historical only; NOT executable).
+- Stop condition `start from any base other than actual_stitch_base` unchanged; after this refresh it protects `f9f98658…`.
 
-## Frozen inputs (exact PR heads verified via GitHub)
+## Frozen inputs (unchanged; exact four)
 
 | Envelope | CMP | PR | Head |
 |---|---|---|---|
@@ -17,36 +21,29 @@ State: **READY_CONTROL_PLANE**. STITCH-A execution **not started** (`stitch_exec
 | SF-M05-003 | CMP-017 | #88 | `8641c756b539492e3f90d2b04c8a9eb1f2192175` |
 | SF-M05-004 | CMP-029 | #87 | `5c4d8ac700364b8b01fa10a44f8a1b049b3da825` |
 
-Each head touches only its own `services/cmp-NNN-*/**`, `db/migrations/*_cmp-NNN-*.sql`, `evidence/SF-M05-00N/**` and own handover. None touches `pnpm-lock.yaml`, `contracts/**` or `apps/**`. Builder PRs are not merged.
+Builder PRs remain OPEN/unmerged. Stale PR #91 (`reusable: false`) not reused; no replacement stitch branch.
+
+## Envelope flags (unchanged)
+
+`planning_only: false`, `implementation_authorized: true`, `dispatched: false`, `orchestration_task_state: READY`, `state: READY`. `self_certified` / `certified` / `release_certified` / `g4` / `g6` / `ccr_required` / `frozen_contracts_altered` all false; `not_certified: true`. `contract_locks`: 19.
 
 ## Contracts
 
-19/19 FROZEN, 19/19 hash MATCH (`logs/contract-hash-match.log`). Envelope `contract_locks` lists exactly the 19 lock IDs. `orchestrator/contracts-lock.yaml` and `contracts/**` unchanged. CCR not required.
+19/19 FROZEN, 19/19 hash MATCH. `orchestrator/contracts-lock.yaml` and `contracts/**` unchanged. CCR false.
 
-## Stale #91
+## Scope of this PR
 
-PR #91 head `2135940`, base `6e9f0481` (predates #92). `reusable: false`. Not touched.
-
-## Lockfile governance
-
-Root `pnpm-lock.yaml` authorized for STITCH-A by merged #92: `agent_role: integration_agent`, exact `pnpm-lock.yaml` entry in `allowed_write_paths`, not read-only. `check_scope.py` unchanged. No branch-name privilege. `.npmrc` and `pnpm-workspace.yaml` added to the envelope's `read_only_paths` (workspace already globs `services/*`).
+Allowed writes only: `orchestrator/tasks/SF-M05-STITCH-A.yaml`, `orchestrator/handovers/SF-M05-STITCH-A.yaml`, `evidence/SF-M05-STITCH-A-READY/**`. No composition, lockfile, product, migrations, or builder changes. Wave B OFF. STITCH-A execution OFF.
 
 ## Validation (this branch)
 
 | Check | Result | Log |
 |---|---|---|
+| Task == handover (byte-for-byte) | PASS | `logs/envelope-assertions.log` |
+| `actual_stitch_base` / `base_commit` reconstruct | `f9f986585db2662474d760fdbf4fb8cf8e32fc4c` | `logs/envelope-assertions.log` |
 | `contracts_lock_gate.py` | PASS (19 FROZEN, 0 errors) | `logs/contracts-lock-gate.log` |
 | `run_all.py` | 10/10 gates passed | `logs/run-all.log` |
 | `pytest scripts/gates/tests` | 30 passed | `logs/pytest-gates.log` |
-| `check_scope.py` five cases vs STITCH-A envelope | 5/5 as expected (lockfile ALLOW; Wave A trees ALLOW; contracts/lock REFUSE; apps/Wave B REFUSE; nested lockfile/gates/supply-chain REFUSE) | `logs/check-scope-five-cases.log` |
-| Task/handover assertions (READY, authorized true, dispatched false, 19 locks, 4 inputs, exact base, mirror) | PASS | `logs/envelope-assertions.log` |
-
-Changed paths: `orchestrator/tasks/SF-M05-STITCH-A.yaml`, `orchestrator/handovers/SF-M05-STITCH-A.yaml`, `orchestrator/dispatch/M05-ACTIVATION.md`, `docs/planning/M05-ENVELOPES.md`, `evidence/SF-M05-STITCH-A-READY/**`. No `contracts/**`, product, `apps/**` or `pnpm-lock.yaml` changes.
-
-## Carry-forward for the later STITCH-A run (not resolved here)
-
-- CMP-016 declares six `@temporalio/*` 1.24.0 pins that are absent from `pnpm-lock.yaml` at base, so admission needs new resolutions for exactly those builder-declared pins.
-- SF-M05-002 handover: existing locked `pg-cloudflare@1.4.1` and `@next/swc-*` fail `minimumReleaseAge` on non-frozen resolution. Resolve without weakening policy, or STOP.
-- SF-M05-002 handover: coordinate CMP-016 migration repoint with the CMP-015 pin graph (SF-CON-VERSION-PINNING).
+| Contract hash match | 19/19 MATCH | `logs/contract-hash-match.log` |
 
 Recommended gate: none. Agent cannot self-certify.

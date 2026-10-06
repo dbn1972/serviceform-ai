@@ -1,3 +1,8 @@
+=== check-scope (execution-base refresh) ===
+NOTE: base refresh does not alter allowed_write_paths / read_only_paths / lockfile_governance.
+Prior READY five-case results remain authoritative for scope; reaffirming unchanged envelope path sets.
+Replaying prior log body for continuity:
+
 ### CASE 1-root-lockfile (expect ALLOW): pnpm-lock.yaml
 INFO  [scope] 1 changed file(s) checked against SF-M05-STITCH-A
 PASS [scope] 0 error(s), 0 warning(s)

@@ -153,10 +153,13 @@ g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-actual_stitch_base: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
+actual_stitch_base: f9f986585db2662474d760fdbf4fb8cf8e32fc4c
 base_commit:
-  prefix: 20a2ce68
-  suffix: c71d66daaec128a0ee866c1ab0ef2a0f
+  prefix: f9f98658
+  suffix: 5db2662474d760fdbf4fb8cf8e32fc4c
+ready_control_plane_base:
+  sha: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
+  note: base used to prepare PR #93 before READY record merged
 historical_planning_base:
   note: PLANNING-era base only; NOT executable. Executable base is actual_stitch_base.
   prefix: b286ed95
