@@ -1,0 +1,61 @@
+== orchestrator/tasks/SF-M05-STITCH-A.yaml
+PASS planning_only == False
+PASS implementation_authorized == True
+PASS dispatched == False
+PASS orchestration_task_state == 'READY'
+PASS state == 'READY'
+PASS self_certified == False
+PASS not_certified == True
+PASS certified == False
+PASS release_certified == False
+PASS g6 == False
+PASS ccr_required == False
+PASS frozen_contracts_altered == False
+PASS wave_eligible_now == False
+PASS builders_dispatched_this_envelope == False
+PASS actual_stitch_base == '20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f'
+PASS agent_role == 'integration_agent'
+PASS base_commit split == actual_stitch_base
+PASS historical_planning_base labelled b286ed95 (non-executable)
+PASS frozen_inputs exact 4
+PASS depends_on references all 4 SHAs
+PASS contract_locks exact 19 (ordered)
+PASS pnpm-lock.yaml exact in allowed_write_paths
+PASS contracts/** + contracts-lock read-only
+PASS stitch_rule must/must_not/semantic_conflict
+PASS lockfile_governance scope_gate_pr 92 / no branch privilege / check_scope unmodified
+PASS stale #91 reusable false
+PASS no candidate/executed keys
+PASS no banned state text
+== orchestrator/handovers/SF-M05-STITCH-A.yaml
+PASS planning_only == False
+PASS implementation_authorized == True
+PASS dispatched == False
+PASS orchestration_task_state == 'READY'
+PASS state == 'READY'
+PASS self_certified == False
+PASS not_certified == True
+PASS certified == False
+PASS release_certified == False
+PASS g6 == False
+PASS ccr_required == False
+PASS frozen_contracts_altered == False
+PASS wave_eligible_now == False
+PASS builders_dispatched_this_envelope == False
+PASS actual_stitch_base == '20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f'
+PASS agent_role == 'integration_agent'
+PASS base_commit split == actual_stitch_base
+PASS historical_planning_base labelled b286ed95 (non-executable)
+PASS frozen_inputs exact 4
+PASS depends_on references all 4 SHAs
+PASS contract_locks exact 19 (ordered)
+PASS pnpm-lock.yaml exact in allowed_write_paths
+PASS contracts/** + contracts-lock read-only
+PASS stitch_rule must/must_not/semantic_conflict
+PASS lockfile_governance scope_gate_pr 92 / no branch privilege / check_scope unmodified
+PASS stale #91 reusable false
+PASS no candidate/executed keys
+PASS no banned state text
+PASS handover mirrors task byte-for-byte
+RESULT PASS failures=0
+exit=0

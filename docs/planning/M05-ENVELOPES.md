@@ -1,23 +1,35 @@
-# M05 envelope summary (Wave A READY; others PLANNING)
+# M05 envelope summary (Wave A inputs accepted; STITCH-A READY; others PLANNING)
 
-Wave A `SF-M05-001` … `SF-M05-004`: `planning_only: false`. `implementation_authorized: true`. `state: READY`. `wave_eligible_now: true`. `dispatched: false`.  
+Wave A `SF-M05-001` … `SF-M05-004`: builders **COMPLETE**; exact heads **accepted as immutable inputs** for STITCH-A (`frozen_inputs` below). Builder PRs #87–#90 stay draft and are **not merged**.  
 CG-001 handover: `state: FROZEN_ON_MAIN`. `repository_freeze_effective: true`. Original 13 **MATCH**. Lock **19/19 FROZEN**.  
-STITCH-A, Wave B `005+`, `009`, INT, SEC, EVD remain **PLANNING** / not eligible / not dispatched.  
+SF-M05-STITCH-A: `planning_only: false`. `implementation_authorized: true`. `state: READY`. `wave_eligible_now: false`. `dispatched: false`. `actual_stitch_base: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f`. Execution **NOT DISPATCHED**.  
+Wave B `005+`, `009`, INT, SEC, EVD remain **PLANNING** / not eligible / not dispatched. Do **not** promote Wave B.  
 `builders_dispatched_this_envelope: false`. `self_certified: false`. `certified: false`. `release_certified: false`. `g4: false`. `g6: false`.
 
 Machine-readable copies: `orchestrator/handovers/SF-M05-*.yaml` and `orchestrator/tasks/` mirrors. Plan: `docs/planning/M05-PLAN.md`. Locks: `orchestrator/dispatch/M05-SERIAL-LOCKS.md`. Dispatch: `orchestrator/dispatch/DISPATCH-PLAN-M05-WAVE-A.md`.
 
 ## Normative topology (wording)
 
-PLANNING → SF-M05-CG-001 freeze (**SATISFIED** on `origin/main` prefix `ae6c21e1`) → Wave A `001∥002∥003∥004` (**READY GRANTED**; spawn pending activation merge) → STITCH-A (**OFF**) → Wave B `005∥006∥007∥008` (**OFF**) → STITCH-B → `009` → `INT∥SEC` → EVD recommend → human G4.
+PLANNING → SF-M05-CG-001 freeze (**SATISFIED** on `origin/main` prefix `ae6c21e1`) → Wave A `001∥002∥003∥004` (**COMPLETE**; immutable inputs accepted) → STITCH-A (**READY**; not dispatched) → Wave B `005∥006∥007∥008` (**OFF**) → STITCH-B → `009` → `INT∥SEC` → EVD recommend → human G4.
 
-Wave A is **READY** only. STITCH-A / 005+ / INT / SEC / EVD are **not** promoted.
+STITCH-A is **READY** only (control plane). 005+ / 009 / INT / SEC / EVD are **not** promoted.
+
+## STITCH-A frozen inputs (exact immutable heads)
+
+| Envelope | CMP | PR (draft, not merged) | `frozen_inputs` SHA |
+|---|---|---|---|
+| SF-M05-001 | CMP-015 | #90 | `2d68e37c3e01d78129f1604b02fe98bae4048489` |
+| SF-M05-002 | CMP-016 | #89 | `9249ecb7ec2c3e33c0aff139c1496cf7b80c7ce9` |
+| SF-M05-003 | CMP-017 | #88 | `8641c756b539492e3f90d2b04c8a9eb1f2192175` |
+| SF-M05-004 | CMP-029 | #87 | `5c4d8ac700364b8b01fa10a44f8a1b049b3da825` |
+
+Executable base `actual_stitch_base` = `20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f` (merge of scope-gate #92, which authorizes the root `pnpm-lock.yaml` for `integration_agent` envelopes listing it exactly). `b286ed95` is `historical_planning_base` only. Stale #91 (`2135940`) is not reusable. Contract locks: all 19 FROZEN IDs.
 
 ## Sequencing
 
 - SF-M05-CG-001 freeze is on `origin/main` (**LOCK-2 SATISFIED**). Identify/freeze of **NEW** M05 contracts is complete. CCR+STOP if any of the existing 13 frozen shared contracts or the six M05 hashes must change.
-- SF-M05-001 … 004 after CG-001 freeze on `main` (LOCK-3). Parallel; **non-overlapping writes** (table below). READY now; **not dispatched**.
-- SF-M05-STITCH-A after 001–004 immutable heads (Wave A service/migration paths + `pnpm-lock.yaml`; mechanical/format/lockfile only). **Not READY.**
+- SF-M05-001 … 004 after CG-001 freeze on `main` (LOCK-3). Parallel; **non-overlapping writes** (table below). **COMPLETE**; immutable heads accepted.
+- SF-M05-STITCH-A after 001–004 immutable heads (Wave A service/migration paths + `pnpm-lock.yaml`; mechanical/format/lockfile only). **READY**; `implementation_authorized: true`; `dispatched: false`.
 - SF-M05-005 … 008 after STITCH-A on `origin/main` (LOCK-5). Parallel; non-overlapping writes. **Not READY.**
 - SF-M05-STITCH-B after 005–008 immutable heads (Wave B service/migration paths + `pnpm-lock.yaml`; mechanical only).
 - **Hard serial host:** SF-M05-009 after STITCH-B; single writer `apps/api/src/app.ts`; additive `composition/m05.ts`; preserve M01–M04 mounts.
@@ -31,10 +43,10 @@ Concurrent Wave A writers share **no** write prefix. CMP tokens in migration glo
 
 | Envelope | `allowed_write_paths` (product) | Concurrent with | State |
 |---|---|---|---|
-| SF-M05-001 | `services/cmp-015-application-case/**`, `db/migrations/*_cmp-015-*.sql` | 002, 003, 004 | **READY** |
-| SF-M05-002 | `services/cmp-016-workflow-engine/**`, `db/migrations/*_cmp-016-*.sql` | 001, 003, 004 | **READY** |
-| SF-M05-003 | `services/cmp-017-work-queue-tasks/**`, `db/migrations/*_cmp-017-*.sql` | 001, 002, 004 | **READY** |
-| SF-M05-004 | `services/cmp-029-sla-escalation/**`, `db/migrations/*_cmp-029-*.sql` | 001, 002, 003 | **READY** |
+| SF-M05-001 | `services/cmp-015-application-case/**`, `db/migrations/*_cmp-015-*.sql` | 002, 003, 004 | **COMPLETE** (immutable input accepted) |
+| SF-M05-002 | `services/cmp-016-workflow-engine/**`, `db/migrations/*_cmp-016-*.sql` | 001, 003, 004 | **COMPLETE** (immutable input accepted) |
+| SF-M05-003 | `services/cmp-017-work-queue-tasks/**`, `db/migrations/*_cmp-017-*.sql` | 001, 002, 004 | **COMPLETE** (immutable input accepted) |
+| SF-M05-004 | `services/cmp-029-sla-escalation/**`, `db/migrations/*_cmp-029-*.sql` | 001, 002, 003 | **COMPLETE** (immutable input accepted) |
 
 Overlap check: `cmp-015` ∩ `cmp-016` ∩ `cmp-017` ∩ `cmp-029` = empty. No shared `apps/**`, `contracts/**`, or `pnpm-lock.yaml`. Mandatory rules preserved: Temporal never authoritative case state; ADR-0003/0005; no named officer; BPMN import/export only; SLA no case mutation; no M06 providers.
 
@@ -54,11 +66,11 @@ STITCH-A may rewrite Wave A trees only **after** 001–004 are immutable (not co
 | ID | CMP / purpose | Writes | Wave / lock | This package |
 |---|---|---|---|---|
 | SF-M05-CG-001 | NEW M05 contract freeze (done on main) | Freeze already on main; handover reconciled `FROZEN_ON_MAIN`. `contracts/shared/**` READ-ONLY. | LOCK-2 SATISFIED | handover only |
-| SF-M05-001 | CMP-015 Case | `services/cmp-015-application-case/**`, `db/migrations/*_cmp-015-*.sql` | A / LOCK-3 | **READY** |
-| SF-M05-002 | CMP-016 Workflow | `services/cmp-016-workflow-engine/**`, `db/migrations/*_cmp-016-*.sql` | A / LOCK-3 | **READY** |
-| SF-M05-003 | CMP-017 Human Task | `services/cmp-017-work-queue-tasks/**`, `db/migrations/*_cmp-017-*.sql` | A / LOCK-3 | **READY** |
-| SF-M05-004 | CMP-029 SLA | `services/cmp-029-sla-escalation/**`, `db/migrations/*_cmp-029-*.sql` | A / LOCK-3 | **READY** |
-| SF-M05-STITCH-A | Wave A mechanical stitch | Wave A service/migration paths + `pnpm-lock.yaml` | LOCK-4 | **OFF** |
+| SF-M05-001 | CMP-015 Case | `services/cmp-015-application-case/**`, `db/migrations/*_cmp-015-*.sql` | A / LOCK-3 | **COMPLETE** (immutable input accepted) |
+| SF-M05-002 | CMP-016 Workflow | `services/cmp-016-workflow-engine/**`, `db/migrations/*_cmp-016-*.sql` | A / LOCK-3 | **COMPLETE** (immutable input accepted) |
+| SF-M05-003 | CMP-017 Human Task | `services/cmp-017-work-queue-tasks/**`, `db/migrations/*_cmp-017-*.sql` | A / LOCK-3 | **COMPLETE** (immutable input accepted) |
+| SF-M05-004 | CMP-029 SLA | `services/cmp-029-sla-escalation/**`, `db/migrations/*_cmp-029-*.sql` | A / LOCK-3 | **COMPLETE** (immutable input accepted) |
+| SF-M05-STITCH-A | Wave A mechanical stitch | Wave A service/migration paths + `pnpm-lock.yaml` | LOCK-4 | **READY** (not dispatched) |
 | SF-M05-005 | CMP-018 Inspection | `services/cmp-018-inspection-verification/**`, `db/migrations/*_cmp-018-*.sql` | B / LOCK-5 | **OFF** |
 | SF-M05-006 | CMP-019 Deficiency | `services/cmp-019-deficiency/**`, `db/migrations/*_cmp-019-*.sql` | B / LOCK-5 | **OFF** |
 | SF-M05-007 | CMP-027 Grievance | `services/cmp-027-grievance-feedback/**`, `db/migrations/*_cmp-027-*.sql` | B / LOCK-5 | **OFF** |
