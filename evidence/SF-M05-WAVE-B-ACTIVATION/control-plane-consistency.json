@@ -1,0 +1,528 @@
+{
+  "result": "PASS",
+  "errors": [],
+  "envelopes": {
+    "SF-M05-005": {
+      "task_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-018-inspection-verification/**",
+          "db/migrations/*_cmp-018-*.sql",
+          "evidence/SF-M05-005/**",
+          "orchestrator/handovers/SF-M05-005.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "handover_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-018-inspection-verification/**",
+          "db/migrations/*_cmp-018-*.sql",
+          "evidence/SF-M05-005/**",
+          "orchestrator/handovers/SF-M05-005.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "match": true,
+      "byte_identical": true
+    },
+    "SF-M05-006": {
+      "task_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-019-deficiency/**",
+          "db/migrations/*_cmp-019-*.sql",
+          "evidence/SF-M05-006/**",
+          "orchestrator/handovers/SF-M05-006.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "handover_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-019-deficiency/**",
+          "db/migrations/*_cmp-019-*.sql",
+          "evidence/SF-M05-006/**",
+          "orchestrator/handovers/SF-M05-006.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "match": true,
+      "byte_identical": true
+    },
+    "SF-M05-007": {
+      "task_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-027-grievance-feedback/**",
+          "db/migrations/*_cmp-027-*.sql",
+          "evidence/SF-M05-007/**",
+          "orchestrator/handovers/SF-M05-007.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "handover_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-027-grievance-feedback/**",
+          "db/migrations/*_cmp-027-*.sql",
+          "evidence/SF-M05-007/**",
+          "orchestrator/handovers/SF-M05-007.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "match": true,
+      "byte_identical": true
+    },
+    "SF-M05-008": {
+      "task_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-028-appeal-review/**",
+          "db/migrations/*_cmp-028-*.sql",
+          "evidence/SF-M05-008/**",
+          "orchestrator/handovers/SF-M05-008.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "handover_keys": {
+        "state": "READY",
+        "orchestration_task_state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "builders_dispatched_this_envelope": false,
+        "allowed_write_paths": [
+          "services/cmp-028-appeal-review/**",
+          "db/migrations/*_cmp-028-*.sql",
+          "evidence/SF-M05-008/**",
+          "orchestrator/handovers/SF-M05-008.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-COMMON",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING"
+        ],
+        "serial_after": [
+          "SF-M05-STITCH-A"
+        ],
+        "ccr_required": false,
+        "g4": false,
+        "g6": false,
+        "certified": false,
+        "not_certified": true,
+        "self_certified": false,
+        "release_certified": false,
+        "frozen_contracts_altered": false,
+        "dispatch_base_policy": {
+          "source": "HUMAN_WAVE_B_DISPATCH_AUTHORIZATION",
+          "require_exact_sha": true,
+          "must_include_wave_b_ready_record": true,
+          "dispatch_base": null,
+          "dispatch_authorized": false
+        },
+        "ready_record_parent": {
+          "sha": "905afad22b2112182ff17095272c7c34de4726a9",
+          "note": "STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record"
+        }
+      },
+      "match": true,
+      "byte_identical": true
+    }
+  },
+  "held_off": {
+    "SF-M05-STITCH-B": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "dispatched": false,
+      "wave_eligible_now": false
+    },
+    "SF-M05-009": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "dispatched": false,
+      "wave_eligible_now": false
+    },
+    "SF-M05-INT": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "dispatched": false,
+      "wave_eligible_now": false
+    },
+    "SF-M05-SEC": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "dispatched": false,
+      "wave_eligible_now": false
+    },
+    "SF-M05-EVD": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "dispatched": false,
+      "wave_eligible_now": false
+    }
+  },
+  "builders_spawned": "NONE",
+  "stitch_b": "OFF",
+  "g4": false,
+  "certified": false,
+  "g6": false
+}

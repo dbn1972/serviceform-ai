@@ -1,0 +1,4 @@
+format/lint on this slice: changed files are all under prettierignore (*.yaml, *.md, orchestrator/, docs/, evidence/).
+Local pnpm format:check / pnpm lint: node_modules absent; not executed as a product check.
+CI quality still runs format:check + eslint on non-ignored sources; this PR does not touch those sources.
+result=SKIPPED_IGNORED_PATHS
