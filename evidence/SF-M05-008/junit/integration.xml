@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="3.403731552">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-06T12:25:02.156Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.723992886">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-028 API on PostgreSQL &gt; files an appeal, records admissibility, and never leaks across tenants" time="0.094930667">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-06T12:25:02.157Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="1.946438693">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-028 migrations on PostgreSQL &gt; creates sf_appeal tables, all FORCE RLS, owned by sf_migrator" time="0.010064602">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-028 migrations on PostgreSQL &gt; role sf_cmp028_rw is NOLOGIN, not superuser, no BYPASSRLS" time="0.001342367">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-028 migrations on PostgreSQL &gt; PUBLIC holds nothing; sf_app holds no DML on authoritative tables" time="0.001682666">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-028 migrations on PostgreSQL &gt; down then up is reversible and leaves the role in place" time="1.328725535">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-06T12:25:02.158Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.733299973">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="tenant isolation (FORCE RLS) &gt; own-tenant DML succeeds; cross-tenant is invisible; insert as other tenant fails" time="0.020752958">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; another component login cannot DML CMP-028 tables" time="0.011275528">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; CMP-028 login gains nothing beyond sf_app on other component tables" time="0.015325185">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="component privilege boundary (ADR-0006) &gt; no SET ROLE into peer rw; no BYPASSRLS; not owner" time="0.009390472">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database-enforced appeal invariants &gt; terminal appeals are immutable; history is insert-only; no named_officer column" time="0.011908475">
+        </testcase>
+    </testsuite>
+</testsuites>

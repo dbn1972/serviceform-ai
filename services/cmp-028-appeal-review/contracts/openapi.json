@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-028 Appeal / Review",
+    "version": "0.1.0",
+    "description": "Generic appeal filing, admissibility metadata, assignment, review/hearing/decision references. Original case changes only via CMP-015 command port. Workflow via CMP-016 port. Host mount deferred to SF-M05-009. Tenant is server-derived."
+  },
+  "paths": {
+    "/v1/appeals": {
+      "post": {
+        "operationId": "fileAppeal",
+        "summary": "File an appeal linked to an original application/case/decision"
+      }
+    },
+    "/v1/appeals/{appeal_id}": {
+      "get": {
+        "operationId": "getAppeal",
+        "summary": "View a protected appeal (OPA APPEAL_READ)"
+      }
+    },
+    "/v1/appeals/{appeal_id}/admissibility": {
+      "post": {
+        "operationId": "recordAdmissibility",
+        "summary": "Record admissibility metadata (OPA APPEAL_ADMISSIBILITY). Not an LLM decision."
+      }
+    },
+    "/v1/appeals/{appeal_id}/assign": {
+      "post": { "operationId": "assignAppeal" }
+    },
+    "/v1/appeals/{appeal_id}/reassign": {
+      "post": { "operationId": "reassignAppeal" }
+    },
+    "/v1/appeals/{appeal_id}/review": {
+      "post": { "operationId": "recordReview" }
+    },
+    "/v1/appeals/{appeal_id}/hearing": {
+      "post": { "operationId": "recordHearingRef" }
+    },
+    "/v1/appeals/{appeal_id}/decision": {
+      "post": { "operationId": "recordDecisionRef" }
+    },
+    "/v1/appeals/{appeal_id}/withdraw": {
+      "post": { "operationId": "withdrawAppeal" }
+    },
+    "/v1/appeals/{appeal_id}/cancel": {
+      "post": { "operationId": "cancelAppeal" }
+    },
+    "/v1/appeals/{appeal_id}/workflow": {
+      "post": { "operationId": "linkAppealWorkflow" }
+    },
+    "/v1/appeals/{appeal_id}/assist": {
+      "post": {
+        "operationId": "addAppealAssistNote",
+        "summary": "AI/officer assist note: SUMMARY, RETRIEVAL, DRAFT_NOTE, CHECKLIST only"
+      }
+    }
+  }
+}

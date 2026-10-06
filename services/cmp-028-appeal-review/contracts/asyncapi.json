@@ -1,0 +1,16 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-028 Appeal Events",
+    "version": "0.1.0",
+    "description": "Appeal domain events plus audit ingest. Temporal is never signaled from this component."
+  },
+  "channels": {
+    "sf.appeal.events.v1": {
+      "address": "sf.appeal.events.v1"
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1"
+    }
+  }
+}
