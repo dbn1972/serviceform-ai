@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Deficiency event data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deficiency_id",
+    "application_id",
+    "status",
+    "operation",
+    "reason_code",
+    "notice_code",
+    "sla_pause_reason_code",
+    "notification_port"
+  ],
+  "properties": {
+    "deficiency_id": { "type": "string", "format": "uuid" },
+    "application_id": { "type": "string", "format": "uuid" },
+    "status": { "enum": ["OPEN", "RESPONSE_RECEIVED", "CLOSED"] },
+    "operation": { "enum": ["OPEN", "RESPOND", "CLOSE"] },
+    "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "notice_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "sla_pause_reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+    "response_due_at": {
+      "oneOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }]
+    },
+    "notification_port": { "const": "M06_CMP025" }
+  }
+}
