@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CMP-027 Grievance & Feedback",
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/grievances": {
+      "post": { "operationId": "fileGrievance", "responses": { "201": { "description": "filed" } } }
+    },
+    "/feedback": {
+      "post": {
+        "operationId": "recordFeedback",
+        "responses": { "201": { "description": "filed" } }
+      }
+    },
+    "/grievances/{grievanceId}": {
+      "get": { "operationId": "getGrievance", "responses": { "200": { "description": "ok" } } }
+    },
+    "/grievances/{grievanceId}/commands": {
+      "post": { "operationId": "grievanceCommand", "responses": { "200": { "description": "ok" } } }
+    },
+    "/grievances/{grievanceId}/ai-assist": {
+      "post": { "operationId": "aiAssist", "responses": { "202": { "description": "advisory" } } }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-018/inspection-event-data/v1",
+  "title": "InspectionEventData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "inspection_id",
+    "application_id",
+    "operation",
+    "inspection_state",
+    "assignment",
+    "statutory_effect",
+    "authz_decision_id",
+    "idempotency_key",
+    "correlation_id"
+  ],
+  "properties": {
+    "inspection_id": { "type": "string", "format": "uuid" },
+    "application_id": { "type": "string", "format": "uuid" },
+    "prior_inspection_id": { "type": "string", "format": "uuid" },
+    "workflow_node_id": { "type": "string" },
+    "operation": { "type": "string" },
+    "inspection_state": {
+      "type": "string",
+      "enum": ["REQUESTED", "SCHEDULED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]
+    },
+    "assignment": { "type": "object" },
+    "verification_result": {
+      "type": "string",
+      "enum": ["VERIFIED", "NOT_VERIFIED", "INCONCLUSIVE", "DEFICIENCY_NOTED"]
+    },
+    "statutory_effect": { "type": "boolean", "const": false },
+    "authz_decision_id": { "type": "string", "format": "uuid" },
+    "idempotency_key": { "type": "string" },
+    "correlation_id": { "type": "string", "format": "uuid" }
+  }
+}

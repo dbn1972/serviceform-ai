@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="0" errors="0" time="2.016062062">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-06T17:45:05.788Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.548721044">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-019 end to end on PostgreSQL (real login role, FORCE RLS) &gt; opens, pauses INT-009, records a citizen response, resumes, and isolates tenants" time="0.031634625">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-06T17:45:05.789Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="1.467341018">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, runtime login is not the owner" time="0.011204981">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on authoritative deficiency tables; peer login is denied" time="0.011734513">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides the other tenant; no global-tail read" time="0.015781548">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; isolated reversibility: down of CMP-019 migrations then up restores the schema" time="0.922398518">
+        </testcase>
+    </testsuite>
+</testsuites>
