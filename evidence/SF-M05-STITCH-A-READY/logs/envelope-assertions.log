@@ -1,17 +1,44 @@
-=== envelope-assertions (execution-base refresh) ===
+=== envelope-assertions (base-policy revision) ===
+task_sha256=9ea307c539ad866aa8ae6cf5fe9a3b2e639a8aff11aa20534ffb777fed6872d2
+handover_sha256=9ea307c539ad866aa8ae6cf5fe9a3b2e639a8aff11aa20534ffb777fed6872d2
 PASS task==handover byte-identical
-task_sha256=e7cfa37ac9230ddb5e9cacf3c398a22b525a2e17f3ecd48b1c327048d5c36dc2
-handover_sha256=e7cfa37ac9230ddb5e9cacf3c398a22b525a2e17f3ecd48b1c327048d5c36dc2
-actual_stitch_base=f9f986585db2662474d760fdbf4fb8cf8e32fc4c
-base_commit_prefix=f9f98658
-base_commit_suffix=5db2662474d760fdbf4fb8cf8e32fc4c
-reconstructed=f9f986585db2662474d760fdbf4fb8cf8e32fc4c
-reconstruct_match=PASS
-ready_control_plane_base=20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
-ready_control_plane_base_match=PASS
-historical_planning_base=b286ed956755b936f73bc2856c9db2c68d8ca64c
-historical_match=PASS
+PASS actual_stitch_base absent
+PASS base_commit absent
+PASS ready_record_parent.sha
+PASS ready_record_parent.note
+PASS ready_control_plane_base.sha
+PASS historical_planning_base.sha
+PASS historical_planning_base.executable false
+PASS execution_base_policy.source
+PASS execution_base null
+PASS execution_authorized false
+PASS must_include_ready_record
+PASS require_exact_sha
+PASS envelope_sha_is_not_execution_authorization
+PASS planning_only false
+PASS implementation_authorized true
+PASS dispatched false
+PASS orchestration_task_state READY
+PASS state READY
+PASS self_certified false
+PASS not_certified true
+PASS certified false
+PASS release_certified false
+PASS g4 false
+PASS g6 false
+PASS ccr_required false
+PASS frozen_contracts_altered false
+PASS frozen_inputs 001
+PASS frozen_inputs 002
+PASS frozen_inputs 003
+PASS frozen_inputs 004
+PASS contract_locks 19
+PASS stop:execution without separately issued exact human 
+PASS stop:execution_base differs from exact SHA in latest 
+PASS stop:authorized execution_base is not origin/main at 
+PASS stop:authorized execution_base does not contain merge
+PASS no actual_stitch_base stop
+PASS stitch_rule uses execution_base
 frozen_inputs_count=4
 contract_locks_count=19
-PASS flags/frozen_inputs/stop
 failures=0

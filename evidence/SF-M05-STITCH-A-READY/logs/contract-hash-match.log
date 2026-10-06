@@ -1,20 +1,20 @@
-SF-CON-AUDIT-EVENT               FROZEN  files=1 MATCH in_envelope=True
-SF-CON-AUTHZ-DECISION            FROZEN  files=1 MATCH in_envelope=True
-SF-CON-COMMON                    FROZEN  files=1 MATCH in_envelope=True
-SF-CON-CONNECTOR-BINDING         FROZEN  files=1 MATCH in_envelope=True
-SF-CON-ERROR-RESPONSE            FROZEN  files=1 MATCH in_envelope=True
-SF-CON-EVENT-ENVELOPE            FROZEN  files=1 MATCH in_envelope=True
-SF-CON-IDEMPOTENCY               FROZEN  files=1 MATCH in_envelope=True
-SF-CON-ISOLATION-DECLARATION     FROZEN  files=1 MATCH in_envelope=True
-SF-CON-REQUEST-CONTEXT           FROZEN  files=1 MATCH in_envelope=True
-SF-CON-SIMULATION-MARKER         FROZEN  files=1 MATCH in_envelope=True
-SF-CON-ERROR-CATALOGUE           FROZEN  files=1 MATCH in_envelope=True
-SF-CON-DB-SESSION-CONTEXT        FROZEN  files=2 MATCH in_envelope=True
-SF-CON-OUTBOX                    FROZEN  files=2 MATCH in_envelope=True
-SF-CON-APPLICATION-CASE-SM       FROZEN  files=1 MATCH in_envelope=True
-SF-CON-WORKFLOW-MODEL            FROZEN  files=1 MATCH in_envelope=True
-SF-CON-COMMAND-TRANSITION        FROZEN  files=1 MATCH in_envelope=True
-SF-CON-HUMAN-TASK                FROZEN  files=1 MATCH in_envelope=True
-SF-CON-SLA-CLOCK                 FROZEN  files=1 MATCH in_envelope=True
-SF-CON-VERSION-PINNING           FROZEN  files=1 MATCH in_envelope=True
-RESULT 19/19 FROZEN MATCH; envelope_locks=19; set_equal=True
+MATCH SF-CON-AUDIT-EVENT contracts/shared/schemas/audit-event.schema.json
+MATCH SF-CON-AUTHZ-DECISION contracts/shared/schemas/authz-decision.schema.json
+MATCH SF-CON-COMMON contracts/shared/schemas/common.schema.json
+MATCH SF-CON-CONNECTOR-BINDING contracts/shared/schemas/connector-binding.schema.json
+MATCH SF-CON-ERROR-RESPONSE contracts/shared/schemas/error-response.schema.json
+MATCH SF-CON-EVENT-ENVELOPE contracts/shared/schemas/event-envelope.schema.json
+MATCH SF-CON-IDEMPOTENCY contracts/shared/schemas/idempotency-record.schema.json
+MATCH SF-CON-ISOLATION-DECLARATION contracts/shared/schemas/isolation-declaration.schema.json
+MATCH SF-CON-REQUEST-CONTEXT contracts/shared/schemas/request-context.schema.json
+MATCH SF-CON-SIMULATION-MARKER contracts/shared/schemas/simulation-marker.schema.json
+MATCH SF-CON-ERROR-CATALOGUE contracts/shared/error-catalogue.json
+MATCH SF-CON-DB-SESSION-CONTEXT contracts/shared/schemas/db-session-context.schema.json
+MATCH SF-CON-OUTBOX contracts/shared/schemas/outbox-record.schema.json
+MATCH SF-CON-APPLICATION-CASE-SM contracts/m05/schemas/application-case-sm.schema.json
+MATCH SF-CON-WORKFLOW-MODEL contracts/m05/schemas/workflow-model.schema.json
+MATCH SF-CON-COMMAND-TRANSITION contracts/m05/schemas/command-transition.schema.json
+MATCH SF-CON-HUMAN-TASK contracts/m05/schemas/human-task.schema.json
+MATCH SF-CON-SLA-CLOCK contracts/m05/schemas/sla-clock.schema.json
+MATCH SF-CON-VERSION-PINNING contracts/m05/schemas/version-pinning.schema.json
+19/19 MATCH

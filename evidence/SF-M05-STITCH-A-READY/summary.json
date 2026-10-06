@@ -2,19 +2,34 @@
   "task_id": "SF-M05-STITCH-A",
   "package": "SF-M05-STITCH-A-READY",
   "state": "READY_CONTROL_PLANE",
-  "package_kind": "execution_base_refresh",
-  "authoritative_main": "f9f986585db2662474d760fdbf4fb8cf8e32fc4c",
-  "authoritative_main_verified_at_start": true,
-  "actual_stitch_base": "f9f986585db2662474d760fdbf4fb8cf8e32fc4c",
-  "actual_stitch_base_previous": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
+  "package_kind": "base_policy_revision",
+  "ready_record_parent": {
+    "sha": "f9f986585db2662474d760fdbf4fb8cf8e32fc4c",
+    "note": "main SHA from which this READY/base-policy record was prepared"
+  },
   "ready_control_plane_base": {
     "sha": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
     "note": "base used to prepare PR #93 before READY record merged"
   },
-  "historical_planning_base": "b286ed956755b936f73bc2856c9db2c68d8ca64c",
-  "historical_planning_base_executable": false,
-  "executable_bases_count": 1,
-  "base_commit_reconstructs_to_actual_stitch_base": true,
+  "historical_planning_base": {
+    "sha": "b286ed956755b936f73bc2856c9db2c68d8ca64c",
+    "executable": false
+  },
+  "actual_stitch_base_removed": true,
+  "actual_stitch_base_invalid_reason": "Hard-coding a main tip as actual_stitch_base self-invalidates when the READY/base-policy record merges (main advances). Envelope SHA is not human execution authorization; stitch must wait for separate exact human execution_base.",
+  "execution_base": null,
+  "execution_base_unset": true,
+  "execution_base_source": "SEPARATE_HUMAN_AUTHORIZATION",
+  "execution_authorized": false,
+  "execution_base_policy": {
+    "source": "HUMAN_EXECUTION_AUTHORIZATION",
+    "requirement": "execution base MUST equal origin/main at the instant the human STITCH-A execution authorization is issued",
+    "must_include_ready_record": true,
+    "require_exact_sha": true,
+    "envelope_sha_is_not_execution_authorization": true,
+    "execution_base": null,
+    "execution_authorized": false
+  },
   "envelope": {
     "planning_only": false,
     "implementation_authorized": true,
@@ -53,6 +68,7 @@
   },
   "stale_stitch_attempt": {"pr": 91, "reusable": false, "touched": false, "replacement_stitch_created": false},
   "stitch_execution_started": false,
+  "replacement_stitch_created": false,
   "pnpm_lock_modified": false,
   "product_code_modified": false,
   "migrations_modified": false,

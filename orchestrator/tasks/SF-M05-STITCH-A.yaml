@@ -1,6 +1,7 @@
 # M05 READY — Wave A mechanical stitch and lockfile (LOCK-4)
 # READY control plane. implementation_authorized: true. Execution NOT dispatched. Not CERTIFIED. Not G4. Not G6.
 # Integrate exact immutable CMP-015/#90 + CMP-016/#89 + CMP-017/#88 + CMP-029/#87 trees + migrations; root lockfile regenerate only.
+# execution_base is NOT set in this envelope. Separate human STITCH-A execution authorization must supply the exact SHA.
 
 task_id: SF-M05-STITCH-A
 title: M05 Wave A mechanical stitch and lockfile
@@ -23,7 +24,7 @@ depends_on:
   - SF-M05-003 immutable head 8641c756b539492e3f90d2b04c8a9eb1f2192175 (PR #88)
   - SF-M05-004 immutable head 5c4d8ac700364b8b01fa10a44f8a1b049b3da825 (PR #87)
   - LOCK-3 complete
-  - scope gate PR #92 merged on actual_stitch_base
+  - scope gate PR #92 merged on ready_control_plane_base
 allowed_write_paths:
   - services/cmp-015-application-case/**
   - db/migrations/*_cmp-015-*.sql
@@ -64,7 +65,7 @@ read_only_paths:
   - services/cmp-028-appeal-review/**
 stitch_rule:
   must:
-    - start from actual_stitch_base (exact SHA; not from #91 or any builder branch)
+    - start from exact execution_base SHA supplied by separate human STITCH-A execution authorization (task MUST NOT guess; agent MUST NOT use moving main)
     - copy/integrate exact immutable CMP-015 tree + migrations from SF-M05-001 / PR #90 at frozen_inputs SHA
     - copy/integrate exact immutable CMP-016 tree + migrations from SF-M05-002 / PR #89 at frozen_inputs SHA
     - copy/integrate exact immutable CMP-017 tree + migrations from SF-M05-003 / PR #88 at frozen_inputs SHA
@@ -82,6 +83,8 @@ stitch_rule:
     - broaden lockfile refresh or upgrade existing resolutions
     - weaken frozen-lockfile / supply-chain controls
     - self-certify
+    - hard-code or invent an execution_base SHA inside this envelope
+    - treat ready_record_parent, ready_control_plane_base, historical_planning_base, or moving origin/main as execution authorization
   semantic_conflict: STOP and return to owning builder
 lockfile_governance:
   root_lockfile_authorized: true
@@ -112,7 +115,7 @@ lockfile_expectation:
     cmp_017: none
     cmp_029: none
   notes:
-    - "@temporalio/* is absent from pnpm-lock.yaml at actual_stitch_base; admitting CMP-016 requires new resolutions for exactly these builder-declared pins (not invented)"
+    - "@temporalio/* is absent from pnpm-lock.yaml at ready_control_plane_base / ready_record_parent; admitting CMP-016 requires new resolutions for exactly these builder-declared pins (not invented)"
     - SF-M05-002 handover reports existing locked pg-cloudflare@1.4.1 and @next/swc-* fail minimumReleaseAge on non-frozen resolution; resolve without weakening policy or STOP
     - Reuse canonical resolutions; no broad refresh/upgrades
     - Do not alter minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml
@@ -153,18 +156,23 @@ g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-actual_stitch_base: f9f986585db2662474d760fdbf4fb8cf8e32fc4c
-base_commit:
-  prefix: f9f98658
-  suffix: 5db2662474d760fdbf4fb8cf8e32fc4c
+ready_record_parent:
+  sha: f9f986585db2662474d760fdbf4fb8cf8e32fc4c
+  note: main SHA from which this READY/base-policy record was prepared
 ready_control_plane_base:
   sha: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
   note: base used to prepare PR #93 before READY record merged
 historical_planning_base:
-  note: PLANNING-era base only; NOT executable. Executable base is actual_stitch_base.
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
-join_separator: "_"
+  sha: b286ed956755b936f73bc2856c9db2c68d8ca64c
+  executable: false
+execution_base_policy:
+  source: HUMAN_EXECUTION_AUTHORIZATION
+  requirement: execution base MUST equal origin/main at the instant the human STITCH-A execution authorization is issued
+  must_include_ready_record: true
+  require_exact_sha: true
+  envelope_sha_is_not_execution_authorization: true
+  execution_base: null
+  execution_authorized: false
 contract_locks:
   - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
@@ -193,7 +201,10 @@ stop_conditions:
   - write outside allowed_write_paths
   - dependency on unmerged sibling M05 code as source of truth (except exact frozen_inputs SHA trees for copy/integrate)
   - semantic conflict with immutable builder trees → STOP and return to owning builder
-  - start from any base other than actual_stitch_base
+  - execution without separately issued exact human execution_base SHA → STOP
+  - execution_base differs from exact SHA in latest human STITCH-A execution authorization → STOP
+  - authorized execution_base is not origin/main at authorization time → STOP
+  - authorized execution_base does not contain merged STITCH-A READY control-plane record → STOP
   - reuse, amend, rebase or merge stale PR #91
   - merge builder PRs #87 / #88 / #89 / #90
   - lockfile resolution requires weakening supply-chain policy
