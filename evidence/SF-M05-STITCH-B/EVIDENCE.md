@@ -7,7 +7,7 @@ Builder PRs #99/#97/#98/#100 were not merged and their frozen heads were not mut
 | Field | Value |
 |---|---|
 | Task | SF-M05-STITCH-B |
-| Draft PR | (filled after open) |
+| Draft PR | https://github.com/dbn1972/serviceform-ai/pull/101 |
 | Branch | `cursor/m05-stitch-b-exec-ca57057a-9e07` |
 | AUTHORIZED EXECUTION BASE | `ca57057a794739c03d0a46886577e25adf041815` |
 | execution_authorized | true (HUMAN_STITCH_B_EXECUTION_AUTHORIZATION) |
