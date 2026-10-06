@@ -2,11 +2,34 @@
   "task_id": "SF-M05-STITCH-A",
   "package": "SF-M05-STITCH-A-READY",
   "state": "READY_CONTROL_PLANE",
-  "authoritative_main": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
-  "authoritative_main_verified_at_start": true,
-  "actual_stitch_base": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
-  "historical_planning_base_prefix": "b286ed95",
-  "historical_planning_base_executable": false,
+  "package_kind": "base_policy_revision",
+  "ready_record_parent": {
+    "sha": "f9f986585db2662474d760fdbf4fb8cf8e32fc4c",
+    "note": "main SHA from which this READY/base-policy record was prepared"
+  },
+  "ready_control_plane_base": {
+    "sha": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
+    "note": "base used to prepare PR #93 before READY record merged"
+  },
+  "historical_planning_base": {
+    "sha": "b286ed956755b936f73bc2856c9db2c68d8ca64c",
+    "executable": false
+  },
+  "actual_stitch_base_removed": true,
+  "actual_stitch_base_invalid_reason": "Hard-coding a main tip as actual_stitch_base self-invalidates when the READY/base-policy record merges (main advances). Envelope SHA is not human execution authorization; stitch must wait for separate exact human execution_base.",
+  "execution_base": null,
+  "execution_base_unset": true,
+  "execution_base_source": "SEPARATE_HUMAN_AUTHORIZATION",
+  "execution_authorized": false,
+  "execution_base_policy": {
+    "source": "HUMAN_EXECUTION_AUTHORIZATION",
+    "requirement": "execution base MUST equal origin/main at the instant the human STITCH-A execution authorization is issued",
+    "must_include_ready_record": true,
+    "require_exact_sha": true,
+    "envelope_sha_is_not_execution_authorization": true,
+    "execution_base": null,
+    "execution_authorized": false
+  },
   "envelope": {
     "planning_only": false,
     "implementation_authorized": true,
@@ -19,16 +42,19 @@
     "not_certified": true,
     "certified": false,
     "release_certified": false,
+    "g4": false,
     "g6": false,
     "ccr_required": false,
     "frozen_contracts_altered": false,
-    "handover_mirrors_task": true
+    "handover_mirrors_task": true,
+    "contract_locks": 19,
+    "frozen_inputs": 4
   },
   "frozen_inputs": {
-    "SF-M05-001": {"pr": 90, "cmp": "CMP-015", "head": "2d68e37c3e01d78129f1604b02fe98bae4048489", "pr_head_matches": true},
-    "SF-M05-002": {"pr": 89, "cmp": "CMP-016", "head": "9249ecb7ec2c3e33c0aff139c1496cf7b80c7ce9", "pr_head_matches": true},
-    "SF-M05-003": {"pr": 88, "cmp": "CMP-017", "head": "8641c756b539492e3f90d2b04c8a9eb1f2192175", "pr_head_matches": true},
-    "SF-M05-004": {"pr": 87, "cmp": "CMP-029", "head": "5c4d8ac700364b8b01fa10a44f8a1b049b3da825", "pr_head_matches": true}
+    "SF-M05-001": {"pr": 90, "cmp": "CMP-015", "head": "2d68e37c3e01d78129f1604b02fe98bae4048489", "unchanged": true},
+    "SF-M05-002": {"pr": 89, "cmp": "CMP-016", "head": "9249ecb7ec2c3e33c0aff139c1496cf7b80c7ce9", "unchanged": true},
+    "SF-M05-003": {"pr": 88, "cmp": "CMP-017", "head": "8641c756b539492e3f90d2b04c8a9eb1f2192175", "unchanged": true},
+    "SF-M05-004": {"pr": 87, "cmp": "CMP-029", "head": "5c4d8ac700364b8b01fa10a44f8a1b049b3da825", "unchanged": true}
   },
   "builder_prs_merged": false,
   "contracts": {
@@ -36,24 +62,16 @@
     "frozen": 19,
     "hash_match": "19/19 MATCH",
     "envelope_contract_locks": 19,
-    "envelope_locks_equal_lock_ids": true,
     "contracts_lock_modified": false,
     "contracts_modified": false,
     "ccr_required": false
   },
-  "stale_stitch_attempt": {"pr": 91, "head_prefix": "2135940", "base_prefix": "6e9f0481", "predates_scope_gate_pr_92": true, "reusable": false, "touched": false},
-  "scope_gate": {
-    "pr": 92,
-    "merged": true,
-    "merge_commit": "20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f",
-    "root_lockfile_basis": "agent_role integration_agent + exact pnpm-lock.yaml in allowed_write_paths + not read-only",
-    "check_scope_modified": false,
-    "branch_name_privilege": false
-  },
+  "stale_stitch_attempt": {"pr": 91, "reusable": false, "touched": false, "replacement_stitch_created": false},
   "stitch_execution_started": false,
   "replacement_stitch_created": false,
   "pnpm_lock_modified": false,
   "product_code_modified": false,
+  "migrations_modified": false,
   "wave_b": "OFF",
   "sf_m05_009_int_sec_evd": "OFF",
   "m06_m08": "OFF",
@@ -61,18 +79,12 @@
   "g6": false,
   "certified": false,
   "validation": {
+    "task_handover_byte_identical": true,
     "contracts_lock_gate": {"result": "PASS", "log": "logs/contracts-lock-gate.log"},
     "contract_hash_match": {"result": "19/19 MATCH", "log": "logs/contract-hash-match.log"},
     "run_all": {"result": "10/10 gates passed", "log": "logs/run-all.log"},
     "pytest_gates": {"result": "30 passed", "log": "logs/pytest-gates.log"},
-    "check_scope_five_cases": {"result": "5/5 AS_EXPECTED (2 ALLOW, 3 REFUSE)", "log": "logs/check-scope-five-cases.log"},
-    "envelope_assertions": {"result": "PASS failures=0", "log": "logs/envelope-assertions.log"},
-    "main_ci_at_base": {"ci": "success", "security": "success", "developer-platform": "success"}
+    "envelope_assertions": {"result": "PASS", "log": "logs/envelope-assertions.log"}
   },
-  "carry_forward_for_stitch_execution": [
-    "CMP-016 declares six @temporalio/* 1.24.0 pins absent from pnpm-lock.yaml at base; admission needs new resolutions for exactly those pins",
-    "SF-M05-002 handover: existing locked pg-cloudflare@1.4.1 and @next/swc-* fail minimumReleaseAge on non-frozen resolution; resolve without weakening policy or STOP",
-    "SF-M05-002 handover: coordinate CMP-016 migration repoint with CMP-015 pin graph (SF-CON-VERSION-PINNING)"
-  ],
   "recommended_gate": "none"
 }
