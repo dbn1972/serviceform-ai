@@ -64,3 +64,15 @@ Trees MATCH BYTE_IDENTICAL. See `TREE-FIDELITY.md`.
 | CROSS_TENANT_LEAKAGE | 0 (component privilege-rls PASS) |
 
 Recommended next gate: wait for exact-candidate-head **ci**, **Security**, **Developer-platform** SUCCESS, then **separate independent STITCH-B candidate review / merge-authorization**. Do not merge from this agent. 009/INT/SEC/EVD OFF.
+
+
+## Exact-candidate-head workflows (frozen product tip `f6f1f7b`)
+
+| Workflow | Run ID | Result |
+|---|---:|---|
+| ci | [37506301890](https://github.com/dbn1972/serviceform-ai/actions/runs/37506301890) | SUCCESS |
+| security | [37506301848](https://github.com/dbn1972/serviceform-ai/actions/runs/37506301848) | SUCCESS |
+| developer-platform | [37506301839](https://github.com/dbn1972/serviceform-ai/actions/runs/37506301839) | SUCCESS |
+
+`STITCH_B_CANDIDATE_FROZEN` = true for product tip `f6f1f7b06561965574fb3cecd239ca1d640e6f56`.
+`NO_MERGE_AUTHORIZATION` = true. Not CERTIFIED / G4 / G6.

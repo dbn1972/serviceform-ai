@@ -142,7 +142,7 @@ builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true
 dispatched: true
-orchestration_task_state: CANDIDATE_FROZEN_PENDING_CI
+orchestration_task_state: CANDIDATE_FROZEN
 state: CANDIDATE
 self_certified: false
 not_certified: true
@@ -175,7 +175,7 @@ tree_fidelity:
 lockfile_result: WAVE_B_IMPORTERS_ADMITTED_PACKAGES_UNCHANGED
 contracts_lock: 19/19 MATCH
 draft_pr: 101
-candidate_head: e32788d2b979a8599f342531512d15309d54ef25  # pending exact-head CI freeze
+candidate_head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
 contract_locks:
   - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
@@ -218,3 +218,25 @@ stop_conditions:
   - named officer in published workflow
   - BPMN as a second runtime
   - waive CMP-019 or CMP-028 residuals
+
+stitch_b_candidate_frozen: true
+exact_candidate_workflows:
+  ci:
+    run_id: 37506301890
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301890
+  security:
+    run_id: 37506301848
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301848
+  developer_platform:
+    run_id: 37506301839
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301839
+freeze_note: >
+  Candidate product trees and lockfile frozen at f6f1f7b with exact-head CI/Sec/DP SUCCESS.
+  A follow-up evidence-only freeze commit may tip the branch; product trees remain byte-identical
+  to frozen builder inputs and lockfile packages section remains unchanged vs execution base.
