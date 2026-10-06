@@ -24,10 +24,14 @@ type Row = Record<string, unknown>;
 const iso = (v: unknown): string => (v instanceof Date ? v.toISOString() : String(v));
 const strOrNull = (v: unknown): string | null => (v === null || v === undefined ? null : String(v));
 
-const SQL_GET_APPEAL =
-  'SELECT tenant_id, appeal_id, original_application_id, original_case_id, original_decision_id, cell_id, appeal_state, grounds_code, evidence_refs, admissibility_code, admissibility_reason_code, role_code, organisation_id, office_id, jurisdiction_id, service_scope_id, workflow_instance_id, workflow_version_id, hearing_ref, review_ref, decision_ref, original_case_command_ref, created_by, correlation_id, aggregate_version, created_at, updated_at FROM sf_appeal.appeal WHERE tenant_id = $1 AND appeal_id = $2';
-const SQL_LOCK_APPEAL = SQL_GET_APPEAL + ' FOR UPDATE';
-
+const SQL_GET_APPEAL = `SELECT tenant_id, appeal_id, original_application_id, original_case_id,
+         original_decision_id, cell_id, appeal_state, grounds_code, evidence_refs,
+         admissibility_code, admissibility_reason_code, role_code, organisation_id, office_id,
+         jurisdiction_id, service_scope_id, workflow_instance_id, workflow_version_id, hearing_ref,
+         review_ref, decision_ref, original_case_command_ref, created_by, correlation_id,
+         aggregate_version, created_at, updated_at
+    FROM sf_appeal.appeal WHERE tenant_id = $1 AND appeal_id = $2`;
+const SQL_LOCK_APPEAL = `${SQL_GET_APPEAL} FOR UPDATE`;
 
 function toAuthority(row: Row): AppellateAuthority {
   return {

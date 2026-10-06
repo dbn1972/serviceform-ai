@@ -7,7 +7,7 @@ import {
   type TenantContext,
 } from '../context.js';
 import { requestFingerprint } from '../domain/fingerprint.js';
-import { IDEMPOTENCY_KEY, invalid, UUID } from '../domain/validate.js';
+import { invalid, isIdempotencyKey, isUuid } from '../domain/validate.js';
 import { Cmp028Error, detail, mapPgError } from '../errors.js';
 import type { AppealService, Idempotency } from '../service/appeal-service.js';
 
@@ -185,10 +185,10 @@ export function createAppealHandler(
       correlationId = ctx.correlation_id;
 
       const appealId = matched.m[1] ?? '';
-      if (matched.m[1] !== undefined && !UUID.test(appealId)) throw invalid('/appeal_id');
+      if (matched.m[1] !== undefined && !isUuid(appealId)) throw invalid('/appeal_id');
       const idem = (): Idempotency => {
         const key = headerValue(req.headers, 'idempotency-key');
-        if (!key || !IDEMPOTENCY_KEY.test(key)) {
+        if (!key || !isIdempotencyKey(key)) {
           throw new Cmp028Error('SF-SYS-003', detail('IDEMPOTENCY_KEY'));
         }
         return {

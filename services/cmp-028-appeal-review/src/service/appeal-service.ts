@@ -29,8 +29,8 @@ import {
 import {
   assertOnlyKeys,
   codeField,
-  CONTENT_REF,
   invalid,
+  isContentRef,
   optionalCode,
   optionalUuid,
   requireRecord,
@@ -447,7 +447,7 @@ export class AppealService {
       throw new Cmp028Error('SF-SYS-003', detail('AI_DECISION_FORBIDDEN', '/note_kind'));
     }
     const content_ref = obj['content_ref'];
-    if (typeof content_ref !== 'string' || !CONTENT_REF.test(content_ref)) {
+    if (typeof content_ref !== 'string' || !isContentRef(content_ref)) {
       throw invalid('/content_ref');
     }
     const now = this.clock();
