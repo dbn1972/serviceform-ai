@@ -1,0 +1,21 @@
+{
+  "component": "CMP-016",
+  "topics": [
+    {
+      "name": "sf.workflow.events.v1",
+      "event_types": [
+        "WorkflowVersionPublished",
+        "WorkflowVersionRetired",
+        "WorkflowInstanceStarted",
+        "WorkflowRequestRecorded",
+        "WorkflowInstanceMigrated"
+      ]
+    }
+  ],
+  "consumes": [
+    {
+      "name": "CMP-015 committed transitions (SF-CON-COMMAND-TRANSITION)",
+      "consumer_group": "cmp-016.case-transitions"
+    }
+  ]
+}

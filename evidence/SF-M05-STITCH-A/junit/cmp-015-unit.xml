@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="125" failures="0" errors="0" time="0.321674893">
+    <testsuite name="test/contract/frozen-contracts.test.ts" timestamp="2026-10-05T14:38:47.406Z" hostname="cursor" tests="26" failures="0" errors="0" skipped="0" time="0.168803221">
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; states, forbidden states and commands" time="0.001822233">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; transition keys per class" time="0.000577882">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; valid example application-case-sm.cancellation-commit.json: schema and domain accept" time="0.075471948">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; valid example application-case-sm.json: schema and domain accept" time="0.000405641">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; valid example application-case-sm.withdrawal-commit.json: schema and domain accept" time="0.000196692">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.cancellation-requested-as-state.json: schema and domain reject" time="0.000296837">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.cancellation-uncommitted.json: schema and domain reject" time="0.000341073">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.cancelled-always-legal.json: schema and domain reject" time="0.000233183">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.requested-as-state.json: schema and domain reject" time="0.000790137">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.withdrawal-uncommitted.json: schema and domain reject" time="0.000347075">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; invalid example application-case-sm.withdrawn-always-legal.json: schema and domain reject" time="0.0002234">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-APPLICATION-CASE-SM executable table equals the FROZEN schema &gt; every transition yields a schema-valid state-machine record" time="0.001276181">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="emitted objects validate against FROZEN schemas (service run) &gt; SF-CON-VERSION-PINNING from draft creation" time="0.008287867">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="emitted objects validate against FROZEN schemas (service run) &gt; SF-CON-COMMAND-TRANSITION records from every committed command" time="0.012810717">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="emitted objects validate against FROZEN schemas (service run) &gt; SF-CON-EVENT-ENVELOPE / SF-CON-AUDIT-EVENT / component event data for every outbox row" time="0.028164885">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="emitted objects validate against FROZEN schemas (service run) &gt; SF-CON-AUTHZ-DECISION input for every PEP call" time="0.011855147">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="emitted objects validate against FROZEN schemas (service run) &gt; SF-CON-REQUEST-CONTEXT fixtures and SF-CON-ERROR-RESPONSE bodies" time="0.007901967">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="shared contracts CMP-015 depends on (read-only) &gt; error catalogue subset equals the FROZEN error-catalogue.json rows" time="0.000566258">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="shared contracts CMP-015 depends on (read-only) &gt; DB session settings are exactly the SF-CON-DB-SESSION-CONTEXT keys" time="0.000318398">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="shared contracts CMP-015 depends on (read-only) &gt; command-transition and version-pinning invalid examples stay invalid" time="0.000393421">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; state CHECK admits exactly the legal states (no *_REQUESTED)" time="0.000406214">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; DB transition trigger table equals the frozen transition keys" time="0.000239784">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; isolation.json declares every table the migrations create, with FORCE RLS for TENANT_SCOPED" time="0.00057738">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; outbox migration is the frozen template with only schema/CMP replacements" time="0.000188372">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; no SUPERUSER / BYPASSRLS grants and no cross-component schema references" time="0.00043369">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="migration and component contracts agree with the domain &gt; OpenAPI enums match the domain" time="0.000502997">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-05T14:38:47.411Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.01187283">
+        <testcase classname="test/unit/domain.test.ts" name="state machine table (SF-CON-APPLICATION-CASE-SM) &gt; has 39 transitions: 21 always-legal, 10 withdrawal, 8 cancellation; none ALWAYS_LEGAL into WITHDRAWN/CANCELLED" time="0.002138299">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine table (SF-CON-APPLICATION-CASE-SM) &gt; maps each (command, from_state) pair to at most one transition" time="0.000306006">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine table (SF-CON-APPLICATION-CASE-SM) &gt; every command except CREATE_DRAFT drives at least one transition" time="0.000367146">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine table (SF-CON-APPLICATION-CASE-SM) &gt; never admits *_REQUESTED tokens as states" time="0.000392545">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine table (SF-CON-APPLICATION-CASE-SM) &gt; helpers" time="0.000357939">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="planTransition &gt; plans a legal transition with a +1 version" time="0.000688375">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="planTransition &gt; rejects stale, illegal, forbidden and corrupt inputs" time="0.000479318">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="planTransition &gt; gates WITHDRAWN/CANCELLED on a committed request construct of the same kind" time="0.000346634">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="planTransition &gt; builds a contract-shaped state-machine record" time="0.000593803">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="planTransition &gt; parses expected_version strictly" time="0.000485545">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="version pins (SF-CON-VERSION-PINNING) &gt; parses required and optional pins and refuses unknown/missing/invalid ones" time="0.000595748">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="version pins (SF-CON-VERSION-PINNING) &gt; hash is order-independent; any repoint is refused" time="0.00120248">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="version pins (SF-CON-VERSION-PINNING) &gt; keeps TSB authorization_policy_version_id as provenance and records the runtime revision separately" time="0.000177707">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="decision boundary (Constitution #20) &gt; parses attestations strictly" time="0.000505767">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="decision boundary (Constitution #20) &gt; enforces the boundary" time="0.000207954">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="structural validators &gt; request context" time="0.000862251">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="structural validators &gt; envelope and audit" time="0.000295627">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="structural validators &gt; canonical json and hashing" time="0.000209578">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/http.test.ts" timestamp="2026-10-05T14:38:47.412Z" hostname="cursor" tests="21" failures="0" errors="0" skipped="0" time="0.028874225">
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; exposes exactly the documented routes" time="0.002399716">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; runs create -&gt; command -&gt; read -&gt; request flows and marks idempotent replays" time="0.010722385">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; NEGATIVE: tenant-identifying headers are refused with SF-TEN-002 before any work" time="0.001025664">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; NEGATIVE: wrong tenant gets 404 with no case data (CROSS_TENANT_LEAKAGE=0)" time="0.001559062">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; maps errors to SF-CON-ERROR-RESPONSE and hides details of 5xx" time="0.002022586">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; registers on a Fastify-shaped registrar and replies through it" time="0.001372964">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-015 HTTP surface (contracts/openapi.json) &gt; missing params resolve to validation errors" time="0.000564034">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="configuration and port mode guards (Constitution #22; INT-013) &gt; loads SF_ENVIRONMENT and refuses unknown values" time="0.000695194">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="configuration and port mode guards (Constitution #22; INT-013) &gt; refuses SIMULATED ports in PRODUCTION and non-simulation environments" time="0.001722768">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="configuration and port mode guards (Constitution #22; INT-013) &gt; defaults are fail-closed (deny authz, no binding, deny policy, outbox-only workflow)" time="0.001492029">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_INVALID_TRANSITION&quot;} -&gt; SF-APP-001" time="0.000501701">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_REQUEST_NOT_COMMITTED&quot;} -&gt; SF-APP-001" time="0.000262017">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_PIN_IMMUTABLE&quot;} -&gt; SF-APP-001" time="0.000198292">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_RECORD_IMMUTABLE&quot;} -&gt; SF-SYS-003" time="0.000204709">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;OTHER&quot;} -&gt; SF-SYS-001" time="0.000168319">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;42501&quot;} -&gt; SF-TEN-002" time="0.00016201">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;23505&quot;} -&gt; SF-APP-002" time="0.000156239">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;23514&quot;} -&gt; SF-APP-001" time="0.000161853">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;23503&quot;} -&gt; SF-SYS-002" time="0.000187235">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; {&quot;code&quot;:&quot;40001&quot;} -&gt; SF-APP-001" time="0.000168455">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="PostgreSQL error mapping (no SQL text leakage) &gt; null -&gt; SF-SYS-001" time="0.000847151">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-store.test.ts" timestamp="2026-10-05T14:38:47.414Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.007870165">
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; opens a transaction, sets transaction-local session context, commits and releases" time="0.002189916">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; rolls back and maps PostgreSQL errors; survives a failing ROLLBACK" time="0.001198982">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; maps case rows (Date / string timestamps, bigint strings, optional pins)" time="0.000720471">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; writes with optimistic predicates and parameterised SQL only" time="0.001175163">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; idempotency: claim, replay, conflict and in-progress" time="0.0008381">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgCaseStore (SF-CON-DB-SESSION-CONTEXT; short transaction) &gt; maps transition and request rows" time="0.000549341">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pipeline.test.ts" timestamp="2026-10-05T14:38:47.415Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.006972297">
+        <testcase classname="test/unit/pipeline.test.ts" name="command pipeline ordering (SF-CON-COMMAND-TRANSITION) &gt; advances phase by phase and produces a committed record" time="0.002103333">
+        </testcase>
+        <testcase classname="test/unit/pipeline.test.ts" name="command pipeline ordering (SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: phases cannot be skipped or repeated (no commit before outbox, no Temporal before commit)" time="0.0005681">
+        </testcase>
+        <testcase classname="test/unit/pipeline.test.ts" name="command pipeline ordering (SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: a commit receipt cannot be issued inside an open domain transaction" time="0.000941967">
+        </testcase>
+        <testcase classname="test/unit/pipeline.test.ts" name="command pipeline ordering (SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: a forged receipt or a receipt from another command cannot advance Temporal" time="0.001141106">
+        </testcase>
+        <testcase classname="test/unit/pipeline.test.ts" name="command pipeline ordering (SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: the gate refuses to run inside a domain transaction" time="0.000565066">
+        </testcase>
+        <testcase classname="test/unit/pipeline.test.ts" name="outbound port guard (Constitution #11) &gt; passes non-function members through and refuses calls inside a domain transaction" time="0.000467062">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-05T14:38:47.415Z" hostname="cursor" tests="48" failures="0" errors="0" skipped="0" time="0.097282155">
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 draft creation and version pinning (Constitution #9; SF-CON-VERSION-PINNING) &gt; creates a DRAFT pinned to the exact published binding with state+outbox+audit atomically" time="0.005618414">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 draft creation and version pinning (Constitution #9; SF-CON-VERSION-PINNING) &gt; refuses an unpublished or unknown binding (SF-FORM-001) without writing" time="0.000825716">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 draft creation and version pinning (Constitution #9; SF-CON-VERSION-PINNING) &gt; refuses client-supplied version ids (pins come only from publication)" time="0.00045442">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 draft creation and version pinning (Constitution #9; SF-CON-VERSION-PINNING) &gt; ADR-0005: records the live policy_revision per action while pins stay identical" time="0.006078648">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 draft creation and version pinning (Constitution #9; SF-CON-VERSION-PINNING) &gt; refuses to act on a case whose stored pin graph no longer matches its hash" time="0.001071282">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITION) &gt; drives the golden path DRAFT -&gt; CLOSED with one transition, event and audit per step" time="0.0121194">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITION) &gt; commits the domain change before the workflow signal and signals idempotently per version" time="0.001380141">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITION) &gt; a failed workflow signal never undoes the committed transition (outbox remains the trigger)" time="0.002536462">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: Temporal advance before domain commit is impossible (commit failure =&gt; no signal)" time="0.00153254">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITION) &gt; NEGATIVE: illegal transition rejected with SF-APP-001" time="0.001035713">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: stale expected_state is rejected and nothing is written" time="0.000759984">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: stale expected_version is rejected" time="0.000659741">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: a concurrent commit between pre-check and lock is caught inside the transaction" time="0.003579863">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: duplicate idempotency key replays the original response without a second write" time="0.001084332">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; duplicate draft creation with the same key returns the same application" time="0.000763976">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: the same key with a different payload is an idempotency conflict (SF-APP-002)" time="0.001701454">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 optimistic concurrency and idempotency (AWS v1.7 s13.4) &gt; NEGATIVE: an idempotency key that is missing or malformed is refused" time="0.000529616">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 tenant isolation (INT-011; CROSS_TENANT_LEAKAGE=0) &gt; NEGATIVE: wrong tenant cannot read, list or command another tenant case and sees no data" time="0.002924243">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 tenant isolation (INT-011; CROSS_TENANT_LEAKAGE=0) &gt; tenant context comes from the server-side RequestContext only" time="0.000375435">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 tenant isolation (INT-011; CROSS_TENANT_LEAKAGE=0) &gt; every transaction sets the tenant session context of the caller" time="0.000384213">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 OPA authorization (PEP fails closed) &gt; NEGATIVE: an OPA deny is SF-AUTH-002, writes nothing to the case, and records a DENIED audit" time="0.001179476">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 OPA authorization (PEP fails closed) &gt; NEGATIVE: PDP outage is SF-SYS-004 and a malformed decision is SF-AUTH-002" time="0.003694668">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 OPA authorization (PEP fails closed) &gt; sends the case resource attributes to OPA with the command as the action" time="0.000897681">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: an outbound port called inside the transaction is refused and the transaction rolls back" time="0.001226795">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: authorizer port is refused inside the transaction" time="0.000717004">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: workflow port is refused inside the transaction" time="0.000616389">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: notification port is refused inside the transaction" time="0.00058121">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: digilocker port is refused inside the transaction" time="0.000609868">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: servicePolicy port is refused inside the transaction" time="0.000542127">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; NEGATIVE: bindings port is refused inside the transaction" time="0.000534581">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 no network I/O inside the domain transaction (Constitution #11) &gt; ports outside a transaction work normally; M06/M07 ports are unconfigured in M05" time="0.000361759">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 AI decision boundary (Constitution #20) &gt; NEGATIVE: AI cannot final-approve or final-reject, whatever the actor" time="0.002330434">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 AI decision boundary (Constitution #20) &gt; NEGATIVE: an INTEGRATION principal (AI Gateway) cannot record a decision even claiming HUMAN" time="0.001962836">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 AI decision boundary (Constitution #20) &gt; NEGATIVE: decisions need an attestation; HUMAN needs an officer; RULES needs SYSTEM + basis" time="0.002259878">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 AI decision boundary (Constitution #20) &gt; a human officer may decide with AI assistance; deterministic rules may decide via SYSTEM" time="0.006564002">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: WITHDRAWAL_REQUESTED / CANCELLATION_REQUESTED can never be an application state" time="0.00063656">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; registering a request never changes the authoritative case state or version" time="0.002331568">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: WITHDRAWN without a request is rejected" time="0.001341472">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: WITHDRAWN / CANCELLED with an uncommitted (SUBMITTED / UNDER_REVIEW) request is rejected" time="0.003154509">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: a committed request of the other kind cannot be used" time="0.002240666">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: committed request but published service policy denies =&gt; SF-APP-001, state unchanged" time="0.002317815">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; commits WITHDRAWN only with a committed request + permitting policy, consuming the request once" time="0.003488589">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; commits CANCELLED from PAYMENT_PENDING with a committed cancellation request" time="0.001763486">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; a rejected or expired request leaves the case state unchanged and cannot be committed" time="0.003286948">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: AI cannot approve or reject a withdrawal request (ADR-0003)" time="0.001582025">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; NEGATIVE: requests are refused where no WITHDRAWN/CANCELLED transition exists, and stale status is refused" time="0.000995569">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 policy-gated withdrawal / cancellation (ADR-0003; Constitution #17) &gt; validates request payloads" time="0.001186282">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-015 reads &gt; returns the case and its transition history without tenant or actor identifiers" time="0.000906755">
+        </testcase>
+    </testsuite>
+</testsuites>

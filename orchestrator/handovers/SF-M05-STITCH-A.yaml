@@ -218,3 +218,49 @@ stop_conditions:
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
+
+# Executed stitch record (not a gate issue). Not CERTIFIED. Not G4. Not G6.
+# Human authorization: SF-M05-STITCH-A only. STOPPED before STITCHED_CANDIDATE.
+stitch_executed: true
+stitch_state: STOPPED
+stitched_candidate: false
+stop_reasons:
+  - id: R-CMP016-DOWN2
+    class: CLASS-A test harness / migration order
+    route_to: SF-M05-002 (owning builder)
+    detail: >-
+      CMP-016 PostgreSQL int 19/21 on the combined chain. migration.int.test.ts assumes
+      CMP-016 migrations are the chain tail; CMP-017/CMP-029 migrations sort after it.
+      21/21 with those four files held out (diagnostic, not committed). db-isolation 18/18 PASS.
+  - id: R-STITCH-A-SCOPE-LOCKFILE
+    class: CI gate vs authorized write
+    route_to: orchestrator / human
+    detail: >-
+      ci architecture gates step "task envelope scope (agent branches only)" fails:
+      check_scope.py refuses pnpm-lock.yaml for every envelope task although
+      SF-M05-STITCH-A allowed_write_paths lists it. Not modified (outside write set).
+draft_pr: 91
+draft_pr_url: https://github.com/dbn1972/serviceform-ai/pull/91
+working_branch: agent/M05-stitch-a-SF-M05-STITCH-A
+base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+trees_commit: be789fc622609ddba85ab047f80f41ec6cfde19a
+code_head: 2d06259aacd3a8d4abebe48d8b97de63ef952063
+frozen_inputs:
+  SF-M05-001: 2d68e37c3e01d78129f1604b02fe98bae4048489
+  SF-M05-002: 50f56aff9cc1e46c927b881f30c249cb9e1955d2
+  SF-M05-003: 8641c756b539492e3f90d2b04c8a9eb1f2192175
+  SF-M05-004: 5c4d8ac700364b8b01fa10a44f8a1b049b3da825
+tree_fidelity: 4/4 trees + 8/8 migrations MATCH; semantic diff 0
+lockfile: additive +1191/-0; Temporal 1.24.0 admitted; frozen install PASS; policy unchanged
+contracts: 19/19 FROZEN MATCH; contracts diff 0; ccr_required false
+cross_tenant_leakage: 0
+ci_code_head:
+  ci: 37325617264 FAILURE (scope step only)
+  security: 37325617379 SUCCESS
+  developer_platform: 37325617054 SUCCESS
+expected_stitch_lockfile_admission_remaining: false
+evidence: evidence/SF-M05-STITCH-A/
+recommended_gate: none
+wave_b: off
+m06: off
+m08: off

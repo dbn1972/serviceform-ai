@@ -1,0 +1,66 @@
+{
+  "task_id": "SF-M05-STITCH-A",
+  "outcome": "STOPPED",
+  "stitched_candidate": false,
+  "stop_reasons": ["R-CMP016-DOWN2", "R-STITCH-A-SCOPE-LOCKFILE"],
+  "certified": false,
+  "self_certified": false,
+  "g4": false,
+  "g6": false,
+  "base_sha": "6e9f0481eb3007dedee5580838cab59ceea66f03",
+  "branch": "agent/M05-stitch-a-SF-M05-STITCH-A",
+  "draft_pr": 91,
+  "trees_commit": "be789fc622609ddba85ab047f80f41ec6cfde19a",
+  "code_head": "2d06259aacd3a8d4abebe48d8b97de63ef952063",
+  "inputs": {
+    "SF-M05-001": { "cmp": "CMP-015", "pr": 90, "sha": "2d68e37c3e01d78129f1604b02fe98bae4048489" },
+    "SF-M05-002": { "cmp": "CMP-016", "pr": 89, "sha": "50f56aff9cc1e46c927b881f30c249cb9e1955d2" },
+    "SF-M05-003": { "cmp": "CMP-017", "pr": 88, "sha": "8641c756b539492e3f90d2b04c8a9eb1f2192175" },
+    "SF-M05-004": { "cmp": "CMP-029", "pr": 87, "sha": "5c4d8ac700364b8b01fa10a44f8a1b049b3da825" }
+  },
+  "tree_fidelity": { "trees_match": "4/4", "migrations_match": "8/8", "semantic_diff": 0, "changed_files": 196 },
+  "lockfile": {
+    "lines_added": 1191,
+    "lines_removed": 0,
+    "importers_added": 4,
+    "packages_added": 110,
+    "snapshots_added": 110,
+    "existing_entries_changed": 0,
+    "temporal": "1.24.0",
+    "frozen_install": "PASS",
+    "policy_changed": false
+  },
+  "contracts": { "frozen_match": "19/19", "original_13_unchanged": true, "m05_six_unchanged": true, "contracts_diff_files": 0, "ccr_required": false },
+  "root_checks": {
+    "format": "PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "coverage": { "result": "PASS", "files": 188, "tests": 1291, "statements": 85.43, "branches": 75.44, "functions": 90.47, "lines": 88.99 },
+    "contracts_validate": "PASS",
+    "contracts_lock": "PASS",
+    "cdc": "PASS 19",
+    "deps_graph": "PASS 1184 modules",
+    "build": "PASS",
+    "gate_selftests": "PASS 25",
+    "architecture_gates": "PASS 10/10",
+    "migration_lint": "PASS 53",
+    "db_test": "PASS 17",
+    "audit_prod_high": "PASS",
+    "audit_all_moderate": "1 high pre-existing on base (braces, dev-only)",
+    "check_scope": "FAIL pnpm-lock.yaml"
+  },
+  "components": {
+    "CMP-015": { "unit": "125/125", "integration": "27/27" },
+    "CMP-016": { "unit": "136/136", "integration": "19/21", "integration_without_later_migrations": "21/21", "temporal_sdk": "12/12" },
+    "CMP-017": { "unit": "74/74", "integration": "21/21" },
+    "CMP-029": { "unit": "90/90", "integration": "16/16" }
+  },
+  "cross_tenant_leakage": 0,
+  "ci_code_head": {
+    "sha": "2d06259aacd3a8d4abebe48d8b97de63ef952063",
+    "ci": { "run": 37325617264, "result": "FAILURE", "failed_step": "architecture gates / task envelope scope (agent branches only)" },
+    "security": { "run": 37325617379, "result": "SUCCESS" },
+    "developer_platform": { "run": 37325617054, "result": "SUCCESS" },
+    "expected_stitch_lockfile_admission_remaining": false
+  }
+}

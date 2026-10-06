@@ -1,0 +1,407 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-017 Work Queue / Human Task",
+    "version": "0.1.0",
+    "description": "Human-task lifecycle: create, availability, claim, unclaim, reassign, complete, cancel/close, history. Tenant is server-derived (never a path, body or header input). Every protected action is authorized by OPA against the current effective policy (ADR-0005). No named officer in assignment metadata (Constitution #19). Component-local contract; the frozen shape is SF-CON-HUMAN-TASK. Host mount deferred to SF-M05-009."
+  },
+  "paths": {
+    "/v1/tasks": {
+      "post": {
+        "operationId": "createHumanTask",
+        "summary": "Create a task for a workflow human step (SYSTEM actor; OPA TASK_CREATE). Assignment is role + organisation/office + jurisdiction + service scope; any person-identifying field is refused.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["application_id", "assignment"],
+                "properties": {
+                  "application_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "workflow_node_id": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                  },
+                  "assignment": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created"
+          },
+          "403": {
+            "description": "Denied (OPA or tenant)"
+          },
+          "409": {
+            "description": "Duplicate active task for node or idempotency conflict"
+          }
+        }
+      }
+    },
+    "/v1/tasks/available": {
+      "get": {
+        "operationId": "listAvailableHumanTasks",
+        "summary": "OPEN tasks whose assignment criteria the caller currently covers (OPA TASK_LIST)",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available tasks"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}": {
+      "get": {
+        "operationId": "getHumanTask",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task"
+          },
+          "404": {
+            "description": "Not found in the caller tenant"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/history": {
+      "get": {
+        "operationId": "getHumanTaskHistory",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Append-only history with policy_revision per action"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/claim": {
+      "post": {
+        "operationId": "claimHumanTask",
+        "summary": "OPEN -> CLAIMED by the calling principal (runtime record only)",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Claimed"
+          },
+          "403": {
+            "description": "Denied by OPA or assignment resolution"
+          },
+          "409": {
+            "description": "Not OPEN / terminal / stale"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/unclaim": {
+      "post": {
+        "operationId": "unclaimHumanTask",
+        "summary": "CLAIMED -> OPEN. Releasing another principal's claim is OPA action TASK_FORCE_UNCLAIM.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Released"
+          },
+          "403": {
+            "description": "Denied"
+          },
+          "409": {
+            "description": "Not CLAIMED / terminal"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/reassign": {
+      "post": {
+        "operationId": "reassignHumanTask",
+        "summary": "Change assignment criteria; clears any claim; task returns to OPEN. OPA decides for source and target criteria.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["assignment"],
+                "properties": {
+                  "assignment": {
+                    "$ref": "#/components/schemas/Assignment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reassigned"
+          },
+          "403": {
+            "description": "Denied"
+          },
+          "409": {
+            "description": "Unchanged / terminal"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/complete": {
+      "post": {
+        "operationId": "completeHumanTask",
+        "summary": "CLAIMED -> COMPLETED by the claimant. The outcome is an opaque action code; CMP-017 makes no statutory decision.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["outcome"],
+                "properties": {
+                  "outcome": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed"
+          },
+          "403": {
+            "description": "Denied or not the claimant"
+          },
+          "409": {
+            "description": "Not CLAIMED / terminal"
+          }
+        }
+      }
+    },
+    "/v1/tasks/{task_id}/cancel": {
+      "post": {
+        "operationId": "cancelCloseHumanTask",
+        "summary": "OPEN|CLAIMED -> CANCELLED_CLOSED (workflow or case closure). Terminal.",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["outcome"],
+                "properties": {
+                  "outcome": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cancelled/closed"
+          },
+          "403": {
+            "description": "Denied"
+          },
+          "409": {
+            "description": "Already terminal"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Assignment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role_code", "organisation_id", "jurisdiction_id"],
+        "properties": {
+          "role_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "organisation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "office_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "jurisdiction_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "service_scope_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

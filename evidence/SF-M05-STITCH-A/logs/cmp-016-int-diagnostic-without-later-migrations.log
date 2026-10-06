@@ -1,0 +1,13 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/integration/migration.int.test.ts (3 tests) 3411ms
+   ✓ CMP-016 migrations are reversible and ordered (3)
+     ✓ down 2 removes sf_workflow completely and up re-applies cleanly 810ms
+ ✓ test/integration/db-isolation.int.test.ts (18 tests) 695ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  14:41:42
+   Duration  4.50s (tests 95%, transform 4%, import 1%)
+
