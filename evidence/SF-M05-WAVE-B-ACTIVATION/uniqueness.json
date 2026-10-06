@@ -1,0 +1,223 @@
+{
+  "slice": "SF-M05-WAVE-B-ACTIVATION",
+  "parallel_set": [
+    "SF-M05-005",
+    "SF-M05-006",
+    "SF-M05-007",
+    "SF-M05-008"
+  ],
+  "ready_record_parent": "905afad22b2112182ff17095272c7c34de4726a9",
+  "pairwise_overlaps": 0,
+  "classified_overlaps": {
+    "product": 0,
+    "migration": 0,
+    "evidence": 0,
+    "handover": 0
+  },
+  "shared_writable_lockfile_contracts_apps": {
+    "lockfile": false,
+    "contracts": false,
+    "apps": false
+  },
+  "forbidden_writers": 0,
+  "task_handover_byte_identical": {
+    "SF-M05-005": true,
+    "SF-M05-006": true,
+    "SF-M05-007": true,
+    "SF-M05-008": true
+  },
+  "pairs": [
+    {
+      "left": "SF-M05-005",
+      "right": "SF-M05-006",
+      "overlaps": 0,
+      "hits": []
+    },
+    {
+      "left": "SF-M05-005",
+      "right": "SF-M05-007",
+      "overlaps": 0,
+      "hits": []
+    },
+    {
+      "left": "SF-M05-005",
+      "right": "SF-M05-008",
+      "overlaps": 0,
+      "hits": []
+    },
+    {
+      "left": "SF-M05-006",
+      "right": "SF-M05-007",
+      "overlaps": 0,
+      "hits": []
+    },
+    {
+      "left": "SF-M05-006",
+      "right": "SF-M05-008",
+      "overlaps": 0,
+      "hits": []
+    },
+    {
+      "left": "SF-M05-007",
+      "right": "SF-M05-008",
+      "overlaps": 0,
+      "hits": []
+    }
+  ],
+  "overlap_hits": [],
+  "forbidden": [],
+  "contract_locks_count": {
+    "SF-M05-005": 19,
+    "SF-M05-006": 19,
+    "SF-M05-007": 19,
+    "SF-M05-008": 19
+  },
+  "ready_flags": {
+    "SF-M05-005": {
+      "state": "READY",
+      "orchestration_task_state": "READY",
+      "planning_only": false,
+      "implementation_authorized": true,
+      "wave_eligible_now": true,
+      "dispatched": false,
+      "builders_dispatched_this_envelope": false,
+      "certified": false,
+      "not_certified": true,
+      "self_certified": false,
+      "release_certified": false,
+      "g4": false,
+      "g6": false,
+      "ccr_required": false,
+      "frozen_contracts_altered": false,
+      "dispatch_authorized": false,
+      "dispatch_base": null
+    },
+    "SF-M05-006": {
+      "state": "READY",
+      "orchestration_task_state": "READY",
+      "planning_only": false,
+      "implementation_authorized": true,
+      "wave_eligible_now": true,
+      "dispatched": false,
+      "builders_dispatched_this_envelope": false,
+      "certified": false,
+      "not_certified": true,
+      "self_certified": false,
+      "release_certified": false,
+      "g4": false,
+      "g6": false,
+      "ccr_required": false,
+      "frozen_contracts_altered": false,
+      "dispatch_authorized": false,
+      "dispatch_base": null
+    },
+    "SF-M05-007": {
+      "state": "READY",
+      "orchestration_task_state": "READY",
+      "planning_only": false,
+      "implementation_authorized": true,
+      "wave_eligible_now": true,
+      "dispatched": false,
+      "builders_dispatched_this_envelope": false,
+      "certified": false,
+      "not_certified": true,
+      "self_certified": false,
+      "release_certified": false,
+      "g4": false,
+      "g6": false,
+      "ccr_required": false,
+      "frozen_contracts_altered": false,
+      "dispatch_authorized": false,
+      "dispatch_base": null
+    },
+    "SF-M05-008": {
+      "state": "READY",
+      "orchestration_task_state": "READY",
+      "planning_only": false,
+      "implementation_authorized": true,
+      "wave_eligible_now": true,
+      "dispatched": false,
+      "builders_dispatched_this_envelope": false,
+      "certified": false,
+      "not_certified": true,
+      "self_certified": false,
+      "release_certified": false,
+      "g4": false,
+      "g6": false,
+      "ccr_required": false,
+      "frozen_contracts_altered": false,
+      "dispatch_authorized": false,
+      "dispatch_base": null
+    }
+  },
+  "held_off": {
+    "SF-M05-STITCH-B": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "wave_eligible_now": false,
+      "dispatched": false
+    },
+    "SF-M05-009": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "wave_eligible_now": false,
+      "dispatched": false
+    },
+    "SF-M05-INT": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "wave_eligible_now": false,
+      "dispatched": false
+    },
+    "SF-M05-SEC": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "wave_eligible_now": false,
+      "dispatched": false
+    },
+    "SF-M05-EVD": {
+      "state": "PLANNING",
+      "planning_only": true,
+      "implementation_authorized": false,
+      "wave_eligible_now": false,
+      "dispatched": false
+    }
+  },
+  "cg001": {
+    "state": "FROZEN_ON_MAIN",
+    "repository_freeze_effective": true,
+    "existing_frozen": {
+      "count": 13,
+      "result": "MATCH",
+      "hashes_changed": 0,
+      "shared_files_changed": 0
+    },
+    "lock_expected": {
+      "entries": 19,
+      "frozen": 19,
+      "result": "19_FROZEN_HASHES_MATCH",
+      "original_13_unchanged": true
+    },
+    "contract_locks_count": 19,
+    "ccr_required": false
+  },
+  "gate_script": "scripts/gates/cg01_path_uniqueness_gate.py",
+  "gate_unchanged_vs_origin_main": true,
+  "gate_sha256": "ced60e48eb4413caf4f052a14a141716d957b169041bcd46b7c9eded0a1e1d2b",
+  "contracts_lock_unchanged_vs_origin_main": true,
+  "cg01_path_uniqueness_gate_exit": 0,
+  "builders_spawned": "NONE",
+  "dispatch_authorized": false,
+  "dispatch_base": null,
+  "stitch_b": "OFF",
+  "errors": [],
+  "notes": [
+    "gate_sha256=ced60e48eb4413caf4f052a14a141716d957b169041bcd46b7c9eded0a1e1d2b",
+    "gate_bytes_unchanged_vs_origin_main=True"
+  ],
+  "result": "PASS"
+}

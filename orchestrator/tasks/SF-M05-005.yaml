@@ -1,5 +1,7 @@
-# M05 PLANNING envelope — Inspection / Verification Service (Wave B)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# M05 READY envelope — Inspection / Verification Service (Wave B)
+# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G4. Not G6.
+# Wave B READY GRANTED. Builder spawn PENDING later HUMAN WAVE B DISPATCH AUTHORIZATION.
+# base_commit is activation provenance ONLY; not builder dispatch authorization.
 
 task_id: SF-M05-005
 title: Inspection / Verification Service
@@ -22,9 +24,9 @@ privilege_role: sf_cmp018_rw
 schema: sf_inspection
 hard_serial_locks: [LOCK-5]
 depends_on:
-  - SF-M05-STITCH-A on origin/main
+  - SF-M05-STITCH-A MERGED_AND_VERIFIED_ON_MAIN at 905afad22b2112182ff17095272c7c34de4726a9
   - Wave A CMP-015/016/017/029 on main
-  - later orchestrator dispatch record
+  - later HUMAN WAVE B DISPATCH AUTHORIZATION (dispatch_authorized false in this record)
 allowed_write_paths:
   - services/cmp-018-inspection-verification/**
   - db/migrations/*_cmp-018-*.sql
@@ -32,67 +34,90 @@ allowed_write_paths:
   - orchestrator/handovers/SF-M05-005.yaml
 allowed_write_notes:
   - Checklist/observation capture; scheduling metadata (not M09 CMP-056 product)
-  - INT-006 uses M04 evidence/upload/OCR on main plus SIMULATED DigiLocker
+  - Verification is NOT statutory approval; evidence technical acceptance is separate
+  - INT-006 uses M04 evidence/upload/OCR ports on main plus SIMULATED DigiLocker
   - Do not implement CMP-012
+  - Short PG txn + outbox; no external I/O in txn; ENABLE+FORCE RLS; tenant-scoped
   - Do not commit pnpm-lock.yaml
+  - Do not mount apps/api; host mount deferred to SF-M05-009
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
+  - orchestrator/contracts-lock.yaml
   - apps/**
   - services/cmp-012-digilocker/**
   - services/cmp-011-evidence-requirements/**
-wave_eligible_now: false
+wave_eligible_now: true
 serial_after:
   - SF-M05-STITCH-A
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
 base_commit:
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
+  prefix: "905afad2"
+  suffix: 2b2112182ff17095272c7c34de4726a9
+  note: activation provenance ONLY; not builder dispatch authorization
 join_separator: "_"
+ready_record_parent:
+  sha: 905afad22b2112182ff17095272c7c34de4726a9
+  note: STITCH-A MERGED_AND_VERIFIED_ON_MAIN; parent of this Wave B READY record
+dispatch_base_policy:
+  source: HUMAN_WAVE_B_DISPATCH_AUTHORIZATION
+  require_exact_sha: true
+  must_include_wave_b_ready_record: true
+  dispatch_base: null
+  dispatch_authorized: false
 contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
+  - SF-CON-COMMON
+  - SF-CON-CONNECTOR-BINDING
   - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
   - SF-CON-EVENT-ENVELOPE
   - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
   - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-ERROR-CATALOGUE
   - SF-CON-DB-SESSION-CONTEXT
   - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
 
 stop_conditions:
   - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - six M05 FROZEN hashes change required (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
   - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - builder dispatch without uniqueness PASS / Wave B READY merge / later HUMAN WAVE B DISPATCH AUTHORIZATION
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
-  - M06 or M08 start
-  - SMS/email/DigiLocker/payment implementation
+  - STITCH-B / SF-M05-009 / INT / SEC / EVD / M06 / M08 start
+  - SMS/email/DigiLocker/payment implementation (DigiLocker SIMULATED marker only)
   - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
+  - mutate FROZEN contracts or orchestrator/contracts-lock.yaml
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
+  - treat verification as statutory approval
 
 acceptance_tests_planning:
   - Verification state is not statutory approval

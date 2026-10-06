@@ -1,34 +1,35 @@
 # M05 hard serial locks (LOCK-1 … LOCK-9)
 
-PLANNING record only. **Not dispatched. Not CERTIFIED. Not G6.** Implementation OFF. M06/M08 remain OFF.
+Wave B READY control-plane record. **Builders NOT DISPATCHED by this PR. Not CERTIFIED. Not G6.** G4 NOT ISSUED. M06/M08 remain OFF.
 
-Authoritative planning base: `origin/main` prefix `b286ed95` + suffix `6755b936f73bc2856c9db2c68d8ca64c` (post M04 G3 record #82).  
+Authoritative Wave B READY parent: `origin/main` `905afad22b2112182ff17095272c7c34de4726a9` (STITCH-A **MERGED_AND_VERIFIED_ON_MAIN**, PR #95). Envelope `base_commit` prefix `905afad2` + suffix `2b2112182ff17095272c7c34de4726a9` is **activation provenance ONLY**.
+
 ADR-0001 and `specs/build-plan.yaml` version `2.5-adr0001` remain binding.
 
 These locks are **hard serial**. A later envelope must not start until the named predecessor is satisfied on `origin/main` (or an immutable SHA-pinned head where the lock says so).
 
 **Normative topology (wording only; architecture/build-plan unchanged):**  
-PLANNING → SF-M05-CG-001 freeze → Wave A `001∥002∥003∥004` → STITCH-A → Wave B `005∥006∥007∥008` → STITCH-B → `009` → `INT∥SEC` → EVD.  
-Parallel builder sets are Wave A (001–004 under LOCK-3) and Wave B (005–008 under LOCK-5). CG freeze, stitches, host, and EVD remain serial. INT ∥ SEC only after host.
+PLANNING → SF-M05-CG-001 freeze → Wave A `001∥002∥003∥004` **COMPLETE** → STITCH-A **MERGED_AND_VERIFIED** → Wave B `005∥006∥007∥008` **READY** (this package; not dispatched) → STITCH-B **OFF** → `009` **OFF** → `INT∥SEC` **OFF** → EVD **OFF**.  
+Parallel builder sets are Wave A (001–004 under LOCK-3; complete) and Wave B (005–008 under LOCK-5; READY after this activation PR merges). CG freeze, stitches, host, and EVD remain serial. INT ∥ SEC only after host.
 
-| Lock | Gate | May start | Must wait for |
+| Lock | Gate | Status | Must wait for |
 |---|---|---|---|
-| LOCK-1 | Planning merge | Envelope files on `main`; uniqueness/contracts/architecture green | This planning PR merged; **no builder spawn in this slice**; **no freeze in this slice** |
-| LOCK-2 | SF-M05-CG-001 | Contract guardian for **NEW** M05 contracts (`PROPOSED` → freeze later) | LOCK-1; later freeze authorization; CCR+STOP if existing 13 frozen hashes must change |
-| LOCK-3 | Wave A parallel | SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004 only | LOCK-2 freeze **on origin/main**; later orchestrator dispatch record; uniqueness still PASS |
-| LOCK-4 | STITCH-A | SF-M05-STITCH-A (Wave A paths + migrations + `pnpm-lock.yaml`; mechanical/format/lockfile only) | LOCK-3; Wave A heads **immutable**; not concurrent with 001–004 |
-| LOCK-5 | Wave B parallel | SF-M05-005, SF-M05-006, SF-M05-007, SF-M05-008 | LOCK-4; STITCH-A **on origin/main** |
-| LOCK-6 | STITCH-B | SF-M05-STITCH-B (Wave B paths + migrations + `pnpm-lock.yaml`; mechanical only) | Wave B heads immutable; not concurrent with STITCH-A or 005–008 |
-| LOCK-7 | Host | SF-M05-009 sole `apps/api` writer | STITCH-B on `main`; preserve M01–M04 mounts |
-| LOCK-8 | Verifiers | SF-M05-INT ∥ SF-M05-SEC | SF-M05-009 on `main` |
-| LOCK-9 | Evidence | SF-M05-EVD recommend G4 only | INT and SEC; EVD **cannot issue G4**; human/CI later |
+| LOCK-1 | Planning merge | **SATISFIED** | Planning PR merged; uniqueness/contracts/architecture green |
+| LOCK-2 | SF-M05-CG-001 | **SATISFIED** | NEW M05 contracts FROZEN on `origin/main`; 19/19 MATCH |
+| LOCK-3 | Wave A parallel | **SATISFIED** | 001–004 complete as stitched trees on main |
+| LOCK-4 | STITCH-A | **SATISFIED** — STITCH-A **MERGED_AND_VERIFIED_ON_MAIN** SHA `905afad22b2112182ff17095272c7c34de4726a9` | Wave A heads immutable; not concurrent with 001–004 |
+| LOCK-5 | Wave B parallel | **Wave B READY eligible after this activation PR merges**; builders **NOT DISPATCHED** by this PR | LOCK-4 SATISFIED; later HUMAN WAVE B DISPATCH AUTHORIZATION (`dispatch_authorized` still false here) |
+| LOCK-6 | STITCH-B | **OFF** | Wave B heads immutable; not concurrent with STITCH-A or 005–008 |
+| LOCK-7 | Host | **OFF** | STITCH-B on `main`; preserve M01–M04 mounts |
+| LOCK-8 | Verifiers | **OFF** | SF-M05-009 on `main` |
+| LOCK-9 | Evidence | **OFF** | INT and SEC; EVD **cannot issue G4**; human/CI later |
 
 ## Uniqueness
 
-`scripts/gates/cg01_path_uniqueness_gate.py` is **not** weakened and is **not** extended in this planning slice (it remains the CG-01 M02/M03 READY/`dispatched: false` gate). M05 envelopes keep `state: PLANNING` and `dispatched: false`. Wave A and Wave B write paths do not overlap across concurrent lanes (see `docs/planning/M05-ENVELOPES.md`).
+`scripts/gates/cg01_path_uniqueness_gate.py` is **not** weakened (it remains the CG-01 M02/M03 READY/`dispatched: false` gate). Wave B 005–008 keep non-overlapping product/migration/evidence/handover writes. Pairwise overlap must remain 0. Shared writable `pnpm-lock.yaml` / `contracts/**` / `apps/**` among 005–008 is **false**.
 
-`pnpm-lock.yaml`, existing frozen shared contracts, and `orchestrator/contracts-lock.yaml` (13 rows) stay forbidden for builders. STITCH-A/B are the only M05 envelopes allowed to write `pnpm-lock.yaml`, and they never run concurrent with each other.
+`pnpm-lock.yaml`, existing frozen shared contracts, and `orchestrator/contracts-lock.yaml` stay forbidden for Wave B builders. STITCH-B is the only later M05 envelope allowed to write `pnpm-lock.yaml` for Wave B trees, and it never runs concurrent with STITCH-A or 005–008.
 
 ## Dispatch hold
 
-This planning package does **not** dispatch CG freeze, Wave A/B, host, INT, SEC, or EVD. M06/M08 stay OFF. Agents do not self-certify. EVD cannot issue G4.
+This Wave B READY package does **not** dispatch 005–008 builders, STITCH-B, host, INT, SEC, or EVD. `dispatch_authorized: false`. `dispatch_base: null`. Future dispatch source is a **SEPARATE HUMAN WAVE B DISPATCH AUTHORIZATION**. M06/M08 stay OFF. Agents do not self-certify. EVD cannot issue G4.
