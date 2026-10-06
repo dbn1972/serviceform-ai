@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:integration /tmp/wt-SF-M05-STITCH-A-exec/services/cmp-016-workflow-engine
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /tmp/wt-SF-M05-STITCH-A-exec/services/cmp-016-workflow-engine
+
+ ✓ test/integration/db-isolation.int.test.ts (18 tests) 616ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 2271ms
+   ✓ CMP-016 migrations are reversible and ordered (3)
+     ✓ isolated chain: down 2 removes sf_workflow, up re-applies cleanly, combined catalogue unchanged 1911ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  06:33:17
+   Duration  3.26s (tests 93%, transform 5%, import 2%)
+
+JUNIT report written to /tmp/wt-SF-M05-STITCH-A-exec/services/cmp-016-workflow-engine/evidence/junit/integration.xml

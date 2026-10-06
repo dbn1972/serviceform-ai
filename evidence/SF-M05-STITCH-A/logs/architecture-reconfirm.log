@@ -1,0 +1,60 @@
+                  name                  
+----------------------------------------
+ 1759540150000_cmp-015-application-case
+ 1759540150001_cmp-015-outbox
+ 1759540160000_cmp-016-workflow-engine
+ 1759540160001_cmp-016-outbox
+ 1759540170000_cmp-017-work-queue-tasks
+ 1759540170001_cmp-017-outbox
+ 1759540400000_cmp-029-sla-escalation
+ 1759540400001_cmp-029-outbox
+(8 rows)
+
+       nspname       |        relname         | rls | force |    owner    
+---------------------+------------------------+-----+-------+-------------
+ sf_application_case | application_case       | t   | t     | sf_migrator
+ sf_application_case | case_request_reference | t   | t     | sf_migrator
+ sf_application_case | case_transition        | t   | t     | sf_migrator
+ sf_application_case | idempotency_record     | t   | t     | sf_migrator
+ sf_application_case | inbox_event            | t   | t     | sf_migrator
+ sf_application_case | inbox_event_platform   | f   | f     | sf_migrator
+ sf_application_case | outbox_event           | t   | t     | sf_migrator
+ sf_application_case | outbox_event_platform  | f   | f     | sf_migrator
+ sf_sla              | idempotency_record     | t   | t     | sf_migrator
+ sf_sla              | inbox_event            | t   | t     | sf_migrator
+ sf_sla              | inbox_event_platform   | f   | f     | sf_migrator
+ sf_sla              | outbox_event           | t   | t     | sf_migrator
+ sf_sla              | outbox_event_platform  | f   | f     | sf_migrator
+ sf_sla              | sla_calendar           | t   | t     | sf_migrator
+ sf_sla              | sla_clock              | t   | t     | sf_migrator
+ sf_sla              | sla_clock_event        | t   | t     | sf_migrator
+ sf_sla              | sla_policy             | t   | t     | sf_migrator
+ sf_workflow         | idempotency_record     | t   | t     | sf_migrator
+ sf_workflow         | inbox_event            | t   | t     | sf_migrator
+ sf_workflow         | inbox_event_platform   | f   | f     | sf_migrator
+ sf_workflow         | migration_plan         | t   | t     | sf_migrator
+ sf_workflow         | outbox_event           | t   | t     | sf_migrator
+ sf_workflow         | outbox_event_platform  | f   | f     | sf_migrator
+ sf_workflow         | workflow_definition    | t   | t     | sf_migrator
+ sf_workflow         | workflow_instance      | t   | t     | sf_migrator
+ sf_workflow         | workflow_request       | t   | t     | sf_migrator
+ sf_workflow         | workflow_version       | t   | t     | sf_migrator
+(27 rows)
+
+   rolname    | rolsuper | rolbypassrls | rolcanlogin 
+--------------+----------+--------------+-------------
+ sf_app       | f        | f            | f
+ sf_cmp015_rw | f        | f            | f
+ sf_cmp016_rw | f        | f            | f
+ sf_cmp017_rw | f        | f            | f
+ sf_cmp029_rw | f        | f            | f
+ sf_migrator  | f        | f            | f
+(6 rows)
+
+       nspname       | schema_owner 
+---------------------+--------------
+ sf_sla              | sf_migrator
+ sf_application_case | sf_migrator
+ sf_workflow         | sf_migrator
+(3 rows)
+

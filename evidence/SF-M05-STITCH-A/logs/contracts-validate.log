@@ -1,0 +1,43 @@
+
+> serviceform-ai@ contracts:validate /tmp/wt-SF-M05-STITCH-A-exec
+> pnpm --filter @serviceform/contracts run validate
+
+
+> @serviceform/contracts@0.0.0 validate /tmp/wt-SF-M05-STITCH-A-exec/packages/contracts
+> tsx scripts/validate-contracts.ts
+
+PASS valid/audit-event.json -> audit-event
+PASS valid/authz-decision-input.json -> authz-decision-input
+PASS valid/authz-decision-output.json -> authz-decision-output
+PASS valid/connector-binding.local.json -> connector-binding
+PASS valid/db-session-context.json -> db-session-context
+PASS valid/error-response.json -> error-response
+PASS valid/event-envelope.json -> event-envelope
+PASS valid/idempotency-record.json -> idempotency-record
+PASS valid/isolation-declaration.json -> isolation-declaration
+PASS valid/outbox-record.json -> outbox-record
+PASS valid/request-context.citizen.json -> request-context
+PASS valid/request-context.integration.json -> request-context
+PASS valid/request-context.officer.json -> request-context
+PASS valid/simulation-marker.json -> simulation-marker
+PASS invalid/audit-event.missing-cell.json -> audit-event
+PASS invalid/audit-event.override-without-reason.json -> audit-event
+PASS invalid/authz-decision-input.environment-personal-data.json -> authz-decision-input
+PASS invalid/authz-decision-output.pii-leak.json -> authz-decision-output
+PASS invalid/connector-binding.production-simulated.json -> connector-binding
+PASS invalid/connector-binding.sandbox-without-secret.json -> connector-binding
+PASS invalid/connector-binding.secret-value.json -> connector-binding
+PASS invalid/connector-binding.simulated-in-uat.json -> connector-binding
+PASS invalid/connector-binding.tenant-omitted.json -> connector-binding
+PASS invalid/db-session-context.empty-tenant.json -> db-session-context
+PASS invalid/db-session-context.unknown-setting.json -> db-session-context
+PASS invalid/error-response.stack-trace.json -> error-response
+PASS invalid/event-envelope.camel-case.json -> event-envelope
+PASS invalid/idempotency-record.completed-without-response.json -> idempotency-record
+PASS invalid/isolation-declaration.tenant-without-rls.json -> isolation-declaration
+PASS invalid/outbox-record.camel-case-envelope.json -> outbox-record
+PASS invalid/outbox-record.dead-letter-without-error.json -> outbox-record
+PASS invalid/request-context.bad-trace.json -> request-context
+PASS invalid/request-context.integration-without-purpose.json -> request-context
+
+12 contracts, 0 failure(s)

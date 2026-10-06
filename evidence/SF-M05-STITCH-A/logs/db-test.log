@@ -1,0 +1,17 @@
+
+> serviceform-ai@ db:test /tmp/wt-SF-M05-STITCH-A-exec
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /tmp/wt-SF-M05-STITCH-A-exec/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /tmp/wt-SF-M05-STITCH-A-exec/db
+
+
+ Test Files  3 passed (3)
+      Tests  17 passed (17)
+   Start at  06:33:03
+   Duration  7.36s (tests 98%, import 1%, transform 1%)
+

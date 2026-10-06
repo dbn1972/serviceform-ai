@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="90" failures="0" errors="0" time="0.115021696">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-06T06:32:13.162Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.050930903">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-SLA-CLOCK (FROZEN) conformance of CMP-029 projections &gt; every clock status the service can produce validates against the frozen schema" time="0.00787668">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-SLA-CLOCK (FROZEN) conformance of CMP-029 projections &gt; the frozen valid examples are accepted and the frozen invalid examples are refused by CMP-029 rules" time="0.001451805">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-SLA-CLOCK (FROZEN) conformance of CMP-029 projections &gt; a client-supplied clock value is not a member of any request schema" time="0.001778308">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-029 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.017566454">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-029 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.012985183">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-029 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.000630129">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-029 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000690442">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-029 component contracts &gt; isolation declarations validate and match the migration (every table FORCE RLS)" time="0.002261405">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; contains no SMS, e-mail, push or other notification provider implementation (M06)" time="0.00199036">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; the only notification surface is the CMP-025 port, carrying no recipient or channel" time="0.000288345">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; has no path to case/application state: no reference to CMP-015 schemas, tables or code" time="0.001125899">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; only touches its own schema in SQL and never mounts on the API host" time="0.000318217">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; runs no network call inside the authoritative transaction" time="0.000157104">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no case-state writes, no host mount &gt; role and privilege posture in the migration: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000432619">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/calendar.test.ts" timestamp="2026-10-06T06:32:13.166Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.013470533">
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; spans windows and weekends for working minutes" time="0.001326268">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; skips a published holiday (Mon 2026-10-12)" time="0.000239797">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; lands exactly on the window end when the duration fits exactly" time="0.000126717">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; starts counting at the next window when started outside working time" time="0.000220225">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; calendar-minute basis ignores the working calendar" time="0.000120671">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; applies the calendar UTC offset to local windows and holidays" time="0.00015427">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; rejects non-positive durations and exhausted horizons" time="0.008290815">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; measures elapsed working time and is the inverse of addDuration" time="0.000364876">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="working-calendar arithmetic (deterministic) &gt; is reproducible and unaffected by a later calendar version" time="0.000830508">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; accepts a well-formed calendar" time="0.000235898">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;utc_offset_minutes&quot;:9999}" time="0.000109667">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;working_weekdays&quot;:[]}" time="0.000043124">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;working_weekdays&quot;:[1,1]}" time="0.000030155">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;working_weekdays&quot;:[8]}" time="0.000024634">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;window_start_minute&quot;:600,&quot;window_end_minute&quot;:600}" time="0.000064595">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; rejects {&quot;holidays&quot;:[&quot;2026-02-30&quot;]}" time="0.000039991">
+        </testcase>
+        <testcase classname="test/unit/calendar.test.ts" name="calendar validation &gt; checks ISO dates strictly" time="0.000063705">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/clock-domain.test.ts" timestamp="2026-10-06T06:32:13.168Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.008697283">
+        <testcase classname="test/unit/clock-domain.test.ts" name="start &gt; computes the deadline on the server from the pinned policy and calendar" time="0.001457625">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; pauses with an allowed reason, preserving remaining working time" time="0.000376951">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; rejects a reason not listed by the published SLA" time="0.000237277">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; rejects pause of a clock that is not running or whose deadline elapsed" time="0.000319985">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; rejects resume of a clock that is not paused" time="0.000159791">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; resume recomputes the deadline from remaining time and the pinned calendar" time="0.000203226">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="pause / resume &gt; time spent paused does not consume the SLA" time="0.000524706">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="complete &gt; requires the published completion anchor and a resumed clock" time="0.000254509">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="complete &gt; a late completion keeps the breach record" time="0.000493197">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="evaluate: warning, breach, escalation &gt; emits one approaching-breach warning inside the warning window" time="0.000337968">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="evaluate: warning, breach, escalation &gt; breaches at the deadline and escalates level by level on the policy schedule" time="0.000387427">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="evaluate: warning, breach, escalation &gt; is idempotent: re-evaluating the same instant yields no further transitions" time="0.000210694">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; replays to the same final state every time" time="0.000339983">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; verifies a genuine history against the pinned policy and calendar" time="0.000276282">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; detects a silently edited deadline" time="0.000603826">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; detects deadline edits on a non-resume transition and a broken status chain" time="0.000340983">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; rejects replay of an empty history or one that does not start with START" time="0.000559368">
+        </testcase>
+        <testcase classname="test/unit/clock-domain.test.ts" name="auditable history and deterministic replay &gt; a later calendar version never alters a pinned clock" time="0.000251438">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/sla-api.test.ts" timestamp="2026-10-06T06:32:13.169Z" hostname="cursor" tests="41" failures="0" errors="0" skipped="0" time="0.041922977">
+        <testcase classname="test/unit/sla-api.test.ts" name="happy path: start, pause, resume, complete &gt; runs the full clock lifecycle on server time with auditable history" time="0.007701254">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="happy path: start, pause, resume, complete &gt; serves the application-scoped read (Eng GET /applications/{id}/sla)" time="0.001836017">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="happy path: start, pause, resume, complete &gt; emits SLA domain events and audit through the outbox only" time="0.001282255">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: wrong tenant &gt; another tenant cannot read, pause, resume, complete or evaluate a clock (404, no leakage)" time="0.001807799">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: wrong tenant &gt; another tenant cannot start a clock on a policy it does not own" time="0.000711228">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: wrong tenant &gt; refuses caller-asserted tenant identity headers before any work" time="0.000440914">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: wrong tenant &gt; requires a server-resolved tenant context" time="0.000249438">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: wrong tenant &gt; denies when the policy decision point denies, errors, or is unavailable (fail closed)" time="0.000519288">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; rejects pause when the reason is not allowed by the published SLA, and audits the denial" time="0.001316873">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; rejects pause for a policy that publishes no pause reasons" time="0.000875097">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; a caller cannot assert that the pause is allowed" time="0.000849709">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; rejects resume of a clock that is not paused" time="0.001044703">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; rejects repeated pause and resume after resume" time="0.002204134">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: pause and resume rules &gt; refuses to pause once the deadline has elapsed (pause is not retroactive)" time="0.000639915">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects now in a command body" time="0.000626313">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects clock_now in a command body" time="0.000498528">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects occurred_at in a command body" time="0.000473946">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects deadline_at in a command body" time="0.000473287">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects timestamp in a command body" time="0.000433044">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects effective_from in a command body" time="0.00041925">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects started_at in a command body" time="0.000438991">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects client time on start, resume, complete, evaluate and calendar/policy creation" time="0.000712401">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; rejects client time in query parameters" time="0.000501089">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: client-supplied time is never authoritative &gt; computes every deadline from the injected server clock" time="0.000675954">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="negative: the clock cannot mutate case state &gt; has no case/application state dependency and emits only SLA events" time="0.00101643">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="idempotency &gt; replays the stored response for the same key and body without a second effect" time="0.000884389">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="idempotency &gt; rejects a reused key with a different request and a missing/invalid key" time="0.000870966">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="idempotency &gt; rejects a second clock for the same application stage" time="0.000744446">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; rejects unknown, retired and anchor-mismatched policies and unknown routes" time="0.001076777">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; fails explicitly when the pinned calendar version is unavailable" time="0.000689726">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; versions calendars and policies; published versions never change" time="0.000705155">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; validates /v1/sla-calendars" time="0.000172795">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; validates /v1/sla-calendars" time="0.000099168">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; validates /v1/sla-policies" time="0.000079127">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="start preconditions and configuration &gt; validates escalation schedules" time="0.000461366">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="breach, escalation and the CMP-025 port &gt; breaches and escalates on the policy schedule and requests notification via the port only" time="0.001462954">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="breach, escalation and the CMP-025 port &gt; keeps SLA state when the notification port fails" time="0.000729212">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="breach, escalation and the CMP-025 port &gt; does not send notifications from within the transaction" time="0.000762432">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="breach, escalation and the CMP-025 port &gt; a paused clock never breaches" time="0.000751794">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="INT-009 deficiency pause/resume port &gt; pauses and resumes through the port with the same policy checks" time="0.001297361">
+        </testcase>
+        <testcase classname="test/unit/sla-api.test.ts" name="INT-009 deficiency pause/resume port &gt; refuses an unpublished pause reason and a missing clock" time="0.00148939">
+        </testcase>
+    </testsuite>
+</testsuites>
