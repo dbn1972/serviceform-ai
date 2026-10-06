@@ -1,0 +1,72 @@
+{
+  "entities": [
+    {
+      "entity": "sf_inspection.inspection",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.inspection_history",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.checklist_item",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.observation",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.evidence_ref",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.finding",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.idempotency_record",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.outbox_event",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.inbox_event",
+      "owner_component": "CMP-018",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_inspection.outbox_event_platform",
+      "owner_component": "CMP-018",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-018 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_inspection.inbox_event_platform",
+      "owner_component": "CMP-018",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-018 consumes no tenant-less events."
+    }
+  ]
+}

@@ -1,7 +1,6 @@
-# M05 READY envelope — Inspection / Verification Service (Wave B)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G4. Not G6.
-# Wave B READY GRANTED. Builder spawn PENDING later HUMAN WAVE B DISPATCH AUTHORIZATION.
-# base_commit is activation provenance ONLY; not builder dispatch authorization.
+# SF-M05-005 builder handover (CMP-018). Not the task envelope.
+# HUMAN WAVE B DISPATCH AUTHORIZATION consumed. CANDIDATE_COMPLETE after local validation.
+# Not MERGED. Not CERTIFIED. Not G4. Not G6. STITCH-B not started.
 
 task_id: SF-M05-005
 title: Inspection / Verification Service
@@ -51,12 +50,13 @@ wave_eligible_now: true
 serial_after:
   - SF-M05-STITCH-A
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -77,8 +77,9 @@ dispatch_base_policy:
   source: HUMAN_WAVE_B_DISPATCH_AUTHORIZATION
   require_exact_sha: true
   must_include_wave_b_ready_record: true
-  dispatch_base: null
-  dispatch_authorized: false
+  dispatch_base: ca57057a794739c03d0a46886577e25adf041815
+  dispatch_authorized: true
+actual_branch: cursor/m05-inspection-sf-m05-005-da43
 contract_locks:
   - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION

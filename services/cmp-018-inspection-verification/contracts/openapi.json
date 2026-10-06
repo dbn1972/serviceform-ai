@@ -1,0 +1,396 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-018 Inspection / Verification",
+    "version": "0.1.0",
+    "description": "Reusable inspection request, scheduling metadata, assignment, checklist, observations, evidence refs, findings, verification result, re-inspection. Verification is NOT statutory approval. Tenant is server-derived. Host mount deferred to SF-M05-009. CMP-012 is not implemented."
+  },
+  "paths": {
+    "/v1/inspections": {
+      "post": {
+        "operationId": "createInspection",
+        "summary": "Create inspection request",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "created"
+          }
+        }
+      }
+    },
+    "/v1/inspections/available": {
+      "get": {
+        "operationId": "listAvailableInspections",
+        "summary": "List REQUESTED/SCHEDULED inspections matching assignment",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}": {
+      "get": {
+        "operationId": "getInspection",
+        "summary": "Get inspection",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/detail": {
+      "get": {
+        "operationId": "getInspectionDetail",
+        "summary": "Checklist, observations, evidence, findings",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/history": {
+      "get": {
+        "operationId": "getInspectionHistory",
+        "summary": "History",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/schedule": {
+      "post": {
+        "operationId": "scheduleInspection",
+        "summary": "Record scheduling metadata (not CMP-056)",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/reassign": {
+      "post": {
+        "operationId": "reassignInspection",
+        "summary": "Reassign by role/office/jurisdiction",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/start": {
+      "post": {
+        "operationId": "startInspection",
+        "summary": "Start inspection (runtime claim)",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/checklist": {
+      "post": {
+        "operationId": "recordChecklist",
+        "summary": "Record checklist item",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/observations": {
+      "post": {
+        "operationId": "recordObservation",
+        "summary": "Record observation",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/evidence": {
+      "post": {
+        "operationId": "attachEvidence",
+        "summary": "Attach evidence/OCR/DigiLocker SIMULATED refs",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/findings": {
+      "post": {
+        "operationId": "recordFinding",
+        "summary": "Record finding",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/result": {
+      "post": {
+        "operationId": "recordResult",
+        "summary": "Record non-statutory verification result",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/complete": {
+      "post": {
+        "operationId": "completeInspection",
+        "summary": "Complete inspection; not statutory approval",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/cancel": {
+      "post": {
+        "operationId": "cancelInspection",
+        "summary": "Cancel inspection",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    },
+    "/v1/inspections/{inspection_id}/reinspect": {
+      "post": {
+        "operationId": "reinspect",
+        "summary": "Open a re-inspection of a completed inspection",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "201": {
+            "description": "created"
+          },
+          "403": {
+            "description": "denied"
+          }
+        }
+      }
+    }
+  }
+}
