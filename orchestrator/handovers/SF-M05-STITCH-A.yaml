@@ -1,5 +1,5 @@
 # M05 READY — Wave A mechanical stitch and lockfile (LOCK-4)
-# READY control plane. implementation_authorized: true. Execution NOT dispatched. Not CERTIFIED. Not G4. Not G6.
+# CANDIDATE execution record. Not CERTIFIED. Not G4. Not G6. Do not merge.
 # Integrate exact immutable CMP-015/#90 + CMP-016/#89 + CMP-017/#88 + CMP-029/#87 trees + migrations; root lockfile regenerate only.
 # execution_base is NOT set in this envelope. Separate human STITCH-A execution authorization must supply the exact SHA.
 
@@ -145,9 +145,9 @@ serial_after:
 builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_FROZEN_PENDING_CI
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
@@ -171,8 +171,9 @@ execution_base_policy:
   must_include_ready_record: true
   require_exact_sha: true
   envelope_sha_is_not_execution_authorization: true
-  execution_base: null
-  execution_authorized: false
+  execution_base: df028c71035d584601e1c6a860c75d7bb7d2bd22
+  execution_authorized: true
+stitch_executed: true
 contract_locks:
   - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION

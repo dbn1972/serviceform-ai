@@ -1,0 +1,151 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-016 Workflow Engine Events",
+    "version": "0.1.0",
+    "description": "Envelope is SF-CON-EVENT-ENVELOPE v1; payloads below are the envelope data member. Workflow sequencing events only: CMP-016 never publishes case state (CMP-015 owns it)."
+  },
+  "channels": {
+    "sf.workflow.events.v1": {
+      "address": "sf.workflow.events.v1",
+      "messages": {
+        "WorkflowVersionPublished": {
+          "payload": {
+            "$ref": "#/components/schemas/WorkflowVersionPublished"
+          }
+        },
+        "WorkflowVersionRetired": {
+          "payload": {
+            "$ref": "#/components/schemas/WorkflowVersionRetired"
+          }
+        },
+        "WorkflowInstanceStarted": {
+          "payload": {
+            "$ref": "#/components/schemas/WorkflowInstanceStarted"
+          }
+        },
+        "WorkflowRequestRecorded": {
+          "payload": {
+            "$ref": "#/components/schemas/WorkflowRequestRecorded"
+          }
+        },
+        "WorkflowInstanceMigrated": {
+          "payload": {
+            "$ref": "#/components/schemas/WorkflowInstanceMigrated"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WorkflowVersionPublished": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["definition_id", "version_id", "version_no", "graph_hash", "origin"],
+        "properties": {
+          "definition_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version_no": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "graph_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "origin": {
+            "type": "string",
+            "enum": ["STUDIO", "BPMN_IMPORT"]
+          }
+        }
+      },
+      "WorkflowVersionRetired": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version_id", "graph_hash"],
+        "properties": {
+          "version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "graph_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      },
+      "WorkflowInstanceStarted": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["application_id", "workflow_version_id", "graph_hash"],
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workflow_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "graph_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      },
+      "WorkflowRequestRecorded": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["application_id", "request_kind", "outcome", "workflow_version_id"],
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "request_kind": {
+            "type": "string",
+            "enum": ["WITHDRAWAL", "CANCELLATION"]
+          },
+          "outcome": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          },
+          "workflow_version_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "WorkflowInstanceMigrated": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["application_id", "migration_id", "from_version_id", "to_version_id"],
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "migration_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "from_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "to_version_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "entity": "sf_workflow.workflow_definition",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.workflow_version",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.migration_plan",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.workflow_instance",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.workflow_request",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.idempotency_record",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.outbox_event",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.inbox_event",
+    "owner_component": "CMP-016",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_workflow.outbox_event_platform",
+    "owner_component": "CMP-016",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_workflow.inbox_event_platform",
+    "owner_component": "CMP-016",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]

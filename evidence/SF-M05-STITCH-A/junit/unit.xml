@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="136" failures="0" errors="0" time="0.274505458">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-06T06:32:04.553Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.020053183">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-WORKFLOW-MODEL conformance (FROZEN, read-only) &gt; consumes the frozen schema whose hash matches orchestrator/contracts-lock.yaml" time="0.002310933">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-WORKFLOW-MODEL conformance (FROZEN, read-only) &gt; every canonical model this component emits validates against the frozen schema" time="0.010880362">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-WORKFLOW-MODEL conformance (FROZEN, read-only) &gt; agrees with the frozen schema on every frozen example" time="0.001691469">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-WORKFLOW-MODEL conformance (FROZEN, read-only) &gt; human-task assignment emitted for CMP-017 conforms to SF-CON-HUMAN-TASK (no named officer)" time="0.00114689">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-COMMAND-TRANSITION consumption (CMP-015 commit before Temporal) &gt; accepts the frozen committed example as a workflow signal" time="0.000685484">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-COMMAND-TRANSITION consumption (CMP-015 commit before Temporal) &gt; rejects both frozen invalid examples" time="0.000410295">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="error catalogue (FROZEN SF-CON-ERROR-CATALOGUE) &gt; local codes mirror the frozen catalogue" time="0.001139422">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local event contract &gt; asyncapi lists every domain event type emitted to sf.workflow.events.v1" time="0.00045761">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/bpmn.test.ts" timestamp="2026-10-06T06:32:04.554Z" hostname="cursor" tests="26" failures="0" errors="0" skipped="0" time="0.026189636">
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; exports a non-executable BPMN view and round-trips to the same canonical graph" time="0.007773693">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; round-trips the FROZEN valid canonical example" time="0.003021895">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; infers kinds from standard BPMN elements when sf:kind is absent" time="0.000853268">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects named-officer assignment via humanPerformer" time="0.00036927">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects named-officer assignment via potentialOwner" time="0.00017996">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects named-officer assignment via camunda:assignee" time="0.000288626">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects named-officer assignment via zeebe:candidateUsers" time="0.000281643">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct scriptTask (no second runtime)" time="0.000164898">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct conditionExpression (no second runtime)" time="0.000374919">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct extensionElements (no second runtime)" time="0.000174748">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct engine attribute (no second runtime)" time="0.000163854">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct timer expression (no second runtime)" time="0.000088656">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects engine-executable construct callActivity (no second runtime)" time="0.000065187">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: refuses DTDs, entities and processing instructions (XXE)" time="0.000211769">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects malformed XML (unclosed)" time="0.00036289">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects malformed XML (mismatched)" time="0.000071155">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects malformed XML (bad attribute)" time="0.000046818">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects malformed XML (duplicate attribute)" time="0.000041141">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects malformed XML (stray lt)" time="0.000038506">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: comment handling is linear and cannot hide markup" time="0.008325768">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects markup characters inside attribute values and missing attribute separators" time="0.000202102">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; NEGATIVE: rejects more than one root element" time="0.000071775">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; rejects oversized or overly deep documents" time="0.000703138">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; rejects documents outside the profile" time="0.00036125">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; imported graphs are still validated as canonical graphs (assignment required)" time="0.000125163">
+        </testcase>
+        <testcase classname="test/unit/bpmn.test.ts" name="BPMN 2.0 import/export interoperability profile (Constitution #33) &gt; ignores comments, documentation and diagram interchange" time="0.000388901">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/constitution.test.ts" timestamp="2026-10-06T06:32:04.556Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.010454795">
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; NEGATIVE: no cross-component authoritative SQL - every schema reference is sf_workflow" time="0.001982727">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; NEGATIVE: no import of a sibling component, the API host or a database driver" time="0.003601474">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; Temporal workflow sandbox module is deterministic and executes only the canonical model" time="0.000517986">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; NEGATIVE: Temporal cannot update CMP-015 state - no port or effect can write case state" time="0.000978737">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; NEGATIVE: no named-officer, jurisdiction, tenant or service branching in source" time="0.000757641">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; no LLM / AI gateway path and no BPMN execution engine dependency" time="0.000780289">
+        </testcase>
+        <testcase classname="test/unit/constitution.test.ts" name="Architecture Constitution guards for CMP-016 (static) &gt; migrations: FORCE RLS on every tenant table, NOLOGIN role, no SUPERUSER/BYPASSRLS grant" time="0.000795033">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/interpreter.test.ts" timestamp="2026-10-06T06:32:04.556Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="0.020879531">
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; starts deterministically and waits at a rule gate (CMP-008 port)" time="0.00472864">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; human task assignment carries role + org + office + jurisdiction + scope, no principal" time="0.001631944">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; NEGATIVE: advance after a failed / uncommitted CMP-015 commit is rejected and state is unchanged" time="0.004044519">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; NEGATIVE: signal pinned to another workflow version is rejected (no silent repoint)" time="0.001749017">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; rejects an outcome the pinned graph does not offer at an active node" time="0.001489951">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; is idempotent on redelivered committed signals (at-least-once outbox)" time="0.000601562">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; parallel fork/join, timer and port nodes; completes only after both branches" time="0.000811166">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; ignores a timer that is no longer armed" time="0.000501357">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; rule gate routes on the deterministic rule outcome; unexpected results are rejected" time="0.000758909">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; withdrawal: request -&gt; review (case unchanged) -&gt; rejected review returns to scrutiny" time="0.000516807">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; withdrawal commit by CMP-015 terminates the instance and releases tasks and timers" time="0.000514316">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; cancellation review without assignment waits for a CMP-015 committed outcome" time="0.000437514">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; decision routes on the committed outcome, with a default edge" time="0.000363145">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; faults deterministically when a decision has no matching edge" time="0.000237862">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; decision with a rule ref evaluates through the rule port" time="0.000186004">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; faults when a join can no longer be satisfied" time="0.000278231">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; a fork whose branch ends immediately still waits for sibling branches" time="0.000170408">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; rejects ambiguous committed outcomes unless a node is named" time="0.000292805">
+        </testcase>
+        <testcase classname="test/unit/interpreter.test.ts" name="workflow interpreter: Temporal sequences, CMP-015 owns state &gt; safe boundary: only commit or timer waits, no partial joins" time="0.00033591">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-06T06:32:04.557Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="0.066121538">
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; publishes through maker-checker approval and emits outbox + audit in the same transaction" time="0.009027668">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: a published version cannot be silently mutated through the service" time="0.007186646">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; publication fails closed without approval, on same-principal approval and on concurrent edits" time="0.003284491">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: named officer assignment is rejected before anything is stored" time="0.000831902">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; starts Temporal only after the instance binding commits" time="0.00406035">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: a failed instance commit never starts Temporal" time="0.001967032">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: imported BPMN drafts cannot start an execution" time="0.003776022">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: advance after a failed CMP-015 commit is rejected before DB or Temporal" time="0.001050355">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; delivers a committed CMP-015 transition: read check, Temporal signal, then inbox record" time="0.002849844">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: committed transition for another pin, tenant or unknown application is rejected" time="0.00371822">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; CROSS_TENANT_LEAKAGE=0: tenant B cannot see or drive tenant A workflow records" time="0.002781014">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; withdrawal request is a CMP-016 record (case untouched), committed before Temporal, idempotent" time="0.004843291">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: requests are offered only where the pinned workflow allows (Constitution #17)" time="0.003243005">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: a failed request commit never signals Temporal" time="0.001714082">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; explicit migration: approved plan, safe boundary, DB repoint committed before Temporal" time="0.004081653">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; NEGATIVE: migration outside a safe boundary is refused" time="0.002511526">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; deny-by-default authorization stops every command before the database" time="0.000550635">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; validates identifiers and keys at the boundary" time="0.004459387">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="WorkflowService: domain command -&gt; commit -&gt; outbox -&gt; Temporal (never reversed) &gt; progress projection stops once the instance is terminal" time="0.001728216">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/temporal-sdk.test.ts" timestamp="2026-10-06T06:32:04.559Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.012716624">
+        <testcase classname="test/unit/temporal-sdk.test.ts" name="TemporalSdkClient (production TemporalClientPort) fails closed &gt; starts only the canonical type on the configured queue with REJECT_DUPLICATE + FAIL" time="0.002088225">
+        </testcase>
+        <testcase classname="test/unit/temporal-sdk.test.ts" name="TemporalSdkClient (production TemporalClientPort) fails closed &gt; rejects other workflow types, queues, ids and signal names before any SDK call" time="0.000728394">
+        </testcase>
+        <testcase classname="test/unit/temporal-sdk.test.ts" name="TemporalSdkClient (production TemporalClientPort) fails closed &gt; maps SDK failures to fail-closed platform errors" time="0.000388626">
+        </testcase>
+        <testcase classname="test/unit/temporal-sdk.test.ts" name="canonical activities &gt; bounds timer durations resolved from SLA policy" time="0.005533552">
+        </testcase>
+        <testcase classname="test/unit/temporal-sdk.test.ts" name="canonical activities &gt; runs as the SYSTEM workload identity and records only the sequencing projection" time="0.002919168">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/temporal.test.ts" timestamp="2026-10-06T06:32:04.559Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.058191387">
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; exposes no operation that writes CMP-015 case state" time="0.001893704">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; starts a published canonical version on Temporal with a deterministic workflow id" time="0.013510833">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; NEGATIVE: imported BPMN cannot execute as an alternate runtime" time="0.012770455">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; NEGATIVE: refuses cross-tenant start/advance" time="0.002678603">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; NEGATIVE: advance before the domain commit is rejected and never reaches Temporal" time="0.001241189">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; NEGATIVE: no Temporal network call while an authoritative transaction is open" time="0.004994981">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="Temporal sequencing adapter: never authoritative case state &gt; withTenantTx fails closed without tenant context" time="0.000476173">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="canonical Temporal workflow body (deterministic host) &gt; runs the pinned graph end-to-end through ports, timers and committed signals" time="0.003765087">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="canonical Temporal workflow body (deterministic host) &gt; withdrawal commit terminates and cancels open work" time="0.003523148">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="canonical Temporal workflow body (deterministic host) &gt; applies an approved migration signal at a safe boundary and rejects a bad one" time="0.011003066">
+        </testcase>
+        <testcase classname="test/unit/temporal.test.ts" name="canonical Temporal workflow body (deterministic host) &gt; activity effects map only to sibling ports (no case-state effect exists)" time="0.000731175">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/validate.test.ts" timestamp="2026-10-06T06:32:04.560Z" hostname="cursor" tests="33" failures="0" errors="0" skipped="0" time="0.020651936">
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; accepts the FROZEN valid example" time="0.002473229">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects the FROZEN bpmn-as-runtime example (BPMN is not a second runtime)" time="0.00037999">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects the FROZEN named-officer example (Constitution #19)" time="0.000338179">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects named assignee field officer_id" time="0.000468116">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects named assignee field assignee" time="0.000173733">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects named assignee field user_id" time="0.000213218">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects named assignee field email" time="0.000204112">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects named assignee field principal_id" time="0.000168129">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; requires role + organisation + jurisdiction on HUMAN_TASK" time="0.000740981">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects NODE_ID_DUPLICATE" time="0.00037348">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects EXACTLY_ONE_START_REQUIRED" time="0.000295054">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects EDGE_UNKNOWN_NODE" time="0.000209412">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects EDGE_SELF_LOOP" time="0.000206137">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects END_HAS_OUTGOING" time="0.000345503">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects PORT_NODE_MUST_BE_PORT_ONLY" time="0.000138886">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects PORT_ONLY_ON_NON_PORT_NODE" time="0.000188055">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects PARALLEL_EDGES_UNCONDITIONAL" time="0.000184176">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects CHOICE_MULTIPLE_DEFAULTS" time="0.00017285">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects CHOICE_OUTCOME_DUPLICATE" time="0.000198355">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects REQUEST_REQUIRES_REVIEW" time="0.000175241">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects RULE_GATE_RULE_REF_REQUIRED" time="0.000174495">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects ROUTING_RULE_REF_AMBIGUOUS" time="0.000149419">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects NODE_UNREACHABLE" time="0.00020838">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects DEAD_END_NODE" time="0.000216557">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects START_SINGLE_OUTGOING" time="0.000147129">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects UNKNOWN_FIELD" time="0.00008446">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects NODE_KIND_INVALID" time="0.00007572">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects EDGE_OUTCOME_INVALID" time="0.000106263">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects a cycle with no path to END" time="0.00013496">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; bounds graph size and shape" time="0.000146156">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; computes a stable graph_hash independent of key order and verifies integrity" time="0.005999313">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; sandbox-safe SHA-256 matches node:crypto exactly" time="0.001757668">
+        </testcase>
+        <testcase classname="test/unit/validate.test.ts" name="canonical workflow model validation (SF-CON-WORKFLOW-MODEL) &gt; rejects model envelope tampering" time="0.002295576">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/versioning-migration.test.ts" timestamp="2026-10-06T06:32:04.562Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.039246828">
+        <testcase classname="test/unit/versioning-migration.test.ts" name="workflow versions: immutable once published (Constitution #8) &gt; drafts can be revised; published versions cannot be mutated" time="0.006423261">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="workflow versions: immutable once published (Constitution #8) &gt; publication is maker-checker: author cannot approve own version" time="0.000885577">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="workflow versions: immutable once published (Constitution #8) &gt; publication rejects a draft whose stored graph no longer matches its hash" time="0.000732476">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="workflow versions: immutable once published (Constitution #8) &gt; retire is PUBLISHED -&gt; RETIRED only; retired versions are not executable" time="0.001291781">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="workflow versions: immutable once published (Constitution #8) &gt; only published, hash-verified versions mint the executable capability" time="0.008602098">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="in-flight migration: explicit, approved, safe boundary (Constitution #35) &gt; validates mapping, approval and maker-checker" time="0.015882694">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="in-flight migration: explicit, approved, safe boundary (Constitution #35) &gt; refuses to migrate outside a safe boundary" time="0.001950691">
+        </testcase>
+        <testcase classname="test/unit/versioning-migration.test.ts" name="in-flight migration: explicit, approved, safe boundary (Constitution #35) &gt; re-pins waiting tokens and re-issues tasks/timers for renamed nodes" time="0.001825184">
+        </testcase>
+    </testsuite>
+</testsuites>

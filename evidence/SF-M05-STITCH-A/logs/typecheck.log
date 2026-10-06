@@ -1,0 +1,97 @@
+
+> serviceform-ai@ typecheck /tmp/wt-SF-M05-STITCH-A-exec
+> pnpm -r --workspace-concurrency=2 run typecheck
+
+Scope: 42 of 43 workspace projects
+db typecheck$ tsc --noEmit -p tsconfig.json
+packages/contracts typecheck$ tsc --noEmit -p tsconfig.json
+packages/contracts typecheck: Done
+packages/observability typecheck$ tsc --noEmit -p tsconfig.json
+db typecheck: Done
+packages/ui-ux4g typecheck$ tsc --noEmit -p tsconfig.json
+packages/observability typecheck: Done
+services/cmp-015-application-case typecheck$ tsc --noEmit -p tsconfig.json
+packages/ui-ux4g typecheck: Done
+services/cmp-016-workflow-engine typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-015-application-case typecheck: Done
+services/cmp-017-work-queue-tasks typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-017-work-queue-tasks typecheck: Done
+services/cmp-029-sla-escalation typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-016-workflow-engine typecheck: Done
+services/cmp-029-sla-escalation typecheck: Done
+apps/web-admin typecheck$ next typegen && tsc --noEmit -p tsconfig.json
+apps/web-citizen typecheck$ next typegen && tsc --noEmit -p tsconfig.json
+apps/web-citizen typecheck: Generating route types...
+apps/web-admin typecheck: Generating route types...
+apps/web-citizen typecheck: ✓ Types generated successfully
+apps/web-admin typecheck: ✓ Types generated successfully
+apps/web-citizen typecheck: Done
+apps/web-officer typecheck$ next typegen && tsc --noEmit -p tsconfig.json
+apps/web-admin typecheck: Done
+apps/web-studio typecheck$ next typegen && tsc --noEmit -p tsconfig.json
+apps/web-officer typecheck: Generating route types...
+apps/web-officer typecheck: ✓ Types generated successfully
+apps/web-studio typecheck: Generating route types...
+apps/web-studio typecheck: ✓ Types generated successfully
+apps/web-officer typecheck: Done
+packages/audit-client typecheck$ tsc --noEmit -p tsconfig.json
+apps/web-studio typecheck: Done
+packages/connector-sdk typecheck$ tsc --noEmit -p tsconfig.json
+packages/audit-client typecheck: Done
+packages/outbox typecheck$ tsc --noEmit -p tsconfig.json
+packages/connector-sdk typecheck: Done
+packages/security typecheck$ tsc --noEmit -p tsconfig.json
+packages/outbox typecheck: Done
+packages/storage typecheck$ tsc --noEmit -p tsconfig.json
+packages/security typecheck: Done
+services/cmp-001-catalogue typecheck$ tsc --noEmit -p tsconfig.json
+packages/storage typecheck: Done
+services/cmp-002-tenant-organisation typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-001-catalogue typecheck: Done
+services/cmp-003-jurisdiction typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-002-tenant-organisation typecheck: Done
+services/cmp-005-citizen-profile typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-003-jurisdiction typecheck: Done
+services/cmp-008-rules typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-005-citizen-profile typecheck: Done
+services/cmp-009-dynamic-forms typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-008-rules typecheck: Done
+services/cmp-011-evidence-requirements typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-009-dynamic-forms typecheck: Done
+services/cmp-014-document-intelligence typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-011-evidence-requirements typecheck: Done
+services/cmp-030-consent-privacy typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-014-document-intelligence typecheck: Done
+services/cmp-033-metadata typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-030-consent-privacy typecheck: Done
+services/cmp-034-master-data typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-033-metadata typecheck: Done
+services/cmp-036-api-gateway typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-036-api-gateway typecheck: Done
+services/cmp-039-ai-gateway typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-034-master-data typecheck: Done
+services/cmp-047-observability typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-047-observability typecheck: Done
+services/cmp-051-maker-checker typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-039-ai-gateway typecheck: Done
+services/cmp-052-versioning typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-051-maker-checker typecheck: Done
+services/cmp-053-localization typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-052-versioning typecheck: Done
+services/cmp-053-localization typecheck: Done
+services/cmp-004-identity-access typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-013-document-upload typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-013-document-upload typecheck: Done
+services/cmp-031-audit-ledger typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-004-identity-access typecheck: Done
+services/cmp-032-storage typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-032-storage typecheck: Done
+services/cmp-037-integration-hub typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-031-audit-ledger typecheck: Done
+services/cmp-038-event-bus typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-038-event-bus typecheck: Done
+services/cmp-048-security-platform typecheck$ tsc --noEmit -p tsconfig.json
+services/cmp-037-integration-hub typecheck: Done
+services/cmp-048-security-platform typecheck: Done
+apps/api typecheck$ tsc --noEmit -p tsconfig.json
+apps/api typecheck: Done

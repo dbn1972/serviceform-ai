@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-015/events/request-status-changed/v1",
+  "title": "ApplicationRequestStatusChanged data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id",
+    "application_id",
+    "kind",
+    "from_status",
+    "to_status",
+    "authz_decision_id",
+    "authz_policy_revision"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "application_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["WITHDRAWAL", "CANCELLATION"]
+    },
+    "from_status": {
+      "type": "string",
+      "enum": ["SUBMITTED", "UNDER_REVIEW"]
+    },
+    "to_status": {
+      "type": "string",
+      "enum": ["UNDER_REVIEW", "REJECTED", "EXPIRED", "COMMITTED"]
+    },
+    "authz_decision_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "authz_policy_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "decision_maker": {
+      "type": "string",
+      "enum": ["HUMAN", "RULES"]
+    }
+  }
+}

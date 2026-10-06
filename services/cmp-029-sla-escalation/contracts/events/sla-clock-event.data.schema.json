@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SLA clock event data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "clock_id",
+    "application_id",
+    "stage_code",
+    "sla_policy_version_id",
+    "calendar_version_id",
+    "clock_status",
+    "operation",
+    "deadline_at",
+    "escalation_level",
+    "server_computed_deadline",
+    "notification_port"
+  ],
+  "properties": {
+    "clock_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "application_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "stage_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "sla_policy_version_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "calendar_version_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "clock_status": {
+      "enum": ["NOT_STARTED", "RUNNING", "PAUSED", "COMPLETED", "BREACHED"]
+    },
+    "operation": {
+      "enum": ["START", "PAUSE", "RESUME", "COMPLETE", "WARN", "BREACH", "ESCALATE"]
+    },
+    "deadline_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "escalation_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "reason_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "breach_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "server_computed_deadline": {
+      "const": true
+    },
+    "notification_port": {
+      "const": "M06_CMP025"
+    }
+  }
+}
