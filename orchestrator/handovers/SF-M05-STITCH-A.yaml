@@ -1,5 +1,6 @@
-# M05 PLANNING envelope — Wave A mechanical stitch and lockfile (LOCK-4)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# M05 READY — Wave A mechanical stitch and lockfile (LOCK-4)
+# READY control plane. implementation_authorized: true. Execution NOT dispatched. Not CERTIFIED. Not G4. Not G6.
+# Integrate exact immutable CMP-015/#90 + CMP-016/#89 + CMP-017/#88 + CMP-029/#87 trees + migrations; root lockfile regenerate only.
 
 task_id: SF-M05-STITCH-A
 title: M05 Wave A mechanical stitch and lockfile
@@ -17,11 +18,12 @@ parallel_group: M05-STITCH-A
 hard_serial_locks: [LOCK-4]
 must_not_run_concurrent_with: [SF-M05-STITCH-B, SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
 depends_on:
-  - SF-M05-001 immutable head
-  - SF-M05-002 immutable head
-  - SF-M05-003 immutable head
-  - SF-M05-004 immutable head
+  - SF-M05-001 immutable head 2d68e37c3e01d78129f1604b02fe98bae4048489 (PR #90)
+  - SF-M05-002 immutable head 9249ecb7ec2c3e33c0aff139c1496cf7b80c7ce9 (PR #89)
+  - SF-M05-003 immutable head 8641c756b539492e3f90d2b04c8a9eb1f2192175 (PR #88)
+  - SF-M05-004 immutable head 5c4d8ac700364b8b01fa10a44f8a1b049b3da825 (PR #87)
   - LOCK-3 complete
+  - scope gate PR #92 merged on actual_stitch_base
 allowed_write_paths:
   - services/cmp-015-application-case/**
   - db/migrations/*_cmp-015-*.sql
@@ -35,21 +37,101 @@ allowed_write_paths:
   - evidence/SF-M05-STITCH-A/**
   - orchestrator/handovers/SF-M05-STITCH-A.yaml
 allowed_write_notes:
-  - Mechanical/format/lockfile only; no semantic redesign of Wave A components
-  - Admit Wave A workspace importers; do not weaken frozen-lockfile CI
+  - Component paths are for integrating the four exact immutable builder trees only; no semantic redesign
+  - Mechanical/format/lockfile only; admit Wave A workspace importers; do not weaken frozen-lockfile CI
+  - Serial after Wave A immutable heads; not concurrent with SF-M05-001..004 or SF-M05-STITCH-B
   - Wave A trees only; do not touch Wave B services
+  - Do NOT merge builder PRs #87/#88/#89/#90; copy/integrate exact SHA-pinned trees
+  - Do NOT reuse, amend, rebase or merge stale PR #91
 explicit_cannot:
-  - semantic redesign of Wave A component source
-  - edit existing 13 frozen shared contracts or mutate their lock hashes
+  - semantic redesign of CMP-015 / CMP-016 / CMP-017 / CMP-029 component source
+  - modify contracts/**, apps/**, other services/**, or existing migrations outside Wave A globs
+  - edit contracts/** or orchestrator/contracts-lock.yaml or mutate any of the 19 lock hashes
+  - invent new dependencies or broaden lockfile refresh/upgrades
+  - weaken frozen-lockfile / supply-chain controls (minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml)
+  - modify scripts/gates/** (including check_scope.py and cg01_path_uniqueness_gate.py)
   - self-certify
 read_only_paths:
-  - contracts/shared/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
   - apps/**
-  - scripts/gates/cg01_path_uniqueness_gate.py
+  - scripts/gates/**
+  - .npmrc
+  - pnpm-workspace.yaml
   - services/cmp-018-inspection-verification/**
   - services/cmp-019-deficiency/**
   - services/cmp-027-grievance-feedback/**
   - services/cmp-028-appeal-review/**
+stitch_rule:
+  must:
+    - start from actual_stitch_base (exact SHA; not from #91 or any builder branch)
+    - copy/integrate exact immutable CMP-015 tree + migrations from SF-M05-001 / PR #90 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-016 tree + migrations from SF-M05-002 / PR #89 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-017 tree + migrations from SF-M05-003 / PR #88 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-029 tree + migrations from SF-M05-004 / PR #87 at frozen_inputs SHA
+    - regenerate only the root pnpm-lock.yaml (admit four Wave A workspace importers)
+    - preserve byte fidelity of materialized trees and migrations versus frozen_inputs (formatting / mechanical reconciliation only)
+    - run combined validation on the stitched tree (install --frozen-lockfile, format, lint, typecheck, unit, contract, Postgres integration, architecture gates, contracts-lock 19/19)
+    - create STITCH-A evidence under evidence/SF-M05-STITCH-A/**
+  must_not:
+    - merge builder PRs #87 / #88 / #89 / #90
+    - reuse, amend, rebase or merge stale PR #91
+    - change CMP-015 / CMP-016 / CMP-017 / CMP-029 semantics or redesign
+    - modify contracts/**, orchestrator/contracts-lock.yaml, apps/**, other services/**, or migrations outside Wave A globs
+    - invent new deps or alter canonical resolutions beyond admitting the four importers and their builder-declared exact pins
+    - broaden lockfile refresh or upgrade existing resolutions
+    - weaken frozen-lockfile / supply-chain controls
+    - self-certify
+  semantic_conflict: STOP and return to owning builder
+lockfile_governance:
+  root_lockfile_authorized: true
+  basis:
+    - agent_role is integration_agent
+    - allowed_write_paths contains the exact entry pnpm-lock.yaml
+    - pnpm-lock.yaml is not matched by read_only_paths
+  scope_gate_pr: 92
+  scope_gate_merge_commit: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
+  check_scope_modified: false
+  branch_name_privilege: false
+  nested_lockfiles_permitted: false
+lockfile_expectation:
+  importers_to_admit:
+    - services/cmp-015-application-case
+    - services/cmp-016-workflow-engine
+    - services/cmp-017-work-queue-tasks
+    - services/cmp-029-sla-escalation
+  builder_declared_external_pins:
+    cmp_015: none
+    cmp_016:
+      - "@temporalio/activity@1.24.0"
+      - "@temporalio/client@1.24.0"
+      - "@temporalio/common@1.24.0"
+      - "@temporalio/worker@1.24.0"
+      - "@temporalio/workflow@1.24.0"
+      - "@temporalio/testing@1.24.0 (devDependency)"
+    cmp_017: none
+    cmp_029: none
+  notes:
+    - "@temporalio/* is absent from pnpm-lock.yaml at actual_stitch_base; admitting CMP-016 requires new resolutions for exactly these builder-declared pins (not invented)"
+    - SF-M05-002 handover reports existing locked pg-cloudflare@1.4.1 and @next/swc-* fail minimumReleaseAge on non-frozen resolution; resolve without weakening policy or STOP
+    - Reuse canonical resolutions; no broad refresh/upgrades
+    - Do not alter minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml
+frozen_inputs:
+  SF-M05-001: 2d68e37c3e01d78129f1604b02fe98bae4048489
+  SF-M05-002: 9249ecb7ec2c3e33c0aff139c1496cf7b80c7ce9
+  SF-M05-003: 8641c756b539492e3f90d2b04c8a9eb1f2192175
+  SF-M05-004: 5c4d8ac700364b8b01fa10a44f8a1b049b3da825
+frozen_input_prs:
+  SF-M05-001: 90
+  SF-M05-002: 89
+  SF-M05-003: 88
+  SF-M05-004: 87
+stale_attempt:
+  pr: 91
+  head_prefix: "2135940"
+  base_prefix: 6e9f0481
+  predates_scope_gate_pr_92: true
+  reusable: false
 wave_eligible_now: false
 serial_after:
   - SF-M05-001
@@ -58,50 +140,67 @@ serial_after:
   - SF-M05-004
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
+actual_stitch_base: 20a2ce68c71d66daaec128a0ee866c1ab0ef2a0f
 base_commit:
+  prefix: 20a2ce68
+  suffix: c71d66daaec128a0ee866c1ab0ef2a0f
+historical_planning_base:
+  note: PLANNING-era base only; NOT executable. Executable base is actual_stitch_base.
   prefix: b286ed95
   suffix: 6755b936f73bc2856c9db2c68d8ca64c
 join_separator: "_"
 contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
+  - SF-CON-COMMON
+  - SF-CON-CONNECTOR-BINDING
   - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
   - SF-CON-EVENT-ENVELOPE
   - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
   - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-ERROR-CATALOGUE
   - SF-CON-DB-SESSION-CONTEXT
   - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
 
 stop_conditions:
-  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - FROZEN contract change required for any of the 19 locked contracts (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
-  - dependency on unmerged sibling M05 code as source of truth
+  - dependency on unmerged sibling M05 code as source of truth (except exact frozen_inputs SHA trees for copy/integrate)
+  - semantic conflict with immutable builder trees → STOP and return to owning builder
+  - start from any base other than actual_stitch_base
+  - reuse, amend, rebase or merge stale PR #91
+  - merge builder PRs #87 / #88 / #89 / #90
+  - lockfile resolution requires weakening supply-chain policy
   - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
+  - Wave B (SF-M05-005..008), SF-M05-009, INT, SEC, EVD start
   - M06 or M08 start
   - SMS/email/DigiLocker/payment implementation
-  - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
+  - weaken cg01_path_uniqueness_gate.py or check_scope.py
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime

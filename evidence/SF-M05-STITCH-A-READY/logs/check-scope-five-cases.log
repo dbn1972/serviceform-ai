@@ -1,0 +1,33 @@
+### CASE 1-root-lockfile (expect ALLOW): pnpm-lock.yaml
+INFO  [scope] 1 changed file(s) checked against SF-M05-STITCH-A
+PASS [scope] 0 error(s), 0 warning(s)
+exit=0 result=ALLOW AS_EXPECTED
+
+### CASE 2-wave-a-trees-migrations-evidence-handover (expect ALLOW): services/cmp-015-application-case/src/index.ts db/migrations/1759540160000_cmp-016-workflow-engine.sql services/cmp-017-work-queue-tasks/package.json services/cmp-029-sla-escalation/src/clock.ts evidence/SF-M05-STITCH-A/EVIDENCE.md orchestrator/handovers/SF-M05-STITCH-A.yaml
+INFO  [scope] 6 changed file(s) checked against SF-M05-STITCH-A
+PASS [scope] 0 error(s), 0 warning(s)
+exit=0 result=ALLOW AS_EXPECTED
+
+### CASE 3-contracts-and-lock (expect REFUSE): contracts/shared/schemas/audit-event.schema.json orchestrator/contracts-lock.yaml
+INFO  [scope] 2 changed file(s) checked against SF-M05-STITCH-A
+ERROR [scope] contracts/shared/schemas/audit-event.schema.json: read-only for SF-M05-STITCH-A
+ERROR [scope] orchestrator/contracts-lock.yaml: read-only for SF-M05-STITCH-A
+FAIL [scope] 2 error(s), 0 warning(s)
+exit=1 result=REFUSE AS_EXPECTED
+
+### CASE 4-apps-and-wave-b (expect REFUSE): apps/api/src/app.ts services/cmp-018-inspection-verification/package.json
+INFO  [scope] 2 changed file(s) checked against SF-M05-STITCH-A
+ERROR [scope] apps/api/src/app.ts: read-only for SF-M05-STITCH-A
+ERROR [scope] services/cmp-018-inspection-verification/package.json: read-only for SF-M05-STITCH-A
+FAIL [scope] 2 error(s), 0 warning(s)
+exit=1 result=REFUSE AS_EXPECTED
+
+### CASE 5-nested-lockfile-gates-supply-chain (expect REFUSE): services/cmp-016-workflow-engine/pnpm-lock.yaml scripts/gates/check_scope.py pnpm-workspace.yaml .npmrc
+INFO  [scope] 4 changed file(s) checked against SF-M05-STITCH-A
+ERROR [scope] services/cmp-016-workflow-engine/pnpm-lock.yaml: nested lockfiles are not permitted; only the root pnpm-lock.yaml exists
+ERROR [scope] scripts/gates/check_scope.py: read-only for SF-M05-STITCH-A
+ERROR [scope] pnpm-workspace.yaml: read-only for SF-M05-STITCH-A
+ERROR [scope] .npmrc: read-only for SF-M05-STITCH-A
+FAIL [scope] 4 error(s), 0 warning(s)
+exit=1 result=REFUSE AS_EXPECTED
+
