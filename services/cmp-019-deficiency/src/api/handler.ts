@@ -9,7 +9,6 @@ import { isUuid } from '../domain/uuid.js';
 import { Cmp019Error, detail, mapPgError } from '../errors.js';
 import {
   assertNoClientTime,
-  asRecord,
   validateCloseInput,
   validateEmptyInput,
   validateOpenInput,
@@ -78,10 +77,20 @@ const ROUTES: Route[] = [
     return s.get(ctx, pathUuid(p.params, 'deficiency_id'));
   }),
   route('POST', '/v1/deficiencies/:deficiency_id/response', 'respondToDeficiency', (s, ctx, p) =>
-    s.respond(ctx, pathUuid(p.params, 'deficiency_id'), validateRespondInput(p.body), requireIdem(p.idem)),
+    s.respond(
+      ctx,
+      pathUuid(p.params, 'deficiency_id'),
+      validateRespondInput(p.body),
+      requireIdem(p.idem),
+    ),
   ),
   route('POST', '/v1/deficiencies/:deficiency_id/close', 'closeDeficiency', (s, ctx, p) =>
-    s.close(ctx, pathUuid(p.params, 'deficiency_id'), validateCloseInput(p.body), requireIdem(p.idem)),
+    s.close(
+      ctx,
+      pathUuid(p.params, 'deficiency_id'),
+      validateCloseInput(p.body),
+      requireIdem(p.idem),
+    ),
   ),
   route(
     'GET',

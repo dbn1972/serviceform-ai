@@ -1,6 +1,10 @@
 import type { AuthorizationPort } from '../../src/authz.js';
 import type { ContextResolver } from '../../src/context.js';
-import type { CaseCommand, CaseCommandPort, CaseCommandResult } from '../../src/ports/case-command-port.js';
+import type {
+  CaseCommand,
+  CaseCommandPort,
+  CaseCommandResult,
+} from '../../src/ports/case-command-port.js';
 import type {
   DeficiencyNotificationRequest,
   NotificationPort,

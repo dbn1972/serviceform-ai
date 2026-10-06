@@ -80,7 +80,8 @@ function requireRef(value: unknown, pointer: string): string {
 
 function optionalDue(value: unknown): string | null {
   if (value === undefined || value === null) return null;
-  if (typeof value !== 'string' || Number.isNaN(Date.parse(value))) bad('/response_due_at', 'DUE_AT_INVALID');
+  if (typeof value !== 'string' || Number.isNaN(Date.parse(value)))
+    bad('/response_due_at', 'DUE_AT_INVALID');
   return new Date(value).toISOString();
 }
 
@@ -190,7 +191,8 @@ export function validateRespondInput(body: unknown): RespondInput {
 export function validateCloseInput(body: unknown): CloseInput {
   const rec = asRecord(body);
   assertNoClientTime(rec, 'body');
-  for (const key of Object.keys(rec)) if (key !== 'close_reason_code') bad(`/${key}`, 'UNKNOWN_FIELD');
+  for (const key of Object.keys(rec))
+    if (key !== 'close_reason_code') bad(`/${key}`, 'UNKNOWN_FIELD');
   return { close_reason_code: requireCode(rec['close_reason_code'], '/close_reason_code') };
 }
 

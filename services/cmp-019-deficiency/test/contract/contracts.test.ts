@@ -6,7 +6,14 @@ import { describe, expect, it } from 'vitest';
 import { ERROR_CATALOGUE_SUBSET } from '../../src/errors.js';
 import { DOMAIN_EVENT_TYPES, TOPIC_DOMAIN } from '../../src/outbox.js';
 import { ROUTE_DESCRIPTORS } from '../../src/api/handler.js';
-import { APPLICATION_ID, ACTOR_CITIZEN, ctxFor, OPEN_BODY, RESPOND_BODY, TENANT_A } from '../doubles/fixtures.js';
+import {
+  APPLICATION_ID,
+  ACTOR_CITIZEN,
+  ctxFor,
+  OPEN_BODY,
+  RESPOND_BODY,
+  TENANT_A,
+} from '../doubles/fixtures.js';
 import { makeHarness } from '../doubles/harness.js';
 
 const here = dirname(fileURLToPath(import.meta.url));

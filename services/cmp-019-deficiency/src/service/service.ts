@@ -11,7 +11,10 @@ import { nextStatus } from '../domain/model.js';
 import { Cmp019Error, detail } from '../errors.js';
 import { envelopeOf, TOPIC_DOMAIN, type DomainEventType } from '../outbox.js';
 import type { CaseCommandPort } from '../ports/case-command-port.js';
-import type { NotificationPort, DeficiencyNotificationRequest } from '../ports/notification-port.js';
+import type {
+  NotificationPort,
+  DeficiencyNotificationRequest,
+} from '../ports/notification-port.js';
 import type { SlaClockPort } from '../ports/sla-clock-port.js';
 import type {
   DeficiencyRepository,
@@ -50,7 +53,13 @@ interface PortWork {
     body: Parameters<CaseCommandPort['executeCommand']>[2];
     idempotencyKey: string;
   };
-  sla?: { kind: 'pause' | 'resume'; applicationId: string; stage: string; reason: string; key: string };
+  sla?: {
+    kind: 'pause' | 'resume';
+    applicationId: string;
+    stage: string;
+    reason: string;
+    key: string;
+  };
   notification?: DeficiencyNotificationRequest;
 }
 
@@ -73,7 +82,11 @@ const NOTIFY_BY_OP: Record<'OPEN' | 'RESPOND' | 'CLOSE', DeficiencyNotificationR
   CLOSE: 'DEFICIENCY_CLOSED',
 };
 
-export function noticeView(row: NoticeRow, items: ItemRow[], evidence: EvidenceRow[]): Record<string, unknown> {
+export function noticeView(
+  row: NoticeRow,
+  items: ItemRow[],
+  evidence: EvidenceRow[],
+): Record<string, unknown> {
   return {
     deficiency_id: row.deficiency_id,
     application_id: row.application_id,
@@ -253,7 +266,10 @@ export class DeficiencyService {
   async open(ctx: TenantContext, input: OpenInput, idem: Idempotency): Promise<CommandResult> {
     this.assertActor(ctx, ['OFFICER']);
     await this.guard(ctx, DEFICIENCY_ACTIONS.open, input.application_id);
-    if (input.response_due_at !== null && Date.parse(input.response_due_at) <= this.deps.clock().getTime()) {
+    if (
+      input.response_due_at !== null &&
+      Date.parse(input.response_due_at) <= this.deps.clock().getTime()
+    ) {
       throw new Cmp019Error('SF-SYS-003', detail('DUE_AT_NOT_FUTURE', '/response_due_at'));
     }
     return this.idempotent(ctx, idem, async (tx, now) => {
@@ -365,7 +381,8 @@ export class DeficiencyService {
       const items = await tx.listItems(deficiencyId);
       const known = new Set(items.map((i) => i.item_code));
       for (const code of input.provided_item_codes) {
-        if (!known.has(code)) throw new Cmp019Error('SF-SYS-003', detail('UNKNOWN_ITEM', '/provided_item_codes'));
+        if (!known.has(code))
+          throw new Cmp019Error('SF-SYS-003', detail('UNKNOWN_ITEM', '/provided_item_codes'));
       }
       const nowIso = now.toISOString();
       const row: NoticeRow = {
@@ -397,7 +414,15 @@ export class DeficiencyService {
       }));
       for (const e of evidence) await tx.insertEvidence(e);
       await tx.appendHistory(
-        this.history(ctx, row, existing.aggregate_version + 1, 'RESPOND', existing.status, nowIso, null),
+        this.history(
+          ctx,
+          row,
+          existing.aggregate_version + 1,
+          'RESPOND',
+          existing.status,
+          nowIso,
+          null,
+        ),
       );
       const eventId = await this.emit(tx, ctx, row, EVENT_BY_OP.RESPOND, 'RESPOND');
       await appendAudit(tx, ctx, {
@@ -538,7 +563,11 @@ export class DeficiencyService {
       const body = [];
       for (const row of rows) {
         body.push(
-          noticeView(row, await tx.listItems(row.deficiency_id), await tx.listEvidence(row.deficiency_id)),
+          noticeView(
+            row,
+            await tx.listItems(row.deficiency_id),
+            await tx.listEvidence(row.deficiency_id),
+          ),
         );
       }
       return { status: 200, body: { deficiencies: body } };

@@ -107,8 +107,11 @@ describe('CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011)', () => 
     );
     expect(t1).toEqual(['NOTICE_A']);
     expect(t1).not.toContain(CANARY);
-    const none = await asTenant(h.rt, null, OFFICER, async (c) =>
-      (await c.query(`SELECT notice_code FROM sf_deficiency.deficiency_notice`)).rows,
+    const none = await asTenant(
+      h.rt,
+      null,
+      OFFICER,
+      async (c) => (await c.query(`SELECT notice_code FROM sf_deficiency.deficiency_notice`)).rows,
     );
     expect(none).toEqual([]);
   });

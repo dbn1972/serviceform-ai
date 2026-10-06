@@ -38,10 +38,7 @@ export function authzInput(
   };
 }
 
-export async function authorize(
-  port: AuthorizationPort,
-  input: AuthzDecisionInput,
-): Promise<void> {
+export async function authorize(port: AuthorizationPort, input: AuthzDecisionInput): Promise<void> {
   if (
     input.subject.tenant_id === null ||
     input.resource.tenant_id === null ||

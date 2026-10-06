@@ -48,9 +48,9 @@ describe('CMP-019 deficiency lifecycle', () => {
     const listed = await h.call('GET', `/v1/applications/${APPLICATION_ID}/deficiencies`);
     expect((listed.body as Body).deficiencies).toHaveLength(1);
     const mem = h.repo.tenant(TENANT_A);
-    expect(mem.outbox.filter((e) => e.topic === TOPIC_DOMAIN).map((e) => e.envelope.event_type)).toEqual(
-      ['DeficiencyOpened', 'DeficiencyResponded', 'DeficiencyClosed'],
-    );
+    expect(
+      mem.outbox.filter((e) => e.topic === TOPIC_DOMAIN).map((e) => e.envelope.event_type),
+    ).toEqual(['DeficiencyOpened', 'DeficiencyResponded', 'DeficiencyClosed']);
   });
 
   it('resumes SLA when an officer closes an unanswered notice', async () => {
@@ -71,9 +71,14 @@ describe('CMP-019 deficiency lifecycle', () => {
     expect(replay.status).toBe(201);
     expect((replay.body as Body).deficiency_id).toBe((first.body as Body).deficiency_id);
     expect(h.slaClock.pauses).toHaveLength(1);
-    const conflict = await h.call('POST', '/v1/deficiencies', { ...OPEN_BODY, notice_code: 'OTHER' }, {
-      key: 'idem-open-0001',
-    });
+    const conflict = await h.call(
+      'POST',
+      '/v1/deficiencies',
+      { ...OPEN_BODY, notice_code: 'OTHER' },
+      {
+        key: 'idem-open-0001',
+      },
+    );
     expect(conflict.status).toBe(409);
     expect((conflict.body as Body).error_code).toBe('SF-APP-002');
   });
@@ -90,7 +95,10 @@ describe('CMP-019 deficiency lifecycle', () => {
     });
     expect(header.status).toBe(403);
 
-    const timed = await h.call('POST', '/v1/deficiencies', { ...OPEN_BODY, opened_at: '2026-01-01T00:00:00Z' });
+    const timed = await h.call('POST', '/v1/deficiencies', {
+      ...OPEN_BODY,
+      opened_at: '2026-01-01T00:00:00Z',
+    });
     expect(timed.status).toBe(400);
     expect((timed.body as Body).details[0].code).toBe('CLIENT_TIME_NOT_AUTHORITATIVE');
 

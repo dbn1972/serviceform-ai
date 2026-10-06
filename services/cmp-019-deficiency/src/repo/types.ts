@@ -1,8 +1,4 @@
-import type {
-  DeficiencyOperation,
-  DeficiencyStatus,
-  ItemStatus,
-} from '../domain/model.js';
+import type { DeficiencyOperation, DeficiencyStatus, ItemStatus } from '../domain/model.js';
 import type { EventEnvelope, RequestContext } from '../types.js';
 
 export interface NoticeRow {

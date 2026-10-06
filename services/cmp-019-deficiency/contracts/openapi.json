@@ -38,7 +38,10 @@
                   "reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
                   "notice_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
                   "instruction_ref": { "type": "string", "minLength": 1, "maxLength": 200 },
-                  "sla_pause_reason_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+                  "sla_pause_reason_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
                   "sla_stage_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
                   "response_due_at": { "type": "string", "format": "date-time" },
                   "case_expected_state": { "type": "string" },

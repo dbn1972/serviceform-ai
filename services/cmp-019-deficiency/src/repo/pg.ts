@@ -188,10 +188,10 @@ class PgTx implements DeficiencyTx {
   }
 
   async getNotice(id: string): Promise<NoticeRow | undefined> {
-    const r = await this.c.query(SELECT_NOTICE + ' WHERE tenant_id = $1 AND deficiency_id = $2 FOR UPDATE', [
-      this.tenantId,
-      id,
-    ]);
+    const r = await this.c.query(
+      SELECT_NOTICE + ' WHERE tenant_id = $1 AND deficiency_id = $2 FOR UPDATE',
+      [this.tenantId, id],
+    );
     const row = r.rows[0];
     return row ? toNotice(row) : undefined;
   }
@@ -208,7 +208,8 @@ class PgTx implements DeficiencyTx {
 
   async listByApplication(applicationId: string): Promise<NoticeRow[]> {
     const r = await this.c.query(
-      SELECT_NOTICE + ' WHERE tenant_id = $1 AND application_id = $2 ORDER BY opened_at, deficiency_id',
+      SELECT_NOTICE +
+        ' WHERE tenant_id = $1 AND application_id = $2 ORDER BY opened_at, deficiency_id',
       [this.tenantId, applicationId],
     );
     return r.rows.map(toNotice);

@@ -139,7 +139,9 @@ class MemoryTx implements DeficiencyTx {
 
   listByApplication(applicationId: string): Promise<NoticeRow[]> {
     return Promise.resolve(
-      [...this.d.notices.values()].filter((n) => n.application_id === applicationId).map((n) => ({ ...n })),
+      [...this.d.notices.values()]
+        .filter((n) => n.application_id === applicationId)
+        .map((n) => ({ ...n })),
     );
   }
 
@@ -151,13 +153,16 @@ class MemoryTx implements DeficiencyTx {
   markItemsProvided(deficiencyId: string, codes: string[]): Promise<void> {
     const set = new Set(codes);
     for (const item of this.d.items) {
-      if (item.deficiency_id === deficiencyId && set.has(item.item_code)) item.item_status = 'PROVIDED';
+      if (item.deficiency_id === deficiencyId && set.has(item.item_code))
+        item.item_status = 'PROVIDED';
     }
     return Promise.resolve();
   }
 
   listItems(deficiencyId: string): Promise<ItemRow[]> {
-    return Promise.resolve(this.d.items.filter((i) => i.deficiency_id === deficiencyId).map((i) => ({ ...i })));
+    return Promise.resolve(
+      this.d.items.filter((i) => i.deficiency_id === deficiencyId).map((i) => ({ ...i })),
+    );
   }
 
   insertResponse(row: ResponseRow): Promise<void> {
@@ -176,7 +181,9 @@ class MemoryTx implements DeficiencyTx {
   }
 
   listEvidence(deficiencyId: string): Promise<EvidenceRow[]> {
-    return Promise.resolve(this.d.evidence.filter((e) => e.deficiency_id === deficiencyId).map((e) => ({ ...e })));
+    return Promise.resolve(
+      this.d.evidence.filter((e) => e.deficiency_id === deficiencyId).map((e) => ({ ...e })),
+    );
   }
 
   appendHistory(row: HistoryRow): Promise<void> {

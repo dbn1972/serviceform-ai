@@ -35,7 +35,9 @@ export function buildDeficiencyService(
   });
 }
 
-export function buildDeficiencyApi(opts: DeficiencyOptions): ReturnType<typeof createDeficiencyApi> {
+export function buildDeficiencyApi(
+  opts: DeficiencyOptions,
+): ReturnType<typeof createDeficiencyApi> {
   return createDeficiencyApi({
     service: buildDeficiencyService(opts),
     resolveContext: opts.resolveContext,
