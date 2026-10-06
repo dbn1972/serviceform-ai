@@ -71,6 +71,7 @@ function toItem(r: Record<string, unknown>): ItemRow {
 const NOTICE_COLS = `tenant_id, deficiency_id, application_id, cell_id, status, reason_code, notice_code,
   instruction_ref, sla_pause_reason_code, sla_stage_code, response_due_at, opened_at, responded_at,
   closed_at, close_reason_code, opened_by, closed_by, correlation_id, aggregate_version, created_at, updated_at`;
+const SELECT_NOTICE = `SELECT ${NOTICE_COLS} FROM sf_deficiency.deficiency_notice`;
 
 class PgTx implements DeficiencyTx {
   constructor(
@@ -187,19 +188,18 @@ class PgTx implements DeficiencyTx {
   }
 
   async getNotice(id: string): Promise<NoticeRow | undefined> {
-    const r = await this.c.query(
-      `SELECT ${NOTICE_COLS} FROM sf_deficiency.deficiency_notice WHERE tenant_id = $1 AND deficiency_id = $2 FOR UPDATE`,
-      [this.tenantId, id],
-    );
+    const r = await this.c.query(SELECT_NOTICE + ' WHERE tenant_id = $1 AND deficiency_id = $2 FOR UPDATE', [
+      this.tenantId,
+      id,
+    ]);
     const row = r.rows[0];
     return row ? toNotice(row) : undefined;
   }
 
   async findActiveByApplication(applicationId: string): Promise<NoticeRow | undefined> {
     const r = await this.c.query(
-      `SELECT ${NOTICE_COLS} FROM sf_deficiency.deficiency_notice
-        WHERE tenant_id = $1 AND application_id = $2 AND status IN ('OPEN','RESPONSE_RECEIVED')
-        FOR UPDATE`,
+      SELECT_NOTICE +
+        " WHERE tenant_id = $1 AND application_id = $2 AND status IN ('OPEN','RESPONSE_RECEIVED') FOR UPDATE",
       [this.tenantId, applicationId],
     );
     const row = r.rows[0];
@@ -208,8 +208,7 @@ class PgTx implements DeficiencyTx {
 
   async listByApplication(applicationId: string): Promise<NoticeRow[]> {
     const r = await this.c.query(
-      `SELECT ${NOTICE_COLS} FROM sf_deficiency.deficiency_notice
-        WHERE tenant_id = $1 AND application_id = $2 ORDER BY opened_at, deficiency_id`,
+      SELECT_NOTICE + ' WHERE tenant_id = $1 AND application_id = $2 ORDER BY opened_at, deficiency_id',
       [this.tenantId, applicationId],
     );
     return r.rows.map(toNotice);
