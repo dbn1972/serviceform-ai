@@ -1,0 +1,25 @@
+{
+  "M05_HOST_PACKAGE_ADMISSION": "ADMITTED",
+  "M05_HOST_PACKAGE_ADMISSION_BLOCKING": false,
+  "admitted_workspace_deps": [
+    "@serviceform/cmp-015-application-case",
+    "@serviceform/cmp-017-work-queue-tasks",
+    "@serviceform/cmp-018-inspection-verification",
+    "@serviceform/cmp-019-deficiency",
+    "@serviceform/cmp-027-grievance-feedback",
+    "@serviceform/cmp-028-appeal-review",
+    "@serviceform/cmp-029-sla-escalation"
+  ],
+  "missing_workspace_deps": [],
+  "file_url_fallback_present_in_source": true,
+  "file_url_fallback_required_for_load": false,
+  "package_specifier_only_load_ok": true,
+  "cmp_016_admitted": false,
+  "cmp_036_declared_count": 1,
+  "proof_artifacts": [
+    "proof/import-meta-resolve.json",
+    "proof/tsx-package-specifier-import.json",
+    "proof/load-by-specifier-only.json"
+  ],
+  "notes": "m05.ts file-URL fallback remains in source (read-only for this lane) but is not required after workspace admission; package specifier resolves via apps/api node_modules workspace links."
+}

@@ -1,0 +1,94 @@
+# M05 LOCK-8 production remediation — API host M05 package admission (REM-002)
+# Authorized by HUMAN_SF_M05_LOCK8_PRODUCTION_REMEDIATION_AUTHORIZATION.
+# Not CERTIFIED. Not G4. Not G6. Do not merge without separate merge authorization.
+# Does not start REM-001 / EVD / INT-SEC rerun.
+
+task_id: SF-M05-REM-002
+title: API host M05 package admission remediation
+module_id: M05
+component_ids: [CMP-015, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-011]
+requirement_ids:
+  - host-package-admission-m05
+  - M05_HOST_PACKAGE_ADMISSION
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: composer
+branch: cursor/m05-rem-hostpkg-c0d25b32
+worktree: in-repo
+parallel_group: M05-LOCK8-REM
+hard_serial_locks: [LOCK-8]
+must_not_run_concurrent_with: []
+depends_on:
+  - origin/main at c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  - HUMAN_SF_M05_LOCK8_PRODUCTION_REMEDIATION_AUTHORIZATION
+  - INDEPENDENT_SF_M05_INT_SEC_REVIEW = ACCEPTED
+allowed_write_paths:
+  - apps/api/package.json
+  - pnpm-lock.yaml
+  - evidence/SF-M05-REM-002/**
+  - orchestrator/tasks/SF-M05-REM-002.yaml
+  - orchestrator/handovers/SF-M05-REM-002.yaml
+allowed_write_notes:
+  - Admit exactly seven M05 workspace:* deps on @serviceform/api
+  - Lockfile importer-only; no packages/snapshots churn; no supply-chain policy relax
+  - Prove package-specifier resolution without .ts file-URL fallback
+  - Do not modify apps/api/src/** or build.mjs without new auth
+read_only_paths:
+  - apps/api/src/**
+  - apps/api/scripts/**
+  - apps/api/test/**
+  - services/**
+  - contracts/**
+  - db/migrations/**
+  - .npmrc
+  - pnpm-workspace.yaml
+  - package.json
+explicit_cannot:
+  - admit CMP-016
+  - re-add / duplicate CMP-036
+  - modify apps/api/src/** or build.mjs without new auth
+  - merge this PR
+  - start REM-001 / EVD / INT / SEC rerun
+  - claim G4 / CERTIFIED / G6
+  - waive CMP-019 or CMP-028
+  - weaken frozen-lockfile / minimumReleaseAge / trustPolicy / blockExoticSubdeps
+
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: IMPLEMENTATION
+state: IMPLEMENTATION
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g4: false
+g6: false
+merge_authorized: false
+do_not_merge: true
+ccr_required: false
+frozen_contracts_altered: false
+
+execution_base_main: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+base_commit:
+  prefix: c0d25b32
+  suffix: 114779ddb4cc23e4e62a25f9d1365192
+join_separator: ""
+
+admitted_workspace_deps:
+  - "@serviceform/cmp-015-application-case"
+  - "@serviceform/cmp-017-work-queue-tasks"
+  - "@serviceform/cmp-018-inspection-verification"
+  - "@serviceform/cmp-019-deficiency"
+  - "@serviceform/cmp-027-grievance-feedback"
+  - "@serviceform/cmp-028-appeal-review"
+  - "@serviceform/cmp-029-sla-escalation"
+
+stop_conditions:
+  - origin/main SHA drift from c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  - unexpected lockfile packages/snapshots churn
+  - write outside allowed_write_paths
+  - package-specifier load still requires file-URL fallback after admission (SF_M05_REM_002_BLOCKED)
+  - CERTIFIED or G4 or G6 claim
+  - merge without separate authorization

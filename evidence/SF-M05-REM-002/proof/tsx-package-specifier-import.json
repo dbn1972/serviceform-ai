@@ -1,0 +1,122 @@
+{
+  "runtime": "tsx",
+  "all_seven_package_specifier_import_ok": true,
+  "results": [
+    {
+      "package": "@serviceform/cmp-015-application-case",
+      "resolved": "file:///workspace/services/cmp-015-application-case/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "ApplicationCaseService",
+        "CANCELLATION_SOURCES",
+        "COMMANDS",
+        "Cmp015Error",
+        "CommandPipeline",
+        "DECISION_COMMANDS",
+        "DenyPublishedBindingPort",
+        "DenyServicePolicyPort",
+        "ENDPOINTS",
+        "ERROR_CATALOGUE"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-017-work-queue-tasks",
+      "resolved": "file:///workspace/services/cmp-017-work-queue-tasks/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "Cmp017Error",
+        "PgTaskRepository",
+        "TaskService",
+        "contextOnlyScope",
+        "createTaskHandler",
+        "denyAllAuthz",
+        "matchesAssignment",
+        "mismatches",
+        "parseAssignment",
+        "scopeFromContext"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-018-inspection-verification",
+      "resolved": "file:///workspace/services/cmp-018-inspection-verification/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "Cmp018Error",
+        "InspectionService",
+        "PgInspectionRepository",
+        "assertSimulationPolicy",
+        "contextOnlyScope",
+        "createInspectionHandler",
+        "denyAllAuthz",
+        "matchesAssignment",
+        "mismatches",
+        "noopCaseCommand"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-019-deficiency",
+      "resolved": "file:///workspace/services/cmp-019-deficiency/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "DeficiencyService",
+        "PgDeficiencyRepository",
+        "ROUTE_DESCRIPTORS",
+        "buildDeficiencyApi",
+        "buildDeficiencyService",
+        "createDeficiencyApi"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-027-grievance-feedback",
+      "resolved": "file:///workspace/services/cmp-027-grievance-feedback/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "AI_ASSIST_KINDS",
+        "ASSIGNMENT_KEYS",
+        "AllowLinkagePolicyPort",
+        "COMMANDS",
+        "Cmp027Error",
+        "DenyRoutingPolicyPort",
+        "ENDPOINTS",
+        "ERROR_CATALOGUE",
+        "EVENT_TYPES",
+        "FORBIDDEN_AI_DISPOSITION"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-028-appeal-review",
+      "resolved": "file:///workspace/services/cmp-028-appeal-review/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "AppealService",
+        "Cmp028Error",
+        "PgAppealRepository",
+        "createAppealHandler",
+        "denyAllAuthz",
+        "guardOutboundPort",
+        "inDomainTransaction",
+        "parseAuthority"
+      ]
+    },
+    {
+      "package": "@serviceform/cmp-029-sla-escalation",
+      "resolved": "file:///workspace/services/cmp-029-sla-escalation/src/index.ts",
+      "dynamic_import_ok": true,
+      "uses_composition_file_url_fallback": false,
+      "export_keys_sample": [
+        "PgSlaRepository",
+        "ROUTE_DESCRIPTORS",
+        "SlaService",
+        "buildSlaApi",
+        "buildSlaService",
+        "createSlaApi"
+      ]
+    }
+  ]
+}

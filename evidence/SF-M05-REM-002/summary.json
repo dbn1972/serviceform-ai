@@ -1,0 +1,45 @@
+{
+  "task_id": "SF-M05-REM-002",
+  "title": "API host M05 package admission remediation",
+  "authorization": "HUMAN_SF_M05_LOCK8_PRODUCTION_REMEDIATION_AUTHORIZATION",
+  "sha_guard": "PASS",
+  "execution_base": "c0d25b32114779ddb4cc23e4e62a25f9d1365192",
+  "branch": "cursor/m05-rem-hostpkg-c0d25b32",
+  "outcome": "SF_M05_REM_002_CANDIDATE_READY",
+  "contracts": "19/19 FROZEN MATCH",
+  "admitted_workspace_deps": [
+    "@serviceform/cmp-015-application-case",
+    "@serviceform/cmp-017-work-queue-tasks",
+    "@serviceform/cmp-018-inspection-verification",
+    "@serviceform/cmp-019-deficiency",
+    "@serviceform/cmp-027-grievance-feedback",
+    "@serviceform/cmp-028-appeal-review",
+    "@serviceform/cmp-029-sla-escalation"
+  ],
+  "cmp_016_admitted": false,
+  "cmp_036_readded": false,
+  "lockfile": {
+    "importer_apps_api_added_lines": 21,
+    "importer_removed_lines": 0,
+    "packages_section_byte_identical": true,
+    "snapshots_section_byte_identical": true,
+    "naive_lockfile_only_used": false,
+    "policy_relaxed": false
+  },
+  "package_specifier_resolution_without_file_url_fallback": true,
+  "composition_m05_vitest": "13/13 PASS",
+  "api_build": "PASS",
+  "frozen_lockfile": "PASS",
+  "architecture_gates": "10/10 PASS",
+  "merge_authorized": false,
+  "do_not_merge": true,
+  "g4": false,
+  "certified": false,
+  "evd_off": true,
+  "production_code_paths_touched": [
+    "apps/api/package.json",
+    "pnpm-lock.yaml"
+  ],
+  "apps_api_src_modified": false,
+  "build_mjs_modified": false
+}
