@@ -351,9 +351,7 @@ describe('SF-M05-SEC static isolation (not CERTIFIED)', () => {
     // Next importer after apps/api is typically another workspace path (two-space key).
     const rest = lock.slice(appsApiIdx + 1);
     const nextMatch = rest.match(/\n {2}(?!apps\/api)[a-zA-Z0-9@/_-]+:\n/);
-    const importerSlice = nextMatch?.index
-      ? rest.slice(0, nextMatch.index)
-      : rest.slice(0, 8000);
+    const importerSlice = nextMatch?.index ? rest.slice(0, nextMatch.index) : rest.slice(0, 8000);
     for (const name of M05_ADMITTED) {
       expect(importerSlice.includes(`'${name}':`), name).toBe(true);
       expect(
