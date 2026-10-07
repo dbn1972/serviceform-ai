@@ -140,9 +140,11 @@ describe('INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS)', () 
 
     const recovered = await service.getReconciliationConsumer().reconcilePending(state.ctx);
     expect(recovered).toHaveLength(1);
-    expect(recovered[0]?.case_effect_status).toBe('APPLIED');
-    expect(recovered[0]?.sla_effect_status).toBe('APPLIED');
-    expect(recovered[0]?.reconstructed_from_durable_state).toBe(true);
+    const first = recovered[0];
+    if (!first) throw new Error('expected reconciliation result');
+    expect(first.case_effect_status).toBe('APPLIED');
+    expect(first.sla_effect_status).toBe('APPLIED');
+    expect(first.reconstructed_from_durable_state).toBe(true);
 
     const inbox = await asTenant(
       h.rt,
@@ -153,7 +155,7 @@ describe('INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS)', () 
           await c.query(
             `SELECT consumer_group FROM sf_deficiency.inbox_event
             WHERE consumer_group = $1 AND event_id = $2`,
-            [RECONCILIATION_CONSUMER_GROUP, recovered[0]!.source_event_id],
+            [RECONCILIATION_CONSUMER_GROUP, first.source_event_id],
           )
         ).rows,
     );
@@ -162,7 +164,7 @@ describe('INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS)', () 
     const before = caseCommands.commands.length;
     const dup = await service
       .getReconciliationConsumer()
-      .reconcileIntent(state.ctx, recovered[0]!.intent_id);
+      .reconcileIntent(state.ctx, first.intent_id);
     expect(dup.replayed).toBe(true);
     expect(caseCommands.commands).toHaveLength(before);
   });
