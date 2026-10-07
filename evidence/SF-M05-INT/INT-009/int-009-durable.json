@@ -1,0 +1,12 @@
+{
+  "INT_009_DURABLE_RECONCILIATION": "BLOCKED",
+  "reason": "SF_M05_INT_BLOCKED: case_expected_state|version not in Deficiency* outbox data nor deficiency_notice columns; afterCommit swallows CMP-015/CMP-029 failures without durable tokens for retry. Do not patch production in INT lane.",
+  "details": {
+    "in_outbox_event_data": false,
+    "in_deficiency_notice_columns": false,
+    "after_commit_swallows_errors": true,
+    "governing_residual": "GOVERNING_UNRESOLVED_UNWAIVED"
+  },
+  "production_code_patched": false,
+  "cmp_019_residual": "GOVERNING_UNRESOLVED_UNWAIVED"
+}

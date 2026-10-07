@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="1.760287227">
+    <testsuite name="apps/api/test/composition-m05.test.ts" timestamp="2026-10-07T06:11:29.381Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="1.760287227">
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; starts without m05 deps and leaves Wave1/2/M02/M03/M04 decoration unchanged" time="0.05084128">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts each M05 HTTP component independently (CMP-016 excluded)" time="0.459672293">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts all seven HTTP components with a deterministic CMP list (CMP-016/036 excluded)" time="0.024696861">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; registers CMP-036 exactly once and does not remount it from M05 composition" time="0.020423948">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not invent a CMP-016 host HTTP API" time="0.024252627">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps Wave1/2/M02/M03/M04 mount lists unchanged when M05 is registered" time="1.035736072">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; exposes M05 routes under /v1 and rejects forged tenant headers" time="0.039621595">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; uses server-derived context authority; forged X-Tenant-ID is not authoritative" time="0.026917036">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; preserves transport-neutral method/path/body/header/status/response semantics" time="0.030743965">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; has no cross-component SQL and couples only via public entry points" time="0.019525354">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; records CMP-019 and CMP-028 residuals as carried unwaived in composition source" time="0.00069364">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not re-assign query with dynamic user-controlled keys (CodeQL property injection)" time="0.011298006">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m05.test.ts" name="registerM05Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.014210579">
+        </testcase>
+    </testsuite>
+</testsuites>

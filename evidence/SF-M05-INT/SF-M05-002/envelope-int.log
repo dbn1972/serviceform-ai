@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:integration /workspace/services/cmp-016-workflow-engine
+> vitest run --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M05-INT/SF-M05-002/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-016-workflow-engine
+
+ ✓ test/integration/db-isolation.int.test.ts (18 tests) 671ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 2512ms
+   ✓ CMP-016 migrations are reversible and ordered (3)
+     ✓ isolated chain: down 2 removes sf_workflow, up re-applies cleanly, combined catalogue unchanged 2115ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  06:11:36
+   Duration  3.54s (tests 94%, transform 4%, import 2%)
+
+JUNIT report written to /workspace/services/cmp-016-workflow-engine/evidence/junit/integration.xml

@@ -1,0 +1,16 @@
+
+> @serviceform/cmp-029-sla-escalation@0.0.0 test:integration /workspace/services/cmp-029-sla-escalation
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M05-INT/SF-M05-004/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-029-sla-escalation
+
+ ✓ test/integration/privilege-rls.int.test.ts (11 tests) 1032ms
+ ✓ test/integration/api-flow.int.test.ts (5 tests) 654ms
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  06:11:59
+   Duration  2.03s (tests 90%, transform 7%, import 3%)
+
+JUNIT report written to /workspace/evidence/SF-M05-004/junit/integration.xml

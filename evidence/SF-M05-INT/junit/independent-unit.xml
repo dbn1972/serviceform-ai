@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="0" errors="0" time="0.691408638">
+    <testsuite name="tests/integration/m05/host-package-admission.test.ts" timestamp="2026-10-07T06:11:26.429Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.163039017">
+        <testcase classname="tests/integration/m05/host-package-admission.test.ts" name="M05 host package admission residual &gt; records M05_HOST_PACKAGE_ADMISSION_BLOCKING when package.json lacks M05 workspace deps" time="0.001417851">
+        </testcase>
+        <testcase classname="tests/integration/m05/host-package-admission.test.ts" name="M05 host package admission residual &gt; file-URL fallback still resolves CMP-015 index for host/build smoke" time="0.160630663">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-004-outbox-txn.test.ts" timestamp="2026-10-07T06:11:26.430Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003751081">
+        <testcase classname="tests/integration/m05/int-004-outbox-txn.test.ts" name="INT-004 submission hot path txn/outbox (independent) &gt; CMP-015 domain txn refuses network/outbound ports while open" time="0.001621658">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-004-outbox-txn.test.ts" name="INT-004 submission hot path txn/outbox (independent) &gt; pipeline orders case change → outbox → commit → Temporal (Constitution #10/#11)" time="0.000473066">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-004-outbox-txn.test.ts" name="INT-004 submission hot path txn/outbox (independent) &gt; workflow-advance default relies on committed outbox, not in-txn Temporal" time="0.000317024">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-004-outbox-txn.test.ts" name="INT-004 submission hot path txn/outbox (independent) &gt; SUBMIT path writes outbox inside domain transaction in service.ts" time="0.000278756">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-005-temporal-opa.test.ts" timestamp="2026-10-07T06:11:26.431Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.00482908">
+        <testcase classname="tests/integration/m05/int-005-temporal-opa.test.ts" name="INT-005 Temporal after CMP-015 commit; OPA on officer action (independent) &gt; CMP-016 refuses uncommitted signals (Temporal cannot skip CMP-015 commit)" time="0.002057593">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-005-temporal-opa.test.ts" name="INT-005 Temporal after CMP-015 commit; OPA on officer action (independent) &gt; CMP-016 Temporal adapter calls assertCommitted before client.signal" time="0.000469031">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-005-temporal-opa.test.ts" name="INT-005 Temporal after CMP-015 commit; OPA on officer action (independent) &gt; CMP-016 service authorizes before write path" time="0.000187388">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-005-temporal-opa.test.ts" name="INT-005 Temporal after CMP-015 commit; OPA on officer action (independent) &gt; CMP-017 officer claim/complete goes through authz (OPA)" time="0.00036446">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-005-temporal-opa.test.ts" name="INT-005 Temporal after CMP-015 commit; OPA on officer action (independent) &gt; CMP-015 host mount exists; CMP-016 has no host HTTP surface" time="0.000240366">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-006-evidence-simulated.test.ts" timestamp="2026-10-07T06:11:26.433Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.046776088">
+        <testcase classname="tests/integration/m05/int-006-evidence-simulated.test.ts" name="INT-006 evidence/storage/OCR/verification; DigiLocker SIMULATED only (independent) &gt; CMP-018 DigiLocker SIMULATED allowed in CI with valid marker" time="0.044647804">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-006-evidence-simulated.test.ts" name="INT-006 evidence/storage/OCR/verification; DigiLocker SIMULATED only (independent) &gt; CMP-018 PRODUCTION critical SIMULATED fail-closed" time="0.00033828">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-006-evidence-simulated.test.ts" name="INT-006 evidence/storage/OCR/verification; DigiLocker SIMULATED only (independent) &gt; CMP-018 uses evidence/OCR/DigiLocker ports (no invented REAL DigiLocker product)" time="0.00048419">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-006-evidence-simulated.test.ts" name="INT-006 evidence/storage/OCR/verification; DigiLocker SIMULATED only (independent) &gt; M04 DigiLocker SIMULATED guard still present for INT-006 dependency path" time="0.000209668">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-009-durable-reconciliation.test.ts" timestamp="2026-10-07T06:11:26.434Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.002881142">
+        <testcase classname="tests/integration/m05/int-009-durable-reconciliation.test.ts" name="INT-009 deficiency pause/resume + expected-state/version durable reconciliation &gt; happy path wires afterCommit → CMP-015 case command + CMP-029 SLA pause/resume" time="0.001274986">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-009-durable-reconciliation.test.ts" name="INT-009 deficiency pause/resume + expected-state/version durable reconciliation &gt; MATERIAL: evaluate durable reconciliation of case_expected_state/version from production" time="0.000673731">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-011-host.test.ts" timestamp="2026-10-07T06:11:26.434Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.422683366">
+        <testcase classname="tests/integration/m05/int-011-host.test.ts" name="INT-011 M05 host tenant isolation (independent) &gt; forged X-Tenant-ID is not authoritative; canary not echoed" time="0.393319883">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-011-host.test.ts" name="INT-011 M05 host tenant isolation (independent) &gt; M05 mounted matrix excludes CMP-016 HTTP and does not remount CMP-036" time="0.027983338">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-011-host.test.ts" name="INT-011 M05 host tenant isolation (independent) &gt; residuals CMP-019/CMP-028 remain GOVERNING_UNRESOLVED_UNWAIVED (not waived by INT)" time="0.000344205">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-013-modes.test.ts" timestamp="2026-10-07T06:11:26.434Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.047448864">
+        <testcase classname="tests/integration/m05/int-013-modes.test.ts" name="INT-013 M05 external dependency simulation (independent re-verify) &gt; CMP-015 SIMULATED ports refuse PRODUCTION; admit CI" time="0.001704184">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-013-modes.test.ts" name="INT-013 M05 external dependency simulation (independent re-verify) &gt; CMP-018 critical SIMULATED refuse PRODUCTION; CI marker validates" time="0.043999522">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-013-modes.test.ts" name="INT-013 M05 external dependency simulation (independent re-verify) &gt; CMP-027 SIMULATED ports refuse PRODUCTION" time="0.000357949">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-013-modes.test.ts" name="INT-013 M05 external dependency simulation (independent re-verify) &gt; CMP-011 DigiLocker SIMULATED PRODUCTION fail-closed (INT-006 dependency)" time="0.000350631">
+        </testcase>
+    </testsuite>
+</testsuites>
