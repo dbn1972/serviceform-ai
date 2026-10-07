@@ -1,5 +1,7 @@
-# M05 PLANNING envelope — Wave B mechanical stitch and lockfile (LOCK-6)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# M05 CANDIDATE — Wave B mechanical stitch and lockfile (LOCK-6)
+# CANDIDATE execution record. Not CERTIFIED. Not G4. Not G6. Do not merge.
+# Integrate exact immutable CMP-018/#99 + CMP-019/#97 + CMP-027/#98 + CMP-028/#100 trees + migrations; root lockfile admit only.
+# HUMAN_STITCH_B_EXECUTION_AUTHORIZATION issued; LOCK-6 = EXECUTION_AUTHORIZED.
 
 task_id: SF-M05-STITCH-B
 title: M05 Wave B mechanical stitch and lockfile
@@ -11,16 +13,16 @@ model_release: claude-opus-5-5
 effort: high
 component_ids: [CMP-018, CMP-019, CMP-027, CMP-028]
 integration_ids: [INT-006, INT-009, INT-011, INT-013]
-branch: agent/M05-stitch-b-SF-M05-STITCH-B
+branch: cursor/m05-stitch-b-exec-ca57057a-9e07
 worktree: ../wt-SF-M05-STITCH-B
 parallel_group: M05-STITCH-B
 hard_serial_locks: [LOCK-6]
 must_not_run_concurrent_with: [SF-M05-STITCH-A, SF-M05-005, SF-M05-006, SF-M05-007, SF-M05-008]
 depends_on:
-  - SF-M05-005 immutable head
-  - SF-M05-006 immutable head
-  - SF-M05-007 immutable head
-  - SF-M05-008 immutable head
+  - SF-M05-005 immutable head 1ca2dbccb2702d40b28f46cab7717bf3fc36d4d7 (PR #99)
+  - SF-M05-006 immutable head b36715f83c1c2aaa47c6d9b54c568959c131db50 (PR #97)
+  - SF-M05-007 immutable head f4208a1d446ccd5e7b707a9f5942481d24630278 (PR #98)
+  - SF-M05-008 immutable head 1a6a1ee2e128b1c0eda8fe411d798287063eed5b (PR #100)
   - SF-M05-STITCH-A on origin/main
 allowed_write_paths:
   - services/cmp-018-inspection-verification/**
@@ -35,21 +37,99 @@ allowed_write_paths:
   - evidence/SF-M05-STITCH-B/**
   - orchestrator/handovers/SF-M05-STITCH-B.yaml
 allowed_write_notes:
-  - Mechanical/format/lockfile only; Wave B trees only
-  - Admit Wave B workspace importers; do not weaken frozen-lockfile CI
+  - Component paths are for integrating the four exact immutable builder trees only; no semantic redesign
+  - Mechanical/format/lockfile only; admit Wave B workspace importers; do not weaken frozen-lockfile CI
+  - Serial after Wave B immutable heads; not concurrent with SF-M05-005..008 or SF-M05-STITCH-A
+  - Wave B trees only; do not touch Wave A services
+  - Do NOT merge builder PRs #97/#98/#99/#100; copy/integrate exact SHA-pinned trees
+  - Carry CMP-019 and CMP-028 governing residuals unresolved/unwaived
 explicit_cannot:
-  - semantic redesign of Wave B component source
-  - modify Wave A services, apps/**, or existing 13 frozen shared contracts
-  - invent new dependencies or broaden lockfile refresh
+  - semantic redesign of CMP-018 / CMP-019 / CMP-027 / CMP-028 component source
+  - modify contracts/**, apps/**, other services/**, or existing migrations outside Wave B globs
+  - edit contracts/** or orchestrator/contracts-lock.yaml or mutate any of the 19 lock hashes
+  - invent new dependencies or broaden lockfile refresh/upgrades
+  - weaken frozen-lockfile / supply-chain controls (minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml)
+  - modify scripts/gates/** (including check_scope.py and cg01_path_uniqueness_gate.py)
+  - waive or resolve CMP-019 / CMP-028 residuals
   - self-certify
 read_only_paths:
-  - contracts/shared/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
   - apps/**
-  - scripts/gates/cg01_path_uniqueness_gate.py
+  - scripts/gates/**
+  - .npmrc
+  - pnpm-workspace.yaml
   - services/cmp-015-application-case/**
   - services/cmp-016-workflow-engine/**
   - services/cmp-017-work-queue-tasks/**
   - services/cmp-029-sla-escalation/**
+stitch_rule:
+  must:
+    - start from exact execution_base SHA supplied by HUMAN_STITCH_B_EXECUTION_AUTHORIZATION
+    - copy/integrate exact immutable CMP-018 tree + migrations from SF-M05-005 / PR #99 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-019 tree + migrations from SF-M05-006 / PR #97 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-027 tree + migrations from SF-M05-007 / PR #98 at frozen_inputs SHA
+    - copy/integrate exact immutable CMP-028 tree + migrations from SF-M05-008 / PR #100 at frozen_inputs SHA
+    - regenerate only the root pnpm-lock.yaml (admit four Wave B workspace importers)
+    - preserve byte fidelity of materialized trees and migrations versus frozen_inputs (formatting / mechanical reconciliation only)
+    - run combined validation on the stitched tree
+    - create STITCH-B evidence under evidence/SF-M05-STITCH-B/**
+    - persist CMP-019 and CMP-028 carried unresolved residuals
+  must_not:
+    - merge builder PRs #97 / #98 / #99 / #100
+    - change CMP-018 / CMP-019 / CMP-027 / CMP-028 semantics or redesign
+    - modify contracts/**, orchestrator/contracts-lock.yaml, apps/**, other services/**, or migrations outside Wave B globs
+    - invent new deps or alter canonical resolutions beyond admitting the four importers
+    - broaden lockfile refresh or upgrade existing resolutions
+    - weaken frozen-lockfile / supply-chain controls
+    - waive CMP-019 / CMP-028 residuals
+    - self-certify
+    - start SF-M05-009 / INT / SEC / EVD / M06 / M08
+  semantic_conflict: STOP and return to owning builder
+lockfile_governance:
+  root_lockfile_authorized: true
+  basis:
+    - agent_role is integration_agent
+    - allowed_write_paths contains the exact entry pnpm-lock.yaml
+    - pnpm-lock.yaml is not matched by read_only_paths
+  check_scope_modified: false
+  branch_name_privilege: false
+  nested_lockfiles_permitted: false
+lockfile_expectation:
+  importers_to_admit:
+    - services/cmp-018-inspection-verification
+    - services/cmp-019-deficiency
+    - services/cmp-027-grievance-feedback
+    - services/cmp-028-appeal-review
+  builder_declared_external_pins:
+    cmp_018: none
+    cmp_019: none
+    cmp_027: none
+    cmp_028: none
+  notes:
+    - All four Wave B package.json files declare no external dependencies
+    - Admit empty importer rows only; packages section unchanged vs execution base
+    - Reuse canonical resolutions; no broad refresh/upgrades
+    - Do not alter minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml
+frozen_inputs:
+  SF-M05-005: 1ca2dbccb2702d40b28f46cab7717bf3fc36d4d7
+  SF-M05-006: b36715f83c1c2aaa47c6d9b54c568959c131db50
+  SF-M05-007: f4208a1d446ccd5e7b707a9f5942481d24630278
+  SF-M05-008: 1a6a1ee2e128b1c0eda8fe411d798287063eed5b
+frozen_input_prs:
+  SF-M05-005: 99
+  SF-M05-006: 97
+  SF-M05-007: 98
+  SF-M05-008: 100
+carried_residuals:
+  CMP-019:
+    status: GOVERNING_UNRESOLVED_UNWAIVED
+    governing_doc: docs/m05-006-cmp019.md
+    note: post-commit CMP-015 commands, CMP-029 SLA pause/resume, notification/retry, durable/idempotent recovery; INT/EVD later
+  CMP-028:
+    status: GOVERNING_UNRESOLVED_UNWAIVED
+    governing_doc: docs/m05-008-cmp028.md
+    note: original_case_command reservation; CMP-015 remains authoritative; no appeal/CMP-015 boundary redesign
 wave_eligible_now: false
 serial_after:
   - SF-M05-005
@@ -59,50 +139,106 @@ serial_after:
   - SF-M05-STITCH-A
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_FROZEN
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-base_commit:
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
-join_separator: "_"
+execution_base_policy:
+  source: HUMAN_STITCH_B_EXECUTION_AUTHORIZATION
+  requirement: execution base MUST equal origin/main at the instant the human STITCH-B execution authorization is issued
+  require_exact_sha: true
+  envelope_sha_is_not_execution_authorization: true
+  execution_base: ca57057a794739c03d0a46886577e25adf041815
+  execution_authorized: true
+stitch_executed: true
+no_merge_authorization: true
+sf_m05_009_off: true
+int_off: true
+sec_off: true
+evd_off: true
+m06_off: true
+m08_off: true
+tree_fidelity:
+  CMP-018: MATCH BYTE_IDENTICAL
+  CMP-019: MATCH BYTE_IDENTICAL
+  CMP-027: MATCH BYTE_IDENTICAL
+  CMP-028: MATCH BYTE_IDENTICAL
+lockfile_result: WAVE_B_IMPORTERS_ADMITTED_PACKAGES_UNCHANGED
+contracts_lock: 19/19 MATCH
+draft_pr: 101
+candidate_head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
 contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
+  - SF-CON-COMMON
+  - SF-CON-CONNECTOR-BINDING
   - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
   - SF-CON-EVENT-ENVELOPE
   - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
   - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-ERROR-CATALOGUE
   - SF-CON-DB-SESSION-CONTEXT
   - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
 
 stop_conditions:
-  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - FROZEN contract change required for any of the 19 locked contracts (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
-  - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - dependency on unmerged sibling M05 code as source of truth (except exact frozen_inputs SHA trees for copy/integrate)
+  - semantic conflict with immutable builder trees → STOP and return to owning builder
+  - execution without separately issued exact human execution_base SHA → STOP
+  - execution_base differs from exact SHA in latest human STITCH-B execution authorization → STOP
+  - merge builder PRs #97 / #98 / #99 / #100
+  - lockfile resolution requires weakening supply-chain policy
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
+  - SF-M05-009, INT, SEC, EVD start
   - M06 or M08 start
   - SMS/email/DigiLocker/payment implementation
-  - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
+  - weaken cg01_path_uniqueness_gate.py or check_scope.py
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
+  - waive CMP-019 or CMP-028 residuals
+
+product_candidate_head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+branch_tip_after_freeze_record: see git tip; product frozen at product_candidate_head
+stitch_b_candidate_frozen: true
+exact_candidate_workflows:
+  ci:
+    run_id: 37506301890
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301890
+  security:
+    run_id: 37506301848
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301848
+  developer_platform:
+    run_id: 37506301839
+    conclusion: SUCCESS
+    head: f6f1f7b06561965574fb3cecd239ca1d640e6f56
+    url: https://github.com/dbn1972/serviceform-ai/actions/runs/37506301839
+freeze_note: >
+  Candidate product trees and lockfile frozen at f6f1f7b with exact-head CI/Sec/DP SUCCESS.
+  A follow-up evidence-only freeze commit may tip the branch; product trees remain byte-identical
+  to frozen builder inputs and lockfile packages section remains unchanged vs execution base.

@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-019-deficiency@0.0.0 test:integration /workspace/wt-SF-M05-STITCH-B/services/cmp-019-deficiency
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/wt-SF-M05-STITCH-B/services/cmp-019-deficiency
+
+ ✓ test/integration/privilege-rls.int.test.ts (4 tests) 1467ms
+   ✓ CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011) (4)
+     ✓ isolated reversibility: down of CMP-019 migrations then up restores the schema 922ms
+ ✓ test/integration/api-flow.int.test.ts (1 test) 549ms
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  17:45:03
+   Duration  2.36s (tests 92%, transform 6%, import 2%)
+
+JUNIT report written to /workspace/wt-SF-M05-STITCH-B/evidence/SF-M05-006/junit/integration.xml

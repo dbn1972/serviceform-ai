@@ -1,0 +1,8 @@
+{
+  "asyncapi": "2.6.0",
+  "info": { "title": "CMP-027 Grievance events", "version": "0.0.0" },
+  "channels": {
+    "sf.grievance.events.v1": { "subscribe": { "message": { "name": "GrievanceDomainEvent" } } },
+    "sf.audit.ingest.v1": { "subscribe": { "message": { "name": "AuditEventSubmitted" } } }
+  }
+}

@@ -1,0 +1,126 @@
+    schema     |         table         | rls | force_rls 
+---------------+-----------------------+-----+-----------
+ sf_appeal     | appeal                | t   | t
+ sf_appeal     | appeal_history        | t   | t
+ sf_appeal     | assist_note           | t   | t
+ sf_appeal     | idempotency_record    | t   | t
+ sf_appeal     | inbox_event           | t   | t
+ sf_appeal     | inbox_event_platform  | f   | f
+ sf_appeal     | outbox_event          | t   | t
+ sf_appeal     | outbox_event_platform | f   | f
+ sf_deficiency | citizen_response      | t   | t
+ sf_deficiency | deficiency_event      | t   | t
+ sf_deficiency | deficiency_notice     | t   | t
+ sf_deficiency | evidence_ref          | t   | t
+ sf_deficiency | idempotency_record    | t   | t
+ sf_deficiency | inbox_event           | t   | t
+ sf_deficiency | inbox_event_platform  | f   | f
+ sf_deficiency | outbox_event          | t   | t
+ sf_deficiency | outbox_event_platform | f   | f
+ sf_deficiency | requested_item        | t   | t
+ sf_grievance  | ai_assist_record      | t   | t
+ sf_grievance  | assignment_request    | t   | t
+ sf_grievance  | grievance             | t   | t
+ sf_grievance  | grievance_response    | t   | t
+ sf_grievance  | grievance_transition  | t   | t
+ sf_grievance  | idempotency_record    | t   | t
+ sf_grievance  | inbox_event           | t   | t
+ sf_grievance  | inbox_event_platform  | f   | f
+ sf_grievance  | outbox_event          | t   | t
+ sf_grievance  | outbox_event_platform | f   | f
+ sf_inspection | checklist_item        | t   | t
+ sf_inspection | evidence_ref          | t   | t
+ sf_inspection | finding               | t   | t
+ sf_inspection | idempotency_record    | t   | t
+ sf_inspection | inbox_event           | t   | t
+ sf_inspection | inbox_event_platform  | f   | f
+ sf_inspection | inspection            | t   | t
+ sf_inspection | inspection_history    | t   | t
+ sf_inspection | observation           | t   | t
+ sf_inspection | outbox_event          | t   | t
+ sf_inspection | outbox_event_platform | f   | f
+(39 rows)
+
+   rolname    | rolsuper | rolcanlogin | rolbypassrls 
+--------------+----------+-------------+--------------
+ sf_cmp018_rw | f        | f           | f
+ sf_cmp019_rw | f        | f           | f
+ sf_cmp027_rw | f        | f           | f
+ sf_cmp028_rw | f        | f           | f
+ sf_migrator  | f        | f           | f
+(5 rows)
+
+   grantee    | table_schema  |      table_name      | privilege_type 
+--------------+---------------+----------------------+----------------
+ sf_cmp018_rw | sf_inspection | checklist_item       | INSERT
+ sf_cmp018_rw | sf_inspection | checklist_item       | SELECT
+ sf_cmp018_rw | sf_inspection | evidence_ref         | INSERT
+ sf_cmp018_rw | sf_inspection | evidence_ref         | SELECT
+ sf_cmp018_rw | sf_inspection | finding              | INSERT
+ sf_cmp018_rw | sf_inspection | finding              | SELECT
+ sf_cmp018_rw | sf_inspection | idempotency_record   | DELETE
+ sf_cmp018_rw | sf_inspection | idempotency_record   | INSERT
+ sf_cmp018_rw | sf_inspection | idempotency_record   | SELECT
+ sf_cmp018_rw | sf_inspection | inspection           | INSERT
+ sf_cmp018_rw | sf_inspection | inspection           | SELECT
+ sf_cmp018_rw | sf_inspection | inspection_history   | INSERT
+ sf_cmp018_rw | sf_inspection | inspection_history   | SELECT
+ sf_cmp018_rw | sf_inspection | observation          | INSERT
+ sf_cmp018_rw | sf_inspection | observation          | SELECT
+ sf_cmp019_rw | sf_deficiency | citizen_response     | INSERT
+ sf_cmp019_rw | sf_deficiency | citizen_response     | SELECT
+ sf_cmp019_rw | sf_deficiency | deficiency_event     | INSERT
+ sf_cmp019_rw | sf_deficiency | deficiency_event     | SELECT
+ sf_cmp019_rw | sf_deficiency | deficiency_notice    | INSERT
+ sf_cmp019_rw | sf_deficiency | deficiency_notice    | SELECT
+ sf_cmp019_rw | sf_deficiency | evidence_ref         | INSERT
+ sf_cmp019_rw | sf_deficiency | evidence_ref         | SELECT
+ sf_cmp019_rw | sf_deficiency | idempotency_record   | DELETE
+ sf_cmp019_rw | sf_deficiency | idempotency_record   | INSERT
+ sf_cmp019_rw | sf_deficiency | idempotency_record   | SELECT
+ sf_cmp019_rw | sf_deficiency | requested_item       | INSERT
+ sf_cmp019_rw | sf_deficiency | requested_item       | SELECT
+ sf_cmp027_rw | sf_grievance  | ai_assist_record     | INSERT
+ sf_cmp027_rw | sf_grievance  | ai_assist_record     | SELECT
+ sf_cmp027_rw | sf_grievance  | assignment_request   | INSERT
+ sf_cmp027_rw | sf_grievance  | assignment_request   | SELECT
+ sf_cmp027_rw | sf_grievance  | grievance            | INSERT
+ sf_cmp027_rw | sf_grievance  | grievance            | SELECT
+ sf_cmp027_rw | sf_grievance  | grievance_response   | INSERT
+ sf_cmp027_rw | sf_grievance  | grievance_response   | SELECT
+ sf_cmp027_rw | sf_grievance  | grievance_transition | INSERT
+ sf_cmp027_rw | sf_grievance  | grievance_transition | SELECT
+ sf_cmp027_rw | sf_grievance  | idempotency_record   | DELETE
+ sf_cmp027_rw | sf_grievance  | idempotency_record   | INSERT
+ sf_cmp027_rw | sf_grievance  | idempotency_record   | SELECT
+ sf_cmp028_rw | sf_appeal     | appeal               | INSERT
+ sf_cmp028_rw | sf_appeal     | appeal               | SELECT
+ sf_cmp028_rw | sf_appeal     | appeal_history       | INSERT
+ sf_cmp028_rw | sf_appeal     | appeal_history       | SELECT
+ sf_cmp028_rw | sf_appeal     | assist_note          | INSERT
+ sf_cmp028_rw | sf_appeal     | assist_note          | SELECT
+ sf_cmp028_rw | sf_appeal     | idempotency_record   | DELETE
+ sf_cmp028_rw | sf_appeal     | idempotency_record   | INSERT
+ sf_cmp028_rw | sf_appeal     | idempotency_record   | SELECT
+(50 rows)
+
+
+TABLES 39
+NON_FORCE_COUNT 8
+NON_FORCE sf_inspection.outbox_event_platform|rls=false|force=false
+NON_FORCE sf_inspection.inbox_event_platform|rls=false|force=false
+NON_FORCE sf_appeal.outbox_event_platform|rls=false|force=false
+NON_FORCE sf_appeal.inbox_event_platform|rls=false|force=false
+NON_FORCE sf_grievance.outbox_event_platform|rls=false|force=false
+NON_FORCE sf_grievance.inbox_event_platform|rls=false|force=false
+NON_FORCE sf_deficiency.outbox_event_platform|rls=false|force=false
+NON_FORCE sf_deficiency.inbox_event_platform|rls=false|force=false
+ROLES
+sf_cmp018_rw|super=false|login=false|bypass=false
+sf_cmp019_rw|super=false|login=false|bypass=false
+sf_cmp027_rw|super=false|login=false|bypass=false
+sf_cmp028_rw|super=false|login=false|bypass=false
+sf_migrator|super=false|login=false|bypass=false
+BAD_RW_ROLE_FLAGS 0
+CROSS_SCHEMA_GRANT_COUNT 0
+CROSS_TENANT_LEAKAGE_PROBE see component privilege-rls tests PASS

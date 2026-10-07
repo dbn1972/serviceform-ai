@@ -1,0 +1,66 @@
+{
+  "entities": [
+    {
+      "entity": "sf_deficiency.deficiency_notice",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.requested_item",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.citizen_response",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.evidence_ref",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.deficiency_event",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.idempotency_record",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.outbox_event",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.inbox_event",
+      "owner_component": "CMP-019",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_deficiency.outbox_event_platform",
+      "owner_component": "CMP-019",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-019 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_deficiency.inbox_event_platform",
+      "owner_component": "CMP-019",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-019 consumes no tenant-less events."
+    }
+  ]
+}

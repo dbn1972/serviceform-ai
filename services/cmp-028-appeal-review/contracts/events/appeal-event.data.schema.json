@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-028/appeal-event/v1",
+  "title": "AppealEventData",
+  "description": "Component-local appeal event payload. Not a new shared frozen contract.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "owner_component",
+    "tenant_id",
+    "appeal_id",
+    "original_application_id",
+    "operation",
+    "appeal_state",
+    "grounds_code",
+    "admissibility_code",
+    "appellate_authority",
+    "authz_decision_id",
+    "idempotency_key",
+    "correlation_id"
+  ],
+  "properties": {
+    "owner_component": { "const": "CMP-028" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "appeal_id": { "type": "string", "format": "uuid" },
+    "original_application_id": { "type": "string", "format": "uuid" },
+    "operation": { "type": "string" },
+    "appeal_state": { "type": "string" },
+    "grounds_code": { "type": "string" },
+    "admissibility_code": { "type": "string" },
+    "appellate_authority": { "type": "object" },
+    "authz_decision_id": { "type": "string", "format": "uuid" },
+    "idempotency_key": { "type": "string" },
+    "correlation_id": { "type": "string", "format": "uuid" }
+  }
+}

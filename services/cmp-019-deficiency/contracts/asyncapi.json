@@ -1,0 +1,40 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-019 Deficiency Events",
+    "version": "0.1.0",
+    "description": "Domain events for deficiency open, citizen response and closure. No PII, SMS, email or channel payload."
+  },
+  "channels": {
+    "sf.deficiency.events.v1": {
+      "address": "sf.deficiency.events.v1",
+      "messages": {
+        "DeficiencyOpened": { "$ref": "#/components/messages/DeficiencyOpened" },
+        "DeficiencyResponded": { "$ref": "#/components/messages/DeficiencyResponded" },
+        "DeficiencyClosed": { "$ref": "#/components/messages/DeficiencyClosed" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "DeficiencyOpened": {
+        "name": "DeficiencyOpened",
+        "payload": { "$ref": "./events/deficiency-event.data.schema.json" }
+      },
+      "DeficiencyResponded": {
+        "name": "DeficiencyResponded",
+        "payload": { "$ref": "./events/deficiency-event.data.schema.json" }
+      },
+      "DeficiencyClosed": {
+        "name": "DeficiencyClosed",
+        "payload": { "$ref": "./events/deficiency-event.data.schema.json" }
+      }
+    }
+  }
+}

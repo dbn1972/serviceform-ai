@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="18" failures="0" errors="0" time="0.077795303">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-06T17:44:53.396Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.063327688">
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.030265732">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.017778035">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.00564792">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.0012487">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; isolation declarations validate and match the migration (every table FORCE RLS)" time="0.002697314">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; contains no SMS, e-mail, push or notification provider (M06)" time="0.001933907">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; does not import CMP-015 or CMP-029 source and has no SQL against their schemas" time="0.000479957">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; only touches sf_deficiency in SQL and never mounts on the API host" time="0.000376963">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; runs no network call inside the authoritative transaction" time="0.000461939">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000295654">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; OpenAPI mutating bodies refuse client-supplied clock members" time="0.000715089">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-06T17:44:53.399Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002454849">
+        <testcase classname="test/unit/domain.test.ts" name="deficiency status table &gt; allows citizen response and officer close from OPEN, and close from RESPONSE_RECEIVED" time="0.001353541">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-06T17:44:53.399Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.012012766">
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; opens a notice, pauses SLA, records a citizen response and resumes SLA" time="0.007132117">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; resumes SLA when an officer closes an unanswered notice" time="0.000812214">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; replays identical idempotent opens and refuses a different fingerprint" time="0.000999781">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses AI/SYSTEM actors, forged tenant headers, client time and wrong-tenant context" time="0.000848824">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses a second active notice on the same application" time="0.000612424">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; OPA deny and PDP failure fail closed" time="0.000468846">
+        </testcase>
+    </testsuite>
+</testsuites>

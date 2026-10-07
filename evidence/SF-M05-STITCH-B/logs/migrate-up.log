@@ -1,0 +1,10 @@
+
+> serviceform-ai@ db:migrate /workspace/wt-SF-M05-STITCH-B
+> pnpm --filter @serviceform/db run migrate:up
+
+
+> @serviceform/db@0.0.0 migrate:up /workspace/wt-SF-M05-STITCH-B/db
+> node-pg-migrate up --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform --create-migrations-schema --check-order
+
+No migrations to run!
+Migrations complete!
