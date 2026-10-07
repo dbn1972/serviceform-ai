@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="0.095865672">
-    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-07T07:55:40.664Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.058061245">
-        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.031393786">
+<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="0.093939276">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-07T08:07:31.728Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.051408362">
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.026476456">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.015101149">
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.013701975">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001152096">
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-019 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001147686">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000984342">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.001042586">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; isolation declarations validate and match the migration (every table FORCE RLS)" time="0.002752332">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-019 component contracts &gt; isolation declarations validate and match the migration (every table FORCE RLS)" time="0.002637372">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; contains no SMS, e-mail, push or notification provider (M06)" time="0.002103055">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; contains no SMS, e-mail, push or notification provider (M06)" time="0.002213612">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; does not import CMP-015 or CMP-029 source and has no SQL against their schemas" time="0.000598535">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; does not import CMP-015 or CMP-029 source and has no SQL against their schemas" time="0.000566478">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; only touches sf_deficiency in SQL and never mounts on the API host" time="0.000394701">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; only touches sf_deficiency in SQL and never mounts on the API host" time="0.00041179">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; runs no network call inside the authoritative transaction" time="0.000481153">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; runs no network call inside the authoritative transaction" time="0.000523342">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; ships an executable reconciler with durable same-txn intent (not afterCommit-only)" time="0.000341163">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; ships an executable reconciler with durable same-txn intent (not afterCommit-only)" time="0.000343492">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000271201">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000284347">
         </testcase>
-        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; OpenAPI mutating bodies refuse client-supplied clock members" time="0.000773592">
-        </testcase>
-    </testsuite>
-    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-07T07:55:40.666Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.00210521">
-        <testcase classname="test/unit/domain.test.ts" name="deficiency status table &gt; allows citizen response and officer close from OPEN, and close from RESPONSE_RECEIVED" time="0.001178319">
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no CMP-015/029 SQL, no host mount &gt; OpenAPI mutating bodies refuse client-supplied clock members" time="0.000762893">
         </testcase>
     </testsuite>
-    <testsuite name="test/unit/reconciliation.test.ts" timestamp="2026-10-07T07:55:40.666Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.02222781">
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; OPEN/RESPOND healthy path applies case + SLA + notification via reconciler" time="0.006510265">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; persists same-txn durable intent with tokens sufficient to reconstruct effects" time="0.00107072">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; CMP-015 fail then reconcile recovers case command from durable intent" time="0.001031766">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; CMP-029 fail then reconcile recovers SLA pause from durable intent" time="0.001042921">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; both case and SLA fail then recover via reconciler" time="0.001042937">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; crash after commit before downstream: durable intent remains PENDING and drain recovers" time="0.000957128">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; crash after first effect: partial retry applies only incomplete effects" time="0.001115999">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; duplicate delivery is a no-op once inbox recorded" time="0.001232885">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; idempotent open replay does not re-fire ports" time="0.002598963">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; stale expected version is rejected safely and remains observable" time="0.002662524">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; reconstructs exact intended effects from durable state alone" time="0.001218576">
-        </testcase>
-        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; T1 intents are invisible to T2 (tenant isolation)" time="0.000569719">
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-07T08:07:31.731Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.002057155">
+        <testcase classname="test/unit/domain.test.ts" name="deficiency status table &gt; allows citizen response and officer close from OPEN, and close from RESPONSE_RECEIVED" time="0.001181352">
         </testcase>
     </testsuite>
-    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-07T07:55:40.667Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.013471407">
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; opens a notice, pauses SLA, records a citizen response and resumes SLA" time="0.007930217">
+    <testsuite name="test/unit/reconciliation.test.ts" timestamp="2026-10-07T08:07:31.731Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.021617465">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; OPEN/RESPOND healthy path applies case + SLA + notification via reconciler" time="0.007347038">
         </testcase>
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; resumes SLA when an officer closes an unanswered notice" time="0.001230658">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; persists same-txn durable intent with tokens sufficient to reconstruct effects" time="0.001060101">
         </testcase>
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; replays identical idempotent opens and refuses a different fingerprint" time="0.001101858">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; CMP-015 fail then reconcile recovers case command from durable intent" time="0.001084109">
         </testcase>
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses AI/SYSTEM actors, forged tenant headers, client time and wrong-tenant context" time="0.000885227">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; CMP-029 fail then reconcile recovers SLA pause from durable intent" time="0.001093947">
         </testcase>
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses a second active notice on the same application" time="0.000773005">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; both case and SLA fail then recover via reconciler" time="0.001037887">
         </testcase>
-        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; OPA deny and PDP failure fail closed" time="0.000472324">
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; crash after commit before downstream: durable intent remains PENDING and drain recovers" time="0.001055899">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; crash after first effect: partial retry applies only incomplete effects" time="0.00087529">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; duplicate delivery is a no-op once inbox recorded" time="0.001019866">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; idempotent open replay does not re-fire ports" time="0.003581936">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; stale expected version is rejected safely and remains observable" time="0.000719906">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; reconstructs exact intended effects from durable state alone" time="0.001063363">
+        </testcase>
+        <testcase classname="test/unit/reconciliation.test.ts" name="CMP-019 durable reconciliation (INT-009 REM-001) &gt; T1 intents are invisible to T2 (tenant isolation)" time="0.000560163">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-07T08:07:31.732Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.018856294">
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; opens a notice, pauses SLA, records a citizen response and resumes SLA" time="0.012511209">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; resumes SLA when an officer closes an unanswered notice" time="0.001436955">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; replays identical idempotent opens and refuses a different fingerprint" time="0.001324626">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses AI/SYSTEM actors, forged tenant headers, client time and wrong-tenant context" time="0.000982763">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; refuses a second active notice on the same application" time="0.000886918">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="CMP-019 deficiency lifecycle &gt; OPA deny and PDP failure fail closed" time="0.000501245">
         </testcase>
     </testsuite>
 </testsuites>

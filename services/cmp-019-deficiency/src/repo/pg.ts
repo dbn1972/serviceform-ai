@@ -477,28 +477,28 @@ class PgTx implements DeficiencyTx {
     last_error_code?: string | null;
     now: Date;
   }): Promise<void> {
-    const sets: string[] = ['updated_at = $3'];
-    const vals: unknown[] = [this.tenantId, p.intentId, p.now.toISOString()];
-    if (p.case_effect_status !== undefined) {
-      vals.push(p.case_effect_status);
-      sets.push(`case_effect_status = $${String(vals.length)}`);
-    }
-    if (p.sla_effect_status !== undefined) {
-      vals.push(p.sla_effect_status);
-      sets.push(`sla_effect_status = $${String(vals.length)}`);
-    }
-    if (p.notification_effect_status !== undefined) {
-      vals.push(p.notification_effect_status);
-      sets.push(`notification_effect_status = $${String(vals.length)}`);
-    }
-    if (p.last_error_code !== undefined) {
-      vals.push(p.last_error_code);
-      sets.push(`last_error_code = $${String(vals.length)}`);
-    }
+    // Fully parameterised UPDATE (no SQL string interpolation — Semgrep / eslint).
     await this.c.query(
-      `UPDATE sf_deficiency.reconciliation_intent SET ${sets.join(', ')}
-        WHERE tenant_id = $1 AND intent_id = $2`,
-      vals,
+      `UPDATE sf_deficiency.reconciliation_intent SET
+         case_effect_status = CASE WHEN $4::boolean THEN $5 ELSE case_effect_status END,
+         sla_effect_status = CASE WHEN $6::boolean THEN $7 ELSE sla_effect_status END,
+         notification_effect_status = CASE WHEN $8::boolean THEN $9 ELSE notification_effect_status END,
+         last_error_code = CASE WHEN $10::boolean THEN $11 ELSE last_error_code END,
+         updated_at = $3
+       WHERE tenant_id = $1 AND intent_id = $2`,
+      [
+        this.tenantId,
+        p.intentId,
+        p.now.toISOString(),
+        p.case_effect_status !== undefined,
+        p.case_effect_status ?? null,
+        p.sla_effect_status !== undefined,
+        p.sla_effect_status ?? null,
+        p.notification_effect_status !== undefined,
+        p.notification_effect_status ?? null,
+        p.last_error_code !== undefined,
+        p.last_error_code ?? null,
+      ],
     );
   }
 

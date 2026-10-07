@@ -30,6 +30,12 @@ function intents(h: ReturnType<typeof makeHarness>, tenant = TENANT_A) {
   return [...h.repo.tenant(tenant).intents.values()];
 }
 
+function firstIntent(h: ReturnType<typeof makeHarness>, tenant = TENANT_A) {
+  const row = intents(h, tenant)[0];
+  if (!row) throw new Error('expected reconciliation intent');
+  return row;
+}
+
 describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
   it('OPEN/RESPOND healthy path applies case + SLA + notification via reconciler', async () => {
     const h = makeHarness();
@@ -139,7 +145,7 @@ describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
     await openNotice(h);
     expect(h.caseCommands.commands).toHaveLength(0);
     expect(h.slaClock.pauses).toHaveLength(0);
-    const intent = intents(h)[0]!;
+    const intent = firstIntent(h);
     expect(intent.case_effect_status).toBe('FAILED_RETRYABLE');
 
     h.caseCommands.failNext = 0;
@@ -162,7 +168,7 @@ describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
     const beforeCase = h.caseCommands.commands.length;
     await h.service
       .getReconciliationConsumer()
-      .reconcileIntent(tenantCtx(h), intents(h)[0]!.intent_id);
+      .reconcileIntent(tenantCtx(h), firstIntent(h).intent_id);
     expect(h.caseCommands.commands).toHaveLength(beforeCase); // case not re-applied
     expect(h.slaClock.pauses).toHaveLength(1);
     expect(intents(h)[0]?.sla_effect_status).toBe('APPLIED');
@@ -171,7 +177,7 @@ describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
   it('duplicate delivery is a no-op once inbox recorded', async () => {
     const h = makeHarness();
     await openNotice(h);
-    const intent = intents(h)[0]!;
+    const intent = firstIntent(h);
     expect(
       h.repo
         .tenant(TENANT_A)
@@ -221,7 +227,7 @@ describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
     h.caseCommands.failNext = 1;
     h.slaClock.failNextPause = 1;
     await openNotice(h);
-    const intent = intents(h)[0]!;
+    const intent = firstIntent(h);
     // Clear in-memory port history; only durable intent remains as source of truth.
     h.caseCommands.commands.length = 0;
     h.slaClock.pauses.length = 0;
