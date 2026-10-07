@@ -27,7 +27,7 @@ export function ctxFor(
   tenantId: string,
   actorId = ACTOR_OFFICER,
   type: RequestContext['actor']['type'] = 'OFFICER',
-): RequestContext {
+): TenantContext {
   return {
     tenant_id: tenantId,
     cell_id: 'cell-test-1',
@@ -73,11 +73,22 @@ export class RecordingSlaClock implements SlaClockPort {
   readonly pauses: DeficiencyClockCommand[] = [];
   readonly resumes: DeficiencyClockCommand[] = [];
   inTx = false;
+  failNextPause = 0;
+  failNextResume = 0;
   pauseForDeficiency(
     _ctx: TenantContext,
     command: DeficiencyClockCommand,
   ): Promise<DeficiencyClockResult> {
     if (this.inTx) throw new Error('NETWORK_IN_TX');
+    if (this.failNextPause > 0) {
+      this.failNextPause -= 1;
+      return Promise.reject(
+        Object.assign(new Error('sla pause unavailable'), {
+          code: 'SLA_PORT_DOWN',
+          details: [{ code: 'SLA_PORT_DOWN' }],
+        }),
+      );
+    }
     this.pauses.push(command);
     return Promise.resolve({
       clock_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
@@ -92,6 +103,15 @@ export class RecordingSlaClock implements SlaClockPort {
     command: DeficiencyClockCommand,
   ): Promise<DeficiencyClockResult> {
     if (this.inTx) throw new Error('NETWORK_IN_TX');
+    if (this.failNextResume > 0) {
+      this.failNextResume -= 1;
+      return Promise.reject(
+        Object.assign(new Error('sla resume unavailable'), {
+          code: 'SLA_PORT_DOWN',
+          details: [{ code: 'SLA_PORT_DOWN' }],
+        }),
+      );
+    }
     this.resumes.push(command);
     return Promise.resolve({
       clock_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
@@ -103,15 +123,60 @@ export class RecordingSlaClock implements SlaClockPort {
   }
 }
 
+/** Mirrors CMP-015 Cmp015Error shape for STALE_EXPECTED_STATE / STALE_VERSION. */
+export function cmp015StaleError(
+  detailCode: 'STALE_EXPECTED_STATE' | 'STALE_VERSION',
+  pointer: '/expected_state' | '/expected_version',
+): Error {
+  return Object.assign(new Error('Invalid application state transition'), {
+    name: 'Cmp015Error',
+    code: 'SF-APP-001',
+    statusCode: 409,
+    details: [{ code: detailCode, pointer }],
+  });
+}
+
 export class RecordingCaseCommands implements CaseCommandPort {
-  readonly commands: { applicationId: string; body: CaseCommand }[] = [];
+  readonly commands: { applicationId: string; body: CaseCommand; key: string }[] = [];
+  failNext = 0;
+  staleNext = 0;
+  /** CMP-015 STALE_EXPECTED_STATE (real detail code + pointer). */
+  staleExpectedStateNext = 0;
+  /** CMP-015 STALE_VERSION (real detail code + pointer). */
+  staleVersionNext = 0;
   executeCommand(
     _ctx: TenantContext,
     applicationId: string,
     body: CaseCommand,
-    _key: string,
+    key: string,
   ): Promise<CaseCommandResult> {
-    this.commands.push({ applicationId, body });
+    if (this.staleExpectedStateNext > 0) {
+      this.staleExpectedStateNext -= 1;
+      return Promise.reject(cmp015StaleError('STALE_EXPECTED_STATE', '/expected_state'));
+    }
+    if (this.staleVersionNext > 0) {
+      this.staleVersionNext -= 1;
+      return Promise.reject(cmp015StaleError('STALE_VERSION', '/expected_version'));
+    }
+    if (this.staleNext > 0) {
+      this.staleNext -= 1;
+      return Promise.reject(
+        Object.assign(new Error('stale expected version'), {
+          code: 'STALE_EXPECTED_VERSION',
+          details: [{ code: 'STALE_EXPECTED_VERSION' }],
+        }),
+      );
+    }
+    if (this.failNext > 0) {
+      this.failNext -= 1;
+      return Promise.reject(
+        Object.assign(new Error('case port unavailable'), {
+          code: 'CASE_PORT_DOWN',
+          details: [{ code: 'CASE_PORT_DOWN' }],
+        }),
+      );
+    }
+    this.commands.push({ applicationId, body, key });
     return Promise.resolve({
       application_id: applicationId,
       state: body.command === 'RAISE_DEFICIENCY' ? 'DEFICIENCY_RAISED' : 'CITIZEN_RESPONSE',

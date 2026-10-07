@@ -142,7 +142,8 @@ export async function setupHarness(): Promise<Harness> {
     `);
     await c.query(`
       TRUNCATE TABLE sf_deficiency.evidence_ref, sf_deficiency.citizen_response, sf_deficiency.requested_item,
-        sf_deficiency.deficiency_event, sf_deficiency.deficiency_notice, sf_deficiency.idempotency_record,
+        sf_deficiency.deficiency_event, sf_deficiency.reconciliation_intent,
+        sf_deficiency.deficiency_notice, sf_deficiency.idempotency_record,
         sf_deficiency.outbox_event, sf_deficiency.outbox_event_platform,
         sf_deficiency.inbox_event, sf_deficiency.inbox_event_platform RESTART IDENTITY CASCADE
     `);

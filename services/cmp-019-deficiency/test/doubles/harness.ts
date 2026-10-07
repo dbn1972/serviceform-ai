@@ -1,6 +1,6 @@
 import { createDeficiencyApi, type ApiResponse } from '../../src/api/handler.js';
 import { buildDeficiencyService } from '../../src/index.js';
-import type { RequestContext } from '../../src/types.js';
+import type { RequestContext, TenantContext } from '../../src/types.js';
 import {
   AllowAllAuthorizer,
   ctxFor,
@@ -24,7 +24,7 @@ export function makeHarness(startIso = '2026-10-06T10:00:00Z') {
   const notifier = new RecordingNotifier();
   const slaClock = new RecordingSlaClock();
   const caseCommands = new RecordingCaseCommands();
-  const state: { ctx: RequestContext | null } = { ctx: ctxFor(TENANT_A) };
+  const state: { ctx: TenantContext | RequestContext | null } = { ctx: ctxFor(TENANT_A) };
   const service = buildDeficiencyService({
     repository: repo,
     authorizer,

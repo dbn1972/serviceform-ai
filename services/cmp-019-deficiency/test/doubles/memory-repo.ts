@@ -2,10 +2,12 @@ import { Cmp019Error } from '../../src/errors.js';
 import type {
   DeficiencyRepository,
   DeficiencyTx,
+  EffectStatus,
   EvidenceRow,
   HistoryRow,
   ItemRow,
   NoticeRow,
+  ReconciliationIntentRow,
   ResponseRow,
   StoredIdempotent,
 } from '../../src/repo/types.js';
@@ -19,6 +21,8 @@ export interface TenantData {
   history: HistoryRow[];
   idempotency: Map<string, { fingerprint: string; response?: StoredIdempotent }>;
   outbox: { topic: string; envelope: EventEnvelope<object> }[];
+  intents: Map<string, ReconciliationIntentRow>;
+  inbox: Set<string>;
 }
 
 const emptyTenant = (): TenantData => ({
@@ -29,6 +33,8 @@ const emptyTenant = (): TenantData => ({
   history: [],
   idempotency: new Map(),
   outbox: [],
+  intents: new Map(),
+  inbox: new Set(),
 });
 
 export class MemoryDeficiencyRepository implements DeficiencyRepository {
@@ -198,5 +204,58 @@ class MemoryTx implements DeficiencyTx {
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void> {
     this.d.outbox.push({ topic, envelope });
     return Promise.resolve();
+  }
+
+  insertReconciliationIntent(row: ReconciliationIntentRow): Promise<void> {
+    this.d.intents.set(row.intent_id, { ...row });
+    return Promise.resolve();
+  }
+
+  getReconciliationIntent(intentId: string): Promise<ReconciliationIntentRow | undefined> {
+    const row = this.d.intents.get(intentId);
+    return Promise.resolve(row ? { ...row } : undefined);
+  }
+
+  listPendingReconciliationIntents(limit: number): Promise<ReconciliationIntentRow[]> {
+    const pending = [...this.d.intents.values()].filter(
+      (i) =>
+        i.case_effect_status === 'PENDING' ||
+        i.case_effect_status === 'FAILED_RETRYABLE' ||
+        i.sla_effect_status === 'PENDING' ||
+        i.sla_effect_status === 'FAILED_RETRYABLE' ||
+        i.notification_effect_status === 'PENDING' ||
+        i.notification_effect_status === 'FAILED_RETRYABLE',
+    );
+    return Promise.resolve(pending.slice(0, limit).map((i) => ({ ...i })));
+  }
+
+  updateReconciliationEffects(p: {
+    intentId: string;
+    case_effect_status?: EffectStatus;
+    sla_effect_status?: EffectStatus;
+    notification_effect_status?: EffectStatus;
+    last_error_code?: string | null;
+    now: Date;
+  }): Promise<void> {
+    const row = this.d.intents.get(p.intentId);
+    if (!row) return Promise.resolve();
+    if (p.case_effect_status !== undefined) row.case_effect_status = p.case_effect_status;
+    if (p.sla_effect_status !== undefined) row.sla_effect_status = p.sla_effect_status;
+    if (p.notification_effect_status !== undefined)
+      row.notification_effect_status = p.notification_effect_status;
+    if (p.last_error_code !== undefined) row.last_error_code = p.last_error_code;
+    row.updated_at = p.now.toISOString();
+    return Promise.resolve();
+  }
+
+  hasInbox(consumerGroup: string, eventId: string): Promise<boolean> {
+    return Promise.resolve(this.d.inbox.has(`${consumerGroup}|${eventId}`));
+  }
+
+  recordInbox(consumerGroup: string, eventId: string): Promise<boolean> {
+    const key = `${consumerGroup}|${eventId}`;
+    if (this.d.inbox.has(key)) return Promise.resolve(false);
+    this.d.inbox.add(key);
+    return Promise.resolve(true);
   }
 }

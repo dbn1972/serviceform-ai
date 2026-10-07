@@ -45,6 +45,10 @@ export function buildDeficiencyApi(
 }
 
 export { DeficiencyService } from './service/service.js';
+export {
+  DeficiencyReconciliationConsumer,
+  RECONCILIATION_CONSUMER_GROUP,
+} from './service/reconciliation.js';
 export { createDeficiencyApi, ROUTE_DESCRIPTORS } from './api/handler.js';
 export { PgDeficiencyRepository } from './repo/pg.js';
 export type { SqlClient, SqlPool, SqlResult } from './repo/pg.js';
@@ -53,3 +57,4 @@ export type { CaseCommandPort } from './ports/case-command-port.js';
 export type { NotificationPort, DeficiencyNotificationRequest } from './ports/notification-port.js';
 export type { AuthorizationPort } from './authz.js';
 export type { ContextResolver } from './context.js';
+export type { ReconciliationIntentRow, EffectStatus } from './repo/types.js';

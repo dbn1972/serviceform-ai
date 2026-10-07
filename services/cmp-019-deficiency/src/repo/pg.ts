@@ -6,10 +6,12 @@ import type { EventEnvelope, RequestContext } from '../types.js';
 import type {
   DeficiencyRepository,
   DeficiencyTx,
+  EffectStatus,
   EvidenceRow,
   HistoryRow,
   ItemRow,
   NoticeRow,
+  ReconciliationIntentRow,
   ResponseRow,
   StoredIdempotent,
 } from './types.js';
@@ -387,6 +389,170 @@ class PgTx implements DeficiencyTx {
       ],
     );
   }
+
+  async insertReconciliationIntent(row: ReconciliationIntentRow): Promise<void> {
+    await this.c.query(
+      `INSERT INTO sf_deficiency.reconciliation_intent (
+         tenant_id, intent_id, deficiency_id, application_id, cell_id, correlation_id,
+         source_event_id, operation,
+         case_command, case_expected_state, case_expected_version, case_reason_code,
+         case_idempotency_key, case_effect_status,
+         sla_kind, sla_stage_code, sla_reason_code, sla_idempotency_key, sla_effect_status,
+         notification_kind, notification_effect_status, last_error_code, created_at, updated_at
+       ) VALUES (
+         $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24
+       )`,
+      [
+        row.tenant_id,
+        row.intent_id,
+        row.deficiency_id,
+        row.application_id,
+        row.cell_id,
+        row.correlation_id,
+        row.source_event_id,
+        row.operation,
+        row.case_command,
+        row.case_expected_state,
+        row.case_expected_version,
+        row.case_reason_code,
+        row.case_idempotency_key,
+        row.case_effect_status,
+        row.sla_kind,
+        row.sla_stage_code,
+        row.sla_reason_code,
+        row.sla_idempotency_key,
+        row.sla_effect_status,
+        row.notification_kind,
+        row.notification_effect_status,
+        row.last_error_code,
+        row.created_at,
+        row.updated_at,
+      ],
+    );
+  }
+
+  async getReconciliationIntent(intentId: string): Promise<ReconciliationIntentRow | undefined> {
+    const r = await this.c.query(
+      `SELECT tenant_id, intent_id, deficiency_id, application_id, cell_id, correlation_id,
+              source_event_id, operation,
+              case_command, case_expected_state, case_expected_version, case_reason_code,
+              case_idempotency_key, case_effect_status,
+              sla_kind, sla_stage_code, sla_reason_code, sla_idempotency_key, sla_effect_status,
+              notification_kind, notification_effect_status, last_error_code, created_at, updated_at
+         FROM sf_deficiency.reconciliation_intent
+        WHERE tenant_id = $1 AND intent_id = $2`,
+      [this.tenantId, intentId],
+    );
+    const row = r.rows[0];
+    return row ? toIntent(row) : undefined;
+  }
+
+  async listPendingReconciliationIntents(limit: number): Promise<ReconciliationIntentRow[]> {
+    const r = await this.c.query(
+      `SELECT tenant_id, intent_id, deficiency_id, application_id, cell_id, correlation_id,
+              source_event_id, operation,
+              case_command, case_expected_state, case_expected_version, case_reason_code,
+              case_idempotency_key, case_effect_status,
+              sla_kind, sla_stage_code, sla_reason_code, sla_idempotency_key, sla_effect_status,
+              notification_kind, notification_effect_status, last_error_code, created_at, updated_at
+         FROM sf_deficiency.reconciliation_intent
+        WHERE tenant_id = $1
+          AND (
+            case_effect_status IN ('PENDING', 'FAILED_RETRYABLE')
+            OR sla_effect_status IN ('PENDING', 'FAILED_RETRYABLE')
+            OR notification_effect_status IN ('PENDING', 'FAILED_RETRYABLE')
+          )
+        ORDER BY created_at ASC
+        LIMIT $2`,
+      [this.tenantId, limit],
+    );
+    return r.rows.map(toIntent);
+  }
+
+  async updateReconciliationEffects(p: {
+    intentId: string;
+    case_effect_status?: EffectStatus;
+    sla_effect_status?: EffectStatus;
+    notification_effect_status?: EffectStatus;
+    last_error_code?: string | null;
+    now: Date;
+  }): Promise<void> {
+    // Fully parameterised UPDATE (no SQL string interpolation — Semgrep / eslint).
+    await this.c.query(
+      `UPDATE sf_deficiency.reconciliation_intent SET
+         case_effect_status = CASE WHEN $4::boolean THEN $5 ELSE case_effect_status END,
+         sla_effect_status = CASE WHEN $6::boolean THEN $7 ELSE sla_effect_status END,
+         notification_effect_status = CASE WHEN $8::boolean THEN $9 ELSE notification_effect_status END,
+         last_error_code = CASE WHEN $10::boolean THEN $11 ELSE last_error_code END,
+         updated_at = $3
+       WHERE tenant_id = $1 AND intent_id = $2`,
+      [
+        this.tenantId,
+        p.intentId,
+        p.now.toISOString(),
+        p.case_effect_status !== undefined,
+        p.case_effect_status ?? null,
+        p.sla_effect_status !== undefined,
+        p.sla_effect_status ?? null,
+        p.notification_effect_status !== undefined,
+        p.notification_effect_status ?? null,
+        p.last_error_code !== undefined,
+        p.last_error_code ?? null,
+      ],
+    );
+  }
+
+  async hasInbox(consumerGroup: string, eventId: string): Promise<boolean> {
+    const r = await this.c.query(
+      `SELECT 1 FROM sf_deficiency.inbox_event
+        WHERE tenant_id = $1 AND consumer_group = $2 AND event_id = $3`,
+      [this.tenantId, consumerGroup, eventId],
+    );
+    return r.rows.length > 0;
+  }
+
+  async recordInbox(consumerGroup: string, eventId: string): Promise<boolean> {
+    const r = await this.c.query(
+      `INSERT INTO sf_deficiency.inbox_event (consumer_group, event_id, tenant_id)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (consumer_group, event_id) DO NOTHING`,
+      [consumerGroup, eventId, this.tenantId],
+    );
+    return (r.rowCount ?? 0) === 1;
+  }
+}
+
+function toIntent(r: Record<string, unknown>): ReconciliationIntentRow {
+  return {
+    tenant_id: String(r['tenant_id']),
+    intent_id: String(r['intent_id']),
+    deficiency_id: String(r['deficiency_id']),
+    application_id: String(r['application_id']),
+    cell_id: String(r['cell_id']),
+    correlation_id: String(r['correlation_id']),
+    source_event_id: String(r['source_event_id']),
+    operation: r['operation'] as ReconciliationIntentRow['operation'],
+    case_command: (r['case_command'] as ReconciliationIntentRow['case_command']) ?? null,
+    case_expected_state: strOrNull(r['case_expected_state']),
+    case_expected_version:
+      r['case_expected_version'] === null || r['case_expected_version'] === undefined
+        ? null
+        : num(r['case_expected_version']),
+    case_reason_code: strOrNull(r['case_reason_code']),
+    case_idempotency_key: strOrNull(r['case_idempotency_key']),
+    case_effect_status: r['case_effect_status'] as EffectStatus,
+    sla_kind: (r['sla_kind'] as ReconciliationIntentRow['sla_kind']) ?? null,
+    sla_stage_code: strOrNull(r['sla_stage_code']),
+    sla_reason_code: strOrNull(r['sla_reason_code']),
+    sla_idempotency_key: strOrNull(r['sla_idempotency_key']),
+    sla_effect_status: r['sla_effect_status'] as EffectStatus,
+    notification_kind:
+      (r['notification_kind'] as ReconciliationIntentRow['notification_kind']) ?? null,
+    notification_effect_status: r['notification_effect_status'] as EffectStatus,
+    last_error_code: strOrNull(r['last_error_code']),
+    created_at: iso(r['created_at']),
+    updated_at: iso(r['updated_at']),
+  };
 }
 
 export class PgDeficiencyRepository implements DeficiencyRepository {

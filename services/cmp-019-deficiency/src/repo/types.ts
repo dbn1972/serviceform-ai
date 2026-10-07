@@ -71,6 +71,37 @@ export interface StoredIdempotent {
   body: unknown;
 }
 
+export type EffectStatus = 'NONE' | 'PENDING' | 'APPLIED' | 'FAILED_STALE' | 'FAILED_RETRYABLE';
+
+export type ReconciliationOperation = 'OPEN' | 'RESPOND' | 'CLOSE';
+
+export interface ReconciliationIntentRow {
+  tenant_id: string;
+  intent_id: string;
+  deficiency_id: string;
+  application_id: string;
+  cell_id: string;
+  correlation_id: string;
+  source_event_id: string;
+  operation: ReconciliationOperation;
+  case_command: 'RAISE_DEFICIENCY' | 'RECORD_CITIZEN_RESPONSE' | null;
+  case_expected_state: string | null;
+  case_expected_version: number | null;
+  case_reason_code: string | null;
+  case_idempotency_key: string | null;
+  case_effect_status: EffectStatus;
+  sla_kind: 'pause' | 'resume' | null;
+  sla_stage_code: string | null;
+  sla_reason_code: string | null;
+  sla_idempotency_key: string | null;
+  sla_effect_status: EffectStatus;
+  notification_kind: 'DEFICIENCY_OPENED' | 'DEFICIENCY_RESPONDED' | 'DEFICIENCY_CLOSED' | null;
+  notification_effect_status: EffectStatus;
+  last_error_code: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface DeficiencyTx {
   claimIdempotency(p: {
     principalId: string;
@@ -101,6 +132,19 @@ export interface DeficiencyTx {
   appendHistory(row: HistoryRow): Promise<void>;
   listHistory(deficiencyId: string): Promise<HistoryRow[]>;
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void>;
+  insertReconciliationIntent(row: ReconciliationIntentRow): Promise<void>;
+  getReconciliationIntent(intentId: string): Promise<ReconciliationIntentRow | undefined>;
+  listPendingReconciliationIntents(limit: number): Promise<ReconciliationIntentRow[]>;
+  updateReconciliationEffects(p: {
+    intentId: string;
+    case_effect_status?: EffectStatus;
+    sla_effect_status?: EffectStatus;
+    notification_effect_status?: EffectStatus;
+    last_error_code?: string | null;
+    now: Date;
+  }): Promise<void>;
+  hasInbox(consumerGroup: string, eventId: string): Promise<boolean>;
+  recordInbox(consumerGroup: string, eventId: string): Promise<boolean>;
 }
 
 export interface DeficiencyRepository {

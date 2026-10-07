@@ -17,5 +17,8 @@ does not write CMP-015 or CMP-029 tables and implements no SMS/email/push provid
 `OPEN` notice. Time (`opened_at`, `responded_at`, `closed_at`) is server-derived. AI/SYSTEM actors
 cannot open or close a deficiency.
 
-INT-009: open calls `pauseForDeficiency` after commit; citizen response or closure calls
-`resumeAfterDeficiency` after commit.
+INT-009: open/respond/close persist a same-transaction `reconciliation_intent` carrying
+`case_expected_state`/`case_expected_version` and SLA pause/resume tokens. The executable
+`DeficiencyReconciliationConsumer` (CMP-016-like + inbox) applies CaseCommandPort / SlaClockPort
+effects after commit; `afterCommit` is best-effort only. Crash recovery uses `reconcilePending`.
+CMP-019 residual remains GOVERNING_UNRESOLVED_UNWAIVED until independent INT re-proof.

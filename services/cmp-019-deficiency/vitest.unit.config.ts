@@ -6,6 +6,6 @@ export default defineConfig({
     exclude: ['**/*.int.test.ts'],
     environment: 'node',
     reporters: ['default', 'junit'],
-    outputFile: { junit: '../../evidence/SF-M05-006/junit/unit.xml' },
+    outputFile: { junit: '../../evidence/SF-M05-REM-001/junit/unit.xml' },
   },
 });

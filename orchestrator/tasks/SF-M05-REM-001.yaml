@@ -1,0 +1,64 @@
+# SF-M05-REM-001 — CMP-019 durable reconciliation remediation (INT-009)
+# Production remediation. Not CERTIFIED. Not G4. Not G6. Do not merge until independent review.
+# CMP-019 remains GOVERNING_UNRESOLVED_UNWAIVED.
+
+task_id: SF-M05-REM-001
+title: CMP-019 durable reconciliation intent + executable consumer (INT-009)
+module_id: M05
+component_ids: [CMP-019]
+integration_ids: [INT-009]
+requirement_ids:
+  - Eng-v1.4-CMP-019
+  - INT-009
+agent_role: component_builder
+builder_agent: serviceform-case-execution-builder
+model_route: composer
+effort: high
+branch: cursor/m05-rem-int009-c0d25b32
+privilege_role: sf_cmp019_rw
+schema: sf_deficiency
+hard_serial_locks: [LOCK-8]
+depends_on:
+  - HUMAN_SF_M05_LOCK8_PRODUCTION_REMEDIATION_AUTHORIZATION
+  - origin/main at c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  - INDEPENDENT_SF_M05_INT_SEC_REVIEW = ACCEPTED
+allowed_write_paths:
+  - services/cmp-019-deficiency/**
+  - db/migrations/*_cmp-019-*.sql
+  - evidence/SF-M05-REM-001/**
+  - orchestrator/tasks/SF-M05-REM-001.yaml
+  - orchestrator/handovers/SF-M05-REM-001.yaml
+allowed_write_notes:
+  - NEW additive migration only; do not edit landed CMP-019 migrations in place
+  - Same-txn durable reconciliation intent + executable consumer (CMP-016-like + inbox)
+  - CaseCommandPort / SlaClockPort only; no cross-component SQL; no network in auth txn
+  - Do not alter SF-CON-OUTBOX table shape
+  - Do not modify CMP-015, CMP-029, apps/**, shared contracts, contracts-lock, pnpm-lock
+  - Do not merge; do not claim G4/CERTIFIED
+  - CMP-019 remains GOVERNING_UNRESOLVED_UNWAIVED
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - services/cmp-015-application-case/**
+  - services/cmp-029-sla-escalation/**
+forbidden:
+  - merge
+  - G4
+  - CERTIFIED
+  - G6
+  - EVD
+  - REM-002
+  - verifier PR consumption as production source
+dispatch_base: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+orchestration_task_state: IN_PROGRESS
+state: IN_PROGRESS
+self_certified: false
+not_certified: true
+certified: false
+g4: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cmp_019_residual: GOVERNING_UNRESOLVED_UNWAIVED

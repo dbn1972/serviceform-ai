@@ -1,0 +1,30 @@
+# SF-M05-REM-001 handover — REM_001_R1 correction in progress → refreeze
+task_id: SF-M05-REM-001
+correction: REM_001_R1
+authorization: HUMAN_SF_M05_REM_001_CORRECTION_AUTHORIZATION
+state: candidate-correction
+orchestration_task_state: CANDIDATE_CORRECTION
+branch: cursor/m05-rem-int009-c0d25b32
+base_commit: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+prior_freeze_head: 30b1233d9601231aefbdad40fb4ef06f98402a53
+component_ids: [CMP-019]
+integration_ids: [INT-009]
+cmp_019_residual: GOVERNING_UNRESOLVED_UNWAIVED
+self_certified: false
+certified: false
+g4: false
+g6: false
+merged: false
+do_not_merge: true
+frozen_contracts_altered: false
+ccr_required: false
+rem_001_r1:
+  isStale_includes: [STALE_EXPECTED_STATE, STALE_VERSION, STALE_EXPECTED_VERSION, EXPECTED_VERSION_MISMATCH]
+  failed_stale_not_retryable: true
+  rem002_pr105_untouched: true
+  rem002_head_required: bfd75eb6ab1bb9eebdf3fb49dadd9d182cd46f34
+local_unit_tests: 33/33 PASS
+notes:
+  - REM_001_R1 maps CMP-015 STALE_EXPECTED_STATE to FAILED_STALE
+  - Refreeze after CI+Security+Developer-platform SUCCESS on new #106 head
+  - Do not merge; do not touch #105
