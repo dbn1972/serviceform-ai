@@ -1,0 +1,99 @@
+# SF-M05-REM-002 handover — API host M05 package admission
+# Candidate remediation freeze. DO NOT MERGE. Not CERTIFIED. Not G4. Not G6.
+# EVD_OFF. Did not start REM-001 / INT rerun / SEC rerun.
+
+task_id: SF-M05-REM-002
+title: API host M05 package admission remediation
+module_id: M05
+component_ids: [CMP-015, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-011]
+requirement_ids:
+  - host-package-admission-m05
+  - M05_HOST_PACKAGE_ADMISSION
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+model_route: composer
+branch: cursor/m05-rem-hostpkg-c0d25b32
+worktree: in-repo
+parallel_group: M05-LOCK8-REM
+hard_serial_locks: [LOCK-8]
+depends_on:
+  - origin/main at c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  - HUMAN_SF_M05_LOCK8_PRODUCTION_REMEDIATION_AUTHORIZATION
+allowed_write_paths:
+  - apps/api/package.json
+  - pnpm-lock.yaml
+  - evidence/SF-M05-REM-002/**
+  - orchestrator/tasks/SF-M05-REM-002.yaml
+  - orchestrator/handovers/SF-M05-REM-002.yaml
+
+planning_only: false
+implementation_authorized: true
+dispatched: true
+implementation_started: true
+candidate_complete: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g4: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+merge_authorized: false
+do_not_merge: true
+
+execution_base_main: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+sha_guard: PASS
+contracts: 19/19 FROZEN MATCH
+
+draft_pr: null
+draft_pr_number: null
+frozen_head: null
+
+admitted_workspace_deps:
+  - "@serviceform/cmp-015-application-case"
+  - "@serviceform/cmp-017-work-queue-tasks"
+  - "@serviceform/cmp-018-inspection-verification"
+  - "@serviceform/cmp-019-deficiency"
+  - "@serviceform/cmp-027-grievance-feedback"
+  - "@serviceform/cmp-028-appeal-review"
+  - "@serviceform/cmp-029-sla-escalation"
+
+cmp_016_admitted: false
+cmp_036_readded: false
+
+M05_HOST_PACKAGE_ADMISSION: ADMITTED
+M05_HOST_PACKAGE_ADMISSION_BLOCKING: false
+package_specifier_resolution_without_file_url_fallback: true
+file_url_fallback_present_in_source: true
+file_url_fallback_required_for_load: false
+
+lockfile:
+  importer_apps_api_added_lines: 21
+  importer_removed_lines: 0
+  packages_section_byte_identical: true
+  snapshots_section_byte_identical: true
+  naive_lockfile_only_used: false
+  policy_relaxed: false
+
+apps_api_src_modified: false
+build_mjs_modified: false
+evd_off: true
+rem_001_started: false
+int_rerun_started: false
+sec_rerun_started: false
+
+residuals_carried:
+  CMP-019: GOVERNING_UNRESOLVED_UNWAIVED
+  CMP-028: GOVERNING_UNRESOLVED_UNWAIVED
+
+evidence_root: evidence/SF-M05-REM-002/
+outcome: SF_M05_REM_002_CANDIDATE_READY
+
+# Implementation note (freeze). Do not amend/rebase after freeze head is set.
+# Base main c0d25b32114779ddb4cc23e4e62a25f9d1365192.
+# Contracts 19/19 MATCH. Not CERTIFIED. Do not merge.
+# Next gate: INDEPENDENT_SF_M05_LOCK8_REMEDIATION_REVIEW (after REM-001 + REM-002).
