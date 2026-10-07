@@ -12,7 +12,7 @@ Independent verifier recommendation only: **`SF_M05_SEC` + `_` + `PASS`**.
 | Role | independent security verifier (tenant / OPA / AI / host) |
 | Execution base (LOCK-8) | `c0d25b32114779ddb4cc23e4e62a25f9d1365192` (`origin/main` post #102) |
 | Planning `base_commit` provenance | `b286ed95` + `6755b936f73bc2856c9db2c68d8ca64c` (task envelope unchanged; not used as execution tip) |
-| Verifier head |  |
+| Verifier head | `7e8c92379c66809e8163d354e1545cf66f504918` (evidence binder tip; immutable after CI green) |
 | Components | CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029 |
 | INT | INT-004, INT-005, INT-006, INT-009, INT-011, INT-013 |
 | Unmerged siblings | SF-M05-INT **not** consumed as production source of truth |
