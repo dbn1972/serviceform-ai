@@ -1,0 +1,84 @@
+# SF-M05-SEC-RERUN — independent security verifier (LOCK-8 post-remediation)
+# NEW draft PR. Do NOT reuse #104. Do NOT merge. Not CERTIFIED. Not G4/G6. EVD OFF.
+
+task_id: SF-M05-SEC-RERUN
+title: M05 LOCK-8 security rerun after REM-001/REM-002
+module_id: M05
+agent_role: security_agent
+builder_agent: serviceform-security-verifier
+component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
+integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
+branch: cursor/m05-sec-rerun-4d99c91e
+parallel_group: M05-LOCK8-RERUN
+hard_serial_locks: [LOCK-8]
+depends_on:
+  - origin/main == 4d99c91e4bcdc145585fe62449c83a004de1399d
+  - SF-M05-REM-001 MERGED
+  - SF-M05-REM-002 MERGED
+allowed_write_paths:
+  - tests/security/m05/**
+  - evidence/SF-M05-SEC-RERUN/**
+  - orchestrator/handovers/SF-M05-SEC-RERUN.yaml
+explicit_cannot:
+  - waive security findings
+  - self-certify
+  - issue G4
+  - merge this draft PR
+  - reuse PR #104 as PASS
+  - patch production
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - pnpm-lock.yaml
+  - db/migrations/**
+
+self_certified: false
+certified: false
+g4: false
+g6: false
+evd_started: false
+
+verification:
+  human_authorization: HUMAN_SF_M05_LOCK8_RERUN_AUTHORIZATION
+  execution_base: 4d99c91e4bcdc145585fe62449c83a004de1399d
+  production_code_modified: false
+  result_family: SF_M05_SEC_RERUN
+  result_status: PASS
+  CROSS_TENANT_LEAKAGE: 0
+  SUPERUSER: 0
+  BYPASSRLS: 0
+  runtime_ownership_violations: 0
+  statutory_ai_paths: 0
+  blocking_high_critical: 0
+  contracts: 19/19 MATCH
+  catalog_pass: 463
+  catalog_fail: 0
+  vitest_pass: 30
+  vitest_fail: 0
+  force_rls_enable_probes: 58
+  force_rls_force_probes: 58
+  cross_tenant_probes: 16
+  cross_component_sql_probes: 8
+  reconciliation_intent_tenant_isolated: true
+  durable_recon_stale_terminates: true
+  network_in_auth_txn: 0
+  cmp016_http_mounted: 0
+  cmp036_duplicate: 0
+  forged_tenant_authoritative: 0
+  host_package_admission: ADMITTED
+  supply_chain_frozen_lockfile: true
+  supply_chain_blockExoticSubdeps: true
+  supply_chain_minimumReleaseAge: 10080
+  supply_chain_trustPolicy: no-downgrade
+  cmp019_residual: GOVERNING_UNRESOLVED_UNWAIVED
+  cmp028_residual: GOVERNING_UNRESOLVED_UNWAIVED
+  residuals_waived: false
+  historical_pr_104_reused: false
+  int_unmerged_consumed: false
+  m06: OFF
+  m08: OFF
+  assessed_at: 2026-10-07T14:59:35Z
+  # Filled after freeze tip / draft PR:
+  immutable_verifier_head: PENDING
+  draft_pr: PENDING
