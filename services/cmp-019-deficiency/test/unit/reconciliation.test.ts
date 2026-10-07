@@ -222,6 +222,47 @@ describe('CMP-019 durable reconciliation (INT-009 REM-001)', () => {
     expect(intents(h)[0]?.case_effect_status).toBe('FAILED_STALE');
   });
 
+  it('REM_001_R1: CMP-015 STALE_EXPECTED_STATE → FAILED_STALE; not retryable', async () => {
+    const h = makeHarness();
+    // Real CMP-015 error shape: SF-APP-001 + details[0].code = STALE_EXPECTED_STATE.
+    h.caseCommands.staleExpectedStateNext = 1;
+    await openNotice(h);
+    const intent = firstIntent(h);
+    expect(h.caseCommands.commands).toHaveLength(0);
+    expect(intent.case_effect_status).toBe('FAILED_STALE');
+    expect(intent.last_error_code).toBe('STALE_EXPECTED_STATE');
+    // SLA/notification remain independent and can still apply.
+    expect(intent.sla_effect_status).toBe('APPLIED');
+    expect(intent.notification_effect_status).toBe('APPLIED');
+
+    // reconcilePending must not select FAILED_STALE for case retry.
+    const before = h.caseCommands.commands.length;
+    const pending = await h.service.getReconciliationConsumer().reconcilePending(tenantCtx(h));
+    expect(pending).toHaveLength(0);
+    expect(h.caseCommands.commands).toHaveLength(before);
+    expect(firstIntent(h).case_effect_status).toBe('FAILED_STALE');
+
+    // Duplicate / manual reconcileIntent must not reattempt terminal case.
+    const dup = await h.service
+      .getReconciliationConsumer()
+      .reconcileIntent(tenantCtx(h), intent.intent_id);
+    expect(dup.replayed).toBe(true);
+    expect(dup.case_effect_status).toBe('FAILED_STALE');
+    expect(h.caseCommands.commands).toHaveLength(before);
+  });
+
+  it('CMP-015 STALE_VERSION → FAILED_STALE (real error shape)', async () => {
+    const h = makeHarness();
+    h.caseCommands.staleVersionNext = 1;
+    await openNotice(h);
+    expect(intents(h)[0]?.case_effect_status).toBe('FAILED_STALE');
+    expect(intents(h)[0]?.last_error_code).toBe('STALE_VERSION');
+    expect(h.caseCommands.commands).toHaveLength(0);
+    await h.service.getReconciliationConsumer().reconcilePending(tenantCtx(h));
+    expect(h.caseCommands.commands).toHaveLength(0);
+    expect(intents(h)[0]?.case_effect_status).toBe('FAILED_STALE');
+  });
+
   it('reconstructs exact intended effects from durable state alone', async () => {
     const h = makeHarness();
     h.caseCommands.failNext = 1;

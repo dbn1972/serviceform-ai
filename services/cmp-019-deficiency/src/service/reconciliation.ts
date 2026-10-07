@@ -49,10 +49,20 @@ function errorCode(err: unknown): string {
 
 function isStale(err: unknown): boolean {
   const code = errorCode(err);
+  // CMP-015 optimistic concurrency: STALE_EXPECTED_STATE / STALE_VERSION are terminal.
   return (
+    code === 'STALE_EXPECTED_STATE' ||
     code === 'STALE_EXPECTED_VERSION' ||
     code === 'EXPECTED_VERSION_MISMATCH' ||
     code === 'STALE_VERSION'
+  );
+}
+
+function sanitizeErrorCode(err: unknown): string {
+  return (
+    errorCode(err)
+      .replace(/[^A-Z0-9_]/g, '')
+      .slice(0, 64) || 'PORT_FAILURE'
   );
 }
 
@@ -118,15 +128,12 @@ export class DeficiencyReconciliationConsumer {
         if (isStale(err)) {
           row = await this.mark(ctx, row.intent_id, {
             case_effect_status: 'FAILED_STALE',
-            last_error_code: 'STALE_EXPECTED_VERSION',
+            last_error_code: sanitizeErrorCode(err),
           });
         } else {
           row = await this.mark(ctx, row.intent_id, {
             case_effect_status: 'FAILED_RETRYABLE',
-            last_error_code:
-              errorCode(err)
-                .replace(/[^A-Z0-9_]/g, '')
-                .slice(0, 64) || 'PORT_FAILURE',
+            last_error_code: sanitizeErrorCode(err),
           });
         }
       }

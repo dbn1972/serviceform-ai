@@ -123,16 +123,41 @@ export class RecordingSlaClock implements SlaClockPort {
   }
 }
 
+/** Mirrors CMP-015 Cmp015Error shape for STALE_EXPECTED_STATE / STALE_VERSION. */
+export function cmp015StaleError(
+  detailCode: 'STALE_EXPECTED_STATE' | 'STALE_VERSION',
+  pointer: '/expected_state' | '/expected_version',
+): Error {
+  return Object.assign(new Error('Invalid application state transition'), {
+    name: 'Cmp015Error',
+    code: 'SF-APP-001',
+    statusCode: 409,
+    details: [{ code: detailCode, pointer }],
+  });
+}
+
 export class RecordingCaseCommands implements CaseCommandPort {
   readonly commands: { applicationId: string; body: CaseCommand; key: string }[] = [];
   failNext = 0;
   staleNext = 0;
+  /** CMP-015 STALE_EXPECTED_STATE (real detail code + pointer). */
+  staleExpectedStateNext = 0;
+  /** CMP-015 STALE_VERSION (real detail code + pointer). */
+  staleVersionNext = 0;
   executeCommand(
     _ctx: TenantContext,
     applicationId: string,
     body: CaseCommand,
     key: string,
   ): Promise<CaseCommandResult> {
+    if (this.staleExpectedStateNext > 0) {
+      this.staleExpectedStateNext -= 1;
+      return Promise.reject(cmp015StaleError('STALE_EXPECTED_STATE', '/expected_state'));
+    }
+    if (this.staleVersionNext > 0) {
+      this.staleVersionNext -= 1;
+      return Promise.reject(cmp015StaleError('STALE_VERSION', '/expected_version'));
+    }
     if (this.staleNext > 0) {
       this.staleNext -= 1;
       return Promise.reject(
