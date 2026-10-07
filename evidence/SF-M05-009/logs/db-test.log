@@ -1,0 +1,102 @@
+
+> serviceform-ai@ db:test /workspace
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /workspace/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/db
+
+The DATABASE_URL environment variable is not set or incomplete connection parameters are provided.
+ ❯ test/shared-db-contracts.int.test.ts (6 tests | 6 skipped) 368ms
+The DATABASE_URL environment variable is not set or incomplete connection parameters are provided.
+ ❯ test/rls-harness.int.test.ts (5 tests | 5 skipped) 351ms
+ ❯ test/migrations.int.test.ts (6 tests | 6 skipped) 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/migrations.int.test.ts > migration framework (REQ: AWS v1.7 s17 M0; Eng v1.4 s9.1 G2 migration evidence)
+Error: DATABASE_URL is required for database integration tests
+ ❯ databaseUrl test/helpers.ts:30:19
+     28| export function databaseUrl(): string {
+     29|   const url = process.env['DATABASE_URL'];
+     30|   if (!url) throw new Error('DATABASE_URL is required for database int…
+       |                   ^
+     31|   return url;
+     32| }
+ ❯ withClient test/helpers.ts:35:52
+ ❯ dropServiceformCatalog test/helpers.ts:71:9
+ ❯ test/migrations.int.test.ts:22:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/rls-harness.int.test.ts > RLS harness self-test (REQ: TI v1.0 s8, s8.1; Constitution #6)
+Error: Command failed: pnpm exec node-pg-migrate up --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform --create-migrations-schema --check-order
+The DATABASE_URL environment variable is not set or incomplete connection parameters are provided.
+
+ ❯ migrate test/helpers.ts:58:10
+     56|     '--check-order',
+     57|   ];
+     58|   return execFileSync('pnpm', ['exec', ...args], {
+       |          ^
+     59|     cwd: DB_DIR,
+     60|     encoding: 'utf8',
+ ❯ test/rls-harness.int.test.ts:14:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/rls-harness.int.test.ts > RLS harness self-test (REQ: TI v1.0 s8, s8.1; Constitution #6)
+Error: DATABASE_URL is required for database integration tests
+ ❯ databaseUrl test/helpers.ts:30:19
+     28| export function databaseUrl(): string {
+     29|   const url = process.env['DATABASE_URL'];
+     30|   if (!url) throw new Error('DATABASE_URL is required for database int…
+       |                   ^
+     31|   return url;
+     32| }
+ ❯ withClient test/helpers.ts:35:52
+ ❯ test/rls-harness.int.test.ts:49:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  test/shared-db-contracts.int.test.ts > shared DB contracts (REQ: SF-CON-OUTBOX, SF-CON-DB-SESSION-CONTEXT; TI v1.0 s8, s13)
+Error: Command failed: pnpm exec node-pg-migrate up --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform --create-migrations-schema --check-order
+The DATABASE_URL environment variable is not set or incomplete connection parameters are provided.
+
+ ❯ migrate test/helpers.ts:58:10
+     56|     '--check-order',
+     57|   ];
+     58|   return execFileSync('pnpm', ['exec', ...args], {
+       |          ^
+     59|     cwd: DB_DIR,
+     60|     encoding: 'utf8',
+ ❯ test/shared-db-contracts.int.test.ts:77:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  test/shared-db-contracts.int.test.ts > shared DB contracts (REQ: SF-CON-OUTBOX, SF-CON-DB-SESSION-CONTEXT; TI v1.0 s8, s13)
+Error: DATABASE_URL is required for database integration tests
+ ❯ databaseUrl test/helpers.ts:30:19
+     28| export function databaseUrl(): string {
+     29|   const url = process.env['DATABASE_URL'];
+     30|   if (!url) throw new Error('DATABASE_URL is required for database int…
+       |                   ^
+     31|   return url;
+     32| }
+ ❯ withClient test/helpers.ts:35:52
+ ❯ test/shared-db-contracts.int.test.ts:88:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  17 skipped (17)
+   Start at  03:09:48
+   Duration  1.08s (tests 86%, import 7%, transform 5%, worker 1%)
+
+/workspace/db:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @serviceform/db@0.0.0 test:integration: `vitest run --root . --config vitest.integration.config.ts`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.

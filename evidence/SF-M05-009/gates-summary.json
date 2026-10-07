@@ -1,0 +1,38 @@
+{
+  "task": "SF-M05-009",
+  "format_check": "PASS",
+  "lint": "PASS",
+  "typecheck": "PASS",
+  "test_coverage": {
+    "result": "PASS",
+    "tests": 1416,
+    "statements": 83.99,
+    "branches": 74.48,
+    "functions": 87.3,
+    "lines": 87.81
+  },
+  "contracts_validate": "PASS",
+  "contracts_lock": "PASS 19/19 FROZEN MATCH",
+  "cdc": {
+    "result": "PASS",
+    "tests": 19
+  },
+  "deps_graph": {
+    "result": "PASS",
+    "modules": 1326
+  },
+  "build": "PASS",
+  "architecture_gates": "PASS 10/10",
+  "scope_check": "PASS",
+  "cg01_uniqueness": "PASS",
+  "frozen_lockfile": "PASS",
+  "db_test": "DEFERRED_TO_CI_NO_LOCAL_POSTGRES",
+  "m01_envelope": "DEFERRED_TO_CI_NO_LOCAL_POSTGRES",
+  "host_vitest": "PASS 53 (m05 13 + m04 10 + m03 5 + m02 4 + composition 7 + app 14)",
+  "pnpm_lock_changed": false,
+  "certified": false,
+  "g4": false,
+  "g6": false,
+  "previous_freeze_superseded": "6db55642e9d7f763273307a99072d09dfeb4c101",
+  "codeql_remediation": "pass-through Fastify query read-only; alerts 25-27"
+}

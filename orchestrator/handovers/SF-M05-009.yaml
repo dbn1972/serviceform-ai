@@ -1,5 +1,7 @@
-# M05 PLANNING envelope — serialized API host mounts (LOCK-7)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# SF-M05-009 handover — API host composition for M05 services
+# Candidate-complete builder freeze. DO NOT MERGE. Not CERTIFIED. Not G4. Not G6.
+# INT_OFF / SEC_OFF / EVD_OFF / M06 / M08 remain true.
+# CMP-019 and CMP-028 residuals GOVERNING_UNRESOLVED_UNWAIVED (carried, not waived).
 
 task_id: SF-M05-009
 title: API host composition for M05 services
@@ -14,14 +16,15 @@ builder_agent: serviceform-foundation-builder
 model_route: opus
 model_release: claude-opus-5-5
 effort: high
-branch: agent/M05-host-SF-M05-009
-worktree: ../wt-SF-M05-009
+branch: cursor/m05-host-sf-m05-009-3503
+worktree: in-repo
 parallel_group: M05-HOST
 hard_serial_locks: [LOCK-7]
 must_not_run_concurrent_with: [SF-M02-003, SF-M03-008, SF-M04-007]
 depends_on:
   - SF-M05-STITCH-B on origin/main
   - M05 Wave A and Wave B services on main
+  - HUMAN_SF_M05_009_EXECUTION_AUTHORIZATION
 allowed_write_paths:
   - apps/api/src/composition/m05.ts
   - apps/api/src/app.ts
@@ -42,22 +45,59 @@ serial_after:
   - SF-M05-STITCH-B
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+implementation_started: true
+candidate_complete: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
+merge_authorized: false
+do_not_merge: true
+
+execution_base_main: a10a8db2595604c9e81182eba4e29366ef5e06e7
+lock6: SATISFIED
+lock7: EXECUTION_AUTHORIZED
+draft_pr: https://github.com/dbn1972/serviceform-ai/pull/102
+draft_pr_number: 102
+previous_freeze_head_superseded: 6db55642e9d7f763273307a99072d09dfeb4c101
+previous_freeze_reason: CodeQL js/remote-property-injection alerts 25-27 on query[key] assignment
+codeql_remediation: pass-through Fastify request.query read-only; no dynamic property write
+
+mounted_component_ids:
+  - CMP-015
+  - CMP-017
+  - CMP-018
+  - CMP-019
+  - CMP-027
+  - CMP-028
+  - CMP-029
+not_mounted:
+  - CMP-016  # no Fastify/HTTP surface; Temporal/workflow behind ports
+  - CMP-036  # already registered once in app.ts; not remounted from M05
+
+residuals_carried:
+  CMP-019: GOVERNING_UNRESOLVED_UNWAIVED
+  CMP-028: GOVERNING_UNRESOLVED_UNWAIVED
+
+int_off: true
+sec_off: true
+evd_off: true
+m06_off: true
+m08_off: true
+
 base_commit:
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
-join_separator: "_"
+  prefix: a10a8db2
+  suffix: 595604c9e81182eba4e29366ef5e06e7
+join_separator: ""
 contract_locks:
   - SF-CON-COMMON
   - SF-CON-REQUEST-CONTEXT
@@ -74,22 +114,34 @@ contract_locks:
   - SF-CON-SIMULATION-MARKER
 
 stop_conditions:
-  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - FROZEN existing shared contracts change required (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
   - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - issue G4 (EVD recommend only; human/CI issues)
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
   - M06 or M08 start
-  - SMS/email/DigiLocker/payment implementation
-  - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
+  - INT / SEC / EVD start without separate authorization
+  - waive CMP-019 or CMP-028
+  - invent CMP-016 host HTTP
+  - remount CMP-036 from M05
   - Temporal authoritative case state
   - named officer in published workflow
   - BPMN as a second runtime
+  - commit pnpm-lock.yaml or apps/api/package.json
 
 acceptance_tests_planning:
   - M05 plugins mount under /v1 without cross-component SQL
   - Existing M01/M02/M03/M04 mounts remain
+  - CMP-016 no invented host HTTP
+  - CMP-036 not duplicated
+  - Transport-neutral adapters preserve semantics
+  - Server-derived context; forged X-Tenant-ID not authoritative
+  - Optional M05 absent → default host startup unchanged
+  - CMP-019 and CMP-028 residuals explicitly carried
+
+# Implementation note (freeze). Do not amend/rebase after freeze head is set.
+# Draft PR #102. Branch cursor/m05-host-sf-m05-009-3503.
+# Base main a10a8db2595604c9e81182eba4e29366ef5e06e7.
+# Contracts 19/19 MATCH. Not CERTIFIED. Do not merge.
+# Next gate: INDEPENDENT_SF_M05_009_CANDIDATE_REVIEW / MERGE_AUTHORIZATION.

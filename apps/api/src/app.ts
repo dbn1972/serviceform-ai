@@ -8,6 +8,7 @@ import type { AppConfig } from './config.js';
 import { registerM02Plugins, type M02PluginMounts } from './composition/m02.js';
 import { registerM03Plugins, type M03PluginMounts } from './composition/m03.js';
 import { registerM04Plugins, type M04PluginMounts } from './composition/m04.js';
+import { registerM05Plugins, type M05PluginMounts } from './composition/m05.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -44,6 +45,12 @@ export interface AppDependencies {
    * CMP-036 remains registered above composition — do not remount it via m04.
    */
   m04?: M04PluginMounts;
+  /**
+   * M05 mounts (CMP-015/017/018/019/027/028/029). Optional; tests supply doubles.
+   * CMP-016 has no host HTTP surface. CMP-036 remains registered above composition —
+   * do not remount it via m05. CMP-019/CMP-028 residuals are carried unwaived.
+   */
+  m05?: M05PluginMounts;
 }
 
 /**
@@ -129,6 +136,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m04Mounted', mounted);
   }
 
+  // Decorate only when mounts are supplied so existing optional composition suites
+  // still see `m05Mounted` as undefined when M05 is absent.
+  if (deps.m05) {
+    const mounted = await registerM05Plugins(app, deps.m05);
+    app.decorate('m05Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -139,5 +153,6 @@ declare module 'fastify' {
     m02Mounted: string[];
     m03Mounted?: string[];
     m04Mounted?: string[];
+    m05Mounted?: string[];
   }
 }
