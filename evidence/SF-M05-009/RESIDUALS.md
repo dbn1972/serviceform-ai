@@ -16,6 +16,11 @@
 - Reservation: `original_case_command` — CMP-015 remains authoritative; no direct mutation; do not redesign appeal/CMP-015 command boundary
 - SF-M05-009 action: **host adapt only** via `createAppealHandler`. **Did not** modify `services/cmp-028-appeal-review/**` or CMP-015. **Did not** waive.
 
+## CodeQL (addressed on re-freeze; not waived)
+
+- Alerts [25](https://github.com/dbn1972/serviceform-ai/security/code-scanning/25) / [26](https://github.com/dbn1972/serviceform-ai/security/code-scanning/26) / [27](https://github.com/dbn1972/serviceform-ai/security/code-scanning/27) on prior freeze `6db5564`: `js/remote-property-injection` when copying `request.query` with user-controlled keys into a new object.
+- Fix: host adapter passes Fastify's parsed query through read-only (no dynamic `query[key]=`). Superseding freeze head records the remediation. Not a residual waiver — findings remediated in write envelope.
+
 ## Mechanical / host residuals
 
 - Admit `@serviceform/cmp-015-application-case`, `@serviceform/cmp-017-work-queue-tasks`, `@serviceform/cmp-018-inspection-verification`, `@serviceform/cmp-019-deficiency`, `@serviceform/cmp-027-grievance-feedback`, `@serviceform/cmp-028-appeal-review`, `@serviceform/cmp-029-sla-escalation` on `apps/api/package.json` + regenerate `pnpm-lock.yaml` (orchestrator stitch). File-URL fallback can then be removed.

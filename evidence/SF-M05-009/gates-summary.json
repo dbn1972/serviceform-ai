@@ -28,9 +28,11 @@
   "frozen_lockfile": "PASS",
   "db_test": "DEFERRED_TO_CI_NO_LOCAL_POSTGRES",
   "m01_envelope": "DEFERRED_TO_CI_NO_LOCAL_POSTGRES",
-  "host_vitest": "PASS 52 (m05 12 + m04 10 + m03 5 + m02 4 + composition 7 + app 14)",
+  "host_vitest": "PASS 53 (m05 13 + m04 10 + m03 5 + m02 4 + composition 7 + app 14)",
   "pnpm_lock_changed": false,
   "certified": false,
   "g4": false,
-  "g6": false
+  "g6": false,
+  "previous_freeze_superseded": "6db55642e9d7f763273307a99072d09dfeb4c101",
+  "codeql_remediation": "pass-through Fastify query read-only; alerts 25-27"
 }

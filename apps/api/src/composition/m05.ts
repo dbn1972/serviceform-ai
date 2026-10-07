@@ -125,21 +125,14 @@ function requestPath(request: FastifyRequest): string {
 }
 
 function toNeutralRequest(request: FastifyRequest): NeutralRequest {
-  const query: Record<string, string | string[] | undefined> = {};
-  for (const [key, value] of Object.entries(request.query as Record<string, unknown>)) {
-    if (typeof value === 'string' || value === undefined) {
-      query[key] = value;
-    } else if (Array.isArray(value) && value.every((v) => typeof v === 'string')) {
-      query[key] = value as string[];
-    } else if (value != null) {
-      query[key] = String(value);
-    }
-  }
+  // Pass Fastify's already-parsed query through read-only. Do not re-assign into a new
+  // object with user-controlled keys (CodeQL js/remote-property-injection alerts 25–27).
+  // Components that inspect query (e.g. limit, assertNoClientTime) see the same keys/values.
   return {
     method: request.method,
     path: requestPath(request),
     headers: request.headers as Readonly<Record<string, string | string[] | undefined>>,
-    query,
+    query: request.query as Readonly<Record<string, string | string[] | undefined>>,
     body: request.body,
   };
 }

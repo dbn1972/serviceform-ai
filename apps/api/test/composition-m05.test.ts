@@ -744,6 +744,32 @@ describe('CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-sin
     expect(src).toMatch(/CMP-028/);
     expect(src).toMatch(/do not redesign CMP-015 boundary/i);
   });
+
+  it('does not re-assign query with dynamic user-controlled keys (CodeQL property injection)', async () => {
+    const src = await readFile(new URL('../src/composition/m05.ts', import.meta.url), 'utf8');
+    expect(src).not.toMatch(/query\s*\[\s*key\s*\]\s*=/);
+    expect(src).not.toMatch(/Object\.defineProperty\(\s*query\s*,\s*key/);
+    expect(src).toMatch(/Pass Fastify's already-parsed query through read-only/);
+
+    let seenLimit: string | undefined;
+    const service = {
+      listAvailable: async (_ctx: unknown, limit: number) => {
+        seenLimit = String(limit);
+        return { items: [], limit };
+      },
+    };
+    app = await buildApp(config, {
+      logger: silentLogger(),
+      m05: { tasks: { service, resolveContext: async () => CTX } },
+    });
+    const res = await app.inject({
+      method: 'GET',
+      url: '/v1/tasks/available?limit=7',
+    });
+    expect(res.statusCode).toBe(200);
+    expect(seenLimit).toBe('7');
+    expect(res.json()).toMatchObject({ items: [], limit: 7 });
+  });
 });
 
 describe('registerM05Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0)', () => {

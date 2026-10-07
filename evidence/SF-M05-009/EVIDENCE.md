@@ -9,6 +9,7 @@
 | Integrations | INT-011 (forged tenant-header denial; CROSS_TENANT_LEAKAGE=0 canary); INT-004 referenced by envelope |
 | Draft PR | https://github.com/dbn1972/serviceform-ai/pull/102 |
 | Branch | `cursor/m05-host-sf-m05-009-3503` |
+| Previous freeze (superseded) | `6db55642e9d7f763273307a99072d09dfeb4c101` (CodeQL remote-property-injection alerts 25–27) |
 | Authoritative base | `a10a8db2595604c9e81182eba4e29366ef5e06e7` (`main`, STITCH-B #101) |
 | Frozen contracts | unchanged (**19/19 MATCH**; no CCR) |
 | `pnpm-lock.yaml` | not committed (`pnpm_lock_changed=false`) |
@@ -65,7 +66,8 @@ Local `pnpm db:test` and `bash scripts/ci/run-m01-envelope-int.sh` require `DATA
 | cg01_path_uniqueness | PASS |
 | db:test | DEFERRED_TO_CI (no local Postgres) |
 | M01 envelope | DEFERRED_TO_CI (no local Postgres) |
-| host vitest combined | PASS 52 (M05 12 / M04 10 / M03 5 / M02 4 / composition 7 / app 14) |
+| host vitest combined | PASS 53 (M05 13 / M04 10 / M03 5 / M02 4 / composition 7 / app 14) |
+| CodeQL remediations | Pass-through Fastify query read-only (no `query[key]=` / no dynamic property write); alerts 25–27 |
 | INT-011 canary `00000000-0000-4000-8000-000000000099` | absent from deny bodies (`CROSS_TENANT_LEAKAGE=0` on host inject) |
 
 Logs: `evidence/SF-M05-009/logs/`. JUnit: `evidence/SF-M05-009/junit/unit.xml`. Gates: `evidence/SF-M05-009/gates-summary.json`.

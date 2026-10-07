@@ -68,6 +68,9 @@ lock6: SATISFIED
 lock7: EXECUTION_AUTHORIZED
 draft_pr: https://github.com/dbn1972/serviceform-ai/pull/102
 draft_pr_number: 102
+previous_freeze_head_superseded: 6db55642e9d7f763273307a99072d09dfeb4c101
+previous_freeze_reason: CodeQL js/remote-property-injection alerts 25-27 on query[key] assignment
+codeql_remediation: pass-through Fastify request.query read-only; no dynamic property write
 
 mounted_component_ids:
   - CMP-015
