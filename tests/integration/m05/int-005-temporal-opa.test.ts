@@ -35,7 +35,9 @@ describe('INT-005 Temporal after CMP-015 commit; OPA on officer action (independ
       'utf8',
     );
     expect(adapter).toContain('assertCommitted(signal)');
-    expect(adapter).toMatch(/async advance\([\s\S]*assertCommitted\(signal\)[\s\S]*this\.client\.signal/);
+    expect(adapter).toMatch(
+      /async advance\([\s\S]*assertCommitted\(signal\)[\s\S]*this\.client\.signal/,
+    );
   });
 
   it('CMP-016 service authorizes before write path', () => {
@@ -53,7 +55,10 @@ describe('INT-005 Temporal after CMP-015 commit; OPA on officer action (independ
       'utf8',
     );
     expect(tasks).toMatch(/authorize|authz/i);
-    const authz = readFileSync(join(ROOT, 'services/cmp-017-work-queue-tasks/src/authz.ts'), 'utf8');
+    const authz = readFileSync(
+      join(ROOT, 'services/cmp-017-work-queue-tasks/src/authz.ts'),
+      'utf8',
+    );
     expect(authz.length).toBeGreaterThan(50);
   });
 

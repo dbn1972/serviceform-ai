@@ -60,10 +60,8 @@ describe('M05 host package admission residual', () => {
   });
 
   it('file-URL fallback still resolves CMP-015 index for host/build smoke', async () => {
-    const href = new URL(
-      '../../../services/cmp-015-application-case/src/index.ts',
-      import.meta.url,
-    ).href;
+    const href = new URL('../../../services/cmp-015-application-case/src/index.ts', import.meta.url)
+      .href;
     const mod = (await import(href)) as { registerApplicationCaseRoutes?: unknown };
     expect(typeof mod.registerApplicationCaseRoutes).toBe('function');
   });
