@@ -21,6 +21,7 @@ const root = join(here, '../..');
 const repoRoot = join(root, '../..');
 const SCHEMA_MIGRATION = 'db/migrations/1759541900000_cmp-019-deficiency.sql';
 const OUTBOX_MIGRATION = 'db/migrations/1759541900001_cmp-019-outbox.sql';
+const RECON_MIGRATION = 'db/migrations/1759541900002_cmp-019-reconciliation.sql';
 
 const requireFromContracts = createRequire(join(repoRoot, 'packages/contracts/package.json'));
 const { Ajv2020 } = requireFromContracts('ajv/dist/2020.js') as { Ajv2020: new (o: object) => Ajv };
@@ -139,7 +140,8 @@ describe('CMP-019 component contracts', () => {
       expect(validateIso(row), JSON.stringify(validateIso.errors)).toBe(true);
     const sql =
       readFileSync(join(repoRoot, SCHEMA_MIGRATION), 'utf8') +
-      readFileSync(join(repoRoot, OUTBOX_MIGRATION), 'utf8');
+      readFileSync(join(repoRoot, OUTBOX_MIGRATION), 'utf8') +
+      readFileSync(join(repoRoot, RECON_MIGRATION), 'utf8');
     for (const row of iso.entities) {
       expect(sql).toContain(
         `-- sf:isolation ${row['entity']} ${row['isolation_class']} owner=CMP-019`,
@@ -158,7 +160,7 @@ describe('boundary: no providers, no CMP-015/029 SQL, no host mount', () => {
   const stripComments = (text: string): string =>
     text.replaceAll(/\/\*[\s\S]*?\*\//g, '').replaceAll(/^\s*\/\/.*$/gm, '');
   const srcText = srcFiles.map((f) => stripComments(readFileSync(f, 'utf8'))).join('\n');
-  const migrationText = [SCHEMA_MIGRATION, OUTBOX_MIGRATION]
+  const migrationText = [SCHEMA_MIGRATION, OUTBOX_MIGRATION, RECON_MIGRATION]
     .map((m) => readFileSync(join(repoRoot, m), 'utf8'))
     .join('\n');
 
@@ -211,7 +213,30 @@ describe('boundary: no providers, no CMP-015/029 SQL, no host mount', () => {
     const svc = readFileSync(join(root, 'src/service/service.ts'), 'utf8');
     expect(svc).toContain('NETWORK_IN_TX');
     expect(svc).toContain('afterCommit');
-    expect(svc).toMatch(/if \(!outcome\.replayed\) await this\.afterCommit/);
+    expect(svc).toMatch(/if \(!outcome\.replayed && outcome\.intentId\) await this\.afterCommit/);
+    expect(svc).toContain('persistIntent');
+    expect(svc).toContain('insertReconciliationIntent');
+  });
+
+  it('ships an executable reconciler with durable same-txn intent (not afterCommit-only)', () => {
+    const recon = readFileSync(join(root, 'src/service/reconciliation.ts'), 'utf8');
+    expect(recon).toContain('DeficiencyReconciliationConsumer');
+    expect(recon).toContain('reconcileIntent');
+    expect(recon).toContain('reconcilePending');
+    expect(recon).toContain('RECONCILIATION_CONSUMER_GROUP');
+    expect(recon).toContain('case_expected_state');
+    expect(recon).toContain('case_expected_version');
+    expect(recon).toContain('CaseCommandPort');
+    expect(recon).toContain('SlaClockPort');
+    const migration = readFileSync(
+      join(root, '../../db/migrations/1759541900002_cmp-019-reconciliation.sql'),
+      'utf8',
+    );
+    expect(migration).toContain('CREATE TABLE sf_deficiency.reconciliation_intent');
+    expect(migration).toContain('case_expected_state');
+    expect(migration).toContain('case_expected_version');
+    expect(migration).toContain('FORCE ROW LEVEL SECURITY');
+    expect(migration).not.toMatch(/ALTER TABLE sf_deficiency\.outbox_event\b/);
   });
 
   it('role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public', () => {

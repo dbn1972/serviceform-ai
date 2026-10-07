@@ -1,0 +1,29 @@
+# SF-M05-REM-001 handover — provisional until exact-head CI freeze
+task_id: SF-M05-REM-001
+state: candidate-in-progress
+orchestration_task_state: CANDIDATE_IN_PROGRESS
+branch: cursor/m05-rem-int009-c0d25b32
+base_commit: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+component_ids: [CMP-019]
+integration_ids: [INT-009]
+cmp_019_residual: GOVERNING_UNRESOLVED_UNWAIVED
+self_certified: false
+certified: false
+g4: false
+g6: false
+merged: false
+do_not_merge: true
+frozen_contracts_altered: false
+ccr_required: false
+durable_reconciliation:
+  intent_table: sf_deficiency.reconciliation_intent
+  migration: db/migrations/1759541900002_cmp-019-reconciliation.sql
+  consumer: DeficiencyReconciliationConsumer
+  consumer_group: cmp-019.reconciliation
+  after_commit_sole_delivery: false
+  sf_con_outbox_shape_altered: false
+local_unit_tests: 31/31 PASS
+notes:
+  - Persistence alone insufficient; executable reconciler shipped
+  - Independent INT re-proof deferred (coordinator)
+  - Freeze head + CI run IDs to be filled after SUCCESS

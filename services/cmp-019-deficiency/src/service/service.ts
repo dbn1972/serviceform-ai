@@ -23,9 +23,11 @@ import type {
   HistoryRow,
   ItemRow,
   NoticeRow,
+  ReconciliationIntentRow,
 } from '../repo/types.js';
 import type { TenantContext } from '../types.js';
 import type { CloseInput, OpenInput, RespondInput } from './input.js';
+import { DeficiencyReconciliationConsumer } from './reconciliation.js';
 
 export interface DeficiencyServiceDeps {
   repo: DeficiencyRepository;
@@ -34,6 +36,8 @@ export interface DeficiencyServiceDeps {
   caseCommands: CaseCommandPort;
   notifier: NotificationPort;
   clock: () => Date;
+  /** Optional override; default builds a CMP-016-like reconciler over the same ports. */
+  reconciler?: DeficiencyReconciliationConsumer;
 }
 
 export interface Idempotency {
@@ -47,26 +51,10 @@ export interface CommandResult {
   body: unknown;
 }
 
-interface PortWork {
-  caseCommand?: {
-    applicationId: string;
-    body: Parameters<CaseCommandPort['executeCommand']>[2];
-    idempotencyKey: string;
-  };
-  sla?: {
-    kind: 'pause' | 'resume';
-    applicationId: string;
-    stage: string;
-    reason: string;
-    key: string;
-  };
-  notification?: DeficiencyNotificationRequest;
-}
-
 interface Committed {
   status: number;
   body: unknown;
-  work: PortWork;
+  intentId: string | null;
   replayed: boolean;
 }
 
@@ -119,7 +107,24 @@ export function noticeView(
 }
 
 export class DeficiencyService {
-  constructor(private readonly deps: DeficiencyServiceDeps) {}
+  private readonly reconciler: DeficiencyReconciliationConsumer;
+
+  constructor(private readonly deps: DeficiencyServiceDeps) {
+    this.reconciler =
+      deps.reconciler ??
+      new DeficiencyReconciliationConsumer({
+        repo: deps.repo,
+        caseCommands: deps.caseCommands,
+        slaClock: deps.slaClock,
+        notifier: deps.notifier,
+        clock: deps.clock,
+      });
+  }
+
+  /** Exposed for crash-recovery workers and tests (executable consumer). */
+  getReconciliationConsumer(): DeficiencyReconciliationConsumer {
+    return this.reconciler;
+  }
 
   private async guard(
     ctx: TenantContext,
@@ -141,7 +146,10 @@ export class DeficiencyService {
   private async idempotent(
     ctx: TenantContext,
     idem: Idempotency,
-    fn: (tx: DeficiencyTx, now: Date) => Promise<{ status: number; body: unknown; work: PortWork }>,
+    fn: (
+      tx: DeficiencyTx,
+      now: Date,
+    ) => Promise<{ status: number; body: unknown; intentId: string | null }>,
   ): Promise<CommandResult> {
     const now = this.deps.clock();
     const outcome = await this.deps.repo.withTx(ctx, async (tx): Promise<Committed> => {
@@ -152,7 +160,7 @@ export class DeficiencyService {
         fingerprint: idem.fingerprint,
         now,
       });
-      if (claim !== 'claimed') return { ...claim, work: {}, replayed: true };
+      if (claim !== 'claimed') return { ...claim, intentId: null, replayed: true };
       const result = await fn(tx, now);
       await tx.completeIdempotency({
         principalId: ctx.actor.id,
@@ -163,47 +171,24 @@ export class DeficiencyService {
       });
       return { ...result, replayed: false };
     });
-    if (!outcome.replayed) await this.afterCommit(ctx, outcome.work);
+    // afterCommit may remain as best-effort delivery, but durable intent + reconciler are authoritative.
+    if (!outcome.replayed && outcome.intentId) await this.afterCommit(ctx, outcome.intentId);
     return { status: outcome.status, body: outcome.body };
   }
 
-  /** Ports run after commit. Failures never undo the deficiency row (Constitution #11). */
-  private async afterCommit(ctx: TenantContext, work: PortWork): Promise<void> {
+  /**
+   * Best-effort post-commit delivery via the executable reconciler.
+   * Failures never undo the deficiency row (Constitution #11). Crash recovery uses
+   * reconcilePending / reconcileIntent against the durable same-txn intent.
+   */
+  private async afterCommit(ctx: TenantContext, intentId: string): Promise<void> {
     if (this.deps.repo.inTransaction()) {
       throw new Cmp019Error('SF-SYS-001', { details: [{ code: 'NETWORK_IN_TX' }] });
     }
-    if (work.caseCommand) {
-      try {
-        await this.deps.caseCommands.executeCommand(
-          ctx,
-          work.caseCommand.applicationId,
-          work.caseCommand.body,
-          work.caseCommand.idempotencyKey,
-        );
-      } catch {
-        // CMP-015 remains the case owner; stitch retries from the outbox event.
-      }
-    }
-    if (work.sla) {
-      const command = {
-        application_id: work.sla.applicationId,
-        stage_code: work.sla.stage,
-        reason_code: work.sla.reason,
-        idempotency_key: work.sla.key,
-      };
-      try {
-        if (work.sla.kind === 'pause') await this.deps.slaClock.pauseForDeficiency(ctx, command);
-        else await this.deps.slaClock.resumeAfterDeficiency(ctx, command);
-      } catch {
-        // INT-009 retry is owned by STITCH-B / outbox consumers, not by rolling back CMP-019.
-      }
-    }
-    if (work.notification) {
-      try {
-        await this.deps.notifier.requestNotification(work.notification);
-      } catch {
-        // CMP-025 delivery is not this service's job.
-      }
+    try {
+      await this.reconciler.reconcileIntent(ctx, intentId);
+    } catch {
+      // Durable intent remains PENDING/FAILED_RETRYABLE for the reconciler / drain worker.
     }
   }
 
@@ -238,6 +223,28 @@ export class DeficiencyService {
     });
     await tx.insertOutbox(env, TOPIC_DOMAIN);
     return env.event_id;
+  }
+
+  private async persistIntent(
+    tx: DeficiencyTx,
+    ctx: TenantContext,
+    nowIso: string,
+    partial: Omit<
+      ReconciliationIntentRow,
+      'tenant_id' | 'cell_id' | 'correlation_id' | 'created_at' | 'updated_at' | 'last_error_code'
+    >,
+  ): Promise<string> {
+    const row: ReconciliationIntentRow = {
+      ...partial,
+      tenant_id: ctx.tenant_id,
+      cell_id: ctx.cell_id,
+      correlation_id: ctx.correlation_id,
+      last_error_code: null,
+      created_at: nowIso,
+      updated_at: nowIso,
+    };
+    await tx.insertReconciliationIntent(row);
+    return row.intent_id;
   }
 
   private history(
@@ -330,36 +337,30 @@ export class DeficiencyService {
         result: 'SUCCESS',
         now,
       });
+      const intentId = await this.persistIntent(tx, ctx, nowIso, {
+        intent_id: randomUUID(),
+        deficiency_id: row.deficiency_id,
+        application_id: row.application_id,
+        source_event_id: eventId,
+        operation: 'OPEN',
+        case_command: 'RAISE_DEFICIENCY',
+        case_expected_state: input.case_expected_state,
+        case_expected_version: input.case_expected_version,
+        case_reason_code: row.reason_code,
+        case_idempotency_key: idem.key,
+        case_effect_status: 'PENDING',
+        sla_kind: 'pause',
+        sla_stage_code: row.sla_stage_code,
+        sla_reason_code: row.sla_pause_reason_code,
+        sla_idempotency_key: `int009-pause:${row.deficiency_id}`,
+        sla_effect_status: 'PENDING',
+        notification_kind: NOTIFY_BY_OP.OPEN,
+        notification_effect_status: 'PENDING',
+      });
       return {
         status: 201,
         body: noticeView(row, items, evidence),
-        work: {
-          caseCommand: {
-            applicationId: row.application_id,
-            body: {
-              command: 'RAISE_DEFICIENCY',
-              expected_state: input.case_expected_state,
-              expected_version: input.case_expected_version,
-              reason_code: row.reason_code,
-            },
-            idempotencyKey: idem.key,
-          },
-          sla: {
-            kind: 'pause',
-            applicationId: row.application_id,
-            stage: row.sla_stage_code,
-            reason: row.sla_pause_reason_code,
-            key: `int009-pause:${row.deficiency_id}`,
-          },
-          notification: {
-            notification_port: 'M06_CMP025',
-            tenant_id: ctx.tenant_id,
-            application_id: row.application_id,
-            deficiency_id: row.deficiency_id,
-            kind: NOTIFY_BY_OP.OPEN,
-            source_event_id: eventId,
-          },
-        },
+        intentId,
       };
     });
   }
@@ -435,36 +436,30 @@ export class DeficiencyService {
       });
       const allItems = await tx.listItems(deficiencyId);
       const allEvidence = await tx.listEvidence(deficiencyId);
+      const intentId = await this.persistIntent(tx, ctx, nowIso, {
+        intent_id: randomUUID(),
+        deficiency_id: row.deficiency_id,
+        application_id: row.application_id,
+        source_event_id: eventId,
+        operation: 'RESPOND',
+        case_command: 'RECORD_CITIZEN_RESPONSE',
+        case_expected_state: input.case_expected_state,
+        case_expected_version: input.case_expected_version,
+        case_reason_code: null,
+        case_idempotency_key: idem.key,
+        case_effect_status: 'PENDING',
+        sla_kind: 'resume',
+        sla_stage_code: row.sla_stage_code,
+        sla_reason_code: row.sla_pause_reason_code,
+        sla_idempotency_key: `int009-resume:${row.deficiency_id}`,
+        sla_effect_status: 'PENDING',
+        notification_kind: NOTIFY_BY_OP.RESPOND,
+        notification_effect_status: 'PENDING',
+      });
       return {
         status: 200,
         body: noticeView(row, allItems, allEvidence),
-        work: {
-          caseCommand: {
-            applicationId: row.application_id,
-            body: {
-              command: 'RECORD_CITIZEN_RESPONSE',
-              expected_state: input.case_expected_state,
-              expected_version: input.case_expected_version,
-              reason_code: null,
-            },
-            idempotencyKey: idem.key,
-          },
-          sla: {
-            kind: 'resume',
-            applicationId: row.application_id,
-            stage: row.sla_stage_code,
-            reason: row.sla_pause_reason_code,
-            key: `int009-resume:${row.deficiency_id}`,
-          },
-          notification: {
-            notification_port: 'M06_CMP025',
-            tenant_id: ctx.tenant_id,
-            application_id: row.application_id,
-            deficiency_id: row.deficiency_id,
-            kind: NOTIFY_BY_OP.RESPOND,
-            source_event_id: eventId,
-          },
-        },
+        intentId,
       };
     });
   }
@@ -517,30 +512,30 @@ export class DeficiencyService {
       const items = await tx.listItems(deficiencyId);
       const evidence = await tx.listEvidence(deficiencyId);
       const resume = existing.status === 'OPEN';
+      const intentId = await this.persistIntent(tx, ctx, nowIso, {
+        intent_id: randomUUID(),
+        deficiency_id: row.deficiency_id,
+        application_id: row.application_id,
+        source_event_id: eventId,
+        operation: 'CLOSE',
+        case_command: null,
+        case_expected_state: null,
+        case_expected_version: null,
+        case_reason_code: null,
+        case_idempotency_key: null,
+        case_effect_status: 'NONE',
+        sla_kind: resume ? 'resume' : null,
+        sla_stage_code: resume ? row.sla_stage_code : null,
+        sla_reason_code: resume ? row.sla_pause_reason_code : null,
+        sla_idempotency_key: resume ? `int009-resume:${row.deficiency_id}` : null,
+        sla_effect_status: resume ? 'PENDING' : 'NONE',
+        notification_kind: NOTIFY_BY_OP.CLOSE,
+        notification_effect_status: 'PENDING',
+      });
       return {
         status: 200,
         body: noticeView(row, items, evidence),
-        work: {
-          ...(resume
-            ? {
-                sla: {
-                  kind: 'resume' as const,
-                  applicationId: row.application_id,
-                  stage: row.sla_stage_code,
-                  reason: row.sla_pause_reason_code,
-                  key: `int009-resume:${row.deficiency_id}`,
-                },
-              }
-            : {}),
-          notification: {
-            notification_port: 'M06_CMP025',
-            tenant_id: ctx.tenant_id,
-            application_id: row.application_id,
-            deficiency_id: row.deficiency_id,
-            kind: NOTIFY_BY_OP.CLOSE,
-            source_event_id: eventId,
-          },
-        },
+        intentId,
       };
     });
   }

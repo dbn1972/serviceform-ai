@@ -27,7 +27,7 @@ export function ctxFor(
   tenantId: string,
   actorId = ACTOR_OFFICER,
   type: RequestContext['actor']['type'] = 'OFFICER',
-): RequestContext {
+): TenantContext {
   return {
     tenant_id: tenantId,
     cell_id: 'cell-test-1',
@@ -73,11 +73,22 @@ export class RecordingSlaClock implements SlaClockPort {
   readonly pauses: DeficiencyClockCommand[] = [];
   readonly resumes: DeficiencyClockCommand[] = [];
   inTx = false;
+  failNextPause = 0;
+  failNextResume = 0;
   pauseForDeficiency(
     _ctx: TenantContext,
     command: DeficiencyClockCommand,
   ): Promise<DeficiencyClockResult> {
     if (this.inTx) throw new Error('NETWORK_IN_TX');
+    if (this.failNextPause > 0) {
+      this.failNextPause -= 1;
+      return Promise.reject(
+        Object.assign(new Error('sla pause unavailable'), {
+          code: 'SLA_PORT_DOWN',
+          details: [{ code: 'SLA_PORT_DOWN' }],
+        }),
+      );
+    }
     this.pauses.push(command);
     return Promise.resolve({
       clock_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
@@ -92,6 +103,15 @@ export class RecordingSlaClock implements SlaClockPort {
     command: DeficiencyClockCommand,
   ): Promise<DeficiencyClockResult> {
     if (this.inTx) throw new Error('NETWORK_IN_TX');
+    if (this.failNextResume > 0) {
+      this.failNextResume -= 1;
+      return Promise.reject(
+        Object.assign(new Error('sla resume unavailable'), {
+          code: 'SLA_PORT_DOWN',
+          details: [{ code: 'SLA_PORT_DOWN' }],
+        }),
+      );
+    }
     this.resumes.push(command);
     return Promise.resolve({
       clock_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
@@ -104,14 +124,34 @@ export class RecordingSlaClock implements SlaClockPort {
 }
 
 export class RecordingCaseCommands implements CaseCommandPort {
-  readonly commands: { applicationId: string; body: CaseCommand }[] = [];
+  readonly commands: { applicationId: string; body: CaseCommand; key: string }[] = [];
+  failNext = 0;
+  staleNext = 0;
   executeCommand(
     _ctx: TenantContext,
     applicationId: string,
     body: CaseCommand,
-    _key: string,
+    key: string,
   ): Promise<CaseCommandResult> {
-    this.commands.push({ applicationId, body });
+    if (this.staleNext > 0) {
+      this.staleNext -= 1;
+      return Promise.reject(
+        Object.assign(new Error('stale expected version'), {
+          code: 'STALE_EXPECTED_VERSION',
+          details: [{ code: 'STALE_EXPECTED_VERSION' }],
+        }),
+      );
+    }
+    if (this.failNext > 0) {
+      this.failNext -= 1;
+      return Promise.reject(
+        Object.assign(new Error('case port unavailable'), {
+          code: 'CASE_PORT_DOWN',
+          details: [{ code: 'CASE_PORT_DOWN' }],
+        }),
+      );
+    }
+    this.commands.push({ applicationId, body, key });
     return Promise.resolve({
       application_id: applicationId,
       state: body.command === 'RAISE_DEFICIENCY' ? 'DEFICIENCY_RAISED' : 'CITIZEN_RESPONSE',

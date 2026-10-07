@@ -7,6 +7,6 @@ export default defineConfig({
     testTimeout: 60_000,
     hookTimeout: 120_000,
     reporters: ['default', 'junit'],
-    outputFile: { junit: '../../evidence/SF-M05-006/junit/integration.xml' },
+    outputFile: { junit: '../../evidence/SF-M05-REM-001/junit/integration.xml' },
   },
 });

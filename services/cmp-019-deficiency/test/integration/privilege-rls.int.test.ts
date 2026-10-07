@@ -117,7 +117,7 @@ describe('CMP-019 privilege boundary (ADR-0006) and FORCE RLS (INT-011)', () => 
   });
 
   it('isolated reversibility: down of CMP-019 migrations then up restores the schema', async () => {
-    migrateDown(2);
+    migrateDown(3);
     const missing = await h.admin.query(
       `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_deficiency'`,
     );
