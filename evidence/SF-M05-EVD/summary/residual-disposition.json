@@ -1,0 +1,52 @@
+{
+  "schema": "serviceform.m05.independent-evd.residual-disposition.v1",
+  "task_id": "SF-M05-EVD",
+  "blocking_residual_for_g4_recommendation": false,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "rows": [
+    {
+      "residual": "CMP-019 durable reconciliation / INT-009 proof obligation",
+      "prior_status": "GOVERNING_UNRESOLVED_UNWAIVED",
+      "evd_status": "CMP-019_RESIDUAL_CLOSURE=ACCEPTED",
+      "class": "VERIFIED_RESIDUAL_CLOSURE",
+      "disposition": "ACCEPTED_VERIFIED_CLOSURE_NOT_WAIVER",
+      "blocking_for_g4_recommendation": false,
+      "waived": false,
+      "authority": "HUMAN_SF_M05_EVD_AUTHORIZATION; INDEPENDENT_SF_M05_LOCK8_RERUN_REVIEW=ACCEPTED; INT-009 DURABLE_RECONCILIATION=PROVEN on #108 d1614d70…",
+      "notes": "Verified closure accepted because executable INT-009 E2E proved durable reconciliation, STALE→FAILED_STALE terminals, ports-only, FORCE RLS, CROSS_TENANT_LEAKAGE=0. Not a silent waiver of an open defect."
+    },
+    {
+      "residual": "CMP-028 original_case_command / appeal↔CMP-015 boundary reservation",
+      "status": "GOVERNING_UNRESOLVED_UNWAIVED",
+      "class": "GOVERNING_ARCHITECTURAL_RESERVATION",
+      "disposition": "PERMISSIBLE_CARRIED_RESIDUAL_NON_BLOCKING_FOR_M05_G4_RECOMMENDATION",
+      "blocking_for_g4_recommendation": false,
+      "waived": false,
+      "authority": "HUMAN_SF_M05_EVD_AUTHORIZATION (explicit assess; do not silently waive)",
+      "evidence": {
+        "int": "CMP-028 envelope-int PASS on #108; residual revalidated unwaived",
+        "sec": "appeal original_case_command → CMP-015 CaseCommandPort only; no case SQL; OPA fail-closed on appeal actions; boundaried SEC PASS unwaived"
+      },
+      "notes": "Governing reservation that CMP-015 remains authoritative for original case mutation. Boundary revalidated by INT+SEC. Remains GOVERNING_UNRESOLVED_UNWAIVED and is not closed or waived. Assessed as permissible carried residual — does not block G4_SECURITY_VERIFIED recommendation under governing rules."
+    },
+    {
+      "residual": "INT summary.json embeds stale intermediate freeze run IDs / verifier_freeze_head",
+      "class": "CLASS_E_EVIDENCE_HEAD_BINDING",
+      "disposition": "NON_BLOCKING_PROVENANCE_TAIL",
+      "blocking_for_g4_recommendation": false,
+      "waived": false,
+      "authority": "HUMAN_SF_M05_EVD_AUTHORIZATION (provenance tails NON_BLOCKING; bind final heads/run IDs)",
+      "authoritative_int_head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+      "authoritative_int_runs": ["37656918445", "37656918451", "37656918853"],
+      "do_not_rewrite_pr": 108
+    },
+    {
+      "residual": "Historical #103 / #104 DRAFT_UNMERGED_EVIDENCE",
+      "class": "HISTORICAL_VERIFIER_ONLY",
+      "disposition": "NOT_CURRENT_PASS",
+      "blocking_for_g4_recommendation": false,
+      "waived": false,
+      "notes": "Must not be treated as current PASS. Current PASS refs are #108 and #107 only."
+    }
+  ]
+}
