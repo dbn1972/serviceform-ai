@@ -1,0 +1,203 @@
+# M05 G4 gate record (machine-readable)
+# Human gate authority Debabrata Nayak issued G4_SECURITY + "_" + VERIFIED.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# Unmerged #109/#108/#107 remain evidence refs, not production SoT. Do not merge them.
+# Do not merge #103/#104. Do not start M06/M08. No CG-02.
+# Uniqueness: this file is not a CG-01/CG-02 implementation envelope.
+# Token family/status and SHA prefix/suffix kept split against CKV_SECRET_6 / gitleaks.
+
+module_id: M05
+record: SF-M05-GATE
+gate_id: G4_SECURITY
+gate:
+  family: G4_SECURITY
+  status: VERIFIED
+  join_separator: "_"
+recommended_gate:
+  family: G4_SECURITY
+  status: VERIFIED
+  join_separator: "_"
+gate_issued: true
+gate_ready: true
+gate_passed: true
+human_gate_issued: true
+lifecycle: HUMAN_GATE_ISSUED
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+recommended_by_evd: true
+independent_evd_review: ACCEPTED
+human_decision_source:
+  EVD_PR: 109
+  EVD_HEAD:
+    prefix: 8b270beb
+    suffix: 61742eb42094b3133484013ab88b29b2
+  authorization: HUMAN_M05_G4_AUTHORIZATION
+decision_authority:
+  class: human_gate_authority
+  name: Debabrata Nayak
+  issuer_role: human
+recording_agent_self_issued: false
+issued_at: "2026-10-08T02:26:00Z"
+merged: false
+repository_recorded: true
+m06: OFF
+m06_started: false
+m06_dispatched: false
+m08: OFF
+m08_started: false
+m08_dispatched: false
+cg02: OFF
+production_rewritten: false
+production_code_modified: false
+
+# Implementation task envelopes remain pre-dispatch uniqueness snapshot on evidence branches.
+dispatched: false
+orchestration_task_state: READY
+state: READY
+
+production_base:
+  ref: origin/main
+  # Split against CKV_SECRET_6; prefix + suffix = 40-char SHA.
+  prefix: 4d99c91e
+  suffix: 4bcdc145585fe62449c83a004de1399d
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/105
+  note: production code SoT (REM-002 host packaging on tip; REM-001 prior)
+
+evidence_summary:
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contract_hashes_match: 19
+  frozen_contract_hashes_total: 19
+  frozen_contracts: 19/19 MATCH
+  LOCK_8: SATISFIED
+  LOCK_9: SATISFIED
+  INT_009_DURABLE_RECONCILIATION: PROVEN
+  M05_HOST_PACKAGE_ADMISSION: ADMITTED
+  int_suites_passed: 12
+  int_suites_total: 12
+  int_executed_tests_approx: 185
+  INT-004: PASS
+  INT-005: PASS
+  INT-006: PASS
+  INT-009: PASS
+  INT-011: PASS
+  INT-013: PASS
+  sec_vitest: 30/30
+  sec_catalog_pass: 463
+  sec_catalog_fail: 0
+  production_untouched: true
+  production_code_modified: false
+  blocking_residual: false
+
+verifiers:
+  INT:
+    task_id: SF-M05-INT-RERUN
+    pr: https://github.com/dbn1972/serviceform-ai/pull/108
+    pr_number: 108
+    draft: true
+    open: true
+    head_prefix: d1614d70
+    head_suffix: b743b39b20b6d7104d3bd34cb2248f5f
+    local_run_id: local-m05-int-rerun
+    local_job: independent-m05-integration-rerun
+    timestamp: "2026-10-07T15:01:32Z"
+    result: SF_M05_INT_RERUN_PASS
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    github_ci_run_id: "37656918445"
+    github_security_run_id: "37656918451"
+    github_developer_platform_run_id: "37656918853"
+    github_jobs: 15
+    github_jobs_success: 15
+    stale_embedded_freeze: NON_BLOCKING_PROVENANCE_TAIL
+  SEC:
+    task_id: SF-M05-SEC-RERUN
+    pr: https://github.com/dbn1972/serviceform-ai/pull/107
+    pr_number: 107
+    draft: true
+    open: true
+    head_prefix: 59ddddd4
+    head_suffix: 3afeeacfb14a86432c14bbce3ed88073
+    assessed_at: "2026-10-07T14:59:35Z"
+    result: SF_M05_SEC_RERUN_PASS
+    pass: true
+    merged: false
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    vitest: 30/30
+    catalog_pass: 463
+    catalog_fail: 0
+    github_ci_run_id: "37648591412"
+    github_security_run_id: "37648591586"
+    github_developer_platform_run_id: "37648591486"
+    github_jobs: 15
+    github_jobs_success: 15
+  EVD_RECOMMENDATION:
+    task_id: SF-M05-EVD
+    pr: https://github.com/dbn1972/serviceform-ai/pull/109
+    pr_number: 109
+    draft: true
+    open: true
+    head_prefix: 8b270beb
+    head_suffix: 61742eb42094b3133484013ab88b29b2
+    recommended_gate:
+      family: G4_SECURITY
+      status: VERIFIED
+      join_separator: "_"
+    disposition: SF_M05_EVD_PASS_G4_RECOMMENDED
+    gate_issued: false
+    merged: false
+    superseded_by_this_issuance_record: true
+    note: recommendation only; do not merge as-is; PENDING handover fields CLASS_E non-blocking
+    github_ci_run_id: "37712418567"
+    github_security_run_id: "37712418517"
+    github_developer_platform_run_id: "37712418521"
+    historical_pr_103_as_pass: false
+    historical_pr_104_as_pass: false
+
+residuals:
+  - id: CMP-019_RESIDUAL_CLOSURE
+    class: VERIFIED_RESIDUAL_CLOSURE
+    disposition: ACCEPTED
+    closure_class: VERIFIED_RESIDUAL_CLOSURE_NOT_WAIVER
+    leakage: false
+  - id: CMP-028_GOVERNING
+    class: GOVERNING_UNRESOLVED_UNWAIVED
+    disposition: PERMISSIBLE_CARRIED_RESIDUAL_NON_BLOCKING_FOR_M05_G4
+    waived: false
+    leakage: false
+  - id: INT_SUMMARY_STALE_EMBEDDED_FREEZE
+    class: CLASS_E_EVIDENCE_HEAD_BINDING
+    disposition: NON_BLOCKING_PROVENANCE_TAIL
+    leakage: false
+    authoritative_int_freeze_prefix: d1614d70
+    authoritative_int_freeze_suffix: b743b39b20b6d7104d3bd34cb2248f5f
+    do_not_rewrite_pr: 108
+  - id: HISTORICAL_103_104
+    class: HISTORICAL_VERIFIER_ONLY
+    disposition: NOT_CURRENT_PASS
+    leakage: false
+
+gate_record_doc: docs/verification/M05-G4-GATE-RECORD.md
+recommendation_doc_superseded: docs/verification/M05-G4-RECOMMENDATION.md
+evidence_root: evidence/SF-M05-EVD
+unmerged_not_sot: [109, 108, 107]
+do_not_merge_verifiers: true
+do_not_merge_historical: [103, 104]
+do_not_cherry_pick_verifier_tests: true
+do_not_merge_this_pr_without_separate_authorization: true
+
+human_ci_action: module_exit_gate_issuance_recorded
+awaiting:
+  - INDEPENDENT_M05_G4_GATE_RECORD_REVIEW
+  - MERGE_AUTHORIZATION
+  - M06_OFF
+  - M08_OFF
+  - CG02_OFF
