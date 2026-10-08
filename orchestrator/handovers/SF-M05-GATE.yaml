@@ -212,10 +212,12 @@ do_not_cherry_pick_verifier_tests: true
 do_not_merge_this_pr_without_separate_authorization: true
 
 human_ci_action: module_exit_gate_issuance_recorded
+# Achieved operational state (not a future gate).
+operational_status: M05_G4_GATE_RECORD_MERGED_AND_VERIFIED_ON_MAIN
 awaiting:
-  - M05_G4_GATE_RECORD_MERGED_AND_VERIFIED
   - INDEPENDENT_M05_G4_POST_MERGE_FINALIZATION_REVIEW
   - MERGE_AUTHORIZATION
+downstream_holds:
   - M06_OFF
   - M08_OFF
   - CG02_OFF
