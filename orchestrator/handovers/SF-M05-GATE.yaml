@@ -42,9 +42,25 @@ decision_authority:
   issuer_role: human
 recording_agent_self_issued: false
 issued_at: "2026-10-08T02:26:00Z"
-merged: false
-# Becomes true only after merge+verify on main.
-repository_recorded: false
+merged: true
+repository_recorded: true
+# Operational post-merge status only. Do not treat as a change to the issued G4 decision.
+post_merge_main:
+  ref: origin/main
+  prefix: a4c99795
+  suffix: a5c22e0631fc6faaed2fa73145265ddf
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/110
+post_merge:
+  ci:
+    run_id: "37740005151"
+    attempt: 2
+    result: SUCCESS
+  security:
+    run_id: "37740005393"
+    result: SUCCESS
+  developer_platform:
+    run_id: "37740005190"
+    result: SUCCESS
 m06: OFF
 m06_started: false
 m06_dispatched: false
@@ -196,9 +212,12 @@ do_not_cherry_pick_verifier_tests: true
 do_not_merge_this_pr_without_separate_authorization: true
 
 human_ci_action: module_exit_gate_issuance_recorded
+# Achieved operational state (not a future gate).
+operational_status: M05_G4_GATE_RECORD_MERGED_AND_VERIFIED_ON_MAIN
 awaiting:
-  - INDEPENDENT_M05_G4_GATE_RECORD_REVIEW
+  - INDEPENDENT_M05_G4_POST_MERGE_FINALIZATION_REVIEW
   - MERGE_AUTHORIZATION
+downstream_holds:
   - M06_OFF
   - M08_OFF
   - CG02_OFF
