@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m06/payment-intent/v1",
+  "title": "PaymentIntent",
+  "description": "FROZEN. SF-CON-PAYMENT-INTENT. Payment intent (CMP-021). Amount and currency are locked from SF-CON-FEE-QUOTE. Client-supplied amounts are forbidden. PSP binding uses SF-CON-CONNECTOR-BINDING modes REAL/SANDBOX/SIMULATED under INT-013.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "payment_intent_id",
+    "fee_quote_id",
+    "application_id",
+    "currency",
+    "amount_minor",
+    "amount_locked_from_fee_quote",
+    "client_supplied_amount_forbidden",
+    "status",
+    "connector_binding_id",
+    "connector_mode",
+    "idempotency_key"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-PAYMENT-INTENT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "payment_intent_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "fee_quote_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "amount_minor": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "amount_locked_from_fee_quote": {
+      "type": "boolean",
+      "const": true
+    },
+    "client_supplied_amount_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "status": {
+      "type": "string",
+      "enum": ["CREATED", "AUTHORIZED", "CAPTURED", "FAILED", "CANCELLED"]
+    },
+    "connector_binding_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "connector_mode": {
+      "type": "string",
+      "enum": ["REAL", "SANDBOX", "SIMULATED"],
+      "description": "INT-013 mode. Production critical connectors must not silently SIMULATE."
+    },
+    "simulation_marker_required_when_simulated": {
+      "type": "boolean",
+      "const": true
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "connector_mode": {
+            "const": "SIMULATED"
+          }
+        },
+        "required": ["connector_mode"]
+      },
+      "then": {
+        "required": ["simulation_marker_required_when_simulated"],
+        "properties": {
+          "simulation_marker_required_when_simulated": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

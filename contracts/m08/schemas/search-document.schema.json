@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m08/search-document/v1",
+  "title": "SearchDocument",
+  "description": "FROZEN. SF-CON-SEARCH-DOCUMENT. Tenant-safe search index document envelope (CMP-035). Facet fields and source CMP refs only. Cross-tenant fields forbidden. OpenSearch adapter via SF-CON-CONNECTOR-BINDING + INT-013.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "document_id",
+    "source_cmp_id",
+    "source_record_id",
+    "facets",
+    "tenant_scope_required",
+    "cross_tenant_fields_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-SEARCH-DOCUMENT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "document_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "source_cmp_id": {
+      "type": "string",
+      "pattern": "^CMP-[0-9]{3}$"
+    },
+    "source_record_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "description": "Facet value. Must not embed raw PII payloads."
+      },
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]{1,63}$"
+      }
+    },
+    "tenant_scope_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "cross_tenant_fields_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "connector_mode": {
+      "type": "string",
+      "enum": ["REAL", "SANDBOX", "SIMULATED"]
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  }
+}

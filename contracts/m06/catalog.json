@@ -1,0 +1,45 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "freeze_status": "PENDING_MERGE",
+  "in_contracts_lock": true,
+  "module": "M06",
+  "task": "SF-M06-CG-001",
+  "note": "SF-M06-CG-001 freeze preparation (combined CG-02). Candidate until origin/main merge. Repository freeze not effective. Wave A OFF. Builders OFF.",
+  "contracts": [
+    {
+      "id": "SF-CON-FEE-QUOTE",
+      "path": "contracts/m06/schemas/fee-quote.schema.json",
+      "owner": "CMP-020",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-PAYMENT-INTENT",
+      "path": "contracts/m06/schemas/payment-intent.schema.json",
+      "owner": "CMP-021",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-PAYMENT-CALLBACK",
+      "path": "contracts/m06/schemas/payment-callback.schema.json",
+      "owner": "CMP-021",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-NOTIFICATION-DISPATCH",
+      "path": "contracts/m06/schemas/notification-dispatch.schema.json",
+      "owner": "CMP-025",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-MESSAGE-THREAD",
+      "path": "contracts/m06/schemas/message-thread.schema.json",
+      "owner": "CMP-026",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    }
+  ]
+}
