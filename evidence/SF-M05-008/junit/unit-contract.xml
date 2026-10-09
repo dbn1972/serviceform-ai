@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="31" failures="0" errors="0" time="0.368212927">
+    <testsuite name="test/contract/boundaries.test.ts" timestamp="2026-10-06T12:24:57.972Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.007539276">
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT * FROM sf_application_case.application" time="0.001618274">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: UPDATE sf_application_case.application SET state = $1" time="0.000262258">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT * FROM sf_workflow.instance" time="0.000134164">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: INSERT INTO sf_audit.audit_ledger VALUES ($1)" time="0.000196317">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; guard refuses: SELECT * FROM sf_appeal.appeal t JOIN sf_application_case.application a ON true" time="0.000172447">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; allows the component schema and shared session accessor only" time="0.000190007">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; source never names another schema, imports another component, a driver, or the network" time="0.002104835">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="cross-component direct SQL is rejected &gt; migration references no foreign schema, grants nothing to PUBLIC, and no DML to sf_app" time="0.000669437">
+        </testcase>
+        <testcase classname="test/contract/boundaries.test.ts" name="migration safety (ADR-0006) &gt; uses NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS and policies on current_tenant_id()" time="0.000627825">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-06T12:24:57.973Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.080287168">
+        <testcase classname="test/contract/contracts.test.ts" name="19 frozen contracts remain FROZEN (read-only consumption) &gt; lock lists exactly the 19 ids this envelope consumes" time="0.001772883">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="19 frozen contracts remain FROZEN (read-only consumption) &gt; emitted domain events are valid SF-CON-EVENT-ENVELOPE instances" time="0.077534592">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/handler.test.ts" timestamp="2026-10-06T12:24:57.974Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.095035506">
+        <testcase classname="test/unit/handler.test.ts" name="transport-neutral handler &gt; serves file + get and every error body matches SF-CON-ERROR-RESPONSE" time="0.094055552">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/lifecycle.test.ts" timestamp="2026-10-06T12:24:57.974Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.07624047">
+        <testcase classname="test/unit/lifecycle.test.ts" name="appeal lifecycle &gt; files, records admissibility, assigns, review, hearing, decision, and emits outbox+audit" time="0.069296681">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="appeal lifecycle &gt; withdraws a filed appeal and refuses later mutation" time="0.001983776">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="appeal lifecycle &gt; is idempotent on file" time="0.00083009">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="original case is never rewritten except via CMP-015 command port &gt; records opaque original ids and only mutates a fake case map through the port after commit" time="0.001140936">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="original case is never rewritten except via CMP-015 command port &gt; refuses CMP-015 port calls while a domain transaction is open" time="0.000594134">
+        </testcase>
+        <testcase classname="test/unit/lifecycle.test.ts" name="workflow is a port, not a second BPMN runtime &gt; links a workflow instance after OPA and outside the prior file transaction" time="0.000968095">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/negative.test.ts" timestamp="2026-10-06T12:24:57.975Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.106392057">
+        <testcase classname="test/unit/negative.test.ts" name="wrong tenant is denied (CROSS_TENANT_LEAKAGE=0) &gt; hides tenant A appeals from tenant B" time="0.085253312">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_READ fail-closed and audits DENIED" time="0.002751307">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_ADMISSIBILITY fail-closed and audits DENIED" time="0.004315049">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_ASSIGN fail-closed and audits DENIED" time="0.001702578">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_RECORD_REVIEW fail-closed and audits DENIED" time="0.002271918">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_RECORD_DECISION fail-closed and audits DENIED" time="0.001486377">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_WITHDRAW fail-closed and audits DENIED" time="0.000809046">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; denies APPEAL_CANCEL fail-closed and audits DENIED" time="0.000798692">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="OPA on protected appeal actions &gt; PDP failure fails closed" time="0.001015449">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="AI never decides appeal outcome &gt; refuses AI roles on admissibility, decision, review, withdraw and cancel" time="0.00090717">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="AI never decides appeal outcome &gt; allows summary/checklist notes and refuses decision-shaped kinds" time="0.002058059">
+        </testcase>
+        <testcase classname="test/unit/negative.test.ts" name="named officer metadata is refused &gt; rejects officer_id on authority and top-level assignee" time="0.000429838">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-repository.test.ts" timestamp="2026-10-06T12:24:57.975Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.00271845">
+        <testcase classname="test/unit/pg-repository.test.ts" name="pg mappers &gt; maps a row including empty evidence array" time="0.001707758">
+        </testcase>
+    </testsuite>
+</testsuites>
