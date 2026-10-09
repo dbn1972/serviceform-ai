@@ -1,0 +1,643 @@
+{
+  "result": "PASS",
+  "errors": [],
+  "envelopes": {
+    "SF-M06-001": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-020-fee-calculation/**",
+          "db/migrations/*_cmp-020-*.sql",
+          "evidence/SF-M06-001/**",
+          "orchestrator/handovers/SF-M06-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-020-fee-calculation/**",
+          "db/migrations/*_cmp-020-*.sql",
+          "evidence/SF-M06-001/**",
+          "orchestrator/handovers/SF-M06-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M06-002": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-025-notification/**",
+          "db/migrations/*_cmp-025-*.sql",
+          "evidence/SF-M06-002/**",
+          "orchestrator/handovers/SF-M06-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-025-notification/**",
+          "db/migrations/*_cmp-025-*.sql",
+          "evidence/SF-M06-002/**",
+          "orchestrator/handovers/SF-M06-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M06-003": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-026-communication-messaging/**",
+          "db/migrations/*_cmp-026-*.sql",
+          "evidence/SF-M06-003/**",
+          "orchestrator/handovers/SF-M06-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-026-communication-messaging/**",
+          "db/migrations/*_cmp-026-*.sql",
+          "evidence/SF-M06-003/**",
+          "orchestrator/handovers/SF-M06-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-FEE-QUOTE",
+          "SF-CON-PAYMENT-INTENT",
+          "SF-CON-PAYMENT-CALLBACK",
+          "SF-CON-NOTIFICATION-DISPATCH",
+          "SF-CON-MESSAGE-THREAD"
+        ],
+        "serial_after": [
+          "SF-M06-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M08-001": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-035-search-indexing/**",
+          "db/migrations/*_cmp-035-*.sql",
+          "evidence/SF-M08-001/**",
+          "orchestrator/handovers/SF-M08-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-035-search-indexing/**",
+          "db/migrations/*_cmp-035-*.sql",
+          "evidence/SF-M08-001/**",
+          "orchestrator/handovers/SF-M08-001.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M08-002": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-007-recommendation/**",
+          "db/migrations/*_cmp-007-*.sql",
+          "evidence/SF-M08-002/**",
+          "orchestrator/handovers/SF-M08-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-007-recommendation/**",
+          "db/migrations/*_cmp-007-*.sql",
+          "evidence/SF-M08-002/**",
+          "orchestrator/handovers/SF-M08-002.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M08-003": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-045-analytics-mis/**",
+          "db/migrations/*_cmp-045-*.sql",
+          "evidence/SF-M08-003/**",
+          "orchestrator/handovers/SF-M08-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-045-analytics-mis/**",
+          "db/migrations/*_cmp-045-*.sql",
+          "evidence/SF-M08-003/**",
+          "orchestrator/handovers/SF-M08-003.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    },
+    "SF-M08-004": {
+      "task_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-046-operational-dashboard/**",
+          "db/migrations/*_cmp-046-*.sql",
+          "evidence/SF-M08-004/**",
+          "orchestrator/handovers/SF-M08-004.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "handover_keys": {
+        "state": "READY",
+        "planning_only": false,
+        "implementation_authorized": true,
+        "dispatched": false,
+        "wave_eligible_now": true,
+        "allowed_write_paths": [
+          "services/cmp-046-operational-dashboard/**",
+          "db/migrations/*_cmp-046-*.sql",
+          "evidence/SF-M08-004/**",
+          "orchestrator/handovers/SF-M08-004.yaml"
+        ],
+        "contract_locks": [
+          "SF-CON-COMMON",
+          "SF-CON-REQUEST-CONTEXT",
+          "SF-CON-AUTHZ-DECISION",
+          "SF-CON-ERROR-RESPONSE",
+          "SF-CON-ERROR-CATALOGUE",
+          "SF-CON-EVENT-ENVELOPE",
+          "SF-CON-IDEMPOTENCY",
+          "SF-CON-AUDIT-EVENT",
+          "SF-CON-ISOLATION-DECLARATION",
+          "SF-CON-DB-SESSION-CONTEXT",
+          "SF-CON-OUTBOX",
+          "SF-CON-CONNECTOR-BINDING",
+          "SF-CON-SIMULATION-MARKER",
+          "SF-CON-APPLICATION-CASE-SM",
+          "SF-CON-WORKFLOW-MODEL",
+          "SF-CON-COMMAND-TRANSITION",
+          "SF-CON-HUMAN-TASK",
+          "SF-CON-SLA-CLOCK",
+          "SF-CON-VERSION-PINNING",
+          "SF-CON-SEARCH-DOCUMENT",
+          "SF-CON-DISCOVERY-QUERY",
+          "SF-CON-RECOMMENDATION",
+          "SF-CON-ANALYTICS-METRIC",
+          "SF-CON-RETENTION-POLICY"
+        ],
+        "serial_after": [
+          "SF-M08-CG-001"
+        ],
+        "ccr_required": false,
+        "builders_dispatched_this_envelope": false
+      },
+      "match": true
+    }
+  }
+}

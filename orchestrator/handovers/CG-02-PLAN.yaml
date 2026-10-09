@@ -1,19 +1,21 @@
-# CG-02 concurrency gate index — PLANNING ONLY
-# Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# CG-02 concurrency gate index — Wave A READY promotion (builders OFF)
+# READY_PROMOTION_GRANTED. BUILDER_SPAWN_PENDING_ACTIVATION_RECORD_MERGE.
+# Not dispatched. Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
 # Decision token split against CKV_SECRET_6: family + status (do not join).
+# SF-M08-005 remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
+
 record: CG-02-PLAN
 concurrency_group: CG-02
 after_modules: [M05]
 parallel_modules: [M06, M08]
 decision:
-  family: CG02_M06_M08_PLANNING
-  status: PLANNING
-
-planning_only: true
+  family: CG02_M06_M08_READY_PROMOTION
+  status: READY_PROMOTION_GRANTED
+planning_only: false
 implementation_authorized: false
 dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+orchestration_task_state: READY_PROMOTION_GRANTED
+state: READY_PROMOTION_GRANTED
 self_certified: false
 not_certified: true
 certified: false
@@ -21,50 +23,49 @@ release_certified: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_02_contract_freeze_required: true
-freeze_authorized: false
+cg_02_contract_freeze_required: false
+freeze_authorized: true
 statutory_retention_policy_input_required: true
 base_commit:
-  prefix: 88690846
-  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+  prefix: 5acb291e
+  suffix: a828894c40110396f0eafd62462e4572
 planning_base_commit:
-  prefix: 88690846
+  prefix: '88690846'
   suffix: 021a2ce082b8a7c7f35c12603effd5d9
-join_separator: "_"
+join_separator: _
 contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
-  - SF-CON-APPLICATION-CASE-SM
-  - SF-CON-WORKFLOW-MODEL
-  - SF-CON-COMMAND-TRANSITION
-  - SF-CON-HUMAN-TASK
-  - SF-CON-SLA-CLOCK
-  - SF-CON-VERSION-PINNING
+- SF-CON-COMMON
+- SF-CON-REQUEST-CONTEXT
+- SF-CON-AUTHZ-DECISION
+- SF-CON-ERROR-RESPONSE
+- SF-CON-ERROR-CATALOGUE
+- SF-CON-EVENT-ENVELOPE
+- SF-CON-IDEMPOTENCY
+- SF-CON-AUDIT-EVENT
+- SF-CON-ISOLATION-DECLARATION
+- SF-CON-DB-SESSION-CONTEXT
+- SF-CON-OUTBOX
+- SF-CON-CONNECTOR-BINDING
+- SF-CON-SIMULATION-MARKER
+- SF-CON-APPLICATION-CASE-SM
+- SF-CON-WORKFLOW-MODEL
+- SF-CON-COMMAND-TRANSITION
+- SF-CON-HUMAN-TASK
+- SF-CON-SLA-CLOCK
+- SF-CON-VERSION-PINNING
 stop_conditions:
-  - FROZEN existing 19 contracts change required (CCR+STOP)
-  - statutory / fee / payment / retention policy invention required
-  - write outside allowed_write_paths
-  - dependency on unmerged sibling CG-02 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / READY auth / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - READY promotion in this planning slice
-  - freeze contracts in the planning PR
-  - concurrent SF-M06-005 and SF-M08-007
-  - M07 or M09-M12 start
-  - merge or modify M05 evidence PRs #107/#108/#109
-  - create orchestrator/tasks/** in this slice
-
+- FROZEN existing 19 contracts change required (CCR+STOP)
+- statutory / fee / payment / retention policy invention required
+- write outside allowed_write_paths
+- dependency on unmerged sibling CG-02 code as source of truth
+- builder dispatch without uniqueness PASS / CG-001 freeze on main / READY auth / orchestrator dispatch record
+- CERTIFIED or RELEASE CERTIFIED or G6 claim
+- concurrent SF-M06-005 and SF-M08-007
+- M07 or M09-M12 start
+- merge or modify M05 evidence PRs
+- spawn builders before activation record merge
+- promote SF-M08-005 without statutory retention policy input
+- mutate contracts/** or orchestrator/contracts-lock.yaml in this slice
 m05_exit_token:
   module: M05
   gate: G4_SECURITY
@@ -74,15 +75,18 @@ m05_exit_token:
   finalize_pr: 111
   finalize_main: 88690846021a2ce082b8a7c7f35c12603effd5d9
 m05_evidence_prs_immutable_unmerged:
-  - {pr: 107, head: 59ddddd43afeeacfb14a86432c14bbce3ed88073}
-  - {pr: 108, head: d1614d70b743b39b20b6d7104d3bd34cb2248f5f}
-  - {pr: 109, head: 8b270beb61742eb42094b3133484013ab88b29b2}
+- pr: 107
+  head: 59ddddd43afeeacfb14a86432c14bbce3ed88073
+- pr: 108
+  head: d1614d70b743b39b20b6d7104d3bd34cb2248f5f
+- pr: 109
+  head: 8b270beb61742eb42094b3133484013ab88b29b2
 planning_authorization:
   human_decision: CG_02_M06_M08_PLANNING_AUTHORIZED
-  scope: planning_only
+  scope: superseded_by_ready_promotion
   implementation_authorized: false
-  ready_authorized: false
-  freeze_authorized: false
+  ready_authorized: true
+  freeze_authorized: true
 builders_dispatched: 0
 m06_started: false
 m08_started: false
@@ -92,35 +96,55 @@ m09_off: true
 m10_off: true
 m11_off: true
 m12_off: true
-frozen_contract_hashes: 19/19 MATCH
+frozen_contract_hashes: 29/29 MATCH
 lockfile_owner: stitch_A_then_stitch_B_per_module
 immutable_paths:
-  - contracts/shared/**
-  - existing M05 contract files and hashes
-  - orchestrator/contracts-lock.yaml (until later append-only freeze auth)
-  - pnpm-lock.yaml
+- contracts/shared/**
+- existing M05 contract files and hashes
+- contracts/m06/**
+- contracts/m08/**
+- orchestrator/contracts-lock.yaml
+- pnpm-lock.yaml
 hard_serial:
-  pair: [SF-M06-005, SF-M08-007]
+  pair:
+  - SF-M06-005
+  - SF-M08-007
   shared_write_prefix: apps/api/
   single_writer_file: apps/api/src/app.ts
   must_not_run_concurrent_with: true
-wave_a_eligible_now: []
+wave_a_eligible_now:
+- SF-M06-001
+- SF-M06-002
+- SF-M06-003
+- SF-M08-001
+- SF-M08-002
+- SF-M08-003
+- SF-M08-004
 documents:
   repo_plan: docs/planning/CG-02-M06-M08-PLAN.md
   repo_envelopes: docs/planning/CG-02-M06-M08-ENVELOPES.md
   contract_prereqs: docs/planning/CG-02-M06-M08-CONTRACT-PREREQUISITES.md
 awaiting:
-  - INDEPENDENT_CG_02_PLANNING_REVIEW
-  - HUMAN_CG_02_READY_PROMOTION_AUTHORIZATION
-  - separate_human_contract_freeze_authorization
+- INDEPENDENT_CG_02_READY_PROMOTION_REVIEW
+- HUMAN_CG_02_READY_PROMOTION_MERGE_AUTHORIZATION
+- activation_record_merge_before_builder_spawn
 blockers_for_planning: []
 adr_opened: []
 ccr_opened: []
 explicit_non_goals:
-  - implementation_in_this_slice
-  - ready_promotion_in_this_slice
-  - builder_dispatch_in_this_slice
-  - contract_freeze_in_this_slice
-  - certified_or_release_certified_claim
-  - m07_or_later_activation
-  - orchestrator_tasks_mirrors_in_this_slice
+- builder_dispatch_in_this_slice
+- sf_m08_005_ready_promotion
+- wave_b_stitch_host_int_sec_evd
+- contracts_or_lock_mutation
+- certified_or_release_certified_claim
+- m07_or_later_activation
+- merge_this_draft_pr
+repository_freeze_effective: true
+ready_promotion_granted: true
+builder_spawn_pending_activation_record_merge: true
+ready_promotion_authorization:
+  human_decision: HUMAN_CG_02_READY_PROMOTION_AUTHORIZATION
+  scope: wave_a_seven_lanes_only
+  implementation_authorized_on_envelopes: true
+  builders_dispatched: 0
+  sf_m08_005_held: true

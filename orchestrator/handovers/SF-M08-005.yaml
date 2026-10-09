@@ -25,12 +25,14 @@ privilege_role: sf_cmp049_rw
 schema: sf_retention
 hard_serial_locks: ['LOCK-2', 'LOCK-3']
 depends_on:
-  - M05 G4 exit + finalize on origin/main at base_commit
-  - 19 FROZEN contracts MATCH
-  - SF-M08-CG-001 freeze on origin/main (later; not this PR)
-  - LOCK-1 planning PR on main
-  - later human READY promotion authorization (NOT granted)
-  - later orchestrator dispatch record
+  - M05 G4 exit + finalize on origin/main
+  - 29 FROZEN contracts MATCH (existing 19 unchanged)
+  - SF-M08-CG-001 FROZEN_ON_MAIN on origin/main at/after prefix 5acb291e
+  - LOCK-1 planning PR on main (#112)
+  - LOCK-2 freeze merged (#113)
+  - human Wave A READY granted for SF-M08-001..004 only — THIS LANE HELD
+  - STATUTORY_RETENTION_POLICY_INPUT_REQUIRED (do not invent periods)
+  - later separate READY auth for SF-M08-005 after policy input
 allowed_write_paths:
   - services/cmp-049-data-retention/**
   - db/migrations/*_cmp-049-*.sql
