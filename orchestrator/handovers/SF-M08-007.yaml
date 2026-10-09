@@ -1,0 +1,99 @@
+# M08 PLANNING envelope — API host composition
+# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED.
+
+task_id: SF-M08-007
+title: API host M08 composition mounts
+module_id: M08
+concurrency_group: CG-02
+component_ids: []
+integration_ids: [INT-011]
+requirement_ids:
+  - Constitution-single-host
+  - CG-02-apps-api-single-writer
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M08-host-SF-M08-007
+worktree: ../wt-SF-M08-007
+parallel_group: M08-HOST
+privilege_role: sf_api_host_rw
+schema: null
+hard_serial_locks: [LOCK-7]
+must_not_run_concurrent_with: [SF-M06-005]
+depends_on:
+  - SF-M08-STITCH-B on origin/main
+  - 19 FROZEN contracts MATCH
+  - later human READY promotion authorization (NOT granted)
+allowed_write_paths:
+  - apps/api/src/composition/m08.ts
+  - apps/api/src/app.ts
+  - apps/api/test/**/m08*
+  - evidence/SF-M08-007/**
+  - orchestrator/handovers/SF-M08-007.yaml
+allowed_write_notes:
+  - Additive composition module only; preserve M01–M05 mounts
+  - Serialized single-writer window vs SF-M06-005
+  - Do not commit pnpm-lock.yaml
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - services/**
+wave_eligible_now: false
+serial_after:
+  - SF-M08-STITCH-B
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+stop_conditions:
+  - concurrent execution with SF-M06-005
+  - remove or break prior module mounts
+  - builder dispatch without READY auth / dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - freeze contracts in the planning PR
+
+acceptance_tests_planning:
+  - composition/m08.ts mounts only M08 plugins
+  - app.ts change is mount-call only and reviewable
+  - never scheduled concurrent with SF-M06-005

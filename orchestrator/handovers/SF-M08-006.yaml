@@ -1,0 +1,110 @@
+# M08 PLANNING envelope — Service Discovery Engine
+# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M08-006
+title: Service Discovery Engine
+module_id: M08
+concurrency_group: CG-02
+build_plan: specs/build-plan.yaml (ADR-0001)
+component_ids: [CMP-006]
+integration_ids: [INT-003, INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-006
+  - INT-003
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M08-discovery-SF-M08-006
+worktree: ../wt-SF-M08-006
+parallel_group: M08-B
+privilege_role: sf_cmp006_rw
+schema: sf_discovery
+hard_serial_locks: ['LOCK-5']
+depends_on:
+  - M05 G4 exit + finalize on origin/main at base_commit
+  - 19 FROZEN contracts MATCH
+  - SF-M08-CG-001 freeze on origin/main (later; not this PR)
+  - LOCK-1 planning PR on main
+  - later human READY promotion authorization (NOT granted)
+  - later orchestrator dispatch record
+allowed_write_paths:
+  - services/cmp-006-service-discovery/**
+  - db/migrations/*_cmp-006-*.sql
+  - evidence/SF-M08-006/**
+  - orchestrator/handovers/SF-M08-006.yaml
+allowed_write_notes:
+  - Consume Search (035) + catalogue/jurisdiction/localization on main via ports
+  - INT-003 discovery → form/application draft is non-mutating until citizen acts
+  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M08-007
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - specs/**
+  - policy/**
+  - infra/**
+  - services/cmp-035-search-indexing/**
+  - services/cmp-007-recommendation/**
+wave_eligible_now: false
+serial_after:
+  - SF-M08-STITCH-A
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+stop_conditions:
+  - FROZEN existing 19 contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling CG-02 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / READY auth / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - READY promotion in this planning slice
+  - freeze contracts in the planning PR
+  - M07 or M09-M12 start
+
+acceptance_tests_planning:
+  - Jurisdiction-aware availability uses master data ports
+  - No cross-tenant service leakage
+  - Host mount deferred to SF-M08-007

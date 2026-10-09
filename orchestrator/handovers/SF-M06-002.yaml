@@ -1,0 +1,114 @@
+# M06 PLANNING envelope — Notification Service
+# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+
+task_id: SF-M06-002
+title: Notification Service
+module_id: M06
+concurrency_group: CG-02
+build_plan: specs/build-plan.yaml (ADR-0001)
+component_ids: [CMP-025]
+integration_ids: [INT-007, INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-025
+  - INT-013
+  - Constitution-no-secrets-in-logs
+agent_role: component_builder
+builder_agent: serviceform-integration-builder
+model_route: sonnet
+model_release: claude-sonnet-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M06-notification-SF-M06-002
+worktree: ../wt-SF-M06-002
+parallel_group: M06-A
+privilege_role: sf_cmp025_rw
+schema: sf_notification
+hard_serial_locks: ['LOCK-2', 'LOCK-3']
+depends_on:
+  - M05 G4 exit + finalize on origin/main at base_commit
+  - 19 FROZEN contracts MATCH
+  - SF-M06-CG-001 freeze on origin/main (later; not this PR)
+  - LOCK-1 planning PR on main
+  - later human READY promotion authorization (NOT granted)
+  - later orchestrator dispatch record
+allowed_write_paths:
+  - services/cmp-025-notification/**
+  - db/migrations/*_cmp-025-*.sql
+  - evidence/SF-M06-002/**
+  - orchestrator/handovers/SF-M06-002.yaml
+allowed_write_notes:
+  - Channel adapters via CMP-037 + INT-013 REAL/SANDBOX/SIMULATED
+  - Templates metadata-driven; no provider secrets in code/logs
+  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M06-005
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - specs/**
+  - policy/**
+  - infra/**
+  - services/cmp-020-fee-calculation/**
+  - services/cmp-021-payment/**
+  - services/cmp-026-communication-messaging/**
+wave_eligible_now: false
+serial_after:
+  - SF-M06-CG-001
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+stop_conditions:
+  - FROZEN existing 19 contracts change required (CCR+STOP)
+  - statutory / policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling CG-02 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze on main / READY auth / orchestrator dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - READY promotion in this planning slice
+  - freeze contracts in the planning PR
+  - M07 or M09-M12 start
+  - production silent SIMULATED critical notification connector
+
+acceptance_tests_planning:
+  - Dispatch is idempotent and tenant-scoped
+  - INT-013 mode marker present on SIMULATED paths
+  - No PII/secrets in logs
+  - Host mount deferred to SF-M06-005
