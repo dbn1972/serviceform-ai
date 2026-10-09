@@ -1,0 +1,96 @@
+# M06 Fees, Payments, Notifications and Messaging — PLANNING index
+# Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. M07 OFF.
+module_id: M06
+record: M06-PLAN
+concurrency_group: CG-02
+name: Fees, Payments, Notifications and Messaging
+depends_on: [M05]
+components: [CMP-020, CMP-021, CMP-025, CMP-026]
+integrations_owned: [INT-007]
+integrations_reverify: [INT-011, INT-013]
+integrations_owner_note: INT-011 and INT-013 remain M01-owned; M06 re-verifies layers it adds
+exit_gate:
+  id: G3_INTEGRATION
+  status: VERIFIED
+  issued: false
+  note: target module exit only; this package does not issue G3; EVD cannot issue G3
+decision:
+  family: M06_PLANNING
+  status: PLANNING
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+stop_conditions:
+  - FROZEN existing 19 contracts change required (CCR+STOP)
+  - fee / payment / provider policy invention required
+  - write outside allowed_write_paths
+  - dependency on unmerged sibling M06/M08 code as source of truth
+  - builder dispatch without uniqueness PASS / CG-001 freeze / READY auth / dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G3 (EVD recommend only)
+  - M07 start
+  - freeze contracts in the planning PR
+  - concurrent host with SF-M08-007
+m07_off: true
+builders_dispatched: 0
+m06_started: false
+wave_a_eligible_now: []
+wave_a_parallel: [SF-M06-001, SF-M06-002, SF-M06-003]
+wave_b_after_stitch_a: [SF-M06-004]
+hard_serial_locks:
+  LOCK-1: planning PR merged; no spawn; no freeze in this slice
+  LOCK-2: SF-M06-CG-001 NEW M06 contracts only after later freeze authorization
+  LOCK-3: Wave A parallel SF-M06-001..003 after freeze on origin/main plus dispatch
+  LOCK-4: STITCH-A mechanical/format/lockfile on Wave A paths
+  LOCK-5: Wave B SF-M06-004 after STITCH-A on origin/main
+  LOCK-6: STITCH-B Wave B paths + lockfile
+  LOCK-7: SF-M06-005 apps/api single writer; never concurrent with SF-M08-007
+  LOCK-8: INT parallel SEC after host
+  LOCK-9: EVD recommend G3 only
+documents:
+  repo_plan: docs/planning/CG-02-M06-M08-PLAN.md
+  repo_envelopes: docs/planning/CG-02-M06-M08-ENVELOPES.md
+  contract_prereqs: docs/planning/CG-02-M06-M08-CONTRACT-PREREQUISITES.md
+builder_envelopes: [SF-M06-001, SF-M06-002, SF-M06-003, SF-M06-004, SF-M06-005]
+stitch_envelopes: [SF-M06-STITCH-A, SF-M06-STITCH-B]
+guardian_envelopes: [SF-M06-CG-001]
+verifier_envelopes: [SF-M06-INT, SF-M06-SEC, SF-M06-EVD]
+host_must_not_overlap: SF-M08-007

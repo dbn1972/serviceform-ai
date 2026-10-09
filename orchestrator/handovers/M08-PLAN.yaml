@@ -1,0 +1,101 @@
+# M08 Search, Discovery, Recommendation, Analytics, Operations and Retention — PLANNING index
+# Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. M07+/M09+ OFF.
+module_id: M08
+record: M08-PLAN
+concurrency_group: CG-02
+name: Search, Discovery, Recommendation, Analytics, Operations and Retention
+depends_on: [M05]
+components: [CMP-006, CMP-007, CMP-035, CMP-045, CMP-046, CMP-049]
+integrations_owned: [INT-003, INT-010]
+integrations_reverify: [INT-011, INT-013]
+integrations_owner_note: INT-011 and INT-013 remain M01-owned; M08 re-verifies layers it adds
+exit_gate:
+  id: G3_INTEGRATION
+  status: VERIFIED
+  issued: false
+  note: target module exit only; this package does not issue G3; EVD cannot issue G3
+decision:
+  family: M08_PLANNING
+  status: PLANNING
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+statutory_retention_policy_input_required: true
+stop_conditions:
+  - FROZEN existing 19 contracts change required (CCR+STOP)
+  - statutory retention period invention required
+  - LLM final statutory eligibility/approval/rejection
+  - recommendation bypassing CMP-039
+  - write outside allowed_write_paths
+  - invent M08→M06 dependency without FROZEN port
+  - builder dispatch without uniqueness PASS / CG-001 freeze / READY auth / dispatch record
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G3 (EVD recommend only)
+  - M07 or M09-M12 start
+  - freeze contracts in the planning PR
+  - concurrent host with SF-M06-005
+m07_off: true
+m09_off: true
+m10_off: true
+builders_dispatched: 0
+m08_started: false
+wave_a_eligible_now: []
+wave_a_parallel: [SF-M08-001, SF-M08-002, SF-M08-003, SF-M08-004, SF-M08-005]
+wave_b_after_stitch_a: [SF-M08-006]
+hard_serial_locks:
+  LOCK-1: planning PR merged; no spawn; no freeze in this slice
+  LOCK-2: SF-M08-CG-001 NEW M08 contracts only after later freeze authorization
+  LOCK-3: Wave A parallel SF-M08-001..005 after freeze on origin/main plus dispatch
+  LOCK-4: STITCH-A mechanical/format/lockfile on Wave A paths
+  LOCK-5: Wave B SF-M08-006 after STITCH-A on origin/main
+  LOCK-6: STITCH-B Wave B paths + lockfile
+  LOCK-7: SF-M08-007 apps/api single writer; never concurrent with SF-M06-005
+  LOCK-8: INT parallel SEC after host
+  LOCK-9: EVD recommend G3 only
+documents:
+  repo_plan: docs/planning/CG-02-M06-M08-PLAN.md
+  repo_envelopes: docs/planning/CG-02-M06-M08-ENVELOPES.md
+  contract_prereqs: docs/planning/CG-02-M06-M08-CONTRACT-PREREQUISITES.md
+builder_envelopes: [SF-M08-001, SF-M08-002, SF-M08-003, SF-M08-004, SF-M08-005, SF-M08-006, SF-M08-007]
+stitch_envelopes: [SF-M08-STITCH-A, SF-M08-STITCH-B]
+guardian_envelopes: [SF-M08-CG-001]
+verifier_envelopes: [SF-M08-INT, SF-M08-SEC, SF-M08-EVD]
+host_must_not_overlap: SF-M06-005

@@ -1,0 +1,92 @@
+# M06 PLANNING envelope — security_verifier
+# PLANNING. Not READY. Not dispatched. Independent verifier. Cannot CERTIFY.
+
+task_id: SF-M06-SEC
+title: M06 security_verifier — Independent tenant/authz/payment security verification
+module_id: M06
+concurrency_group: CG-02
+component_ids: []
+integration_ids: ['INT-011']
+requirement_ids:
+  - independent-verification
+  - no-self-certification
+agent_role: security_verifier
+builder_agent: serviceform-security-verifier
+model_route: opus
+model_release: claude-opus-5-5
+effort: xhigh
+verifier_model_route: opus
+branch: agent/M06-verify-SF-M06-SEC
+worktree: ../wt-SF-M06-SEC
+parallel_group: M06-VERIFY
+depends_on:
+  - host and prior verifiers as listed in serial_after
+  - later human READY / verify authorization (NOT granted)
+allowed_write_paths:
+  - tests/security/m06/**
+  - evidence/SF-M06-SEC/**
+  - orchestrator/handovers/SF-M06-SEC.yaml
+allowed_write_notes:
+  - Independent of builders; must not patch owner production code
+  - Cannot issue module exit gate; recommend only
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - pnpm-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M06-005
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_02_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 88690846
+  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+join_separator: "_"
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+stop_conditions:
+  - patch owner production code
+  - waive critical findings
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
+  - issue G3 (recommend only)
+  - start builders
+
+acceptance_tests_planning:
+  - Evidence bound to commit SHA and run identifiers when later executed
+  - CROSS_TENANT_LEAKAGE remains 0 recommendation prerequisite
+  - No self-certification
