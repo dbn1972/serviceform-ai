@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m06/notification-dispatch/v1",
+  "title": "NotificationDispatch",
+  "description": "FROZEN. SF-CON-NOTIFICATION-DISPATCH. Notification dispatch (CMP-025). Template/channel/locale metadata-driven. Recipient is a handle class ref — raw PII must not appear in logs or payloads. Connector modes REAL/SANDBOX/SIMULATED per INT-013 + SF-CON-SIMULATION-MARKER.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "dispatch_id",
+    "template_ref",
+    "channel",
+    "locale",
+    "recipient_handle_class",
+    "recipient_handle_ref",
+    "connector_binding_id",
+    "connector_mode",
+    "raw_pii_in_payload_forbidden",
+    "idempotency_key"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-NOTIFICATION-DISPATCH"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "dispatch_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "template_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["SMS", "EMAIL", "PUSH", "IN_APP"]
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+    },
+    "recipient_handle_class": {
+      "type": "string",
+      "enum": ["CITIZEN_HANDLE_REF", "OFFICIAL_HANDLE_REF", "SYSTEM_HANDLE_REF"],
+      "description": "Handle class only — never embed raw phone/email in this contract instance for logging."
+    },
+    "recipient_handle_ref": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "connector_binding_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "connector_mode": {
+      "type": "string",
+      "enum": ["REAL", "SANDBOX", "SIMULATED"]
+    },
+    "raw_pii_in_payload_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "simulation_marker_required_when_simulated": {
+      "type": "boolean",
+      "const": true
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  }
+}

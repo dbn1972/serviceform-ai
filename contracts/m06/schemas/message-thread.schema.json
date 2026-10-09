@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m06/message-thread/v1",
+  "title": "MessageThread",
+  "description": "FROZEN. SF-CON-MESSAGE-THREAD. Tenant-scoped messaging thread (CMP-026). Participants and attachments are refs within the tenant isolation boundary. Cross-tenant participation is forbidden.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "thread_id",
+    "application_id",
+    "participants",
+    "isolation_class",
+    "cross_tenant_participants_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-MESSAGE-THREAD"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "thread_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/participant"
+      }
+    },
+    "attachment_storage_keys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 8,
+        "maxLength": 256,
+        "pattern": "^[A-Za-z0-9_./:-]+$",
+        "description": "Storage key ref only (CMP-032). Not inline binary."
+      }
+    },
+    "read_receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["participant_ref", "read_at"],
+        "properties": {
+          "participant_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "read_at": {
+            "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+          }
+        }
+      }
+    },
+    "isolation_class": {
+      "const": "TENANT_SCOPED"
+    },
+    "cross_tenant_participants_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  },
+  "$defs": {
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["participant_ref", "role_code", "tenant_id"],
+      "properties": {
+        "participant_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "role_code": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/roleCode"
+        },
+        "tenant_id": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        }
+      }
+    }
+  }
+}

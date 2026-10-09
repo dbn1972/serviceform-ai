@@ -1,0 +1,25 @@
+{
+  "contract_id": "SF-CON-RETENTION-POLICY",
+  "contract_status": "FROZEN",
+  "freeze_status": "FROZEN",
+  "tenant_id": "11111111-1111-4111-8111-111111111111",
+  "policy_id": "88888888-8888-4888-8888-888888888888",
+  "scope": {
+    "resource_type": "APPLICATION",
+    "service_code": "RESIDENCE_CERTIFICATE"
+  },
+  "policy_neutral_shape": true,
+  "statutory_retention_policy_input_required": true,
+  "owner_supplied_period_ref": null,
+  "eligibility_transitions": [
+    {
+      "from_eligibility": "ACTIVE",
+      "to_eligibility": "ARCHIVE_ELIGIBLE"
+    },
+    {
+      "from_eligibility": "ARCHIVE_ELIGIBLE",
+      "to_eligibility": "DELETE_ELIGIBLE"
+    }
+  ],
+  "invented_statutory_period_forbidden": true
+}

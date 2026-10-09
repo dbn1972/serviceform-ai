@@ -1,0 +1,28 @@
+PASS unique $id count=5
+PASS unique contract_id SF-CON-ANALYTICS-METRIC,SF-CON-DISCOVERY-QUERY,SF-CON-RECOMMENDATION,SF-CON-RETENTION-POLICY,SF-CON-SEARCH-DOCUMENT
+PASS no circular M08 $ref
+PASS compile analytics-metric.schema.json $id=https://contracts.serviceform.ai/m08/analytics-metric/v1
+PASS compile discovery-query.schema.json $id=https://contracts.serviceform.ai/m08/discovery-query/v1
+PASS compile recommendation.schema.json $id=https://contracts.serviceform.ai/m08/recommendation/v1
+PASS compile retention-policy.schema.json $id=https://contracts.serviceform.ai/m08/retention-policy/v1
+PASS compile search-document.schema.json $id=https://contracts.serviceform.ai/m08/search-document/v1
+PASS valid/analytics-metric.json -> analytics-metric
+PASS valid/discovery-query.json -> discovery-query
+PASS valid/recommendation.json -> recommendation
+PASS valid/retention-policy.json -> retention-policy
+PASS valid/search-document.json -> search-document
+PASS invalid/analytics-metric.raw-pii.json -> analytics-metric
+PASS invalid/discovery-query.statutory-result.json -> discovery-query
+PASS invalid/recommendation.authoritative.json -> recommendation
+PASS invalid/retention-policy.input-not-required.json -> retention-policy
+PASS invalid/search-document.cross-tenant.json -> search-document
+PASS search-document has cross_tenant_fields_forbidden
+PASS discovery-query has result_is_non_statutory
+PASS recommendation has non_authoritative
+PASS analytics-metric has raw_pii_payload_forbidden
+PASS retention-policy has statutory_retention_policy_input_required
+PASS recommendation NON_AUTHORITATIVE
+PASS recommendation ai_gateway_cmp=CMP-039
+PASS retention-policy has no invented day-count fields
+
+5 M08 contracts, 0 failure(s)

@@ -1,0 +1,26 @@
+PASS unique $id count=5
+PASS unique contract_id SF-CON-FEE-QUOTE,SF-CON-MESSAGE-THREAD,SF-CON-NOTIFICATION-DISPATCH,SF-CON-PAYMENT-CALLBACK,SF-CON-PAYMENT-INTENT
+PASS no circular M06 $ref
+PASS compile fee-quote.schema.json $id=https://contracts.serviceform.ai/m06/fee-quote/v1
+PASS compile message-thread.schema.json $id=https://contracts.serviceform.ai/m06/message-thread/v1
+PASS compile notification-dispatch.schema.json $id=https://contracts.serviceform.ai/m06/notification-dispatch/v1
+PASS compile payment-callback.schema.json $id=https://contracts.serviceform.ai/m06/payment-callback/v1
+PASS compile payment-intent.schema.json $id=https://contracts.serviceform.ai/m06/payment-intent/v1
+PASS valid/fee-quote.json -> fee-quote
+PASS valid/message-thread.json -> message-thread
+PASS valid/notification-dispatch.json -> notification-dispatch
+PASS valid/payment-callback.json -> payment-callback
+PASS valid/payment-intent.json -> payment-intent
+PASS invalid/fee-quote.client-authoritative.json -> fee-quote
+PASS invalid/message-thread.cross-tenant.json -> message-thread
+PASS invalid/notification-dispatch.raw-pii-allowed.json -> notification-dispatch
+PASS invalid/payment-callback.unverified-effect.json -> payment-callback
+PASS invalid/payment-intent.client-amount.json -> payment-intent
+PASS fee-quote has client_authoritative_amount
+PASS payment-intent has amount_locked_from_fee_quote
+PASS payment-callback has duplicate_financial_effect_forbidden
+PASS notification-dispatch has raw_pii_in_payload_forbidden
+PASS message-thread has cross_tenant_participants_forbidden
+PASS fee-quote amount_source excludes CLIENT
+
+5 M06 contracts, 0 failure(s)

@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m08/analytics-metric/v1",
+  "title": "AnalyticsMetric",
+  "description": "FROZEN. SF-CON-ANALYTICS-METRIC. Analytics metric point (CMP-045). Aggregates only under purpose limitation. Raw PII payloads forbidden. Not an authoritative case or payment store.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "metric_id",
+    "metric_code",
+    "period_start",
+    "period_end",
+    "value",
+    "aggregate_only",
+    "raw_pii_payload_forbidden",
+    "purpose_code"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-ANALYTICS-METRIC"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "metric_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "metric_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Z0-9_.-]+$"
+    },
+    "period_start": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "period_end": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "value": {
+      "type": "number"
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "description": "Facet/dimension value. Must not embed raw PII payloads."
+      },
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]{1,63}$"
+      }
+    },
+    "aggregate_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "raw_pii_payload_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "purpose_code": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/purposeCode"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  }
+}

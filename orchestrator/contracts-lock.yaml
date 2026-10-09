@@ -5,11 +5,14 @@ version: "2.5"
 # fails on a hash mismatch.
 # Reconfirmed 3 Oct 2026 on PR #6: 13/13 hashes match files. ADR-0006 does not change these hashes.
 # Reconfirmed 5 Oct 2026 on PR #85 freeze candidate: 19/19 hashes match files. Original 13 unchanged.
+# CG-02 freeze candidate 9 Oct 2026: append-only ten NEW rows; existing 19 hashes unchanged; 29/29 FROZEN_CANDIDATE.
 # A builder that needs a frozen-contract change must STOP and open a Contract Change Request.
 verified:
-  date: 2026-10-05
+  date: 2026-10-09
   result: 19_FROZEN_HASHES_MATCH
+  candidate_result: 29_FROZEN_CANDIDATE_HASHES_MATCH
   original_13_unchanged: true
+  existing_19_unchanged: true
   adr_0006_changes_hashes: false
 contracts:
   - id: SF-CON-AUDIT-EVENT
@@ -229,5 +232,119 @@ contracts:
     schema_hash: 54e69aa1250b776eba8bb764f8d14e0e2d16cd5e088200ba31613eaa280720f8
     producers: [CMP-015]
     consumers: [SF-M05-001, SF-M05-002, SF-M05-003, SF-M05-004]
+    adr0006_could_change: false
+    change_request: null
+
+  # CG-02 combined freeze preparation (SF-M06-CG-001 + SF-M08-CG-001).
+  # APPEND-ONLY ten NEW FROZEN rows. Existing 19 rows above are unchanged.
+  # Candidate until origin/main merge. Wave A remains OFF. CCR if any of the 19 must change.
+  - id: SF-CON-FEE-QUOTE
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-020; CG-02 planning"
+    path: contracts/m06/schemas/fee-quote.schema.json
+    schema_hash: cf5c47aeb958b3eafca7f2cbb1f6f84ddf61fc9bac5978763cbf862e29968015
+    producers: [CMP-020]
+    consumers: [SF-M06-001, SF-M06-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-PAYMENT-INTENT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-021; INT-007; INT-013"
+    path: contracts/m06/schemas/payment-intent.schema.json
+    schema_hash: 776d1f6eae458efe4620d6175bf04d185f6cdfe9f9a9ed84ba68c2513b04b0ef
+    producers: [CMP-021]
+    consumers: [SF-M06-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-PAYMENT-CALLBACK
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-021; INT-007"
+    path: contracts/m06/schemas/payment-callback.schema.json
+    schema_hash: ca0bacba68d9dd2ee4baa543d2314215ad7ad4603f374991704a1a855fbaff3a
+    producers: [CMP-021]
+    consumers: [SF-M06-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-NOTIFICATION-DISPATCH
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-025; INT-013"
+    path: contracts/m06/schemas/notification-dispatch.schema.json
+    schema_hash: 9f3e790a54d4b6a7b0ad7481f3b12ee8cab14a9d56d55928c7b657e94f7f38e9
+    producers: [CMP-025]
+    consumers: [SF-M06-002]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-MESSAGE-THREAD
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-026"
+    path: contracts/m06/schemas/message-thread.schema.json
+    schema_hash: dd634d71d1593e586da3ea17a03f1dc0f5f116dd45c194a04ca3c5be0e67ce4b
+    producers: [CMP-026]
+    consumers: [SF-M06-003]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-SEARCH-DOCUMENT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-035; INT-010"
+    path: contracts/m08/schemas/search-document.schema.json
+    schema_hash: bfa68e8fc9bf3a431780ab85401d416a85d89f5dcbf1cd5706c0ad5756704f3b
+    producers: [CMP-035]
+    consumers: [SF-M08-001, SF-M08-006]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-DISCOVERY-QUERY
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-006; INT-003"
+    path: contracts/m08/schemas/discovery-query.schema.json
+    schema_hash: fff3eb9aee99078cd865f5513502743164ece58983995d7fd5b8ddccde270785
+    producers: [CMP-006]
+    consumers: [SF-M08-006]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-RECOMMENDATION
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-007; NON_AUTHORITATIVE; CMP-039"
+    path: contracts/m08/schemas/recommendation.schema.json
+    schema_hash: 6b789a500ee19e44f76f10c181f3289303d98c730bb634421e654c63461c960b
+    producers: [CMP-007]
+    consumers: [SF-M08-002]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-ANALYTICS-METRIC
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-045; INT-010"
+    path: contracts/m08/schemas/analytics-metric.schema.json
+    schema_hash: d7831867e305e9031902809fdf405cd16e2d4e8481ebd339100a8f74b67ee890
+    producers: [CMP-045]
+    consumers: [SF-M08-003]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-RETENTION-POLICY
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-049; POLICY-NEUTRAL"
+    path: contracts/m08/schemas/retention-policy.schema.json
+    schema_hash: 463a4c5925335019dc908d98fe5f7db71969408a2b374be5b25b76e7b9652ba0
+    producers: [CMP-049]
+    consumers: [SF-M08-005]
     adr0006_could_change: false
     change_request: null

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m06/payment-callback/v1",
+  "title": "PaymentCallback",
+  "description": "FROZEN. SF-CON-PAYMENT-CALLBACK. Verified payment callback (CMP-021, INT-007). Signature verification required before financial effect. Exactly-once financial side effect. Links to application/workflow via ports — no duplicate money movement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "callback_id",
+    "payment_intent_id",
+    "application_id",
+    "verification_result",
+    "signature_verified",
+    "financial_effect_applied",
+    "duplicate_financial_effect_forbidden",
+    "exactly_once_key",
+    "idempotency_key"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-PAYMENT-CALLBACK"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "callback_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "payment_intent_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "workflow_signal_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Port reference for post-commit workflow signal (INT-007). Temporal advance only after domain commit."
+    },
+    "verification_result": {
+      "type": "string",
+      "enum": ["VERIFIED", "REJECTED"]
+    },
+    "signature_verified": {
+      "type": "boolean"
+    },
+    "financial_effect_applied": {
+      "type": "boolean"
+    },
+    "duplicate_financial_effect_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "exactly_once_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verification_result": {
+            "const": "VERIFIED"
+          },
+          "financial_effect_applied": {
+            "const": true
+          }
+        },
+        "required": ["verification_result", "financial_effect_applied"]
+      },
+      "then": {
+        "properties": {
+          "signature_verified": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verification_result": {
+            "const": "REJECTED"
+          }
+        },
+        "required": ["verification_result"]
+      },
+      "then": {
+        "properties": {
+          "financial_effect_applied": {
+            "const": false
+          }
+        }
+      }
+    }
+  ]
+}

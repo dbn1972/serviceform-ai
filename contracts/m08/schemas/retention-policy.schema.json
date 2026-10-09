@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m08/retention-policy/v1",
+  "title": "RetentionPolicy",
+  "description": "FROZEN. SF-CON-RETENTION-POLICY. POLICY-NEUTRAL retention policy binding shape (CMP-049). Machinery for archive/delete eligibility transitions only. statutory_retention_policy_input_required remains true until an owner supplies approved period refs. This contract MUST NOT invent statutory retention periods, DPDP erasure timelines, or jurisdiction-specific schedules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "policy_id",
+    "scope",
+    "policy_neutral_shape",
+    "statutory_retention_policy_input_required",
+    "eligibility_transitions",
+    "invented_statutory_period_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-RETENTION-POLICY"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "policy_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resource_type"],
+      "properties": {
+        "resource_type": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/resourceType"
+        },
+        "service_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "jurisdiction_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "policy_neutral_shape": {
+      "type": "boolean",
+      "const": true
+    },
+    "statutory_retention_policy_input_required": {
+      "type": "boolean",
+      "const": true,
+      "description": "Remains true until owner supplies approved retention period refs. Builders must not invent periods."
+    },
+    "owner_supplied_period_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128,
+      "description": "Null until owner input. When present, opaque ref to approved policy input — not an invented day count in this schema."
+    },
+    "eligibility_transitions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from_eligibility", "to_eligibility"],
+        "properties": {
+          "from_eligibility": {
+            "type": "string",
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          },
+          "to_eligibility": {
+            "type": "string",
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          }
+        }
+      }
+    },
+    "invented_statutory_period_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  }
+}

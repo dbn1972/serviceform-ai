@@ -1,0 +1,45 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "freeze_status": "PENDING_MERGE",
+  "in_contracts_lock": true,
+  "module": "M08",
+  "task": "SF-M08-CG-001",
+  "note": "SF-M08-CG-001 freeze preparation (combined CG-02). Candidate until origin/main merge. Repository freeze not effective. Wave A OFF. Builders OFF. CMP-049 policy-neutral; STATUTORY_RETENTION_POLICY_INPUT_REQUIRED=true.",
+  "contracts": [
+    {
+      "id": "SF-CON-SEARCH-DOCUMENT",
+      "path": "contracts/m08/schemas/search-document.schema.json",
+      "owner": "CMP-035",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-DISCOVERY-QUERY",
+      "path": "contracts/m08/schemas/discovery-query.schema.json",
+      "owner": "CMP-006",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-RECOMMENDATION",
+      "path": "contracts/m08/schemas/recommendation.schema.json",
+      "owner": "CMP-007",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-ANALYTICS-METRIC",
+      "path": "contracts/m08/schemas/analytics-metric.schema.json",
+      "owner": "CMP-045",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-RETENTION-POLICY",
+      "path": "contracts/m08/schemas/retention-policy.schema.json",
+      "owner": "CMP-049",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    }
+  ]
+}

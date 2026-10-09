@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m06/fee-quote/v1",
+  "title": "FeeQuote",
+  "description": "FROZEN. SF-CON-FEE-QUOTE. Deterministic fee quote / breakdown (CMP-020). Amounts come from published fee-policy / rules metadata pins only. Client-supplied amounts are not authoritative. Waiver/exemption flags are metadata refs only — no invented statutory fee schedule.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "quote_id",
+    "application_id",
+    "currency",
+    "line_items",
+    "total_amount_minor",
+    "amount_source",
+    "client_authoritative_amount",
+    "fee_policy_version_id",
+    "rule_version_id",
+    "tenant_service_binding_id",
+    "idempotency_key"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-FEE-QUOTE"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "quote_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "line_items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/lineItem"
+      }
+    },
+    "total_amount_minor": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "amount_source": {
+      "type": "string",
+      "enum": ["RULES_ENGINE", "FEE_POLICY_METADATA"],
+      "description": "Deterministic platform calculation source. CLIENT is forbidden."
+    },
+    "client_authoritative_amount": {
+      "type": "boolean",
+      "const": false,
+      "description": "Must be false. Client cannot authoritatively set fee amounts."
+    },
+    "fee_policy_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "rule_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "tenant_service_binding_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "waiver_policy_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Optional metadata ref to a published waiver/exemption policy. Not a statutory invention."
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  },
+  "$defs": {
+    "lineItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "amount_minor", "calculation_basis"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9_.-]+$"
+        },
+        "amount_minor": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calculation_basis": {
+          "type": "string",
+          "enum": ["FEE_POLICY_LINE", "RULES_ENGINE_LINE"],
+          "description": "Line amount basis must be policy/rules — never CLIENT_SUPPLIED."
+        },
+        "description_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    }
+  }
+}

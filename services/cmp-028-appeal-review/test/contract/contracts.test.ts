@@ -33,12 +33,18 @@ const LOCKED = [
   'SF-CON-VERSION-PINNING',
 ] as const;
 
-describe('19 frozen contracts remain FROZEN (read-only consumption)', () => {
-  it('lock lists exactly the 19 ids this envelope consumes', () => {
+describe('LOCKED 19 remain FROZEN; append-only global 29 (read-only consumption)', () => {
+  it('lock keeps original LOCKED 19 and appends CG-02 rows to 29 FROZEN', () => {
     const text = readFileSync(join(repoRoot, 'orchestrator/contracts-lock.yaml'), 'utf8');
     const ids = [...text.matchAll(/^\s+- id: (SF-CON-[A-Z0-9-]+)/gm)].map((m) => m[1]);
-    expect(ids).toEqual([...LOCKED]);
-    expect(text.match(/status: FROZEN/g)?.length).toBe(19);
+    expect(ids).toHaveLength(29);
+    expect(ids.slice(0, LOCKED.length)).toEqual([...LOCKED]);
+    for (const id of LOCKED) {
+      expect(ids).toContain(id);
+    }
+    expect(text.match(/status: FROZEN/g)?.length).toBe(29);
+    expect(text).toContain('19_FROZEN_HASHES_MATCH');
+    expect(text).toContain('29_FROZEN_CANDIDATE_HASHES_MATCH');
   });
 
   it('emitted domain events are valid SF-CON-EVENT-ENVELOPE instances', async () => {
