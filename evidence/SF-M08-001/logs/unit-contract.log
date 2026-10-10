@@ -1,52 +1,53 @@
 
  RUN  v5.0.3 /workspace/services/cmp-035-search-indexing
 
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > indexes declared facets only and retains source identity and version 8ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > writes a domain event and an audit event to the outbox in the same transaction 2ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > is idempotent on re-delivery of the same event 2ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > advances on newer source versions and ignores stale ones 3ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > tombstones on remove events and a late older upsert cannot resurrect it 2ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > indexes declared facets only and retains source identity and version 5ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > writes a domain event and an audit event to the outbox in the same transaction 1ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > is idempotent on re-delivery of the same event 1ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > advances on newer source versions and ignores stale ones 2ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > tombstones on remove events and a late older upsert cannot resurrect it 3ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > records a tombstone when the remove arrives before any upsert 1ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer projection > keeps the same source record in two tenants as two isolated documents 1ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > skips platform (tenant_id null) events without opening a transaction 0ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > skips events with no published projection rule (default port) 1ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > skips event types the rule does not project 1ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > skips event types the rule does not project 0ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > rejects INVALID_TOPIC 1ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > rejects INVALID_ENVELOPE 0ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > rejects malformed or mismatched rules from the metadata port 1ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > rejects events missing a required facet without writing anything 1ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > rejects events missing a required facet without writing anything 0ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > fails closed on a lost optimistic update 1ms
  ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > refuses SIMULATED rules outside simulation environments and invalid indexer identity 1ms
- ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > resolves rules through the port before the domain transaction opens 1ms
- ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > returns only the caller tenant hits: CROSS_TENANT_LEAKAGE = 0 12ms
+ ✓ test/unit/indexer.test.ts > SearchIndexConsumer skips and failures > resolves rules through the port before the domain transaction opens 0ms
+ ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > returns only the caller tenant hits: CROSS_TENANT_LEAKAGE = 0 9ms
  ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > blocks results if the isolation layer ever returns another tenant row 4ms
  ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > the tenant cannot be supplied in the query body 4ms
- ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > getDocument hides other tenants and removed documents 4ms
- ✓ test/unit/service.test.ts > SearchQueryService queries > filters by facets and source component and excludes removed documents 4ms
+ ✓ test/unit/service.test.ts > SearchQueryService tenant isolation (INT-011) > getDocument hides other tenants and removed documents 3ms
+ ✓ test/unit/service.test.ts > SearchQueryService queries > filters by facets and source component and excludes removed documents 3ms
  ✓ test/unit/service.test.ts > SearchQueryService queries > pages with a keyset cursor 3ms
- ✓ test/unit/service.test.ts > SearchQueryService queries > hits carry source identity, source version and projection pin 4ms
+ ✓ test/unit/service.test.ts > SearchQueryService queries > hits carry source identity, source version and projection pin 6ms
  ✓ test/unit/service.test.ts > SearchQueryService authorization and context > asks the PDP with subject tenant = resource tenant 2ms
- ✓ test/unit/service.test.ts > SearchQueryService authorization and context > denies, fails closed on PDP outage and on malformed decisions 4ms
- ✓ test/unit/service.test.ts > SearchQueryService authorization and context > default-deny authorization port 1ms
- ✓ test/unit/service.test.ts > SearchQueryService authorization and context > requires a verified tenant context 4ms
+ ✓ test/unit/service.test.ts > SearchQueryService authorization and context > denies, fails closed on PDP outage and on malformed decisions 6ms
+ ✓ test/unit/service.test.ts > SearchQueryService authorization and context > default-deny authorization port 0ms
+ ✓ test/unit/service.test.ts > SearchQueryService authorization and context > requires a verified tenant context 2ms
  ✓ test/unit/service.test.ts > SearchQueryService authorization and context > refuses a SIMULATED authorizer in PRODUCTION 3ms
  ✓ test/unit/service.test.ts > SearchQueryService authorization and context > loadConfig validates SF_ENVIRONMENT 0ms
- ✓ test/contract/frozen-contracts.test.ts > SF-CON-SEARCH-DOCUMENT (FROZEN) conformance > the frozen schema file is byte-identical to the contracts-lock hash 4ms
- ✓ test/contract/frozen-contracts.test.ts > SF-CON-SEARCH-DOCUMENT (FROZEN) conformance > local guard agrees with the frozen schema on the frozen examples 43ms
+ ✓ test/contract/frozen-contracts.test.ts > SF-CON-SEARCH-DOCUMENT (FROZEN) conformance > the frozen schema file is byte-identical to the contracts-lock hash 1ms
+ ✓ test/contract/frozen-contracts.test.ts > SF-CON-SEARCH-DOCUMENT (FROZEN) conformance > local guard agrees with the frozen schema on the frozen examples 45ms
  ✓ test/contract/frozen-contracts.test.ts > SF-CON-SEARCH-DOCUMENT (FROZEN) conformance > documents in emitted events and query hits validate against the frozen schema 5ms
  ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > error catalogue subset equals the FROZEN error-catalogue.json rows 1ms
- ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > emitted envelopes, audit events, request context, errors and authz input validate 41ms
- ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > isolation declarations validate against SF-CON-ISOLATION-DECLARATION 3ms
+ ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > emitted envelopes, audit events, request context, errors and authz input validate 31ms
+ ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > isolation declarations validate against SF-CON-ISOLATION-DECLARATION 2ms
  ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > outbox migration is the frozen template with schema/cmp replacements only 0ms
  ✓ test/contract/frozen-contracts.test.ts > frozen shared contracts consumed by CMP-035 > schema migration: NOLOGIN role, ENABLE+FORCE RLS, tenant accessor, no named-service SQL 0ms
- ✓ test/unit/domain.test.ts > document identity > is a deterministic RFC 9562 v5 UUID per (tenant, source component, source record) 2ms
- ✓ test/unit/domain.test.ts > SF-CON-SEARCH-DOCUMENT shape > builds a tenant-scoped document with the frozen constants 1ms
+ ✓ test/unit/domain.test.ts > document identity > is a deterministic RFC 9562 v8 (SHA-256) UUID per (tenant, source component, source record) 3ms
+ ✓ test/unit/domain.test.ts > timestamps > accepts RFC 3339 date-times with an offset and rejects the rest in linear time 1ms
+ ✓ test/unit/domain.test.ts > SF-CON-SEARCH-DOCUMENT shape > builds a tenant-scoped document with the frozen constants 0ms
  ✓ test/unit/domain.test.ts > SF-CON-SEARCH-DOCUMENT shape > rejects cross-tenant flags, extra fields, bad ids and bad facets 0ms
  ✓ test/unit/domain.test.ts > SF-CON-SEARCH-DOCUMENT shape > facet values are bounded scalars 0ms
- ✓ test/unit/domain.test.ts > projection rules (metadata) > accepts a published rule and rejects malformed ones 3ms
+ ✓ test/unit/domain.test.ts > projection rules (metadata) > accepts a published rule and rejects malformed ones 1ms
  ✓ test/unit/domain.test.ts > projection rules (metadata) > paths are bounded dotted identifiers 0ms
  ✓ test/unit/domain.test.ts > projection rules (metadata) > classifies event types 0ms
- ✓ test/unit/domain.test.ts > projection rules (metadata) > copies only declared scalar facets 0ms
+ ✓ test/unit/domain.test.ts > projection rules (metadata) > copies only declared scalar facets 1ms
  ✓ test/unit/domain.test.ts > projection rules (metadata) > rejects missing required and non-scalar facet values 1ms
  ✓ test/unit/domain.test.ts > projection rules (metadata) > does not read inherited properties 0ms
  ✓ test/unit/domain.test.ts > search query parsing > applies defaults 0ms
@@ -55,25 +56,13 @@
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"tenant_id":"22222222-2222-4222-8222-222222222222"} with UNKNOWN_FIELD 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"source_cmp_id":"x"} with INVALID_SOURCE_CMP_ID 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"facets":[]} with FACETS_NOT_OBJECT 0ms
- ✓ test/unit/domain.test.ts > search query parsing > rejects {"facets":{"f_0":1,"f_1":1,"f_2":1,"f_3":1,"f_4":1,"f_5":1,"f_6":1,"f_7":1,"f_8":1}} with TOO_MANY_FACETS 0ms
+ ✓ test/unit/domain.test.ts > search query parsing > rejects {"facets":{"f_0":1,"f_1":1,"f_2":1,"f_3":1,"f_4":1,"f_5":1,"f_6":1,"f_7":1,"f_8":1}} with TOO_MANY_FACETS 2ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"facets":{"Bad":"x"}} with INVALID_FACET_NAME 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"facets":{"ok":{}}} with INVALID_FACET_VALUE 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"limit":0} with INVALID_LIMIT 0ms
- ✓ test/unit/domain.test.ts > search query parsing > rejects {"limit":101} with INVALID_LIMIT 1ms
+ ✓ test/unit/domain.test.ts > search query parsing > rejects {"limit":101} with INVALID_LIMIT 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"limit":1.5} with INVALID_LIMIT 0ms
  ✓ test/unit/domain.test.ts > search query parsing > rejects {"after":"x"} with INVALID_CURSOR 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > serves queries with no-store caching and echoes the context correlation id on errors 4ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"x-tenant-id":"11111111-1111-4111-8111-111111111111"} with SF-TEN-002 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"X-SF-Tenant":"11111111-1111-4111-8111-111111111111"} with SF-TEN-002 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"x-roles":"ADMIN"} with SF-TEN-002 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"forwarded":"for=1.2.3.4;tenant=abc"} with SF-TEN-002 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"forwarded":["proto=https","tenant=abc"]} with SF-TEN-002 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > allows an ordinary forwarded header 0ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > maps a missing context to SF-AUTH-001 and unknown errors to a detail-free 500 1ms
- ✓ test/unit/http.test.ts > CMP-035 HTTP surface > registers routes on a host registrar 1ms
- ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > source has no service== / department== / scheme== / tenant literal branches 3ms
- ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > source names no specific source component, topic or event type 1ms
- ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > does not import sibling component code or SQL 1ms
  ✓ test/unit/pg-store.test.ts > PgSearchStore transaction and session context > sets SF-CON-DB-SESSION-CONTEXT keys transaction-locally and commits 2ms
  ✓ test/unit/pg-store.test.ts > PgSearchStore transaction and session context > rolls back, maps PG errors and releases on failure 1ms
  ✓ test/unit/pg-store.test.ts > PgSearchStore transaction and session context > tolerates a failing ROLLBACK 0ms
@@ -90,10 +79,22 @@
  ✓ test/unit/pg-store.test.ts > error mapping and transaction scope > maps null to SF-SYS-001 0ms
  ✓ test/unit/pg-store.test.ts > error mapping and transaction scope > passes Cmp035Error through 0ms
  ✓ test/unit/pg-store.test.ts > error mapping and transaction scope > refuses outbound port calls inside the domain transaction 1ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > serves queries with no-store caching and echoes the context correlation id on errors 4ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"x-tenant-id":"11111111-1111-4111-8111-111111111111"} with SF-TEN-002 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"X-SF-Tenant":"11111111-1111-4111-8111-111111111111"} with SF-TEN-002 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"x-roles":"ADMIN"} with SF-TEN-002 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"forwarded":"for=1.2.3.4;tenant=abc"} with SF-TEN-002 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > rejects tenant-identifying headers {"forwarded":["proto=https","tenant=abc"]} with SF-TEN-002 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > allows an ordinary forwarded header 0ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > maps a missing context to SF-AUTH-001 and unknown errors to a detail-free 500 1ms
+ ✓ test/unit/http.test.ts > CMP-035 HTTP surface > registers routes on a host registrar 1ms
+ ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > source has no service== / department== / scheme== / tenant literal branches 3ms
+ ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > source names no specific source component, topic or event type 1ms
+ ✓ test/unit/no-named-branching.test.ts > generic projection: no named service / tenant / source branching > does not import sibling component code or SQL 1ms
 
  Test Files  7 passed (7)
-      Tests  89 passed (89)
-   Start at  02:06:46
-   Duration  466ms (transform 45%, tests 30%, import 23%, worker 3%)
+      Tests  90 passed (90)
+   Start at  02:37:25
+   Duration  450ms (transform 51%, tests 28%, import 19%, worker 3%)
 
 JUNIT report written to /workspace/evidence/SF-M08-001/junit/unit-contract.xml

@@ -9,7 +9,7 @@ without separate authorization. STITCH-A / host (SF-M08-007) / INT / SEC / EVD n
 | Authorization | `HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION` |
 | Dispatch base | `8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b` (exact `origin/main`; guard in `pre-dispatch-guard.json`) |
 | Branch | `agent/M08-search-SF-M08-001` |
-| Implementation commit | `7c50057d` (`logs/impl-sha.txt` has the full SHA) |
+| Implementation commits | `7c50057d` (service + migrations) · `7ca8a30c` (SAST remediation). Logs are bound to `7ca8a30c` (`logs/impl-sha.txt`) |
 | Frozen contracts | 29/29 MATCH; none altered; `CCR_REQUIRED=false` |
 | `pnpm-lock.yaml` | not committed; `EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL` (`logs/lockfile-residual.log`) |
 | Task envelope | `orchestrator/tasks/SF-M08-001.yaml` unmodified |
@@ -46,17 +46,32 @@ without separate authorization. STITCH-A / host (SF-M08-007) / INT / SEC / EVD n
 ```bash
 pnpm install --frozen-lockfile          # lockfile restored afterwards; not committed
 pnpm format:check && pnpm lint && pnpm typecheck
-pnpm test:coverage                      # 1521/1521; repo thresholds met
-(cd services/cmp-035-search-indexing && pnpm exec vitest run --config vitest.unit.config.ts)  # 89/89 unit + contract
+pnpm test:coverage                      # 1522/1522; repo thresholds met
+(cd services/cmp-035-search-indexing && pnpm exec vitest run --config vitest.unit.config.ts)  # 90/90 unit + contract
 (cd services/cmp-035-search-indexing && DATABASE_URL=… pnpm exec vitest run --config vitest.integration.config.ts)  # 15/15, PostgreSQL 16.15
 DATABASE_URL=… pnpm db:test             # 17/17 full migration chain up/down + RLS harness
 pnpm contracts:validate && pnpm test:cdc && pnpm deps:graph && pnpm build
 python3 -m pytest scripts/gates/tests -q   # 30/30
 python3 scripts/gates/run_all.py           # 10/10 PASS
 python3 scripts/gates/check_scope.py --envelope orchestrator/tasks/SF-M08-001.yaml --base origin/main  # PASS
+semgrep --test tests/semgrep/ --metrics=off && semgrep scan --metrics=off --error --config p/default \
+  --config p/typescript --config p/nodejsscan --config p/secrets --config .semgrep/ --exclude tests/semgrep  # 0 findings (semgrep 1.179.0, CI config)
 ```
 
 Logs: `logs/`. JUnit: `junit/`. Summary: `gates-summary.json`.
+
+## SAST remediation (security workflow on first candidate head `b4d66d19`)
+
+The first candidate head failed the `security` workflow. Semgrep raised 4 blocking findings, and the
+CodeQL PR check raised 2 new high alerts. Every one was in this lane's code. They were fixed in
+`7ca8a30c` without any suppression:
+
+| Finding | Fix |
+|---|---|
+| Semgrep `node_sha1` + CodeQL weak crypto (`document.ts`) | `document_id` is now an RFC 9562 v8 name-based UUID over SHA-256 |
+| Semgrep `prototype-pollution-loop` (`projection.ts`) | Read-only own-property descriptor `reduce`; no indexed assignment loop |
+| CodeQL polynomial ReDoS (`validate.ts` `isIsoTimestamp`, inherited validator) | Length-bounded, anchored pieces; regression test with hostile input |
+| Semgrep `regex_dos` ×2 (`pg-store.test.ts` double) | Predicate/`startsWith` matching |
 
 ## Residuals (not blockers for this builder candidate)
 
@@ -68,6 +83,8 @@ Logs: `logs/`. JUnit: `junit/`. Summary: `gates-summary.json`.
   SF-M08-007 / STITCH scope. No OpenSearch adapter in this slice (connector binding + INT-013 later).
 - Facet PII classification relies on published projection metadata declaring only non-PII facets;
   CMP-035 enforces declared-only, bounded scalars. Semantic-registry classification is later scope.
+- OPA policy data for `SEARCH_DOCUMENT_QUERY` / `SEARCH_DOCUMENT_READ` is not in `policy/**`
+  (read-only for this lane). Until it is added, the PDP denies and queries fail closed.
 - Rerunning `evidence/CG-02-WAVE-A-ACTIVATION/pairwise_write_path_uniqueness.py` on the dispatch base
   reports a stale seven-lane assertion against the guardian-corrected module-local lists (see
   `pre-dispatch-guard.json`); overlaps 0, forbidden writers 0. Not modified (outside write scope).

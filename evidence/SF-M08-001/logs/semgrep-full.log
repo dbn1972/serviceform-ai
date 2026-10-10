@@ -1,0 +1,42 @@
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 3318 files tracked by git with 1196 Code rules:
+                                                                                
+  Language      Rules   Files          Origin      Rules                        
+ ─────────────────────────────        ───────────────────                       
+  <multilang>      51    3318          Community    1192                        
+  ts              282    1352          Custom          4                        
+  json              4     633                                                   
+  yaml             40     193                                                   
+  python          243      29                                                   
+  js              268       8                                                   
+  bash              4       6                                                   
+  terraform       101       3                                                   
+                                                                                
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 721
+ • Targets scanned: 3318
+ • Parsed lines: ~99.9%
+ • Scan skipped: 
+   ◦ Matching --exclude patterns: 2
+   ◦ Files matching .semgrepignore patterns: 112
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 721 rules on 3318 files: 0 findings.
+(need more rules? `semgrep login` for additional free Semgrep Registry rules)
+
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/

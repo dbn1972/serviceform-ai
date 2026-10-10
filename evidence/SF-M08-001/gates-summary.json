@@ -2,7 +2,7 @@
   "schema": "serviceform.builder.gates-summary.v1",
   "task_id": "SF-M08-001",
   "component": "CMP-035",
-  "implementation_commit": "7c50057d",
+  "implementation_commit": "7ca8a30c",
   "dispatch_base": "8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b",
   "environment": "local builder VM; PostgreSQL 16.15; Node 22.23.3; pnpm 10.28.0",
   "results": {
@@ -10,19 +10,45 @@
     "format_check": "PASS",
     "lint": "PASS",
     "typecheck": "PASS",
-    "repo_unit_coverage": { "result": "PASS", "tests": "1521/1521", "statements": 84.21, "branches": 74.92, "functions": 87.43, "lines": 88.02 },
-    "cmp035_unit_contract": { "result": "PASS", "tests": "89/89" },
-    "cmp035_component_coverage": { "statements": 93.6, "branches": 89.17, "functions": 95.45, "lines": 97.5 },
-    "cmp035_integration_postgres": { "result": "PASS", "tests": "15/15" },
-    "db_test_full_chain": { "result": "PASS", "tests": "17/17" },
+    "repo_unit_coverage": {
+      "result": "PASS",
+      "tests": "1522/1522",
+      "statements": 84.2,
+      "branches": 74.92,
+      "functions": 87.43,
+      "lines": 88.03
+    },
+    "cmp035_unit_contract": {
+      "result": "PASS",
+      "tests": "90/90"
+    },
+    "cmp035_component_coverage": {
+      "statements": 93.13,
+      "branches": 88.77,
+      "functions": 95.49,
+      "lines": 97.54
+    },
+    "cmp035_integration_postgres": {
+      "result": "PASS",
+      "tests": "15/15"
+    },
+    "db_test_full_chain": {
+      "result": "PASS",
+      "tests": "17/17"
+    },
     "contracts_validate": "PASS",
-    "cdc": { "result": "PASS", "tests": "19/19" },
+    "cdc": {
+      "result": "PASS",
+      "tests": "19/19"
+    },
     "deps_graph": "PASS",
     "build": "PASS",
     "architecture_gates": "10/10 PASS",
     "gate_self_tests": "30/30 PASS",
     "scope": "PASS (45 files)",
-    "contracts_lock": "29/29 FROZEN MATCH"
+    "contracts_lock": "29/29 FROZEN MATCH",
+    "semgrep_full_repo_ci_config": "PASS (0 findings; semgrep 1.179.0)",
+    "semgrep_rule_tests": "PASS"
   },
   "CROSS_TENANT_LEAKAGE": 0,
   "cross_tenant_measurement": "2 tenants x 5 documents incl. one shared source record id; paged queries per tenant returned 10 hits, 0 foreign",
@@ -33,5 +59,10 @@
   "self_certified": false,
   "certified": false,
   "g3": false,
-  "g6": false
+  "g6": false,
+  "implementation_commits": [
+    "7c50057d",
+    "7ca8a30c"
+  ],
+  "sast_remediation": "b4d66d19 security workflow failed (semgrep 4 blocking, CodeQL 2 high, all in this lane); fixed in 7ca8a30c without suppression"
 }
