@@ -1,5 +1,6 @@
 # SF-M06-001 handover — CMP-020 Fee & Calculation Service (CG-02 Wave A)
-# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. DISPATCHED. Implementation in progress.
+# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. DISPATCHED. Builder candidate complete;
+# the commit carrying this text is the frozen immutable candidate head (DRAFT PR, unmerged).
 # Not MERGED. Not CERTIFIED. Not RELEASE CERTIFIED. Not G3. Not G6.
 # Task envelope orchestrator/tasks/SF-M06-001.yaml is not modified by this builder.
 # SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
@@ -62,8 +63,10 @@ planning_only: false
 implementation_authorized: true
 implementation_started: true
 dispatched: true
-orchestration_task_state: DISPATCHED
-state: dispatched
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
+builder_token: SF-M06-001_BUILDER_CANDIDATE_READY
+merged: false
 self_certified: false
 not_certified: true
 certified: false
@@ -130,6 +133,25 @@ stop_conditions:
 - start Wave B / STITCH / host / INT / SEC / EVD / M07+
 - weaken cg01_path_uniqueness_gate.py
 - own apps/api, pnpm-lock.yaml, or contracts-lock as Wave A builder
+builder_output:
+  implementation_commit: b6691e62f6db66c89a1df5d373071cc3c85b66d1
+  evidence: evidence/SF-M06-001/EVIDENCE.md
+  schema: sf_fee
+  privilege_role: sf_cmp020_rw
+  migrations:
+    - db/migrations/1759620200000_cmp-020-fee-calculation.sql
+    - db/migrations/1759620200001_cmp-020-outbox.sql
+  produces: [SF-CON-FEE-QUOTE]
+  ports_unbound_fail_closed: [ApplicationPinsPort, FeePolicyPort, FeeRulesPort]
+  local_results:
+    unit_contract: 176/176 PASS
+    postgres_integration: 13/13 PASS
+    gates_run_all: PASS
+    check_scope: PASS
+    db_test: 17/17 PASS
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+  invented_fee_or_waiver_policy: false
+  host_mount: deferred to SF-M06-005
 acceptance_tests_planning:
 - Fee quote produced from published service/version pins
 - No hard-coded tenant/jurisdiction/service fee tables in domain logic
