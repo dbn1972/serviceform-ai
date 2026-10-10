@@ -20,7 +20,7 @@ describe('linear charset checks match their documented patterns', () => {
     ['A B', false],
     ['É', false],
     ['A/B', false],
-  ])('isLineCode(%j) = %s  /^[A-Z0-9_.-]{1,64}$/', (v, expected) => {
+  ])('isLineCode case %#  /^[A-Z0-9_.-]{1,64}$/', (v, expected) => {
     expect(isLineCode(v)).toBe(expected);
   });
 
@@ -35,7 +35,7 @@ describe('linear charset checks match their documented patterns', () => {
     ['_a', false],
     ['a-b', false],
     ['a b', false],
-  ])('isRuleOutputKey(%j) = %s  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/', (v, expected) => {
+  ])('isRuleOutputKey case %#  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/', (v, expected) => {
     expect(isRuleOutputKey(v)).toBe(expected);
   });
 
@@ -47,7 +47,7 @@ describe('linear charset checks match their documented patterns', () => {
     ['abc', false],
     ['A1C', false],
     ['', false],
-  ])('isCurrencyCode(%j) = %s  /^[A-Z]{3}$/', (v, expected) => {
+  ])('isCurrencyCode case %#  /^[A-Z]{3}$/', (v, expected) => {
     expect(isCurrencyCode(v)).toBe(expected);
   });
 
@@ -59,7 +59,7 @@ describe('linear charset checks match their documented patterns', () => {
     [`md5:${HEX64}`, false],
     [`sha256:${'g'.repeat(64)}`, false],
     ['', false],
-  ])('isSha256Prefixed(%j) = %s  /^sha256:[0-9a-f]{64}$/', (v, expected) => {
+  ])('isSha256Prefixed case %#  /^sha256:[0-9a-f]{64}$/', (v, expected) => {
     expect(isSha256Prefixed(v)).toBe(expected);
   });
 });
