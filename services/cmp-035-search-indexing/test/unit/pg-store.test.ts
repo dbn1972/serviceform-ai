@@ -21,15 +21,16 @@ class FakeClient implements SqlClient {
   calls: Call[] = [];
   released = 0;
   responses: Partial<SqlQueryResult>[] = [];
-  failOn: RegExp | null = null;
+  failOn: ((text: string) => boolean) | null = null;
   failWith: unknown = null;
 
   async query(text: string, values?: unknown[]): Promise<SqlQueryResult> {
     this.calls.push({ text, values });
-    if (this.failOn?.test(text)) throw this.failWith;
-    const next = /^(BEGIN|COMMIT|ROLLBACK|SELECT set_config)/.test(text)
-      ? {}
-      : (this.responses.shift() ?? {});
+    if (this.failOn?.(text)) throw this.failWith;
+    const control = ['BEGIN', 'COMMIT', 'ROLLBACK', 'SELECT set_config'].some((p) =>
+      text.startsWith(p),
+    );
+    const next = control ? {} : (this.responses.shift() ?? {});
     return { rows: next.rows ?? [], rowCount: next.rowCount ?? 0 };
   }
 
@@ -93,7 +94,7 @@ describe('PgSearchStore transaction and session context', () => {
 
   it('rolls back, maps PG errors and releases on failure', async () => {
     const client = new FakeClient();
-    client.failOn = /INSERT INTO sf_search\.inbox_event/;
+    client.failOn = (text) => text.startsWith('INSERT INTO sf_search.inbox_event');
     client.failWith = Object.assign(new Error('rls'), { code: '42501' });
     await expect(
       store(client).withTx(SESSION, (tx) => tx.recordInbox('cmp-035.indexer', ROW.source_event_id)),
@@ -104,7 +105,7 @@ describe('PgSearchStore transaction and session context', () => {
 
   it('tolerates a failing ROLLBACK', async () => {
     const client = new FakeClient();
-    client.failOn = /^(SELECT 1|ROLLBACK)$/;
+    client.failOn = (text) => text === 'ROLLBACK';
     client.failWith = new Error('gone');
     await expect(
       store(client).withTx(SESSION, async (tx) => {

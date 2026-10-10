@@ -109,13 +109,15 @@ export function classifyEvent(rule: ProjectionRule, eventType: string): Projecti
   return null;
 }
 
+/** Read-only, own-property traversal; never assigns into the event payload. */
 function readPath(data: Record<string, unknown>, path: string): unknown {
-  let cursor: unknown = data;
-  for (const segment of path.split('.')) {
-    if (!isPlainObject(cursor) || !Object.hasOwn(cursor, segment)) return undefined;
-    cursor = cursor[segment];
-  }
-  return cursor;
+  return path
+    .split('.')
+    .reduce<unknown>(
+      (node, segment) =>
+        isPlainObject(node) ? Object.getOwnPropertyDescriptor(node, segment)?.value : undefined,
+      data,
+    );
 }
 
 /** Copies only declared scalar facets; anything else in the event payload is discarded. */

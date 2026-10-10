@@ -52,12 +52,20 @@ export function isCode(value: unknown): value is string {
   return typeof value === 'string' && CODE_RE.test(value);
 }
 
+const DATE_TIME_RE = /^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}$/;
+const FRACTION_RE = /^\.\d{1,9}$/;
+const OFFSET_RE = /^(?:[Zz]|[+-]\d{2}:\d{2})$/;
+
+/** RFC 3339 date-time with an explicit offset, checked in bounded pieces (no backtracking). */
 export function isIsoTimestamp(value: unknown): value is string {
-  return (
-    typeof value === 'string' &&
-    !Number.isNaN(Date.parse(value)) &&
-    /T.*(Z|[+-]\d{2}:\d{2})$/.test(value)
-  );
+  if (typeof value !== 'string' || value.length < 20 || value.length > 40) return false;
+  if (!DATE_TIME_RE.test(value.slice(0, 19))) return false;
+  const rest = value.slice(19);
+  const offsetAt = rest.search(/[Zz+-]/);
+  if (offsetAt < 0) return false;
+  const fraction = rest.slice(0, offsetAt);
+  if (fraction !== '' && !FRACTION_RE.test(fraction)) return false;
+  return OFFSET_RE.test(rest.slice(offsetAt)) && !Number.isNaN(Date.parse(value));
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {

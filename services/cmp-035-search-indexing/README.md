@@ -27,7 +27,7 @@ for each SF-CON-EVENT-ENVELOPE. Nothing in CMP-035 reads another component's tab
   `STALE` and changes nothing (also enforced by trigger). Remove events tombstone the row
   (`status = REMOVED`, empty facets) so a late older upsert cannot resurrect it.
 - Re-delivery is idempotent through `sf_search.inbox_event` (consumer group `cmp-035.indexer`) and
-  a deterministic v5 `document_id` per (tenant, source component, source record).
+  a deterministic RFC 9562 v8 (SHA-256 name-based) `document_id` per (tenant, source component, source record).
 - Each projection write emits `SearchDocumentIndexed` / `SearchDocumentRemoved` and an audit event
   through the SF-CON-OUTBOX outbox (relayed by CMP-038) in the same transaction.
 - Platform events (`tenant_id = null`) are never indexed.

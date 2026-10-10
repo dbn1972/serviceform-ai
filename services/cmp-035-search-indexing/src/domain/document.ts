@@ -94,20 +94,21 @@ function uuidBytes(uuid: string): Buffer {
 }
 
 /**
- * RFC 9562 name-based (v5) id. One document per (tenant, source component, source record), so
- * re-delivery and re-projection converge on the same document_id.
+ * RFC 9562 v8 name-based id (SHA-256 over namespace + name; RFC 9562 appendix B.2). One document
+ * per (tenant, source component, source record), so re-delivery and re-projection converge on the
+ * same document_id.
  */
 export function deriveDocumentId(
   tenantId: string,
   sourceCmpId: string,
   sourceRecordId: string,
 ): string {
-  const hash = createHash('sha1')
+  const hash = createHash('sha256')
     .update(uuidBytes(DOCUMENT_NAMESPACE))
     .update(`${tenantId.toLowerCase()}|${sourceCmpId}|${sourceRecordId.toLowerCase()}`)
     .digest();
   const b = Buffer.from(hash.subarray(0, 16));
-  b[6] = ((b[6] ?? 0) & 0x0f) | 0x50;
+  b[6] = ((b[6] ?? 0) & 0x0f) | 0x80;
   b[8] = ((b[8] ?? 0) & 0x3f) | 0x80;
   const hex = b.toString('hex');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;

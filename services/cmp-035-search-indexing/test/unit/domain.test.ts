@@ -14,19 +14,34 @@ import {
   projectFacets,
 } from '../../src/domain/projection.js';
 import { parseSearchQuery } from '../../src/domain/query.js';
-import { UUID_RE } from '../../src/domain/validate.js';
+import { UUID_RE, isIsoTimestamp } from '../../src/domain/validate.js';
 import { RULE, T1, T2 } from '../doubles/fixtures.js';
 
 const REC = '33333333-3333-4333-8333-333333333333';
 
 describe('document identity', () => {
-  it('is a deterministic RFC 9562 v5 UUID per (tenant, source component, source record)', () => {
+  it('is a deterministic RFC 9562 v8 (SHA-256) UUID per (tenant, source component, source record)', () => {
     const a = deriveDocumentId(T1, 'CMP-015', REC);
     expect(a).toMatch(UUID_RE);
-    expect(a[14]).toBe('5');
+    expect(a[14]).toBe('8');
     expect(deriveDocumentId(T1, 'CMP-015', REC.toUpperCase())).toBe(a);
     expect(deriveDocumentId(T2, 'CMP-015', REC)).not.toBe(a);
     expect(deriveDocumentId(T1, 'CMP-027', REC)).not.toBe(a);
+  });
+});
+
+describe('timestamps', () => {
+  it('accepts RFC 3339 date-times with an offset and rejects the rest in linear time', () => {
+    expect(isIsoTimestamp('2026-10-10T01:59:00.000Z')).toBe(true);
+    expect(isIsoTimestamp('2026-10-10t01:59:00+05:30')).toBe(true);
+    expect(isIsoTimestamp('2026-10-10T01:59:00')).toBe(false);
+    expect(isIsoTimestamp('2026-13-45T99:99:99Z')).toBe(false);
+    expect(isIsoTimestamp(1)).toBe(false);
+    const hostile = `2026-10-10${'T'.repeat(50_000)}`;
+    const started = performance.now();
+    expect(isIsoTimestamp(hostile)).toBe(false);
+    expect(isIsoTimestamp(`2026-10-10T00:00:00.${'1'.repeat(50_000)}Z`)).toBe(false);
+    expect(performance.now() - started).toBeLessThan(50);
   });
 });
 
