@@ -1,0 +1,36 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-046 Operational Dashboard Events",
+    "version": "0.1.0",
+    "description": "Refresh notifications for derived read models. Aggregate counts only; no PII, no case or SLA state."
+  },
+  "channels": {
+    "sf.ops-dashboard.events.v1": {
+      "address": "sf.ops-dashboard.events.v1",
+      "messages": {
+        "OpsViewRefreshed": {
+          "$ref": "#/components/messages/OpsViewRefreshed"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "OpsViewRefreshed": {
+        "name": "OpsViewRefreshed",
+        "payload": {
+          "$ref": "./events/ops-view-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

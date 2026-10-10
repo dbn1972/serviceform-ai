@@ -1,0 +1,395 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-046 Operational Dashboard",
+    "version": "0.1.0",
+    "description": "Tenant-scoped, non-authoritative operational read models (SLA, queue, integration, event and platform health). Aggregates only. Sources are read through ports (CMP-029, CMP-017, CMP-037, CMP-038, CMP-047). No route approves, rejects, assigns or mutates a case, task or SLA clock. Every route is a PEP call on OPA. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/ops/views": {
+      "get": {
+        "operationId": "listOpsViews",
+        "description": "Views the PDP allows for the caller; overall_status is the worst status among them.",
+        "responses": {
+          "200": {
+            "description": "Views",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["overall_status", "views"],
+                  "properties": {
+                    "overall_status": {
+                      "enum": ["OK", "DEGRADED", "UNAVAILABLE"]
+                    },
+                    "views": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "view_code",
+                          "source_component",
+                          "status",
+                          "stale",
+                          "max_age_seconds",
+                          "as_of",
+                          "metrics",
+                          "non_authoritative"
+                        ],
+                        "properties": {
+                          "view_code": {
+                            "enum": [
+                              "SLA_SUMMARY",
+                              "QUEUE_SUMMARY",
+                              "INTEGRATION_HEALTH",
+                              "EVENT_HEALTH",
+                              "PLATFORM_HEALTH"
+                            ]
+                          },
+                          "source_component": {
+                            "enum": ["CMP-017", "CMP-029", "CMP-037", "CMP-038", "CMP-047"]
+                          },
+                          "status": {
+                            "enum": ["OK", "DEGRADED", "UNAVAILABLE"]
+                          },
+                          "stale": {
+                            "type": "boolean"
+                          },
+                          "max_age_seconds": {
+                            "type": "integer"
+                          },
+                          "as_of": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "source_observed_at": {
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "last_attempt_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "last_error_code": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "snapshot_version": {
+                            "type": "integer"
+                          },
+                          "metrics": {
+                            "type": "array",
+                            "maxItems": 200,
+                            "items": {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": ["metric_code", "value"],
+                              "properties": {
+                                "metric_code": {
+                                  "type": "string",
+                                  "pattern": "^[A-Z][A-Z0-9_.-]{1,63}$"
+                                },
+                                "value": {
+                                  "type": "number"
+                                },
+                                "dimensions": {
+                                  "type": "object",
+                                  "maxProperties": 8,
+                                  "propertyNames": {
+                                    "pattern": "^[a-z][a-z0-9_]{1,63}$"
+                                  },
+                                  "additionalProperties": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string",
+                                        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "non_authoritative": {
+                            "const": true
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)"
+          }
+        }
+      }
+    },
+    "/v1/ops/views/{view_code}": {
+      "get": {
+        "operationId": "getOpsView",
+        "parameters": [
+          {
+            "name": "view_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "SLA_SUMMARY",
+                "QUEUE_SUMMARY",
+                "INTEGRATION_HEALTH",
+                "EVENT_HEALTH",
+                "PLATFORM_HEALTH"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "View snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "view_code",
+                    "source_component",
+                    "status",
+                    "stale",
+                    "max_age_seconds",
+                    "as_of",
+                    "metrics",
+                    "non_authoritative"
+                  ],
+                  "properties": {
+                    "view_code": {
+                      "enum": [
+                        "SLA_SUMMARY",
+                        "QUEUE_SUMMARY",
+                        "INTEGRATION_HEALTH",
+                        "EVENT_HEALTH",
+                        "PLATFORM_HEALTH"
+                      ]
+                    },
+                    "source_component": {
+                      "enum": ["CMP-017", "CMP-029", "CMP-037", "CMP-038", "CMP-047"]
+                    },
+                    "status": {
+                      "enum": ["OK", "DEGRADED", "UNAVAILABLE"]
+                    },
+                    "stale": {
+                      "type": "boolean"
+                    },
+                    "max_age_seconds": {
+                      "type": "integer"
+                    },
+                    "as_of": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "source_observed_at": {
+                      "oneOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "last_attempt_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_error_code": {
+                      "oneOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "snapshot_version": {
+                      "type": "integer"
+                    },
+                    "metrics": {
+                      "type": "array",
+                      "maxItems": 200,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["metric_code", "value"],
+                        "properties": {
+                          "metric_code": {
+                            "type": "string",
+                            "pattern": "^[A-Z][A-Z0-9_.-]{1,63}$"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "dimensions": {
+                            "type": "object",
+                            "maxProperties": 8,
+                            "propertyNames": {
+                              "pattern": "^[a-z][a-z0-9_]{1,63}$"
+                            },
+                            "additionalProperties": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "boolean"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "non_authoritative": {
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (never refreshed)"
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)"
+          }
+        }
+      }
+    },
+    "/v1/ops/views/{view_code}/refresh": {
+      "post": {
+        "operationId": "refreshOpsView",
+        "description": "Re-reads the owner port and replaces this tenant's derived snapshot. Takes no body; the server clock is authoritative.",
+        "parameters": [
+          {
+            "name": "view_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "SLA_SUMMARY",
+                "QUEUE_SUMMARY",
+                "INTEGRATION_HEALTH",
+                "EVENT_HEALTH",
+                "PLATFORM_HEALTH"
+              ]
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refreshed (refresh_outcome SUCCESS) or source failed (view UNAVAILABLE, last-known metrics retained)"
+          },
+          "409": {
+            "description": "SF-APP-002 idempotency conflict"
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)"
+          }
+        }
+      }
+    }
+  }
+}
