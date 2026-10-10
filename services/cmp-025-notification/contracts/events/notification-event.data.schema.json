@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Notification event data",
+  "description": "Event data for sf.notification.events.v1. Never carries recipient addresses, rendered bodies, template parameters or provider payloads.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/dispatchEvent"
+    },
+    {
+      "$ref": "#/$defs/templateEvent"
+    }
+  ],
+  "$defs": {
+    "dispatchEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dispatch_id",
+        "application_id",
+        "status",
+        "channel",
+        "template_ref",
+        "template_version",
+        "recipient_handle_class",
+        "connector_mode",
+        "simulated",
+        "attempts",
+        "error_code"
+      ],
+      "properties": {
+        "dispatch_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "application_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uuid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": ["QUEUED", "SENDING", "SENT", "DELIVERED", "UNDELIVERED", "FAILED"]
+        },
+        "channel": {
+          "enum": ["SMS", "EMAIL", "PUSH", "IN_APP"]
+        },
+        "template_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "template_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "recipient_handle_class": {
+          "enum": ["CITIZEN_HANDLE_REF", "OFFICIAL_HANDLE_REF", "SYSTEM_HANDLE_REF"]
+        },
+        "connector_mode": {
+          "enum": ["REAL", "SANDBOX", "SIMULATED"]
+        },
+        "simulated": {
+          "type": "boolean"
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "error_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "templateEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["template_ref", "template_version", "channel", "locale"],
+      "properties": {
+        "template_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "template_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "channel": {
+          "enum": ["SMS", "EMAIL", "PUSH", "IN_APP"]
+        },
+        "locale": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+        }
+      }
+    }
+  }
+}

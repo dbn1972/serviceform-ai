@@ -1,0 +1,54 @@
+{
+  "entities": [
+    {
+      "entity": "sf_notification.notification_template",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.notification_dispatch",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.dispatch_attempt",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.idempotency_record",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.outbox_event",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.inbox_event",
+      "owner_component": "CMP-025",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_notification.outbox_event_platform",
+      "owner_component": "CMP-025",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-025 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_notification.inbox_event_platform",
+      "owner_component": "CMP-025",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-025 consumes no tenant-less events."
+    }
+  ]
+}
