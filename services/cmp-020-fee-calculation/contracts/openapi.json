@@ -1,0 +1,316 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-020 Fee & Calculation Service",
+    "version": "0.1.0",
+    "description": "Deterministic fee quotes (SF-CON-FEE-QUOTE, FROZEN). Version pins come from the application (CMP-015 pin graph); amounts come only from the pinned published fee-policy version and the pinned CMP-008 rule evaluation. Clients cannot supply amounts, currency, waivers or pins. Integer minor units only. Issued quotes are immutable. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/fee-quotes": {
+      "post": {
+        "operationId": "createFeeQuote",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["application_id"],
+                "properties": {
+                  "application_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "facts": {
+                    "type": "object",
+                    "maxProperties": 64,
+                    "description": "Deterministic rule inputs for the pinned CMP-008 rule version. Keys ^[a-z][a-z0-9_]{0,63}$; keys naming fee outcomes (amount/fee/total/waiver/exempt/discount/charge/price) are refused. Hashed, never stored."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Quote issued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m06/fee-quote/v1"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Identical governed inputs already produced this immutable quote (deterministic replay)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m06/fee-quote/v1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AMOUNT_FORBIDDEN; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-FORM-001 (FEE_POLICY_NOT_PINNED, pin/binding/publication mismatch) / SF-APP-002 (idempotency conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "SF-RULE-001 (rule output missing, non-integer, negative, unpinned, or total out of range)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fee-quotes/{quote_id}": {
+      "get": {
+        "operationId": "getFeeQuote",
+        "parameters": [
+          {
+            "name": "quote_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m06/fee-quote/v1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AMOUNT_FORBIDDEN; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/applications/{application_id}/fee-quotes": {
+      "get": {
+        "operationId": "listApplicationFeeQuotes",
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quotes for the application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["quotes"],
+                  "properties": {
+                    "quotes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://contracts.serviceform.ai/m06/fee-quote/v1"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AMOUNT_FORBIDDEN; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "$ref": "https://contracts.serviceform.ai/error-response/v1"
+      }
+    }
+  }
+}

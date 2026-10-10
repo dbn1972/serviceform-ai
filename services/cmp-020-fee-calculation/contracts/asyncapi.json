@@ -1,0 +1,30 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-020 Fee Events",
+    "version": "0.1.0",
+    "description": "Domain events for issued, immutable fee quotes (SF-CON-FEE-QUOTE). Integer minor units only; no PII, no rule facts."
+  },
+  "channels": {
+    "sf.fee.events.v1": {
+      "address": "sf.fee.events.v1",
+      "messages": {
+        "FeeQuoteIssued": { "$ref": "#/components/messages/FeeQuoteIssued" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "FeeQuoteIssued": {
+        "name": "FeeQuoteIssued",
+        "payload": { "$ref": "./events/fee-quote-event.data.schema.json" }
+      }
+    }
+  }
+}

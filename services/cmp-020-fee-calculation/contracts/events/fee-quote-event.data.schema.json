@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-020/fee-quote-event-data/v1",
+  "title": "FeeQuoteIssued data",
+  "description": "Component-local. Data block of the FeeQuoteIssued event on sf.fee.events.v1. Amounts are integer minor units copied from the immutable quote. No PII and no rule facts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "quote_id",
+    "application_id",
+    "currency",
+    "total_amount_minor",
+    "amount_source",
+    "client_authoritative_amount",
+    "line_count",
+    "fee_policy_version_id",
+    "rule_version_id",
+    "tenant_service_binding_id",
+    "calculation_hash"
+  ],
+  "properties": {
+    "quote_id": { "type": "string", "format": "uuid" },
+    "application_id": { "type": "string", "format": "uuid" },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "total_amount_minor": { "type": "integer", "minimum": 0 },
+    "amount_source": { "type": "string", "enum": ["RULES_ENGINE", "FEE_POLICY_METADATA"] },
+    "client_authoritative_amount": { "const": false },
+    "line_count": { "type": "integer", "minimum": 1, "maximum": 64 },
+    "fee_policy_version_id": { "type": "string", "format": "uuid" },
+    "rule_version_id": { "type": "string", "format": "uuid" },
+    "tenant_service_binding_id": { "type": "string", "format": "uuid" },
+    "calculation_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
