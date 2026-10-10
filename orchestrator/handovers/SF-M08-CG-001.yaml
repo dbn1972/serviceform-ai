@@ -1,7 +1,8 @@
-# SF-M08-CG-001 freeze preparation (combined CG-02 with SF-M06-CG-001)
-# Candidate lock append. DO NOT MERGE in this slice. Wave A OFF. Not CERTIFIED. Not G6.
+# SF-M08-CG-001 freeze reconciled on origin/main (combined CG-02 with SF-M06-CG-001)
+# Wave A READY GRANTED in a separate activation record. Builders not spawned. Not CERTIFIED. Not G6.
 # Decision token split against CKV_SECRET_6: family + status (do not join).
-# Sole writer of orchestrator/contracts-lock.yaml for this freeze: combined CG-02 PR.
+# repository_freeze_effective reconciled under HUMAN_CG_02_READY_PROMOTION_AUTHORIZATION.
+# SF-M08-005 remains PLANNING — STATUTORY_RETENTION_POLICY_INPUT_REQUIRED=true.
 
 record: SF-M08-CG-001
 task_id: SF-M08-CG-001
@@ -11,21 +12,25 @@ agent_role: contract_guardian
 
 decision:
   family: SF_M08_CG001_FREEZE
-  status: PREPARED
+  status: FROZEN_ON_MAIN
 
 pre_freeze_authorized: true
 freeze_authorized: true
 freeze_prepared: true
-repository_freeze_effective: false
+repository_freeze_effective: true
 implementation_authorized: false
 dispatched: false
-wave_a_eligible: false
-wave_a_eligible_now: []
-contracts_status: FROZEN_CANDIDATE
-freeze_status: PENDING_MERGE
+wave_a_eligible: true
+wave_a_eligible_now:
+  - SF-M08-001
+  - SF-M08-002
+  - SF-M08-003
+  - SF-M08-004
+contracts_status: FROZEN
+freeze_status: FROZEN_ON_MAIN
 in_contracts_lock: true
-orchestration_task_state: FREEZE_PREPARED
-state: FREEZE_PREPARED
+orchestration_task_state: FROZEN_ON_MAIN
+state: FROZEN_ON_MAIN
 
 planning_only: false
 builders_dispatched: 0
@@ -39,10 +44,12 @@ release_certified: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_02_contract_freeze_required: true
+cg_02_contract_freeze_required: false
 statutory_retention_policy_input_required: true
+ready_promotion_granted: true
+builder_spawn_pending_activation_record_merge: true
 
-contracts_lock_mode: APPEND_NEW_CG02_ROWS_ONLY
+contracts_lock_mode: IMMUTABLE_ON_MAIN
 existing_19_frozen_contracts_mutable: false
 combined_cg02_freeze_pr: true
 
@@ -53,7 +60,7 @@ decision_authority:
   name: Debabrata Nayak
 
 do_not_represent_contracts_as_frozen: false
-do_not_represent_repository_freeze_as_effective: true
+do_not_represent_repository_freeze_as_effective: false
 
 frozen_contracts:
   - id: SF-CON-SEARCH-DOCUMENT
@@ -94,22 +101,13 @@ existing_frozen:
 lock_expected:
   entries: 29
   frozen: 29
-  result: 29_FROZEN_CANDIDATE_HASHES_MATCH
+  result: 29_FROZEN_HASHES_MATCH
   existing_19_unchanged: true
 
 base_commit:
-  prefix: 2add535c
-  suffix: ff20ee6ecdcbeacfdc2074029c89be2b
+  prefix: 5acb291e
+  suffix: a828894c40110396f0eafd62462e4572
 join_separator: "_"
-
-allowed_write_paths:
-  - contracts/m06/**
-  - contracts/m08/**
-  - orchestrator/contracts-lock.yaml
-  - evidence/SF-M06-CG-001/**
-  - evidence/SF-M08-CG-001/**
-  - orchestrator/handovers/SF-M06-CG-001.yaml
-  - orchestrator/handovers/SF-M08-CG-001.yaml
 
 contract_locks:
   - SF-CON-COMMON
@@ -138,12 +136,32 @@ contract_locks:
   - SF-CON-RETENTION-POLICY
 
 stop_conditions:
-  - merge without HUMAN_CG_02_CONTRACT_FREEZE_MERGE_AUTHORIZATION
   - mutate existing 19 frozen hashes
+  - mutate ten CG-02 FROZEN hashes without CCR
   - weaken isolation / outbox / simulation-marker
   - invent statutory retention periods or DPDP schedules
   - treat recommendation as authoritative
-  - dispatch builders / Wave A / READY
+  - spawn Wave A builders before activation record merge
+  - promote SF-M08-005 without statutory retention policy input
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - touch #107 / #108 / #109
   - start M07+
+
+explicit_non_goals:
+  - spawn_wave_a_builders
+  - promote_sf_m08_005
+  - stitch_a
+  - wave_b
+  - host_int_sec_evd
+  - certified_or_g6_claim
+  - contracts_or_lock_mutation_in_ready_slice
+
+awaiting:
+  - wave_a_activation_record_merge
+  - not_builder_spawn_this_slice
+  - statutory_retention_policy_input_for_sf_m08_005
+
+evidence: evidence/SF-M08-CG-001
+documents:
+  catalog: contracts/m08/catalog.json
+  activation: orchestrator/dispatch/CG-02-ACTIVATION.md

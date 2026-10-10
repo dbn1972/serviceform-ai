@@ -1,5 +1,8 @@
 # CG-02 plan: M06 ∥ M08 after M05 G4 exit (PLANNING ONLY)
 
+> **Control-plane update:** CG-02 Wave A READY promotion candidate (seven lanes) supersedes the “PLANNING only / no READY” claims below for SF-M06-001..003 and SF-M08-001..004. Freeze #113 is on main `5acb291e…` (29/29). SF-M08-005 remains PLANNING. Builders remain 0 until activation-record merge + separate dispatch auth. See `orchestrator/dispatch/CG-02-ACTIVATION.md` and `docs/planning/CG-02-M06-M08-ENVELOPES.md`.
+
+
 **Decision token (split against CKV_SECRET_6):** family `CG02_M06_M08_PLANNING` + status `PLANNING` (do **not** join).  
 **Envelope state:** `PLANNING`. **Not READY.** **Not dispatched.** Not CERTIFIED. Not RELEASE CERTIFIED. Not G6. **Implementation OFF.** **Builders OFF.** **M07+ OFF.**
 
