@@ -18,7 +18,7 @@ function fakePool(
     query: ((text: string, values?: unknown[]) => {
       const rec = { text, values };
       log.push(rec);
-      if (/^(BEGIN|COMMIT|ROLLBACK)/.test(text) || text.startsWith('SELECT set_config')) {
+      if (['BEGIN', 'COMMIT', 'ROLLBACK'].includes(text) || text.startsWith('SELECT set_config')) {
         return Promise.resolve({ rows: [], rowCount: null });
       }
       return Promise.resolve(respond(rec));

@@ -1,6 +1,7 @@
 import { PERIOD_GRANULARITIES, type PeriodGranularity } from '../domain/period.js';
 import { isCategoryCode, isIdentifyingFieldName, isValidFieldName } from '../domain/privacy.js';
 import type { Aggregation, DimensionSpec } from '../domain/projection.js';
+import { parseIsoInstant } from '../domain/timestamp.js';
 import { isUuid } from '../domain/uuid.js';
 import { Cmp045Error, detail } from '../errors.js';
 
@@ -191,9 +192,9 @@ function queryString(
 
 function instant(value: string | null, pointer: string): string | null {
   if (value === null) return null;
-  const t = Date.parse(value);
-  if (Number.isNaN(t) || !/^\d{4}-\d{2}-\d{2}T/.test(value)) bad(pointer, 'TIMESTAMP_REQUIRED');
-  return new Date(t).toISOString();
+  const t = parseIsoInstant(value);
+  if (t === null) bad(pointer, 'TIMESTAMP_REQUIRED');
+  return new Date(t as number).toISOString();
 }
 
 /**

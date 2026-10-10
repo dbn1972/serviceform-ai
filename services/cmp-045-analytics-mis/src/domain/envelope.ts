@@ -1,5 +1,6 @@
 import { Cmp045Error, detail } from '../errors.js';
 import type { EventEnvelope } from '../types.js';
+import { parseIsoInstant } from './timestamp.js';
 import { isUuid } from './uuid.js';
 
 const EVENT_TYPE = /^[A-Z][A-Za-z0-9]{2,79}$/;
@@ -32,9 +33,7 @@ export function parseEnvelope(raw: unknown): EventEnvelope<Record<string, unknow
     bad('/aggregate_version');
   }
   const occurred = str('occurred_at');
-  if (Number.isNaN(Date.parse(occurred)) || !/^\d{4}-\d{2}-\d{2}T/.test(occurred)) {
-    bad('/occurred_at');
-  }
+  if (parseIsoInstant(occurred) === null) bad('/occurred_at');
   if (!isUuid(str('correlation_id'))) bad('/correlation_id');
   const actor = e['actor'];
   if (
