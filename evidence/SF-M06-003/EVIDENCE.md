@@ -30,13 +30,14 @@ human/CI to decide. Recommended next step: `INDEPENDENT_CG_02_WAVE_A_BUILDER_REV
 | `tsc --noEmit` (service tsconfig, strict + exactOptionalPropertyTypes) | exit 0 | `typecheck.log` |
 | `eslint --max-warnings=0` (repo config, incl. interpolated-SQL ban) | exit 0 | `lint.log` |
 | `prettier --check` | exit 0 | `format.log` |
-| Unit + contract tests (6 files, 82 tests) | 82 passed | `unit-contract-coverage.log`, `junit/unit-contract.xml` |
-| Service coverage (unit+contract only) | stmts 95.88 %, branches 90.66 %, funcs 95.21 %, lines 98.23 % | same |
+| Unit + contract tests (6 files, 85 tests) | 85 passed | `unit-contract-coverage.log`, `junit/unit-contract.xml` |
+| Service coverage (unit+contract only) | stmts 95.99 %, branches 91.03 %, lines 98.27 % | same |
 | Integration on PostgreSQL 16.15 (3 files, 30 tests) | 30 passed | `integration-postgres.log`, `junit/integration.xml`, `postgres-version.txt` |
 | Repo gates `run_all.py` | 10/10 PASS | `repo-gates.log` |
 | `migration_lint.py` (inside gates) | 0 errors | `repo-gates.log` |
 | dependency-cruiser on the service | no violations | `depcruise.log` |
 | `check_scope.py --envelope SF-M06-003 --base origin/main` | PASS, 42 files, 0 errors | `check-scope.log` |
+| Semgrep (same rule packs as CI: p/default, p/typescript, p/nodejsscan, p/secrets, `.semgrep/`) on the service | 0 findings (0 blocking) | `semgrep-local.log`, `semgrep-local-results.json` |
 | Root `vitest run --coverage` (global thresholds incl. this service) | exit 0 | `root-unit-coverage.log` |
 | Diff vs dispatch base for `contracts/**`, `orchestrator/contracts-lock.yaml`, `pnpm-lock.yaml`, `apps/**`, `specs/**`, `policy/**`, `infra/**` | empty | `frozen-readonly-diff-stat.log` |
 
@@ -47,6 +48,23 @@ human/CI to decide. Recommended next step: `INDEPENDENT_CG_02_WAVE_A_BUILDER_REV
 formatting drift on `main`). `pnpm-lock.yaml` was reverted and is **not** part of this change:
 `EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL` (`logs/lockfile-residual.diff`). `package.json`
 declares no dependencies.
+
+## Security correction (HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION)
+
+Independent review blocked the first candidate (`9ac8f9bb…`) on CI **SAST (semgrep)**: two
+`ajinabraham.njsscan.dos.regex_dos` blocking findings in `src/domain/model.ts` (storage-key
+regex line 96, `^\d{1,15}$` sequence regex line 175). Correction, no suppressions or rule/workflow
+edits:
+
+- `parseStorageKey`: length bound 8..256 first, then one linear per-character pass over
+  `[A-Za-z0-9_./:-]`; traversal (`..`, leading `/`, `//`) refusals unchanged. `STORAGE_KEY_RE`
+  removed from `validate.ts` (no remaining users).
+- `parseSequence`: length bound 1..15 first, then ASCII-digit loop (same accepted set as before).
+- `isIsoTimestamp` (`validate.ts`): defensive 64-character bound before the `T.*` pattern.
+- New tests: boundary and hostile-input cases (7/8/256/257 chars, 16 digits, unicode digits,
+  control characters, multi-megabyte inputs complete in < 1 s).
+- Reproduced locally before the fix (2 findings at the same lines) and after (0 findings) with the
+  CI command; see `semgrep-local.log`. Delta vs previous head: `security-correction-delta.txt`.
 
 ## Requirement trace
 

@@ -1,179 +1,185 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="82" failures="0" errors="0" time="0.254524443">
-    <testsuite name="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" timestamp="2026-10-10T02:07:41.772Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.124064694">
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; error catalogue subset equals the FROZEN error-catalogue.json rows" time="0.002320294">
+<testsuites name="vitest tests" tests="85" failures="0" errors="0" time="0.285745032">
+    <testsuite name="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" timestamp="2026-10-10T03:27:58.941Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.134632074">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; error catalogue subset equals the FROZEN error-catalogue.json rows" time="0.002871608">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; emitted envelopes, audit, request context, error responses and authz input validate" time="0.102259047">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; emitted envelopes, audit, request context, error responses and authz input validate" time="0.106369511">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION and cover every migrated table" time="0.004108094">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION and cover every migrated table" time="0.005704851">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; outbox migration is the frozen template with schema/cmp replacements only" time="0.000197024">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; outbox migration is the frozen template with schema/cmp replacements only" time="0.000193825">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; schema migration: NOLOGIN role, FORCE RLS on every tenant table, no BYPASSRLS, no named-service SQL" time="0.000891526">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; schema migration: NOLOGIN role, FORCE RLS on every tenant table, no BYPASSRLS, no named-service SQL" time="0.001002539">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; service contracts topics match the emitted topics" time="0.000323946">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-026 &gt; service contracts topics match the emitted topics" time="0.000390341">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; the frozen artifact still matches the locked hash" time="0.000632294">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; the frozen artifact still matches the locked hash" time="0.001218076">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; frozen valid example validates, frozen invalid example is rejected" time="0.006342469">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; frozen valid example validates, frozen invalid example is rejected" time="0.008267627">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; thread documents produced by the service validate against the frozen schema" time="0.004837271">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; thread documents produced by the service validate against the frozen schema" time="0.005312346">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; the document builder never emits other-tenant participants, even if given cross-tenant ids" time="0.000273797">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; the document builder never emits other-tenant participants, even if given cross-tenant ids" time="0.000291072">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; shared schema files load" time="0.000205044">
-        </testcase>
-    </testsuite>
-    <testsuite name="services/cmp-026-communication-messaging/test/unit/domain.test.ts" timestamp="2026-10-10T02:07:41.775Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.011316634">
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="thread state machine &gt; permits only CLOSE from OPEN, REOPEN and ARCHIVE from CLOSED" time="0.002781338">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="thread state machine &gt; guards optimistic concurrency and message acceptance" time="0.000497504">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; notice senders must be authority-side actor types" time="0.000390768">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; parses bodies, keys, participants, sequences and page sizes strictly" time="0.00170386">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; participant references are stable, opaque and thread-specific" time="0.000371987">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="shared contract validators &gt; request context, actor, authz output, envelope and audit validators accept/reject" time="0.001952999">
-        </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="shared contract validators &gt; canonical hashing is key-order independent" time="0.000291011">
+        <testcase classname="services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts" name="SF-CON-MESSAGE-THREAD (FROZEN, consumed unchanged) &gt; shared schema files load" time="0.000209893">
         </testcase>
     </testsuite>
-    <testsuite name="services/cmp-026-communication-messaging/test/unit/http.test.ts" timestamp="2026-10-10T02:07:41.775Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.026818889">
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 context headers &gt; refuses tenant-identifying and actor-asserting headers" time="0.002287626">
+    <testsuite name="services/cmp-026-communication-messaging/test/unit/domain.test.ts" timestamp="2026-10-10T03:27:58.943Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.012092897">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="thread state machine &gt; permits only CLOSE from OPEN, REOPEN and ARCHIVE from CLOSED" time="0.002766283">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 context headers &gt; requires a valid tenant-bound request context" time="0.001289575">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="thread state machine &gt; guards optimistic concurrency and message acceptance" time="0.000539205">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; rejects invalid environments and simulated ports outside simulation environments" time="0.00068813">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; notice senders must be authority-side actor types" time="0.000320942">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; service construction fails closed when a simulated port is wired in PRODUCTION" time="0.000340392">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; parses bodies, keys, participants, sequences and page sizes strictly" time="0.001893643">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; deny-all authorization fails closed" time="0.000136592">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="input parsing &gt; participant references are stable, opaque and thread-specific" time="0.00039571">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 error mapping &gt; maps database hints and SQLSTATE codes to catalogue errors without leaking internals" time="0.000990147">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="bounded linear parsers (regex-DoS hardening) &gt; storage keys: 8..256 chars of [A-Za-z0-9_./:-] only; traversal and separators refused" time="0.001301042">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; drives the full thread lifecycle through the route table" time="0.014491113">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="bounded linear parsers (regex-DoS hardening) &gt; sequence strings: 1..15 ASCII digits only; long or hostile input is rejected in linear time" time="0.000757204">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; replays idempotently with the idempotent-replayed header and maps errors" time="0.003645196">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="bounded linear parsers (regex-DoS hardening) &gt; ISO timestamps longer than 64 characters are rejected before any pattern work" time="0.000246708">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; refuses tenant headers before resolving context and unauthenticated requests" time="0.000348761">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="shared contract validators &gt; request context, actor, authz output, envelope and audit validators accept/reject" time="0.002008548">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; registers Fastify-shaped routes" time="0.001100629">
-        </testcase>
-    </testsuite>
-    <testsuite name="services/cmp-026-communication-messaging/test/unit/no-named-branching.test.ts" timestamp="2026-10-10T02:07:41.776Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.004277016">
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/no-named-branching.test.ts" name="no named-service / department / scheme branching &gt; source has no service== / department== / scheme== branches" time="0.003099953">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/domain.test.ts" name="shared contract validators &gt; canonical hashing is key-order independent" time="0.000316798">
         </testcase>
     </testsuite>
-    <testsuite name="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" timestamp="2026-10-10T02:07:41.776Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.010195417">
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; applies SF-CON-DB-SESSION-CONTEXT in a transaction and releases the connection" time="0.002057583">
+    <testsuite name="services/cmp-026-communication-messaging/test/unit/http.test.ts" timestamp="2026-10-10T03:27:58.943Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.028888192">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 context headers &gt; refuses tenant-identifying and actor-asserting headers" time="0.005977668">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; rolls back, maps database errors and releases on failure (even if rollback fails)" time="0.000443291">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 context headers &gt; requires a valid tenant-bound request context" time="0.00119002">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; maps rows for threads, transitions, participants, messages and attachments" time="0.002530514">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; rejects invalid environments and simulated ports outside simulation environments" time="0.000629376">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; writes with tenant-bound parameters and honest row counts" time="0.000643192">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; service construction fails closed when a simulated port is wired in PRODUCTION" time="0.0003162">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; inserts outbox rows with aggregate or audit partition keys" time="0.001970992">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 config and simulation policy &gt; deny-all authorization fails closed" time="0.000124438">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; idempotency: claim, replay, in-progress conflict, fingerprint mismatch, complete" time="0.001286616">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 error mapping &gt; maps database hints and SQLSTATE codes to catalogue errors without leaking internals" time="0.001016181">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; drives the full thread lifecycle through the route table" time="0.014588411">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; replays idempotently with the idempotent-replayed header and maps errors" time="0.001890735">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; refuses tenant headers before resolving context and unauthenticated requests" time="0.000356098">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/http.test.ts" name="CMP-026 HTTP routes &gt; registers Fastify-shaped routes" time="0.001177804">
         </testcase>
     </testsuite>
-    <testsuite name="services/cmp-026-communication-messaging/test/unit/service.test.ts" timestamp="2026-10-10T02:07:41.776Z" hostname="cursor" tests="47" failures="0" errors="0" skipped="0" time="0.077851793">
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; creates a tenant-scoped case thread with participants and outbox events" time="0.007067521">
+    <testsuite name="services/cmp-026-communication-messaging/test/unit/no-named-branching.test.ts" timestamp="2026-10-10T03:27:58.944Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.00446731">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/no-named-branching.test.ts" name="no named-service / department / scheme branching &gt; source has no service== / department== / scheme== branches" time="0.00312116">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; replays an identical request without a second thread; conflicting reuse is rejected" time="0.003338515">
+    </testsuite>
+    <testsuite name="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" timestamp="2026-10-10T03:27:58.944Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.011321144">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; applies SF-CON-DB-SESSION-CONTEXT in a transaction and releases the connection" time="0.002148216">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; rejects missing idempotency key, unknown fields, and bad role / ids" time="0.001022525">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; rolls back, maps database errors and releases on failure (even if rollback fails)" time="0.000537643">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; refuses a participant that names another tenant (cross-tenant participants forbidden)" time="0.000371943">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; maps rows for threads, transitions, participants, messages and attachments" time="0.003632984">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; derives participants from the case port: ineligible participant or denied case access fails closed" time="0.00069368">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; writes with tenant-bound parameters and honest row counts" time="0.000914293">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; rejects duplicate participants including the opener" time="0.000304701">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; inserts outbox rows with aggregate or audit partition keys" time="0.001129953">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; OPA deny, PDP failure and malformed decision all fail closed with no writes" time="0.000415691">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/pg-store.test.ts" name="PgMessagingStore &gt; idempotency: claim, replay, in-progress conflict, fingerprint mismatch, complete" time="0.001563407">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; passes tenant, application and role context to the authorizer" time="0.000572998">
+    </testsuite>
+    <testsuite name="services/cmp-026-communication-messaging/test/unit/service.test.ts" timestamp="2026-10-10T03:27:58.945Z" hostname="cursor" tests="47" failures="0" errors="0" skipped="0" time="0.094343415">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; creates a tenant-scoped case thread with participants and outbox events" time="0.00755283">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; requires a tenant-bound context" time="0.000396068">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; replays an identical request without a second thread; conflicting reuse is rejected" time="0.001794347">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; citizen and officer see the identical authoritative, ordered thread" time="0.003008385">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; rejects missing idempotency key, unknown fields, and bad role / ids" time="0.001109222">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; non-participant (same tenant) and other-tenant principals get 404 with no data" time="0.00194754">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; refuses a participant that names another tenant (cross-tenant participants forbidden)" time="0.000549787">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; OPA is consulted for every operation and a deny blocks the write" time="0.001991313">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; derives participants from the case port: ineligible participant or denied case access fails closed" time="0.000788571">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; assigns gap-free sequences and bumps the thread counter" time="0.002012405">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; rejects duplicate participants including the opener" time="0.000431591">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; replays idempotent sends and rejects key reuse with a different payload" time="0.00307546">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; OPA deny, PDP failure and malformed decision all fail closed with no writes" time="0.000558812">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; validates body: required, non-blank, bounded; unknown fields rejected" time="0.001057032">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; passes tenant, application and role context to the authorizer" time="0.0008054">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; events and audit never contain message body text or raw principal ids" time="0.000867581">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="openThread &gt; requires a tenant-bound context" time="0.00047641">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; paginates with next_after_sequence and validates limits" time="0.004354966">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; citizen and officer see the identical authoritative, ordered thread" time="0.006613824">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; stores references verified by the storage port outside any DB transaction" time="0.00123863">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; non-participant (same tenant) and other-tenant principals get 404 with no data" time="0.002132392">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; rejects unknown, other-tenant, unscanned and infected objects; no partial message" time="0.001338751">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; OPA is consulted for every operation and a deny blocks the write" time="0.000984141">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; rejects malformed, traversal, duplicate and excessive keys before calling storage" time="0.000958662">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; assigns gap-free sequences and bumps the thread counter" time="0.002286554">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; storage outage fails closed (503) and writes nothing" time="0.001790852">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; replays idempotent sends and rejects key reuse with a different payload" time="0.003600046">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; issues a short-lived access grant and audits it; retracted attachments are not served" time="0.00225794">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; validates body: required, non-blank, bounded; unknown fields rejected" time="0.001866364">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; refuses attachment access when OPA denies, and unknown attachment ids" time="0.000676739">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; events and audit never contain message body text or raw principal ids" time="0.001155671">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; defaults to an unconfigured storage port that fails closed" time="0.001013789">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="messaging &gt; paginates with next_after_sequence and validates limits" time="0.008559973">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="retraction (UI delete never erases the audit record) &gt; masks the body for everyone but keeps the authoritative row and an audit event" time="0.001538381">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; stores references verified by the storage port outside any DB transaction" time="0.001695122">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="retraction (UI delete never erases the audit record) &gt; only the sender may retract; double retract and unknown ids are rejected" time="0.001633946">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; rejects unknown, other-tenant, unscanned and infected objects; no partial message" time="0.001552319">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; only authority-side principals may send notices; citizens are refused" time="0.001237989">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; rejects malformed, traversal, duplicate and excessive keys before calling storage" time="0.00132882">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; validates acknowledgement parameters" time="0.000836604">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; storage outage fails closed (503) and writes nothing" time="0.0046441">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; notice content is immutable: it cannot be retracted" time="0.001899036">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; issues a short-lived access grant and audits it; retracted attachments are not served" time="0.00250308">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; a participant acknowledges once; sender and duplicates are refused; event emitted" time="0.002351172">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; refuses attachment access when OPA denies, and unknown attachment ids" time="0.000653442">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; flags acknowledgement after the due time" time="0.002889917">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="attachments (CMP-032 port only) &gt; defaults to an unconfigured storage port that fails closed" time="0.00075663">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; plain messages and notices without ack_required cannot be acknowledged" time="0.001284444">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="retraction (UI delete never erases the audit record) &gt; masks the body for everyone but keeps the authoritative row and an audit event" time="0.001532329">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; signals workflow after commit for ack-required notices; workflow failure never blocks" time="0.00248199">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="retraction (UI delete never erases the audit record) &gt; only the sender may retract; double retract and unknown ids are rejected" time="0.002054837">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; does not signal workflow on idempotent replay" time="0.000689696">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; only authority-side principals may send notices; citizens are refused" time="0.001149754">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; system principals may issue notices" time="0.001038477">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; validates acknowledgement parameters" time="0.000754404">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="read receipts &gt; records a monotonic read position and exposes it in the frozen contract document" time="0.001883142">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; notice content is immutable: it cannot be retracted" time="0.001169024">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="read receipts &gt; refuses positions beyond the last message and malformed values" time="0.000821453">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; a participant acknowledges once; sender and duplicates are refused; event emitted" time="0.002073597">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; adds an eligible participant, who then sees the thread; removal revokes access" time="0.002162128">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; flags acknowledgement after the due time" time="0.000917519">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; rejects duplicates, ineligible actors, cross-tenant tenant_id, and removal of the last participant" time="0.001410015">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; plain messages and notices without ack_required cannot be acknowledged" time="0.003295112">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; removed participants can no longer send" time="0.000589687">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; signals workflow after commit for ack-required notices; workflow failure never blocks" time="0.001842712">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; lists only threads the actor participates in for an application" time="0.000944127">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; does not signal workflow on idempotent replay" time="0.000807795">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; close, reopen, archive follow the legal graph with optimistic versions and transitions log" time="0.003318175">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="official notices and acknowledgement &gt; system principals may issue notices" time="0.001134064">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; rejects stale status/version, illegal commands, and invalid payloads" time="0.00103922">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="read receipts &gt; records a monotonic read position and exposes it in the frozen contract document" time="0.001934653">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; commands are authorized per action and non-participants cannot close threads" time="0.000618199">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="read receipts &gt; refuses positions beyond the last message and malformed values" time="0.000958758">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread view and frozen contract document &gt; returns an SF-CON-MESSAGE-THREAD document with active participants and attachment refs only" time="0.001259603">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; adds an eligible participant, who then sees the thread; removal revokes access" time="0.001982048">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="domain transaction boundary &gt; never calls an outbound port while a domain transaction is open" time="0.001004633">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; rejects duplicates, ineligible actors, cross-tenant tenant_id, and removal of the last participant" time="0.00140259">
         </testcase>
-        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="domain transaction boundary &gt; refuses outbound calls made from inside the domain transaction" time="0.00042085">
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; removed participants can no longer send" time="0.000663176">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="participants &gt; lists only threads the actor participates in for an application" time="0.001015639">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; close, reopen, archive follow the legal graph with optimistic versions and transitions log" time="0.003359254">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; rejects stale status/version, illegal commands, and invalid payloads" time="0.001365239">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread lifecycle commands &gt; commands are authorized per action and non-participants cannot close threads" time="0.000634295">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="thread view and frozen contract document &gt; returns an SF-CON-MESSAGE-THREAD document with active participants and attachment refs only" time="0.001657454">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="domain transaction boundary &gt; never calls an outbound port while a domain transaction is open" time="0.000882273">
+        </testcase>
+        <testcase classname="services/cmp-026-communication-messaging/test/unit/service.test.ts" name="domain transaction boundary &gt; refuses outbound calls made from inside the domain transaction" time="0.000410699">
         </testcase>
     </testsuite>
 </testsuites>

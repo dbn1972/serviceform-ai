@@ -125,7 +125,7 @@ builder_notes:
   dispatch_authorization: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
   dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
   branch: agent/M06-messaging-SF-M06-003
-  tested_code_sha: 346991d2e95af7e16086a1ab090d0b5d55c4a2b3
+  tested_code_sha: ebdb4e64bb6ba083216196ddf967032935792303
   candidate_head: see PR head; evidence/handover-only commits follow tested_code_sha
   pr: https://github.com/dbn1972/serviceform-ai/pull/117
   pr_state: DRAFT_DO_NOT_MERGE
@@ -152,3 +152,9 @@ builder_notes:
   g3: false
   g6: false
   recommended_next: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW
+  security_correction:
+    authorization: HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION
+    previous_head: 9ac8f9bbee1ccb6eed809a34aa25453f569ca622
+    finding: Semgrep ajinabraham.njsscan.dos.regex_dos x2 in src/domain/model.ts
+    fix: length-bound plus per-character parsers; no suppressions; no workflow or rule edits
+    semgrep_blocking_local: 0
