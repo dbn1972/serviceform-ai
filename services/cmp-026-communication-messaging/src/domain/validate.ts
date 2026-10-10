@@ -7,7 +7,6 @@ export const CODE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
 export const TRACE_ID_RE = /^[0-9a-f]{32}$/;
 export const EVENT_TYPE_RE = /^[A-Z][A-Za-z0-9]{2,79}$/;
 export const RESOURCE_TYPE_RE = /^[A-Z][A-Za-z0-9]{1,63}$/;
-export const STORAGE_KEY_RE = /^[A-Za-z0-9_./:-]{8,256}$/;
 export const CHECKSUM_RE = /^sha256:[0-9a-f]{64}$/;
 
 export const ACTOR_TYPES = [
@@ -53,9 +52,12 @@ export function isCode(value: unknown): value is string {
   return typeof value === 'string' && CODE_RE.test(value);
 }
 
+const ISO_TIMESTAMP_MAX_LENGTH = 64;
+
 export function isIsoTimestamp(value: unknown): value is string {
   return (
     typeof value === 'string' &&
+    value.length <= ISO_TIMESTAMP_MAX_LENGTH &&
     !Number.isNaN(Date.parse(value)) &&
     /T.*(Z|[+-]\d{2}:\d{2})$/.test(value)
   );

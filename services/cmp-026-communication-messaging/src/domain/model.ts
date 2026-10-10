@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { Cmp026Error, detail } from '../errors.js';
-import { isCode, isUuid, STORAGE_KEY_RE, type ActorType } from './validate.js';
+import { isCode, isUuid, type ActorType } from './validate.js';
 
 export const THREAD_STATUSES = ['OPEN', 'CLOSED', 'ARCHIVED'] as const;
 export type ThreadStatus = (typeof THREAD_STATUSES)[number];
@@ -86,6 +86,39 @@ export function bodyDigest(body: string): string {
   return `sha256:${createHash('sha256').update(body, 'utf8').digest('hex')}`;
 }
 
+const STORAGE_KEY_MIN_LENGTH = 8;
+const STORAGE_KEY_MAX_LENGTH = 256;
+const STORAGE_KEY_PUNCTUATION = '_./:-';
+const SEQUENCE_MAX_DIGITS = 15;
+
+function isAsciiAlnum(code: number): boolean {
+  return (
+    (code >= 0x30 && code <= 0x39) ||
+    (code >= 0x41 && code <= 0x5a) ||
+    (code >= 0x61 && code <= 0x7a)
+  );
+}
+
+/** Length-bound first, then a single linear pass over the allowed charset [A-Za-z0-9_./:-]. */
+function isStorageKeyShape(value: string): boolean {
+  if (value.length < STORAGE_KEY_MIN_LENGTH || value.length > STORAGE_KEY_MAX_LENGTH) return false;
+  for (let i = 0; i < value.length; i += 1) {
+    const code = value.charCodeAt(i);
+    if (!isAsciiAlnum(code) && !STORAGE_KEY_PUNCTUATION.includes(value.charAt(i))) return false;
+  }
+  return true;
+}
+
+/** Length-bound first (1..15), then ASCII digits only. */
+function isDigitString(value: string): boolean {
+  if (value.length < 1 || value.length > SEQUENCE_MAX_DIGITS) return false;
+  for (let i = 0; i < value.length; i += 1) {
+    const code = value.charCodeAt(i);
+    if (code < 0x30 || code > 0x39) return false;
+  }
+  return true;
+}
+
 /**
  * Storage key reference only (CMP-032). The key is opaque to CMP-026; tenant ownership is
  * verified by the CMP-032 port. Structural traversal markers are refused here as defence in depth.
@@ -93,7 +126,7 @@ export function bodyDigest(body: string): string {
 export function parseStorageKey(value: unknown, pointer: string): string {
   if (
     typeof value !== 'string' ||
-    !STORAGE_KEY_RE.test(value) ||
+    !isStorageKeyShape(value) ||
     value.includes('..') ||
     value.startsWith('/') ||
     value.includes('//')
@@ -172,7 +205,7 @@ export function parsePageSize(value: unknown): number {
 }
 
 export function parseSequence(value: unknown, pointer: string, min: number): number {
-  const n = typeof value === 'string' && /^\d{1,15}$/.test(value) ? Number(value) : value;
+  const n = typeof value === 'string' && isDigitString(value) ? Number(value) : value;
   if (typeof n !== 'number' || !Number.isInteger(n) || n < min) {
     throw new Cmp026Error('SF-SYS-003', { details: detail('SEQUENCE_INVALID', pointer) });
   }

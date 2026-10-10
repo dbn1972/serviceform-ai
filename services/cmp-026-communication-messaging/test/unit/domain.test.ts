@@ -21,6 +21,7 @@ import {
   isAuditEvent,
   isAuthzDecisionOutput,
   isEventEnvelope,
+  isIsoTimestamp,
   isRequestContext,
   sha256Of,
 } from '../../src/domain/validate.js';
@@ -126,6 +127,67 @@ describe('input parsing', () => {
     expect(participantRef('t1', CITIZEN)).toBe(a);
     expect(participantRef('t2', CITIZEN)).not.toBe(a);
     expect(a).not.toContain(CITIZEN);
+  });
+});
+
+describe('bounded linear parsers (regex-DoS hardening)', () => {
+  it('storage keys: 8..256 chars of [A-Za-z0-9_./:-] only; traversal and separators refused', () => {
+    const ok = (k: string) => parseStorageKey(k, '/k');
+    expect(ok('a'.repeat(8))).toBe('a'.repeat(8));
+    expect(ok('a'.repeat(256))).toHaveLength(256);
+    expect(ok('Az09_./:-Az09')).toBe('Az09_./:-Az09');
+    for (const bad of [
+      'a'.repeat(7),
+      'a'.repeat(257),
+      'a'.repeat(100_000),
+      'has space in key',
+      'tab\there-key',
+      'new\nline-key',
+      'unicode-\u00e9-key',
+      'emoji-\u{1F600}-key',
+      'null\u0000-byte',
+      'semi;colon-key',
+      'back\\slash-key',
+      'percent%20-key',
+      'tenant/../other',
+      '/leading/slash',
+      'double//slash/key',
+    ]) {
+      expect(() => ok(bad), JSON.stringify(bad.slice(0, 20))).toThrow();
+    }
+  });
+
+  it('sequence strings: 1..15 ASCII digits only; long or hostile input is rejected in linear time', () => {
+    expect(parseSequence('0', '/s', 0)).toBe(0);
+    expect(parseSequence('007', '/s', 0)).toBe(7);
+    expect(parseSequence('9'.repeat(15), '/s', 0)).toBe(Number('9'.repeat(15)));
+    for (const bad of [
+      '',
+      '9'.repeat(16),
+      '1'.repeat(1_000_000),
+      '1e3',
+      '-1',
+      '+1',
+      ' 1',
+      '1 ',
+      '1.5',
+      '\u0661',
+      '12\n',
+    ]) {
+      expect(() => parseSequence(bad, '/s', 0)).toThrow();
+    }
+    const started = Date.now();
+    expect(() => parseSequence('1'.repeat(5_000_000) + 'x', '/s', 0)).toThrow();
+    expect(() => parseStorageKey('a'.repeat(5_000_000) + '!', '/k')).toThrow();
+    expect(Date.now() - started).toBeLessThan(1000);
+  });
+
+  it('ISO timestamps longer than 64 characters are rejected before any pattern work', () => {
+    expect(isIsoTimestamp('2026-10-06T12:00:00.000Z')).toBe(true);
+    expect(isIsoTimestamp('2026-10-06T12:00:00+05:30')).toBe(true);
+    expect(isIsoTimestamp(`2026-10-06T${'0'.repeat(100)}Z`)).toBe(false);
+    expect(isIsoTimestamp('2026-10-06')).toBe(false);
+    expect(isIsoTimestamp(5)).toBe(false);
   });
 });
 
