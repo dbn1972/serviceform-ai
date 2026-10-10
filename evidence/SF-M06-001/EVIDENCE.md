@@ -10,7 +10,7 @@ Builder self-assessment is not verification; independent review/INT/SEC remain r
 | Authorization | `HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION` |
 | Branch | `agent/M06-fee-SF-M06-001` |
 | Dispatch base (exact) | `8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b` |
-| Implementation commit | `743d2dfff59e630f3b150b4084aace87e1e116ee` (feature `b6691e62` + semgrep fix) |
+| Implementation commit | `55fba541a449cd87cc4c3011659aba077060e2bd` (feature `b6691e62` + fixes `743d2dff`, `55fba541`) |
 | Model / effort | claude-opus-5-5 / high (cloud agent `bc-929602dc-73db-5b6a-ad61-2086308b2664`) |
 | CCR | false (no frozen contract or contracts-lock change) |
 | Lockfile | not committed (see residual) |
@@ -26,7 +26,7 @@ Builder self-assessment is not verification; independent review/INT/SEC remain r
 | `contracts_lock_gate.py` | PASS — 29 in lock, 29 FROZEN |
 | #107 / #108 / #109 open, unmerged at bound heads | PASS (`59ddddd4…`, `d1614d70…`, `8b270beb…`) |
 
-## Executed results at `743d2dff`
+## Executed results at `55fba541`
 
 Local VM: Node 22.14.0, pnpm 10.28.0, PostgreSQL 16.15 (CI pins 16.14-alpine).
 
@@ -50,6 +50,12 @@ First draft-PR CI run (head `55c3bbf2`, run `38016091770`) failed two checks, bo
 checkov `CKV_SECRET_6` on a joined lane token and full SHAs in the handover (now split
 family/status and prefix/suffix), and njsscan `regex_dos` on three port-value regex checks
 (replaced with linear charset checks in `743d2dff`).
+
+Second run (head `5789f555`, runs `38017239115` / `38017239172`): checkov, CodeQL, gitleaks,
+migrations harness, architecture gates PASS. semgrep p/secrets matched a hex sample embedded in a
+committed JUnit test title (titles now index-named, `55fba541`). The quality job failed only on
+`packages/security/test/decision-log-canary.test.ts` timing out at 5 s under load (outside this
+lane's write scope; passes on main and locally in ~0.4 s); all CMP-020 tests passed in that job.
 
 ## What the tests prove (requirement → test)
 
