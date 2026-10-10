@@ -1,0 +1,48 @@
+=== envelope-assertions (M06 STITCH-A READY) ===
+task_sha256=17eb290feca62d0eeab9132d1bfe844364a97d2597f08ece12b4d63d8b17301b
+handover_sha256=17eb290feca62d0eeab9132d1bfe844364a97d2597f08ece12b4d63d8b17301b
+PASS task==handover byte-identical
+PASS actual_stitch_base absent
+PASS base_commit absent
+PASS ready_record_parent.sha
+PASS ready_control_plane_base.sha
+PASS historical_planning_base.sha
+PASS historical_planning_base.executable false
+PASS execution_base_policy.source
+PASS execution_base null
+PASS execution_authorized false
+PASS must_include_ready_record
+PASS require_exact_sha
+PASS envelope_sha_is_not_execution_authorization
+PASS planning_only false
+PASS implementation_authorized true
+PASS dispatched false
+PASS orchestration_task_state READY
+PASS state READY
+PASS agent_role integration_agent
+PASS builder_agent serviceform-integration-stitcher
+PASS self_certified false
+PASS not_certified true
+PASS certified false
+PASS release_certified false
+PASS g3 false
+PASS g6 false
+PASS ccr_required false
+PASS frozen_contracts_altered false
+PASS frozen_inputs 001
+PASS frozen_inputs 002
+PASS frozen_inputs 003
+PASS component_ids
+PASS integration_ids
+PASS must_not_run_concurrent_with SF-M06-STITCH-B
+PASS must_not_run_concurrent_with SF-M08-STITCH-A
+PASS must_not_run_concurrent_with SF-M08-STITCH-B
+PASS root_lockfile_authorized true
+PASS pnpm-lock.yaml in allowed_write_paths
+PASS contract_locks 29
+PASS semantic_conflict token
+PASS m08_stitch_a OFF
+PASS sf_m08_005 PLANNING
+frozen_inputs_count=3
+contract_locks_count=29
+failures=0
