@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="119" failures="1" errors="0" time="0.179484229">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-10T02:08:23.296Z" hostname="cursor" tests="22" failures="0" errors="0" skipped="0" time="0.069369161">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-NOTIFICATION-DISPATCH consumption (read-only) &gt; the frozen schema file still matches its contracts-lock hash (no mutation)" time="0.001856471">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-NOTIFICATION-DISPATCH consumption (read-only) &gt; frozen valid example passes and the raw-PII-allowed example is refused" time="0.002184449">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-NOTIFICATION-DISPATCH consumption (read-only) &gt; every dispatch the service returns is a valid contract instance (SIMULATED and REAL)" time="0.00560247">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-NOTIFICATION-DISPATCH consumption (read-only) &gt; a contract instance carrying raw_pii_in_payload_forbidden=false would be rejected" time="0.000443692">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-025 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.018990203">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-025 &gt; event data cannot carry addresses, bodies or parameters (additionalProperties=false)" time="0.004506436">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-025 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.017967221">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-025 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001977795">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="structural mirrors never exceed the frozen INT-013 contracts &gt; every binding our policy accepts is valid under SF-CON-CONNECTOR-BINDING (exhaustive)" time="0.002830298">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="structural mirrors never exceed the frozen INT-013 contracts &gt; PRODUCTION critical SIMULATED/SANDBOX is refused by both the policy and the contract" time="0.000829979">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="structural mirrors never exceed the frozen INT-013 contracts &gt; isSimulationMarker agrees with SF-CON-SIMULATION-MARKER on a case table" time="0.000905104">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="structural mirrors never exceed the frozen INT-013 contracts &gt; minted markers validate under the frozen marker schema" time="0.000151704">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-025 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.00086586">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-025 component contracts &gt; OpenAPI mutating bodies are closed and refuse client-supplied mode, tenant, address or clock" time="0.000985195">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-025 component contracts &gt; isolation declarations validate and match the migrations (every table FORCE RLS)" time="0.002588244">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; imports no provider SDK or network module and declares no runtime dependency" time="0.002856416">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; never reads the environment, console-logs, or embeds a secret value" time="0.00026301">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; has no hard-coded tenant, jurisdiction, service or official names in domain logic" time="0.000880658">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; only touches sf_notification in SQL, imports no sibling service and never mounts on the API host" time="0.000524643">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no PUBLIC, no DELETE on dispatch" time="0.000302484">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; database enforces INT-013 independently of the application (defence in depth)" time="0.000114467">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: no providers, no network in src, no host mount, no secrets &gt; delivery performs provider I/O between transactions (claim -&gt; send -&gt; finalize)" time="0.000169289">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/delivery.test.ts" timestamp="2026-10-10T02:08:23.299Z" hostname="cursor" tests="27" failures="0" errors="0" skipped="0" time="0.0496921">
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; sends outside any transaction, marks the sink TEST/SIMULATED and records the SimulationMarker" time="0.00786189">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; exposes the attempt history on read" time="0.001529571">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; does nothing when nothing is due and honours the claim limit" time="0.00709568">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; retries transient failures with deterministic backoff, then fails terminally at max attempts" time="0.003307045">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; fails permanently on a permanent provider rejection without retry" time="0.001090949">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; treats a connector exception as transient without leaking its message" time="0.001002742">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; re-claims an expired lease after a crash and sends once more (at-least-once)" time="0.00113011">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; abandons a lease-exhausted dispatch instead of sending forever" time="0.00108876">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; a worker that lost its lease writes nothing (no double finalize)" time="0.001739779">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; only a SYSTEM actor may drain, and PDP outage fails closed" time="0.001538933">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery worker over the SIMULATED connector (INT-013) &gt; never drains another tenant" time="0.000876349">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; critical SIMULATED in PRODUCTION" time="0.001789068">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; mode drift to REAL" time="0.0031673">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; environment drift" time="0.000647705">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; retries (does not fail) when the binding source is unavailable" time="0.000787369">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; a binding that now belongs to another tenant is refused" time="0.000612608">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; unresolved recipient is permanent; directory outage is transient and not leaked" time="0.000975311">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery re-validates the connector boundary (fail-closed, nothing sent) &gt; a missing adapter is transient (host may bind later), never a silent success" time="0.000620247">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="REAL and SANDBOX delivery via the Integration Hub port &gt; UAT SANDBOX: accepted, no SimulationMarker, secret passed only as a reference" time="0.001277562">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="REAL and SANDBOX delivery via the Integration Hub port &gt; PRODUCTION REAL: accepted, no SimulationMarker, secret passed only as a reference" time="0.000860278">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="REAL and SANDBOX delivery via the Integration Hub port &gt; hub outage is a transient failure and never leaks hub error text" time="0.000745709">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="REAL and SANDBOX delivery via the Integration Hub port &gt; normalises a malformed hub error code" time="0.000652407">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="REAL and SANDBOX delivery via the Integration Hub port &gt; PRODUCTION never falls back to SIMULATED: a SIMULATED critical binding is refused at dispatch" time="0.000400412">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery receipts &gt; records DELIVERED once, idempotently, and refuses further transitions" time="0.001618061">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery receipts &gt; records UNDELIVERED, refuses a mismatched provider ref, non-SENT dispatches and non-integration actors" time="0.001433513">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="delivery receipts &gt; another tenant cannot record a receipt" time="0.002076569">
+        </testcase>
+        <testcase classname="test/unit/delivery.test.ts" name="no secrets or PII in logs, events, audit or rows &gt; canary address, email and secret ref never appear anywhere observable" time="0.001969288">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-10T02:08:23.301Z" hostname="cursor" tests="31" failures="0" errors="0" skipped="0" time="0.008870235">
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses citizen@example.invalid" time="0.001131073">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses +91 98765 43210" time="0.000294756">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses 9876543210" time="0.000149833">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses 1234 5678 9012" time="0.000213322">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses ABCDE1234F" time="0.000087009">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses line
+break" time="0.000104241">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" time="0.000089539">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; allows reference-style value INR 150" time="0.000121726">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; allows reference-style value APP-2026-000123" time="0.000320778">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; allows reference-style value Ward 12" time="0.000112445">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; allows reference-style value 2026-10-10" time="0.000097948">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; allows reference-style value Receipt 4821" time="0.000041198">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; reports the first offending parameter by name only" time="0.000109414">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PII guard &gt; refuses PII-shaped parameter names but not look-alikes" time="0.000400922">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="template definition and rendering &gt; extracts distinct placeholders" time="0.000567511">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="template definition and rendering &gt; renders strictly and deterministically without evaluation" time="0.000268279">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="template definition and rendering &gt; refuses unknown and missing parameters" time="0.000290619">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="template definition and rendering &gt; refuses placeholders outside the allow-list, stray braces and PII parameter names" time="0.000335433">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; accepts a SIMULATED binding in a simulation environment and mints a valid marker" time="0.000687889">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; returns no marker for REAL and SANDBOX bindings" time="0.000114268">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses a SIMULATED binding when no test run id is configured" time="0.000086743">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses any non-REAL critical binding in PRODUCTION" time="0.00021499">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses SIMULATED outside simulation environments (UAT)" time="0.000106401">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses SIMULATED outside simulation environments (PREPROD)" time="0.000055395">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses SIMULATED outside simulation environments (PRODUCTION)" time="0.000041247">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses REAL or SANDBOX in LOCAL and CI" time="0.000064485">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; refuses environment mismatch, tenant mismatch, wrong type, unmapped channel and missing refs" time="0.000315038">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; allows a platform-wide (tenant_id null) binding and REAL in PRODUCTION" time="0.000128381">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 binding policy (fail-closed) &gt; validates marker shape strictly" time="0.000160613">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="dispatch state machine and backoff &gt; allows only the documented transitions" time="0.000383942">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="dispatch state machine and backoff &gt; backs off exponentially, capped and deterministic" time="0.000130624">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-repo.test.ts" timestamp="2026-10-10T02:08:23.303Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.010482876">
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository transaction envelope &gt; sets the tenant session context inside BEGIN..COMMIT and releases the client" time="0.00207994">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository transaction envelope &gt; rolls back and releases on failure, rethrowing the original error" time="0.001234249">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository transaction envelope &gt; refuses a missing tenant and a nested transaction" time="0.000880228">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository statements &gt; every statement is parameterised and scoped to the tenant" time="0.002345437">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository statements &gt; serialises JSON columns and reads absent optional rows as undefined" time="0.000398974">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository statements &gt; claims and replays idempotency records" time="0.001115704">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgNotificationRepository statements &gt; writes outbox rows with the tenant, aggregate partition and a separate audit partition" time="0.00107109">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-10T02:08:23.304Z" hostname="cursor" tests="25" failures="1" errors="0" skipped="0" time="0.030876565">
+        <testcase classname="test/unit/service.test.ts" name="template publication &gt; publishes immutable monotonically increasing versions per (ref, channel, locale)" time="0.005097591">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="template publication &gt; refuses PII-shaped parameter names and out-of-list placeholders" time="0.000636374">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="template publication &gt; is officer/admin only and tenant-scoped" time="0.000735576">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; accepts a dispatch, pins the template version, and returns the FROZEN contract instance" time="0.002953896">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; honours an explicit template version pin and refuses a missing template" time="0.001324821">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; replays the same idempotency key + body once and refuses a different body" time="0.001336971">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; refuses the same key from another principal in the same tenant (dispatch key is tenant-unique)" time="0.001029591">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; requires a declared purpose for INTEGRATION actors (SF-CON-REQUEST-CONTEXT)" time="0.000742656">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; requires an Idempotency-Key header" time="0.000708132">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; keeps tenants isolated: the other tenant cannot read or reuse a dispatch or binding" time="0.000953536">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; refuses tenant-identifying headers and client-supplied connector mode, tenant or time" time="0.000748251">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; refuses raw PII in template parameters without echoing the value" time="0.007507839">
+            <failure message="expected 202 to be 400 // Object.is equality" type="AssertionError">
+AssertionError: expected 202 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 202
+
+ ❯ test/unit/service.test.ts:199:24
+            </failure>
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; refuses missing or extra template parameters" time="0.00060643">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; refuses citizen actors and fails closed on PDP denial or outage" time="0.00042274">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="dispatch (idempotent, tenant-scoped, contract-shaped) &gt; missing tenant context is a 401 and never reaches the repository" time="0.000148931">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; unknown binding -&gt; 503 SF-INT-001 and nothing persisted" time="0.000405601">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; SIMULATED critical in PRODUCTION -&gt; 503 SF-INT-001 and nothing persisted" time="0.000369784">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; wrong connector type -&gt; 503 SF-INT-001 and nothing persisted" time="0.000390392">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; binding for another environment -&gt; 503 SF-INT-001 and nothing persisted" time="0.000372453">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; a hub outage while resolving the binding fails closed without leaking provider detail" time="0.000359789">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; refuses a SIMULATED dispatch when no simulation run id is configured" time="0.000250194">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; refuses PUSH and IN_APP channels until a connector type exists (CCR residual)" time="0.000242179">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed connector boundary at dispatch &gt; refuses when no adapter is bound for the binding (no silent drop)" time="0.000629541">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="no network inside DB transactions &gt; resolves the binding and authorizes strictly outside any transaction" time="0.000473159">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="no network inside DB transactions &gt; refuses to start a nested transaction (guards NETWORK_IN_TX)" time="0.000660749">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/wiring.test.ts" timestamp="2026-10-10T02:08:23.306Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.010193292">
+        <testcase classname="test/unit/wiring.test.ts" name="composition root &gt; requires a repository or pool and builds service, API and worker otherwise" time="0.001748086">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="composition root &gt; unbound ports fail closed" time="0.004221264">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="errors, context, logging, fingerprints, authz &gt; maps database error classes to catalogue codes" time="0.000514279">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="errors, context, logging, fingerprints, authz &gt; rejects tenant-identifying and role-asserting headers" time="0.000860547">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="errors, context, logging, fingerprints, authz &gt; log scrubbing drops non-allow-listed keys and redacts PII-shaped values" time="0.000671212">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="errors, context, logging, fingerprints, authz &gt; request fingerprints are stable across key order and sensitive to route and body" time="0.000473914">
+        </testcase>
+        <testcase classname="test/unit/wiring.test.ts" name="errors, context, logging, fingerprints, authz &gt; refuses malformed envelopes and cross-tenant authorization inputs" time="0.000409927">
+        </testcase>
+    </testsuite>
+</testsuites>
