@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="1.943024814">
-    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-10T02:10:41.599Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.684440414">
-        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; issues, persists, replays and reads a metadata-only quote" time="0.069770308">
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="2.137201236">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-10T02:30:08.521Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.709185778">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; issues, persists, replays and reads a metadata-only quote" time="0.063799595">
         </testcase>
-        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; rules-sourced quote round-trips exact integers beyond 2^53 / 2 through bigint columns" time="0.038650789">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; rules-sourced quote round-trips exact integers beyond 2^53 / 2 through bigint columns" time="0.0338574">
         </testcase>
-        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; concurrent identical requests under different keys yield one immutable quote" time="0.046845832">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; concurrent identical requests under different keys yield one immutable quote" time="0.062702968">
         </testcase>
-        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; wrong tenant cannot read or list; CROSS_TENANT_LEAKAGE = 0" time="0.030115814">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; wrong tenant cannot read or list; CROSS_TENANT_LEAKAGE = 0" time="0.030369563">
         </testcase>
-        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; a refused calculation writes nothing (no quote, outbox or idempotency row)" time="0.029612765">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-020 API over real PostgreSQL (FORCE RLS runtime login) &gt; a refused calculation writes nothing (no quote, outbox or idempotency row)" time="0.024888316">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:10:41.600Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="1.2585844">
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS; tables owned by sf_migrator with FORCE RLS" time="0.014708948">
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:30:08.522Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="1.428015458">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS; tables owned by sf_migrator with FORCE RLS" time="0.013099099">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; no non-owner role holds UPDATE/DELETE/TRUNCATE on quote tables" time="0.005044234">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; no non-owner role holds UPDATE/DELETE/TRUNCATE on quote tables" time="0.005190977">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; a peer component login cannot read or write CMP-020 tables" time="0.007543332">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; a peer component login cannot read or write CMP-020 tables" time="0.009065175">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; wrong-tenant rows are invisible and cannot be written; no tenant context sees nothing" time="0.016180464">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; wrong-tenant rows are invisible and cannot be written; no tenant context sees nothing" time="0.020220216">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; issued quotes and lines are immutable even for the runtime role" time="0.006653178">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; issued quotes and lines are immutable even for the runtime role" time="0.006563886">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; commit-time integrity: total must equal the exact sum of lines and a quote needs a line" time="0.004549324">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; commit-time integrity: total must equal the exact sum of lines and a quote needs a line" time="0.005622476">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; column checks refuse client-authoritative amounts, negatives and unknown sources" time="0.003086404">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; column checks refuse client-authoritative amounts, negatives and unknown sources" time="0.003643399">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; down migration removes sf_fee and re-applies cleanly" time="0.727471235">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; down migration removes sf_fee and re-applies cleanly" time="0.786500013">
         </testcase>
     </testsuite>
 </testsuites>

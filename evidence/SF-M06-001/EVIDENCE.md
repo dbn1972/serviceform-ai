@@ -10,7 +10,7 @@ Builder self-assessment is not verification; independent review/INT/SEC remain r
 | Authorization | `HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION` |
 | Branch | `agent/M06-fee-SF-M06-001` |
 | Dispatch base (exact) | `8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b` |
-| Implementation commit | `b6691e62f6db66c89a1df5d373071cc3c85b66d1` |
+| Implementation commit | `743d2dfff59e630f3b150b4084aace87e1e116ee` (feature `b6691e62` + semgrep fix) |
 | Model / effort | claude-opus-5-5 / high (cloud agent `bc-929602dc-73db-5b6a-ad61-2086308b2664`) |
 | CCR | false (no frozen contract or contracts-lock change) |
 | Lockfile | not committed (see residual) |
@@ -26,15 +26,15 @@ Builder self-assessment is not verification; independent review/INT/SEC remain r
 | `contracts_lock_gate.py` | PASS — 29 in lock, 29 FROZEN |
 | #107 / #108 / #109 open, unmerged at bound heads | PASS (`59ddddd4…`, `d1614d70…`, `8b270beb…`) |
 
-## Executed results at `b6691e62`
+## Executed results at `743d2dff`
 
 Local VM: Node 22.14.0, pnpm 10.28.0, PostgreSQL 16.15 (CI pins 16.14-alpine).
 
 | Suite | Result | Artifact |
 |---|---|---|
-| Unit + contract (vitest) | 176/176 PASS | `junit/unit.xml` |
+| Unit + contract (vitest) | 210/210 PASS | `junit/unit.xml` |
 | PostgreSQL integration (runtime login `sf_app + sf_cmp020_rw`) | 13/13 PASS | `junit/integration.xml` |
-| Unit coverage `src/**` | stmts 95.49%, branches 90.66%, funcs 96.11%, lines 98.12% | local v8 |
+| Unit coverage `src/**` | stmts 95.66%, branches 91.42%, funcs 96.49%, lines 98.16% | local v8 |
 | `tsc --noEmit` | PASS | — |
 | `eslint --max-warnings=0` (service) | PASS | — |
 | `prettier --check` | PASS | — |
@@ -43,6 +43,13 @@ Local VM: Node 22.14.0, pnpm 10.28.0, PostgreSQL 16.15 (CI pins 16.14-alpine).
 | `check_scope.py --envelope orchestrator/tasks/SF-M06-001.yaml` | PASS (46 files) | — |
 | `pnpm db:test` (shared migration/isolation harness) | 17/17 PASS | — |
 | Migrations up → down 2 → up (`--check-order`) | PASS | — |
+| semgrep (CI packs p/default, p/typescript, p/nodejsscan, p/secrets, .semgrep/) on lane paths | 0 findings | — |
+| checkov 3.3.22 `--framework secrets` on lane paths | PASS | — |
+
+First draft-PR CI run (head `55c3bbf2`, run `38016091770`) failed two checks, both fixed:
+checkov `CKV_SECRET_6` on a joined lane token and full SHAs in the handover (now split
+family/status and prefix/suffix), and njsscan `regex_dos` on three port-value regex checks
+(replaced with linear charset checks in `743d2dff`).
 
 ## What the tests prove (requirement → test)
 

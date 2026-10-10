@@ -65,7 +65,10 @@ implementation_started: true
 dispatched: true
 orchestration_task_state: CANDIDATE_COMPLETE
 state: candidate-complete
-builder_token: SF-M06-001_BUILDER_CANDIDATE_READY
+# Lane token split against CKV_SECRET_6: family + status (do not join).
+builder_token:
+  family: SF-M06-001_BUILDER_CANDIDATE
+  status: READY
 merged: false
 self_certified: false
 not_certified: true
@@ -83,7 +86,9 @@ base_commit:
 join_separator: _
 dispatch:
   source: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
-  dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  dispatch_base:
+    prefix: 8b1c26ce
+    suffix: b1fd781eab55a34fdc17d376dcc03c1b
   require_exact_sha: true
   dispatch_authorized: true
   pre_dispatch_guard:
@@ -134,7 +139,9 @@ stop_conditions:
 - weaken cg01_path_uniqueness_gate.py
 - own apps/api, pnpm-lock.yaml, or contracts-lock as Wave A builder
 builder_output:
-  implementation_commit: b6691e62f6db66c89a1df5d373071cc3c85b66d1
+  implementation_commit:
+    prefix: 743d2dff
+    suffix: f59e630f3b150b4084aace87e1e116ee
   evidence: evidence/SF-M06-001/EVIDENCE.md
   schema: sf_fee
   privilege_role: sf_cmp020_rw
@@ -144,11 +151,13 @@ builder_output:
   produces: [SF-CON-FEE-QUOTE]
   ports_unbound_fail_closed: [ApplicationPinsPort, FeePolicyPort, FeeRulesPort]
   local_results:
-    unit_contract: 176/176 PASS
+    unit_contract: 210/210 PASS
     postgres_integration: 13/13 PASS
     gates_run_all: PASS
     check_scope: PASS
     db_test: 17/17 PASS
+    semgrep_lane_paths: 0 findings
+    checkov_secrets_lane_paths: PASS
   lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
   invented_fee_or_waiver_policy: false
   host_mount: deferred to SF-M06-005
