@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="4.179145233">
-    <testsuite name="test/integration/pg-flow.int.test.ts" timestamp="2026-10-10T02:08:05.675Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.56645459">
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; publishes templates, dispatches idempotently, drains with provider I/O outside any transaction" time="0.044040197">
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="2.046537738">
+    <testsuite name="test/integration/pg-flow.int.test.ts" timestamp="2026-10-10T03:30:00.768Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.616241851">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; publishes templates, dispatches idempotently, drains with provider I/O outside any transaction" time="0.053151766">
         </testcase>
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; writes outbox + audit rows in the same transaction and never persists the address" time="0.002196462">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; writes outbox + audit rows in the same transaction and never persists the address" time="0.002329498">
         </testcase>
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; tenant isolation: another tenant sees nothing, cannot reuse the binding or drain the queue" time="0.003826759">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; tenant isolation: another tenant sees nothing, cannot reuse the binding or drain the queue" time="0.004242993">
         </testcase>
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; concurrent drains never double-claim a dispatch (FOR UPDATE SKIP LOCKED)" time="0.047199648">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; concurrent drains never double-claim a dispatch (FOR UPDATE SKIP LOCKED)" time="0.056297062">
         </testcase>
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; an expired lease is re-claimed after a crash; an unexpired one is not" time="0.014051029">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; an expired lease is re-claimed after a crash; an unexpired one is not" time="0.016876527">
         </testcase>
-        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; a mid-transaction failure rolls back the dispatch, idempotency claim and outbox together" time="0.001883567">
+        <testcase classname="test/integration/pg-flow.int.test.ts" name="CMP-025 against PostgreSQL (INT-011, INT-013) &gt; a mid-transaction failure rolls back the dispatch, idempotency claim and outbox together" time="0.002355117">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:08:05.677Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="3.612690643">
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, runtime login is not the owner" time="0.01111916">
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T03:30:00.770Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="1.430295887">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, runtime login is not the owner" time="0.011580936">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on authoritative tables; a peer-component login is denied" time="0.012230706">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on authoritative tables; a peer-component login is denied" time="0.012308216">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides the other tenant, refuses cross-tenant writes and a missing tenant context" time="0.014170082">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides the other tenant, refuses cross-tenant writes and a missing tenant context" time="0.014049347">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; database refuses PRODUCTION-critical non-REAL, SIMULATED without marker, SIMULATED in UAT, REAL in CI" time="0.006853576">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; database refuses PRODUCTION-critical non-REAL, SIMULATED without marker, SIMULATED in UAT, REAL in CI" time="0.006654473">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; dispatch transitions are guarded; terminal rows, identity columns and deletes are refused" time="0.010511852">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; dispatch transitions are guarded; terminal rows, identity columns and deletes are refused" time="0.010476769">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; published templates and attempts are insert-only; the runtime cannot rewrite identity columns" time="0.007496609">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; published templates and attempts are insert-only; the runtime cannot rewrite identity columns" time="0.006094225">
         </testcase>
-        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; isolated reversibility: down of CMP-025 migrations then up restores the schema" time="0.841664372">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; isolated reversibility: down of CMP-025 migrations then up restores the schema" time="0.854623193">
         </testcase>
     </testsuite>
 </testsuites>

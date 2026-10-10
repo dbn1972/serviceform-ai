@@ -8,7 +8,7 @@ import {
   ACTOR_OFFICER,
   BINDING_SMS,
   CANARY_ADDRESS,
-  CANARY_SECRET_REF,
+  CANARY_CONNECTOR_REF,
   ctxFor,
   DISPATCH_BODY,
   integrationCtx,
@@ -337,7 +337,7 @@ describe('REAL and SANDBOX delivery via the Integration Hub port', () => {
       deliver(req) {
         seen.push(req);
         if (hubResult === 'down')
-          return Promise.reject(new Error(`hub down ${CANARY_ADDRESS} ${CANARY_SECRET_REF}`));
+          return Promise.reject(new Error(`hub down ${CANARY_ADDRESS} ${CANARY_CONNECTOR_REF}`));
         if (hubResult === 'bad')
           return Promise.resolve({ status: 'PERMANENT_FAILURE', errorCode: 'lower case' });
         return Promise.resolve({ status: 'ACCEPTED', providerMessageRef: 'prov-123' });
@@ -366,7 +366,7 @@ describe('REAL and SANDBOX delivery via the Integration Hub port', () => {
       expect(seen).toHaveLength(1);
       expect(seen[0]).toMatchObject({
         mode,
-        secretRef: CANARY_SECRET_REF,
+        secretRef: CANARY_CONNECTOR_REF,
         connectorBindingId: BINDING_SMS,
       });
       expect(seen[0]?.request.providerIdempotencyKey).toBe(id);
@@ -376,7 +376,7 @@ describe('REAL and SANDBOX delivery via the Integration Hub port', () => {
         connector_mode: mode,
       });
       expect(attempts(h)[0]?.simulation_marker).toBeNull();
-      expect(JSON.stringify(h.logger.lines)).not.toContain(CANARY_SECRET_REF);
+      expect(JSON.stringify(h.logger.lines)).not.toContain(CANARY_CONNECTOR_REF);
     },
   );
 
@@ -387,7 +387,7 @@ describe('REAL and SANDBOX delivery via the Integration Hub port', () => {
     expect(row(h, id).last_error_code).toBe('HUB_UNAVAILABLE');
     const dump = JSON.stringify([h.repo.tenant(TENANT_A), h.logger.lines]);
     expect(dump).not.toContain(CANARY_ADDRESS);
-    expect(dump).not.toContain(CANARY_SECRET_REF);
+    expect(dump).not.toContain(CANARY_CONNECTOR_REF);
   });
 
   it('normalises a malformed hub error code', async () => {
@@ -508,7 +508,7 @@ describe('no secrets or PII in logs, events, audit or rows', () => {
       h.repo.tenant(TENANT_A).attempts,
       h.repo.tenant(TENANT_A).idempotency,
     ]);
-    for (const canary of [CANARY_ADDRESS, 'canary.person@example.invalid', CANARY_SECRET_REF]) {
+    for (const canary of [CANARY_ADDRESS, 'canary.person@example.invalid', CANARY_CONNECTOR_REF]) {
       expect(dump).not.toContain(canary);
     }
     expect(h.logger.lines.length).toBeGreaterThan(0);

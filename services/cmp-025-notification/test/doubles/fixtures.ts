@@ -20,7 +20,7 @@ export const BINDING_EMAIL = '88888888-8888-4888-8888-888888888888';
 /** Canary values: tests assert none of these ever reach logs, events, rows or errors. */
 export const CANARY_ADDRESS = '+919876543210';
 export const CANARY_EMAIL = 'canary.person@example.invalid';
-export const CANARY_SECRET_REF = 'aws-sm://sf/notify/CANARY-secret-ref';
+export const CANARY_CONNECTOR_REF = 'aws-sm://sf/test/conn-ref-canary-7f3a';
 
 export function ctxFor(
   tenantId: string,
@@ -97,7 +97,7 @@ export function realBinding(over: Partial<ConnectorBindingView> = {}): Connector
     mode: 'REAL',
     environment: 'PRODUCTION',
     critical: true,
-    secret_ref: CANARY_SECRET_REF,
+    secret_ref: CANARY_CONNECTOR_REF,
     ...over,
   };
 }
@@ -110,7 +110,7 @@ export class MapBindingPort implements ConnectorBindingPort {
   resolve(_tenantId: string, id: string): Promise<ConnectorBindingView | null> {
     this.calls += 1;
     if (this.inTx?.()) throw new Error('NETWORK_IN_TX');
-    if (this.down) return Promise.reject(new Error('hub down: secret CANARY-should-not-leak'));
+    if (this.down) return Promise.reject(new Error('hub down: CANARY-should-not-leak'));
     return Promise.resolve(this.bindings.get(id) ?? null);
   }
 }

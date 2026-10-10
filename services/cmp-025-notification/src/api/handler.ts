@@ -7,7 +7,7 @@ import {
 import { IDEMPOTENCY_KEY, requestFingerprint } from '../domain/fingerprint.js';
 import { isUuid } from '../domain/uuid.js';
 import { Cmp025Error, detail, mapPgError } from '../errors.js';
-import { TEMPLATE_REF_RE } from '../domain/model.js';
+import { isTemplateRef } from '../domain/model.js';
 import {
   assertNoClientTime,
   validateDispatchInput,
@@ -112,7 +112,7 @@ function pathUuid(params: Record<string, string>, name: string): string {
 
 function pathTemplateRef(params: Record<string, string>): string {
   const v = params['template_ref'];
-  if (v === undefined || !TEMPLATE_REF_RE.test(v)) {
+  if (v === undefined || !isTemplateRef(v)) {
     throw new Cmp025Error('SF-SYS-003', detail('REF_REQUIRED', '/template_ref'));
   }
   return v;

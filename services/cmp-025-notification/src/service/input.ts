@@ -1,11 +1,11 @@
 import {
   CHANNELS,
   HANDLE_CLASSES,
-  HANDLE_REF_RE,
+  isHandleRef,
+  isLocale,
   isOneOf,
-  LOCALE_RE,
-  PARAM_NAME_RE,
-  TEMPLATE_REF_RE,
+  isParamName,
+  isTemplateRef,
   type Channel,
   type HandleClass,
 } from '../domain/model.js';
@@ -83,8 +83,13 @@ function requireUuid(value: unknown, pointer: string): string {
   return value;
 }
 
-function requireMatching(value: unknown, re: RegExp, pointer: string, code: string): string {
-  if (typeof value !== 'string' || !re.test(value)) bad(pointer, code);
+function requireValid(
+  value: unknown,
+  valid: (candidate: unknown) => candidate is string,
+  pointer: string,
+  code: string,
+): string {
+  if (!valid(value)) bad(pointer, code);
   return value;
 }
 
@@ -96,7 +101,7 @@ function parseParams(raw: unknown): Record<string, string> {
   if (entries.length > MAX_PARAMS) bad('/template_params', 'TOO_MANY_PARAMS');
   const out: Record<string, string> = {};
   for (const [name, value] of entries) {
-    if (!PARAM_NAME_RE.test(name)) bad('/template_params', 'PARAM_NAME_INVALID');
+    if (!isParamName(name)) bad('/template_params', 'PARAM_NAME_INVALID');
     if (typeof value !== 'string') bad(`/template_params/${name}`, 'PARAM_STRING_REQUIRED');
     // Pointers name the parameter, never echo the value (it may be PII-shaped).
     if (findPii(value) !== null) bad(`/template_params/${name}`, 'PII_IN_PARAM_REFUSED');
@@ -137,19 +142,14 @@ export function validateDispatchInput(body: unknown): DispatchInput {
       application === undefined || application === null
         ? null
         : requireUuid(application, '/application_id'),
-    template_ref: requireMatching(
-      rec['template_ref'],
-      TEMPLATE_REF_RE,
-      '/template_ref',
-      'REF_REQUIRED',
-    ),
+    template_ref: requireValid(rec['template_ref'], isTemplateRef, '/template_ref', 'REF_REQUIRED'),
     template_version: typeof version === 'number' ? version : null,
     channel,
-    locale: requireMatching(rec['locale'], LOCALE_RE, '/locale', 'LOCALE_INVALID'),
+    locale: requireValid(rec['locale'], isLocale, '/locale', 'LOCALE_INVALID'),
     recipient_handle_class: handleClass,
-    recipient_handle_ref: requireMatching(
+    recipient_handle_ref: requireValid(
       rec['recipient_handle_ref'],
-      HANDLE_REF_RE,
+      isHandleRef,
       '/recipient_handle_ref',
       'HANDLE_REF_INVALID',
     ),
@@ -192,14 +192,9 @@ export function validatePublishTemplateInput(body: unknown): PublishTemplateInpu
     bad('/allowed_params', 'ALLOWED_PARAMS_INVALID');
   }
   return {
-    template_ref: requireMatching(
-      rec['template_ref'],
-      TEMPLATE_REF_RE,
-      '/template_ref',
-      'REF_REQUIRED',
-    ),
+    template_ref: requireValid(rec['template_ref'], isTemplateRef, '/template_ref', 'REF_REQUIRED'),
     channel,
-    locale: requireMatching(rec['locale'], LOCALE_RE, '/locale', 'LOCALE_INVALID'),
+    locale: requireValid(rec['locale'], isLocale, '/locale', 'LOCALE_INVALID'),
     subject_template: typeof subject === 'string' ? subject : null,
     body_template: text,
     allowed_params: allowed as string[],

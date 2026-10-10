@@ -4,7 +4,7 @@ import {
   CONNECTOR_MODES,
   ENVIRONMENTS,
   isOneOf,
-  SECRET_REF_RE,
+  isSecretRef,
   SIMULATION_ENVIRONMENTS,
   type Channel,
   type ConnectorMode,
@@ -50,6 +50,7 @@ export function isSimulationMarker(value: unknown): value is SimulationMarker {
     keys.every((k) => allowed.includes(k)) &&
     m['simulation'] === true &&
     typeof m['scenario'] === 'string' &&
+    m['scenario'].length <= 64 &&
     SCENARIO_RE.test(m['scenario']) &&
     typeof m['test_run_id'] === 'string' &&
     m['test_run_id'].length >= 1 &&
@@ -103,7 +104,7 @@ export function assertBindingPolicy(
   if (binding.connector_type !== expectedType) refuse('CONNECTOR_TYPE_MISMATCH');
   if (binding.mode === 'SIMULATED') {
     if (!binding.simulator_version) refuse('SIMULATOR_VERSION_REQUIRED');
-  } else if (binding.secret_ref === null || !SECRET_REF_RE.test(binding.secret_ref)) {
+  } else if (!isSecretRef(binding.secret_ref)) {
     refuse('SECRET_REF_REQUIRED');
   }
   return binding;

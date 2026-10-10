@@ -1,4 +1,4 @@
-import { PARAM_NAME_RE } from './model.js';
+import { isParamName } from './model.js';
 
 export type PiiKind = 'EMAIL' | 'PHONE_OR_ID_NUMBER' | 'TAX_ID' | 'CONTROL_CHARS' | 'TOO_LONG';
 
@@ -10,8 +10,13 @@ export const MAX_PARAMS = 32;
 // such as APP-2026-000123 are therefore not misread as a phone number.
 const NUMERIC_RUN = /(?<![A-Za-z0-9-])\+?\d[\d\s().-]{8,}\d(?![A-Za-z0-9])/g;
 const TAX_ID = /\b[A-Z]{5}\d{4}[A-Z]\b/;
-// eslint-disable-next-line no-control-regex
-const CONTROL = /[\u0000-\u001f\u007f]/;
+function hasControlChars(value: string): boolean {
+  for (let i = 0; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    if (c < 32 || c === 127) return true;
+  }
+  return false;
+}
 
 function digitCount(text: string): number {
   let n = 0;
@@ -22,7 +27,7 @@ function digitCount(text: string): number {
 /** Deterministic PII screen for template parameter values (INT-013, Constitution: no PII in payloads). */
 export function findPii(value: string): PiiKind | null {
   if (value.length > MAX_PARAM_VALUE_LENGTH) return 'TOO_LONG';
-  if (CONTROL.test(value)) return 'CONTROL_CHARS';
+  if (hasControlChars(value)) return 'CONTROL_CHARS';
   if (value.includes('@')) return 'EMAIL';
   if (TAX_ID.test(value)) return 'TAX_ID';
   for (const match of value.matchAll(NUMERIC_RUN)) {
@@ -35,7 +40,7 @@ const PII_PARAM_NAME =
   /(phone|mobile|msisdn|e?mail|aadhaar|aadhar|passport|address|dob|birth|(^|_)pan(_|$))/i;
 
 export function looksLikePiiParamName(name: string): boolean {
-  return PII_PARAM_NAME.test(name) || !PARAM_NAME_RE.test(name);
+  return PII_PARAM_NAME.test(name) || !isParamName(name);
 }
 
 /** Returns the first offending parameter name, or null when the whole map is PII-free. */

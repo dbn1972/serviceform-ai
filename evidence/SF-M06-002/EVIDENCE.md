@@ -86,3 +86,26 @@ It is reported, not hidden; the independent reviewer may want an exhaustion-race
 - Runtime role/RLS proof used a local PostgreSQL 16.15 with a superuser admin role for setup only.
 - `pnpm-lock.yaml` was not modified (`EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL`: the new importer row is
   needed on main; `pnpm install` rewrites it locally and the rewrite was discarded).
+
+## Security correction (HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION)
+
+Prior head `c6410dbb71d9aaeb879c0569c16e335d8df3617d` failed the SAST (semgrep) job with 3 blocking findings
+(regex_dos in `src/domain/simulation.ts` and `src/service/input.ts`; node_secret in `test/doubles/fixtures.ts`).
+The sections above describe that prior head; the corrected run is in `correction/` (supersedes counts above).
+
+- Regex matching of client-supplied text was replaced by linear, length-bounded validators in
+  `src/domain/model.ts` (same charsets and bounds; `isSecretRef` adds a 512 character cap, stricter and fail-closed).
+  `test/unit/model-validators.test.ts` records a truth table from the previous patterns and proves multi-megabyte
+  hostile input is refused in well under a second.
+- The secret-shaped fixture is now `CANARY_CONNECTOR_REF` = a synthetic, non-credential reference that still passes
+  secret-ref validation and is still asserted absent from logs, events, rows and errors.
+- No suppression comments, workflow, semgrep config, lockfile or contract change.
+
+| Check (corrected tree) | Result |
+|---|---|
+| unit + contract | 163/163 PASS |
+| PostgreSQL integration | 13/13 PASS |
+| eslint max-warnings 0 / tsc / prettier | PASS / PASS / PASS |
+| `run_all.py` | 10/10 PASS |
+| coverage stmts / branches | 93.67 / 87.84 |
+| semgrep (CI config, local run 1.180.0) | 0 findings; same config reports 3 on the prior head |

@@ -1,5 +1,5 @@
 import { Cmp025Error, detail } from '../errors.js';
-import { PARAM_NAME_RE } from './model.js';
+import { isParamName } from './model.js';
 import { looksLikePiiParamName } from './pii-guard.js';
 
 const PLACEHOLDER = /\{\{\s*([^{}\s]+)\s*\}\}/g;
@@ -29,7 +29,7 @@ export function assertTemplateDefinition(def: TemplateDefinition): void {
     throw new Cmp025Error('SF-SYS-003', detail('DUPLICATE_PARAM', '/allowed_params'));
   }
   for (const name of allowed) {
-    if (!PARAM_NAME_RE.test(name) || looksLikePiiParamName(name)) {
+    if (!isParamName(name) || looksLikePiiParamName(name)) {
       throw new Cmp025Error('SF-SYS-003', detail('PII_PARAM_NAME_REFUSED', '/allowed_params'));
     }
   }

@@ -1,4 +1,4 @@
-# SF-M06-002 builder handover — CMP-025 Notification Service (CG-02 Wave A)
+# SF-M06-002 builder handover (security-corrected) — CMP-025 Notification Service (CG-02 Wave A)
 # BUILDER CANDIDATE. Draft PR. Not merged. Not VERIFIED. Not CERTIFIED. Not G6. Builder cannot self-certify.
 # Authorization: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION (lane SF-M06-002 only).
 
@@ -21,8 +21,8 @@ branch: agent/M06-notification-SF-M06-002
 privilege_role: sf_cmp025_rw
 schema: sf_notification
 
-state: BUILDER_CANDIDATE_READY
-orchestration_task_state: BUILDER_CANDIDATE_READY
+state: SECURITY_CORRECTION_CANDIDATE_READY
+orchestration_task_state: SECURITY_CORRECTION_CANDIDATE_READY
 dispatched: true
 planning_only: false
 implementation_authorized: true
@@ -98,3 +98,22 @@ not_done_by_design:
   - No SMS/email/push provider SDK, no network call in service source, no resolved address or secret persisted or logged.
   - No SF-M08-005, Wave B, STITCH, host, INT/SEC/EVD, M07+; no CERTIFIED/G3/G6 claim.
 recommended_next: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW
+
+security_correction:
+  authorization: HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION
+  trigger: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW = BLOCKED_CORRECTION_REQUIRED (Semgrep 3 blocking on prior head)
+  guard: origin/main == 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b; prior PR head == c6410dbb71d9aaeb879c0569c16e335d8df3617d (no rebase)
+  prior_head: c6410dbb71d9aaeb879c0569c16e335d8df3617d
+  prior_findings:
+    - ajinabraham.njsscan.dos.regex_dos services/cmp-025-notification/src/domain/simulation.ts (SECRET_REF_RE.test on client-supplied secret_ref)
+    - ajinabraham.njsscan.dos.regex_dos services/cmp-025-notification/src/service/input.ts (requireMatching(value, re) with dynamic RegExp)
+    - ajinabraham.njsscan.generic.hardcoded_secrets.node_secret services/cmp-025-notification/test/doubles/fixtures.ts (secret-named credential-shaped constant)
+  fix:
+    - client-supplied text is no longer matched with regular expressions in model/simulation/input; linear single-pass validators with the length bound checked first (isTemplateRef, isHandleRef, isLocale, isParamName, isSecretRef); same charsets and bounds
+    - isSecretRef adds a 512 character upper bound (frozen schema has none): stricter, fail-closed
+    - marker scenario length bounded before pattern match
+    - fixture renamed CANARY_CONNECTOR_REF with synthetic non-credential value that still passes secret-ref validation and still serves as a leak canary
+    - no suppressions, no workflow/semgrep/lockfile/contract edits
+  evidence: evidence/SF-M06-002/correction/
+  local_results: 163/163 unit+contract, 13/13 PostgreSQL integration, eslint 0 warnings, tsc, prettier, gates 10/10, depcruise, semgrep (CI-equivalent config) 0 findings on corrected tree and 3 on prior head
+  ci_required_on_new_head: [CI, Security, Developer-platform SUCCESS at exact head; Semgrep blocking 0; hardcoded-secret 0]

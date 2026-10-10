@@ -60,11 +60,6 @@ export const CHANNEL_CONNECTOR_TYPE: Readonly<Partial<Record<Channel, string>>> 
 };
 
 export const CODE_RE = /^[A-Z][A-Z0-9_]{1,63}$/;
-export const TEMPLATE_REF_RE = /^[A-Za-z0-9_.:-]{1,128}$/;
-export const LOCALE_RE = /^(?:[a-z]{2}|[a-z]{2}-[A-Z]{2})$/;
-export const HANDLE_REF_RE = /^[A-Za-z0-9_.:-]{8,128}$/;
-export const PARAM_NAME_RE = /^[a-z][a-z0-9_]{0,63}$/;
-export const SECRET_REF_RE = /^(aws-sm|aws-ssm|vault):\/\/[A-Za-z0-9/_.+=@-]+$/;
 
 export const DEFAULT_MAX_ATTEMPTS = 5;
 export const LEASE_MS = 60_000;
@@ -75,6 +70,77 @@ const BACKOFF_CAP_MS = 60 * 60_000;
 export function backoffMs(attemptsSoFar: number): number {
   const exp = Math.max(0, attemptsSoFar - 1);
   return Math.min(BACKOFF_CAP_MS, BACKOFF_BASE_MS * 2 ** exp);
+}
+
+const MAX_REF_LENGTH = 128;
+const MAX_SECRET_REF_LENGTH = 512;
+const SECRET_REF_PREFIXES = ['aws-sm://', 'aws-ssm://', 'vault://'] as const;
+
+const isLower = (c: number): boolean => c >= 97 && c <= 122;
+const isUpper = (c: number): boolean => c >= 65 && c <= 90;
+const isDigit = (c: number): boolean => c >= 48 && c <= 57;
+
+/**
+ * Charset validators are linear single-pass scans guarded by a length bound checked first; they
+ * replace regular expressions on client-supplied text so no input can trigger backtracking.
+ */
+function onlyAllowed(value: string, start: number, extra: string): boolean {
+  for (let i = start; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    if (!isLower(c) && !isUpper(c) && !isDigit(c) && !extra.includes(value.charAt(i))) return false;
+  }
+  return true;
+}
+
+/** `[A-Za-z0-9_.:-]{1,128}` */
+export function isTemplateRef(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length >= 1 &&
+    value.length <= MAX_REF_LENGTH &&
+    onlyAllowed(value, 0, '_.:-')
+  );
+}
+
+/** `[A-Za-z0-9_.:-]{8,128}` */
+export function isHandleRef(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length >= 8 &&
+    value.length <= MAX_REF_LENGTH &&
+    onlyAllowed(value, 0, '_.:-')
+  );
+}
+
+/** `ll` or `ll-CC` (two lowercase letters, optional hyphen and two uppercase letters). */
+export function isLocale(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  if (value.length !== 2 && value.length !== 5) return false;
+  if (!isLower(value.charCodeAt(0)) || !isLower(value.charCodeAt(1))) return false;
+  if (value.length === 2) return true;
+  return value.charAt(2) === '-' && isUpper(value.charCodeAt(3)) && isUpper(value.charCodeAt(4));
+}
+
+/** `[a-z][a-z0-9_]{0,63}` */
+export function isParamName(value: unknown): value is string {
+  if (typeof value !== 'string' || value.length < 1 || value.length > 64) return false;
+  if (!isLower(value.charCodeAt(0))) return false;
+  for (let i = 1; i < value.length; i += 1) {
+    const c = value.charCodeAt(i);
+    if (!isLower(c) && !isDigit(c) && c !== 95) return false;
+  }
+  return true;
+}
+
+/**
+ * Reference into an external secret store: `(aws-sm|aws-ssm|vault)://[A-Za-z0-9/_.+=@-]+`.
+ * The frozen schema sets no upper bound; this builder refuses references over 512 characters.
+ */
+export function isSecretRef(value: unknown): value is string {
+  if (typeof value !== 'string' || value.length > MAX_SECRET_REF_LENGTH) return false;
+  const prefix = SECRET_REF_PREFIXES.find((p) => value.startsWith(p));
+  if (prefix === undefined || value.length === prefix.length) return false;
+  return onlyAllowed(value, prefix.length, '/_.+=@-');
 }
 
 export function isCode(value: unknown): value is string {
