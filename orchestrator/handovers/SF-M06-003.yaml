@@ -119,3 +119,36 @@ acceptance_tests_planning:
 - Threads are tenant-scoped with RLS negatives planned
 - Attachment refs resolve through storage ports
 - Host mount deferred to SF-M06-005
+
+builder_notes:
+  recorded_by: SF-M06-003 builder candidate (not a gate; no self-certification)
+  dispatch_authorization: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
+  dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  branch: agent/M06-messaging-SF-M06-003
+  tested_code_sha: 346991d2e95af7e16086a1ab090d0b5d55c4a2b3
+  candidate_head: see PR head; evidence/handover-only commits follow tested_code_sha
+  pr: https://github.com/dbn1972/serviceform-ai/pull/117
+  pr_state: DRAFT_DO_NOT_MERGE
+  evidence_dir: evidence/SF-M06-003/
+  cmp_026_datastore: sf_messaging (Aurora PostgreSQL schema; no new database or infrastructure)
+  privilege_role: sf_cmp026_rw (NOLOGIN, NOSUPERUSER, NOBYPASSRLS)
+  migrations:
+    - db/migrations/1759542600000_cmp-026-communication-messaging.sql
+    - db/migrations/1759542600001_cmp-026-outbox.sql
+  frozen_contract_consumed: SF-CON-MESSAGE-THREAD (unchanged; hash asserted by contract test)
+  attachments: CMP-032 storage-key references via AttachmentStoragePort only; no object-store ownership or credentials
+  authorization: OPA via AuthorizationPort; fail closed on error, malformed decision or deny
+  CROSS_TENANT_LEAKAGE: 0 (executed negative tests; see evidence)
+  frozen_contracts: unchanged
+  contracts_lock: unchanged
+  lockfile: unchanged
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+  host_mount: deferred to SF-M06-005
+  sibling_code_dependency: none
+  ccr_required: false
+  self_certified: false
+  certified: false
+  not_certified: true
+  g3: false
+  g6: false
+  recommended_next: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW
