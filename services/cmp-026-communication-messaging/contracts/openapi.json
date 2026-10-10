@@ -1,0 +1,229 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CMP-026 Communication / Messaging",
+    "version": "0.0.0"
+  },
+  "paths": {
+    "/threads": {
+      "post": {
+        "operationId": "openThread",
+        "responses": {
+          "201": {
+            "description": "opened"
+          },
+          "403": {
+            "description": "denied"
+          },
+          "409": {
+            "description": "idempotency conflict"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/applications/{applicationId}/threads": {
+      "get": {
+        "operationId": "listThreadsForApplication",
+        "responses": {
+          "200": {
+            "description": "threads the caller participates in"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}": {
+      "get": {
+        "operationId": "getThread",
+        "responses": {
+          "200": {
+            "description": "thread plus SF-CON-MESSAGE-THREAD document"
+          },
+          "404": {
+            "description": "missing or not a participant"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/transitions": {
+      "get": {
+        "operationId": "listThreadTransitions",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/commands": {
+      "post": {
+        "operationId": "threadCommand",
+        "responses": {
+          "200": {
+            "description": "ok"
+          },
+          "409": {
+            "description": "stale or illegal"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/threads/{threadId}/participants": {
+      "post": {
+        "operationId": "addParticipant",
+        "responses": {
+          "201": {
+            "description": "added"
+          },
+          "403": {
+            "description": "cross-tenant or ineligible"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/threads/{threadId}/participants/remove": {
+      "post": {
+        "operationId": "removeParticipant",
+        "responses": {
+          "200": {
+            "description": "removed"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/threads/{threadId}/messages": {
+      "post": {
+        "operationId": "sendMessage",
+        "responses": {
+          "201": {
+            "description": "sent"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      },
+      "get": {
+        "operationId": "listMessages",
+        "responses": {
+          "200": {
+            "description": "page ordered by sequence"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/messages/{messageId}/retract": {
+      "post": {
+        "operationId": "retractMessage",
+        "responses": {
+          "200": {
+            "description": "retracted; row retained for audit"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/threads/{threadId}/messages/{messageId}/acknowledge": {
+      "post": {
+        "operationId": "acknowledgeNotice",
+        "responses": {
+          "201": {
+            "description": "acknowledged"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ]
+      }
+    },
+    "/threads/{threadId}/read": {
+      "post": {
+        "operationId": "markRead",
+        "responses": {
+          "200": {
+            "description": "monotonic read position recorded"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/attachments/{attachmentId}/access": {
+      "get": {
+        "operationId": "getAttachmentAccess",
+        "responses": {
+          "200": {
+            "description": "short-lived CMP-032 access grant"
+          }
+        }
+      }
+    }
+  }
+}
