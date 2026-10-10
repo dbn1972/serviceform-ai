@@ -9,7 +9,7 @@ verification and a human/CI gate.
 | Task / component | SF-M08-003 / CMP-045 (INT-010, INT-011) |
 | Dispatch base | `8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b` (`origin/main` at dispatch) |
 | Branch | `agent/M08-analytics-SF-M08-003` |
-| Code commit the logs were produced on | `1eccfd63a6d68ad1fa448d4ad11129ab50cee939` (see `logs/code-commit.txt`); later commits on the branch change only `evidence/SF-M08-003/**` and `orchestrator/handovers/SF-M08-003.yaml` |
+| Code commit the logs were produced on | `07df111d112d812e0fc90cfb325ce06626a4bc35` (see `logs/code-commit.txt`; security correction of `b9ce25c8`); later commits on the branch change only `evidence/SF-M08-003/**` and `orchestrator/handovers/SF-M08-003.yaml` |
 | Local run environment | Node v22.14.0, pnpm 10.28.0, PostgreSQL 16.15 (Ubuntu package; CI pins 16.14, CI result is the authoritative run) |
 | Connector mode | none (no external connector; replay source is an in-memory simulator, never production) |
 | Run identifiers | local run; GitHub Actions run ids are bound by the PR head SHA once CI reports |
@@ -21,15 +21,30 @@ verification and a human/CI gate.
 | typecheck (`tsc --noEmit`, strict + exactOptionalPropertyTypes) | exit 0 | `logs/typecheck.log` |
 | eslint `--max-warnings=0` | exit 0 | `logs/eslint.log` |
 | prettier `--check` | exit 0 | `logs/prettier.log` |
-| unit + contract (4 files) | 70 passed / 0 failed | `logs/unit.log`, `junit/unit.xml` |
-| root `vitest run services/cmp-045-analytics-mis` | 70 passed | `logs/root-vitest.log` |
+| unit + contract (5 files) | 73 passed / 0 failed | `logs/unit.log`, `junit/unit.xml` |
+| root `vitest run services/cmp-045-analytics-mis` | 73 passed | `logs/root-vitest.log` |
 | PostgreSQL integration (privilege/RLS/guards + end-to-end) | 22 passed / 0 failed | `logs/integration.log`, `junit/integration.xml` |
-| Unit coverage of `src/**` (pg.ts partly integration-covered) | stmts 88.8%, branches 81.4%, funcs 88.3%, lines 91.4% | `logs/coverage-unit.log` |
+| Unit coverage of `src/**` (pg.ts partly integration-covered) | stmts 89.0%, branches 81.8%, funcs 88.7%, lines 91.5% | `logs/coverage-unit.log` |
 | repo gates (`scripts/gates/run_all.py`) | 10/10 passed (contracts-lock 29/29 FROZEN, migration-lint, openapi-asyncapi, hardcoding, ...) | `logs/gates.log` |
 | migration lint | pass | `logs/migration-lint.log` |
+| Semgrep (CI rule set, local, `services/cmp-045-analytics-mis` + `db/migrations`) | 0 findings, 0 blocking | `logs/semgrep-local.log` |
 | dependency-cruiser | no violations (37 modules) | `logs/depcruise.log` |
 | `pnpm db:test` (shared migrations/tenant-isolation harness) | 17 passed | `logs/db-test.log` |
 | migration down (both files) then up | schema dropped then 9 tables recreated | manual run, recorded below |
+
+## Security correction (HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION)
+
+CI Semgrep on `b9ce25c8c5f965cd39cd363783812846775fc8c2` (security run 38016180661) reported 2 blocking
+`ajinabraham.njsscan.dos.regex_dos` findings:
+
+| Finding | Correction |
+|---|---|
+| `src/service/input.ts:195` timestamp prefix regex on caller input | new `src/domain/timestamp.ts`: length bound (<= 40), fixed-position character checks, then `Date.parse`; no pattern matching on input. The identical check in `src/domain/envelope.ts` was moved to the same helper |
+| `test/unit/pg-repo.test.ts:21` regex over SQL text | exact-equality list for `BEGIN`/`COMMIT`/`ROLLBACK` plus `startsWith` |
+
+No suppressions, no workflow, semgrep config, contract or lockfile change. New tests in
+`test/unit/timestamp.test.ts` cover shape, separators, non-digits, non-dates and a 100k-character input.
+The pre-correction `input.ts` is still flagged by `p/nodejsscan` when scanned alone and the corrected file is not.
 
 ## Requirement and risk mapping
 

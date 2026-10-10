@@ -125,7 +125,7 @@ builder_notes:
   recorded_by: component_builder (serviceform-foundation-builder)
   branch: agent/M08-analytics-SF-M08-003
   base_commit_used: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
-  result_commit_code: 1eccfd63a6d68ad1fa448d4ad11129ab50cee939
+  result_commit_code: 07df111d112d812e0fc90cfb325ce06626a4bc35
   result_commit_note: >-
     Last code commit. Evidence logs were produced on it. The PR head is this commit plus
     commits that change only evidence/SF-M08-003/** and this handover; the PR head is the
@@ -147,6 +147,11 @@ builder_notes:
   lockfile: unchanged (EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL)
   cmp_045_datastore: sf_analytics (aggregates and definitions only; no authoritative case/payment state)
   CROSS_TENANT_LEAKAGE: 0
+  security_correction:
+    previous_head: b9ce25c8c5f965cd39cd363783812846775fc8c2
+    findings_fixed: 2 (ajinabraham.njsscan.dos.regex_dos in input.ts and pg-repo.test.ts)
+    method: bounded fixed-position timestamp parsing plus Date.parse; exact-match SQL control statements in test
+    suppressions: none
   evidence: evidence/SF-M08-003/EVIDENCE.md
   blockers: none
   risks:
