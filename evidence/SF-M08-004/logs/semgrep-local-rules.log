@@ -1,0 +1,27 @@
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 36 files tracked by git with 4 Code rules:
+  Scanning 27 files with 4 ts rules.
+Rule semgrep.sf-no-console-log contains an include pattern 'apps/api/src/' that will soon be interpreted as '/apps/api/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/apps/api/src/'. To confirm the anchored behavior and avoid this warning, change it to '/apps/api/src/'.
+Rule semgrep.sf-no-console-log contains an include pattern 'packages/*/src/' that will soon be interpreted as '/packages/*/src/' to comply with the Semgrepignore v2 and Gitignore specifications. To make this pattern permanently unanchored, edit rule semgrep.sf-no-console-log and change it to '**/packages/*/src/'. To confirm the anchored behavior and avoid this warning, change it to '/packages/*/src/'.
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 0 (0 blocking)
+ • Rules run: 4
+ • Targets scanned: 27
+ • Parsed lines: ~100.0%
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 4 rules on 27 files: 0 findings.
+If Semgrep missed a finding, please send us feedback to let us know!
+See https://semgrep.dev/docs/reporting-false-negatives/
+exit=0

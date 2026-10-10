@@ -1,6 +1,7 @@
-# M08 READY envelope — Operational Dashboard (CG-02 Wave A)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G6.
-# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
+# SF-M08-004 handover — CMP-046 Operational Dashboard (CG-02 Wave A)
+# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. Implementation candidate-complete.
+# DRAFT PR; do not merge. Not MERGED. Not CERTIFIED. Not G3. Not G6.
+# Task envelope orchestrator/tasks/SF-M08-004.yaml was not modified.
 # SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
 
 task_id: SF-M08-004
@@ -25,13 +26,18 @@ parallel_group: M08-A
 privilege_role: sf_cmp046_rw
 schema: sf_ops_dashboard
 hard_serial_locks: [LOCK-2, LOCK-3]
+dispatch_base_policy:
+  source: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
+  require_exact_sha: true
+  dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  dispatch_authorized: true
 depends_on:
 - SF-M08-CG-001 FROZEN_ON_MAIN on origin/main at/after prefix 5acb291e
 - 29 FROZEN contracts MATCH (existing 19 unchanged + ten CG-02 hash-verified)
 - LOCK-1 planning PR on main (#112)
 - LOCK-2 freeze merged (#113) at 5acb291e…
 - human CG-02 Wave A READY authorization granted (Debabrata Nayak)
-- uniqueness PASS; builder spawn pending activation record merge
+- uniqueness PASS; dispatch authorized (HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION)
 allowed_write_paths:
 - services/cmp-046-operational-dashboard/**
 - db/migrations/*_cmp-046-*.sql
@@ -57,9 +63,10 @@ serial_after:
 builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
 self_certified: false
 not_certified: true
 certified: false
@@ -118,3 +125,13 @@ acceptance_tests_planning:
 - Unauthorized / wrong-tenant dashboard access denied
 - No case approval actions from ops dashboard
 - Host mount deferred to SF-M08-007
+candidate:
+  pull_request: https://github.com/dbn1972/serviceform-ai/pull/116
+  draft: true
+  evidence: evidence/SF-M08-004/EVIDENCE.md
+  residuals:
+  - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row; pnpm-lock.yaml not modified)
+  - OPA policy data for OPS_VIEW_SLA / OPS_VIEW_QUEUE / OPS_VIEW_INTEGRATION / OPS_VIEW_EVENTS / OPS_VIEW_HEALTH / OPS_REFRESH_VIEW (policy/** read-only for this lane)
+  - concrete owner adapters for the five SummaryPorts (CMP-029, CMP-017, CMP-037, CMP-038, CMP-047)
+  - host mount deferred to SF-M08-007; no UI delivered
+  - cross-tenant / platform-wide operator view not built (needs ADR)
