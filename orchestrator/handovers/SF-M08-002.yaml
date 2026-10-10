@@ -1,8 +1,8 @@
-# M08 READY envelope — Recommendation Engine (CG-02 Wave A)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G6.
-# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
-# SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
-
+# SF-M08-002 handover — CMP-007 Recommendation Engine (CG-02 Wave A)
+# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. Implementation candidate-complete.
+# Immutable head pending this commit's exact-head CI. DRAFT PR. Not MERGED. Not VERIFIED. Not CERTIFIED. Not G3. Not G6.
+# Task envelope orchestrator/tasks/SF-M08-002.yaml was not modified.
+# NON_AUTHORITATIVE decision support; all model calls via CMP-039 only.
 task_id: SF-M08-002
 title: Recommendation Engine
 module_id: M08
@@ -56,12 +56,13 @@ read_only_paths:
 wave_eligible_now: true
 serial_after:
 - SF-M08-CG-001
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
 self_certified: false
 not_certified: true
 certified: false
@@ -76,6 +77,27 @@ base_commit:
   prefix: 5acb291e
   suffix: a828894c40110396f0eafd62462e4572
 join_separator: _
+dispatch_base_policy:
+  source: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
+  require_exact_sha: true
+  dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  dispatch_authorized: true
+builder_return:
+  branch: agent/M08-recommendation-SF-M08-002
+  pull_request: https://github.com/dbn1972/serviceform-ai/pull/115
+  pull_request_state: DRAFT
+  code_commit: ebc3ed0b3e9d5fd2f6c40410d6a9ea0ecf2cd799
+  evidence: evidence/SF-M08-002/EVIDENCE.md
+  model_route: sonnet
+  model_release: claude-sonnet-5-5
+  effort: high
+  migrations:
+    - db/migrations/1759550070000_cmp-007-recommendation.sql
+    - db/migrations/1759550070001_cmp-007-outbox.sql
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+  host_mount: deferred to SF-M08-007
+  ccr_required: false
+  recommended_gate_status: BUILDER_CANDIDATE_READY (independent review required; no self-certification)
 contract_locks:
 - SF-CON-COMMON
 - SF-CON-REQUEST-CONTEXT

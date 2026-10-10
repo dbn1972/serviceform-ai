@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="61" failures="0" errors="0" time="0.850438823">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-10T02:05:13.475Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.215934907">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 consumes FROZEN SF-CON-RECOMMENDATION (no change) &gt; the response document validates against the frozen schema; the invalid example fails" time="0.140535667">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 consumes FROZEN SF-CON-RECOMMENDATION (no change) &gt; FAILED recommendations expose no contract document (reason_codes minItems 1)" time="0.018618717">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 component contracts &gt; OpenAPI exposes the Eng interfaces; AsyncAPI lists every emitted event" time="0.000850888">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 component contracts &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION and match the migration" time="0.002702027">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 component contracts &gt; emitted event data validates against component-local JSON Schemas and carries no PII" time="0.047927556">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.000349972">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 component contracts &gt; schema migration: own role, FORCE RLS, no BYPASSRLS/SUPERUSER, no cross-schema refs, no raw prompt/output columns" time="0.000706868">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 static hard checks &gt; never calls model provider SDKs or hosts; inference is the CMP-039 port only" time="0.00077137">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 static hard checks &gt; does not import sibling services or query their schemas (no cross-component SQL)" time="0.000887397">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 static hard checks &gt; no named-service/tenant/jurisdiction branching and no authoritative writes" time="0.000535539">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-007 static hard checks &gt; opens no network call inside a DB transaction (external() guard on every port call)" time="0.000462534">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-10T02:05:13.477Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.006295348">
+        <testcase classname="test/unit/domain.test.ts" name="decision-boundary guard &gt; flags codes that name a statutory, fee, payment or case outcome" time="0.001551782">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="decision-boundary guard &gt; accepts neutral relevance codes and refuses malformed ones" time="0.000284129">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="gateway output parser &gt; accepts the closed shape" time="0.000616695">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="gateway output parser &gt; refuses malformed, extended, duplicated, over-long or unpinned output" time="0.001204947">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="gateway output parser &gt; refuses any assertion that the output is authoritative" time="0.000308159">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="gateway output parser &gt; refuses allowed reason codes that name a binding outcome even if pinned" time="0.000141159">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine and helpers &gt; only moves REQUESTED -&gt; GENERATED|FAILED and GENERATED -&gt; SELECTED|DISMISSED" time="0.000420318">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="state machine and helpers &gt; validates uuids and fingerprints deterministically" time="0.000675847">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/recommendation-http.test.ts" timestamp="2026-10-10T02:05:13.478Z" hostname="cursor" tests="42" failures="0" errors="0" skipped="0" time="0.628208568">
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; generates coded recommendations through the gateway port and conforms to SF-CON-RECOMMENDATION shape" time="0.12096879">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; ranks multiple items, unions reason codes, and keeps order from the model" time="0.026851088">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; sends only coded, aliased, non-identifying data to CMP-039 and never inside a DB transaction" time="0.01440065">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; records outbox events and audit as valid envelopes without subject or PII" time="0.022211146">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; uses published catalogue entries when no candidates are supplied" time="0.013969509">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 recommendation generation (non-authoritative, CMP-039 only) &gt; filters profile signals to the policy allowlist and tolerates profile outage" time="0.018714684">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 idempotency &gt; replays the stored response without a second gateway call" time="0.012735846">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 idempotency &gt; refuses the same key with a different request and a missing/invalid key" time="0.012888029">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 idempotency &gt; replays a stored gateway failure instead of calling the gateway again" time="0.012211156">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 consent and purpose &gt; blocks without consent, never calls the catalogue or gateway, and audits the denial" time="0.012215907">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 consent and purpose &gt; checks consent for the policy purpose of the authenticated subject in the derived tenant" time="0.0105109">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 consent and purpose &gt; fails closed (503) when the consent service is unavailable" time="0.010955605">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 consent and purpose &gt; does not reuse consent granted in another tenant" time="0.011214436">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; refuses unknown or retired policies" time="0.011825246">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; refuses retired or other-tenant candidates without leaking their existence" time="0.011387998">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; refuses signals outside the pinned policy list and too many candidates" time="0.011750465">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; rejects unknown body fields (no free-text or identity injection)" time="0.009850352">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; rejects tenant-identifying headers" time="0.010478501">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 request validation and tenant-safe candidates &gt; requires a resolvable server-side context" time="0.009707609">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 gateway failures fail safe to non-AI discovery &gt; unavailable: persists FAILED, exposes fallback, emits RecommendationFailed" time="0.011512979">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 gateway failures fail safe to non-AI discovery &gt; timeout: persists FAILED, exposes fallback, emits RecommendationFailed" time="0.010140973">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 gateway failures fail safe to non-AI discovery &gt; throws: persists FAILED, exposes fallback, emits RecommendationFailed" time="0.011626997">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 gateway failures fail safe to non-AI discovery &gt; unsafe: persists FAILED, exposes fallback, emits RecommendationFailed" time="0.010074832">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 gateway failures fail safe to non-AI discovery &gt; denied: persists FAILED, exposes fallback, emits RecommendationFailed" time="0.011936939">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 model output guard (no statutory or authoritative content) &gt; binding_decision: refused as UNSAFE_OUTPUT and nothing authoritative is stored" time="0.010731715">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 model output guard (no statutory or authoritative content) &gt; invented_candidate: refused as UNSAFE_OUTPUT and nothing authoritative is stored" time="0.010611545">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 model output guard (no statutory or authoritative content) &gt; free_text: refused as UNSAFE_OUTPUT and nothing authoritative is stored" time="0.010099264">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 model output guard (no statutory or authoritative content) &gt; bad_reason: refused as UNSAFE_OUTPUT and nothing authoritative is stored" time="0.011417821">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 model output guard (no statutory or authoritative content) &gt; not_advisory: refused as UNSAFE_OUTPUT and nothing authoritative is stored" time="0.01077323">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 policy administration &gt; versions policies insert-only and keeps the pinned pins" time="0.01154542">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 policy administration &gt; refuses reason, signal or purpose codes that name a binding outcome" time="0.011913994">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 policy administration &gt; is OPA-gated: denied action writes nothing; PDP outage fails closed" time="0.012726961">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 authorization and tenant isolation &gt; denies creation when OPA denies and does no external work" time="0.009917019">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 authorization and tenant isolation &gt; lets the owner read; hides it from other citizens and other tenants (404)" time="0.011571382">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 authorization and tenant isolation &gt; lets an authorised officer read within the tenant but not across tenants" time="0.010632821">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 authorization and tenant isolation &gt; keeps T2 canary data out of every T1 response, event and gateway request" time="0.011918537">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 authorization and tenant isolation &gt; rejects malformed ids" time="0.009584358">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 disposition is a citizen choice, never a decision &gt; selects a recommended service and emits a selection event with the pinned version ref" time="0.011929661">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 disposition is a citizen choice, never a decision &gt; dismisses; terminal states refuse any further change" time="0.010551809">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 disposition is a citizen choice, never a decision &gt; refuses a service the engine did not recommend, and malformed decisions" time="0.012129446">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 disposition is a citizen choice, never a decision &gt; only the subject may dispose; FAILED recommendations cannot be disposed" time="0.014991295">
+        </testcase>
+        <testcase classname="test/unit/recommendation-http.test.ts" name="CMP-007 logging &gt; log records carry only ids and coded status" time="0.012053488">
+        </testcase>
+    </testsuite>
+</testsuites>
