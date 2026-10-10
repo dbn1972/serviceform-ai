@@ -1,0 +1,18 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "CMP-035 Search & Indexing events",
+    "version": "0.0.0",
+    "description": "Produced via the SF-CON-OUTBOX outbox relayed by CMP-038. Source events are consumed through the CMP-038 consumer runtime (consumer group cmp-035.indexer, inbox dedupe); the topics consumed are named by published projection rules, not by code."
+  },
+  "channels": {
+    "sf.search.events.v1": {
+      "subscribe": {
+        "message": {
+          "oneOf": [{ "name": "SearchDocumentIndexed" }, { "name": "SearchDocumentRemoved" }]
+        }
+      }
+    },
+    "sf.audit.ingest.v1": { "subscribe": { "message": { "name": "AuditEventSubmitted" } } }
+  }
+}

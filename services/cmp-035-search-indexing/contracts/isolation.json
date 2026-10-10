@@ -1,0 +1,32 @@
+[
+  {
+    "entity": "sf_search.search_document",
+    "owner_component": "CMP-035",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_search.outbox_event",
+    "owner_component": "CMP-035",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_search.outbox_event_platform",
+    "owner_component": "CMP-035",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_search.inbox_event",
+    "owner_component": "CMP-035",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_search.inbox_event_platform",
+    "owner_component": "CMP-035",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]
