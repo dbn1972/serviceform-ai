@@ -2,13 +2,11 @@ import { Cmp020Error, detail } from '../errors.js';
 import type { ApplicationFeePins } from '../ports/application-pins-port.js';
 import type { PublishedFeePolicy } from '../ports/fee-policy-port.js';
 import type { FeeRulesEvaluation } from '../ports/fee-rules-port.js';
-import { canonicalJson, sha256Prefixed, SHA256_PREFIXED } from './fingerprint.js';
+import { isCurrencyCode, isLineCode, isRuleOutputKey, isSha256Prefixed } from './charset.js';
+import { canonicalJson, sha256Prefixed } from './fingerprint.js';
 import { isWithinContractRange, parseMinor, sumMinor } from './money.js';
 import { isUuid } from './uuid.js';
 
-export const LINE_CODE = /^[A-Z0-9_.-]{1,64}$/;
-export const CURRENCY = /^[A-Z]{3}$/;
-export const RULE_OUTPUT_KEY = /^[A-Za-z][A-Za-z0-9_.]{0,63}$/;
 export const MAX_POLICY_LINES = 64;
 
 export type CalculationBasis = 'FEE_POLICY_LINE' | 'RULES_ENGINE_LINE';
@@ -84,10 +82,10 @@ export function validatePolicy(
   if (policy.tenant_service_binding_id !== pins.tenant_service_binding_id) {
     policyInvalid('FEE_POLICY_BINDING_MISMATCH', '/tenant_service_binding_id');
   }
-  if (typeof policy.content_hash !== 'string' || !SHA256_PREFIXED.test(policy.content_hash)) {
+  if (typeof policy.content_hash !== 'string' || !isSha256Prefixed(policy.content_hash)) {
     policyInvalid('FEE_POLICY_INVALID', '/content_hash');
   }
-  if (typeof policy.currency !== 'string' || !CURRENCY.test(policy.currency)) {
+  if (typeof policy.currency !== 'string' || !isCurrencyCode(policy.currency)) {
     policyInvalid('FEE_POLICY_INVALID', '/currency');
   }
   const ruleVersion = policy.rule_version_id ?? null;
@@ -109,7 +107,7 @@ export function validatePolicy(
   const lines: ValidatedLine[] = policy.lines.map((line, i) => {
     const at = `/lines/${i}`;
     if (typeof line !== 'object' || line === null) policyInvalid('FEE_POLICY_INVALID', at);
-    if (typeof line.code !== 'string' || !LINE_CODE.test(line.code)) {
+    if (typeof line.code !== 'string' || !isLineCode(line.code)) {
       policyInvalid('FEE_POLICY_INVALID', `${at}/code`);
     }
     if (seen.has(line.code)) policyInvalid('FEE_POLICY_DUPLICATE_LINE', `${at}/code`);
@@ -129,7 +127,7 @@ export function validatePolicy(
     }
     if (line.basis === 'RULE_OUTPUT') {
       if (line.amount_minor !== undefined) policyInvalid('FEE_POLICY_INVALID', at);
-      if (typeof line.rule_output_key !== 'string' || !RULE_OUTPUT_KEY.test(line.rule_output_key)) {
+      if (typeof line.rule_output_key !== 'string' || !isRuleOutputKey(line.rule_output_key)) {
         policyInvalid('FEE_POLICY_INVALID', `${at}/rule_output_key`);
       }
       return {
@@ -166,7 +164,7 @@ export function validateEvaluation(
   }
   if (
     typeof evaluation.rule_pack.content_hash !== 'string' ||
-    !SHA256_PREFIXED.test(evaluation.rule_pack.content_hash)
+    !isSha256Prefixed(evaluation.rule_pack.content_hash)
   ) {
     ruleUnsafe('RULE_EVALUATION_INVALID', '/rule_pack/content_hash');
   }

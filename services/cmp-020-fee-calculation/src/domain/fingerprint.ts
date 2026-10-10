@@ -16,6 +16,5 @@ export function requestFingerprint(method: string, route: string, body: unknown)
   return sha256Prefixed(`${method.toUpperCase()} ${route}\n${canonicalJson(body ?? null)}`);
 }
 
-export const SHA256_PREFIXED = /^sha256:[0-9a-f]{64}$/;
 export const IDEMPOTENCY_KEY = /^[A-Za-z0-9_.:-]{8,128}$/;
 export const IDEMPOTENCY_TTL_MS = 24 * 60 * 60 * 1000;
