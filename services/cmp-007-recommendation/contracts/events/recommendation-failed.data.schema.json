@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RecommendationFailed data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recommendation_id",
+    "status",
+    "non_authoritative",
+    "authoritative",
+    "statutory_decision",
+    "rejection_code",
+    "fallback"
+  ],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string"
+    },
+    "non_authoritative": {
+      "const": true
+    },
+    "authoritative": {
+      "const": false
+    },
+    "statutory_decision": {
+      "const": false
+    },
+    "rejection_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+    },
+    "fallback": {
+      "const": "NON_AI_DISCOVERY"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-007 Recommendation Events",
+    "version": "0.1.0",
+    "description": "Events carry ids, coded reason codes, model pins and hashes. They are NON_AUTHORITATIVE decision support: never a statutory eligibility, approval, rejection, penalty, fee or payment outcome, and no PII, prompts or model text. Component-local contract; not shared-frozen."
+  },
+  "channels": {
+    "sf.recommendation.events.v1": {
+      "address": "sf.recommendation.events.v1",
+      "messages": {
+        "RecommendationRequested": {
+          "$ref": "#/components/messages/RecommendationRequested"
+        },
+        "RecommendationGenerated": {
+          "$ref": "#/components/messages/RecommendationGenerated"
+        },
+        "RecommendationFailed": {
+          "$ref": "#/components/messages/RecommendationFailed"
+        },
+        "RecommendationSelected": {
+          "$ref": "#/components/messages/RecommendationSelected"
+        },
+        "RecommendationDismissed": {
+          "$ref": "#/components/messages/RecommendationDismissed"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "RecommendationRequested": {
+        "name": "RecommendationRequested",
+        "payload": {
+          "$ref": "./events/recommendation-requested.data.schema.json"
+        }
+      },
+      "RecommendationGenerated": {
+        "name": "RecommendationGenerated",
+        "payload": {
+          "$ref": "./events/recommendation-generated.data.schema.json"
+        }
+      },
+      "RecommendationFailed": {
+        "name": "RecommendationFailed",
+        "payload": {
+          "$ref": "./events/recommendation-failed.data.schema.json"
+        }
+      },
+      "RecommendationSelected": {
+        "name": "RecommendationSelected",
+        "payload": {
+          "$ref": "./events/recommendation-disposed.data.schema.json"
+        }
+      },
+      "RecommendationDismissed": {
+        "name": "RecommendationDismissed",
+        "payload": {
+          "$ref": "./events/recommendation-disposed.data.schema.json"
+        }
+      }
+    }
+  }
+}

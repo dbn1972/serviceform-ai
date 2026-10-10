@@ -1,0 +1,54 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-007 Recommendation Engine",
+    "version": "0.1.0",
+    "description": "NON_AUTHORITATIVE decision support. All model calls go through CMP-039. A recommendation is never a statutory eligibility, approval, rejection, penalty, fee waiver or payment decision and never a case state. Responses embed SF-CON-RECOMMENDATION. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/recommendation-policies": {
+      "post": {
+        "operationId": "createRecommendationPolicy",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/v1/recommendations": {
+      "post": {
+        "operationId": "createRecommendation",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ]
+      }
+    },
+    "/v1/recommendations/{id}": {
+      "get": {
+        "operationId": "getRecommendation"
+      }
+    },
+    "/v1/recommendations/{id}/disposition": {
+      "post": {
+        "operationId": "disposeRecommendation"
+      }
+    }
+  }
+}
