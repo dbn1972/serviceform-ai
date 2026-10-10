@@ -1,0 +1,109 @@
+{
+  "task_id": "SF-M06-STITCH-A",
+  "package": "SF-M06-STITCH-A-READY",
+  "state": "READY_CONTROL_PLANE",
+  "package_kind": "ready_promotion",
+  "authorization": "HUMAN_M06_STITCH_A_READY_PROMOTION_AUTHORIZATION",
+  "ready_record_parent": {
+    "sha": "8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b",
+    "note": "main SHA from which this READY/base-policy record was prepared"
+  },
+  "ready_control_plane_base": {
+    "sha": "8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b",
+    "note": "exact origin/main tip used as base for this READY promotion PR"
+  },
+  "historical_planning_base": {
+    "sha": "88690846021a2ce082b8a7c7f35c12603effd5d9",
+    "executable": false
+  },
+  "execution_base": null,
+  "execution_base_unset": true,
+  "execution_base_source": "SEPARATE_HUMAN_AUTHORIZATION",
+  "execution_authorized": false,
+  "execution_base_policy": {
+    "source": "HUMAN_EXECUTION_AUTHORIZATION",
+    "requirement": "execution base MUST equal origin/main at the instant the human STITCH-A execution authorization is issued",
+    "must_include_ready_record": true,
+    "require_exact_sha": true,
+    "envelope_sha_is_not_execution_authorization": true,
+    "execution_base": null,
+    "execution_authorized": false
+  },
+  "envelope": {
+    "planning_only": false,
+    "implementation_authorized": true,
+    "dispatched": false,
+    "orchestration_task_state": "READY",
+    "state": "READY",
+    "wave_eligible_now": false,
+    "builders_dispatched_this_envelope": false,
+    "agent_role": "integration_agent",
+    "builder_agent": "serviceform-integration-stitcher",
+    "component_ids": ["CMP-020", "CMP-025", "CMP-026"],
+    "integration_ids": ["INT-007", "INT-011", "INT-013"],
+    "root_lockfile_authorized": true,
+    "self_certified": false,
+    "not_certified": true,
+    "certified": false,
+    "release_certified": false,
+    "g3": false,
+    "g6": false,
+    "ccr_required": false,
+    "frozen_contracts_altered": false,
+    "handover_mirrors_task": true,
+    "contract_locks": 29,
+    "frozen_inputs": 3,
+    "m08_stitch_a": "OFF",
+    "sf_m08_005": "PLANNING",
+    "semantic_conflict": "M06_STITCH_A_SEMANTIC_CONFLICT"
+  },
+  "frozen_inputs": {
+    "SF-M06-001": {"pr": 121, "cmp": "CMP-020", "head": "c962167f9f2cfee9bc758584de69d5792d627d92", "state": "OPEN_DRAFT"},
+    "SF-M06-002": {"pr": 118, "cmp": "CMP-025", "head": "fb948840f15280b33c1bb981a28119b1d3d95de6", "state": "OPEN_DRAFT"},
+    "SF-M06-003": {"pr": 117, "cmp": "CMP-026", "head": "591559bd9e480956b315b960d56e8f4329b80ecd", "state": "OPEN_DRAFT"}
+  },
+  "builder_prs_merged": false,
+  "contracts": {
+    "lock_entries": 29,
+    "frozen": 29,
+    "hash_match": "29/29 MATCH",
+    "envelope_contract_locks": 29,
+    "contracts_lock_modified": false,
+    "contracts_modified": false,
+    "ccr_required": false
+  },
+  "carried_residuals": [
+    "EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL",
+    "CMP-020_PORT_ADAPTERS_UNBOUND",
+    "CMP-020_FACTS_SOURCE_OPEN",
+    "CMP-020_MIGRATION_ORDERING",
+    "CMP-025_CONNECTOR_TYPE_GAP",
+    "CMP-026_SCHEMA_PARTICIPANT_TENANT",
+    "CMP-026_ADAPTERS_UNBOUND",
+    "HOST_MOUNTS_DEFERRED"
+  ],
+  "stitch_execution_started": false,
+  "pnpm_lock_modified": false,
+  "product_code_modified": false,
+  "migrations_modified": false,
+  "wave_b": "OFF",
+  "sf_m08_stitch_a": "OFF",
+  "sf_m08_005": "PLANNING",
+  "host_int_sec_evd": "OFF",
+  "m07_plus": "OFF",
+  "g3": false,
+  "g6": false,
+  "certified": false,
+  "evidence_prs_107_108_109": "UNCHANGED",
+  "validation": {
+    "task_handover_byte_identical": true,
+    "contracts_lock_gate": {"result": "PASS", "log": "logs/contracts-lock-gate.log"},
+    "contract_hash_match": {"result": "29/29 MATCH", "log": "logs/contract-hash-match.log"},
+    "run_all": {"result": "10/10 gates passed", "log": "logs/run-all.log"},
+    "pytest_gates": {"result": "30 passed", "log": "logs/pytest-gates.log"},
+    "envelope_assertions": {"result": "PASS", "log": "logs/envelope-assertions.log"},
+    "check_scope_lockfile_admission": {"result": "PASS", "log": "logs/check-scope-lockfile-admission.log"},
+    "check_scope_role_negative": {"result": "PASS_REFUSED", "log": "logs/check-scope-role-negative.log"}
+  },
+  "recommended_gate": "INDEPENDENT_M06_STITCH_A_READY_REVIEW / HUMAN_M06_STITCH_A_READY_MERGE_AUTHORIZATION"
+}
