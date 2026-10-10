@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="3.268947547">
+    <testsuite name="test/integration/indexing-flow.int.test.ts" timestamp="2026-10-10T02:06:50.786Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.565092305">
+        <testcase classname="test/integration/indexing-flow.int.test.ts" name="CMP-035 projection and tenant-safe query against real PostgreSQL (INT-010/INT-011) &gt; indexes per tenant, is idempotent and monotonic, and CROSS_TENANT_LEAKAGE = 0" time="0.073595791">
+            <system-out>
+EVIDENCE SF-M08-001 CROSS_TENANT_LEAKAGE=0 returned=10 tenants=2 per_tenant=5
+
+            </system-out>
+        </testcase>
+        <testcase classname="test/integration/indexing-flow.int.test.ts" name="CMP-035 projection and tenant-safe query against real PostgreSQL (INT-010/INT-011) &gt; removes documents as tombstones without deleting the projection row" time="0.008465197">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-10T02:06:50.787Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="2.166882578">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-035 migrations (isolated database; up -&gt; down -&gt; up) &gt; applies on platform baseline + shared DB contracts only (no sibling schema)" time="0.483459683">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-035 migrations (isolated database; up -&gt; down -&gt; up) &gt; rolls back both CMP-035 migrations and keeps the NOLOGIN role" time="0.417112784">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-035 migrations (isolated database; up -&gt; down -&gt; up) &gt; re-applies after rollback" time="0.800284637">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:06:50.787Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.536972664">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; runtime login is not SUPERUSER, not BYPASSRLS, owns no table" time="0.00873194">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; sf_cmp035_rw is NOLOGIN, NOSUPERUSER, NOBYPASSRLS; TENANT_SCOPED tables FORCE RLS" time="0.006408512">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; own authorized DML succeeds under tenant context" time="0.005351416">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: wrong-tenant rows are invisible; cross-tenant insert fails; no tenant sees nothing" time="0.007762877">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: wrong tenant cannot UPDATE another tenant document" time="0.003540315">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: peer component login cannot SELECT/DELETE CMP-035 tables" time="0.00686642">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: sf_app alone holds no DML on the projection table" time="0.00605607">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: runtime cannot SET ROLE into another component role nor DELETE documents" time="0.002419968">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: identity columns are not updatable and source version cannot regress" time="0.005894591">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-035 privilege boundary and FORCE RLS (INT-011) &gt; tenant_id is uuid NOT NULL on every TENANT_SCOPED table" time="0.004132017">
+        </testcase>
+    </testsuite>
+</testsuites>

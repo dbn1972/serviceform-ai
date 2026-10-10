@@ -1,0 +1,28 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-035-search-indexing
+
+ ✓ test/integration/migration.int.test.ts > CMP-035 migrations (isolated database; up -> down -> up) > applies on platform baseline + shared DB contracts only (no sibling schema) 483ms
+ ✓ test/integration/migration.int.test.ts > CMP-035 migrations (isolated database; up -> down -> up) > rolls back both CMP-035 migrations and keeps the NOLOGIN role 417ms
+ ✓ test/integration/migration.int.test.ts > CMP-035 migrations (isolated database; up -> down -> up) > re-applies after rollback 800ms
+stdout | test/integration/indexing-flow.int.test.ts > CMP-035 projection and tenant-safe query against real PostgreSQL (INT-010/INT-011) > indexes per tenant, is idempotent and monotonic, and CROSS_TENANT_LEAKAGE = 0
+EVIDENCE SF-M08-001 CROSS_TENANT_LEAKAGE=0 returned=10 tenants=2 per_tenant=5
+
+ ✓ test/integration/indexing-flow.int.test.ts > CMP-035 projection and tenant-safe query against real PostgreSQL (INT-010/INT-011) > indexes per tenant, is idempotent and monotonic, and CROSS_TENANT_LEAKAGE = 0 74ms
+ ✓ test/integration/indexing-flow.int.test.ts > CMP-035 projection and tenant-safe query against real PostgreSQL (INT-010/INT-011) > removes documents as tombstones without deleting the projection row 8ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > runtime login is not SUPERUSER, not BYPASSRLS, owns no table 9ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > sf_cmp035_rw is NOLOGIN, NOSUPERUSER, NOBYPASSRLS; TENANT_SCOPED tables FORCE RLS 6ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > own authorized DML succeeds under tenant context 5ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: wrong-tenant rows are invisible; cross-tenant insert fails; no tenant sees nothing 8ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: wrong tenant cannot UPDATE another tenant document 4ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: peer component login cannot SELECT/DELETE CMP-035 tables 7ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: sf_app alone holds no DML on the projection table 6ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: runtime cannot SET ROLE into another component role nor DELETE documents 2ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > NEGATIVE: identity columns are not updatable and source version cannot regress 6ms
+ ✓ test/integration/privilege-rls.int.test.ts > CMP-035 privilege boundary and FORCE RLS (INT-011) > tenant_id is uuid NOT NULL on every TENANT_SCOPED table 4ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  02:06:47
+   Duration  3.68s (tests 95%, transform 3%, import 2%)
+
+JUNIT report written to /workspace/evidence/SF-M08-001/junit/integration.xml

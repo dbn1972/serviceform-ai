@@ -1,0 +1,30 @@
+{
+  "schema": "serviceform.cg02.wave-a.pre-dispatch-guard.v1",
+  "task_id": "SF-M08-001",
+  "authorization": "HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION",
+  "checked_at": "2026-10-10T01:52:00Z",
+  "origin_main": "8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b",
+  "dispatch_base": "8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b",
+  "origin_main_equals_dispatch_base": true,
+  "envelope": {
+    "path": "orchestrator/tasks/SF-M08-001.yaml",
+    "state": "READY",
+    "implementation_authorized": true,
+    "dispatched": false,
+    "wave_eligible_now": true
+  },
+  "contracts_lock": { "frozen": 29, "file_hash_match": 29, "gate": "PASS" },
+  "write_path_uniqueness": {
+    "cg01_path_uniqueness_gate": "PASS",
+    "cg02_pairwise_overlaps": 0,
+    "cg02_forbidden_writers": 0,
+    "recorded_on_main": "evidence/CG-02-WAVE-A-ACTIVATION/uniqueness.json result=PASS",
+    "note": "Re-running evidence/CG-02-WAVE-A-ACTIVATION/pairwise_write_path_uniqueness.py on 8b1c26ce reports FAIL only on its stale assertion that each guardian CG handover lists all seven lanes in wave_a_eligible_now; guardian correction 33c47870 (#114, independently reviewed PASS) scoped those lists module-locally. Overlaps and forbidden writers are 0. The script rewrites its own output files, which were restored (outside this lane's write scope)."
+  },
+  "held_prs_unmerged_at_bound_heads": {
+    "107": "59ddddd43afeeacfb14a86432c14bbce3ed88073",
+    "108": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+    "109": "8b270beb61742eb42094b3133484013ab88b29b2"
+  },
+  "result": "GUARD_PASS"
+}
