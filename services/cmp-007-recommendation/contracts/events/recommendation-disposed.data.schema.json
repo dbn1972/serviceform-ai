@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RecommendationSelected/Dismissed data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recommendation_id",
+    "status",
+    "non_authoritative",
+    "authoritative",
+    "statutory_decision",
+    "disposition"
+  ],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string"
+    },
+    "non_authoritative": {
+      "const": true
+    },
+    "authoritative": {
+      "const": false
+    },
+    "statutory_decision": {
+      "const": false
+    },
+    "disposition": {
+      "enum": ["SELECTED", "DISMISSED"]
+    },
+    "selected_service_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "published_version_ref": {
+      "type": "string"
+    },
+    "application_id": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}

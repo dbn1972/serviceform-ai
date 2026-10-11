@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RecommendationGenerated data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recommendation_id",
+    "status",
+    "non_authoritative",
+    "authoritative",
+    "statutory_decision",
+    "item_count",
+    "reason_codes",
+    "items",
+    "model_route_ref",
+    "model_id",
+    "model_version",
+    "prompt_id",
+    "prompt_version",
+    "prompt_hash"
+  ],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string"
+    },
+    "non_authoritative": {
+      "const": true
+    },
+    "authoritative": {
+      "const": false
+    },
+    "statutory_decision": {
+      "const": false
+    },
+    "item_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rank", "service_id", "reason_codes"],
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "service_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason_codes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+            }
+          }
+        }
+      }
+    },
+    "model_route_ref": {
+      "type": "string"
+    },
+    "model_id": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "prompt_id": {
+      "type": "string"
+    },
+    "prompt_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "prompt_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "application_id": {
+      "type": "string",
+      "format": "uuid"
+    }
+  }
+}

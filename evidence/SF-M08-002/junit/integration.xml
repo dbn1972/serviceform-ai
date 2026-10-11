@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="1.244731138">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-10T02:05:15.708Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.691130358">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-007 API over PostgreSQL FORCE RLS &gt; persists a recommendation, replays idempotently, and writes outbox + audit atomically" time="0.138046305">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-007 API over PostgreSQL FORCE RLS &gt; hides recommendations from other tenants and other citizens; FAILED persists with fallback" time="0.027731178">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-007 API over PostgreSQL FORCE RLS &gt; refuses unsafe model output at the database boundary: nothing authoritative is stored" time="0.009907478">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:05:15.710Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.55360078">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; migration roles: NOLOGIN, NOSUPERUSER, NOBYPASSRLS; runtime login is not owner" time="0.017610555">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides T2 rows from T1; CROSS_TENANT_LEAKAGE=0" time="0.017752956">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; WITH CHECK refuses writing a row for another tenant" time="0.001658537">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; refuses illegal transitions, authoritative/statutory flags, and content tampering" time="0.015197181">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; refuses rows that start non-REQUESTED, are authoritative, or skip the CMP-039 route" time="0.007797746">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-007 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; policies are insert-only" time="0.00366417">
+        </testcase>
+    </testsuite>
+</testsuites>

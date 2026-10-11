@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RecommendationRequested data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "recommendation_id",
+    "status",
+    "non_authoritative",
+    "authoritative",
+    "statutory_decision",
+    "candidate_count",
+    "signal_count"
+  ],
+  "properties": {
+    "recommendation_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "type": "string"
+    },
+    "non_authoritative": {
+      "const": true
+    },
+    "authoritative": {
+      "const": false
+    },
+    "statutory_decision": {
+      "const": false
+    },
+    "candidate_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "signal_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 32
+    }
+  }
+}
