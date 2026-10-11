@@ -1,5 +1,6 @@
-# M05 PLANNING envelope — evidence bind (recommend G4 only)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# SF-M05-EVD — LOCK-9 evidence bind (recommend G4 only)
+# NEW draft PR. DO NOT MERGE. Not CERTIFIED. Not G6.
+# Outcome: SF_M05_EVD_PASS_G4_RECOMMENDED; G4_ISSUED=false
 
 task_id: SF-M05-EVD
 title: M05 evidence bind (recommend G4 only)
@@ -11,13 +12,16 @@ model_release: claude-opus-5-5
 effort: high
 component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
 integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
-branch: agent/M05-evd-SF-M05-EVD
-worktree: ../wt-SF-M05-EVD
+branch: cursor/m05-evd-4d99c91e
+worktree: in-repo
 parallel_group: M05-VERIFY
 hard_serial_locks: [LOCK-9]
 depends_on:
-  - SF-M05-INT
-  - SF-M05-SEC
+  - origin/main at 4d99c91e4bcdc145585fe62449c83a004de1399d
+  - HUMAN_SF_M05_EVD_AUTHORIZATION
+  - INDEPENDENT_SF_M05_LOCK8_RERUN_REVIEW=ACCEPTED
+  - SF-M05-INT-RERUN (#108) SF_M05_INT_RERUN_PASS
+  - SF-M05-SEC-RERUN (#107) SF_M05_SEC_RERUN_PASS
 allowed_write_paths:
   - evidence/SF-M05-EVD/**
   - docs/verification/M05-G4-RECOMMENDATION.md
@@ -26,64 +30,125 @@ explicit_cannot:
   - certify own work or release
   - issue G4 or G6 or CERTIFIED
   - start M06 or M08
+  - waive CMP-028
+  - treat CMP-019 closure as waiver
+  - reuse #103 or #104 as current PASS
+  - merge this PR or verifier PRs
 read_only_paths:
   - contracts/**
   - services/**
+  - apps/**
+  - packages/**
+  - db/migrations/**
   - pnpm-lock.yaml
+  - tests/**
+
 wave_eligible_now: false
 serial_after:
-  - SF-M05-INT
-  - SF-M05-SEC
-
+  - SF-M05-INT-RERUN
+  - SF-M05-SEC-RERUN
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-base_commit:
-  prefix: b286ed95
-  suffix: 6755b936f73bc2856c9db2c68d8ca64c
-join_separator: "_"
-contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
+merge_authorized: false
+do_not_merge: true
+
+authorization: HUMAN_SF_M05_EVD_AUTHORIZATION
+lock8_independent_review: ACCEPTED
+lock8_status: SATISFIED
+preflight_guard: GUARD_PASS
+sha_guard: PASS
+production_sot: 4d99c91e4bcdc145585fe62449c83a004de1399d
+contracts_lock: 19/19 MATCH
+
+evidence_bind:
+  disposition: SF_M05_EVD_PASS_G4_RECOMMENDED
+  recommended_gate:
+    family: G4_SECURITY
+    status: VERIFIED
+    join_separator: "_"
+  G4_RECOMMENDATION: G4_SECURITY_VERIFIED
+  G4_ISSUED: false
+  gate_issued: false
+  gate_passed: false
+  gate_ready: false
+  human_gate_issued: false
+  human_or_ci_decides: true
+  certified: false
+  self_certified: false
+  release_certified: false
+  g6_claimed: false
+  m06: OFF
+  m08: OFF
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contracts: 19/19 MATCH
+  production_code_modified: false
+  blocking_residual_for_g4_recommendation: false
+  required_checks: 15/15 PASS
+  int_pr: 108
+  int_head: d1614d70b743b39b20b6d7104d3bd34cb2248f5f
+  int_result: SF_M05_INT_RERUN_PASS
+  int_status: DRAFT_UNMERGED_EVIDENCE
+  int_ci: "37656918445"
+  int_security: "37656918451"
+  int_developer_platform: "37656918853"
+  INT_009_DURABLE_RECONCILIATION: PROVEN
+  M05_HOST_PACKAGE_ADMISSION: ADMITTED
+  sec_pr: 107
+  sec_head: 59ddddd43afeeacfb14a86432c14bbce3ed88073
+  sec_result: SF_M05_SEC_RERUN_PASS
+  sec_status: DRAFT_UNMERGED_EVIDENCE
+  sec_ci: "37648591412"
+  sec_security: "37648591586"
+  sec_developer_platform: "37648591486"
+  CMP-019_RESIDUAL_CLOSURE: ACCEPTED
+  CMP-019_closure_class: VERIFIED_RESIDUAL_CLOSURE_NOT_WAIVER
+  CMP-028_residual: GOVERNING_UNRESOLVED_UNWAIVED
+  CMP-028_disposition: PERMISSIBLE_CARRIED_RESIDUAL_NON_BLOCKING_FOR_M05_G4_RECOMMENDATION
+  CMP-028_waived: false
+  historical_pr_103_as_pass: false
+  historical_pr_104_as_pass: false
+  do_not_merge_verifiers: true
+  assessed_at: "2026-10-08T01:10:15Z"
+  next_gate: INDEPENDENT_SF_M05_EVD_REVIEW / HUMAN_M05_G4_AUTHORIZATION
+
+# Filled after this EVD PR exact-head CI+Security+Developer-platform SUCCESS:
+immutable_evd_head: PENDING
+draft_pr: PENDING
+evd_ci: PENDING
+evd_security: PENDING
+evd_developer_platform: PENDING
+frozen: false
 
 stop_conditions:
-  - FROZEN existing 13 shared contracts change required (CCR+STOP)
+  - FROZEN existing 19 shared contracts change required (CCR+STOP)
   - statutory / policy invention required
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
-  - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
+  - dependency on unmerged sibling M05 code as production source of truth
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
   - M06 or M08 start
-  - SMS/email/DigiLocker/payment implementation
-  - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
-  - Temporal authoritative case state
-  - named officer in published workflow
-  - BPMN as a second runtime
+  - waive CMP-028
+  - treat CMP-019 closure as waiver
+  - reuse #103/#104 as current PASS
+  - merge this PR or #107/#108
+  - weaken cg01_path_uniqueness_gate.py / contracts_lock_gate.py
 
-acceptance_tests_planning:
-  - Bind executed INT+SEC evidence; recommend G4_SECURITY_VERIFIED only
+acceptance_tests:
+  - Bind final INT #108 + SEC #107 heads/run IDs (not stale embedded freeze)
+  - Recommend G4_SECURITY_VERIFIED only when CMP-028 non-blocking under governing rules
   - Cannot issue G4; human/CI issues later
+  - CMP-019 residual closure ACCEPTED as verified closure not waiver
+  - CMP-028 remains GOVERNING_UNRESOLVED_UNWAIVED with explicit disposition

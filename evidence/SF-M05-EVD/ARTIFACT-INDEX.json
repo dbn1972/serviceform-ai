@@ -1,0 +1,120 @@
+{
+  "schema": "serviceform.m05.independent-evd.artifact-index.v1",
+  "task_id": "SF-M05-EVD",
+  "production_sot": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+  "production_sot_note": "origin/main merge #105 REM-002; only production source of truth",
+  "disposition": "SF_M05_EVD_PASS_G4_RECOMMENDED",
+  "recommended_gate": {
+    "family": "G4_SECURITY",
+    "status": "VERIFIED",
+    "join_separator": "_"
+  },
+  "G4_ISSUED": false,
+  "gate_issued": false,
+  "gate_ready": false,
+  "gate_passed": false,
+  "human_gate_issued": false,
+  "human_or_ci_decides": true,
+  "self_certified": false,
+  "certified": false,
+  "g6_claimed": false,
+  "release_certified": false,
+  "CROSS_TENANT_LEAKAGE": 0,
+  "frozen_contracts": "19/19 MATCH",
+  "blocking_residual_for_g4_recommendation": false,
+  "production_code_modified": false,
+  "unmerged_evidence_only": ["#108", "#107"],
+  "do_not_merge_verifiers": true,
+  "m06": "OFF",
+  "m08": "OFF",
+  "int": {
+    "pr": 108,
+    "head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+    "draft": true,
+    "open": true,
+    "merged": false,
+    "status": "DRAFT_UNMERGED_EVIDENCE",
+    "result": "SF_M05_INT_RERUN_PASS",
+    "local_run_id": "local-m05-int-rerun",
+    "timestamp": "2026-10-07T15:01:32Z",
+    "suites": "12/12",
+    "executed_tests": 185,
+    "INT-009": "PASS",
+    "INT_009_DURABLE_RECONCILIATION": "PROVEN",
+    "M05_HOST_PACKAGE_ADMISSION": "ADMITTED",
+    "github_ci": "37656918445",
+    "github_security": "37656918451",
+    "github_developer_platform": "37656918853",
+    "github_jobs_success": "15/15",
+    "evidence_package": "evidence/SF-M05-INT-RERUN/ (on #108)",
+    "did_not_reuse_pr_103": true
+  },
+  "sec": {
+    "pr": 107,
+    "head": "59ddddd43afeeacfb14a86432c14bbce3ed88073",
+    "draft": true,
+    "open": true,
+    "merged": false,
+    "status": "DRAFT_UNMERGED_EVIDENCE",
+    "result": "SF_M05_SEC_RERUN_PASS",
+    "vitest": "30/30",
+    "catalog": "463/0",
+    "github_ci": "37648591412",
+    "github_security": "37648591586",
+    "github_developer_platform": "37648591486",
+    "github_jobs_success": "15/15",
+    "evidence_package": "evidence/SF-M05-SEC-RERUN/ (on #107)",
+    "did_not_reuse_pr_104": true
+  },
+  "residuals": [
+    {
+      "id": "CMP-019_RESIDUAL_CLOSURE",
+      "class": "VERIFIED_RESIDUAL_CLOSURE",
+      "status": "ACCEPTED",
+      "disposition": "ACCEPTED_VERIFIED_CLOSURE_NOT_WAIVER",
+      "blocking": false,
+      "waived": false
+    },
+    {
+      "id": "CMP-028_ORIGINAL_CASE_COMMAND_RESERVATION",
+      "class": "GOVERNING_ARCHITECTURAL_RESERVATION",
+      "status": "GOVERNING_UNRESOLVED_UNWAIVED",
+      "disposition": "PERMISSIBLE_CARRIED_RESIDUAL_NON_BLOCKING_FOR_M05_G4_RECOMMENDATION",
+      "blocking": false,
+      "waived": false
+    },
+    {
+      "id": "INT_SUMMARY_STALE_EMBEDDED_FREEZE",
+      "class": "CLASS_E_EVIDENCE_HEAD_BINDING",
+      "disposition": "NON_BLOCKING_PROVENANCE_TAIL",
+      "blocking": false,
+      "authoritative_head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+      "do_not_rewrite_pr": 108
+    },
+    {
+      "id": "HISTORICAL_PR_103_104",
+      "class": "HISTORICAL_VERIFIER_ONLY",
+      "disposition": "NOT_CURRENT_PASS",
+      "blocking": false
+    }
+  ],
+  "sot_push": {
+    "github_ci": "37621953137",
+    "github_security": "37621953091",
+    "github_developer_platform": "37621953079"
+  },
+  "local_artifacts": [
+    "evidence/SF-M05-EVD/EVIDENCE.md",
+    "evidence/SF-M05-EVD/summary.json",
+    "evidence/SF-M05-EVD/ARTIFACT-INDEX.json",
+    "evidence/SF-M05-EVD/COMMIT_SHA.txt",
+    "evidence/SF-M05-EVD/env.txt",
+    "evidence/SF-M05-EVD/summary/residual-disposition.json",
+    "evidence/SF-M05-EVD/summary/required-checks.json",
+    "evidence/SF-M05-EVD/logs/github-ci-bind.json",
+    "evidence/SF-M05-EVD/logs/contracts-lock.log",
+    "evidence/SF-M05-EVD/logs/uniqueness-gate.log",
+    "docs/verification/M05-G4-RECOMMENDATION.md",
+    "orchestrator/handovers/SF-M05-EVD.yaml"
+  ]
+}
