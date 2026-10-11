@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="1.465222195">
+    <testsuite name="apps/api/test/composition-m04.test.ts" timestamp="2026-10-05T03:49:30.840Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="1.465222195">
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; starts without m04 deps and leaves Wave1/2/M02/M03 decoration unchanged" time="0.057788799">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts each M04 component independently" time="0.504601879">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts all six together with a deterministic CMP list (CMP-036 excluded)" time="0.034144152">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; registers CMP-036 exactly once and does not remount it from M04 composition" time="0.033631394">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps M01/M02/M03 mount lists unchanged when M04 is registered" time="0.597808254">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; exposes M04 routes under /v1 and rejects forged tenant headers" time="0.046361005">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; fails when duplicate or unexpected M04 routes collide" time="0.117825219">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not trust a raw tenant header as host context and never echoes the canary" time="0.043191611">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; has no cross-component SQL and CMP-014 uses a gateway port (no direct provider)" time="0.026568359">
+        </testcase>
+        <testcase classname="apps/api/test/composition-m04.test.ts" name="registerM04Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.00201051">
+        </testcase>
+    </testsuite>
+</testsuites>
