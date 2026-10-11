@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-025-notification@0.0.0 test:integration /workspace/services/cmp-025-notification
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-025-notification
+
+ ✓ test/integration/privilege-rls.int.test.ts (7 tests) 1926ms
+   ✓ CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) (7)
+     ✓ isolated reversibility: down of named CMP-025 migrations then up restores the schema 1379ms
+ ✓ test/integration/pg-flow.int.test.ts (6 tests) 584ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  02:23:30
+   Duration  2.84s (tests 93%, transform 5%, import 2%)
+
+JUNIT report written to /workspace/evidence/SF-M06-002/junit/integration.xml

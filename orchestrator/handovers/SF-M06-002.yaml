@@ -1,124 +1,136 @@
-# M06 READY envelope — Notification Service (CG-02 Wave A)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G6.
-# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
-# SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
+# SF-M06-002 builder handover (security-corrected) — CMP-025 Notification Service (CG-02 Wave A)
+# BUILDER CANDIDATE. Draft PR. Not merged. Not VERIFIED. Not CERTIFIED. Not G6. Builder cannot self-certify.
+# Authorization: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION (lane SF-M06-002 only).
 
 task_id: SF-M06-002
 title: Notification Service
 module_id: M06
 concurrency_group: CG-02
-build_plan: specs/build-plan.yaml (ADR-0001)
 component_ids: [CMP-025]
 integration_ids: [INT-007, INT-011, INT-013]
 requirement_ids:
-- Eng-v1.4-CMP-025
-- INT-013
-- Constitution-no-secrets-in-logs
+  - Eng-v1.4-CMP-025
+  - INT-013
+  - Constitution-no-secrets-in-logs
 agent_role: component_builder
 builder_agent: serviceform-integration-builder
 model_route: sonnet
 model_release: claude-sonnet-5-5
 effort: high
-verifier_model_route: opus
 branch: agent/M06-notification-SF-M06-002
-worktree: ../wt-SF-M06-002
-parallel_group: M06-A
 privilege_role: sf_cmp025_rw
 schema: sf_notification
-hard_serial_locks: [LOCK-2, LOCK-3]
-depends_on:
-- SF-M06-CG-001 FROZEN_ON_MAIN on origin/main at/after prefix 5acb291e
-- 29 FROZEN contracts MATCH (existing 19 unchanged + ten CG-02 hash-verified)
-- LOCK-1 planning PR on main (#112)
-- LOCK-2 freeze merged (#113) at 5acb291e…
-- human CG-02 Wave A READY authorization granted (Debabrata Nayak)
-- uniqueness PASS; builder spawn pending activation record merge
-allowed_write_paths:
-- services/cmp-025-notification/**
-- db/migrations/*_cmp-025-*.sql
-- evidence/SF-M06-002/**
-- orchestrator/handovers/SF-M06-002.yaml
-allowed_write_notes:
-- Channel adapters via CMP-037 + INT-013 REAL/SANDBOX/SIMULATED
-- Templates metadata-driven; no provider secrets in code/logs
-- Do not commit pnpm-lock.yaml; host mount deferred to SF-M06-005
-read_only_paths:
-- pnpm-lock.yaml
-- contracts/**
-- orchestrator/contracts-lock.yaml
-- apps/**
-- specs/**
-- policy/**
-- infra/**
-- services/cmp-020-fee-calculation/**
-- services/cmp-021-payment/**
-- services/cmp-026-communication-messaging/**
-wave_eligible_now: true
-serial_after:
-- SF-M06-CG-001
-builders_dispatched_this_envelope: false
+
+state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
+orchestration_task_state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
+dispatched: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+verified: false
 g3: false
 g6: false
+merged: false
+do_not_merge: true
 ccr_required: false
 frozen_contracts_altered: false
-cg_02_contract_freeze_required: false
-freeze_authorized: true
-base_commit:
-  prefix: 5acb291e
-  suffix: a828894c40110396f0eafd62462e4572
-join_separator: _
-contract_locks:
-- SF-CON-COMMON
-- SF-CON-REQUEST-CONTEXT
-- SF-CON-AUTHZ-DECISION
-- SF-CON-ERROR-RESPONSE
-- SF-CON-ERROR-CATALOGUE
-- SF-CON-EVENT-ENVELOPE
-- SF-CON-IDEMPOTENCY
-- SF-CON-AUDIT-EVENT
-- SF-CON-ISOLATION-DECLARATION
-- SF-CON-DB-SESSION-CONTEXT
-- SF-CON-OUTBOX
-- SF-CON-CONNECTOR-BINDING
-- SF-CON-SIMULATION-MARKER
-- SF-CON-APPLICATION-CASE-SM
-- SF-CON-WORKFLOW-MODEL
-- SF-CON-COMMAND-TRANSITION
-- SF-CON-HUMAN-TASK
-- SF-CON-SLA-CLOCK
-- SF-CON-VERSION-PINNING
-- SF-CON-FEE-QUOTE
-- SF-CON-PAYMENT-INTENT
-- SF-CON-PAYMENT-CALLBACK
-- SF-CON-NOTIFICATION-DISPATCH
-- SF-CON-MESSAGE-THREAD
-stop_conditions:
-- FROZEN existing 19 contracts change required (CCR+STOP)
-- ten CG-02 FROZEN hashes change required (CCR+STOP)
-- statutory / policy invention required
-- write outside allowed_write_paths
-- dependency on unmerged sibling CG-02 code as source of truth
-- spawn builders before activation record merge / uniqueness PASS
-- CERTIFIED or RELEASE CERTIFIED or G6 claim
-- M07 or M09-M12 start
-- production silent SIMULATED critical notification connector
-- mutate FROZEN contracts or orchestrator/contracts-lock.yaml
-- claim CERTIFIED or RELEASE CERTIFIED or G6
-- start SF-M08-005 without statutory retention policy input
-- start Wave B / STITCH / host / INT / SEC / EVD / M07+
-- weaken cg01_path_uniqueness_gate.py
-- own apps/api, pnpm-lock.yaml, or contracts-lock as Wave A builder
-acceptance_tests_planning:
-- Dispatch is idempotent and tenant-scoped
-- INT-013 mode marker present on SIMULATED paths
-- No PII/secrets in logs
-- Host mount deferred to SF-M06-005
+lockfile_modified: false
+
+dispatch_base:
+  sha: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  verified_origin_main_equals_dispatch_base: true
+candidate:
+  code_commit: 59fb6d4d06ceb4d63d8bc55e3e92dabafea7142a
+  candidate_head: PR head (code_commit + one evidence/handover commit; the head sha cannot be embedded in a file it contains)
+  head_delta_after_code_commit: [evidence/SF-M06-002/**, orchestrator/handovers/SF-M06-002.yaml]
+
+pre_dispatch_guard:
+  origin_main_equals_dispatch_base: PASS
+  envelope_ready_authorized_not_dispatched_wave_eligible: PASS
+  uniqueness_gate_cg01_path_uniqueness: PASS
+  contracts_lock_gate: PASS (29 contracts, 29 FROZEN, hashes MATCH)
+  prs_107_108_109_unmerged: PASS (all OPEN)
+
+writes:
+  - services/cmp-025-notification/**
+  - db/migrations/1759545025000_cmp-025-notification.sql
+  - db/migrations/1759545025001_cmp-025-outbox.sql
+  - evidence/SF-M06-002/**
+  - orchestrator/handovers/SF-M06-002.yaml
+scope_check: evidence/SF-M06-002/logs/scope.log (PASS)
+
+consumed_frozen_contracts:
+  - SF-CON-NOTIFICATION-DISPATCH (realised; hash re-verified by test against contracts-lock)
+  - SF-CON-CONNECTOR-BINDING, SF-CON-SIMULATION-MARKER (structural mirrors; exhaustive parity test)
+  - SF-CON-OUTBOX (template copied, schema/cmp replaced only), SF-CON-EVENT-ENVELOPE, SF-CON-AUDIT-EVENT
+  - SF-CON-REQUEST-CONTEXT, SF-CON-AUTHZ-DECISION, SF-CON-ERROR-RESPONSE, SF-CON-ERROR-CATALOGUE
+  - SF-CON-IDEMPOTENCY, SF-CON-ISOLATION-DECLARATION, SF-CON-DB-SESSION-CONTEXT, SF-CON-COMMON
+
+results_at_code_commit:
+  typecheck: PASS
+  eslint_max_warnings_0: PASS
+  prettier_check: PASS
+  unit_contract_tests: 119/119 PASS (junit evidence/SF-M06-002/junit/unit.xml)
+  postgres_integration_tests: 13/13 PASS on PostgreSQL 16 (junit evidence/SF-M06-002/junit/integration.xml)
+  coverage_src: statements 93.19, branches 86.54, functions 98.63, lines 96.23
+  repo_gates_run_all: 10/10 PASS
+  dependency_cruiser: PASS
+  migration_up_down_up: PASS (privilege-rls.int.test.ts reversibility)
+  mutation_spot_checks: 3 of 4 killed; 1 surviving defence-in-depth mutant (evidence/SF-M06-002/EVIDENCE.md)
+
+residuals:
+  - id: PUSH_IN_APP_CONNECTOR_TYPE
+    detail: SF-CON-NOTIFICATION-DISPATCH allows PUSH and IN_APP but SF-CON-CONNECTOR-BINDING has no connector_type for them. Builder fails closed (CHANNEL_CONNECTOR_UNMAPPED) rather than guess. A CCR or ADR is needed if those channels are required.
+    ccr_required_now: false
+  - id: TOPIC_REGISTRATION
+    detail: sf.notification.events.v1 declared in services/cmp-025-notification/contracts/topics.json; CMP-038 registry entry is outside this lane's write paths (host/integration stitch).
+  - id: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+    detail: new workspace importer row for services/cmp-025-notification is required in pnpm-lock.yaml; builder did not modify pnpm-lock.yaml (read-only). pnpm install rewrites it locally; reverted.
+  - id: HOST_MOUNT_DEFERRED
+    detail: apps/api mount, real CMP-037 binding/recipient/hub adapters and tenant enumeration for the drain worker are host work (SF-M06-005). Ports are unbound-by-default and fail closed.
+  - id: REAL_SANDBOX_PROVIDER_NOT_PROVEN
+    detail: REAL and SANDBOX paths are proven only against an in-test HubTransport double. No real provider/connector validation was performed or claimed.
+
+not_done_by_design:
+  - No SMS/email/push provider SDK, no network call in service source, no resolved address or secret persisted or logged.
+  - No SF-M08-005, Wave B, STITCH, host, INT/SEC/EVD, M07+; no CERTIFIED/G3/G6 claim.
+recommended_next: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW
+
+security_correction:
+  authorization: HUMAN_CG_02_WAVE_A_SECURITY_CORRECTION_AUTHORIZATION
+  trigger: INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW = BLOCKED_CORRECTION_REQUIRED (Semgrep 3 blocking on prior head)
+  guard: origin/main == 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b; prior PR head == c6410dbb71d9aaeb879c0569c16e335d8df3617d (no rebase)
+  prior_head: c6410dbb71d9aaeb879c0569c16e335d8df3617d
+  prior_findings:
+    - ajinabraham.njsscan.dos.regex_dos services/cmp-025-notification/src/domain/simulation.ts (SECRET_REF_RE.test on client-supplied secret_ref)
+    - ajinabraham.njsscan.dos.regex_dos services/cmp-025-notification/src/service/input.ts (requireMatching(value, re) with dynamic RegExp)
+    - ajinabraham.njsscan.generic.hardcoded_secrets.node_secret services/cmp-025-notification/test/doubles/fixtures.ts (secret-named credential-shaped constant)
+  fix:
+    - client-supplied text is no longer matched with regular expressions in model/simulation/input; linear single-pass validators with the length bound checked first (isTemplateRef, isHandleRef, isLocale, isParamName, isSecretRef); same charsets and bounds
+    - isSecretRef adds a 512 character upper bound (frozen schema has none): stricter, fail-closed
+    - marker scenario length bounded before pattern match
+    - fixture renamed CANARY_CONNECTOR_REF with synthetic non-credential value that still passes secret-ref validation and still serves as a leak canary
+    - no suppressions, no workflow/semgrep/lockfile/contract edits
+  evidence: evidence/SF-M06-002/correction/
+  local_results: 163/163 unit+contract, 13/13 PostgreSQL integration, eslint 0 warnings, tsc, prettier, gates 10/10, depcruise, semgrep (CI-equivalent config) 0 findings on corrected tree and 3 on prior head
+  ci_required_on_new_head: [CI, Security, Developer-platform SUCCESS at exact head; Semgrep blocking 0; hardcoded-secret 0]
+
+stitch_conflict_correction:
+  authorization: HUMAN_SF_M06_002_STITCH_CONFLICT_CORRECTION_AUTHORIZATION
+  trigger: M06_STITCH_A_SEMANTIC_CONFLICT (STITCH-A combined validation — tip-count migrateDown(2) tore CMP-020 tip)
+  guard: prior PR head == fb948840f15280b33c1bb981a28119b1d3d95de6 OPEN DRAFT (exact)
+  prior_head: fb948840f15280b33c1bb981a28119b1d3d95de6
+  fix:
+    - privilege-rls isolated reversibility no longer calls tip-count migrateDown(2) on the combined catalog
+    - CMP025_MIGRATION_NAMES / CMP025_MIGRATION_FILES name the two CMP-025 targets explicitly
+    - withIsolatedCmp025Database downs only that named pair on a throwaway DB; combined snapshot equality proves sibling tips (e.g. sf_fee / CMP-020) are untouched
+    - no product semantic broadening; no pnpm-lock.yaml; no CMP-020/CMP-026 edits
+  evidence: evidence/SF-M06-002/stitch-conflict-correction/
+  local_results: 163/163 unit+contract, 13/13 PostgreSQL integration; combined CMP-020-tip proof PASS (fee schema left alone)
+  state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
+  ci_required_on_new_head: [CI, Security, Developer-platform SUCCESS at exact new head]
+  do_not_merge: true
+  recommended_next: RE_RUN_M06_STITCH_A_WITH_NEW_118_HEAD

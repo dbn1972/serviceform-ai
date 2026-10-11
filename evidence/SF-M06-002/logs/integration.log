@@ -1,0 +1,15 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-025-notification
+
+ ✓ test/integration/privilege-rls.int.test.ts (7 tests) 3613ms
+   ✓ CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011) (7)
+     ✓ isolated reversibility: down of CMP-025 migrations then up restores the schema 842ms
+ ✓ test/integration/pg-flow.int.test.ts (6 tests) 566ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  02:08:01
+   Duration  4.50s (tests 96%, transform 3%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M06-002/junit/integration.xml
+exit=0

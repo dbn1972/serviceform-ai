@@ -1,0 +1,52 @@
+
+ RUN  v5.0.3 /workspace
+      Coverage enabled with v8
+
+ ✓ services/cmp-025-notification/test/unit/service.test.ts (25 tests) 33ms
+ ✓ services/cmp-025-notification/test/unit/delivery.test.ts (27 tests) 67ms
+ ✓ services/cmp-025-notification/test/contract/contracts.test.ts (22 tests) 97ms
+ ✓ services/cmp-025-notification/test/unit/pg-repo.test.ts (7 tests) 13ms
+ ✓ services/cmp-025-notification/test/unit/wiring.test.ts (7 tests) 14ms
+ ✓ services/cmp-025-notification/test/unit/model-validators.test.ts (44 tests) 10ms
+ ✓ services/cmp-025-notification/test/unit/domain.test.ts (31 tests) 9ms
+
+ Test Files  7 passed (7)
+      Tests  163 passed (163)
+   Start at  03:30:01
+   Duration  630ms (transform 42%, tests 25%, import 24%, worker 9%)
+
+JUNIT report written to /workspace/test-results/unit/junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   93.71 |    87.92 |   98.72 |   96.38 |                   
+ src               |   96.42 |    95.91 |   95.23 |   98.55 |                   
+  context.ts       |   90.47 |     92.1 |     100 |   94.11 | 49                
+  index.ts         |   88.88 |    95.45 |      80 |     100 | 44                
+ src/api           |   91.66 |    73.91 |     100 |   95.31 |                   
+  handler.ts       |   91.66 |    73.91 |     100 |   95.31 | 109,116,142       
+ src/connectors    |   90.38 |    81.25 |     100 |   93.75 |                   
+  hub-channel.ts   |   92.85 |       75 |     100 |   92.85 | 43                
+  registry.ts      |   88.88 |    84.61 |     100 |     100 | 28,41             
+  ...ed-channel.ts |      90 |    81.81 |     100 |   89.47 | 39,46             
+ src/domain        |   96.56 |    95.31 |   97.29 |   99.35 |                   
+  model.ts         |   98.38 |    96.61 |   92.85 |   97.82 | 147               
+  simulation.ts    |   93.18 |    95.16 |     100 |     100 | 87-88,129         
+  uuid.ts          |      85 |    78.94 |     100 |     100 | 4-8,14            
+ src/repo          |     100 |    81.25 |     100 |     100 |                   
+  pg.ts            |     100 |    81.25 |     100 |     100 | ...,41-94,132,409 
+ src/service       |   90.18 |    82.92 |     100 |   93.69 |                   
+  delivery.ts      |    92.3 |    87.67 |     100 |   93.02 | ...05,108,118,288 
+  input.ts         |   80.24 |    75.58 |     100 |   90.76 | ...80,184,192,212 
+  service.ts       |   96.62 |       90 |     100 |   96.38 | 76,109,193        
+  view.ts          |     100 |    83.33 |     100 |     100 | 11                
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 93.71% ( 701/748 )
+Branches     : 87.92% ( 546/621 )
+Functions    : 98.72% ( 155/157 )
+Lines        : 96.38% ( 613/636 )
+================================================================================
+exit=0
