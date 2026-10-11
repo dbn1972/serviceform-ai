@@ -1,7 +1,7 @@
 # M06 READY — Wave A mechanical stitch and lockfile (LOCK-4)
-# READY control plane. implementation_authorized: true. Execution NOT dispatched. Not CERTIFIED. Not G3. Not G6.
-# Integrate exact immutable CMP-020/#121 + CMP-025/#118 + CMP-026/#117 trees + migrations; root lockfile regenerate only.
-# execution_base is NOT set in this envelope. Separate human STITCH-A execution authorization must supply the exact SHA.
+# STITCHED_CANDIDATE control plane after mechanical Wave A stitch. Not CERTIFIED. Not G3. Not G6.
+# Integrated exact immutable CMP-020/#121 + CMP-025/#118 + CMP-026/#117 trees + migrations; root lockfile admit three importers.
+# execution_authorized=true; execution_base=c5f90d56988c4f988133c99643ff2ab96b53997c; frozen #118 corrected head b694416900d7e8107489c1d4d76bd502611056fb.
 
 task_id: SF-M06-STITCH-A
 title: M06 Wave A mechanical stitch and lockfile
@@ -24,7 +24,7 @@ hard_serial_locks: [LOCK-4]
 must_not_run_concurrent_with: [SF-M06-STITCH-B, SF-M08-STITCH-A, SF-M08-STITCH-B, SF-M06-001, SF-M06-002, SF-M06-003]
 depends_on:
   - SF-M06-001 immutable head c962167f9f2cfee9bc758584de69d5792d627d92 (PR #121)
-  - SF-M06-002 immutable head fb948840f15280b33c1bb981a28119b1d3d95de6 (PR #118)
+  - SF-M06-002 immutable head b694416900d7e8107489c1d4d76bd502611056fb (PR #118)
   - SF-M06-003 immutable head 591559bd9e480956b315b960d56e8f4329b80ecd (PR #117)
   - LOCK-3 Wave A builders complete as DRAFT stitch inputs
   - INDEPENDENT_CG_02_WAVE_A_BUILDER_REVIEW PASS_FOR_STITCH_INPUT_WITH_CARRIED_RESIDUALS
@@ -116,12 +116,12 @@ lockfile_expectation:
     cmp_026: none
   notes:
     - All three builders declare no external dependencies in package.json; admit empty importer rows only
-    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL is carried until execution admits the three importers
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL CLOSED — three empty importers admitted at execution
     - Reuse canonical resolutions; no broad refresh/upgrades
     - Do not alter minimumReleaseAge, trustPolicy, blockExoticSubdeps, .npmrc, pnpm-workspace.yaml, root package.json
 frozen_inputs:
   SF-M06-001: c962167f9f2cfee9bc758584de69d5792d627d92
-  SF-M06-002: fb948840f15280b33c1bb981a28119b1d3d95de6
+  SF-M06-002: b694416900d7e8107489c1d4d76bd502611056fb
   SF-M06-003: 591559bd9e480956b315b960d56e8f4329b80ecd
 frozen_input_prs:
   SF-M06-001: 121
@@ -130,7 +130,8 @@ frozen_input_prs:
 carried_residuals:
   - id: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
     scope: [CMP-020, CMP-025, CMP-026]
-    note: Builders left pnpm-lock.yaml untouched by design; admit three importers only at STITCH-A execution
+    status: CLOSED
+    note: Closed at STITCH-A execution — three empty importers admitted; frozen-lockfile PASS
   - id: CMP-020_PORT_ADAPTERS_UNBOUND
     scope: [CMP-020]
     note: CMP-015 pins / fee-policy / CMP-008 rules adapters unbound; host/STITCH scope (SF-M06-005) — do not invent bindings here
@@ -161,9 +162,9 @@ serial_after:
 builders_dispatched_this_envelope: false
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: STITCHED_CANDIDATE
+state: STITCHED_CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
@@ -187,8 +188,11 @@ execution_base_policy:
   must_include_ready_record: true
   require_exact_sha: true
   envelope_sha_is_not_execution_authorization: true
-  execution_base: null
-  execution_authorized: false
+  execution_base: c5f90d56988c4f988133c99643ff2ab96b53997c
+  execution_authorized: true
+stitch_executed: true
+stitched_candidate: true
+stitch_state: STITCHED_CANDIDATE
 m08_stitch_a: "OFF"
 sf_m08_005: PLANNING
 contract_locks:

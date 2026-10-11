@@ -1,0 +1,90 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-025 Notification Events",
+    "version": "0.1.0",
+    "description": "Domain events for template publication and notification dispatch lifecycle. No recipient address, rendered body, template parameter or provider payload."
+  },
+  "channels": {
+    "sf.notification.events.v1": {
+      "address": "sf.notification.events.v1",
+      "messages": {
+        "NotificationTemplatePublished": {
+          "$ref": "#/components/messages/NotificationTemplatePublished"
+        },
+        "NotificationQueued": {
+          "$ref": "#/components/messages/NotificationQueued"
+        },
+        "NotificationSent": {
+          "$ref": "#/components/messages/NotificationSent"
+        },
+        "NotificationRetryScheduled": {
+          "$ref": "#/components/messages/NotificationRetryScheduled"
+        },
+        "NotificationFailed": {
+          "$ref": "#/components/messages/NotificationFailed"
+        },
+        "NotificationDelivered": {
+          "$ref": "#/components/messages/NotificationDelivered"
+        },
+        "NotificationUndelivered": {
+          "$ref": "#/components/messages/NotificationUndelivered"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "NotificationTemplatePublished": {
+        "name": "NotificationTemplatePublished",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationQueued": {
+        "name": "NotificationQueued",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationSent": {
+        "name": "NotificationSent",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationRetryScheduled": {
+        "name": "NotificationRetryScheduled",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationFailed": {
+        "name": "NotificationFailed",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationDelivered": {
+        "name": "NotificationDelivered",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      },
+      "NotificationUndelivered": {
+        "name": "NotificationUndelivered",
+        "payload": {
+          "$ref": "./events/notification-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

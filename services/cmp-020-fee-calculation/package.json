@@ -1,0 +1,15 @@
+{
+  "name": "@serviceform/cmp-020-fee-calculation",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-020 Fee & Calculation Service",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --root . --config vitest.unit.config.ts",
+    "test:integration": "vitest run --root . --config vitest.integration.config.ts"
+  }
+}

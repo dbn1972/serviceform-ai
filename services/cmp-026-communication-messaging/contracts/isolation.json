@@ -1,0 +1,80 @@
+[
+  {
+    "entity": "sf_messaging.thread",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.thread_transition",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.participant",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.message",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.message_attachment",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.message_retraction",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.notice_acknowledgement",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.read_receipt",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.idempotency_record",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.outbox_event",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.inbox_event",
+    "owner_component": "CMP-026",
+    "isolation_class": "TENANT_SCOPED",
+    "rls": "FORCE"
+  },
+  {
+    "entity": "sf_messaging.outbox_event_platform",
+    "owner_component": "CMP-026",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  },
+  {
+    "entity": "sf_messaging.inbox_event_platform",
+    "owner_component": "CMP-026",
+    "isolation_class": "PLATFORM_OPERATIONAL",
+    "rls": "NOT_APPLICABLE"
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "CMP-026 Messaging events",
+    "version": "0.0.0",
+    "description": "Events carry opaque participant refs and content digests only; never message body text or raw principal ids."
+  },
+  "channels": {
+    "sf.messaging.events.v1": {
+      "subscribe": {
+        "message": {
+          "oneOf": [
+            {
+              "name": "ThreadOpened"
+            },
+            {
+              "name": "ThreadStatusChanged"
+            },
+            {
+              "name": "ThreadParticipantAdded"
+            },
+            {
+              "name": "ThreadParticipantRemoved"
+            },
+            {
+              "name": "CaseMessageSent"
+            },
+            {
+              "name": "CaseMessageRetracted"
+            },
+            {
+              "name": "NoticeAcknowledged"
+            }
+          ]
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "subscribe": {
+        "message": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  }
+}

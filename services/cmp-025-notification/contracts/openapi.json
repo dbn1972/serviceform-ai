@@ -1,0 +1,302 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-025 Notification Service",
+    "version": "0.1.0",
+    "description": "Metadata-driven notification dispatch (INT-013 connector modes REAL/SANDBOX/SIMULATED). Realises the FROZEN SF-CON-NOTIFICATION-DISPATCH contract; tenant comes from the verified request context only. SIMULATED dispatches carry a SimulationMarker. No recipient address or rendered body is accepted, stored or returned. Component-local API contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/notifications": {
+      "post": {
+        "operationId": "dispatchNotification",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "template_ref",
+                  "channel",
+                  "locale",
+                  "recipient_handle_class",
+                  "recipient_handle_ref",
+                  "connector_binding_id"
+                ],
+                "properties": {
+                  "application_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "template_ref": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+                  },
+                  "template_version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "channel": {
+                    "enum": ["SMS", "EMAIL", "PUSH", "IN_APP"]
+                  },
+                  "locale": {
+                    "type": "string",
+                    "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+                  },
+                  "recipient_handle_class": {
+                    "enum": ["CITIZEN_HANDLE_REF", "OFFICIAL_HANDLE_REF", "SYSTEM_HANDLE_REF"]
+                  },
+                  "recipient_handle_ref": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+                  },
+                  "connector_binding_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "template_params": {
+                    "type": "object",
+                    "maxProperties": 32,
+                    "additionalProperties": {
+                      "type": "string",
+                      "maxLength": 200
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted and queued; delivery is asynchronous"
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 template not found"
+          },
+          "409": {
+            "description": "SF-APP-002"
+          },
+          "503": {
+            "description": "SF-INT-001 connector refused (fail-closed)"
+          }
+        }
+      }
+    },
+    "/v1/notifications/{dispatch_id}": {
+      "get": {
+        "operationId": "getNotification",
+        "parameters": [
+          {
+            "name": "dispatch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dispatch with attempt history"
+          },
+          "404": {
+            "description": "SF-SYS-002"
+          }
+        }
+      }
+    },
+    "/v1/notifications/{dispatch_id}/receipt": {
+      "post": {
+        "operationId": "recordDeliveryReceipt",
+        "parameters": [
+          {
+            "name": "dispatch_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["outcome", "provider_message_ref"],
+                "properties": {
+                  "outcome": {
+                    "enum": ["DELIVERED", "UNDELIVERED"]
+                  },
+                  "provider_message_ref": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recorded"
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "409": {
+            "description": "SF-APP-001"
+          }
+        }
+      }
+    },
+    "/v1/notification-templates": {
+      "post": {
+        "operationId": "publishNotificationTemplate",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["template_ref", "channel", "locale", "body_template"],
+                "properties": {
+                  "template_ref": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+                  },
+                  "channel": {
+                    "enum": ["SMS", "EMAIL", "PUSH", "IN_APP"]
+                  },
+                  "locale": {
+                    "type": "string",
+                    "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+                  },
+                  "subject_template": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300
+                  },
+                  "body_template": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "allowed_params": {
+                    "type": "array",
+                    "maxItems": 32,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{0,63}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Published as a new immutable version"
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002"
+          },
+          "409": {
+            "description": "SF-APP-002"
+          }
+        }
+      }
+    },
+    "/v1/notification-templates/{template_ref}": {
+      "get": {
+        "operationId": "listNotificationTemplateVersions",
+        "parameters": [
+          {
+            "name": "template_ref",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published versions"
+          },
+          "404": {
+            "description": "SF-SYS-002"
+          }
+        }
+      }
+    }
+  }
+}
