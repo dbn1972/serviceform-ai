@@ -515,6 +515,22 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  services/cmp-007-recommendation:
+    dependencies:
+      '@serviceform/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      fastify:
+        specifier: 5.12.5
+        version: 5.12.5
+      pg:
+        specifier: 8.23.1
+        version: 8.23.1
+    devDependencies:
+      '@types/pg':
+        specifier: 8.23.1
+        version: 8.23.1
+
   services/cmp-008-rules:
     dependencies:
       '@fastify/rate-limit':
@@ -780,6 +796,8 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  services/cmp-035-search-indexing: {}
+
   services/cmp-036-api-gateway:
     dependencies:
       '@fastify/rate-limit':
@@ -870,6 +888,10 @@ importers:
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1
+
+  services/cmp-045-analytics-mis: {}
+
+  services/cmp-046-operational-dashboard: {}
 
   services/cmp-047-observability:
     dependencies:
