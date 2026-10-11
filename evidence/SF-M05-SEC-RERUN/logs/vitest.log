@@ -1,0 +1,16 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/security/m05/forged-tenant-http.test.ts (5 tests) 627ms
+   ✓ SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) (5)
+     ✓ rejects client-controlled tenant headers on all M05 HTTP mounts with zero leakage 526ms
+ ✓ tests/security/m05/static-isolation.test.ts (11 tests) 205ms
+ ✓ tests/security/m05/opa-boundaries.test.ts (9 tests) 54ms
+ ✓ tests/security/m05/reconciliation-security.test.ts (5 tests) 12ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  14:59:33
+   Duration  1.83s (tests 59%, import 25%, transform 15%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M05-SEC-RERUN/junit/unit.xml
