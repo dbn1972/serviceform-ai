@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-033-metadata@0.0.0 test:integration /workspace/services/cmp-033-metadata
+> vitest run --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M03-INT/SF-M03-002/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-033-metadata
+
+ ✓ test/integration/rls-api.int.test.ts (5 tests) 643ms
+ ✓ test/integration/privilege-boundary.int.test.ts (2 tests) 450ms
+ ✓ test/integration/migration.int.test.ts (1 test) 437ms
+
+ Test Files  3 passed (3)
+      Tests  8 passed (8)
+   Start at  11:54:28
+   Duration  2.21s (tests 77%, import 15%, transform 8%)
+
+JUNIT report written to /workspace/services/cmp-033-metadata/evidence/junit/integration.xml

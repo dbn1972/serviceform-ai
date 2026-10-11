@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.047020501">
+    <testsuite name="services/cmp-050-studio-portal/test/contract/contracts.test.ts" timestamp="2026-10-04T11:54:24.177Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.038724232">
+        <testcase classname="services/cmp-050-studio-portal/test/contract/contracts.test.ts" name="CMP-050 component contracts &gt; parses OpenAPI BFF paths" time="0.001181863">
+        </testcase>
+        <testcase classname="services/cmp-050-studio-portal/test/contract/contracts.test.ts" name="CMP-050 component contracts &gt; declares no tenant-owned SQL entities" time="0.000571781">
+        </testcase>
+        <testcase classname="services/cmp-050-studio-portal/test/contract/contracts.test.ts" name="CMP-050 component contracts &gt; builds a valid simulation marker for local session" time="0.035955993">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-050-studio-portal/test/unit/headers.test.ts" timestamp="2026-10-04T11:54:24.179Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003080293">
+        <testcase classname="services/cmp-050-studio-portal/test/unit/headers.test.ts" name="INT-011 portal header refusal &gt; rejects tenant and x-sf headers" time="0.001616723">
+        </testcase>
+        <testcase classname="services/cmp-050-studio-portal/test/unit/headers.test.ts" name="INT-011 portal header refusal &gt; allows ordinary headers" time="0.000482368">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-050-studio-portal/test/unit/int002-journey.test.ts" timestamp="2026-10-04T11:54:24.179Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.005215976">
+        <testcase classname="services/cmp-050-studio-portal/test/unit/int002-journey.test.ts" name="INT-002 studio journey (client) &gt; refuses paths outside the platform allowlist" time="0.001952184">
+        </testcase>
+        <testcase classname="services/cmp-050-studio-portal/test/unit/int002-journey.test.ts" name="INT-002 studio journey (client) &gt; runs validate → submit → checker approve → publish" time="0.001808902">
+        </testcase>
+    </testsuite>
+</testsuites>

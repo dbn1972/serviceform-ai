@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-053-localization@0.0.0 test:unit /workspace/services/cmp-053-localization
+> vitest run --root . --config vitest.unit.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M03-INT/INT-013/junit/cmp-053-unit.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-053-localization
+
+ ✓ test/contract/contracts.test.ts (5 tests) 62ms
+ ✓ test/unit/domain.test.ts (7 tests) 69ms
+ ✓ test/unit/plugin-api.test.ts (3 tests) 133ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  11:54:49
+   Duration  456ms (transform 40%, tests 31%, import 27%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M03-005/junit/unit.xml

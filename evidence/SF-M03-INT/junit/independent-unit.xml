@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="0.511892203">
+    <testsuite name="tests/integration/m03/int-002-client.test.ts" timestamp="2026-10-04T11:54:21.167Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.005485184">
+        <testcase classname="tests/integration/m03/int-002-client.test.ts" name="INT-002 Studio client (independent; CMP-050) &gt; allowlists only /v1 platform paths" time="0.002020438">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-002-client.test.ts" name="INT-002 Studio client (independent; CMP-050) &gt; approve/reject HTTP bodies omit required CMP-051 decision reason (seam residual)" time="0.000732748">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m03/int-011-host.test.ts" timestamp="2026-10-04T11:54:21.168Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.458819819">
+        <testcase classname="tests/integration/m03/int-011-host.test.ts" name="INT-011 host M03 mounts (independent stitcher) &gt; forged x-tenant-id is SF-TEN-002 and never echoes the canary" time="0.457238369">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-011-host.test.ts" name="INT-011 host M03 mounts (independent stitcher) &gt; M03 composition has no SQL and does not mount CMP-050/054" time="0.000551587">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m03/int-013-modes.test.ts" timestamp="2026-10-04T11:54:21.169Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.0475872">
+        <testcase classname="tests/integration/m03/int-013-modes.test.ts" name="INT-013 M03 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; SIMULATED DEPARTMENT_API import is allowed in LOCAL/CI and emits a frozen marker shape" time="0.043395803">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-013-modes.test.ts" name="INT-013 M03 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; REAL and SANDBOX import adapters fail closed (adapter not shipped)" time="0.00094899">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-013-modes.test.ts" name="INT-013 M03 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; PRODUCTION refuses SIMULATED import; PRODUCTION REAL still fail-closed until adapter exists" time="0.000527482">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-013-modes.test.ts" name="INT-013 M03 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-033/051/052 refuse REAL/SANDBOX and PRODUCTION SIMULATED ports" time="0.001048846">
+        </testcase>
+        <testcase classname="tests/integration/m03/int-013-modes.test.ts" name="INT-013 M03 connector modes (independent; REAL/SANDBOX/SIMULATED) &gt; CMP-053 assist refuses SIMULATED when deployment is PRODUCTION and env mismatches" time="0.000502604">
+        </testcase>
+    </testsuite>
+</testsuites>

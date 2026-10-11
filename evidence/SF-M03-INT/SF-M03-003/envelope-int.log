@@ -1,0 +1,17 @@
+
+> @serviceform/cmp-034-master-data@0.0.0 test:integration /workspace/services/cmp-034-master-data
+> vitest run --root . --config vitest.integration.config.ts -- --reporter=default --reporter=junit --outputFile.junit=/workspace/evidence/SF-M03-INT/SF-M03-003/junit/envelope-int.xml
+
+
+ RUN  v5.0.3 /workspace/services/cmp-034-master-data
+
+ ✓ test/integration/api.int.test.ts (1 test) 707ms
+ ✓ test/integration/privilege-boundary.int.test.ts (3 tests) 500ms
+ ✓ test/integration/migration.int.test.ts (2 tests) 471ms
+
+ Test Files  3 passed (3)
+      Tests  6 passed (6)
+   Start at  11:54:31
+   Duration  2.37s (tests 79%, import 13%, transform 8%)
+
+JUNIT report written to /workspace/evidence/SF-M03-003/junit/integration.xml
