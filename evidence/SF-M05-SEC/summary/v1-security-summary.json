@@ -1,0 +1,52 @@
+{
+  "task_id": "SF-M05-SEC",
+  "role": "independent security verifier",
+  "execution_base": "c0d25b32114779ddb4cc23e4e62a25f9d1365192",
+  "planning_base_commit_provenance": {
+    "prefix": "b286ed95",
+    "suffix": "6755b936f73bc2856c9db2c68d8ca64c",
+    "note": "task envelope provenance only; not substituted as execution base"
+  },
+  "production_code_modified": false,
+  "immutable_verifier_head": "8b6bb78af9deaeabbd4c94edeb378609d4e8c360",
+  "vitest": {
+    "files": 3,
+    "tests": 24,
+    "failed": 0
+  },
+  "catalog": {
+    "pass": 455,
+    "fail": 0,
+    "CROSS_TENANT_LEAKAGE": 0,
+    "SUPERUSER_findings": 0,
+    "BYPASSRLS_findings": 0,
+    "runtime_ownership_violations": 0,
+    "force_rls_enable_probes": 57,
+    "force_rls_force_probes": 57,
+    "cross_tenant_probes": 13,
+    "cross_component_sql_probes": 8
+  },
+  "statutory_ai_paths": 0,
+  "blocking_high_critical": 0,
+  "frozen_contracts": "19/19 MATCH",
+  "cmp016_http_mounted": 0,
+  "cmp036_duplicate": 0,
+  "codeql_25_26_27_remediated": true,
+  "codeql_equivalent_property_write": 0,
+  "forged_tenant_authoritative": 0,
+  "host_package_admission": "DEFERRED_UNRESOLVED",
+  "cmp019_residual": "GOVERNING_UNRESOLVED_UNWAIVED",
+  "cmp028_residual": "GOVERNING_UNRESOLVED_UNWAIVED",
+  "int009_residual": "GOVERNING_UNRESOLVED_UNWAIVED",
+  "residuals_waived": false,
+  "certified": false,
+  "evd_started": false,
+  "g4": false,
+  "g6": false,
+  "m06": "OFF",
+  "m08": "OFF",
+  "result_family": "SF_M05_SEC",
+  "result_status": "PASS",
+  "assessed_at": "2026-10-07T06:23:17Z",
+  "evidence_commit": "bcefcad9f13c92e4d029f01ee9071776617d82ce"
+}
