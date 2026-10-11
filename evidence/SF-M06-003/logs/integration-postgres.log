@@ -1,0 +1,18 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-026-communication-messaging
+
+ ✓ test/integration/privilege-rls.int.test.ts (19 tests) 3862ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 1961ms
+   ✓ CMP-026 migrations (isolated database; up -> down -> up) (3)
+     ✓ applies on platform baseline + shared DB contracts only 490ms
+     ✓ rolls back both CMP-026 migrations and keeps the NOLOGIN role 362ms
+     ✓ re-applies after rollback 801ms
+ ✓ test/integration/service-flow.int.test.ts (8 tests) 720ms
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+   Start at  03:27:59
+   Duration  6.99s (tests 97%, transform 2%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M06-003/junit/integration.xml
+integration exit=0

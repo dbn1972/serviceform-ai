@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="6.542521329">
+    <testsuite name="test/integration/migration.int.test.ts" timestamp="2026-10-10T03:28:06.213Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="1.960556655">
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-026 migrations (isolated database; up -&gt; down -&gt; up) &gt; applies on platform baseline + shared DB contracts only" time="0.489759864">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-026 migrations (isolated database; up -&gt; down -&gt; up) &gt; rolls back both CMP-026 migrations and keeps the NOLOGIN role" time="0.362158213">
+        </testcase>
+        <testcase classname="test/integration/migration.int.test.ts" name="CMP-026 migrations (isolated database; up -&gt; down -&gt; up) &gt; re-applies after rollback" time="0.800590912">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T03:28:06.215Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="3.862173379">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; runtime login is not SUPERUSER, not BYPASSRLS, owns no table" time="0.010187332">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; sf_cmp026_rw is NOLOGIN/NOSUPERUSER/NOBYPASSRLS; every TENANT_SCOPED table is ENABLE+FORCE RLS" time="0.008274619">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; tenant_id is uuid NOT NULL on every TENANT_SCOPED table" time="0.008083043">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; own authorized DML succeeds under tenant context" time="0.00964332">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: wrong-tenant rows are invisible; cross-tenant inserts fail; no context sees nothing" time="0.011926144">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: a T2 participant cannot be attached to a T1 thread (tenant-composite FK + RLS)" time="0.005818647">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: peer component login cannot touch CMP-026 tables" time="0.020321367">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: sf_app alone holds no DML on authoritative tables; no SET ROLE into peers" time="0.00646245">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 privilege boundary and FORCE RLS (INT-011) &gt; NEGATIVE: runtime cannot DELETE or TRUNCATE any messaging table" time="0.007903693">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; messages are append-only: UPDATE and DELETE are refused" time="0.008012296">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; even the owner-trigger refuses mutation of immutable rows" time="0.00538727">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; thread transitions follow the legal graph; illegal jumps and version skips are refused" time="0.007742916">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; thread identity columns cannot be rewritten (no UPDATE grant on application_id)" time="0.003298821">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; a message cannot be appended to a closed thread, with a stale sequence, or by a non-participant" time="0.007131439">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; retraction is sender-only, plain-message-only and one-shot; the message row survives" time="0.017300645">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; acknowledgement applies only to ack-required notices, never by the sender" time="0.014044907">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; official notice columns are consistent: ack settings only on notices" time="0.005383795">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; read position is monotonic, bounded by the last message, participants only; participants removal is one-way" time="0.017284137">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-026 database invariants (defence in depth below the service) &gt; attachment rows only accept clean storage-key references (no traversal, no inline content)" time="0.01202083">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/service-flow.int.test.ts" timestamp="2026-10-10T03:28:06.216Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.719791295">
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; runs the two-way thread flow; both sides read the same authoritative thread" time="0.04265982">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; NEGATIVE: another tenant cannot read, send or acknowledge; same-tenant outsiders get 404" time="0.014429578">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; concurrent sends receive unique, gap-free sequence numbers" time="0.084473559">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; concurrent duplicate idempotency keys create exactly one message" time="0.015128467">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; commits state, idempotency record and outbox atomically; rolls everything back on failure" time="0.013788538">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; outbox and audit events carry no message body text or raw principal ids" time="0.01344921">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; retraction keeps the authoritative row; notices acknowledge once; lifecycle persists transitions" time="0.03616229">
+        </testcase>
+        <testcase classname="test/integration/service-flow.int.test.ts" name="CMP-026 service against PostgreSQL (RLS + triggers + outbox) &gt; read receipts and participant removal persist; removed participants lose access" time="0.023902666">
+        </testcase>
+    </testsuite>
+</testsuites>
