@@ -112,3 +112,37 @@ acceptance_tests_planning:
   - Tenant RLS on task rows
   - INT-005 officer action authorized before transition command
   - Host mount deferred to SF-M05-009
+
+# Builder execution record (SF-M05-003). Builder output only. Not verified. Not CERTIFIED. Not G4. Not G6.
+# READY-envelope fields above are unchanged. The immutable frozen head SHA and CI run IDs are recorded in the
+# builder freeze report because they bind to the final PR head and cannot be committed before the run exists.
+builder_execution:
+  builder_executed: true
+  branch: agent/M05-tasks-SF-M05-003
+  base_sha_prefix: 6e9f0481
+  implementation_commit_prefix: bfeb12d3
+  model_route: sonnet
+  model_release: claude-sonnet-5-5
+  effort: high
+  merged: false
+  self_certified: false
+  independent_verifier_route: opus
+  ccr_required: false
+  frozen_contracts_altered: false
+  contracts_lock_altered: false
+  pnpm_lock_altered: false
+  apps_altered: false
+  stitch_a_started: false
+  other_m05_tasks_started: false
+  schema: sf_tasks
+  privilege_role: sf_cmp017_rw
+  adr_refs: [ADR-0003, ADR-0005, ADR-0006]
+  migrations:
+    - db/migrations/1759540170000_cmp-017-work-queue-tasks.sql
+    - db/migrations/1759540170001_cmp-017-outbox.sql
+  evidence_dir: evidence/SF-M05-003
+  recommended_gate: none
+  notes:
+    - Dependency-free workspace package; shared contracts imported by relative path until STITCH-A admits the importer.
+    - Transport-neutral handler only; apps/api host mount remains deferred to SF-M05-009.
+    - task_state in SF-CON-HUMAN-TASK event data is the post-operation state (frozen schema silent); flagged for verifier.
