@@ -1,0 +1,19 @@
+{
+  "M05_HOST_PACKAGE_ADMISSION": "DEFERRED_UNRESOLVED",
+  "M05_HOST_PACKAGE_ADMISSION_BLOCKING": true,
+  "missing_workspace_deps": [
+    "@serviceform/cmp-015-application-case",
+    "@serviceform/cmp-017-work-queue-tasks",
+    "@serviceform/cmp-018-inspection-verification",
+    "@serviceform/cmp-019-deficiency",
+    "@serviceform/cmp-027-grievance-feedback",
+    "@serviceform/cmp-028-appeal-review",
+    "@serviceform/cmp-029-sla-escalation"
+  ],
+  "file_url_fallback_present": true,
+  "would_require_writes_outside_int_set": [
+    "apps/api/package.json",
+    "pnpm-lock.yaml"
+  ],
+  "production_patched": false
+}

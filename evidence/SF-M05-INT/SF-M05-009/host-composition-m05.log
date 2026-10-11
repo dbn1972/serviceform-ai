@@ -1,0 +1,14 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ apps/api/test/composition-m05.test.ts (13 tests) 1760ms
+   ✓ CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) (12)
+     ✓ mounts each M05 HTTP component independently (CMP-016 excluded) 460ms
+     ✓ keeps Wave1/2/M02/M03/M04 mount lists unchanged when M05 is registered 1036ms
+
+ Test Files  1 passed (1)
+      Tests  13 passed (13)
+   Start at  06:11:27
+   Duration  2.31s (tests 79%, import 12%, transform 9%)
+
+JUNIT report written to /workspace/evidence/SF-M05-INT/SF-M05-009/junit/host-composition-m05.xml

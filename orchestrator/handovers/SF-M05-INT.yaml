@@ -1,5 +1,7 @@
-# M05 PLANNING envelope — independent integration (owned INT-004/005/006/009; re-verify INT-011/013)
-# PLANNING. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# SF-M05-INT handover — independent integration verifier
+# LOCK-8 EXECUTION_AUTHORIZED. Draft PR only. DO NOT MERGE.
+# Not CERTIFIED. Not G4. Not G6. SEC not consumed. EVD OFF.
+# Outcome: SF_M05_INT_BLOCKED (INT-009 durable reconciliation + host package admission).
 
 task_id: SF-M05-INT
 title: M05 independent integration
@@ -11,12 +13,13 @@ model_release: claude-opus-5-5
 effort: high
 component_ids: [CMP-015, CMP-016, CMP-017, CMP-018, CMP-019, CMP-027, CMP-028, CMP-029]
 integration_ids: [INT-004, INT-005, INT-006, INT-009, INT-011, INT-013]
-branch: agent/M05-int-SF-M05-INT
-worktree: ../wt-SF-M05-INT
+branch: cursor/m05-int-c0d25b32
+worktree: in-repo
 parallel_group: M05-VERIFY
 hard_serial_locks: [LOCK-8]
 depends_on:
   - SF-M05-009 on origin/main
+  - HUMAN_SF_M05_LOCK8_EXECUTION_AUTHORIZATION
 allowed_write_paths:
   - tests/integration/m05/**
   - evidence/integration/m05/**
@@ -36,36 +39,69 @@ serial_after:
   - SF-M05-009
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
+g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-base_commit:
+merge_authorized: false
+do_not_merge: true
+
+# Planning YAML base_commit is provenance only — not rewritten here.
+planning_base_commit_provenance:
   prefix: b286ed95
   suffix: 6755b936f73bc2856c9db2c68d8ca64c
-join_separator: "_"
-contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
+  join_separator: "_"
+
+execution_base_main: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+lock7: SATISFIED
+lock8: EXECUTION_AUTHORIZED
+sha_guard: PASS
+contracts_lock: 19/19 MATCH
+
+verification_record:
+  production_base: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  execution_base: c0d25b32114779ddb4cc23e4e62a25f9d1365192
+  production_code_modified: false
+  verifier_branch: cursor/m05-int-c0d25b32
+  verifier_freeze_head: af7c86f842d52ad1255d8f2a4310a386bafe70b3
+  result:
+    family: SF_M05_INT
+    status: BLOCKED
+    join_separator: "_"
+  CROSS_TENANT_LEAKAGE: 0
+  contracts_lock: 19/19 MATCH
+  INT-004: PASS
+  INT-005: PASS
+  INT-006: PASS
+  INT-009: BLOCKED
+  INT-011: PASS
+  INT-013: PASS
+  INT_009_DURABLE_RECONCILIATION: BLOCKED
+  M05_HOST_PACKAGE_ADMISSION_BLOCKING: true
+  M05_HOST_PACKAGE_ADMISSION: DEFERRED_UNRESOLVED
+  CMP-019_residual: GOVERNING_UNRESOLVED_UNWAIVED
+  CMP-028_residual: GOVERNING_UNRESOLVED_UNWAIVED
+  executed_test_count: 163
+  suite_count: 12
+  pass_count: 12
+  fail_count: 0
+  local_run_id: local-m05-int
+  github_ci: PENDING
+  github_security: PENDING
+  github_developer_platform: PENDING
+  sec_consumed: false
+  evd_started: false
+  m06_started: false
+  m08_started: false
 
 stop_conditions:
   - FROZEN existing 13 shared contracts change required (CCR+STOP)
@@ -73,16 +109,11 @@ stop_conditions:
   - LLM final statutory eligibility/approval/rejection/penalty
   - write outside allowed_write_paths
   - dependency on unmerged sibling M05 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / orchestrator dispatch record
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - issue G4 (EVD recommend only; human/CI issues)
   - M06 or M08 start
-  - SMS/email/DigiLocker/payment implementation
-  - weaken cg01_path_uniqueness_gate.py
-  - freeze contracts in the planning PR
-  - Temporal authoritative case state
-  - named officer in published workflow
-  - BPMN as a second runtime
+  - waive CMP-019 or CMP-028
+  - patch production to force INT-009 green
 
 acceptance_tests_planning:
   - INT-004 submission hot path txn/outbox
@@ -91,3 +122,6 @@ acceptance_tests_planning:
   - INT-009 deficiency pause/resume
   - Independently re-verify INT-011 and INT-013 layers added here
   - SIMULATED adapters fail-closed if marked production-critical
+
+# Draft PR freeze. Do not amend after exact-head CI/Security/DP SUCCESS recorded.
+# Next: independent SF-M05-SEC (parallel; do not consume its unmerged branch). EVD OFF.

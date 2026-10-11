@@ -1,0 +1,19 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/integration/m05/host-package-admission.test.ts (2 tests) 163ms
+ ✓ tests/integration/m05/int-013-modes.test.ts (4 tests) 47ms
+ ✓ tests/integration/m05/int-006-evidence-simulated.test.ts (4 tests) 47ms
+ ✓ tests/integration/m05/int-005-temporal-opa.test.ts (5 tests) 5ms
+ ✓ tests/integration/m05/int-004-outbox-txn.test.ts (4 tests) 4ms
+ ✓ tests/integration/m05/int-009-durable-reconciliation.test.ts (2 tests) 3ms
+ ✓ tests/integration/m05/int-011-host.test.ts (3 tests) 423ms
+   ✓ INT-011 M05 host tenant isolation (independent) (3)
+     ✓ forged X-Tenant-ID is not authoritative; canary not echoed 393ms
+
+ Test Files  7 passed (7)
+      Tests  24 passed (24)
+   Start at  06:11:25
+   Duration  1.08s (tests 43%, transform 29%, import 27%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M05-INT/junit/independent-unit.xml
