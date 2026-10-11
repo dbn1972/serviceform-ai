@@ -1,0 +1,20 @@
+
+> @serviceform/cmp-020-fee-calculation@0.0.0 test:unit /workspace/services/cmp-020-fee-calculation
+> vitest run --root . --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-020-fee-calculation
+
+ ✓ test/unit/calculate.test.ts (46 tests) 13ms
+ ✓ test/unit/pg-repo.test.ts (11 tests) 14ms
+ ✓ test/unit/service.test.ts (86 tests) 54ms
+ ✓ test/unit/money.test.ts (23 tests) 7ms
+ ✓ test/unit/charset.test.ts (34 tests) 5ms
+ ✓ test/contract/contracts.test.ts (10 tests) 59ms
+
+ Test Files  6 passed (6)
+      Tests  210 passed (210)
+   Start at  02:46:07
+   Duration  426ms (transform 51%, tests 24%, import 23%, worker 3%)
+
+JUNIT report written to /workspace/evidence/SF-M06-001/junit/unit.xml

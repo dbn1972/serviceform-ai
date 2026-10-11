@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-020-fee-calculation@0.0.0 test:integration /workspace/services/cmp-020-fee-calculation
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-020-fee-calculation
+
+ ✓ test/integration/privilege-rls.int.test.ts (8 tests) 4473ms
+   ✓ CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) (8)
+     ✓ down migration removes sf_fee and re-applies cleanly 809ms
+ ✓ test/integration/api-flow.int.test.ts (5 tests) 746ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  02:46:44
+   Duration  5.54s (tests 97%, transform 2%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M06-001/junit/integration.xml

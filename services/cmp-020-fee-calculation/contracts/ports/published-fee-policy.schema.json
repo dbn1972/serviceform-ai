@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-020/published-fee-policy-port/v1",
+  "title": "PublishedFeePolicy (consumer port)",
+  "description": "Component-local consumer-side shape that CMP-020 requires from the FeePolicyPort adapter (published, immutable fee-policy version from governed metadata: CMP-033/CMP-052, published via CMP-051). Not a shared or frozen contract and not a fee schedule: CMP-020 defines no amounts, rates or waivers. Adapter binding is deferred to host composition (SF-M06-005).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fee_policy_version_id",
+    "tenant_id",
+    "tenant_service_binding_id",
+    "publication_status",
+    "content_hash",
+    "currency",
+    "rule_version_id",
+    "waiver_policy_ref",
+    "lines"
+  ],
+  "properties": {
+    "fee_policy_version_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "tenant_service_binding_id": { "type": "string", "format": "uuid" },
+    "publication_status": { "const": "PUBLISHED" },
+    "content_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "rule_version_id": {
+      "oneOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }],
+      "description": "When present it must equal the application's pinned rule_version_id."
+    },
+    "waiver_policy_ref": {
+      "oneOf": [{ "type": "string", "minLength": 1, "maxLength": 128 }, { "type": "null" }],
+      "description": "Opaque ref to a published waiver/exemption policy; any waiver effect is computed by pinned rules, never by CMP-020."
+    },
+    "lines": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "basis", "amount_minor"],
+            "properties": {
+              "code": { "type": "string", "pattern": "^[A-Z0-9_.-]{1,64}$" },
+              "basis": { "const": "FIXED_AMOUNT" },
+              "amount_minor": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+                  { "type": "string", "pattern": "^(0|[1-9][0-9]{0,15})$" }
+                ]
+              },
+              "description_code": { "type": "string", "minLength": 1, "maxLength": 64 }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "basis", "rule_output_key"],
+            "properties": {
+              "code": { "type": "string", "pattern": "^[A-Z0-9_.-]{1,64}$" },
+              "basis": { "const": "RULE_OUTPUT" },
+              "rule_output_key": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.]{0,63}$" },
+              "description_code": { "type": "string", "minLength": 1, "maxLength": 64 }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

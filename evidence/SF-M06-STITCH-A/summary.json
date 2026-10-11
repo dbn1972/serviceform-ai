@@ -1,0 +1,45 @@
+{
+  "task": "SF-M06-STITCH-A",
+  "disposition": "STITCHED_CANDIDATE_PENDING_CI",
+  "execution_base": "c5f90d56988c4f988133c99643ff2ab96b53997c",
+  "execution_authorized": true,
+  "frozen_inputs": {
+    "SF-M06-001": "c962167f9f2cfee9bc758584de69d5792d627d92",
+    "SF-M06-002": "b694416900d7e8107489c1d4d76bd502611056fb",
+    "SF-M06-003": "591559bd9e480956b315b960d56e8f4329b80ecd"
+  },
+  "byte_identical": true,
+  "lockfile": {
+    "importers_added": [
+      "services/cmp-020-fee-calculation",
+      "services/cmp-025-notification",
+      "services/cmp-026-communication-messaging"
+    ],
+    "diff": "+6/-0",
+    "frozen_lockfile": "PASS"
+  },
+  "validation": {
+    "format": "PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "contracts_validate": "PASS",
+    "contracts_lock": "29/29",
+    "gates": "10/10",
+    "pytest_gates": "30",
+    "migration_lint": "68",
+    "cmp020_unit": "210/210",
+    "cmp020_pg": "13/13",
+    "cmp025_unit": "163/163",
+    "cmp025_pg": "13/13",
+    "cmp026_unit": "85/85",
+    "cmp026_pg": "30/30",
+    "db_test": "17/17",
+    "audit_prod_high": "PASS"
+  },
+  "certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "recorded_at": "2026-10-11T02:48:27.993529Z",
+  "workspace_head_at_evidence_write": "c5f90d56988c4f988133c99643ff2ab96b53997c"
+}
