@@ -1,6 +1,8 @@
-# M06 READY envelope — Fee & Calculation Service (CG-02 Wave A)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G6.
-# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
+# SF-M06-001 handover — CMP-020 Fee & Calculation Service (CG-02 Wave A)
+# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. DISPATCHED. Builder candidate complete;
+# the commit carrying this text is the frozen immutable candidate head (DRAFT PR, unmerged).
+# Not MERGED. Not CERTIFIED. Not RELEASE CERTIFIED. Not G3. Not G6.
+# Task envelope orchestrator/tasks/SF-M06-001.yaml is not modified by this builder.
 # SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
 
 task_id: SF-M06-001
@@ -56,12 +58,18 @@ read_only_paths:
 wave_eligible_now: true
 serial_after:
 - SF-M06-CG-001
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
+# Lane token split against CKV_SECRET_6: family + status (do not join).
+builder_token:
+  family: SF-M06-001_BUILDER_CANDIDATE
+  status: READY
+merged: false
 self_certified: false
 not_certified: true
 certified: false
@@ -76,6 +84,19 @@ base_commit:
   prefix: 5acb291e
   suffix: a828894c40110396f0eafd62462e4572
 join_separator: _
+dispatch:
+  source: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
+  dispatch_base:
+    prefix: 8b1c26ce
+    suffix: b1fd781eab55a34fdc17d376dcc03c1b
+  require_exact_sha: true
+  dispatch_authorized: true
+  pre_dispatch_guard:
+    origin_main_equals_dispatch_base: PASS
+    envelope_ready_authorized_undispatched_eligible: PASS
+    cg01_path_uniqueness_gate: PASS
+    contracts_lock_29_of_29_frozen: PASS
+    m05_evidence_prs_107_108_109_open_at_bound_heads: PASS
 contract_locks:
 - SF-CON-COMMON
 - SF-CON-REQUEST-CONTEXT
@@ -117,6 +138,29 @@ stop_conditions:
 - start Wave B / STITCH / host / INT / SEC / EVD / M07+
 - weaken cg01_path_uniqueness_gate.py
 - own apps/api, pnpm-lock.yaml, or contracts-lock as Wave A builder
+builder_output:
+  implementation_commit:
+    prefix: 55fba541
+    suffix: a449cd87cc4c3011659aba077060e2bd
+  evidence: evidence/SF-M06-001/EVIDENCE.md
+  schema: sf_fee
+  privilege_role: sf_cmp020_rw
+  migrations:
+    - db/migrations/1759620200000_cmp-020-fee-calculation.sql
+    - db/migrations/1759620200001_cmp-020-outbox.sql
+  produces: [SF-CON-FEE-QUOTE]
+  ports_unbound_fail_closed: [ApplicationPinsPort, FeePolicyPort, FeeRulesPort]
+  local_results:
+    unit_contract: 210/210 PASS
+    postgres_integration: 13/13 PASS
+    gates_run_all: PASS
+    check_scope: PASS
+    db_test: 17/17 PASS
+    semgrep_lane_paths: 0 findings
+    checkov_secrets_lane_paths: PASS
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+  invented_fee_or_waiver_policy: false
+  host_mount: deferred to SF-M06-005
 acceptance_tests_planning:
 - Fee quote produced from published service/version pins
 - No hard-coded tenant/jurisdiction/service fee tables in domain logic
