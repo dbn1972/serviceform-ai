@@ -1,0 +1,19 @@
+{
+  "INT_009_DURABLE_RECONCILIATION": "PROVEN",
+  "reason": "Executable E2E: durable reconciliation_intent + DeficiencyReconciliationConsumer proves OPEN/RESPOND, fail→reconcile, crash recovery, duplicate/replay, STALE_EXPECTED_STATE/STALE_VERSION→FAILED_STALE terminal, T1≠T2, ports-only, no network in auth txn",
+  "details": {
+    "migration": "db/migrations/1759541900002_cmp-019-reconciliation.sql",
+    "consumer": "DeficiencyReconciliationConsumer",
+    "stale_codes_terminal": [
+      "STALE_EXPECTED_STATE",
+      "STALE_VERSION",
+      "STALE_EXPECTED_VERSION"
+    ],
+    "residual": "GOVERNING_UNRESOLVED_UNWAIVED",
+    "residual_closure_recommended_if_all_pass": true
+  },
+  "production_code_patched": false,
+  "cmp_019_residual": "GOVERNING_UNRESOLVED_UNWAIVED",
+  "executable_e2e": true,
+  "static_inspection_alone": false
+}

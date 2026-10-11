@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="1.02766814">
+    <testsuite name="tests/integration/m05/int-009-durable-reconciliation.int.test.ts" timestamp="2026-10-07T15:02:08.816Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.520475043">
+        <testcase classname="tests/integration/m05/int-009-durable-reconciliation.int.test.ts" name="INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS) &gt; FORCE RLS on reconciliation_intent; durable tokens; recover; T1≠T2; CROSS_TENANT_LEAKAGE=0" time="0.050607643">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-009-durable-reconciliation.int.test.ts" name="INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS) &gt; STALE_EXPECTED_STATE → FAILED_STALE on PostgreSQL; not selected by reconcilePending" time="0.021068992">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-009-durable-reconciliation.int.test.ts" name="INT-009 REM-001 durable reconciliation on PostgreSQL (FORCE RLS) &gt; STALE_VERSION → FAILED_STALE on PostgreSQL; remaining terminal" time="0.018147199">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m05/int-011-rls-catalog.int.test.ts" timestamp="2026-10-07T15:02:08.817Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.507193097">
+        <testcase classname="tests/integration/m05/int-011-rls-catalog.int.test.ts" name="INT-011 M05 LOGIN RLS catalog (independent) &gt; runtime identities are non-owner, not SUPERUSER, no BYPASSRLS; M05 schemas FORCE RLS" time="0.049629601">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-011-rls-catalog.int.test.ts" name="INT-011 M05 LOGIN RLS catalog (independent) &gt; CMP-019 deficiency_notice hides T1 rows from T2 (CROSS_TENANT_LEAKAGE=0)" time="0.007559115">
+        </testcase>
+        <testcase classname="tests/integration/m05/int-011-rls-catalog.int.test.ts" name="INT-011 M05 LOGIN RLS catalog (independent) &gt; peer privilege role cannot SELECT deficiency_notice" time="0.005907435">
+        </testcase>
+    </testsuite>
+</testsuites>
