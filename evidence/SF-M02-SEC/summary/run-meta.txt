@@ -1,0 +1,15 @@
+task_id=SF-M02-SEC
+production_sot=origin/main
+production_sha=d2530008bdc04ee941ff8a16535168791a3b804f
+verifier_sha=1baa64c77988b99740ccb0f1bab660209583635e
+vitest=pnpm exec vitest run --config tests/security/m02/vitest.config.ts
+vitest_result=3 files, 11/11 pass, 0 fail
+catalog=node tests/security/m02/m02-independent-catalog.mjs
+catalog_result=108 pass / 0 fail
+CROSS_TENANT_LEAKAGE=0
+frozen_contracts=13/13 MATCH
+uniqueness=READY dispatched=false PASS
+database=disposable local PostgreSQL 16.15 (credentials not recorded)
+certified=false
+recommended_gate=V1_SECURITY_PASS
+assessed_at=2026-10-04T13:36:01.532Z
