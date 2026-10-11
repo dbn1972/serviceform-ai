@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="0" errors="0" time="3.206080135">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-05T12:39:56.004Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.570408932">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-029 end to end on PostgreSQL (real login role, FORCE RLS) &gt; runs start, pause, resume, breach, escalation and completion with replayable history" time="0.070659919">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-029 end to end on PostgreSQL (real login role, FORCE RLS) &gt; another tenant sees nothing through the API (RLS), and cannot act on the clock" time="0.015345502">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-029 end to end on PostgreSQL (real login role, FORCE RLS) &gt; replays an idempotent command from the database and rejects a changed request" time="0.011202656">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-029 end to end on PostgreSQL (real login role, FORCE RLS) &gt; serialises concurrent pause commands on the clock row (exactly one wins)" time="0.023614167">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-029 end to end on PostgreSQL (real login role, FORCE RLS) &gt; a refused command leaves no partial state and records a DENIED audit event" time="0.012980739">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-05T12:39:56.005Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="2.635671203">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, runtime login is not the owner" time="0.016171574">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on authoritative SLA tables; CMP-029 role has no DML outside sf_sla" time="0.0116195">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides T2 rows from T1 on every SLA table; CROSS_TENANT_LEAKAGE=0" time="0.010208779">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; wrong-tenant writes fail: forged tenant_id (WITH CHECK) and cross-tenant UPDATE/DELETE affect nothing" time="0.00685033">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; another component&apos;s login cannot SELECT/INSERT/UPDATE/DELETE CMP-029 tables" time="0.011054947">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; CMP-029 login cannot read or write other components tables" time="0.003804455">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 database guards (server-authoritative, immutable, auditable) &gt; published policy versions and calendar versions are immutable; only retirement is allowed" time="0.01576309">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 database guards (server-authoritative, immutable, auditable) &gt; a deadline cannot be edited directly, only recomputed by resume" time="0.005600794">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 database guards (server-authoritative, immutable, auditable) &gt; refuses illegal transitions, version skips, identity edits, monotonic regressions and deletes" time="0.011339063">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 database guards (server-authoritative, immutable, auditable) &gt; clock history is insert-only" time="0.003425706">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-029 database guards (server-authoritative, immutable, auditable) &gt; a clock must start RUNNING at level 0 with a deadline after the start anchor" time="0.005506406">
+        </testcase>
+    </testsuite>
+</testsuites>
