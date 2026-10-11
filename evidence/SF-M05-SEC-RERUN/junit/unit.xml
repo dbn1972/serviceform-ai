@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="0.897118999">
+    <testsuite name="tests/security/m05/forged-tenant-http.test.ts" timestamp="2026-10-07T14:59:35.483Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.626807678">
+        <testcase classname="tests/security/m05/forged-tenant-http.test.ts" name="SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) &gt; rejects client-controlled tenant headers on all M05 HTTP mounts with zero leakage" time="0.526288832">
+        </testcase>
+        <testcase classname="tests/security/m05/forged-tenant-http.test.ts" name="SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) &gt; rejects alternate tenant header spellings without echoing canary" time="0.028276479">
+        </testcase>
+        <testcase classname="tests/security/m05/forged-tenant-http.test.ts" name="SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) &gt; tenant_id in JSON body is not trusted as server tenant context" time="0.031117419">
+        </testcase>
+        <testcase classname="tests/security/m05/forged-tenant-http.test.ts" name="SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) &gt; tenant query manipulation does not become trusted server context" time="0.021256212">
+        </testcase>
+        <testcase classname="tests/security/m05/forged-tenant-http.test.ts" name="SF-M05-SEC INT-011 forged-tenant HTTP (not CERTIFIED) &gt; forged tenant is never authoritative even when resolveContext would return T1" time="0.018622629">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m05/opa-boundaries.test.ts" timestamp="2026-10-07T14:59:35.484Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.053527065">
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-015 OPA deny and PDP unavailable fail closed" time="0.002938887">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-017 task OPA: deny records allow=false; PDP unavailable fails closed" time="0.044621106">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-019 deficiency OPA fail-closed (deny / PDP / cross-tenant)" time="0.000557065">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-028 appeal OPA: deny allow=false; PDP unavailable fails closed" time="0.000615986">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-029 SLA OPA fail-closed" time="0.000514038">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; AI cannot make final statutory / disposition decisions" time="0.000956052">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; CMP-019 INT-009 pause/resume cannot import CMP-029 SQL or skip OPA" time="0.00138605">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; authzInput for case never trusts mismatched tenant" time="0.000297937">
+        </testcase>
+        <testcase classname="tests/security/m05/opa-boundaries.test.ts" name="SF-M05-SEC OPA / AI / port boundaries (not CERTIFIED) &gt; shared OPA default deny remains" time="0.000464079">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m05/reconciliation-security.test.ts" timestamp="2026-10-07T14:59:35.485Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.011850906">
+        <testcase classname="tests/security/m05/reconciliation-security.test.ts" name="SF-M05-SEC-RERUN REM-001 reconciliation security (not CERTIFIED) &gt; durable recon does not bypass expected_state/version; STALE → FAILED_STALE terminal" time="0.005503657">
+        </testcase>
+        <testcase classname="tests/security/m05/reconciliation-security.test.ts" name="SF-M05-SEC-RERUN REM-001 reconciliation security (not CERTIFIED) &gt; STALE_VERSION also terminates safely as FAILED_STALE" time="0.001048926">
+        </testcase>
+        <testcase classname="tests/security/m05/reconciliation-security.test.ts" name="SF-M05-SEC-RERUN REM-001 reconciliation security (not CERTIFIED) &gt; reconcile refuses when authoritative transaction is open (no network in auth txn)" time="0.001486676">
+        </testcase>
+        <testcase classname="tests/security/m05/reconciliation-security.test.ts" name="SF-M05-SEC-RERUN REM-001 reconciliation security (not CERTIFIED) &gt; wrong-tenant reconcile cannot observe peer intent (CROSS_TENANT isolation)" time="0.001497782">
+        </testcase>
+        <testcase classname="tests/security/m05/reconciliation-security.test.ts" name="SF-M05-SEC-RERUN REM-001 reconciliation security (not CERTIFIED) &gt; reconstructor uses CaseCommandPort only with durable expected_state/version" time="0.001110809">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m05/static-isolation.test.ts" timestamp="2026-10-07T14:59:35.486Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.20493335">
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; frozen contracts lock is 19/19 MATCH" time="0.053196353">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; task envelope stays PLANNING (read-only); uniqueness gate PASS" time="0.113603285">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; host omits CMP-016 HTTP; CMP-036 registered once; no remount from M05" time="0.000860351">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; M05 service sources do not run cross-component SQL" time="0.031740549">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; migrations keep FORCE RLS; privilege roles NOLOGIN / NOBYPASSRLS" time="0.000690552">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; CMP-015 is authoritative vs Temporal; CMP-016 has no case-write port" time="0.000322001">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; CMP-019 cannot bypass OPA/tenant/version/CMP-015 (port-only case + SLA)" time="0.000739045">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; CMP-028 original_case_command boundary enforces CMP-015 port only" time="0.000492321">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; OPA authorize ports are fail-closed across M05 PEPs" time="0.000593171">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; REM-002 host package admission: seven workspace:*; CMP-016 none; CMP-036 single" time="0.000863414">
+        </testcase>
+        <testcase classname="tests/security/m05/static-isolation.test.ts" name="SF-M05-SEC static isolation (not CERTIFIED) &gt; REM-002 supply-chain controls remain intact (no relaxation)" time="0.000393741">
+        </testcase>
+    </testsuite>
+</testsuites>
