@@ -1,0 +1,65 @@
+{
+  "schema": "serviceform.builder.evidence.v1",
+  "task_id": "SF-M05-002",
+  "component_id": "CMP-016",
+  "base_sha": "6e9f0481eb3007dedee5580838cab59ceea66f03",
+  "code_sha": "bb667e4a2abfc7106acc04928950c7e785658915",
+  "pr": "https://github.com/dbn1972/serviceform-ai/pull/89",
+  "results": {
+    "format": "PASS",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "root_unit_coverage": "PASS (995 tests)",
+    "contracts_validate": "PASS",
+    "cdc": "PASS",
+    "deps_graph": "PASS",
+    "build": "PASS",
+    "gate_selftests": "PASS (25)",
+    "gates_run_all": "10/10 PASS",
+    "migration_lint": "PASS",
+    "contracts_lock": "19/19 MATCH",
+    "write_scope": "PASS",
+    "db_test": "PASS (17)",
+    "cmp016_unit_contract": "PASS (129)",
+    "cmp016_integration_postgres": "PASS (21)",
+    "semgrep_local_cmp016": "0 findings"
+  },
+  "cross_tenant_leakage": 0,
+  "lockfile_changed": false,
+  "contracts_changed": false,
+  "ccr_required": false,
+  "coverage": {
+    "cmp016_src": {
+      "lines": {
+        "covered": 941,
+        "total": 960,
+        "pct": 98.02
+      },
+      "branches": {
+        "covered": 670,
+        "total": 741,
+        "pct": 90.42
+      },
+      "functions": {
+        "covered": 191,
+        "total": 194,
+        "pct": 98.45
+      },
+      "statements": {
+        "covered": 1075,
+        "total": 1129,
+        "pct": 95.22
+      }
+    },
+    "global_pct": {
+      "lines": 88.67,
+      "branches": 74.16,
+      "functions": 91.02,
+      "statements": 84.96
+    }
+  },
+  "certified": false,
+  "self_certified": false,
+  "g4": false,
+  "g6": false
+}

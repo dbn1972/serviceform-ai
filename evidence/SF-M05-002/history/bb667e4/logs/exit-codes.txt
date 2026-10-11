@@ -1,0 +1,19 @@
+install-frozen rc=0 seconds=2
+lockfile dirtied by install; restoring
+format-check rc=0 seconds=19
+lint rc=0 seconds=15
+typecheck rc=0 seconds=48
+test-coverage rc=0 seconds=30
+contracts-validate rc=0 seconds=2
+test-cdc rc=0 seconds=1
+deps-graph rc=0 seconds=3
+build rc=0 seconds=42
+gate-selftests rc=0 (re-run after installing scripts/requirements.txt + pytest; first attempt rc=1: pytest missing)
+gates-run-all rc=0 seconds=2
+migration-lint rc=0 seconds=0
+contracts-lock rc=0 seconds=0
+check-scope rc=0 seconds=0
+db-test rc=0 seconds=11
+cmp016-unit rc=0 seconds=2
+cmp016-integration rc=0 seconds=4
+DONE

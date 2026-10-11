@@ -1,0 +1,115 @@
+
+> serviceform-ai@ db:test /workspace
+> pnpm --filter @serviceform/db run test:integration
+
+
+> @serviceform/db@0.0.0 test:integration /workspace/db
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/db
+
+Error executing:
+
+-- Down Migration
+REVOKE ALL ON SCHEMA sf_upload FROM sf_cmp013_rw;
+DROP SCHEMA IF EXISTS sf_upload CASCADE;
+DROP ROLE IF EXISTS sf_cmp013_rw;
+;
+error: role "sf_cmp013_rw" cannot be dropped because some objects depend on it
+
+> Rolling back attempted migration ...
+error: role "sf_cmp013_rw" cannot be dropped because some objects depend on it
+    at /workspace/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.query (file:///workspace/node_modules/.pnpm/node-pg-migrate@9.0.0_@types+pg@8.23.1_pg@8.23.1/node_modules/node-pg-migrate/dist/bundle/index.js:3392:11)
+    at async runner (file:///workspace/node_modules/.pnpm/node-pg-migrate@9.0.0_@types+pg@8.23.1_pg@8.23.1/node_modules/node-pg-migrate/dist/bundle/index.js:3590:5) {
+  length: 284,
+  severity: 'ERROR',
+  code: '2BP01',
+  detail: '22 objects in database serviceform_test\n' +
+    '22 objects in database sf_wave_a_combined\n' +
+    '22 objects in database sf_wave_a_combined2\n' +
+    '22 objects in database sf_m89_only',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'user.c',
+  line: '1298',
+  routine: 'DropRole'
+}
+ ❯ test/migrations.int.test.ts (6 tests | 1 failed) 3006ms
+   ❯ migration framework (REQ: AWS v1.7 s17 M0; Eng v1.4 s9.1 G2 migration evidence) (6)
+     × rolls every migration back, leaves no component schema, and re-applies cleanly 433ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/migrations.int.test.ts > migration framework (REQ: AWS v1.7 s17 M0; Eng v1.4 s9.1 G2 migration evidence) > rolls every migration back, leaves no component schema, and re-applies cleanly
+Error: Command failed: pnpm exec node-pg-migrate down 47 --migrations-dir migrations --migrations-table sf_schema_migrations --migrations-schema sf_platform --create-migrations-schema --check-order
+Error executing:
+
+-- Down Migration
+REVOKE ALL ON SCHEMA sf_upload FROM sf_cmp013_rw;
+DROP SCHEMA IF EXISTS sf_upload CASCADE;
+DROP ROLE IF EXISTS sf_cmp013_rw;
+;
+error: role "sf_cmp013_rw" cannot be dropped because some objects depend on it
+
+> Rolling back attempted migration ...
+error: role "sf_cmp013_rw" cannot be dropped because some objects depend on it
+    at /workspace/node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694:17
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.query (file:///workspace/node_modules/.pnpm/node-pg-migrate@9.0.0_@types+pg@8.23.1_pg@8.23.1/node_modules/node-pg-migrate/dist/bundle/index.js:3392:11)
+    at async runner (file:///workspace/node_modules/.pnpm/node-pg-migrate@9.0.0_@types+pg@8.23.1_pg@8.23.1/node_modules/node-pg-migrate/dist/bundle/index.js:3590:5) {
+  length: 284,
+  severity: 'ERROR',
+  code: '2BP01',
+  detail: '22 objects in database serviceform_test\n' +
+    '22 objects in database sf_wave_a_combined\n' +
+    '22 objects in database sf_wave_a_combined2\n' +
+    '22 objects in database sf_m89_only',
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: 'user.c',
+  line: '1298',
+  routine: 'DropRole'
+}
+
+ ❯ ../node_modules/.pnpm/pg@8.23.1/node_modules/pg/lib/client.js:694:17
+ ❯ Object.query ../node_modules/.pnpm/node-pg-migrate@9.0.0_@types+pg@8.23.1_pg@8.23.1/node_modules/node-pg-migrate/dist/bundle/index.js:3392:11
+ ❯ migrate test/helpers.ts:58:10
+     56|     '--check-order',
+     57|   ];
+     58|   return execFileSync('pnpm', ['exec', ...args], {
+       |          ^
+     59|     cwd: DB_DIR,
+     60|     encoding: 'utf8',
+ ❯ test/migrations.int.test.ts:103:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 16 passed (17)
+   Start at  15:28:45
+   Duration  5.88s (tests 98%, import 1%, transform 1%)
+
+/workspace/db:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @serviceform/db@0.0.0 test:integration: `vitest run --root . --config vitest.integration.config.ts`
+Exit status 1
+ ELIFECYCLE  Command failed with exit code 1.

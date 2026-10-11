@@ -1,0 +1,17 @@
+
+> serviceform-ai@ test:cdc /workspace
+> vitest run --config tests/cdc/vitest.config.ts
+
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/cdc/cmp-002-openapi-asyncapi.cdc.test.ts (5 tests) 5ms
+ ✓ tests/cdc/audit-ingest-envelopes.cdc.test.ts (7 tests) 81ms
+ ✓ tests/cdc/cmp-038-topic-compat.cdc.test.ts (7 tests) 71ms
+
+ Test Files  3 passed (3)
+      Tests  19 passed (19)
+   Start at  14:01:35
+   Duration  501ms (transform 59%, import 21%, tests 18%, worker 2%)
+
+JUNIT report written to /workspace/test-results/cdc/junit.xml

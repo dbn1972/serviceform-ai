@@ -114,3 +114,140 @@ acceptance_tests_planning:
   - BPMN artifacts cannot execute without canonical workflow model
   - Published version mutation denied
   - Host mount deferred to SF-M05-009
+
+# Builder completion (does not dispatch; does not certify; does not merge)
+builder_completed: true
+builder_branch: agent/M05-workflow-SF-M05-002
+builder_base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+builder_pr: https://github.com/dbn1972/serviceform-ai/pull/89
+builder_evidence: evidence/SF-M05-002/EVIDENCE.md
+builder_migrations:
+  - db/migrations/1759540160000_cmp-016-workflow-engine.sql
+  - db/migrations/1759540160001_cmp-016-outbox.sql
+builder_previous_frozen_head: e60ca7cb4bb6b4e481b81d47ce39d29f71995644
+builder_temporal_sdk:
+  "@temporalio/activity": 1.24.0
+  "@temporalio/client": 1.24.0
+  "@temporalio/common": 1.24.0
+  "@temporalio/worker": 1.24.0
+  "@temporalio/workflow": 1.24.0
+  "@temporalio/testing": 1.24.0 (devDependency)
+expected_stitch_lockfile_admission: true
+builder_lockfile_changed: false
+builder_contracts_changed: false
+builder_ccr_required: false
+expected_stitch_a_items:
+  - Admit importer services/cmp-016-workflow-engine with the six @temporalio/* 1.24.0 specifiers (frozen-lockfile red solely for this)
+  - Existing locked pg-cloudflare@1.4.1 and @next/swc-* fail minimumReleaseAge on non-frozen resolution; STITCH-A must resolve without weakening policy
+  - Coordinate CMP-016 migration repoint with CMP-015 pin graph (SF-CON-VERSION-PINNING)
+builder_notes: |
+  CMP-016 canonical workflow model (SF-CON-WORKFLOW-MODEL) with immutable published versions,
+  deterministic interpreter, Temporal sequencing adapter (start/signal only; refuses calls inside
+  an open domain transaction) bound to the production Temporal TypeScript SDK (client, worker,
+  sandboxed workflow with signals/durable timers/port-only activities), BPMN 2.0 import/export profile only (imports become drafts; never
+  executed). Advancement only on committed SF-CON-COMMAND-TRANSITION records (domain commit ->
+  outbox -> Temporal). Assignment is role + organisation/office + jurisdiction + scope; named
+  officers rejected. sf_workflow FORCE RLS; sf_cmp016_rw NOLOGIN; no cross-component SQL.
+  Host mount deferred to SF-M05-009. Not CERTIFIED / Not G4 / Not G6. STITCH-A OFF.
+
+# R-CMP016-DOWN2 remediation (Track A; human-authorized; test harness only; does not certify or merge)
+remediation_r_cmp016_down2:
+  authorized_by: human (Track A only)
+  previous_head: 50f56aff9cc1e46c927b881f30c249cb9e1955d2
+  code_sha: b01ed4cce98078a17f19f35f4c9118c085f4acb9
+  base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+  root_cause: >-
+    migration.int.test.ts assumed the CMP-016 pair is the global migration tail (slice(-2) and
+    global down 2). On the combined Wave A chain CMP-017/029 sort after CMP-016, so down 2 rolled
+    back CMP-029. Test defect; not a product or migration defect.
+  pattern: services/cmp-008-rules/test/integration/helpers.ts (withIsolatedCmp008Database)
+  files_changed:
+    - services/cmp-016-workflow-engine/test/integration/helpers.ts
+    - services/cmp-016-workflow-engine/test/integration/migration.int.test.ts
+  isolated_chain:
+    - 1759482000000_platform-baseline.sql
+    - 1759490000000_shared-db-contracts.sql
+    - 1759540160000_cmp-016-workflow-engine.sql
+    - 1759540160001_cmp-016-outbox.sql
+  isolated_db_pattern: sf_cmp016_rev_<8 hex>
+  combined_chain_global_down: false
+  combined_chain_tail_assertion: false
+  src_changed: false
+  migrations_changed: false
+  package_json_changed: false
+  lockfile_changed: false
+  contracts_changed: false
+  temporal_semantics_changed: false
+  semantic_diff_vs_previous_head: 0
+  results:
+    cmp016_unit_contract: PASS 136/136
+    cmp016_postgres_integration: PASS 21/21
+    cmp016_postgres_integration_combined_wave_a: PASS 21/21 (overlay from 2135940, not committed)
+    cmp016_postgres_integration_combined_wave_a_old_tests: FAIL 2/21 (reproduces R-CMP016-DOWN2)
+    cmp016_temporal_sdk: PASS 12/12
+    db_test: PASS 17/17
+    migration_lint: PASS
+    gates_run_all: 10/10
+    contracts_lock: 19/19 MATCH
+    write_scope: PASS
+    cross_tenant_leakage: 0
+  ccr_required: false
+  expected_stitch_lockfile_admission: true
+  residuals:
+    - id: R-CMP016-UNHANDLED-REJECTION
+      note: >-
+        Pre-existing intermittent vitest unhandled rejection in db-isolation.int.test.ts
+        (unchanged since 50f56af; 3/8 runs with the original test files). All 21 tests pass.
+        Outside the Track A allowed write paths; needs separate authorization.
+      addressed_by: remediation_r_cmp016_unhandled_rejection
+  evidence: evidence/SF-M05-002/history/b01ed4c/EVIDENCE.md
+  stitch_a: OFF
+  certified: false
+  g4: false
+  g6: false
+
+# R-CMP016-UNHANDLED-REJECTION remediation (Track A2; human-authorized; test harness only; does not certify or merge)
+remediation_r_cmp016_unhandled_rejection:
+  authorized_by: human (Track A2 only)
+  previous_head: 83811c74ca2be3856de4c99f343b0ad03da4d65e
+  code_sha: b0924d2501f00bdf033f18f2951eea8884bca2ff
+  base_sha: 6e9f0481eb3007dedee5580838cab59ceea66f03
+  root_cause: >-
+    db-isolation.int.test.ts "service layer: tenant B cannot export, start, signal or request on
+    tenant A data" built three rejecting service promises together and awaited errorOf(p) one by
+    one, so a later promise could reject before its handler attached. Test timing; not a domain
+    defect (every call correctly returned SF-SYS-002).
+  fix: lazy thunks; each promise is created inside errorOf(call()) so its handler attaches immediately
+  suppression_used: false
+  files_changed:
+    - services/cmp-016-workflow-engine/test/integration/db-isolation.int.test.ts
+  src_changed: false
+  helpers_changed: false
+  migrations_changed: false
+  package_json_changed: false
+  lockfile_changed: false
+  contracts_changed: false
+  semantic_diff_vs_previous_head: 0
+  mechanism_probe: >-
+    Uncommitted copies with a 200 ms window before each errorOf: old pattern rc=1 with 3 unhandled
+    rejections in 3/3 runs (18/18 tests pass); new pattern rc=0 with 0 in 3/3 runs.
+  results:
+    stability_m89_tree: 20 consecutive runs, 21/21 each, rc=0 20/20, unhandled 0
+    stability_combined_wave_a: 20 consecutive runs, 21/21 each, rc=0 20/20, unhandled 0 (overlay from 2135940, not committed)
+    cmp016_unit_contract: PASS 136/136
+    cmp016_postgres_integration: PASS 21/21
+    cmp016_temporal_sdk: PASS 12/12
+    db_test: PASS 17/17
+    migration_lint: PASS
+    gates_run_all: 10/10
+    contracts_lock: 19/19 MATCH
+    write_scope: PASS
+    cross_tenant_leakage: 0
+  ccr_required: false
+  expected_stitch_lockfile_admission: true
+  residuals: []
+  evidence: evidence/SF-M05-002/EVIDENCE.md
+  stitch_a: OFF
+  certified: false
+  g4: false
+  g6: false

@@ -1,0 +1,22 @@
+INFO  [validate-specs] 8 topology roles, 13 .claude/agents definitions
+PASS [validate-specs] 0 error(s), 0 warning(s)
+INFO  [migration-lint] 47 migration file(s) checked under db/migrations (or explicit paths)
+PASS [migration-lint] 0 error(s), 0 warning(s)
+INFO  [design-system] 39 package manifests checked
+PASS [design-system] 0 error(s), 0 warning(s)
+INFO  [no-hardcoded-jurisdictions] 703 source file(s) scanned
+PASS [no-hardcoded-jurisdictions] 0 error(s), 0 warning(s)
+INFO  [contracts-lock] 19 contract(s) in lock, 19 FROZEN
+PASS [contracts-lock] 0 error(s), 0 warning(s)
+INFO  [agent-rules] 11 cursor rules, 13 Claude subagents
+PASS [agent-rules] 0 error(s), 0 warning(s)
+PASS [codeowners] 0 error(s), 0 warning(s)
+INFO  [openapi-asyncapi] 42 component OpenAPI/AsyncAPI file(s) checked; shared contracts untouched
+PASS [openapi-asyncapi] 0 error(s), 0 warning(s)
+INFO  [workflow-pin] 3 workflow file(s) checked for pins and plaintext secrets
+PASS [workflow-pin] 0 error(s), 0 warning(s)
+INFO  [cg01-path-uniqueness] serial pair SF-M02-003 ↔ SF-M03-008 shares apps/api/** (must_not_run_concurrent_with required)
+INFO  [cg01-path-uniqueness] checked 17 CG-01 implementation envelopes; Wave A eligible now: SF-M02-001, SF-M02-002, SF-M03-001, SF-M03-002, SF-M03-003, SF-M03-005, SF-M03-006
+PASS [cg01-path-uniqueness] 0 error(s), 0 warning(s)
+
+10/10 gates passed
