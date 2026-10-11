@@ -1,7 +1,6 @@
-# M05 READY envelope — Grievance and Feedback Service (Wave B)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G4. Not G6.
-# Wave B READY GRANTED. Builder spawn PENDING later HUMAN WAVE B DISPATCH AUTHORIZATION.
-# base_commit is activation provenance ONLY; not builder dispatch authorization.
+# M05 Wave B builder handover — Grievance and Feedback Service
+# HUMAN WAVE B DISPATCH AUTHORIZATION consumed. Candidate-complete. Not CERTIFIED. Not G4. Not G6.
+# Do not merge. Do not start STITCH-B. Task envelope left unmodified.
 
 task_id: SF-M05-007
 title: Grievance and Feedback Service
@@ -51,12 +50,17 @@ wave_eligible_now: true
 serial_after:
   - SF-M05-STITCH-A
 
-builders_dispatched_this_envelope: false
+# M05 Wave B builder handover — SF-M05-007 CMP-027
+# HUMAN WAVE B DISPATCH AUTHORIZATION consumed. Candidate-complete. Not CERTIFIED. Not G4. Not G6.
+# Do not merge. Do not start STITCH-B.
+
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: candidate-complete
+state: candidate-complete
 self_certified: false
 not_certified: true
 certified: false
@@ -77,8 +81,10 @@ dispatch_base_policy:
   source: HUMAN_WAVE_B_DISPATCH_AUTHORIZATION
   require_exact_sha: true
   must_include_wave_b_ready_record: true
-  dispatch_base: null
-  dispatch_authorized: false
+  dispatch_base: ca57057a794739c03d0a46886577e25adf041815
+  dispatch_authorized: true
+  pr: https://github.com/dbn1972/serviceform-ai/pull/98
+  branch: agent/M05-grievance-SF-M05-007
 contract_locks:
   - SF-CON-AUDIT-EVENT
   - SF-CON-AUTHZ-DECISION
@@ -120,7 +126,10 @@ stop_conditions:
   - named-service branching or AI final disposition
   - alter CMP-016 / CMP-017 source
 
-acceptance_tests_planning:
-  - Tenant-scoped grievance rows ENABLE+FORCE RLS
-  - AI cannot close a grievance as statutory outcome
+acceptance_tests:
+  - Tenant-scoped grievance rows ENABLE+FORCE RLS (integration tests; CI PG harness)
+  - AI cannot close a grievance as statutory outcome (unit + integration)
   - Host mount deferred to SF-M05-009
+  - No named-service branching; named officer fields refused
+  - Outbox Day 1; no outbound I/O in domain txn
+
