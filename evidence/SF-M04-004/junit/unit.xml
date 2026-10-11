@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="66" failures="0" errors="0" time="0.853617824">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-04T15:30:22.475Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.176100539">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 component contracts &gt; OpenAPI exposes the Eng v1.4 interfaces; AsyncAPI lists every emitted event" time="0.002115048">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 component contracts &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION" time="0.057273041">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 component contracts &gt; emitted event data conforms to the component-local schemas (no URLs/keys/filenames)" time="0.111826996">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 component contracts &gt; outbox migration Up matches the frozen SF-CON-OUTBOX template after substitution" time="0.000481441">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 component contracts &gt; schema migration: own role, FORCE RLS, no BYPASSRLS/SUPERUSER, no cross-schema refs" time="0.000551221">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 static hard checks &gt; consumes CMP-032 only via the @serviceform/storage port package (no cross-component import)" time="0.000347287">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 static hard checks &gt; no durable local/pod filesystem writes" time="0.000346795">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 static hard checks &gt; no raw provider credentials or cloud SDKs in the component" time="0.000293833">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 static hard checks &gt; no OCR / document-intelligence implementation (SF-M04-006 scope)" time="0.000784521">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-013 static hard checks &gt; no named-service/jurisdiction branching" time="0.000459691">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-04T15:30:22.477Z" hostname="cursor" tests="26" failures="0" errors="0" skipped="0" time="0.077395518">
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; builds tenant/cell-scoped keys from server ids only" time="0.001536588">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;&quot;" time="0.000232221">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;../t/x&quot;" time="0.00011842">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/../x&quot;" time="0.000177157">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/./x&quot;" time="0.000095709">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;/t/x&quot;" time="0.000128766">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/x/&quot;" time="0.000140973">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t//x&quot;" time="0.000087743">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t\\x&quot;" time="0.000350922">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/%2e%2e/x&quot;" time="0.00012622">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/x\u0000&quot;" time="0.00011959">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/x y&quot;" time="0.000049303">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;t/名前&quot;" time="0.00003852">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses unsafe key &quot;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&quot;" time="0.000029716">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="traversal-safe object keys &gt; refuses non-uuid ids, bad cells and bad checksums" time="0.004012961">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="content sniffing and policy evaluation &gt; recognises every allowed signature and nothing else" time="0.000448747">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="content sniffing and policy evaluation &gt; fails closed on missing/retired/invalid policies" time="0.000354803">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="content sniffing and policy evaluation &gt; checks declarations and observed bytes against the pinned policy" time="0.001705363">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="content sniffing and policy evaluation &gt; only AVAILABLE is technically accepted; terminal states are final" time="0.000199047">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="errors, context and INT-013 policy &gt; maps database errors to catalogue codes" time="0.000205738">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="errors, context and INT-013 policy &gt; requires a contract-valid tenant context" time="0.056412531">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="errors, context and INT-013 policy &gt; enforces SIMULATED environment rules and marker validity" time="0.003586089">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SIMULATED adapters (INT-013, no durable filesystem) &gt; refuses non-simulation environments at construction" time="0.000848266">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SIMULATED adapters (INT-013, no durable filesystem) &gt; rejects forged, expired and wrong content-type uploads; never overwrites" time="0.002984627">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SIMULATED adapters (INT-013, no durable filesystem) &gt; keeps objects quarantined until released; refuses cross-tenant keys" time="0.001317341">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SIMULATED adapters (INT-013, no durable filesystem) &gt; scanner fails closed when the object is missing" time="0.00035232">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/upload-http.test.ts" timestamp="2026-10-04T15:30:22.479Z" hostname="cursor" tests="30" failures="0" errors="0" skipped="0" time="0.600121767">
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 happy path (direct upload -&gt; quarantine -&gt; scan -&gt; available) &gt; issues a short-lived direct upload target and never proxies bytes" time="0.15199383">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 happy path (direct upload -&gt; quarantine -&gt; scan -&gt; available) &gt; runs integrity + policy + scan, then grants download only when AVAILABLE" time="0.029599099">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 happy path (direct upload -&gt; quarantine -&gt; scan -&gt; available) &gt; never calls OPA, storage or scanner inside an open authoritative transaction" time="0.01916759">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 happy path (direct upload -&gt; quarantine -&gt; scan -&gt; available) &gt; emits audit events and contract-valid envelopes for material actions" time="0.01454681">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; refuses session when no policy, retired policy, disallowed type or oversize" time="0.017841429">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; refuses policies naming content types that cannot be verified by signature" time="0.016438442">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; rejects a checksum mismatch and discards the quarantined object" time="0.014861807">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; rejects size mismatch and sniffed type mismatch (declared pdf, actual png)" time="0.020740827">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; completing before the object exists keeps the session open (no state change)" time="0.013493797">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 size/type/checksum policy fails closed &gt; expired session is abandoned on complete and by the sweeper" time="0.01469567">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; infected object is rejected, discarded and never downloadable" time="0.015368657">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; scanner outage keeps SCAN_PENDING, retries via outbox, then rejects SCAN_FAILED" time="0.012995585">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; quarantine release failure is not treated as CLEAN" time="0.015044031">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; duplicate scan event does not duplicate effects; non-pending is skipped" time="0.013191225">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; rejects malformed scan requests" time="0.012431709">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 malware scan fails closed &gt; a document can never be marked AVAILABLE without a CLEAN scan row" time="0.013347645">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation and authorization (INT-011) &gt; wrong-tenant read, complete and access are denied with no leakage" time="0.014948398">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation and authorization (INT-011) &gt; storage port refuses another tenant object key (defense in depth)" time="0.012748643">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation and authorization (INT-011) &gt; refuses client tenant headers, forwarded tenant, missing context and tenant-less actors" time="0.012052395">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation and authorization (INT-011) &gt; rejects client-supplied tenant_id, filename and object key in the body" time="0.011907236">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation and authorization (INT-011) &gt; OPA deny is 403, PDP outage is 503, and OPA receives owner/classification" time="0.014909235">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 idempotency and dependency failure &gt; replays the same session for the same key and refuses a different body" time="0.013081155">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 idempotency and dependency failure &gt; storage outage on target issue is 503 and a retry with the same key recovers" time="0.013395711">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 idempotency and dependency failure &gt; storage outage on complete leaves state unchanged; duplicate complete is idempotent" time="0.013198719">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 idempotency and dependency failure &gt; download presign secret outage is 503 (fail closed)" time="0.014605779">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 idempotency and dependency failure &gt; reads the active policy and validates ids" time="0.012066021">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 INT-013 mode policy &gt; refuses SIMULATED adapters in PRODUCTION and non-simulation environments" time="0.01954011">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 INT-013 mode policy &gt; refuses SIMULATED adapters lacking a marker and a missing repository" time="0.016632088">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 INT-013 mode policy &gt; refuses a SIMULATED critical binding declared for PRODUCTION" time="0.01572839">
+        </testcase>
+        <testcase classname="test/unit/upload-http.test.ts" name="CMP-013 tenant isolation of a second tenant policy &gt; T2 cannot use T1 policy metadata" time="0.016559766">
+        </testcase>
+    </testsuite>
+</testsuites>
