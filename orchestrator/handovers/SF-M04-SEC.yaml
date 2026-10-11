@@ -1,4 +1,4 @@
-# M04 READY — independent security verifier
+# M04 READY — independent security verifier (executed; draft PR only; DO NOT MERGE)
 task_id: SF-M04-SEC
 title: M04 independent security and tenant isolation
 module_id: M04
@@ -9,7 +9,7 @@ model_release: claude-opus-5-5
 effort: xhigh
 component_ids: [CMP-008, CMP-009, CMP-011, CMP-013, CMP-014, CMP-039]
 integration_ids: [INT-011, INT-013]
-branch: agent/M04-sec-SF-M04-SEC
+branch: cursor/m04-sec-sf-m04-sec-9c22
 worktree: ../wt-SF-M04-SEC
 parallel_group: M04-VERIFY
 hard_serial_locks: [LOCK-7]
@@ -76,3 +76,41 @@ acceptance_tests_planning:
   - No SUPERUSER or BYPASSRLS on runtime roles
   - No PII or secrets in logs
   - AI gateway cannot be used to bypass OPA/RLS
+
+# Executed verification record (not CERTIFIED; EVD OFF)
+verification:
+  production_base:
+    prefix: afc8e253
+    suffix: d4c566a4a18b1e01d9b0a1163f9d6adf
+  production_code_modified: false
+  result:
+    family: V1_SECURITY
+    status: PASS
+    join_separator: "_"
+  CROSS_TENANT_LEAKAGE: 0
+  SUPERUSER: 0
+  BYPASSRLS: 0
+  runtime_ownership_violations: 0
+  direct_provider_bypasses: 0
+  statutory_ai_paths: 0
+  secret_pii_leakage: 0
+  blocking_high_critical: 0
+  contracts: 13/13 MATCH
+  catalog_pass: 296
+  catalog_fail: 0
+  vitest_pass: 17
+  vitest_fail: 0
+  force_rls_enable_probes: 33
+  force_rls_force_probes: 33
+  cross_tenant_probes: 17
+  semgrep_class_a_harness: node_secret_canary_concatenated
+  gitleaks_int_paths_in_sec_diff: false
+  evd_started: false
+  m04_g3_issued: false
+  m05: OFF
+  branch_tip:
+    prefix: cbc4d9a2
+    suffix: 46280117a50861849ddf9c38c05812d8
+  evidence_package_commit:
+    prefix: cf23d867
+    suffix: 2f3fceafb5f23484e10e0973ab9c8bee
