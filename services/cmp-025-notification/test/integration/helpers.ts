@@ -1,6 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { copyFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { SqlPool } from '../../src/repo/pg.js';
@@ -8,6 +10,24 @@ import type { SqlPool } from '../../src/repo/pg.js';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
 const DB_DIR = join(REPO_ROOT, 'db');
 const requireFromDb = createRequire(join(DB_DIR, 'package.json'));
+
+/** CMP-025 pair only. Isolated reversibility must not assume these are the global tip. */
+export const CMP025_MIGRATION_FILES = [
+  '1759545025000_cmp-025-notification.sql',
+  '1759545025001_cmp-025-outbox.sql',
+] as const;
+
+export const CMP025_MIGRATION_NAMES = CMP025_MIGRATION_FILES.map((f) => f.replace(/\.sql$/, ''));
+
+/**
+ * Platform prerequisites of the CMP-025 pair: sf_app (baseline), sf_platform.current_tenant_id()
+ * and sf_outbox_publisher (shared DB contracts). The pair creates sf_migrator / sf_cmp025_rw itself.
+ */
+const CMP025_ISOLATED_CHAIN = [
+  '1759482000000_platform-baseline.sql',
+  '1759490000000_shared-db-contracts.sql',
+  ...CMP025_MIGRATION_FILES,
+] as const;
 
 export interface PgClientLike {
   query(
@@ -67,24 +87,113 @@ export function migrate(): void {
   );
 }
 
-export function migrateDown(count: number): void {
-  execFileSync(
+function runMigrate(
+  migrationsDir: string,
+  env: NodeJS.ProcessEnv,
+  direction: 'up' | 'down',
+  count?: number,
+): string {
+  return execFileSync(
     'pnpm',
     [
       'exec',
       'node-pg-migrate',
-      'down',
-      String(count),
+      direction,
+      ...(count === undefined ? [] : [String(count)]),
       '--migrations-dir',
-      'migrations',
+      migrationsDir,
       '--migrations-table',
       'sf_schema_migrations',
       '--migrations-schema',
       'sf_platform',
+      '--create-migrations-schema',
       '--check-order',
     ],
-    { cwd: DB_DIR, encoding: 'utf8', env: process.env },
+    { cwd: DB_DIR, encoding: 'utf8', env },
   );
+}
+
+/**
+ * Tip-count `down N` on the combined catalog is unsafe once sibling migrations sort after
+ * CMP-025 (e.g. CMP-020 tip after STITCH-A). Prefer {@link withIsolatedCmp025Database}.
+ */
+export function migrateDown(count: number): void {
+  runMigrate('migrations', process.env, 'down', count);
+}
+
+export interface CombinedCatalogSnapshot {
+  migrationNames: string[];
+  notificationPresent: boolean;
+  feePresent: boolean;
+  feeTables: string[];
+}
+
+/** Snapshot used to prove CMP-025 isolated reversibility does not tear down sibling tips. */
+export async function snapshotCombinedCatalog(
+  admin: Pick<PgPoolLike, 'query'>,
+): Promise<CombinedCatalogSnapshot> {
+  const migrations = await admin.query(
+    'SELECT name FROM sf_platform.sf_schema_migrations ORDER BY name',
+  );
+  const notification = await admin.query(
+    `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
+  );
+  const fee = await admin.query(`SELECT 1 FROM pg_namespace WHERE nspname = 'sf_fee'`);
+  const feeTables = await admin.query(
+    `SELECT c.relname
+       FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'sf_fee' AND c.relkind = 'r'
+      ORDER BY 1`,
+  );
+  return {
+    migrationNames: migrations.rows.map((r) => String(r['name'])),
+    notificationPresent: notification.rows.length > 0,
+    feePresent: fee.rows.length > 0,
+    feeTables: feeTables.rows.map((r) => String(r['relname'])),
+  };
+}
+
+/**
+ * Throwaway database whose migration directory holds only CMP025_ISOLATED_CHAIN, so `down 2`
+ * reverses exactly the named CMP-025 pair whatever sorts after it in the combined chain.
+ */
+export async function withIsolatedCmp025Database<T>(
+  admin: PgPoolLike,
+  fn: (
+    iso: InstanceType<PgModule['Client']>,
+    migrateIso: (direction: 'up' | 'down', count?: number) => string,
+  ) => Promise<T>,
+): Promise<T> {
+  const name = `sf_cmp025_rev_${randomBytes(4).toString('hex')}`;
+  if (!/^sf_cmp025_rev_[0-9a-f]{8}$/.test(name)) {
+    throw new Error('isolated database name failed allowlist');
+  }
+  const tmp = mkdtempSync(join(tmpdir(), 'cmp025-rev-'));
+  const parsed = new URL(adminUrl());
+  parsed.pathname = `/${name}`;
+  const isoUrl = parsed.toString();
+  const isoEnv = { ...process.env, DATABASE_URL: isoUrl };
+  const createSql = `CREATE DATABASE ${name} TEMPLATE template0`;
+  const dropSql = `DROP DATABASE IF EXISTS ${name} WITH (FORCE)`;
+  try {
+    for (const file of CMP025_ISOLATED_CHAIN) {
+      copyFileSync(join(DB_DIR, 'migrations', file), join(tmp, file));
+    }
+    await admin.query(createSql);
+    const iso = new pg.Client({ connectionString: isoUrl });
+    await iso.connect();
+    try {
+      return await fn(iso, (direction, count) => runMigrate(tmp, isoEnv, direction, count));
+    } finally {
+      await iso.end();
+    }
+  } finally {
+    try {
+      await admin.query(dropSql);
+    } finally {
+      rmSync(tmp, { recursive: true, force: true });
+    }
+  }
 }
 
 async function withAdmin<T>(fn: (c: InstanceType<PgModule['Client']>) => Promise<T>): Promise<T> {

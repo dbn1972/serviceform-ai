@@ -4,12 +4,13 @@ import {
   asTenant,
   CANARY,
   closeHarness,
-  migrate,
-  migrateDown,
+  CMP025_MIGRATION_NAMES,
   OFFICER,
   setupHarness,
+  snapshotCombinedCatalog,
   T1,
   T2,
+  withIsolatedCmp025Database,
   type Harness,
   type PgClientLike,
 } from './helpers.js';
@@ -262,20 +263,50 @@ describe('CMP-025 privilege boundary (ADR-0006) and FORCE RLS (INT-011)', () => 
     ).not.toBe('allowed');
   });
 
-  it('isolated reversibility: down of CMP-025 migrations then up restores the schema', async () => {
-    migrateDown(2);
-    const missing = await h.admin.query(
-      `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
-    );
-    expect(missing.rows).toEqual([]);
-    migrate();
-    const present = await h.admin.query(
-      `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
-    );
-    expect(present.rows).toHaveLength(1);
-    const role = await h.admin.query(
-      `SELECT rolcanlogin FROM pg_roles WHERE rolname = 'sf_cmp025_rw'`,
-    );
-    expect(role.rows[0]?.['rolcanlogin']).toBe(false);
+  it('isolated reversibility: down of named CMP-025 migrations then up restores the schema', async () => {
+    const before = await snapshotCombinedCatalog(h.admin);
+    expect(before.notificationPresent).toBe(true);
+    expect(before.migrationNames.filter((n) => CMP025_MIGRATION_NAMES.includes(n))).toEqual([
+      ...CMP025_MIGRATION_NAMES,
+    ]);
+
+    await withIsolatedCmp025Database(h.admin, async (iso, migrateIso) => {
+      migrateIso('up');
+      const applied = await iso.query(
+        `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
+      );
+      expect(applied.rows).toHaveLength(1);
+      const names = await iso.query(
+        `SELECT name FROM sf_platform.sf_schema_migrations ORDER BY name`,
+      );
+      expect(names.rows.map((r) => String(r['name'])).filter((n) => n.includes('cmp-025'))).toEqual(
+        [...CMP025_MIGRATION_NAMES],
+      );
+
+      // Explicit CMP-025 pair only — never tip-count down on the combined catalog.
+      migrateIso('down', CMP025_MIGRATION_NAMES.length);
+      const missing = await iso.query(
+        `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
+      );
+      expect(missing.rows).toEqual([]);
+      const role = await iso.query(
+        `SELECT rolcanlogin, rolbypassrls, rolsuper FROM pg_roles WHERE rolname = 'sf_cmp025_rw'`,
+      );
+      expect(role.rows).toHaveLength(1);
+      expect(role.rows[0]).toEqual({
+        rolcanlogin: false,
+        rolbypassrls: false,
+        rolsuper: false,
+      });
+
+      migrateIso('up');
+      const present = await iso.query(
+        `SELECT 1 FROM pg_namespace WHERE nspname = 'sf_notification'`,
+      );
+      expect(present.rows).toHaveLength(1);
+    });
+
+    const after = await snapshotCombinedCatalog(h.admin);
+    expect(after).toEqual(before);
   });
 });

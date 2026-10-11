@@ -21,8 +21,8 @@ branch: agent/M06-notification-SF-M06-002
 privilege_role: sf_cmp025_rw
 schema: sf_notification
 
-state: SECURITY_CORRECTION_CANDIDATE_READY
-orchestration_task_state: SECURITY_CORRECTION_CANDIDATE_READY
+state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
+orchestration_task_state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
 dispatched: true
 planning_only: false
 implementation_authorized: true
@@ -117,3 +117,20 @@ security_correction:
   evidence: evidence/SF-M06-002/correction/
   local_results: 163/163 unit+contract, 13/13 PostgreSQL integration, eslint 0 warnings, tsc, prettier, gates 10/10, depcruise, semgrep (CI-equivalent config) 0 findings on corrected tree and 3 on prior head
   ci_required_on_new_head: [CI, Security, Developer-platform SUCCESS at exact head; Semgrep blocking 0; hardcoded-secret 0]
+
+stitch_conflict_correction:
+  authorization: HUMAN_SF_M06_002_STITCH_CONFLICT_CORRECTION_AUTHORIZATION
+  trigger: M06_STITCH_A_SEMANTIC_CONFLICT (STITCH-A combined validation — tip-count migrateDown(2) tore CMP-020 tip)
+  guard: prior PR head == fb948840f15280b33c1bb981a28119b1d3d95de6 OPEN DRAFT (exact)
+  prior_head: fb948840f15280b33c1bb981a28119b1d3d95de6
+  fix:
+    - privilege-rls isolated reversibility no longer calls tip-count migrateDown(2) on the combined catalog
+    - CMP025_MIGRATION_NAMES / CMP025_MIGRATION_FILES name the two CMP-025 targets explicitly
+    - withIsolatedCmp025Database downs only that named pair on a throwaway DB; combined snapshot equality proves sibling tips (e.g. sf_fee / CMP-020) are untouched
+    - no product semantic broadening; no pnpm-lock.yaml; no CMP-020/CMP-026 edits
+  evidence: evidence/SF-M06-002/stitch-conflict-correction/
+  local_results: 163/163 unit+contract, 13/13 PostgreSQL integration; combined CMP-020-tip proof PASS (fee schema left alone)
+  state: STITCH_CONFLICT_CORRECTION_CANDIDATE_READY
+  ci_required_on_new_head: [CI, Security, Developer-platform SUCCESS at exact new head]
+  do_not_merge: true
+  recommended_next: RE_RUN_M06_STITCH_A_WITH_NEW_118_HEAD
