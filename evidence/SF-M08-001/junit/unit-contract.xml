@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="90" failures="0" errors="0" time="0.19421464">
+    <testsuite name="test/contract/frozen-contracts.test.ts" timestamp="2026-10-10T02:37:25.969Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.087579584">
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-SEARCH-DOCUMENT (FROZEN) conformance &gt; the frozen schema file is byte-identical to the contracts-lock hash" time="0.001487687">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-SEARCH-DOCUMENT (FROZEN) conformance &gt; local guard agrees with the frozen schema on the frozen examples" time="0.045159151">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="SF-CON-SEARCH-DOCUMENT (FROZEN) conformance &gt; documents in emitted events and query hits validate against the frozen schema" time="0.00487905">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-035 &gt; error catalogue subset equals the FROZEN error-catalogue.json rows" time="0.000672249">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-035 &gt; emitted envelopes, audit events, request context, errors and authz input validate" time="0.031060168">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-035 &gt; isolation declarations validate against SF-CON-ISOLATION-DECLARATION" time="0.002397828">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-035 &gt; outbox migration is the frozen template with schema/cmp replacements only" time="0.000295121">
+        </testcase>
+        <testcase classname="test/contract/frozen-contracts.test.ts" name="frozen shared contracts consumed by CMP-035 &gt; schema migration: NOLOGIN role, ENABLE+FORCE RLS, tenant accessor, no named-service SQL" time="0.000407008">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-10T02:37:25.970Z" hostname="cursor" tests="24" failures="0" errors="0" skipped="0" time="0.011893788">
+        <testcase classname="test/unit/domain.test.ts" name="document identity &gt; is a deterministic RFC 9562 v8 (SHA-256) UUID per (tenant, source component, source record)" time="0.003407143">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="timestamps &gt; accepts RFC 3339 date-times with an offset and rejects the rest in linear time" time="0.000561937">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-SEARCH-DOCUMENT shape &gt; builds a tenant-scoped document with the frozen constants" time="0.000379131">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-SEARCH-DOCUMENT shape &gt; rejects cross-tenant flags, extra fields, bad ids and bad facets" time="0.000387949">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-SEARCH-DOCUMENT shape &gt; facet values are bounded scalars" time="0.000264686">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; accepts a published rule and rejects malformed ones" time="0.000778939">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; paths are bounded dotted identifiers" time="0.0002098">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; classifies event types" time="0.000147779">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; copies only declared scalar facets" time="0.000563463">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; rejects missing required and non-scalar facet values" time="0.00077526">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="projection rules (metadata) &gt; does not read inherited properties" time="0.000197038">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; applies defaults" time="0.000196296">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; accepts filters and a cursor" time="0.000105098">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects null with BODY_NOT_OBJECT" time="0.000171966">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;tenant_id&quot;:&quot;22222222-2222-4222-8222-222222222222&quot;} with UNKNOWN_FIELD" time="0.000081609">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;source_cmp_id&quot;:&quot;x&quot;} with INVALID_SOURCE_CMP_ID" time="0.000071751">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;facets&quot;:[]} with FACETS_NOT_OBJECT" time="0.000052523">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;facets&quot;:{&quot;f_0&quot;:1,&quot;f_1&quot;:1,&quot;f_2&quot;:1,&quot;f_3&quot;:1,&quot;f_4&quot;:1,&quot;f_5&quot;:1,&quot;f_6&quot;:1,&quot;f_7&quot;:1,&quot;f_8&quot;:1}} with TOO_MANY_FACETS" time="0.001711988">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;facets&quot;:{&quot;Bad&quot;:&quot;x&quot;}} with INVALID_FACET_NAME" time="0.000178599">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;facets&quot;:{&quot;ok&quot;:{}}} with INVALID_FACET_VALUE" time="0.000075624">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;limit&quot;:0} with INVALID_LIMIT" time="0.000048628">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;limit&quot;:101} with INVALID_LIMIT" time="0.000039736">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;limit&quot;:1.5} with INVALID_LIMIT" time="0.000044966">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="search query parsing &gt; rejects {&quot;after&quot;:&quot;x&quot;} with INVALID_CURSOR" time="0.000038194">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/http.test.ts" timestamp="2026-10-10T02:37:25.972Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.008483869">
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; serves queries with no-store caching and echoes the context correlation id on errors" time="0.003883054">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; rejects tenant-identifying headers {&quot;x-tenant-id&quot;:&quot;11111111-1111-4111-8111-111111111111&quot;} with SF-TEN-002" time="0.000416036">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; rejects tenant-identifying headers {&quot;X-SF-Tenant&quot;:&quot;11111111-1111-4111-8111-111111111111&quot;} with SF-TEN-002" time="0.000240988">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; rejects tenant-identifying headers {&quot;x-roles&quot;:&quot;ADMIN&quot;} with SF-TEN-002" time="0.000269705">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; rejects tenant-identifying headers {&quot;forwarded&quot;:&quot;for=1.2.3.4;tenant=abc&quot;} with SF-TEN-002" time="0.000234996">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; rejects tenant-identifying headers {&quot;forwarded&quot;:[&quot;proto=https&quot;,&quot;tenant=abc&quot;]} with SF-TEN-002" time="0.000234707">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; allows an ordinary forwarded header" time="0.000329376">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; maps a missing context to SF-AUTH-001 and unknown errors to a detail-free 500" time="0.000891183">
+        </testcase>
+        <testcase classname="test/unit/http.test.ts" name="CMP-035 HTTP surface &gt; registers routes on a host registrar" time="0.000820322">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/indexer.test.ts" timestamp="2026-10-10T02:37:25.973Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.021056306">
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; indexes declared facets only and retains source identity and version" time="0.005005578">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; writes a domain event and an audit event to the outbox in the same transaction" time="0.001350123">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; is idempotent on re-delivery of the same event" time="0.001324458">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; advances on newer source versions and ignores stale ones" time="0.001671185">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; tombstones on remove events and a late older upsert cannot resurrect it" time="0.003255923">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; records a tombstone when the remove arrives before any upsert" time="0.000652942">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer projection &gt; keeps the same source record in two tenants as two isolated documents" time="0.000949118">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; skips platform (tenant_id null) events without opening a transaction" time="0.000285159">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; skips events with no published projection rule (default port)" time="0.000541182">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; skips event types the rule does not project" time="0.00034246">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; rejects INVALID_TOPIC" time="0.000712985">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; rejects INVALID_ENVELOPE" time="0.000268991">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; rejects malformed or mismatched rules from the metadata port" time="0.000877912">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; rejects events missing a required facet without writing anything" time="0.000401017">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; fails closed on a lost optimistic update" time="0.000706136">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; refuses SIMULATED rules outside simulation environments and invalid indexer identity" time="0.000554723">
+        </testcase>
+        <testcase classname="test/unit/indexer.test.ts" name="SearchIndexConsumer skips and failures &gt; resolves rules through the port before the domain transaction opens" time="0.000485577">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/no-named-branching.test.ts" timestamp="2026-10-10T02:37:25.974Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.005906341">
+        <testcase classname="test/unit/no-named-branching.test.ts" name="generic projection: no named service / tenant / source branching &gt; source has no service== / department== / scheme== / tenant literal branches" time="0.002959387">
+        </testcase>
+        <testcase classname="test/unit/no-named-branching.test.ts" name="generic projection: no named service / tenant / source branching &gt; source names no specific source component, topic or event type" time="0.000747788">
+        </testcase>
+        <testcase classname="test/unit/no-named-branching.test.ts" name="generic projection: no named service / tenant / source branching &gt; does not import sibling component code or SQL" time="0.000867627">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-store.test.ts" timestamp="2026-10-10T02:37:25.974Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.008602882">
+        <testcase classname="test/unit/pg-store.test.ts" name="PgSearchStore transaction and session context &gt; sets SF-CON-DB-SESSION-CONTEXT keys transaction-locally and commits" time="0.001675918">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgSearchStore transaction and session context &gt; rolls back, maps PG errors and releases on failure" time="0.001096719">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgSearchStore transaction and session context &gt; tolerates a failing ROLLBACK" time="0.000278952">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgSearchStore statements are tenant-predicated &gt; binds the session tenant first on every read and write" time="0.002163641">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="PgSearchStore statements are tenant-predicated &gt; documentFromRow normalises PG types" time="0.000263322">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_STALE_VERSION&quot;} to SF-APP-001" time="0.00016481">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;SF_RECORD_IMMUTABLE&quot;} to SF-SYS-003" time="0.000129687">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;P0001&quot;,&quot;hint&quot;:&quot;OTHER&quot;} to SF-SYS-001" time="0.000077553">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;42501&quot;} to SF-TEN-002" time="0.000292994">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;23505&quot;} to SF-APP-002" time="0.000118789">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;23514&quot;} to SF-SYS-003" time="0.000087763">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;40001&quot;} to SF-APP-001" time="0.000053687">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps {&quot;code&quot;:&quot;40P01&quot;} to SF-APP-001" time="0.000045131">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; maps null to SF-SYS-001" time="0.00004047">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; passes Cmp035Error through" time="0.000072419">
+        </testcase>
+        <testcase classname="test/unit/pg-store.test.ts" name="error mapping and transaction scope &gt; refuses outbound port calls inside the domain transaction" time="0.000783458">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-10T02:37:25.975Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.05069187">
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService tenant isolation (INT-011) &gt; returns only the caller tenant hits: CROSS_TENANT_LEAKAGE = 0" time="0.008700185">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService tenant isolation (INT-011) &gt; blocks results if the isolation layer ever returns another tenant row" time="0.004394587">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService tenant isolation (INT-011) &gt; the tenant cannot be supplied in the query body" time="0.004255395">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService tenant isolation (INT-011) &gt; getDocument hides other tenants and removed documents" time="0.003045891">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService queries &gt; filters by facets and source component and excludes removed documents" time="0.002979199">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService queries &gt; pages with a keyset cursor" time="0.002587988">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService queries &gt; hits carry source identity, source version and projection pin" time="0.005788954">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; asks the PDP with subject tenant = resource tenant" time="0.001834946">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; denies, fails closed on PDP outage and on malformed decisions" time="0.006236111">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; default-deny authorization port" time="0.00042768">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; requires a verified tenant context" time="0.001828976">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; refuses a SIMULATED authorizer in PRODUCTION" time="0.002927378">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="SearchQueryService authorization and context &gt; loadConfig validates SF_ENVIRONMENT" time="0.000285206">
+        </testcase>
+    </testsuite>
+</testsuites>

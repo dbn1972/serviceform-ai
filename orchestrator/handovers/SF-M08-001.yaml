@@ -1,6 +1,6 @@
-# M08 READY envelope — Search & Indexing Service (CG-02 Wave A)
-# READY. Not dispatched. Implementation authorized. Not CERTIFIED. Not G6.
-# Wave A READY GRANTED. Builder spawn PENDING ACTIVATION RECORD MERGE.
+# M08 CG-02 Wave A builder handover — Search & Indexing Service (SF-M08-001 / CMP-035)
+# HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION consumed. Candidate-complete. Not CERTIFIED. Not G3. Not G6.
+# Do not merge. Do not start STITCH-A / host / INT / SEC / EVD. Task envelope left unmodified.
 # SF-M08-005 retention remains PLANNING (STATUTORY_RETENTION_POLICY_INPUT_REQUIRED).
 
 task_id: SF-M08-001
@@ -58,12 +58,13 @@ read_only_paths:
 wave_eligible_now: true
 serial_after:
 - SF-M08-CG-001
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: candidate-complete
+state: candidate-complete
 self_certified: false
 not_certified: true
 certified: false
@@ -78,6 +79,18 @@ base_commit:
   prefix: 5acb291e
   suffix: a828894c40110396f0eafd62462e4572
 join_separator: _
+dispatch_base_policy:
+  source: HUMAN_CG_02_WAVE_A_DISPATCH_AUTHORIZATION
+  require_exact_sha: true
+  dispatch_base: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  dispatch_authorized: true
+  branch: agent/M08-search-SF-M08-001
+  pr: https://github.com/dbn1972/serviceform-ai/pull/120
+  pr_state: DRAFT_DO_NOT_MERGE
+  implementation_commit: 7ca8a30c
+  implementation_commits: [7c50057d, 7ca8a30c]
+  evidence: evidence/SF-M08-001/EVIDENCE.md
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
 contract_locks:
 - SF-CON-COMMON
 - SF-CON-REQUEST-CONTEXT
@@ -118,7 +131,9 @@ stop_conditions:
 - start Wave B / STITCH / host / INT / SEC / EVD / M07+
 - weaken cg01_path_uniqueness_gate.py
 - own apps/api, pnpm-lock.yaml, or contracts-lock as Wave A builder
-acceptance_tests_planning:
-- Queries cannot return cross-tenant hits
-- Index pipeline is idempotent
+acceptance_tests:
+- Queries cannot return cross-tenant hits (CROSS_TENANT_LEAKAGE=0 on real PostgreSQL; FORCE RLS + tenant predicate + result guard)
+- Index pipeline is idempotent (inbox dedupe + deterministic document_id) and monotonic (STALE source versions refused; trigger-enforced)
+- Projection only; source cmp/record/event/version retained; declared facets only; hits validate against frozen SF-CON-SEARCH-DOCUMENT
+- Events consumed through the CMP-038 consumer handler; outbox via SF-CON-OUTBOX; no sibling SQL; no network I/O in domain txn
 - Host mount deferred to SF-M08-007

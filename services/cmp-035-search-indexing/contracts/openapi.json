@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CMP-035 Search & Indexing",
+    "version": "0.0.0",
+    "description": "Tenant-scoped search over non-authoritative projections. Tenant comes only from the verified request context (SF-CON-REQUEST-CONTEXT); tenant-identifying headers are rejected. Hit documents conform to SF-CON-SEARCH-DOCUMENT v1 (https://contracts.serviceform.ai/m08/search-document/v1)."
+  },
+  "paths": {
+    "/search/queries": {
+      "post": {
+        "operationId": "searchDocuments",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source_cmp_id": { "type": "string", "pattern": "^CMP-[0-9]{3}$" },
+                  "facets": {
+                    "type": "object",
+                    "maxProperties": 8,
+                    "additionalProperties": {
+                      "oneOf": [
+                        { "type": "string", "minLength": 1, "maxLength": 256 },
+                        { "type": "number" },
+                        { "type": "boolean" }
+                      ]
+                    }
+                  },
+                  "limit": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 },
+                  "after": { "type": "string", "format": "uuid" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "hits (same tenant only) and next_cursor" },
+          "400": { "description": "SF-SYS-003" },
+          "401": { "description": "SF-AUTH-001 / SF-TEN-001" },
+          "403": { "description": "SF-AUTH-002 / SF-TEN-002" }
+        }
+      }
+    },
+    "/search/documents/{documentId}": {
+      "get": {
+        "operationId": "getSearchDocument",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "hit" },
+          "404": { "description": "SF-SYS-002 (absent, removed, or other tenant)" }
+        }
+      }
+    }
+  }
+}
