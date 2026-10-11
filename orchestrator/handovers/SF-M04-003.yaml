@@ -93,3 +93,23 @@ acceptance_tests_planning:
   - Tenant-scoped tables ENABLE+FORCE RLS
   - SIMULATED connector markers on INT-013 adapters
   - Host mount deferred to SF-M04-007
+
+builder_notes:
+  branch: cursor/sf-m04-003-cmp-011-evidence-aa34
+  base_commit_used: 9ccc2b02f8ef64a0987b0c4793137511545ed3f7
+  implementation_head: see evidence/SF-M04-003/logs/head-sha.txt (last source commit; later commits are evidence-only)
+  cmp_011_datastore: sf_evidence (Aurora PostgreSQL; privilege role sf_cmp011_rw NOLOGIN; FORCE RLS)
+  migrations:
+    - db/migrations/1759530110000_cmp-011-evidence.sql
+    - db/migrations/1759530110001_cmp-011-outbox.sql
+  int_013_digilocker: SIMULATED adapter only; REAL/SANDBOX refused; PRODUCTION SIMULATED refused; CMP-012 is M07
+  ports_consumed: [CMP-052 binding pins, CMP-013 uploads, CMP-014 classification, CMP-030 consent, CMP-051 approval]
+  sibling_source_imports: none
+  CROSS_TENANT_LEAKAGE: 0
+  contracts: 13/13 FROZEN unchanged
+  lockfile: unchanged (orchestrator/STITCH-A regen required for the new importer)
+  host_mount: deferred to SF-M04-007
+  envelope_flags: unchanged (state READY, dispatched false)
+  self_certified: false
+  certified: false
+  not_certified: true

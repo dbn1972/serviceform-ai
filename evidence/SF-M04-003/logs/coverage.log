@@ -1,0 +1,28 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-011-evidence-requirements
+      Coverage enabled with v8
+
+ ✓ test/integration/rls-api.int.test.ts (6 tests) 847ms
+ ✓ test/integration/privilege-boundary.int.test.ts (4 tests) 583ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 575ms
+ ✓ test/unit/plugin-http.test.ts (27 tests) 429ms
+ ✓ test/contract/contracts.test.ts (7 tests) 71ms
+ ✓ test/unit/resolver.test.ts (32 tests) 19ms
+ ✓ test/unit/policy-predicate.test.ts (42 tests) 15ms
+
+ Test Files  7 passed (7)
+      Tests  121 passed (121)
+   Start at  15:29:29
+   Duration  4.50s (tests 71%, import 19%, transform 7%, worker 3%)
+
+    Isolate  7 workers spawned · ~84ms startup each (spawn + environment, per file)
+             at least ~501ms faster with isolate: false — reuses workers across files instead of one per file
+
+ % Coverage report from v8
+
+=============================== Coverage summary ===============================
+Statements   : 92.42% ( 927/1003 )
+Branches     : 86.59% ( 672/776 )
+Functions    : 96.22% ( 153/159 )
+Lines        : 95.75% ( 813/849 )
+================================================================================
