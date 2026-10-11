@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="2.565007155">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-10T02:04:57.827Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.735976827">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; refresh -&gt; read -&gt; list persists derived snapshots with outbox event and audit in one transaction" time="0.066926904">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; keeps last-known metrics when a refresh fails, bumping the version by one" time="0.037060481">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; isolates tenants end to end and never reads another tenant row" time="0.040687566">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; replays an idempotent refresh and conflicts on a reused key for another view" time="0.046688249">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; serialises concurrent refreshes of one view so versions advance strictly by one" time="0.068145472">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-046 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; denies and fails closed without touching sources or data" time="0.045350804">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T02:04:57.829Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="1.829030328">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, tables owned by sf_migrator with FORCE RLS" time="0.005913258">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on read-model tables; a peer privilege role cannot write them" time="0.016875567">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; holds no table privilege on peer component schemas (no case / SLA / queue access)" time="0.007133498">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides the other tenant; a session with no tenant sees nothing and cannot write" time="0.012236999">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; database refuses authoritative drift: wrong source, non-authoritative=false, bad status, OK without as_of" time="0.005673431">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; guard triggers: snapshots are never deleted, identity is immutable, version advances by one, refresh log is insert-only" time="0.011660733">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-046 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; isolated reversibility: down of the CMP-046 pair removes the schema and keeps the role; up restores it" time="1.297590718">
+        </testcase>
+    </testsuite>
+</testsuites>

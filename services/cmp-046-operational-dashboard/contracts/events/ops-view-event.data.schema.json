@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ops view event data",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "view_code",
+    "source_component",
+    "status",
+    "refresh_outcome",
+    "metric_count",
+    "snapshot_version",
+    "non_authoritative"
+  ],
+  "properties": {
+    "view_code": {
+      "enum": [
+        "SLA_SUMMARY",
+        "QUEUE_SUMMARY",
+        "INTEGRATION_HEALTH",
+        "EVENT_HEALTH",
+        "PLATFORM_HEALTH"
+      ]
+    },
+    "source_component": {
+      "enum": ["CMP-017", "CMP-029", "CMP-037", "CMP-038", "CMP-047"]
+    },
+    "status": {
+      "enum": ["OK", "DEGRADED", "UNAVAILABLE"]
+    },
+    "refresh_outcome": {
+      "enum": ["SUCCESS", "SOURCE_FAILED", "PAYLOAD_INVALID"]
+    },
+    "metric_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 200
+    },
+    "snapshot_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "non_authoritative": {
+      "const": true
+    }
+  }
+}

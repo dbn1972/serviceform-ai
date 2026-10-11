@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="59" failures="0" errors="0" time="0.109191477">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-10T02:04:54.476Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.061903372">
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-046 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.029564539">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-046 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.017980437">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-046 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.004790255">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-046 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.001249575">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-046 component contracts &gt; view definitions match the OpenAPI view enum, the event schema and the migration CHECKs" time="0.000459026">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-046 component contracts &gt; isolation declarations validate and match the migrations (every tenant table FORCE RLS)" time="0.002712068">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-046 component contracts &gt; OpenAPI mutating bodies take no client data or clock members" time="0.000292591">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: ports only, no peer SQL, no host mount, no authoritative ownership &gt; declares no runtime dependency and makes no network call" time="0.001438937">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: ports only, no peer SQL, no host mount, no authoritative ownership &gt; imports no peer component and has no SQL against peer schemas" time="0.001083583">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: ports only, no peer SQL, no host mount, no authoritative ownership &gt; exposes no case, task or SLA write path from the dashboard" time="0.00037151">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: ports only, no peer SQL, no host mount, no authoritative ownership &gt; runs no network call inside the authoritative transaction" time="0.000208295">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: ports only, no peer SQL, no host mount, no authoritative ownership &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000241951">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-10T02:04:54.478Z" hostname="cursor" tests="22" failures="0" errors="0" skipped="0" time="0.006828942">
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; accepts aggregate metrics with code-like dimensions" time="0.001870373">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects non-object" time="0.000331479">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects unknown top-level field" time="0.000154158">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects bad status" time="0.000214678">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects metrics not array" time="0.000113145">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects too many metrics" time="0.000201281">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects lower-case metric code" time="0.000163016">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects NaN value" time="0.000146734">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects string value" time="0.000354392">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects unknown metric field" time="0.000138523">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects uuid dimension (individual record)" time="0.000184869">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects free-text dimension (spaces)" time="0.000067497">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects email dimension" time="0.000063411">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects personal dimension key" time="0.000106616">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects application dimension key" time="0.000077229">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects nested dimension" time="0.00006285">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects too many dimensions" time="0.000055243">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects duplicate metric identity" time="0.000048605">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="normalizeSample (aggregates only) &gt; rejects bad observed-at" time="0.000053066">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="freshness, status roll-up and resource ids &gt; flags never-refreshed and aged snapshots as stale" time="0.000118088">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="freshness, status roll-up and resource ids &gt; rolls up to the worst status" time="0.000079489">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="freshness, status roll-up and resource ids &gt; derives stable, tenant-distinct uuid resource ids" time="0.00087994">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-10T02:04:54.481Z" hostname="cursor" tests="25" failures="0" errors="0" skipped="0" time="0.040459163">
+        <testcase classname="test/unit/service.test.ts" name="refresh and read &gt; refreshes a view from its port, stamps server time and emits event + audit via the outbox" time="0.006080214">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="refresh and read &gt; marks a view stale after its max age and reports it in the roll-up" time="0.000699762">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="refresh and read &gt; returns 404 for a view that was never refreshed and lists it UNAVAILABLE" time="0.000907528">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="refresh and read &gt; rejects an unknown view code" time="0.000400977">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; keeps last-known metrics and flips to UNAVAILABLE when the port fails" time="0.001203543">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; records UNAVAILABLE with no metrics when the very first refresh fails" time="0.000516776">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; reports an unbound port as UNAVAILABLE / PORT_UNBOUND" time="0.000563639">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; refuses a payload that carries individual records and stores none of it" time="0.000585614">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; times out a hung port without holding a transaction" time="0.021064707">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; never calls a source port inside a database transaction" time="0.000641373">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="source failure is visible, never fabricated &gt; rolls the snapshot, log, event and audit back together when the commit fails" time="0.000481375">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; asks the PDP for a distinct action per view and for refresh, scoped to the caller tenant" time="0.00084832">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; denies a protected view, audits the denial and never reaches the source port" time="0.000481228">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; denies reading one view while another stays readable" time="0.000484101">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; lists only the views the PDP allows and denies when none are allowed" time="0.000420434">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; fails closed (503) when the PDP is unavailable, on read, list and refresh" time="0.000373905">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; keeps citizens out without consulting a policy" time="0.000343034">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement (PEP on every view) &gt; requires an authenticated tenant context" time="0.000134864">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation &gt; serves each tenant only its own snapshots and passes the caller context to the port" time="0.000724457">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation &gt; refuses tenant-identifying headers and client time" time="0.000466665">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="idempotency &gt; replays a completed refresh without a second version or event" time="0.000468023">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="idempotency &gt; conflicts when one key is reused for a different view, and requires a key" time="0.000431957">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="ops surface only: no authoritative case / SLA actions &gt; exposes read routes plus exactly one derived-snapshot refresh" time="0.000322882">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="ops surface only: no authoritative case / SLA actions &gt; refuses unsupported methods and unknown routes" time="0.000171296">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="ops surface only: no authoritative case / SLA actions &gt; keeps SLA samples as aggregates (fixture sanity)" time="0.000069323">
+        </testcase>
+    </testsuite>
+</testsuites>
