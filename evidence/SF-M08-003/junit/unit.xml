@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="73" failures="0" errors="0" time="0.163851704">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-10T03:27:53.538Z" hostname="cursor" tests="19" failures="0" errors="0" skipped="0" time="0.080984974">
+        <testcase classname="test/contract/contracts.test.ts" name="frozen contract consumption (read-only) &gt; SF-CON-ANALYTICS-METRIC file hash still matches contracts-lock.yaml" time="0.001980356">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen contract consumption (read-only) &gt; the frozen valid example is accepted and the frozen raw-PII example is refused" time="0.001418136">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-ANALYTICS-METRIC conformance of CMP-045 projections &gt; every metric the query API returns validates against the frozen schema" time="0.012198552">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-ANALYTICS-METRIC conformance of CMP-045 projections &gt; the contract has no field that could carry a raw payload or person-level value" time="0.0011227">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-045 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.030390071">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-045 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.021794897">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-045 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.000786659">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-045 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000631198">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-045 component contracts &gt; exposes no mutation of another component state: only definition/projection commands and reads" time="0.000701484">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-045 component contracts &gt; isolation declarations validate and match the migration (every tenant table FORCE RLS)" time="0.003261142">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-045 component contracts &gt; the outbox migration is the frozen template with only schema and CMP id replaced" time="0.00028574">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="privacy guards are identical in code and database &gt; the SQL identifying-field token list equals the TypeScript list" time="0.000253557">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="privacy guards are identical in code and database &gt; the SQL category-code pattern equals the TypeScript pattern" time="0.000073414">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="privacy guards are identical in code and database &gt; aggregates are the only stored shape: point columns carry no payload, subject or actor" time="0.000208009">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: projection only, no authoritative state, no provider, no host mount &gt; has no path to case, application or payment state: no reference to their schemas, tables or code" time="0.001309913">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: projection only, no authoritative state, no provider, no host mount &gt; only touches its own schema in SQL and never mounts on the API host" time="0.000380161">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: projection only, no authoritative state, no provider, no host mount &gt; declares no dependencies and uses no network or provider library" time="0.001642931">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: projection only, no authoritative state, no provider, no host mount &gt; runs no network call inside the authoritative transaction" time="0.000142387">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="boundary: projection only, no authoritative state, no provider, no host mount &gt; role and privilege posture in the migration: NOLOGIN, no SUPERUSER/BYPASSRLS, FORCE RLS, no public" time="0.000461173">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/analytics-api.test.ts" timestamp="2026-10-10T03:27:53.543Z" hostname="cursor" tests="33" failures="0" errors="0" skipped="0" time="0.056230042">
+        <testcase classname="test/unit/analytics-api.test.ts" name="request boundary: tenant, identity and idempotency are server-derived &gt; refuses tenant-identifying headers and a missing context" time="0.003122987">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="request boundary: tenant, identity and idempotency are server-derived &gt; requires an idempotency key on mutations and replays an identical retry" time="0.00436509">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="request boundary: tenant, identity and idempotency are server-derived &gt; unknown routes are 404 and wrong methods are 400; GET bodies are refused" time="0.000364933">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="metric definitions: published, versioned, immutable &gt; publishes version 1 then 2 of the same code, emits events and audits" time="0.007386458">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="metric definitions: published, versioned, immutable &gt; retires once; a second retire is an invalid transition; unknown id is 404" time="0.001403596">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="metric definitions: published, versioned, immutable &gt; refuses unknown members (tenant, time, actor) and identifying or malformed definitions" time="0.001604771">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; aggregates events into one point per period and dimension set; stores no payload" time="0.002406417">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; duplicate delivery of the same event never double counts" time="0.00093356">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; SUM aggregates the declared field; COUNT and SUM definitions can share a tenant" time="0.001660772">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; records unclassified values as UNCLASSIFIED, never the raw value" time="0.001127083">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; an event with no matching published definition changes nothing" time="0.002970002">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; fails explicitly on schema-version mismatch, bad value, future event time and tenant-less events" time="0.001186433">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; a failed commit leaves no partial aggregate and the redelivery applies once" time="0.001447958">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; tenant comes from the validated envelope: tenant B events never touch tenant A aggregates" time="0.001096299">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="ingest: projection only, aggregates only, duplicate-safe &gt; authorizes as the consumer workload identity, outside any transaction, and fails closed" time="0.000725447">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; returns contract-shaped aggregates and suppresses cells below the cohort minimum" time="0.001639543">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; filters by period window and dimension equality" time="0.000991215">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; refuses a purpose the definition does not declare, and audits the denial" time="0.000972674">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; a server-derived context purpose wins over, and cannot be widened by, the query parameter" time="0.000845874">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; tenant B cannot read tenant A metrics or definitions (CROSS_TENANT_LEAKAGE=0)" time="0.001679858">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; OPA deny and PDP outage fail closed before any data is read" time="0.000391892">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="query: purpose limitation, small-cohort suppression, tenant isolation &gt; rejects malformed query input" time="0.000482678">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; rebuilt aggregates equal the live-projected aggregates, with generations swapped atomically" time="0.002402807">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; rebuilds a lost projection from history and a corrupted one back to the truth" time="0.001782073">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; live events arriving mid-rebuild are applied to both generations and never lost or doubled" time="0.002920873">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; refuses a concurrent rebuild while the lease is held and takes over after it expires" time="0.001258436">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; a failed or oversized rebuild never replaces the active generation" time="0.000873807">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; refuses events from another tenant returned by the replay source" time="0.003014513">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; fails explicitly while no event history is bound, and refuses retired definitions" time="0.0010887">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; stops at the batch limit instead of looping unbounded" time="0.000594588">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="rebuild: derived store is rebuildable from events (INT-010) &gt; retries with the same key replay the stored result without a second rebuild" time="0.000588115">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="boundary behaviour &gt; network-facing work never runs inside a transaction" time="0.000650632">
+        </testcase>
+        <testcase classname="test/unit/analytics-api.test.ts" name="boundary behaviour &gt; metric points hold no PII keys even when events carry them" time="0.000450996">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-10T03:27:53.546Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.013616389">
+        <testcase classname="test/unit/domain.test.ts" name="period buckets (UTC, exclusive end) &gt; buckets by hour, day, ISO week and month" time="0.001809055">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="period buckets (UTC, exclusive end) &gt; refuses an unparseable timestamp" time="0.000312973">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy: dimensions are category codes, never person-level values &gt; accepts category codes and refuses identifier-shaped values" time="0.000472261">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy: dimensions are category codes, never person-level values &gt; replaces unsafe or out-of-vocabulary values with UNCLASSIFIED and never carries them" time="0.000393486">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy: dimensions are category codes, never person-level values &gt; flags personal and per-record identifier field names by token" time="0.000291667">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; derives a COUNT contribution from allowlisted fields only" time="0.006018185">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; is deterministic: same event and spec give the same dimension hash regardless of key order" time="0.000356907">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; counts unclassified dimensions and keeps the event in the aggregate" time="0.000246567">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; SUM uses only the declared numeric value field and refuses anything else" time="0.000607288">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; a schema version other than the definition pin fails explicitly" time="0.000246393">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="contributionOf: pure aggregation of one event &gt; matches on event type and optional aggregate type only" time="0.000178153">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="metric point identity and envelope parsing &gt; metric_id is deterministic, UUID-shaped and tenant/definition/period/dimension specific" time="0.00049574">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="metric point identity and envelope parsing &gt; refuses a malformed envelope and a tenant-less event" time="0.000762443">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-repo.test.ts" timestamp="2026-10-10T03:27:53.547Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.009931121">
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgAnalyticsRepository transaction discipline &gt; sets the transaction-local session context before any statement and commits" time="0.00222385">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgAnalyticsRepository transaction discipline &gt; rolls back and releases on failure; refuses a null tenant and nested transactions" time="0.002159659">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgAnalyticsRepository transaction discipline &gt; every tenant-table statement binds the transaction tenant, never a caller value" time="0.0010825">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgAnalyticsRepository transaction discipline &gt; maps database errors to the frozen catalogue codes" time="0.001821007">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgAnalyticsRepository transaction discipline &gt; requires a repository and builds a working API from a pool" time="0.001173105">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/timestamp.test.ts" timestamp="2026-10-10T03:27:53.548Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003089178">
+        <testcase classname="test/unit/timestamp.test.ts" name="bounded fixed-position timestamp parsing &gt; accepts ISO date-times and returns epoch milliseconds" time="0.001192783">
+        </testcase>
+        <testcase classname="test/unit/timestamp.test.ts" name="bounded fixed-position timestamp parsing &gt; refuses wrong shapes, wrong separators, non-digits and non-dates" time="0.000362558">
+        </testcase>
+        <testcase classname="test/unit/timestamp.test.ts" name="bounded fixed-position timestamp parsing &gt; is length-bounded: oversized input is refused before any parsing" time="0.000629029">
+        </testcase>
+    </testsuite>
+</testsuites>

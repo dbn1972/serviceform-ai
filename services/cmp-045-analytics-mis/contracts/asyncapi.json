@@ -1,0 +1,54 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-045 Analytics Events",
+    "version": "0.1.0",
+    "description": "Emitted events carry definition identifiers and codes only. CMP-045 CONSUMES domain events (SF-CON-EVENT-ENVELOPE) from CMP-038 for every event_type named by a published tenant definition; the consumed payload is read through the definition's allowlisted fields and is never stored. Consumption is idempotent by event_id (SF-CON-OUTBOX inbox, consumer group cmp-045.projection)."
+  },
+  "channels": {
+    "sf.analytics.events.v1": {
+      "address": "sf.analytics.events.v1",
+      "messages": {
+        "AnalyticsMetricDefinitionPublished": {
+          "$ref": "#/components/messages/AnalyticsMetricDefinitionPublished"
+        },
+        "AnalyticsMetricDefinitionRetired": {
+          "$ref": "#/components/messages/AnalyticsMetricDefinitionRetired"
+        },
+        "AnalyticsProjectionRebuilt": {
+          "$ref": "#/components/messages/AnalyticsProjectionRebuilt"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "AnalyticsMetricDefinitionPublished": {
+        "name": "AnalyticsMetricDefinitionPublished",
+        "payload": {
+          "$ref": "./events/analytics-event.data.schema.json"
+        }
+      },
+      "AnalyticsMetricDefinitionRetired": {
+        "name": "AnalyticsMetricDefinitionRetired",
+        "payload": {
+          "$ref": "./events/analytics-event.data.schema.json"
+        }
+      },
+      "AnalyticsProjectionRebuilt": {
+        "name": "AnalyticsProjectionRebuilt",
+        "payload": {
+          "$ref": "./events/analytics-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

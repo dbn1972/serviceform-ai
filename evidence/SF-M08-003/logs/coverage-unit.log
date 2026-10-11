@@ -1,0 +1,47 @@
+
+ RUN  v5.0.3 /workspace
+      Coverage enabled with v8
+
+ ✓ services/cmp-045-analytics-mis/test/unit/domain.test.ts (13 tests) 14ms
+ ✓ services/cmp-045-analytics-mis/test/unit/analytics-api.test.ts (33 tests) 50ms
+ ✓ services/cmp-045-analytics-mis/test/unit/pg-repo.test.ts (5 tests) 11ms
+ ✓ services/cmp-045-analytics-mis/test/unit/timestamp.test.ts (3 tests) 4ms
+ ✓ services/cmp-045-analytics-mis/test/contract/contracts.test.ts (19 tests) 95ms
+
+ Test Files  5 passed (5)
+      Tests  73 passed (73)
+   Start at  03:27:57
+   Duration  544ms (transform 46%, import 25%, tests 21%, worker 8%)
+
+JUNIT report written to /workspace/test-results/unit/junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   89.02 |    81.81 |   88.65 |   91.52 |                   
+ src               |   94.11 |    91.25 |    92.3 |   94.54 |                   
+  authz.ts         |   88.88 |    85.71 |     100 |    87.5 | 49                
+  context.ts       |   94.44 |     87.5 |     100 |     100 | 19-20,40          
+  index.ts         |   83.33 |    94.44 |   66.66 |      80 | 35                
+  outbox.ts        |    87.5 |    83.33 |     100 |    87.5 | 49                
+ src/api           |   95.89 |    85.71 |     100 |   96.92 |                   
+  handler.ts       |   95.89 |    85.71 |     100 |   96.92 | 85,89             
+ src/domain        |   95.06 |    88.46 |     100 |   99.24 |                   
+  envelope.ts      |    87.5 |    85.41 |     100 |   96.55 | 33                
+  fingerprint.ts   |     100 |     87.5 |     100 |     100 | 17                
+  projection.ts    |     100 |    94.11 |     100 |     100 | 69                
+  uuid.ts          |   89.28 |    73.91 |     100 |     100 | 7-11,17-35        
+ src/repo          |   51.45 |    31.34 |      50 |   52.17 |                   
+  pg.ts            |   51.45 |    31.34 |      50 |   52.17 | ...38,265-403,436 
+ src/service       |   95.34 |    90.55 |     100 |   98.92 |                   
+  ...cs-service.ts |   97.94 |     94.2 |     100 |   98.85 | 138,160           
+  input.ts         |   91.33 |    88.28 |     100 |   99.04 | 105               
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 89.02% ( 649/729 )
+Branches     : 81.81% ( 414/506 )
+Functions    : 88.65% ( 125/141 )
+Lines        : 91.52% ( 572/625 )
+================================================================================
+exit 0

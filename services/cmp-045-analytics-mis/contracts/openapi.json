@@ -1,0 +1,452 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-045 Analytics & MIS",
+    "version": "0.1.0",
+    "description": "Projection and aggregation only. CMP-045 derives tenant-scoped aggregate metric points from domain events under a declared purpose; it is not an authoritative case, application or payment store, accepts no raw PII payload, and exposes no mutation of another component's state. Responses conform to FROZEN SF-CON-ANALYTICS-METRIC. Tenant, actor and time are server-derived. Event ingestion is a CMP-038 subscription handled by AnalyticsService.ingest, not an HTTP route. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/analytics/metric-definitions": {
+      "post": {
+        "operationId": "createMetricDefinition",
+        "summary": "Publish an immutable metric definition version",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "metric_code",
+                  "publication_ref",
+                  "purpose_code",
+                  "source_event_type",
+                  "source_schema_version",
+                  "aggregation",
+                  "period_granularity",
+                  "min_cohort_size"
+                ],
+                "properties": {
+                  "metric_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z0-9][A-Z0-9_.-]{0,63}$"
+                  },
+                  "publication_ref": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  },
+                  "purpose_code": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                  },
+                  "source_event_type": {
+                    "type": "string",
+                    "pattern": "^[A-Z][A-Za-z0-9]{2,79}$"
+                  },
+                  "source_aggregate_type": {
+                    "type": ["string", "null"],
+                    "pattern": "^[A-Z][A-Za-z0-9]{1,63}$"
+                  },
+                  "source_schema_version": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1000
+                  },
+                  "aggregation": {
+                    "enum": ["COUNT", "SUM"]
+                  },
+                  "value_field": {
+                    "type": ["string", "null"],
+                    "pattern": "^[a-z][a-z0-9_]{1,63}$",
+                    "description": "Required for SUM, forbidden for COUNT. Field names that name a personal or per-record identifier are refused."
+                  },
+                  "period_granularity": {
+                    "enum": ["HOUR", "DAY", "WEEK", "MONTH"]
+                  },
+                  "dimensions": {
+                    "type": "array",
+                    "maxItems": 6,
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["key", "source_field"],
+                      "properties": {
+                        "key": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,63}$"
+                        },
+                        "source_field": {
+                          "type": "string",
+                          "pattern": "^[a-z][a-z0-9_]{1,63}$"
+                        },
+                        "allowed_values": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 200,
+                          "uniqueItems": true,
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Z0-9][A-Z0-9_.-]{0,63}$"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "min_cohort_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100000,
+                    "description": "Cells with fewer contributors are suppressed from every response. The value is published policy data, never a code default."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition or REBUILD_IN_PROGRESS / SF-APP-002 idempotency conflict"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      },
+      "get": {
+        "operationId": "listMetricDefinitions",
+        "summary": "List definition versions",
+        "parameters": [
+          {
+            "name": "metric_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z0-9][A-Z0-9_.-]{0,63}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      }
+    },
+    "/v1/analytics/metric-definitions/{definition_id}": {
+      "get": {
+        "operationId": "getMetricDefinition",
+        "summary": "Read one definition version",
+        "parameters": [
+          {
+            "name": "definition_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      }
+    },
+    "/v1/analytics/metric-definitions/{definition_id}/retire": {
+      "post": {
+        "operationId": "retireMetricDefinition",
+        "summary": "Retire a published definition (content is never edited)",
+        "parameters": [
+          {
+            "name": "definition_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition or REBUILD_IN_PROGRESS / SF-APP-002 idempotency conflict"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      }
+    },
+    "/v1/analytics/metric-definitions/{definition_id}/rebuild": {
+      "post": {
+        "operationId": "rebuildMetricProjection",
+        "summary": "Rebuild the projection from the event history into a new generation and swap atomically",
+        "parameters": [
+          {
+            "name": "definition_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "409": {
+            "description": "SF-APP-001 invalid transition or REBUILD_IN_PROGRESS / SF-APP-002 idempotency conflict"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      }
+    },
+    "/v1/analytics/metrics": {
+      "get": {
+        "operationId": "queryMetrics",
+        "summary": "Read aggregate metric points under a declared purpose; small cohorts are suppressed",
+        "parameters": [
+          {
+            "name": "metric_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z0-9][A-Z0-9_.-]{0,63}$"
+            }
+          },
+          {
+            "name": "purpose_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+            },
+            "description": "Declared purpose. Required unless the server-derived request context carries one, which then wins. Must equal the definition's purpose_code."
+          },
+          {
+            "name": "period_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Report window start (inclusive). A filter, not a time source."
+          },
+          {
+            "name": "period_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Report window end (exclusive)."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2000,
+              "default": 500
+            }
+          },
+          {
+            "name": "dim.{key}",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Dimension equality filter; value is a category code or true/false."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["metrics", "suppressed_count"],
+                  "properties": {
+                    "metrics": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["metric", "detail"],
+                        "properties": {
+                          "metric": {
+                            "description": "FROZEN SF-CON-ANALYTICS-METRIC (contracts/m08/schemas/analytics-metric.schema.json). period_end is the exclusive bucket end."
+                          },
+                          "detail": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "suppressed_count": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "description": "Number of cells withheld by small-cohort suppression. Their values are never returned."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 validation (unknown member, identifying field, purpose missing)"
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002 (incl. PURPOSE_NOT_PERMITTED) / SF-TEN-002"
+          },
+          "404": {
+            "description": "SF-SYS-002 (also returned for another tenant's resource)"
+          },
+          "503": {
+            "description": "SF-SYS-004 PDP unavailable / SF-INT-001 replay source unavailable"
+          }
+        }
+      }
+    }
+  }
+}

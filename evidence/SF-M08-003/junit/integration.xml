@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="2.053487017">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-10T03:27:56.465Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.810445256">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; publishes a definition, projects events concurrently without double counting, and serves aggregates" time="0.08688019">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; the outbox carries definition events and audit; the inbox records each delivered event once" time="0.001659113">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; tenant T2 cannot see or touch T1 data through the API (cross-tenant negative at API, repository and DB)" time="0.010022283">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; rebuild reproduces the live aggregates from history and swaps generations atomically" time="0.073033927">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; live events during a rebuild land in both generations exactly once" time="0.034473015">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; two concurrent rebuilds: one wins the lease, the other is refused; nothing is double applied" time="0.019809601">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; a stale generation cannot be activated by a superseded builder" time="0.014934434">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; the database rejects a PII-shaped dimension even if application validation were bypassed" time="0.005903325">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-045 end to end on PostgreSQL (real login role, FORCE RLS) &gt; a retired definition stops projecting and stays readable" time="0.025940107">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-10T03:27:56.467Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="1.243041761">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, runtime login is not the owner" time="0.021323621">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; sf_app holds no DML on analytics tables; CMP-045 role has no DML outside sf_analytics" time="0.017595948">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; FORCE RLS hides T2 rows from T1 on every analytics table; CROSS_TENANT_LEAKAGE=0" time="0.019628995">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; wrong-tenant writes fail: forged tenant_id (WITH CHECK) and cross-tenant UPDATE/DELETE affect nothing" time="0.008250985">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; another component&apos;s login cannot SELECT/INSERT/UPDATE/DELETE CMP-045 tables" time="0.012892529">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 privilege boundary (ADR-0006) and FORCE RLS (INT-011) &gt; CMP-045 login cannot read or write other components tables" time="0.006566776">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; refuses raw or person-level dimension values: email, identifier shapes, numbers, free text" time="0.032319414">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; a point must carry its definition metric code and purpose, and the aggregate-only flags cannot be false" time="0.005516112">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; metric points: identity, dimensions and purpose are immutable; contributors only grow; value changes via the column grant" time="0.009311855">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; published metric definitions are immutable and retained; only PUBLISHED -&gt; RETIRED" time="0.009203094">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; definitions naming personal or per-record identifiers, or non-category vocabularies, are refused by the database" time="0.010885798">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; generation swap: only the building generation can become active; the active generation cannot be deleted" time="0.01593177">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-045 database guards (aggregate-only, purpose-bound, immutable) &gt; column-level grants: the runtime cannot rewrite dimensions or identity even without the trigger" time="0.003572289">
+        </testcase>
+    </testsuite>
+</testsuites>

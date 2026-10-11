@@ -120,3 +120,45 @@ acceptance_tests_planning:
 - Tenant-scoped metrics only
 - No authoritative case mutation APIs
 - Host mount deferred to SF-M08-007
+
+builder_notes:
+  recorded_by: component_builder (serviceform-foundation-builder)
+  branch: agent/M08-analytics-SF-M08-003
+  base_commit_used: 8b1c26ceb1fd781eab55a34fdc17d376dcc03c1b
+  result_commit_code: 07df111d112d812e0fc90cfb325ce06626a4bc35
+  result_commit_note: >-
+    Last code commit. Evidence logs were produced on it. The PR head is this commit plus
+    commits that change only evidence/SF-M08-003/** and this handover; the PR head is the
+    frozen candidate head.
+  pull_request: https://github.com/dbn1972/serviceform-ai/pull/119 (DRAFT, do not merge)
+  completed_work:
+    - services/cmp-045-analytics-mis (domain, ports, pg + service + framework-neutral API, contracts, tests)
+    - db/migrations/1759560450000_cmp-045-analytics-mis.sql (schema sf_analytics, role sf_cmp045_rw)
+    - db/migrations/1759560450001_cmp-045-outbox.sql (frozen SF-CON-OUTBOX template, replacements only)
+  unresolved_work:
+    - host mount and CMP-038 subscription and replay binding (SF-M08-007)
+    - retention/archival (SF-M08-005, STATUTORY_RETENTION_POLICY_INPUT_REQUIRED)
+    - export jobs, jurisdiction row filtering beyond OPA attributes, cross-query differencing policy
+  changed_contracts: none
+  changed_migrations:
+    - 1759560450000_cmp-045-analytics-mis.sql
+    - 1759560450001_cmp-045-outbox.sql
+  frozen_contracts: unchanged (SF-CON-ANALYTICS-METRIC consumed read-only; hash re-verified)
+  lockfile: unchanged (EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL)
+  cmp_045_datastore: sf_analytics (aggregates and definitions only; no authoritative case/payment state)
+  CROSS_TENANT_LEAKAGE: 0
+  security_correction:
+    previous_head: b9ce25c8c5f965cd39cd363783812846775fc8c2
+    findings_fixed: 2 (ajinabraham.njsscan.dos.regex_dos in input.ts and pg-repo.test.ts)
+    method: bounded fixed-position timestamp parsing plus Date.parse; exact-match SQL control statements in test
+    suppressions: none
+  evidence: evidence/SF-M08-003/EVIDENCE.md
+  blockers: none
+  risks:
+    - suppression is per cell; overlapping filters across queries can support differencing
+    - failed rebuild leaves its idempotency key IN_PROGRESS until a new key is used after lease expiry
+  self_certified: false
+  certified: false
+  not_certified: true
+  g3: false
+  g6: false
