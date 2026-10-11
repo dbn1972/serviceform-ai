@@ -1,0 +1,36 @@
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+index a53d1f0..9c20732 100644
+--- a/pnpm-lock.yaml
++++ b/pnpm-lock.yaml
+@@ -688,6 +688,31 @@ importers:
+         specifier: 4.23.15
+         version: 4.23.15
+ 
++  services/cmp-039-ai-gateway:
++    dependencies:
++      '@fastify/rate-limit':
++        specifier: 11.2.0
++        version: 11.2.0
++      '@serviceform/contracts':
++        specifier: workspace:*
++        version: link:../../packages/contracts
++      fastify:
++        specifier: 5.12.5
++        version: 5.12.5
++      fastify-plugin:
++        specifier: 5.1.0
++        version: 5.1.0
++      fastify-rate-limit:
++        specifier: npm:@fastify/rate-limit@11.2.0
++        version: '@fastify/rate-limit@11.2.0'
++      pg:
++        specifier: 8.23.1
++        version: 8.23.1
++    devDependencies:
++      '@types/pg':
++        specifier: 8.23.1
++        version: 8.23.1
++
+   services/cmp-047-observability:
+     dependencies:
+       '@serviceform/observability':

@@ -94,3 +94,25 @@ acceptance_tests_planning:
   - Deny unapproved model/provider
   - No PII/secrets in logs/prompts/test fixtures
   - Host mount deferred to SF-M04-007
+
+# Builder implementation record (additive; envelope fields above are unchanged).
+# Not VERIFIED. Not CERTIFIED. Not G6. M05 OFF. Independent STITCH/INT/SEC/EVD roles still own verification.
+implementation_record:
+  recorded_by: serviceform-ai-platform-builder
+  status: DEVELOP_COMPLETE_PENDING_INDEPENDENT_VERIFY
+  branch: cursor/sf-m04-001-ai-gateway-2eb8
+  pull_request: 71
+  base_main_short: 9ccc2b02f8ef
+  evidence_path: evidence/SF-M04-001/EVIDENCE.md
+  schema: sf_ai_gateway
+  privilege_role: sf_cmp039_rw
+  migrations:
+    - db/migrations/1759530039000_cmp-039-ai-gateway.sql
+    - db/migrations/1759530039001_cmp-039-outbox.sql
+  contracts_changed: false
+  pnpm_lock_changed: false
+  host_mount: deferred to SF-M04-007
+  lockfile_note: >-
+    New workspace package needs a pnpm-lock.yaml importer entry. Proposed diff is in
+    evidence/SF-M04-001/proposed-lockfile-importer.patch for SF-M04-STITCH-A to apply.
+  self_certified: false
