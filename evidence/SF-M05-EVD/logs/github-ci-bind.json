@@ -1,0 +1,79 @@
+{
+  "schema": "serviceform.m05.independent-evd.github-ci-bind.v1",
+  "task_id": "SF-M05-EVD",
+  "note": "Bind FINAL immutable verifier heads and exact-head workflow run IDs. Do not use stale embedded freeze fields from INT summary.json (ci_run_id 37651183699 / verifier_freeze_head b6033b13…). Provenance tails NON_BLOCKING.",
+  "production_sot": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+  "int_head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+  "sec_head": "59ddddd43afeeacfb14a86432c14bbce3ed88073",
+  "runs": {
+    "int": {
+      "pr": 108,
+      "head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+      "ci": {
+        "id": "37656918445",
+        "name": "ci",
+        "conclusion": "SUCCESS",
+        "head_sha": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f"
+      },
+      "security": {
+        "id": "37656918451",
+        "name": "security",
+        "conclusion": "SUCCESS",
+        "head_sha": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f"
+      },
+      "developer_platform": {
+        "id": "37656918853",
+        "name": "developer-platform",
+        "conclusion": "SUCCESS",
+        "head_sha": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f"
+      },
+      "jobs_success": "15/15",
+      "stale_embedded_freeze_fields": {
+        "summary_ci_run_id": "37651183699",
+        "summary_security_run_id": "37651183583",
+        "summary_developer_platform_run_id": "37651183599",
+        "summary_verifier_freeze_head": "b6033b13f29d0a73ab42ec9dd9a6fdda60ddeb4a",
+        "disposition": "NON_BLOCKING_PROVENANCE_TAIL",
+        "authoritative_bind": "final immutable head d1614d70… + runs 37656918445/37656918451/37656918853"
+      }
+    },
+    "sec": {
+      "pr": 107,
+      "head": "59ddddd43afeeacfb14a86432c14bbce3ed88073",
+      "ci": {
+        "id": "37648591412",
+        "name": "ci",
+        "conclusion": "SUCCESS",
+        "head_sha": "59ddddd43afeeacfb14a86432c14bbce3ed88073"
+      },
+      "security": {
+        "id": "37648591586",
+        "name": "security",
+        "conclusion": "SUCCESS",
+        "head_sha": "59ddddd43afeeacfb14a86432c14bbce3ed88073"
+      },
+      "developer_platform": {
+        "id": "37648591486",
+        "name": "developer-platform",
+        "conclusion": "SUCCESS",
+        "head_sha": "59ddddd43afeeacfb14a86432c14bbce3ed88073"
+      },
+      "jobs_success": "15/15"
+    },
+    "sot_push": {
+      "head": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+      "ci": {
+        "id": "37621953137",
+        "conclusion": "SUCCESS"
+      },
+      "security": {
+        "id": "37621953091",
+        "conclusion": "SUCCESS"
+      },
+      "developer_platform": {
+        "id": "37621953079",
+        "conclusion": "SUCCESS"
+      }
+    }
+  }
+}

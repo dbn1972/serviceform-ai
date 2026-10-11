@@ -1,0 +1,143 @@
+{
+  "schema": "serviceform.m05.independent-evd.required-checks.v1",
+  "task_id": "SF-M05-EVD",
+  "assessed_at": "2026-10-08T01:10:15Z",
+  "all_pass": true,
+  "checks": [
+    {
+      "id": 1,
+      "name": "SoT origin/main exact",
+      "expected": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+      "actual": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+      "result": "PASS"
+    },
+    {
+      "id": 2,
+      "name": "Frozen contracts",
+      "expected": "19/19 MATCH",
+      "actual": "19/19 MATCH",
+      "result": "PASS"
+    },
+    {
+      "id": 3,
+      "name": "INT and SEC same production base",
+      "expected": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+      "actual": {
+        "int_base": "4d99c91e4bcdc145585fe62449c83a004de1399d",
+        "sec_base": "4d99c91e4bcdc145585fe62449c83a004de1399d"
+      },
+      "result": "PASS"
+    },
+    {
+      "id": 4,
+      "name": "Exact final INT/SEC heads + six workflows SUCCESS",
+      "expected": {
+        "int_head": "d1614d70b743b39b20b6d7104d3bd34cb2248f5f",
+        "sec_head": "59ddddd43afeeacfb14a86432c14bbce3ed88073",
+        "int_runs": ["37656918445", "37656918451", "37656918853"],
+        "sec_runs": ["37648591412", "37648591586", "37648591486"]
+      },
+      "actual": "all six SUCCESS on exact final heads",
+      "result": "PASS",
+      "note": "Bound final heads/run IDs; not stale embedded freeze fields"
+    },
+    {
+      "id": 5,
+      "name": "No production-only-on-verifier-branches",
+      "expected": "verifier diffs exclude services/apps/packages/migrations/contracts/lockfiles",
+      "actual": {
+        "int_path_audit": "clean",
+        "sec_path_audit": "clean",
+        "production_code_modified": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": 6,
+      "name": "INT-009 durable reconciliation",
+      "expected": "PROVEN",
+      "actual": "INT_009_DURABLE_RECONCILIATION=PROVEN (executable E2E)",
+      "result": "PASS"
+    },
+    {
+      "id": 7,
+      "name": "STALE terminals",
+      "expected": "STALE_EXPECTED_STATE/STALE_VERSION → FAILED_STALE terminal not retryable",
+      "actual": "PROVEN on #108 INT-009",
+      "result": "PASS"
+    },
+    {
+      "id": 8,
+      "name": "Host package admission",
+      "expected": "ADMITTED",
+      "actual": "M05_HOST_PACKAGE_ADMISSION=ADMITTED; seven workspace:*; CMP-016 none; CMP-036 single",
+      "result": "PASS"
+    },
+    {
+      "id": 9,
+      "name": "CROSS_TENANT_LEAKAGE",
+      "expected": 0,
+      "actual": {
+        "int": 0,
+        "sec": 0
+      },
+      "result": "PASS"
+    },
+    {
+      "id": 10,
+      "name": "CMP-019 residual closure",
+      "expected": "ACCEPTED verified closure (not waiver)",
+      "actual": "CMP-019_RESIDUAL_CLOSURE=ACCEPTED",
+      "result": "PASS"
+    },
+    {
+      "id": 11,
+      "name": "CMP-028 governed disposition",
+      "expected": "GOVERNING_UNRESOLVED_UNWAIVED with explicit blocking vs permissible assessment",
+      "actual": "PERMISSIBLE_CARRIED_RESIDUAL_NON_BLOCKING_FOR_M05_G4_RECOMMENDATION; not waived",
+      "result": "PASS"
+    },
+    {
+      "id": 12,
+      "name": "#103/#104 not current PASS",
+      "expected": "historical DRAFT_UNMERGED_EVIDENCE only",
+      "actual": {
+        "current_int_pass": 108,
+        "current_sec_pass": 107,
+        "historical_103_104_as_pass": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": 13,
+      "name": "EVD does not issue G4/G6/CERTIFIED",
+      "expected": "G4_ISSUED=false; CERTIFIED=false; G6=false",
+      "actual": {
+        "G4_RECOMMENDATION": "G4_SECURITY_VERIFIED",
+        "G4_ISSUED": false,
+        "CERTIFIED": false,
+        "G6": false
+      },
+      "result": "PASS"
+    },
+    {
+      "id": 14,
+      "name": "LOCK-8 independent review",
+      "expected": "INDEPENDENT_SF_M05_LOCK8_RERUN_REVIEW=ACCEPTED; LOCK-8=SATISFIED",
+      "actual": "ACCEPTED / SATISFIED per HUMAN_SF_M05_EVD_AUTHORIZATION",
+      "result": "PASS"
+    },
+    {
+      "id": 15,
+      "name": "Verifier PRs draft unmerged evidence; M06/M08 OFF",
+      "expected": "#107/#108 DRAFT_UNMERGED_EVIDENCE; M06=OFF; M08=OFF",
+      "actual": {
+        "pr_108": "OPEN draft mergedAt=null",
+        "pr_107": "OPEN draft mergedAt=null",
+        "m06": "OFF",
+        "m08": "OFF"
+      },
+      "result": "PASS"
+    }
+  ]
+}
