@@ -9,6 +9,7 @@ import { registerM02Plugins, type M02PluginMounts } from './composition/m02.js';
 import { registerM03Plugins, type M03PluginMounts } from './composition/m03.js';
 import { registerM04Plugins, type M04PluginMounts } from './composition/m04.js';
 import { registerM05Plugins, type M05PluginMounts } from './composition/m05.js';
+import { registerM06Plugins, type M06PluginMounts } from './composition/m06.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -51,6 +52,12 @@ export interface AppDependencies {
    * do not remount it via m05. CMP-019/CMP-028 residuals are carried unwaived.
    */
   m05?: M05PluginMounts;
+  /**
+   * M06 mounts (CMP-020/021/025/026). Optional; tests supply doubles.
+   * SIMULATED payment/SMS/email connectors only at host wiring. CMP-036 remains
+   * registered above composition — do not remount it via m06. Hard serial vs SF-M08-007.
+   */
+  m06?: M06PluginMounts;
 }
 
 /**
@@ -143,6 +150,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m05Mounted', mounted);
   }
 
+  // Decorate only when mounts are supplied so existing optional composition suites
+  // still see `m06Mounted` as undefined when M06 is absent.
+  if (deps.m06) {
+    const mounted = await registerM06Plugins(app, deps.m06);
+    app.decorate('m06Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -154,5 +168,6 @@ declare module 'fastify' {
     m03Mounted?: string[];
     m04Mounted?: string[];
     m05Mounted?: string[];
+    m06Mounted?: string[];
   }
 }
