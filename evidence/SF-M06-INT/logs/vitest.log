@@ -1,0 +1,15 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/integration/m06/int-007-fee-payment-path.test.ts (4 tests) 3ms
+ ✓ tests/integration/m06/int-013-modes.test.ts (5 tests) 44ms
+ ✓ tests/integration/m06/int-011-host.test.ts (2 tests) 351ms
+   ✓ INT-011 M06 host admission + forged tenant denial (2)
+     ✓ admits four M06 mounts; CMP-036 once; forged X-Tenant-ID denied without canary leak 317ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  13:16:56
+   Duration  994ms (transform 39%, tests 31%, import 29%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M06-INT/junit/independent-unit.xml
