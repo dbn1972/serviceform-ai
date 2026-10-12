@@ -47,7 +47,7 @@ services:
 
   s3:
     # S3-compatible object storage emulator (AWS v1.7 s2: S3-compatible object access).
-    image: localstack/localstack:4.12
+    image: localstack/localstack:4.14
     environment:
       SERVICES: s3,kms
       AWS_DEFAULT_REGION: ${SF_LOCAL_AWS_REGION:-us-east-1}
