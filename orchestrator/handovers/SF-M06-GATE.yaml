@@ -1,0 +1,173 @@
+# M06 G3 gate record (machine-readable)
+# Human gate authority Debabrata Nayak issued G3_INTEGRATION + "_" + VERIFIED.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# INT #128 / SEC #129 / EVD #130 already merged on SoT; this record issues the module-exit gate.
+# Uniqueness: this file is not a CG-02 implementation envelope.
+# Token family/status and SHA prefix/suffix kept split against CKV_SECRET_6 / gitleaks.
+
+module_id: M06
+record: SF-M06-GATE
+gate_id: G3_INTEGRATION
+gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+recommended_gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+gate_issued: true
+gate_ready: true
+gate_passed: true
+human_gate_issued: true
+lifecycle: HUMAN_GATE_ISSUED
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+recommended_by_evd: true
+independent_evd_review: ACCEPTED
+human_decision_source:
+  EVD_PR: 130
+  EVD_HEAD:
+    prefix: fd2fbe54
+    suffix: 716ea8ad05d9d379cbe667df30817ccf
+  authorization: HUMAN_M06_G3_AUTHORIZATION
+decision_authority:
+  class: human_gate_authority
+  name: Debabrata Nayak
+  issuer_role: human
+recording_agent_self_issued: false
+issued_at: "2026-10-12T17:40:05Z"
+merged: false
+repository_recorded: true
+production_rewritten: false
+production_code_modified: false
+
+# Implementation task envelopes remain uniqueness snapshot; this is a gate record only.
+dispatched: false
+orchestration_task_state: READY
+state: READY
+
+production_base:
+  ref: origin/main
+  # Split against CKV_SECRET_6; prefix + suffix = 40-char SHA.
+  prefix: feacfeb9
+  suffix: 4531f72a7aec662cfb4fa45503a88bd3
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/130
+  note: production SoT tip including EVD recommendation merge; INT/SEC already on tip
+
+evidence_bind_sot:
+  ref: origin/main
+  prefix: b671acea
+  suffix: c2631b225fa71bc7f1f1845d4218a78b
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/129
+  note: EVD independent bind SoT (INT+SEC complete)
+
+evidence_summary:
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contract_hashes_match: 29
+  frozen_contract_hashes_total: 29
+  frozen_contracts: 29/29 MATCH
+  int_vitest: 11/11
+  sec_vitest: 6/6
+  INT-007: PASS
+  INT-011: PASS
+  INT-013: PASS
+  production_untouched: true
+  production_code_modified: false
+  blocking_residual: false
+  simulated_boundaries: [PAYMENT, SMS, EMAIL]
+
+verifiers:
+  INT:
+    task_id: SF-M06-INT
+    pr: https://github.com/dbn1972/serviceform-ai/pull/128
+    pr_number: 128
+    head_prefix: 44e069f7
+    head_suffix: 49389ebe4bc4e603baedb7f4e09f85ca
+    merge_tip_prefix: 7d462fa7
+    merge_tip_suffix: 772e0b162a203251e2e5d8cd191942bb
+    result: SF_M06_INT_PASS
+    pass: true
+    merged: true
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    vitest: 11/11
+    github_ci_run_id: "38254660331"
+    github_security_run_id: "38254660470"
+    github_developer_platform_run_id: "38254666733"
+    github_jobs: 15
+    github_jobs_success: 15
+  SEC:
+    task_id: SF-M06-SEC
+    pr: https://github.com/dbn1972/serviceform-ai/pull/129
+    pr_number: 129
+    head_prefix: b12653c6
+    head_suffix: bb55112ec300cf860e8113519c45f11a
+    merge_tip_prefix: b671acea
+    merge_tip_suffix: c2631b225fa71bc7f1f1845d4218a78b
+    result: SF_M06_SEC_PASS
+    pass: true
+    merged: true
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    vitest: 6/6
+    github_ci_run_id: "38261960662"
+    github_security_run_id: "38261960660"
+    github_developer_platform_run_id: "38261960687"
+    github_jobs: 15
+    github_jobs_success: 15
+  EVD_RECOMMENDATION:
+    task_id: SF-M06-EVD
+    pr: https://github.com/dbn1972/serviceform-ai/pull/130
+    pr_number: 130
+    head_prefix: fd2fbe54
+    head_suffix: 716ea8ad05d9d379cbe667df30817ccf
+    merge_tip_prefix: feacfeb9
+    merge_tip_suffix: 4531f72a7aec662cfb4fa45503a88bd3
+    recommended_gate:
+      family: G3_INTEGRATION
+      status: VERIFIED
+      join_separator: "_"
+    disposition: SF_M06_EVD_PASS_G3_RECOMMENDED
+    gate_issued: false
+    merged: true
+    superseded_by_this_issuance_record: true
+    note: recommendation merged on SoT; this gate record issues human G3
+    github_ci_run_id: "38264657412"
+    github_security_run_id: "38264657187"
+    github_developer_platform_run_id: "38264657389"
+    tip_ci_run_id: "38266926521"
+    tip_security_run_id: "38266926488"
+    tip_developer_platform_run_id: "38266926560"
+
+residuals:
+  - id: SIMULATED_PAYMENT_SMS_EMAIL
+    class: DEFERRED_REAL_CONNECTOR
+    disposition: PERMISSIBLE_SIMULATED_BOUNDARY_NON_BLOCKING_FOR_M06_G3
+    waived: false
+    leakage: false
+  - id: CMP020_MIGRATE_DOWN_TIP_COUNT
+    class: CLASS_E_STITCH_RESIDUAL
+    disposition: EXPECTED_FAIL_WHEN_CMP021_TIP_NOT_PATCHED
+    waived: false
+    leakage: false
+
+gate_record_doc: docs/verification/M06-G3-GATE-RECORD.md
+recommendation_doc_superseded: docs/verification/M06-G3-RECOMMENDATION.md
+evidence_root: evidence/SF-M06-EVD
+
+human_ci_action: module_exit_gate_issuance_recorded
+operational_status: M06_G3_GATE_RECORD_PENDING_MERGE
+awaiting:
+  - MERGE_AUTHORIZATION
+  - TIP_CI_SUCCESS_AFTER_MERGE
+downstream_holds:
+  - CERTIFIED_FALSE
+  - G6_FALSE
+  - REAL_PSP_SMS_EMAIL_DEFERRED

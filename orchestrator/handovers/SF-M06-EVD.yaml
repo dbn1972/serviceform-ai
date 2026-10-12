@@ -1,5 +1,6 @@
-# M06 CANDIDATE — evidence_verifier G3 recommendation only
-# HUMAN_M06_STITCH_B_THROUGH_EVD_AUTHORIZATION. Does NOT issue G3/CERTIFIED/G6.
+# M06 CANDIDATE — evidence_verifier G3 recommendation (superseded for issuance by SF-M06-GATE)
+# HUMAN_M06_STITCH_B_THROUGH_EVD_AUTHORIZATION. EVD does NOT self-issue G3/CERTIFIED/G6.
+# Human issuance recorded separately under HUMAN_M06_G3_AUTHORIZATION → SF-M06-GATE.
 
 task_id: SF-M06-EVD
 title: M06 evidence_verifier — Recommend G3 only; cannot issue G3 or CERTIFY
@@ -38,12 +39,15 @@ state: CANDIDATE
 execution_base: b671aceac2631b225fa71bc7f1f1845d4218a78b
 disposition: SF_M06_EVD_PASS_G3_RECOMMENDED
 recommended_gate: G3_INTEGRATION_VERIFIED
-g3_issued: false
+g3_issued: true
+human_gate_issued: true
+human_gate_record: SF-M06-GATE
+superseded_for_issuance_by: SF-M06-GATE
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
-g3: false
+g3: true
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
@@ -51,4 +55,4 @@ simulated_boundaries: [PAYMENT, SMS, EMAIL]
 bound_inputs:
   SF-M06-INT: 44e069f749389ebe4bc4e603baedb7f4e09f85ca
   SF-M06-SEC: b12653c6bb55112ec300cf860e8113519c45f11a
-next_external_gate: Human/CI issue G3_INTEGRATION_VERIFIED
+next_external_gate: none_for_m06_module_exit; CERTIFIED_and_G6_remain_false
