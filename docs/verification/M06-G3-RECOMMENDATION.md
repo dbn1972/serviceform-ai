@@ -2,6 +2,8 @@
 
 **Recommended gate: `G3_INTEGRATION_VERIFIED`**
 
+> **Superseded for issuance status:** Human gate authority issued `G3_INTEGRATION_VERIFIED` via `docs/verification/M06-G3-GATE-RECORD.md` / `orchestrator/handovers/SF-M06-GATE.yaml` (`HUMAN_M06_G3_AUTHORIZATION`). This recommendation document remains the EVD bind narrative. CERTIFIED / G6 remain **false**.
+
 Independent evidence verifier (SF-M06-EVD / LOCK-9) bind of executed INT + SEC records on exact production SoT `b671aceac2631b225fa71bc7f1f1845d4218a78b`. **Human/CI decides G3.** This record does **not** certify, issue G3, issue G6, or mark CERTIFIED / RELEASE CERTIFIED.
 
 | Field | Value |
@@ -14,7 +16,7 @@ Independent evidence verifier (SF-M06-EVD / LOCK-9) bind of executed INT + SEC r
 | Disposition | **`SF_M06_EVD_PASS_G3_RECOMMENDED`** |
 | Recommended result | **`G3_INTEGRATION_VERIFIED`** |
 | Human/CI decision | **required** (this agent does **not** issue the gate) |
-| `G3_ISSUED` / `gate_issued` / `human_gate_issued` | **false** |
+| `G3_ISSUED` / `gate_issued` / `human_gate_issued` | **true** (see `M06-G3-GATE-RECORD.md`; this EVD row was false at recommendation time) |
 | Self-certified | **false** |
 | CERTIFIED / G6 / RELEASE CERTIFIED | **false** |
 | SIMULATED boundaries | Payment / SMS / EMAIL (REAL deferred) |
