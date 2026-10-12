@@ -22,7 +22,7 @@ describe('SF-M06-SEC static tenant isolation (migrations)', () => {
       .join('\n');
 
     for (const schema of M06_SCHEMAS) {
-      expect(migrations).toMatch(new RegExp(`CREATE SCHEMA ${schema}`));
+      expect(migrations.includes(`CREATE SCHEMA ${schema}`)).toBe(true);
     }
     expect(migrations).toMatch(/ENABLE ROW LEVEL SECURITY/i);
     expect(migrations).toMatch(/FORCE ROW LEVEL SECURITY/i);
