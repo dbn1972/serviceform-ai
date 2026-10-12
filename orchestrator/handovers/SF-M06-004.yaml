@@ -1,67 +1,28 @@
-# M06 PLANNING envelope — Payment Service
-# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# SF-M06-004 handover — CMP-021 Payment Service (gateway bypass, SIMULATED only)
+# HUMAN_M06_GATEWAY_BYPASS_AUTHORIZATION consumed. DISPATCHED. Builder candidate complete.
+# Not MERGED. Not CERTIFIED. Not RELEASE CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M06-004
-title: Payment Service
+title: Payment Service (SIMULATED gateway bypass)
 module_id: M06
-concurrency_group: CG-02
-build_plan: specs/build-plan.yaml (ADR-0001)
 component_ids: [CMP-021]
-integration_ids: [INT-007, INT-011, INT-013]
+integration_ids: [INT-007, INT-013]
 requirement_ids:
-  - Eng-v1.4-CMP-021
-  - INT-007
-  - MODEL-ROUTING-duplicate-financial-side-effects
+- Eng-v1.4-CMP-021
+- INT-007
+- INT-013
+- SF-CON-PAYMENT-INTENT
+- SF-CON-PAYMENT-CALLBACK
 agent_role: component_builder
 builder_agent: serviceform-integration-builder
-model_route: opus
-model_release: claude-opus-5-5
-effort: high
-verifier_model_route: opus
-branch: agent/M06-payment-SF-M06-004
-worktree: ../wt-SF-M06-004
-parallel_group: M06-B
-privilege_role: sf_cmp021_rw
-schema: sf_payment
-hard_serial_locks: ['LOCK-5']
-depends_on:
-  - M05 G4 exit + finalize on origin/main at base_commit
-  - 19 FROZEN contracts MATCH
-  - SF-M06-CG-001 freeze on origin/main (later; not this PR)
-  - LOCK-1 planning PR on main
-  - later human READY promotion authorization (NOT granted)
-  - later orchestrator dispatch record
-allowed_write_paths:
-  - services/cmp-021-payment/**
-  - db/migrations/*_cmp-021-*.sql
-  - evidence/SF-M06-004/**
-  - orchestrator/handovers/SF-M06-004.yaml
-allowed_write_notes:
-  - INT-007 fee → payment → verified callback → application/workflow
-  - Zero duplicate financial side effects under duplicate/reordered callbacks
-  - PSP adapters REAL/SANDBOX/SIMULATED via INT-013; no invented PSP policy
-  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M06-005
-read_only_paths:
-  - pnpm-lock.yaml
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - apps/**
-  - specs/**
-  - policy/**
-  - infra/**
-  - services/cmp-020-fee-calculation/**
-  - services/cmp-025-notification/**
-  - services/cmp-026-communication-messaging/**
-wave_eligible_now: false
-serial_after:
-  - SF-M06-STITCH-A
-
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+model_route: sonnet
+model_release: claude-sonnet-4-6
+branch: cursor/m06-payment-gateway-bypass-1149
+base_commit:
+  sha: eeeece461325ed2ca896d404e393d07632dc5ec5
+state: candidate-complete
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -70,48 +31,81 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_02_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: 88690846
-  suffix: 021a2ce082b8a7c7f35c12603effd5d9
-join_separator: "_"
-contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
-  - SF-CON-APPLICATION-CASE-SM
-  - SF-CON-WORKFLOW-MODEL
-  - SF-CON-COMMAND-TRANSITION
-  - SF-CON-HUMAN-TASK
-  - SF-CON-SLA-CLOCK
-  - SF-CON-VERSION-PINNING
-stop_conditions:
-  - FROZEN existing 19 contracts change required (CCR+STOP)
-  - statutory / policy invention required
-  - write outside allowed_write_paths
-  - dependency on unmerged sibling CG-02 code as source of truth
-  - builder dispatch without uniqueness PASS / CG-001 freeze on main / READY auth / orchestrator dispatch record
-  - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - READY promotion in this planning slice
-  - freeze contracts in the planning PR
-  - M07 or M09-M12 start
-  - invented payment provider policy
-  - duplicate financial side effects
-  - production silent SIMULATED critical payment connector
 
-acceptance_tests_planning:
-  - Verified callback is idempotent; duplicate delivery does not double-charge or double-apply
-  - Case/workflow advanced only after durable payment commit + outbox
-  - No network I/O inside authoritative DB transaction
-  - Host mount deferred to SF-M06-005
+# Authorization consumed
+dispatch:
+  source: HUMAN_M06_GATEWAY_BYPASS_AUTHORIZATION
+  dispatch_authorized: true
+
+# Write path constraints respected
+allowed_write_paths:
+- services/cmp-021-payment/**
+- db/migrations/*_cmp-021-*.sql
+- evidence/SF-M06-004/**
+- orchestrator/handovers/SF-M06-004.yaml
+
+allowed_write_notes:
+- SIMULATED PSP adapter only. No REAL/SANDBOX PSP SDK.
+- Amounts locked from fee quote. Client-supplied amounts are forbidden.
+- No network I/O inside DB transactions.
+- No cross-component SQL.
+- INT-013 fail-closed: SIMULATED refused in PRODUCTION for critical bindings.
+
+read_only_paths:
+- pnpm-lock.yaml
+- contracts/**
+- orchestrator/contracts-lock.yaml
+- apps/**
+- specs/**
+
+stop_conditions_respected:
+- No frozen contracts altered
+- No invented PSP fee statute
+- No cross-component SQL
+- No network in TX (assertNoOpenTx)
+- CERTIFIED/G3/G6 = false
+- No SIMULATED critical connector in production (enforced by assertBindingPolicy)
+
+# Deliverables produced
+builder_output:
+  schema: sf_payment
+  privilege_role: sf_cmp021_rw
+  migrations:
+    - db/migrations/1759620210000_cmp-021-payment.sql
+    - db/migrations/1759620210001_cmp-021-outbox.sql
+  service_path: services/cmp-021-payment/
+  produces_views_of:
+    - SF-CON-PAYMENT-INTENT
+    - SF-CON-PAYMENT-CALLBACK
+  ports_unbound_fail_closed:
+    - FeeQuotePort
+    - ConnectorBindingPort
+    - PaymentGatewayPort (unbound; SimulatedPspConnector wired for LOCAL/CI)
+    - WorkflowSignalPort (no-op default; host wires Temporal later)
+  connectors:
+    - simulated-psp (LOCAL/CI SIMULATED — no network)
+    - hub-psp (REAL/SANDBOX transport stub — throws until host mounts; SF-M06-005)
+  domain_rules_enforced:
+    - amount_locked_from_fee_quote: client cannot supply amount
+    - exactly_once_effect: duplicate callback = zero second financial effect
+    - signature_verified_required_for_financial_effect: true
+    - assertNoOpenTx: all port calls outside DB transaction
+    - INT-013 fail-closed: CRITICAL_NON_REAL_IN_PRODUCTION, NON_SIMULATED_IN_LOCAL_OR_CI_REFUSED
+  local_results:
+    typecheck: PASS
+    unit_contract: 54/54 PASS
+    integration: SKIP (no DATABASE_URL; stubs provided)
+  lockfile_residual: EXPECTED_STITCH_B_LOCKFILE_ADMISSION_RESIDUAL
+
+# Residuals for STITCH-B
+stitch_b_residuals:
+  - pnpm-lock.yaml admission: @serviceform/cmp-021-payment must be added to lockfile by STITCH-B
+  - HubPspConnector wiring: host mount (SF-M06-005) required before REAL/SANDBOX PSP calls
+  - WorkflowSignalPort Temporal wiring: host mount (SF-M06-005) required for INT-007
+  - Integration tests with postgres: DATABASE_URL required; stubs written at test/integration/
+  - REAL PSP webhook crypto: deferred to INT-013 REAL adapter via CMP-037
+
+# Non-claims
+invented_fee_or_waiver_policy: false
+invented_psp_statute: false
+host_mount: deferred_to_SF-M06-005

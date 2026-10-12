@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-021 Payment Service",
+    "version": "0.0.0",
+    "description": "SF-M06-004. SIMULATED PSP only. Amounts locked from fee quote. Client-supplied amounts are forbidden."
+  },
+  "paths": {
+    "/v1/payment-intents": {
+      "post": {
+        "operationId": "createPaymentIntent",
+        "summary": "Create a payment intent from a locked fee quote",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePaymentIntentRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Payment intent created" },
+          "409": { "description": "Duplicate / idempotency conflict" }
+        }
+      }
+    },
+    "/v1/payment-intents/{payment_intent_id}": {
+      "get": {
+        "operationId": "getPaymentIntent",
+        "summary": "Get a payment intent by ID",
+        "parameters": [
+          {
+            "name": "payment_intent_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Payment intent" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/v1/payment-callbacks": {
+      "post": {
+        "operationId": "applyPaymentCallback",
+        "summary": "Apply a PSP callback (signature verified before financial effect)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ApplyCallbackRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Callback applied" },
+          "409": { "description": "Duplicate exactly-once conflict (SF-PAY-002)" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePaymentIntentRequest": {
+        "type": "object",
+        "required": ["fee_quote_id"],
+        "additionalProperties": false,
+        "properties": {
+          "fee_quote_id": { "type": "string", "format": "uuid" },
+          "connector_binding_id": { "type": "string", "format": "uuid" },
+          "test_run_id": { "type": "string", "maxLength": 128 }
+        }
+      },
+      "ApplyCallbackRequest": {
+        "type": "object",
+        "required": ["exactly_once_key", "idempotency_key"],
+        "properties": {
+          "payment_intent_id": { "type": "string", "format": "uuid" },
+          "exactly_once_key": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" },
+          "idempotency_key": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" },
+          "outcome": { "type": "string", "enum": ["CAPTURED", "FAILED", "CANCELLED"] }
+        }
+      }
+    }
+  }
+}
