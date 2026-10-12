@@ -4,7 +4,7 @@ import {
   signPayload,
   simulatorSecret,
 } from '../../src/connectors/simulated-psp.js';
-import { BINDING_ID, TEST_RUN_ID, simulatedBinding } from '../doubles/fixtures.js';
+import { TEST_RUN_ID, simulatedBinding } from '../doubles/fixtures.js';
 import { buildSimulationMarker } from '../../src/domain/simulation.js';
 import type { SimulationMarker } from '../../src/domain/simulation.js';
 

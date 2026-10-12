@@ -10,6 +10,7 @@ import {
   TENANT_A,
   TEST_RUN_ID,
   TxProbe,
+  requireDefined,
 } from './fixtures.js';
 import { MemoryPaymentRepository } from './memory-repo.js';
 import { SimulatedPspConnector } from '../../src/connectors/simulated-psp.js';
@@ -32,7 +33,7 @@ export function makeHarness(startIso = '2026-10-10T02:00:00Z') {
   const connectorBinding = new FakeConnectorBindingPort(probe);
 
   // Build a simulation marker for the default binding
-  const defaultBinding = connectorBinding.binding!;
+  const defaultBinding = requireDefined(connectorBinding.binding, 'binding');
   const marker = buildSimulationMarker(defaultBinding, TEST_RUN_ID) as SimulationMarker;
   const gateway = new SimulatedPspConnector(marker);
 

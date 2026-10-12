@@ -10,6 +10,7 @@ import {
   T2,
   type Harness,
 } from './helpers.js';
+import { requireDefined } from '../doubles/fixtures.js';
 
 /**
  * Privilege and RLS integration tests for CMP-021 Payment Service.
@@ -151,7 +152,7 @@ describe.skipIf(!process.env['DATABASE_URL'])('privilege and rls (integration)',
     await asTenant(h.rt, T1, ACTOR, async (c) => {
       const r = await c.query(
         `SELECT payment_intent_id FROM sf_payment.payment_intent WHERE payment_intent_id = $1`,
-        [intentId!],
+        [requireDefined(intentId, 'intentId')],
       );
       expect(r.rows).toHaveLength(1);
     });
@@ -160,7 +161,7 @@ describe.skipIf(!process.env['DATABASE_URL'])('privilege and rls (integration)',
     await asTenant(h.rt, T2, ACTOR, async (c) => {
       const r = await c.query(
         `SELECT payment_intent_id FROM sf_payment.payment_intent WHERE payment_intent_id = $1`,
-        [intentId!],
+        [requireDefined(intentId, 'intentId')],
       );
       expect(r.rows).toHaveLength(0);
     });

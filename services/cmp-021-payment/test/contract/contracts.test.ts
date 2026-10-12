@@ -6,13 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { ROUTE_DESCRIPTORS } from '../../src/api/handler.js';
 import { ERROR_CATALOGUE_SUBSET } from '../../src/errors.js';
 import { DOMAIN_EVENT_TYPES, TOPIC_DOMAIN } from '../../src/outbox.js';
-import {
-  APPLICATION_ID,
-  FEE_QUOTE_ID,
-  fixtureToken,
-  TENANT_A,
-  TEST_RUN_ID,
-} from '../doubles/fixtures.js';
+import { FEE_QUOTE_ID, fixtureToken, TENANT_A, TEST_RUN_ID } from '../doubles/fixtures.js';
 import { makeHarness } from '../doubles/harness.js';
 
 const here = dirname(fileURLToPath(import.meta.url));

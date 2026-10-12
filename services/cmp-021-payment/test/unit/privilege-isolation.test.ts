@@ -11,6 +11,7 @@ import {
   FakeConnectorBindingPort,
   FakeFeeQuotePort,
   fixtureIdem,
+  requireDefined,
 } from '../doubles/fixtures.js';
 // fixture helpers imported below via expanded import
 import { MemoryPaymentRepository } from '../doubles/memory-repo.js';
@@ -28,7 +29,7 @@ describe('cross-tenant isolation', () => {
     probe.repo = repoA;
     const cbA = new FakeConnectorBindingPort(probe);
     const fqA = new FakeFeeQuotePort(probe);
-    const binding = cbA.binding!;
+    const binding = requireDefined(cbA.binding, 'binding');
     const marker = buildSimulationMarker(binding, TEST_RUN_ID) as SimulationMarker;
     const gwA = new SimulatedPspConnector(marker);
 
@@ -51,7 +52,7 @@ describe('cross-tenant isolation', () => {
     const probe2 = new TxProbe();
     const cbB = new FakeConnectorBindingPort(probe2);
     const fqB = new FakeFeeQuotePort(probe2);
-    const bindingB = cbB.binding!;
+    const bindingB = requireDefined(cbB.binding, 'binding');
     const markerB = buildSimulationMarker(bindingB, TEST_RUN_ID) as SimulationMarker;
     const gwB = new SimulatedPspConnector(markerB);
     probe2.repo = repoB;

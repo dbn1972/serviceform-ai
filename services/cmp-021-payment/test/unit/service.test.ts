@@ -11,6 +11,7 @@ import {
   TENANT_B,
   TEST_RUN_ID,
   TxProbe,
+  requireDefined,
 } from '../doubles/fixtures.js';
 import { MemoryPaymentRepository } from '../doubles/memory-repo.js';
 import { buildPaymentService } from '../../src/index.js';
@@ -27,7 +28,7 @@ function makeService(env = 'LOCAL') {
   probe.repo = repo;
   const connectorBinding = new FakeConnectorBindingPort(probe, env as never);
   const feeQuote = new FakeFeeQuotePort(probe);
-  const binding = connectorBinding.binding!;
+  const binding = requireDefined(connectorBinding.binding, 'binding');
   const marker = buildSimulationMarker(binding, TEST_RUN_ID) as SimulationMarker;
   const gateway = new SimulatedPspConnector(marker);
   const service = buildPaymentService({
@@ -114,7 +115,7 @@ describe('createIntent', () => {
 
   it('cross-tenant fee quote is denied', async () => {
     const { service, feeQuote } = makeService();
-    feeQuote.quotes.get(FEE_QUOTE_ID)!.tenant_id = TENANT_B;
+    requireDefined(feeQuote.quotes.get(FEE_QUOTE_ID), 'quote').tenant_id = TENANT_B;
     const ctx = ctxFor(TENANT_A);
     await expect(
       service.createIntent(

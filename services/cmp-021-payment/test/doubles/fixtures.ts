@@ -156,3 +156,10 @@ export function fixtureIdem(parts: string[], fpSeed: string) {
     fingerprint: `sha256:${fpSeed.repeat(64)}`,
   };
 }
+
+export function requireDefined<T>(value: T | null | undefined, label = 'value'): T {
+  if (value === null || value === undefined) {
+    throw new Error(`${label} required`);
+  }
+  return value;
+}

@@ -17,6 +17,7 @@ import {
   TEST_RUN_ID,
   TxProbe,
   fixtureToken,
+  requireDefined,
 } from '../doubles/fixtures.js';
 import { asSqlPool, closeHarness, setupHarness, type Harness } from './helpers.js';
 
@@ -55,7 +56,7 @@ describe('CMP-021 API over real PostgreSQL (FORCE RLS runtime login)', () => {
     probe.repo = repo;
     connectorBinding = new FakeConnectorBindingPort(probe);
     feeQuote = new FakeFeeQuotePort(probe);
-    const binding = connectorBinding.binding!;
+    const binding = requireDefined(connectorBinding.binding, 'binding');
     const marker = buildSimulationMarker(binding, TEST_RUN_ID) as SimulationMarker;
     const gateway = new SimulatedPspConnector(marker);
     state = { ctx: ctxFor(TENANT_A) };

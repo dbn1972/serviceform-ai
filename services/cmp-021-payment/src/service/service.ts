@@ -14,7 +14,6 @@ import {
   type DeploymentEnvironment,
 } from '../domain/simulation.js';
 import { isUuid } from '../domain/uuid.js';
-import { IDEMPOTENCY_KEY, IDEMPOTENCY_TTL_MS, requestFingerprint } from '../domain/fingerprint.js';
 import { intentView } from '../domain/intent-view.js';
 import { callbackView } from '../domain/callback-view.js';
 import { Cmp021Error, detail } from '../errors.js';
