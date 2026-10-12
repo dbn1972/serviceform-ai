@@ -1,0 +1,21 @@
+
+> @serviceform/cmp-025-notification@0.0.0 test:unit /workspace/services/cmp-025-notification
+> vitest run --root . --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-025-notification
+
+ ✓ test/unit/service.test.ts (25 tests) 26ms
+ ✓ test/unit/delivery.test.ts (27 tests) 51ms
+ ✓ test/contract/contracts.test.ts (22 tests) 77ms
+ ✓ test/unit/pg-repo.test.ts (7 tests) 11ms
+ ✓ test/unit/domain.test.ts (31 tests) 11ms
+ ✓ test/unit/model-validators.test.ts (44 tests) 9ms
+ ✓ test/unit/wiring.test.ts (7 tests) 9ms
+
+ Test Files  7 passed (7)
+      Tests  163 passed (163)
+   Start at  12:27:29
+   Duration  480ms (transform 49%, tests 24%, import 24%, worker 2%)
+
+JUNIT report written to /workspace/evidence/SF-M06-002/junit/unit.xml

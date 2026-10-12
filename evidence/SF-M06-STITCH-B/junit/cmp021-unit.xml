@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="55" failures="0" errors="0" time="0.090527398">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-12T12:27:28.202Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.043981179">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-PAYMENT-INTENT (FROZEN) conformance &gt; the frozen schema hash is unchanged versus contracts-lock" time="0.001674868">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-PAYMENT-INTENT (FROZEN) conformance &gt; created intent validates against frozen SF-CON-PAYMENT-INTENT" time="0.007978976">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-PAYMENT-CALLBACK (FROZEN) conformance &gt; the frozen schema hash is unchanged versus contracts-lock" time="0.000418439">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-PAYMENT-CALLBACK (FROZEN) conformance &gt; verified callback validates against frozen SF-CON-PAYMENT-CALLBACK" time="0.005860842">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-021 &gt; outbox events and audit events validate against shared SF-CON schemas" time="0.017915245">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-021 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.004051513">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000789182">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.000362367">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.002743494">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer component schemas and never BYPASSRLS" time="0.000498881">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/api-flow.test.ts" timestamp="2026-10-12T12:27:28.203Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.013086669">
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; POST /v1/payment-intents → 201 with frozen contract shape" time="0.006378234">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; POST /v1/payment-intents with amount in body → 400 (SF-SYS-003)" time="0.000501026">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; GET /v1/payment-intents/:id → 200" time="0.001016865">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; GET /v1/payment-intents/bad-uuid → 400" time="0.000385726">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; GET unknown route → 404" time="0.000301754">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; missing idempotency key on POST → 400" time="0.000281354">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; tenant-identifying header rejected → 403" time="0.000345739">
+        </testcase>
+        <testcase classname="test/unit/api-flow.test.ts" name="API flow &gt; full intent→callback→captured flow produces 2 domain events + 2 audit events" time="0.002470813">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/gateway.test.ts" timestamp="2026-10-12T12:27:28.204Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.003746378">
+        <testcase classname="test/unit/gateway.test.ts" name="SimulatedPspConnector &gt; createSession returns CREATED status with sim refs" time="0.001378057">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="SimulatedPspConnector &gt; verifyCallback with valid HMAC returns verified=true" time="0.000729806">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="SimulatedPspConnector &gt; verifyCallback with wrong HMAC returns verified=false" time="0.00023604">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="SimulatedPspConnector &gt; verifyCallback without signature returns verified=false" time="0.00020538">
+        </testcase>
+        <testcase classname="test/unit/gateway.test.ts" name="SimulatedPspConnector &gt; FAILED outcome passes through" time="0.000225979">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/money.test.ts" timestamp="2026-10-12T12:27:28.205Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.003652182">
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; converts integer number to bigint" time="0.001034384">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; converts bigint identity" time="0.00022668">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; converts numeric string" time="0.000151212">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; throws on fractional number" time="0.000357607">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; throws on negative number" time="0.000140842">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; assertNonNegative passes for zero" time="0.000467849">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="money domain &gt; assertNonNegative throws for negative" time="0.000166164">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/privilege-isolation.test.ts" timestamp="2026-10-12T12:27:28.205Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.006454616">
+        <testcase classname="test/unit/privilege-isolation.test.ts" name="cross-tenant isolation &gt; tenant A cannot read tenant B intent" time="0.003614787">
+        </testcase>
+        <testcase classname="test/unit/privilege-isolation.test.ts" name="authorizer deny &gt; denied authz returns SF-AUTH-002" time="0.001361397">
+        </testcase>
+        <testcase classname="test/unit/privilege-isolation.test.ts" name="INT-013 fail-closed gate &gt; SIMULATED binding outside simulation env → refused" time="0.000396849">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-12T12:27:28.206Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.014457393">
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; creates an intent and returns SF-CON-PAYMENT-INTENT view" time="0.003569299">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; priorResult replay: does not re-call fee quote or gateway on second identical request" time="0.001158976">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; rejects client-supplied amount (SF-SYS-003 from validateCreateIntentInput)" time="0.000482971">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; port calls are outside TX" time="0.000633087">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; cross-tenant fee quote is denied" time="0.000879071">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="createIntent &gt; missing fee quote returns 404" time="0.000518011">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="applyCallback &gt; VERIFIED callback transitions intent to CAPTURED and applies financial effect once" time="0.001627611">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="applyCallback &gt; duplicate callback returns prior result with zero second financial effect (SF-PAY-002)" time="0.001318496">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="applyCallback &gt; REJECTED callback: no financial effect when signature fails" time="0.001074333">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="getIntent &gt; returns 404 for unknown intent" time="0.000610778">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="getIntent &gt; returns stored intent after create" time="0.000532769">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-013 fail-closed &gt; fails closed when connector binding port is unbound" time="0.000405892">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/simulation.test.ts" timestamp="2026-10-12T12:27:28.206Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.005148981">
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; accepts a valid SIMULATED binding in LOCAL" time="0.001444693">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; throws CONNECTOR_BINDING_NOT_FOUND when null" time="0.000254243">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; throws CRITICAL_NON_REAL_IN_PRODUCTION for critical SIMULATED in PRODUCTION" time="0.000139923">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; throws NON_SIMULATED_IN_LOCAL_OR_CI_REFUSED for REAL in LOCAL" time="0.000216503">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; throws CONNECTOR_TYPE_MISMATCH for non-PAYMENT connector" time="0.000137523">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy &gt; throws CONNECTOR_ENVIRONMENT_MISMATCH when env does not match runtime" time="0.000152677">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="buildSimulationMarker &gt; builds a valid marker for SIMULATED binding" time="0.000610875">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="buildSimulationMarker &gt; returns null for non-SIMULATED mode" time="0.000189992">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="isSimulationMarker &gt; accepts a valid marker" time="0.000422378">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="isSimulationMarker &gt; rejects extra keys" time="0.000155349">
+        </testcase>
+    </testsuite>
+</testsuites>
