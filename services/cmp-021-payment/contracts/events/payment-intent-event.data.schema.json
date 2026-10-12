@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PaymentIntentCreated event data",
+  "type": "object",
+  "required": [
+    "payment_intent_id",
+    "fee_quote_id",
+    "application_id",
+    "currency",
+    "amount_minor",
+    "status",
+    "connector_mode"
+  ],
+  "properties": {
+    "payment_intent_id": { "type": "string", "format": "uuid" },
+    "fee_quote_id": { "type": "string", "format": "uuid" },
+    "application_id": { "type": "string", "format": "uuid" },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "amount_minor": { "type": "integer", "minimum": 0 },
+    "status": { "type": "string", "enum": ["CREATED", "AUTHORIZED"] },
+    "connector_mode": { "type": "string", "enum": ["REAL", "SANDBOX", "SIMULATED"] }
+  }
+}

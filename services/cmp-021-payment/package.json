@@ -1,0 +1,15 @@
+{
+  "name": "@serviceform/cmp-021-payment",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-021 Payment Service",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --root . --config vitest.unit.config.ts",
+    "test:integration": "vitest run --root . --config vitest.integration.config.ts"
+  }
+}

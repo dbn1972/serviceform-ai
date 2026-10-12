@@ -1,0 +1,52 @@
+{
+  "entities": [
+    {
+      "entity": "sf_payment.payment_intent",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.payment_callback",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.exactly_once_effect",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.idempotency_record",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.outbox_event",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.outbox_event_platform",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "owner_component": "CMP-021",
+      "rls": "NOT_APPLICABLE"
+    },
+    {
+      "entity": "sf_payment.inbox_event",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-021",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_payment.inbox_event_platform",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "owner_component": "CMP-021",
+      "rls": "NOT_APPLICABLE"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="1.026141543">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-12T07:58:31.488Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.533528103">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-021 API over real PostgreSQL (FORCE RLS runtime login) &gt; creates intent, persists row, replays identically, reads back" time="0.032360257">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-021 API over real PostgreSQL (FORCE RLS runtime login) &gt; verified callback transitions intent to CAPTURED; duplicate exactly_once_key returns prior (zero second effect)" time="0.01997948">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-021 API over real PostgreSQL (FORCE RLS runtime login) &gt; wrong tenant cannot read or see the intent; CROSS_TENANT_LEAKAGE = 0" time="0.01394537">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-021 API over real PostgreSQL (FORCE RLS runtime login) &gt; refused request writes nothing (no intent or outbox row)" time="0.011721355">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-12T07:58:31.489Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="1" time="0.49261344">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; sf_cmp021_rw is NOLOGIN and NOBYPASSRLS" time="0.007017434">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; sf_payment tables have FORCE ROW LEVEL SECURITY enabled" time="0.001317994">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; sf_payment tables are owned by sf_migrator (not a login role)" time="0.001326058">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; sf_cmp021_rw has UPDATE privilege only on status column of payment_intent" time="0.016195891">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; tenant A cannot read tenant B intent rows (FORCE RLS isolation)" time="0.007534755">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; canary binding (T2 intent) never visible in T1 session SELECT *" time="0.002178951">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; tenant A can INSERT and SELECT own intent; peer tenant B cannot see it" time="0.003087925">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; peer role (sf_t021_other = sf_app + sf_cmp048_rw) is denied SELECT on payment_intent" time="0.006077606">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; peer role cannot INSERT into payment_intent" time="0.001433687">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; INSERT without app.tenant_id session variable is blocked by RLS policy" time="0.000889903">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege and rls (integration) &gt; down-migration removes sf_payment schema" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

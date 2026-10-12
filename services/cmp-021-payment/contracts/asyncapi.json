@@ -1,0 +1,80 @@
+{
+  "asyncapi": "2.6.0",
+  "info": { "title": "CMP-021 Payment Events", "version": "0.0.0" },
+  "channels": {
+    "sf.payment.events.v1": {
+      "subscribe": {
+        "message": {
+          "oneOf": [
+            { "$ref": "#/components/messages/PaymentIntentCreated" },
+            { "$ref": "#/components/messages/PaymentVerified" },
+            { "$ref": "#/components/messages/PaymentFailed" }
+          ]
+        }
+      },
+      "messages": {
+        "PaymentIntentCreated": { "$ref": "#/components/messages/PaymentIntentCreated" },
+        "PaymentVerified": { "$ref": "#/components/messages/PaymentVerified" },
+        "PaymentFailed": { "$ref": "#/components/messages/PaymentFailed" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "PaymentIntentCreated": {
+        "name": "PaymentIntentCreated",
+        "payload": { "$ref": "#/components/schemas/PaymentIntentCreatedData" }
+      },
+      "PaymentVerified": {
+        "name": "PaymentVerified",
+        "payload": { "$ref": "#/components/schemas/PaymentCallbackData" }
+      },
+      "PaymentFailed": {
+        "name": "PaymentFailed",
+        "payload": { "$ref": "#/components/schemas/PaymentCallbackData" }
+      }
+    },
+    "schemas": {
+      "PaymentIntentCreatedData": {
+        "type": "object",
+        "required": [
+          "payment_intent_id",
+          "fee_quote_id",
+          "application_id",
+          "currency",
+          "amount_minor",
+          "status",
+          "connector_mode"
+        ],
+        "properties": {
+          "payment_intent_id": { "type": "string", "format": "uuid" },
+          "fee_quote_id": { "type": "string", "format": "uuid" },
+          "application_id": { "type": "string", "format": "uuid" },
+          "currency": { "type": "string" },
+          "amount_minor": { "type": "integer" },
+          "status": { "type": "string", "enum": ["CREATED", "AUTHORIZED"] },
+          "connector_mode": { "type": "string", "enum": ["REAL", "SANDBOX", "SIMULATED"] }
+        }
+      },
+      "PaymentCallbackData": {
+        "type": "object",
+        "required": [
+          "callback_id",
+          "payment_intent_id",
+          "application_id",
+          "verification_result",
+          "signature_verified",
+          "financial_effect_applied"
+        ],
+        "properties": {
+          "callback_id": { "type": "string", "format": "uuid" },
+          "payment_intent_id": { "type": "string", "format": "uuid" },
+          "application_id": { "type": "string", "format": "uuid" },
+          "verification_result": { "type": "string", "enum": ["VERIFIED", "REJECTED"] },
+          "signature_verified": { "type": "boolean" },
+          "financial_effect_applied": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}
