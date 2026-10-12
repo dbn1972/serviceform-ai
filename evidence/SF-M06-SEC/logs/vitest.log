@@ -1,0 +1,15 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/security/m06/static-isolation.test.ts (2 tests) 4ms
+ ✓ tests/security/m06/forged-tenant-http.test.ts (1 test) 372ms
+   ✓ SF-M06-SEC forged tenant HTTP (fail-closed) (1)
+     ✓ denies forged X-Tenant-ID on all M06 /v1 probes; CROSS_TENANT_LEAKAGE=0 371ms
+ ✓ tests/security/m06/simulation-fail-closed.test.ts (3 tests) 3ms
+
+ Test Files  3 passed (3)
+      Tests  6 passed (6)
+   Start at  13:17:37
+   Duration  1.17s (tests 41%, import 33%, transform 25%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M06-SEC/junit/security.xml

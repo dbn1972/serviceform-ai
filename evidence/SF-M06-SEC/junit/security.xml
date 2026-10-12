@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="0.379649074">
+    <testsuite name="tests/security/m06/forged-tenant-http.test.ts" timestamp="2026-10-12T13:17:38.454Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.372056814">
+        <testcase classname="tests/security/m06/forged-tenant-http.test.ts" name="SF-M06-SEC forged tenant HTTP (fail-closed) &gt; denies forged X-Tenant-ID on all M06 /v1 probes; CROSS_TENANT_LEAKAGE=0" time="0.371123277">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m06/simulation-fail-closed.test.ts" timestamp="2026-10-12T13:17:38.454Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003303219">
+        <testcase classname="tests/security/m06/simulation-fail-closed.test.ts" name="SF-M06-SEC payment/notification SIMULATED fail-closed &gt; refuses critical SIMULATED payment binding in PRODUCTION" time="0.001287802">
+        </testcase>
+        <testcase classname="tests/security/m06/simulation-fail-closed.test.ts" name="SF-M06-SEC payment/notification SIMULATED fail-closed &gt; refuses critical SIMULATED SMS/EMAIL bindings in PRODUCTION" time="0.00045036">
+        </testcase>
+        <testcase classname="tests/security/m06/simulation-fail-closed.test.ts" name="SF-M06-SEC payment/notification SIMULATED fail-closed &gt; admits SIMULATED payment/SMS in CI" time="0.000615779">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m06/static-isolation.test.ts" timestamp="2026-10-12T13:17:38.455Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.004289041">
+        <testcase classname="tests/security/m06/static-isolation.test.ts" name="SF-M06-SEC static tenant isolation (migrations) &gt; M06 migrations ENABLE + FORCE RLS on tenant-scoped tables" time="0.002673626">
+        </testcase>
+        <testcase classname="tests/security/m06/static-isolation.test.ts" name="SF-M06-SEC static tenant isolation (migrations) &gt; host composition does not remount CMP-036 and documents SIMULATED boundaries" time="0.000377067">
+        </testcase>
+    </testsuite>
+</testsuites>
