@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.398423893">
+    <testsuite name="tests/integration/m06/int-007-fee-payment-path.test.ts" timestamp="2026-10-12T13:16:57.071Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003348773">
+        <testcase classname="tests/integration/m06/int-007-fee-payment-path.test.ts" name="INT-007 M06 fee→payment→callback path contracts &gt; exposes fee quote create/get/list under /v1" time="0.00159866">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-007-fee-payment-path.test.ts" name="INT-007 M06 fee→payment→callback path contracts &gt; exposes payment intent create/get and callback apply under /v1" time="0.000332884">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-007-fee-payment-path.test.ts" name="INT-007 M06 fee→payment→callback path contracts &gt; exposes notification dispatch used after payment events" time="0.000151751">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-007-fee-payment-path.test.ts" name="INT-007 M06 fee→payment→callback path contracts &gt; does not expose REAL PSP vendor SDK surfaces on published descriptors" time="0.000326452">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m06/int-011-host.test.ts" timestamp="2026-10-12T13:16:57.074Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.350897779">
+        <testcase classname="tests/integration/m06/int-011-host.test.ts" name="INT-011 M06 host admission + forged tenant denial &gt; admits four M06 mounts; CMP-036 once; forged X-Tenant-ID denied without canary leak" time="0.316753564">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-011-host.test.ts" name="INT-011 M06 host admission + forged tenant denial &gt; serves payment intent with server-derived context (SIMULATED mode marker)" time="0.032947052">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m06/int-013-modes.test.ts" timestamp="2026-10-12T13:16:57.074Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.044177341">
+        <testcase classname="tests/integration/m06/int-013-modes.test.ts" name="INT-013 M06 SIMULATED connector modes (independent re-verify) &gt; CMP-021 Payment SIMULATED admits CI and refuses PRODUCTION critical non-REAL" time="0.001797171">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-013-modes.test.ts" name="INT-013 M06 SIMULATED connector modes (independent re-verify) &gt; CMP-021 Payment cross-tenant binding denied (SF-TEN-002)" time="0.000249925">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-013-modes.test.ts" name="INT-013 M06 SIMULATED connector modes (independent re-verify) &gt; CMP-021 Payment simulation marker validates under CI" time="0.039834953">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-013-modes.test.ts" name="INT-013 M06 SIMULATED connector modes (independent re-verify) &gt; CMP-025 Notification SMS/EMAIL SIMULATED admits CI; refuses PRODUCTION critical" time="0.000749552">
+        </testcase>
+        <testcase classname="tests/integration/m06/int-013-modes.test.ts" name="INT-013 M06 SIMULATED connector modes (independent re-verify) &gt; CMP-025 Notification simulation marker validates under CI" time="0.000501547">
+        </testcase>
+    </testsuite>
+</testsuites>
