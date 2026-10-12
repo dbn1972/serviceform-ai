@@ -1,0 +1,21 @@
+
+> @serviceform/cmp-021-payment@0.0.0 test:unit /workspace/services/cmp-021-payment
+> vitest run --root . --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-021-payment
+
+ ✓ test/unit/api-flow.test.ts (8 tests) 13ms
+ ✓ test/unit/service.test.ts (12 tests) 14ms
+ ✓ test/contract/contracts.test.ts (10 tests) 44ms
+ ✓ test/unit/simulation.test.ts (10 tests) 5ms
+ ✓ test/unit/privilege-isolation.test.ts (3 tests) 6ms
+ ✓ test/unit/gateway.test.ts (5 tests) 4ms
+ ✓ test/unit/money.test.ts (7 tests) 4ms
+
+ Test Files  7 passed (7)
+      Tests  55 passed (55)
+   Start at  12:27:27
+   Duration  429ms (transform 54%, import 28%, tests 15%, worker 3%)
+
+JUNIT report written to /workspace/evidence/SF-M06-004/junit/unit.xml

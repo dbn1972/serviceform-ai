@@ -1,0 +1,54 @@
+
+> @serviceform/cmp-020-fee-calculation@0.0.0 test:integration /workspace/services/cmp-020-fee-calculation
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-020-fee-calculation
+
+ ❯ test/integration/privilege-rls.int.test.ts (8 tests | 1 failed) 916ms
+   ❯ CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) (8)
+     ✓ roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS; tables owned by sf_migrator with FORCE RLS 11ms
+     ✓ no non-owner role holds UPDATE/DELETE/TRUNCATE on quote tables 5ms
+     ✓ a peer component login cannot read or write CMP-020 tables 8ms
+     ✓ wrong-tenant rows are invisible and cannot be written; no tenant context sees nothing 15ms
+     ✓ issued quotes and lines are immutable even for the runtime role 6ms
+     ✓ commit-time integrity: total must equal the exact sum of lines and a quote needs a line 6ms
+     ✓ column checks refuse client-authoritative amounts, negatives and unknown sources 3ms
+     × down migration removes sf_fee and re-applies cleanly 387ms
+ ✓ test/integration/api-flow.int.test.ts (5 tests) 761ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/integration/privilege-rls.int.test.ts > CMP-020 privilege boundary (ADR-0006) and FORCE RLS (INT-011) > down migration removes sf_fee and re-applies cleanly
+AssertionError: expected [ { '?column?': 1 } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "?column?": 1,
++   },
++ ]
+
+ ❯ test/integration/privilege-rls.int.test.ts:205:23
+    203|     migrateDown(2);
+    204|     const gone = await h.admin.query(`SELECT 1 FROM pg_namespace WHERE…
+    205|     expect(gone.rows).toEqual([]);
+       |                       ^
+    206|     migrate();
+    207|     const back = await h.admin.query(`SELECT 1 FROM pg_namespace WHERE…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 12 passed (13)
+   Start at  12:30:06
+   Duration  1.99s (tests 91%, transform 6%, import 3%)
+
+JUNIT report written to /workspace/evidence/SF-M06-001/junit/integration.xml
+/workspace/services/cmp-020-fee-calculation:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @serviceform/cmp-020-fee-calculation@0.0.0 test:integration: `vitest run --root . --config vitest.integration.config.ts`
+Exit status 1

@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="210" failures="0" errors="0" time="0.153901597">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-12T12:27:29.193Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.059633139">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-FEE-QUOTE (FROZEN) conformance &gt; the frozen schema hash is unchanged versus contracts-lock" time="0.001390913">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-FEE-QUOTE (FROZEN) conformance &gt; fixed-policy and rules quotes (create, replay, dedupe, read, list) validate" time="0.018697452">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-FEE-QUOTE (FROZEN) conformance &gt; the frozen invalid example (client-authoritative amount) is rejected by the same schema" time="0.00033546">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-020 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.024487325">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-020 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.00102329">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000840675">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.000487844">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; test fee-policy fixtures conform to the consumer port schema" time="0.007478632">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.002746082">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer component schemas and never BYPASSRLS" time="0.000571674">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/calculate.test.ts" timestamp="2026-10-12T12:27:29.195Z" hostname="cursor" tests="46" failures="0" errors="0" skipped="0" time="0.016034153">
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; accepts the pinned published version" time="0.0017369">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses a policy owned by another tenant as cross-tenant" time="0.000252134">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses unpinned version" time="0.000211769">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses draft version" time="0.000257074">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses other binding" time="0.000155404">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses bad content hash" time="0.000140129">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses bad currency" time="0.000123722">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses unpinned rule version" time="0.000221692">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses malformed rule version" time="0.000315035">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses no lines" time="0.000146587">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses too many lines" time="0.000175061">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses duplicate line code" time="0.000083695">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses fractional fixed amount" time="0.000060777">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses decimal string amount" time="0.000096388">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses negative fixed amount" time="0.000056528">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses missing fixed amount" time="0.000053881">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses fixed line with rule key" time="0.000050245">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses rule line with amount" time="0.000050156">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses rule line without key" time="0.000047588">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses client basis" time="0.000044841">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses lowercase code" time="0.000044661">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validatePolicy: governed pins and published metadata only &gt; refuses oversized waiver ref" time="0.00004907">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses non-deterministic basis" time="0.00016765">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses other rule version" time="0.000056704">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses bad rule hash" time="0.000050234">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses bad evaluation id" time="0.001939381">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses no output" time="0.00012688">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="validateEvaluation: pinned deterministic rules only &gt; refuses array outputs" time="0.000057019">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; fixed-only policy sums lines exactly from metadata" time="0.000400924">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; rule lines take amounts from the pinned evaluation output" time="0.000636231">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; a zero rule output is kept as an explicit zero line (waiver computed by rules, not CMP-020)" time="0.000941739">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses missing output from rules" time="0.000308455">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses fractional output from rules" time="0.000106475">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses decimal string output from rules" time="0.000070441">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses negative output from rules" time="0.000057726">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses inherited output from rules" time="0.000209894">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses a calculation that needs rules without an evaluation" time="0.000143264">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; refuses totals beyond the exact contract integer range" time="0.000093206">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculate: deterministic, exact, policy-ordered &gt; is deterministic over repeated runs" time="0.003946574">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; is stable and independent of fact key order" time="0.000258293">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when tenant changes" time="0.000200806">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when application changes" time="0.000159726">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when policy content changes" time="0.000073465">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when rule content changes" time="0.000062127">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when facts changes" time="0.000052718">
+        </testcase>
+        <testcase classname="test/unit/calculate.test.ts" name="calculationHash &gt; changes when pins changes" time="0.00005173">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/charset.test.ts" timestamp="2026-10-12T12:27:29.198Z" hostname="cursor" tests="34" failures="0" errors="0" skipped="0" time="0.004772443">
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 0  /^[A-Z0-9_.-]{1,64}$/" time="0.001087711">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 1  /^[A-Z0-9_.-]{1,64}$/" time="0.000217194">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 2  /^[A-Z0-9_.-]{1,64}$/" time="0.000097558">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 3  /^[A-Z0-9_.-]{1,64}$/" time="0.000184269">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 4  /^[A-Z0-9_.-]{1,64}$/" time="0.000108382">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 5  /^[A-Z0-9_.-]{1,64}$/" time="0.000164489">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 6  /^[A-Z0-9_.-]{1,64}$/" time="0.000127317">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 7  /^[A-Z0-9_.-]{1,64}$/" time="0.000087503">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 8  /^[A-Z0-9_.-]{1,64}$/" time="0.000392834">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isLineCode case 9  /^[A-Z0-9_.-]{1,64}$/" time="0.000127623">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 0  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000171867">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 1  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.00006677">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 2  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000036899">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 3  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000035589">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 4  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000028845">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 5  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000057293">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 6  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000032306">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 7  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000027073">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 8  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000028685">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isRuleOutputKey case 9  /^[A-Za-z][A-Za-z0-9_.]{0,63}$/" time="0.000029292">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 0  /^[A-Z]{3}$/" time="0.000053014">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 1  /^[A-Z]{3}$/" time="0.000028909">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 2  /^[A-Z]{3}$/" time="0.000025117">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 3  /^[A-Z]{3}$/" time="0.000025171">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 4  /^[A-Z]{3}$/" time="0.000026381">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 5  /^[A-Z]{3}$/" time="0.000025246">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isCurrencyCode case 6  /^[A-Z]{3}$/" time="0.00002633">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 0  /^sha256:[0-9a-f]{64}$/" time="0.000057322">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 1  /^sha256:[0-9a-f]{64}$/" time="0.000029043">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 2  /^sha256:[0-9a-f]{64}$/" time="0.000024922">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 3  /^sha256:[0-9a-f]{64}$/" time="0.000024868">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 4  /^sha256:[0-9a-f]{64}$/" time="0.000028128">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 5  /^sha256:[0-9a-f]{64}$/" time="0.000025151">
+        </testcase>
+        <testcase classname="test/unit/charset.test.ts" name="linear charset checks match their documented patterns &gt; isSha256Prefixed case 6  /^sha256:[0-9a-f]{64}$/" time="0.000033264">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/money.test.ts" timestamp="2026-10-12T12:27:29.200Z" hostname="cursor" tests="23" failures="0" errors="0" skipped="0" time="0.006308055">
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; accepts non-negative safe integers and canonical integer strings" time="0.001268038">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses fraction instead of coercing" time="0.000207279">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses tiny fraction instead of coercing" time="0.000122149">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses negative instead of coercing" time="0.000156064">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses negative zero instead of coercing" time="0.000084423">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses NaN instead of coercing" time="0.000100433">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses Infinity instead of coercing" time="0.000095174">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses unsafe integer instead of coercing" time="0.000067215">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses decimal string instead of coercing" time="0.000314572">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses exponent string instead of coercing" time="0.000112475">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses leading zero instead of coercing" time="0.000110219">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses signed string instead of coercing" time="0.000044338">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses negative string instead of coercing" time="0.00003508">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses whitespace instead of coercing" time="0.000048498">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses too large string instead of coercing" time="0.000033079">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses negative bigint instead of coercing" time="0.000060681">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses oversized bigint instead of coercing" time="0.000034256">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses boolean instead of coercing" time="0.000029104">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses null instead of coercing" time="0.000027179">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; refuses object instead of coercing" time="0.000027004">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; sums exactly beyond float precision and range-checks at the contract boundary" time="0.000741352">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; production source never uses floating-point money operations" time="0.000834982">
+        </testcase>
+        <testcase classname="test/unit/money.test.ts" name="exact money (integer minor units) &gt; production source carries no currency literal or fee table" time="0.000517741">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/pg-repo.test.ts" timestamp="2026-10-12T12:27:29.201Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.014408872">
+        <testcase classname="test/unit/pg-repo.test.ts" name="unbound ports fail closed &gt; pins" time="0.001196841">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="unbound ports fail closed &gt; policy" time="0.000316191">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="unbound ports fail closed &gt; rules" time="0.00016923">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository transaction envelope &gt; sets tenant session context locally, commits and releases" time="0.001410179">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository transaction envelope &gt; rolls back on error, keeps the original error, and releases" time="0.001161047">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository transaction envelope &gt; refuses nested transactions and missing tenant" time="0.001515879">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository statements &gt; maps quote and line rows exactly, including bigint amounts" time="0.001275384">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository statements &gt; returns undefined when no row matches" time="0.000355257">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository statements &gt; writes amounts as decimal strings and reports dedupe conflicts" time="0.000728945">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository statements &gt; idempotency: claim, replay, conflict, in-progress and complete" time="0.004519531">
+        </testcase>
+        <testcase classname="test/unit/pg-repo.test.ts" name="PgFeeRepository statements &gt; outbox partition keys: aggregate id for domain events, audit id for audit events" time="0.000484504">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-12T12:27:29.202Z" hostname="cursor" tests="86" failures="0" errors="0" skipped="0" time="0.052744935">
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; issues a quote from the pinned published fee policy (metadata only)" time="0.005614382">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; takes rule-line amounts from the pinned CMP-008 rule version and passes waiver ref through" time="0.001403212">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; replays the same key without re-invoking ports or duplicating effects" time="0.001001268">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; refuses the same key with a different body (SF-APP-002)" time="0.00102174">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; identical governed inputs under a new key return the same immutable quote" time="0.001119827">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; changed rule facts produce a new quote; facts are ignored when no rule line exists" time="0.003248079">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="POST /v1/fee-quotes: deterministic quote from governed pins &gt; emits exactly one FeeQuoteIssued and one audit event without rule facts" time="0.001244946">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key amount" time="0.000506448">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key amount_minor" time="0.00056429">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key total" time="0.000246359">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key total_amount" time="0.000215006">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key total_amount_minor" time="0.000158265">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key line_items" time="0.000129339">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key lines" time="0.000127901">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key currency" time="0.000189314">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key amount_source" time="0.000185355">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key client_authoritative_amount" time="0.000148705">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key calculation_basis" time="0.000122125">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key waiver" time="0.000109249">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key waiver_policy_ref" time="0.000097911">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key exemption" time="0.000098039">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key fee_policy_version_id" time="0.000096107">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key rule_version_id" time="0.000104774">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key tenant_service_binding_id" time="0.000098844">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses body key tenant_id" time="0.000095074">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key fee_amount" time="0.000702045">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key total_due" time="0.000201109">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key waiver_flag" time="0.000152691">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key is_exempt" time="0.000160876">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key discount_pct" time="0.000129768">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key charge" time="0.000152225">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses outcome-like fact key price_band" time="0.000136227">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses unknown field" time="0.000211824">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses missing application" time="0.000139653">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses bad application id" time="0.002543469">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses array facts" time="0.000274149">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses bad fact key" time="0.000161791">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses non-finite fact" time="0.000119674">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses deep fact" time="0.000188343">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses too many facts" time="0.000136286">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses oversized facts" time="0.000202231">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses client time" time="0.000160145">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="client authority is refused &gt; refuses non-object body" time="0.000153198">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; no fee policy pinned on the application: no default amount is invented" time="0.000336223">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; unknown application" time="0.000254509">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; pins port returns a different application" time="0.000346588">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; malformed pins" time="0.000370481">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; pinned version not found" time="0.0002987">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; pinned version is a draft" time="0.000390304">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; policy declares a rule version other than the application pin" time="0.000520547">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; rules evaluated against an unpinned version" time="0.000577902">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; fractional rule output" time="0.000544907">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; missing rule output" time="0.000498475">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; rules engine produced no output" time="0.000523258">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; pins port outage maps to SF-SYS-004" time="0.000485335">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; policy port outage maps to SF-SYS-004" time="0.000385587">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; rules port outage maps to SF-SYS-004" time="0.000429468">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; unbound ports fail closed; there is no default fee" time="0.000458695">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="governed pin failures fail closed with no persistence &gt; a repository is required" time="0.000556157">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; OPA deny stops before any port call or write" time="0.000452099">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; PDP outage fails closed" time="0.000439033">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; sends tenant-scoped authorization input with the application resource" time="0.000598671">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; refuses actor types outside citizen/officer/system" time="0.000356032">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; officer and system actors may request quotes" time="0.003279425">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; wrong tenant cannot read, list, or quote another tenant&apos;s application" time="0.00262987">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; a fee policy owned by another tenant is a cross-tenant denial" time="0.000521728">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; refuses tenant/role-identifying header x-tenant-id" time="0.000274586">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; refuses tenant/role-identifying header x-sf-tenant" time="0.000191588">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; refuses tenant/role-identifying header forwarded" time="0.000245033">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; refuses tenant/role-identifying header x-roles" time="0.000208089">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; missing context is refused" time="0.000241086">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; null tenant is refused" time="0.00056679">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization and tenant isolation &gt; bad actor id is refused" time="0.000203496">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="transaction boundary and atomicity &gt; a failure inside the transaction leaves no quote, outbox or idempotency row; retry succeeds" time="0.000911639">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="transaction boundary and atomicity &gt; never calls an external port while a transaction is open" time="0.000766392">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="transaction boundary and atomicity &gt; refuses to start work from inside an open transaction" time="0.000335593">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; reads a quote and lists quotes for the application" time="0.001768212">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; unknown quote" time="0.000270521">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; bad quote id" time="0.00015323">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; body on GET" time="0.000132375">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; unknown route" time="0.000124066">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; wrong method" time="0.00011905">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; missing idempotency key" time="0.000114748">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; malformed idempotency key" time="0.000135244">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; refuses client-supplied time in the query string" time="0.000275032">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="read routes and request hygiene &gt; maps database errors without leaking detail" time="0.000797607">
+        </testcase>
+    </testsuite>
+</testsuites>
