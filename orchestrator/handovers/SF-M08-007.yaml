@@ -1,11 +1,13 @@
-# M08 PLANNING envelope — API host composition
-# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED.
+# M08 CANDIDATE — API host composition mounts (LOCK-7)
+# HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION consumed. Host after STITCH-B (#135) on main.
+# Hard serial vs SF-M06-005 (M06 host already merged; M06 mounts preserved).
+# READY → CANDIDATE. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M08-007
 title: API host M08 composition mounts
 module_id: M08
 concurrency_group: CG-02
-component_ids: []
+component_ids: [CMP-035, CMP-007, CMP-045, CMP-046, CMP-049, CMP-006]
 integration_ids: [INT-011]
 requirement_ids:
   - Constitution-single-host
@@ -16,7 +18,7 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M08-host-SF-M08-007
+branch: cursor/m08-007-host-91f2
 worktree: ../wt-SF-M08-007
 parallel_group: M08-HOST
 privilege_role: sf_api_host_rw
@@ -24,19 +26,21 @@ schema: null
 hard_serial_locks: [LOCK-7]
 must_not_run_concurrent_with: [SF-M06-005]
 depends_on:
-  - SF-M08-STITCH-B on origin/main
+  - SF-M08-STITCH-B on origin/main (merge #135 tip 6cc3eb473abc885e3f7eefc99deb90da37f6db00)
   - 19 FROZEN contracts MATCH
-  - later human READY promotion authorization (NOT granted)
+  - HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION
 allowed_write_paths:
   - apps/api/src/composition/m08.ts
   - apps/api/src/app.ts
   - apps/api/test/**/m08*
+  - apps/api/test/composition-m08.test.ts
   - evidence/SF-M08-007/**
   - orchestrator/handovers/SF-M08-007.yaml
 allowed_write_notes:
-  - Additive composition module only; preserve M01–M05 mounts
+  - Additive composition module only; preserve M01–M06 mounts
   - Serialized single-writer window vs SF-M06-005
   - Do not commit pnpm-lock.yaml
+  - No retention periods invented at host (CMP-049 binds period references only)
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
@@ -46,12 +50,16 @@ wave_eligible_now: false
 serial_after:
   - SF-M08-STITCH-B
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+builders_dispatched_this_envelope: true
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+readiness: READY
+execution_authorized: true
+execution_base: 6cc3eb473abc885e3f7eefc99deb90da37f6db00
+authorization_source: HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION
 self_certified: false
 not_certified: true
 certified: false
@@ -63,9 +71,16 @@ frozen_contracts_altered: false
 cg_02_contract_freeze_required: true
 freeze_authorized: false
 base_commit:
-  prefix: 88690846
-  suffix: 021a2ce082b8a7c7f35c12603effd5d9
-join_separator: "_"
+  sha: 6cc3eb473abc885e3f7eefc99deb90da37f6db00
+mounts:
+  - CMP-035
+  - CMP-007
+  - CMP-045
+  - CMP-046
+  - CMP-049
+  - CMP-006
+not_mounted:
+  - CMP-036 (already on host)
 contract_locks:
   - SF-CON-COMMON
   - SF-CON-REQUEST-CONTEXT
@@ -89,11 +104,15 @@ contract_locks:
 stop_conditions:
   - concurrent execution with SF-M06-005
   - remove or break prior module mounts
-  - builder dispatch without READY auth / dispatch record
   - CERTIFIED or RELEASE CERTIFIED or G6 claim
-  - freeze contracts in the planning PR
+  - invent retention periods at host
+  - commit pnpm-lock.yaml
 
-acceptance_tests_planning:
+acceptance_tests:
   - composition/m08.ts mounts only M08 plugins
   - app.ts change is mount-call only and reviewable
-  - never scheduled concurrent with SF-M06-005
+  - CMP-036 registered exactly once
+  - never scheduled concurrent with SF-M06-005; M06 mounts coexist
+  - forged X-Tenant-ID → SF-TEN-002; CROSS_TENANT_LEAKAGE=0
+  - CERTIFIED/G3/G6 remain false
+evidence: evidence/SF-M08-007/EVIDENCE.md
