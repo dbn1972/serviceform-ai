@@ -1,0 +1,27 @@
+{
+  "task_id": "SF-M08-STITCH-B",
+  "execution_base": "2df9353113b7541d0b9fab81096a4b079c1d2739",
+  "branch": "cursor/m08-stitch-b-91f2",
+  "authorization_source": "HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION",
+  "agent_role": "integration_agent",
+  "model_release": "claude-opus-5-5",
+  "state": "STITCHED_CANDIDATE",
+  "lockfile_importers_admitted": ["services/cmp-006-service-discovery"],
+  "lockfile_diff_numstat": "+2/-0",
+  "lockfile_sha256_after": "2bab20a44b894a578a80703457317f02232ebfc474e381440315f459a97c38ad",
+  "certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "ccr_required": false,
+  "product_logic_patched": false,
+  "statutory_periods_invented": false,
+  "checks": {
+    "frozen_install": "PASS_NO_LOCK_MUTATION",
+    "base_frozen_install": "EXIT_0_BUT_MUTATES_LOCK",
+    "gates_run_all": "PASS_10_10",
+    "check_scope": "PASS",
+    "cmp006_typecheck": "PASS",
+    "cmp006_unit": "PASS_51"
+  }
+}
