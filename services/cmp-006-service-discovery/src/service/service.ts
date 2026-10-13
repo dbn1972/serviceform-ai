@@ -305,8 +305,7 @@ export class ServiceDiscoveryService {
 
     const resolutions = await this.external(
       'JURISDICTION',
-      () =>
-        this.deps.jurisdictions.resolve({ tenantId, codes: input.filters.jurisdiction_codes }),
+      () => this.deps.jurisdictions.resolve({ tenantId, codes: input.filters.jurisdiction_codes }),
       validResolutions,
     );
     const applicable = applicableJurisdictions(input.filters.jurisdiction_codes, resolutions);
@@ -540,7 +539,8 @@ export class ServiceDiscoveryService {
             catalogueVersionId: result.catalogue_version_id,
           }),
         (v): v is Awaited<ReturnType<CataloguePort['getVersion']>> =>
-          v === null || (typeof v === 'object' && typeof (v as { status?: unknown }).status === 'string'),
+          v === null ||
+          (typeof v === 'object' && typeof (v as { status?: unknown }).status === 'string'),
       );
       assertPublishedPin(ctx.tenant_id, result.catalogue_version_id, pin);
       return await this.command(ctx, idem, async (tx, now) => {

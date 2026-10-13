@@ -79,16 +79,18 @@ describe('SF-CON-DISCOVERY-QUERY envelope builder', () => {
     expect(isDiscoveryQuery({ ...ok, pagination: { limit: 0, offset: 0 } })).toBe(false);
     expect(isDiscoveryQuery({ ...ok, pagination: { limit: 101, offset: 0 } })).toBe(false);
     expect(isDiscoveryQuery({ ...ok, tenant_id: 'not-a-uuid' })).toBe(false);
-    expect(
-      isDiscoveryQuery({ ...ok, result_is_non_statutory: false as unknown as true }),
-    ).toBe(false);
+    expect(isDiscoveryQuery({ ...ok, result_is_non_statutory: false as unknown as true })).toBe(
+      false,
+    );
   });
 
   it('code / keyword / locale checks', () => {
     for (const c of ['JUR-P', 'SVC_SYNTHETIC_01', 'a.b:c-d', 'X']) expect(isCode(c), c).toBe(true);
-    for (const c of ['', '-x', 'a b', 'x'.repeat(65), 'a/b', 7]) expect(isCode(c), String(c)).toBe(false);
+    for (const c of ['', '-x', 'a b', 'x'.repeat(65), 'a/b', 7])
+      expect(isCode(c), String(c)).toBe(false);
     expect(isKeyword('certificate')).toBe(true);
-    for (const k of ['', ' lead', 'trail ', 'a\nb', 'x'.repeat(129)]) expect(isKeyword(k)).toBe(false);
+    for (const k of ['', ' lead', 'trail ', 'a\nb', 'x'.repeat(129)])
+      expect(isKeyword(k)).toBe(false);
     for (const l of ['en', 'en-IN', 'hi', 'or-Latn-IN']) expect(isLocale(l), l).toBe(true);
     for (const l of ['E', 'EN', 'en_IN', 'en-', 'toolonglang']) expect(isLocale(l), l).toBe(false);
   });
@@ -268,7 +270,10 @@ describe('request validation', () => {
       code: 'SF-TEN-002',
     });
     for (const key of ['query_id', 'correlation_id']) {
-      expect(errOf(() => validateDiscoveryQuery(queryBody({ [key]: SVC_1 }))), key).toMatchObject({
+      expect(
+        errOf(() => validateDiscoveryQuery(queryBody({ [key]: SVC_1 }))),
+        key,
+      ).toMatchObject({
         code: 'SF-SYS-003',
         detail: 'SERVER_OWNED_FIELD',
       });
@@ -295,7 +300,14 @@ describe('request validation', () => {
       [{ filters: { jurisdiction_codes: [JUR_CHILD], extra: 1 } }, 'UNKNOWN_FIELD'],
       [{ filters: { jurisdiction_codes: [JUR_CHILD], keywords: ['a\u0000b'] } }, 'KEYWORD_INVALID'],
       [
-        { filters: { jurisdiction_codes: [JUR_CHILD], keywords: Array(9).fill('k').map((k, i) => k + i) } },
+        {
+          filters: {
+            jurisdiction_codes: [JUR_CHILD],
+            keywords: Array(9)
+              .fill('k')
+              .map((k, i) => k + i),
+          },
+        },
         'TOO_MANY_ITEMS',
       ],
       [{ catalogue_version_id: 'v1' }, 'UUID_REQUIRED'],
@@ -310,7 +322,10 @@ describe('request validation', () => {
       [{ surprise: true }, 'UNKNOWN_FIELD'],
     ];
     for (const [over, code] of cases) {
-      expect(errOf(() => validateDiscoveryQuery(queryBody(over))), code).toMatchObject({
+      expect(
+        errOf(() => validateDiscoveryQuery(queryBody(over))),
+        code,
+      ).toMatchObject({
         code: 'SF-SYS-003',
         detail: code,
       });
@@ -326,8 +341,8 @@ describe('request validation', () => {
     expect(errOf(() => validateSelection({ service_id: SVC_1, actor_id: SVC_2 }))).toMatchObject({
       detail: 'SERVER_OWNED_FIELD',
     });
-    expect(errOf(() => validateSelection({ service_id: SVC_1, tenant_id: TENANT_A }))).toMatchObject(
-      { code: 'SF-TEN-002' },
-    );
+    expect(
+      errOf(() => validateSelection({ service_id: SVC_1, tenant_id: TENANT_A })),
+    ).toMatchObject({ code: 'SF-TEN-002' });
   });
 });

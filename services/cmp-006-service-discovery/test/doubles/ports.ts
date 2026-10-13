@@ -59,10 +59,34 @@ function entry(
 /** Synthetic catalogue: SVC_1 at parent level, SVC_2 only in JUR-Q, SVC_3 in the child district. */
 export function syntheticServices(): IndexedService[] {
   return [
-    entry(TENANT_A, CATALOGUE_A, SVC_1, 'SVC_SYNTHETIC_01', BIND_1, [JUR_PARENT], 'alpha certificate'),
+    entry(
+      TENANT_A,
+      CATALOGUE_A,
+      SVC_1,
+      'SVC_SYNTHETIC_01',
+      BIND_1,
+      [JUR_PARENT],
+      'alpha certificate',
+    ),
     entry(TENANT_A, CATALOGUE_A, SVC_2, 'SVC_SYNTHETIC_02', BIND_2, [JUR_OTHER], 'beta licence'),
-    entry(TENANT_A, CATALOGUE_A, SVC_3, 'SVC_SYNTHETIC_03', BIND_3, [JUR_CHILD], 'gamma certificate'),
-    entry(TENANT_B, CATALOGUE_B, SVC_B1, 'SVC_SYNTHETIC_B1', BIND_B1, [JUR_PARENT], 'alpha certificate'),
+    entry(
+      TENANT_A,
+      CATALOGUE_A,
+      SVC_3,
+      'SVC_SYNTHETIC_03',
+      BIND_3,
+      [JUR_CHILD],
+      'gamma certificate',
+    ),
+    entry(
+      TENANT_B,
+      CATALOGUE_B,
+      SVC_B1,
+      'SVC_SYNTHETIC_B1',
+      BIND_B1,
+      [JUR_PARENT],
+      'alpha certificate',
+    ),
   ];
 }
 
@@ -171,6 +195,8 @@ export class FakeLocalization implements LocalizationPort {
   }): Promise<Record<string, string>> {
     this.calls.push(structuredClone(input));
     if (this.fail) return Promise.reject(new Error('l10n down'));
-    return Promise.resolve(Object.fromEntries(input.keys.map((k) => [k, `[${input.locale}] ${k}`])));
+    return Promise.resolve(
+      Object.fromEntries(input.keys.map((k) => [k, `[${input.locale}] ${k}`])),
+    );
   }
 }

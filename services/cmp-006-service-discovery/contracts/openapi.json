@@ -13,14 +13,18 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": { "schema": { "$ref": "#/components/schemas/DiscoveryQueryRequest" } }
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DiscoveryQueryRequest" }
+            }
           }
         },
         "responses": {
           "200": {
             "description": "Discovery results",
             "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/DiscoveryQueryResponse" } }
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DiscoveryQueryResponse" }
+              }
             }
           },
           "400": { "$ref": "#/components/responses/Error" },

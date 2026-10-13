@@ -151,7 +151,9 @@ class MemoryTx implements DiscoveryTx {
     if (!q || q.actor_type !== 'CITIZEN' || q.actor_id !== row.actor_id || !r) {
       throw new Cmp006Error('SF-SYS-002');
     }
-    if (this.s.selections.some((x) => x.query_id === row.query_id && x.service_id === row.service_id)) {
+    if (
+      this.s.selections.some((x) => x.query_id === row.query_id && x.service_id === row.service_id)
+    ) {
       throw new Cmp006Error('SF-APP-002');
     }
     this.s.selections.push(structuredClone(row));

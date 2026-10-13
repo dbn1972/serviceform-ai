@@ -139,7 +139,11 @@ describe('discovery query (jurisdiction-aware, catalogue pinned)', () => {
       queryBody({ catalogue_version_id: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee' }),
     );
     expect(unknown.status).toBe(404);
-    const jur = await h.call('POST', Q, queryBody({ filters: { jurisdiction_codes: ['JUR-NONE'] } }));
+    const jur = await h.call(
+      'POST',
+      Q,
+      queryBody({ filters: { jurisdiction_codes: ['JUR-NONE'] } }),
+    );
     expect(jur.status).toBe(400);
     expect((jur.body as Body)['details'][0]['code']).toBe('JURISDICTION_CODE_UNKNOWN');
     expect(h.search.calls).toHaveLength(0);
@@ -227,12 +231,17 @@ describe('tenant isolation (INT-011)', () => {
     ]) {
       const h = makeHarness();
       arrange(h);
-      const body = h.catalogue.leakVersion ? queryBody({ catalogue_version_id: CATALOGUE_B }) : queryBody();
+      const body = h.catalogue.leakVersion
+        ? queryBody({ catalogue_version_id: CATALOGUE_B })
+        : queryBody();
       const res = await h.call('POST', Q, body);
       expect(res.status).toBe(403);
       expect((res.body as Body)['details']).toEqual([{ code: 'CROSS_TENANT_RESULT_BLOCKED' }]);
       expect(store(h).queries.size).toBe(0);
-      expect(audits(h)[0]).toMatchObject({ result: 'FAILED', reason: 'CROSS_TENANT_RESULT_BLOCKED' });
+      expect(audits(h)[0]).toMatchObject({
+        result: 'FAILED',
+        reason: 'CROSS_TENANT_RESULT_BLOCKED',
+      });
     }
   });
 
@@ -240,7 +249,9 @@ describe('tenant isolation (INT-011)', () => {
     const h = makeHarness();
     const hdr = await h.call('POST', Q, queryBody(), { headers: { 'X-Tenant-Id': TENANT_B } });
     expect(hdr.status).toBe(403);
-    const fwd = await h.call('POST', Q, queryBody(), { headers: { forwarded: `tenant=${TENANT_B}` } });
+    const fwd = await h.call('POST', Q, queryBody(), {
+      headers: { forwarded: `tenant=${TENANT_B}` },
+    });
     expect(fwd.status).toBe(403);
     const body = await h.call('POST', Q, queryBody({ tenant_id: TENANT_B }));
     expect(body.status).toBe(403);
@@ -296,7 +307,9 @@ describe('authorization (OPA PEP, fail closed)', () => {
 describe('stored query read', () => {
   it('owner and staff can read; another citizen cannot; keywords are not returned', async () => {
     const h = makeHarness();
-    const a = await runQuery(h, { filters: { jurisdiction_codes: [JUR_CHILD], keywords: ['alpha'] } });
+    const a = await runQuery(h, {
+      filters: { jurisdiction_codes: [JUR_CHILD], keywords: ['alpha'] },
+    });
     const id = a['query']['query_id'] as string;
     const own = await h.call('GET', `${Q}/${id}`);
     expect(own.status).toBe(200);
@@ -324,7 +337,12 @@ describe('INT-003 hand-off: non-mutating until the citizen acts', () => {
     const h = makeHarness();
     const a = await runQuery(h);
     const id = a['query']['query_id'] as string;
-    const res = await h.call('POST', `${Q}/${id}/selections`, { service_id: SVC_1 }, { key: 'sel-key-0001' });
+    const res = await h.call(
+      'POST',
+      `${Q}/${id}/selections`,
+      { service_id: SVC_1 },
+      { key: 'sel-key-0001' },
+    );
     expect(res.status).toBe(201);
     expect(res.body).toMatchObject({
       query_id: id,
@@ -342,11 +360,26 @@ describe('INT-003 hand-off: non-mutating until the citizen acts', () => {
     });
     expect(ev?.envelope.actor).toEqual({ type: 'CITIZEN', id: CITIZEN_1 });
 
-    const replay = await h.call('POST', `${Q}/${id}/selections`, { service_id: SVC_1 }, { key: 'sel-key-0001' });
+    const replay = await h.call(
+      'POST',
+      `${Q}/${id}/selections`,
+      { service_id: SVC_1 },
+      { key: 'sel-key-0001' },
+    );
     expect(replay).toEqual(res);
-    const conflict = await h.call('POST', `${Q}/${id}/selections`, { service_id: SVC_3 }, { key: 'sel-key-0001' });
+    const conflict = await h.call(
+      'POST',
+      `${Q}/${id}/selections`,
+      { service_id: SVC_3 },
+      { key: 'sel-key-0001' },
+    );
     expect(conflict.status).toBe(409);
-    const dup = await h.call('POST', `${Q}/${id}/selections`, { service_id: SVC_1 }, { key: 'sel-key-0002' });
+    const dup = await h.call(
+      'POST',
+      `${Q}/${id}/selections`,
+      { service_id: SVC_1 },
+      { key: 'sel-key-0002' },
+    );
     expect(dup.status).toBe(409);
     expect((dup.body as Body)['error_code']).toBe('SF-APP-002');
     expect(store(h).selections).toHaveLength(1);
@@ -356,7 +389,9 @@ describe('INT-003 hand-off: non-mutating until the citizen acts', () => {
   it('a service that was not in the results cannot be selected (audited)', async () => {
     const h = makeHarness();
     const a = await runQuery(h);
-    const res = await h.call('POST', `${Q}/${a['query']['query_id']}/selections`, { service_id: SVC_2 });
+    const res = await h.call('POST', `${Q}/${a['query']['query_id']}/selections`, {
+      service_id: SVC_2,
+    });
     expect(res.status).toBe(409);
     expect((res.body as Body)['details']).toEqual([{ code: 'SERVICE_NOT_IN_RESULTS' }]);
     expect(audits(h).at(-1)).toMatchObject({
