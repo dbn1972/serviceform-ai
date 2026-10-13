@@ -1,0 +1,907 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-049 Data Retention / Archival",
+    "version": "0.1.0",
+    "description": "POLICY-NEUTRAL retention eligibility machinery (SF-CON-RETENTION-POLICY). Tenant from the server-derived request context only. No route accepts a retention period value, archives, purges or deletes data. ARCHIVE_ELIGIBLE/DELETE_ELIGIBLE fail closed (409 SF-APP-001 detail POLICY_INPUT_REQUIRED) until an owner binds owner_supplied_period_ref. Every route is a PEP call on OPA. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/retention/policies": {
+      "post": {
+        "operationId": "registerRetentionPolicy",
+        "description": "PRIVILEGED_ADMIN/SYSTEM. Action RETENTION_POLICY_REGISTER.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPolicyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/policies/{policy_id}": {
+      "get": {
+        "operationId": "getRetentionPolicy",
+        "description": "Action RETENTION_POLICY_READ.",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/policies/{policy_id}/period-ref": {
+      "post": {
+        "operationId": "bindRetentionPeriodRef",
+        "description": "PRIVILEGED_ADMIN/SYSTEM. One-time binding of the owner-supplied opaque period reference. Action RETENTION_POLICY_BIND_PERIOD_REF.",
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BindPeriodRefRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/subjects": {
+      "post": {
+        "operationId": "enrollRetentionSubject",
+        "description": "Enrols an opaque resource reference ACTIVE under a policy. Action RETENTION_SUBJECT_ENROLL.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollSubjectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Enrolled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/subjects/{subject_id}": {
+      "get": {
+        "operationId": "getRetentionSubject",
+        "description": "Action RETENTION_SUBJECT_READ.",
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subject",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/subjects/{subject_id}/evaluation": {
+      "get": {
+        "operationId": "evaluateRetentionSubject",
+        "description": "Deterministic preview of every candidate transition. Action RETENTION_SUBJECT_EVALUATE.",
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/retention/subjects/{subject_id}/transitions": {
+      "post": {
+        "operationId": "transitionRetentionSubject",
+        "description": "Action RETENTION_TRANSITION_<TO>; leaving LEGAL_HOLD also needs RETENTION_LEGAL_HOLD_RELEASE.",
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transitioned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubjectView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "$ref": "https://contracts.serviceform.ai/error-response/v1"
+      },
+      "Transition": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from_eligibility", "to_eligibility"],
+        "properties": {
+          "from_eligibility": {
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          },
+          "to_eligibility": {
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          }
+        }
+      },
+      "Scope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resource_type"],
+        "properties": {
+          "resource_type": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Za-z0-9]{1,63}$"
+          },
+          "service_code": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+          },
+          "jurisdiction_code": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$"
+          }
+        }
+      },
+      "RegisterPolicyRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scope", "eligibility_transitions"],
+        "properties": {
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "owner_supplied_period_ref": {
+            "type": ["string", "null"],
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$",
+            "description": "Opaque owner reference; duration-like values are refused."
+          },
+          "eligibility_transitions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "$ref": "#/components/schemas/Transition"
+            }
+          },
+          "policy_neutral_shape": {
+            "const": true
+          },
+          "statutory_retention_policy_input_required": {
+            "const": true
+          },
+          "invented_statutory_period_forbidden": {
+            "const": true
+          }
+        }
+      },
+      "BindPeriodRefRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["owner_supplied_period_ref"],
+        "properties": {
+          "owner_supplied_period_ref": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+          }
+        }
+      },
+      "EnrollSubjectRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["policy_id", "resource_type", "resource_id"],
+        "properties": {
+          "policy_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "resource_type": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Za-z0-9]{1,63}$"
+          },
+          "resource_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "TransitionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["to_eligibility", "expected_version"],
+        "properties": {
+          "to_eligibility": {
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason_code": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+          }
+        }
+      },
+      "PolicyView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "policy",
+          "policy_version",
+          "owner_period_ref_bound",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "policy": {
+            "$ref": "https://contracts.serviceform.ai/m08/retention-policy/v1"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "owner_period_ref_bound": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SubjectView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subject_id",
+          "policy_id",
+          "resource_type",
+          "resource_id",
+          "eligibility",
+          "subject_version",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "resource_type": {
+            "type": "string"
+          },
+          "resource_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eligibility": {
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          },
+          "subject_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Evaluation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "subject_id",
+          "eligibility",
+          "subject_version",
+          "policy_id",
+          "policy_version",
+          "owner_period_ref_bound",
+          "statutory_retention_policy_input_required",
+          "candidates"
+        ],
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eligibility": {
+            "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+          },
+          "subject_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "policy_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "policy_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "owner_period_ref_bound": {
+            "type": "boolean"
+          },
+          "statutory_retention_policy_input_required": {
+            "const": true
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["to_eligibility", "allowed", "blocking_reason"],
+              "properties": {
+                "to_eligibility": {
+                  "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+                },
+                "allowed": {
+                  "type": "boolean"
+                },
+                "blocking_reason": {
+                  "enum": ["SAME_STATE", "TRANSITION_NOT_IN_POLICY", "POLICY_INPUT_REQUIRED", null]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retention policy event data (RetentionPolicyRegistered, RetentionPolicyPeriodRefBound)",
+  "description": "Policy-neutral. Carries an opaque owner period reference only; never a period value.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policy_id",
+    "policy_version",
+    "resource_type",
+    "owner_supplied_period_ref",
+    "owner_period_ref_bound",
+    "transition_count",
+    "statutory_retention_policy_input_required",
+    "invented_statutory_period_forbidden"
+  ],
+  "properties": {
+    "policy_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "policy_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "resource_type": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]{1,63}$"
+    },
+    "owner_supplied_period_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "owner_period_ref_bound": {
+      "type": "boolean"
+    },
+    "transition_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "statutory_retention_policy_input_required": {
+      "const": true
+    },
+    "invented_statutory_period_forbidden": {
+      "const": true
+    }
+  }
+}
