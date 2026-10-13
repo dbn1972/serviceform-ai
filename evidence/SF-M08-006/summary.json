@@ -1,0 +1,64 @@
+{
+  "task_id": "SF-M08-006",
+  "component_ids": [
+    "CMP-006"
+  ],
+  "integration_ids": [
+    "INT-003",
+    "INT-011"
+  ],
+  "contract": "SF-CON-DISCOVERY-QUERY",
+  "branch": "cursor/m08-006-discovery-91f2",
+  "execution_base": "6ef081cce49aad78f2af9138de443334588fa45f",
+  "implementation_commit": "93b0ae0e244d794ab1801b8cd649b7075d786e26",
+  "authorization": "HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "schema": "sf_discovery",
+  "privilege_role": "sf_cmp006_rw",
+  "result_is_non_statutory": true,
+  "int_003_non_mutating_until_citizen_acts": true,
+  "raw_keywords_persisted": false,
+  "invented_statutory_period_forbidden": true,
+  "retention_period_defined": false,
+  "results": {
+    "typecheck": {
+      "exit": 0
+    },
+    "eslint": {
+      "exit": 0
+    },
+    "prettier": {
+      "exit": 0
+    },
+    "unit_contract": {
+      "passed": 51,
+      "failed": 0
+    },
+    "integration_postgres16": {
+      "passed": 14,
+      "failed": 0,
+      "postgres": "16.15"
+    },
+    "repo_gates": {
+      "passed": 10,
+      "failed": 0
+    },
+    "write_scope": {
+      "result": "PASS",
+      "files": 57,
+      "log": "logs/scope.log"
+    }
+  },
+  "lockfile_modified": false,
+  "apps_modified": false,
+  "contracts_modified": false,
+  "frozen_contracts_altered": false,
+  "host_mount": "deferred to SF-M08-007",
+  "certified": false,
+  "release_certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_gate_status": "none (builder candidate)"
+}

@@ -1,0 +1,35 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-006 Service Discovery Events",
+    "version": "0.1.0",
+    "description": "Discovery events. Codes, pins and counts only: no raw keyword text, no PII, no statutory decision. DiscoveryServiceSelected is the INT-003 hand-off; the draft owner creates any draft, CMP-006 never does."
+  },
+  "channels": {
+    "sf.discovery.events.v1": {
+      "address": "sf.discovery.events.v1",
+      "messages": {
+        "DiscoveryQueryExecuted": { "$ref": "#/components/messages/DiscoveryQueryExecuted" },
+        "DiscoveryServiceSelected": { "$ref": "#/components/messages/DiscoveryServiceSelected" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "DiscoveryQueryExecuted": {
+        "name": "DiscoveryQueryExecuted",
+        "payload": { "$ref": "./events/discovery-query-event.data.schema.json" }
+      },
+      "DiscoveryServiceSelected": {
+        "name": "DiscoveryServiceSelected",
+        "payload": { "$ref": "./events/discovery-selection-event.data.schema.json" }
+      }
+    }
+  }
+}

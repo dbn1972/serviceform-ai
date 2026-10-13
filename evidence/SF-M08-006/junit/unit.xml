@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="51" failures="0" errors="0" time="0.122518016">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-13T12:15:23.748Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.087150185">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-DISCOVERY-QUERY &gt; the frozen schema still pins the non-statutory marker and required pagination" time="0.001700351">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-DISCOVERY-QUERY &gt; frozen valid example passes and invalid example fails (harness sanity)" time="0.000863366">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-DISCOVERY-QUERY &gt; every query envelope CMP-006 returns validates against the frozen schema" time="0.006567083">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-DISCOVERY-QUERY &gt; component limits are inside the frozen bounds" time="0.000468908">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-006 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.02487618">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-006 &gt; PEP inputs and the request context validate against the frozen schemas" time="0.018023888">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-006 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.000880887">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-006 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000549346">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-006 component contracts &gt; OpenAPI response schemas accept what the handler returns" time="0.02880295">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-006 component contracts &gt; isolation.json declares exactly the tables the migrations create, all FORCE RLS or justified" time="0.000465447">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-006 component contracts &gt; outbox migration is the SF-CON-OUTBOX template with only the documented substitutions" time="0.000177225">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no peer component imports and no SQL outside sf_discovery (ports only)" time="0.000710398">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no named service, tenant or jurisdiction and no statutory decision vocabulary in source" time="0.000489139">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no invented retention period anywhere in CMP-006 code or migrations" time="0.001028202">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-13T12:15:23.751Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.010592732">
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-DISCOVERY-QUERY envelope builder &gt; pins frozen constants and the non-statutory marker; omits empty optional filters" time="0.001891362">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-DISCOVERY-QUERY envelope builder &gt; self-check rejects envelopes the frozen schema would reject" time="0.000348605">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-DISCOVERY-QUERY envelope builder &gt; code / keyword / locale checks" time="0.000481382">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="catalogue pin (fail closed) &gt; missing pin is 404, another tenant pin is a cross-tenant refusal, unpublished is 409" time="0.001289819">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="jurisdiction-aware availability (master data via CMP-003 port) &gt; expands only what master data says applies" time="0.000229006">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="jurisdiction-aware availability (master data via CMP-003 port) &gt; unknown and inactive requested codes are refused with a pointer" time="0.000213932">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="jurisdiction-aware availability (master data via CMP-003 port) &gt; keeps search rank order and drops unavailable, unpublished, unpinned or unknown entries" time="0.00153265">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="jurisdiction-aware availability (master data via CMP-003 port) &gt; service_codes filter is enforced again after search" time="0.000228932">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="jurisdiction-aware availability (master data via CMP-003 port) &gt; any candidate or entry from another tenant aborts the query" time="0.000467081">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request validation &gt; accepts the documented shape, trims and de-duplicates" time="0.000548396">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request validation &gt; tenant is never client supplied; server-owned and time fields are refused" time="0.000472615">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request validation &gt; statutory marker cannot be flipped and constants cannot change" time="0.000204034">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request validation &gt; refuses malformed filters, pins and pagination" time="0.000831959">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="request validation &gt; selection body carries a service id only" time="0.000395825">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-13T12:15:23.752Z" hostname="cursor" tests="23" failures="0" errors="0" skipped="0" time="0.024775099">
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; returns services available in the requested jurisdiction or an enclosing one" time="0.004897602">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; a jurisdiction with no applicable services yields an empty, still non-statutory result" time="0.000954615">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; keywords narrow results but are never persisted or emitted" time="0.000770109">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; paginates via the search port (limit+1 probe) and reports next_offset" time="0.000993589">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; stale index candidates are dropped and counted, never guessed at" time="0.001086608">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; unpublished or unknown catalogue pins and unknown jurisdictions fail closed and are audited" time="0.001318062">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; localization outage degrades to codes; it never fails the query" time="0.001047955">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; catalogue, jurisdiction and search outages or malformed answers fail closed (503)" time="0.001415977">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; no port is ever called while a database transaction is open" time="0.00068828">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="discovery query (jurisdiction-aware, catalogue pinned) &gt; state, results, event and audit commit together or not at all" time="0.000566013">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation (INT-011) &gt; each tenant only ever sees its own catalogue services" time="0.00053342">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation (INT-011) &gt; a leaked foreign-tenant search hit, entry or pin aborts the query (403) and is audited" time="0.000844755">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation (INT-011) &gt; tenant headers, body tenant_id, missing context and tenant-less context are refused" time="0.000591366">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant isolation (INT-011) &gt; a stored query of tenant A is invisible to tenant B" time="0.000503282">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization (OPA PEP, fail closed) &gt; a PDP denial is audited DENIED and no port is called" time="0.00032714">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization (OPA PEP, fail closed) &gt; PDP outage is 503 and integrations have no discovery surface" time="0.000297303">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorization (OPA PEP, fail closed) &gt; routing: unknown path 404, wrong method 400, client time in query string refused" time="0.000174709">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="stored query read &gt; owner and staff can read; another citizen cannot; keywords are not returned" time="0.001694744">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-003 hand-off: non-mutating until the citizen acts &gt; running queries never records a selection or a draft intent" time="0.000530267">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-003 hand-off: non-mutating until the citizen acts &gt; the owning citizen selects a result; the event carries catalogue and binding pins" time="0.00223568">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-003 hand-off: non-mutating until the citizen acts &gt; a service that was not in the results cannot be selected (audited)" time="0.000549067">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-003 hand-off: non-mutating until the citizen acts &gt; only the citizen who ran the query may select; staff cannot act for them here" time="0.000561958">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-003 hand-off: non-mutating until the citizen acts &gt; selection needs an idempotency key and a still-published catalogue pin" time="0.000646366">
+        </testcase>
+    </testsuite>
+</testsuites>
