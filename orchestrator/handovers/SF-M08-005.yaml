@@ -130,3 +130,14 @@ acceptance_tests_planning:
 statutory_retention_policy_input_required: true
 invented_statutory_period_forbidden: true
 evidence: evidence/SF-M08-005/EVIDENCE.md
+candidate:
+  implementation_commit: a5377093206fa6c3666c8dfc0a2561341c94d4aa
+  pull_request: null
+  evidence: evidence/SF-M08-005/EVIDENCE.md
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row; pnpm-lock.yaml not modified)
+    - OPA policy data for RETENTION_* actions lives in policy/** (read-only for this lane); until added the PDP denies (fail-closed)
+    - owner-supplied statutory retention period refs not provided; archive/delete eligibility stays refused (POLICY_INPUT_REQUIRED)
+    - maker-checker (CMP-051) for period-ref binding not wired; restricted to PRIVILEGED_ADMIN/SYSTEM + OPA
+    - owner consumers that act on RetentionEligibilityChanged (e.g. CMP-032 storage) not built here
+    - host mount deferred to SF-M08-007; no UI delivered

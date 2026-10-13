@@ -1,0 +1,15 @@
+
+ RUN  v5.0.3 /workspace/services/cmp-049-data-retention
+
+ ✓ test/integration/privilege-rls.int.test.ts (8 tests) 5468ms
+   ✓ CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) (8)
+     ✓ isolated reversibility: down of the CMP-049 pair removes the schema and keeps the role; up restores it 1483ms
+ ✓ test/integration/api-flow.int.test.ts (6 tests) 931ms
+
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  08:51:08
+   Duration  6.70s (tests 98%, transform 2%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M08-005/junit/integration.xml
+exit=0

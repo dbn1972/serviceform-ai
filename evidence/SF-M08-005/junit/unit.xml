@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="68" failures="0" errors="0" time="0.096185938">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-13T08:51:08.458Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.064009595">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-RETENTION-POLICY &gt; the frozen schema still pins the policy-input markers" time="0.00128804">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-RETENTION-POLICY &gt; frozen valid example passes and invalid example fails (harness sanity)" time="0.001105356">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-RETENTION-POLICY &gt; every policy CMP-049 returns validates against the frozen schema, bound or unbound" time="0.007041719">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-RETENTION-POLICY &gt; component eligibility enum equals the frozen enum" time="0.000676259">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-049 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.025595066">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-049 &gt; PEP inputs and the request context validate against the frozen authz and request-context schemas" time="0.019330931">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-049 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001157027">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-049 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000673322">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-049 component contracts &gt; isolation declarations validate and match the migrations (every tenant table FORCE RLS)" time="0.002700003">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-049 component contracts &gt; no request body schema accepts a period value or a tenant id" time="0.000840552">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; domain code computes no retention date, period or erasure timeline" time="0.000629563">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; migrations have no period columns and enforce POLICY_INPUT_REQUIRED at the database" time="0.000284006">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; no hard-coded tenant, jurisdiction or service names in source" time="0.000194048">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; declares no runtime dependency, makes no network call and imports no peer component" time="0.000570106">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; exposes no archive, purge or delete execution path" time="0.000286514">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="statutory policy invention guard and component boundary &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, no PUBLIC grants, no DELETE on state" time="0.000232008">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-13T08:51:08.460Z" hostname="cursor" tests="28" failures="0" errors="0" skipped="0" time="0.006893214">
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; refuses ARCHIVE_ELIGIBLE and DELETE_ELIGIBLE with POLICY_INPUT_REQUIRED while the owner period ref is null" time="0.001503434">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; treats an empty-string period ref as missing" time="0.000207717">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; allows archive/delete eligibility only when the policy lists it AND the period ref is bound" time="0.000246981">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; allows LEGAL_HOLD and returns to ACTIVE without a period ref when the policy lists them" time="0.00019375">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; refuses a transition that leaves LEGAL_HOLD for a period-gated target even when listed, unless bound" time="0.000217936">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; refuses unlisted and same-state transitions" time="0.000182949">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; exhaustively: no period-gated target is ever allowed without a period ref" time="0.000286869">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; evaluateCandidates lists every other state with its blocking reason" time="0.000262779">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateTransition (fail closed) &gt; leaving LEGAL_HOLD requires an extra explicit release action" time="0.000347152">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 30" time="0.000433489">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 365d" time="0.000175935">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 7 years" time="0.000069399">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 10y" time="0.000054678">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 90-days" time="0.000070473">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value 12months" time="0.000068931">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value P7Y" time="0.000120346">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value p30d" time="0.000051595">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value PT24H" time="0.000048609">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value P1Y6M" time="0.00005188">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; refuses duration-like value P2W" time="0.000045065">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; accepts opaque reference owner-input:retention-schedule/ref-0001" time="0.000059616">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; accepts opaque reference gazette:2026/notice-17" time="0.000028821">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; accepts opaque reference P2026-REG-7" time="0.000028833">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; accepts opaque reference decision.register.0042" time="0.000027924">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="owner period ref is a reference, never an invented period &gt; accepts null/undefined as &quot;no owner input yet&quot; and refuses non-strings and oversize refs" time="0.000134856">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="policy shape normalisation &gt; scope requires a PascalCase/upper resource_type and refuses unknown keys" time="0.000250548">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="policy shape normalisation &gt; transitions must be a non-empty, unique, non-self-loop list of known states" time="0.000252503">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="policy shape normalisation &gt; toContract always emits the constant markers and never a period value" time="0.000241621">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-13T08:51:08.462Z" hostname="cursor" tests="24" failures="0" errors="0" skipped="0" time="0.025283129">
+        <testcase classname="test/unit/service.test.ts" name="policy registration (SF-CON-RETENTION-POLICY shape) &gt; registers a policy with server-derived tenant and constant markers" time="0.003997644">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy registration (SF-CON-RETENTION-POLICY shape) &gt; refuses a client-supplied tenant_id, server-owned fields and flipped constant markers" time="0.000853821">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy registration (SF-CON-RETENTION-POLICY shape) &gt; refuses any attempt to supply a period value instead of an owner reference" time="0.000521841">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy registration (SF-CON-RETENTION-POLICY shape) &gt; policy registration and period binding are restricted to PRIVILEGED_ADMIN / SYSTEM actors" time="0.001002331">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy registration (SF-CON-RETENTION-POLICY shape) &gt; reads back the policy; another tenant cannot see it" time="0.000907823">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="fail closed until the owner supplies the period ref &gt; refuses ARCHIVE_ELIGIBLE with POLICY_INPUT_REQUIRED, changes nothing and audits FAILED" time="0.002093092">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="fail closed until the owner supplies the period ref &gt; evaluation reports POLICY_INPUT_REQUIRED without changing state" time="0.001094003">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="fail closed until the owner supplies the period ref &gt; after the owner binds the ref, ACTIVE -&gt; ARCHIVE_ELIGIBLE -&gt; DELETE_ELIGIBLE succeeds and is logged" time="0.00191423">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="fail closed until the owner supplies the period ref &gt; the period ref is bound once; a second binding is refused and audited" time="0.001156561">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy-driven transitions &gt; refuses a transition the policy does not list, even with a bound period ref" time="0.000848609">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy-driven transitions &gt; LEGAL_HOLD works without a period ref; release needs the extra RETENTION_LEGAL_HOLD_RELEASE grant" time="0.001213792">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy-driven transitions &gt; a stale expected_version is refused (optimistic concurrency)" time="0.001949691">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="policy-driven transitions &gt; enrolment requires the policy scope resource_type and refuses duplicate enrolment" time="0.000800999">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement and actor baseline &gt; a policy denial returns 403 and is audited DENIED" time="0.0003464">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement and actor baseline &gt; a PDP outage fails closed with 503" time="0.000207206">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement and actor baseline &gt; citizens never reach retention routes" time="0.000281994">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement and actor baseline &gt; never calls the PDP inside a database transaction" time="0.000971293">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA enforcement and actor baseline &gt; passes the server-derived tenant to the PDP for subject and resource" time="0.000253642">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant context and request hygiene &gt; refuses tenant-identifying headers and missing tenant context" time="0.000218606">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant context and request hygiene &gt; a subject enrolled in tenant A is invisible and immovable from tenant B" time="0.000608964">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant context and request hygiene &gt; refuses client time, unknown fields, bad ids and missing idempotency keys" time="0.000499692">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="idempotency and atomicity &gt; replays the stored response for the same key and body; refuses a different body" time="0.000918765">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="idempotency and atomicity &gt; a commit failure rolls back state, transition log, domain event and audit together" time="0.0005827">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="idempotency and atomicity &gt; a successful transition commits subject, log, event and SUCCESS audit in one transaction" time="0.00059491">
+        </testcase>
+    </testsuite>
+</testsuites>
