@@ -1,0 +1,38 @@
+{
+  "task_id": "SF-M08-INT",
+  "module_id": "M08",
+  "branch": "cursor/m08-int-sf-m08-int-91f2",
+  "execution_base": "50a4ed3ad474a6a1395de98c9937a50f23045cfb",
+  "tests_commit": "5f836dad95bdeebd7fb4ad8a553bb710768e3d95",
+  "run_id": "local-vitest-2026-10-13T15:27:49Z",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "integration_ids": ["INT-003", "INT-010", "INT-011", "INT-013"],
+  "vitest": "PASS_36",
+  "suites": {
+    "int-003-discovery-host": "PASS_11",
+    "int-010-events-index-ops": "PASS_11",
+    "int-011-host": "PASS_6",
+    "int-013-modes": "PASS_8"
+  },
+  "eslint": "PASS",
+  "prettier": "PASS",
+  "cross_tenant_leakage": 0,
+  "production_code_modified": false,
+  "simulated_boundaries": ["CMP-035 SimulatedProjectionRules"],
+  "unbound_fail_closed": ["CMP-045 UnboundReplayPort", "CMP-046 UnboundSummaryPort"],
+  "not_exercised": [
+    "PostgreSQL RLS / privilege roles",
+    "OpenSearch",
+    "CMP-038 event bus delivery and replay history",
+    "CMP-007 recommendation beyond deny-by-default host seam",
+    "CMP-049 retention beyond host seam",
+    "Owner summary adapters CMP-017/029/037/038/047"
+  ],
+  "findings": [],
+  "certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_result": "SF_M08_INT_PASS"
+}
