@@ -4,18 +4,51 @@ export const CONTRACT_ID = 'SF-CON-RETENTION-POLICY';
 export const POLICY_RESOURCE_TYPE = 'RetentionPolicy';
 export const SUBJECT_RESOURCE_TYPE = 'RetentionSubject';
 
-/** Same pattern as SF-CON-COMMON resourceType. */
-export const RESOURCE_TYPE = /^[A-Z][A-Za-z0-9]{1,63}$/;
-export const SCOPE_CODE = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$/;
-/** Opaque reference to an owner-approved policy input (e.g. a gazette or decision register id). */
-export const PERIOD_REF = /^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$/;
+/**
+ * Linear character-class checks (njsscan regex_dos). Patterns documented beside each helper
+ * mirror SF-CON-COMMON / PERIOD_REF CHECK shapes without quantifier regexes on user input.
+ */
+const isUpper = (c: number): boolean => c >= 65 && c <= 90;
+const isLower = (c: number): boolean => c >= 97 && c <= 122;
+const isDigit = (c: number): boolean => c >= 48 && c <= 57;
+const isAlpha = (c: number): boolean => isUpper(c) || isLower(c);
+const isAlnum = (c: number): boolean => isAlpha(c) || isDigit(c);
+
+function every(value: string, from: number, ok: (c: number) => boolean): boolean {
+  for (let i = from; i < value.length; i += 1) if (!ok(value.charCodeAt(i))) return false;
+  return true;
+}
+
+/** ^[A-Z][A-Za-z0-9]{1,63}$ — SF-CON-COMMON resourceType. */
+export function isResourceType(value: string): boolean {
+  if (value.length < 2 || value.length > 64) return false;
+  if (!isUpper(value.charCodeAt(0))) return false;
+  return every(value, 1, isAlnum);
+}
+
+/** ^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$ */
+export function isScopeCode(value: string): boolean {
+  if (value.length < 1 || value.length > 64) return false;
+  if (!isAlnum(value.charCodeAt(0))) return false;
+  return every(value, 1, (c) => isAlnum(c) || c === 95 || c === 46 || c === 58 || c === 45);
+}
+
+/** ^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$ — opaque owner-approved period ref. */
+export function isPeriodRef(value: string): boolean {
+  if (value.length < 1 || value.length > 128) return false;
+  if (!isAlnum(value.charCodeAt(0))) return false;
+  return every(
+    value,
+    1,
+    (c) => isAlnum(c) || c === 95 || c === 46 || c === 58 || c === 47 || c === 45,
+  );
+}
+
 /**
  * A period ref must be a reference, never a value. Anything that reads as a day count or an
  * ISO 8601 duration is refused so a builder or operator cannot smuggle an invented period in.
  * Mirrored by a CHECK constraint in sf_retention.retention_policy.
  */
-const COUNT_WITH_UNIT = /^\d+[._\s-]?([a-z]*)$/i;
-const ISO_DURATION_BODY = /^p[\d.ymwdths]+$/i;
 const DURATION_UNITS: ReadonlySet<string> = new Set([
   '',
   'd',
@@ -38,10 +71,33 @@ const DURATION_UNITS: ReadonlySet<string> = new Set([
   'years',
 ]);
 
+const ISO_DURATION_CHARS: ReadonlySet<number> = new Set(
+  [...'0123456789.ymwdthsYMWDTHS'].map((ch) => ch.charCodeAt(0)),
+);
+
 export function looksLikeDuration(value: string): boolean {
-  const count = COUNT_WITH_UNIT.exec(value);
-  if (count) return DURATION_UNITS.has((count[1] ?? '').toLowerCase());
-  return ISO_DURATION_BODY.test(value) && /\d/.test(value);
+  if (value.length === 0) return false;
+  let i = 0;
+  while (i < value.length && isDigit(value.charCodeAt(i))) i += 1;
+  if (i > 0) {
+    if (i < value.length) {
+      const sep = value.charCodeAt(i);
+      if (sep === 46 || sep === 95 || sep === 32 || sep === 45) i += 1;
+    }
+    const unit = value.slice(i).toLowerCase();
+    if (DURATION_UNITS.has(unit) && every(unit, 0, isLower)) return true;
+    if (unit.length === 0) return true;
+  }
+  // ISO-8601-ish duration body: P… with digits and duration letters only.
+  const first = value.charCodeAt(0);
+  if (first !== 80 && first !== 112) return false;
+  let hasDigit = false;
+  for (let j = 1; j < value.length; j += 1) {
+    const c = value.charCodeAt(j);
+    if (!ISO_DURATION_CHARS.has(c)) return false;
+    if (isDigit(c)) hasDigit = true;
+  }
+  return hasDigit;
 }
 export const MAX_TRANSITIONS = 12;
 
@@ -121,7 +177,7 @@ function reject(reason: string, pointer: string): never {
 
 export function normalizePeriodRef(value: unknown, pointer: string): string | null {
   if (value === undefined || value === null) return null;
-  if (typeof value !== 'string' || !PERIOD_REF.test(value)) reject('PERIOD_REF_INVALID', pointer);
+  if (typeof value !== 'string' || !isPeriodRef(value)) reject('PERIOD_REF_INVALID', pointer);
   if (looksLikeDuration(value)) reject('PERIOD_REF_LOOKS_LIKE_DURATION', pointer);
   return value;
 }
@@ -137,14 +193,14 @@ export function normalizeScope(value: unknown): PolicyScope {
     }
   }
   const resourceType = raw['resource_type'];
-  if (typeof resourceType !== 'string' || !RESOURCE_TYPE.test(resourceType)) {
+  if (typeof resourceType !== 'string' || !isResourceType(resourceType)) {
     reject('RESOURCE_TYPE_INVALID', '/scope/resource_type');
   }
   const scope: PolicyScope = { resource_type: resourceType };
   for (const key of ['service_code', 'jurisdiction_code'] as const) {
     const v = raw[key];
     if (v === undefined) continue;
-    if (typeof v !== 'string' || !SCOPE_CODE.test(v)) reject('SCOPE_CODE_INVALID', `/scope/${key}`);
+    if (typeof v !== 'string' || !isScopeCode(v)) reject('SCOPE_CODE_INVALID', `/scope/${key}`);
     scope[key] = v;
   }
   return scope;

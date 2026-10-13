@@ -1,10 +1,10 @@
 import { isEligibility, type Eligibility } from '../domain/eligibility.js';
 import {
+  isResourceType,
   normalizePeriodRef,
   normalizeScope,
   normalizeTransitions,
   PolicyRejected,
-  RESOURCE_TYPE,
   type PolicyScope,
 } from '../domain/policy.js';
 import type { EligibilityTransition } from '../domain/eligibility.js';
@@ -137,7 +137,7 @@ export function validateEnrollSubject(body: unknown): EnrollSubjectInput {
   commonChecks(rec, ['resource_type', 'resource_id']);
   if (typeof policyId !== 'string' || !isUuid(policyId)) bad('/policy_id', 'UUID_REQUIRED');
   const resourceType = rec['resource_type'];
-  if (typeof resourceType !== 'string' || !RESOURCE_TYPE.test(resourceType)) {
+  if (typeof resourceType !== 'string' || !isResourceType(resourceType)) {
     bad('/resource_type', 'RESOURCE_TYPE_INVALID');
   }
   const resourceId = rec['resource_id'];
