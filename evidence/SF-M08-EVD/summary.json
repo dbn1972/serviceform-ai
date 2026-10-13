@@ -1,0 +1,49 @@
+{
+  "task_id": "SF-M08-EVD",
+  "module_id": "M08",
+  "branch": "cursor/m08-evd-sf-m08-evd-91f2",
+  "authorization": "HUMAN_M08_WAVE_B_THROUGH_EVD_AUTHORIZATION",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "production_sot": "cb31a7d30fba1b912e42a633187efd786fbb3f2d",
+  "execution_base": "cb31a7d30fba1b912e42a633187efd786fbb3f2d",
+  "origin_main_at_bind_completion": "cb31a7d30fba1b912e42a633187efd786fbb3f2d",
+  "disposition": "SF_M08_EVD_PASS_G3_RECOMMENDED",
+  "recommended_result": "G3_INTEGRATION_VERIFIED",
+  "merges": {
+    "SF-M08-005": { "pr": 132, "head": "f4a9697394bf9bdf0bb3d78ec89039e09fb62a5f", "merge": "d5f01a1a63391d4bb39176537441e70cb12d275e", "pr_ci": [38379142062, 38379142121, 38379142148], "merge_ci": [38385142707, 38385142676, 38385142561] },
+    "SF-M08-STITCH-A": { "pr": 133, "head": "2260be81c731c94752acb58adef1734a2c028626", "merge": "6ef081cce49aad78f2af9138de443334588fa45f", "pr_ci": [38385477939, 38385478063, 38385477906], "merge_ci": [38389820299, 38389820313, 38389820297] },
+    "SF-M08-006": { "pr": 134, "head": "b39d5a85bdaab68db9e752a18379dad44f2d90cc", "merge": "2df9353113b7541d0b9fab81096a4b079c1d2739", "pr_ci": [38396322673, 38396322621, 38396322873], "merge_ci": [38400275078, 38400274909, 38400275018] },
+    "SF-M08-STITCH-B": { "pr": 135, "head": "b35ad0def0f0933418e985b909f3c183c625d757", "merge": "6cc3eb473abc885e3f7eefc99deb90da37f6db00", "pr_ci": [38400701126, 38400701149, 38400701175], "merge_ci": [38413184763, 38413184318, 38413184360], "merge_ci_note": "ci 38413184763 CANCELLED (M01 envelope job only); superseded by SoT ci" },
+    "SF-M08-007": { "pr": 136, "head": "f1b74b01c76770d56b474719fad3b1868cceb0a1", "merge": "50a4ed3ad474a6a1395de98c9937a50f23045cfb", "pr_ci": [38414736478, 38414736473, 38414736820], "merge_ci": [38420424180, 38420424233, 38420424208] },
+    "SF-M08-SEC": { "pr": 137, "head": "40c77830f7c7730e188f5b889a74afdeafcf32cd", "merge": "e24c775c38a3196af92c583d7918761d6ab9729b", "pr_ci": [38422448373, 38422448438, 38422448488], "merge_ci": [38427990174, 38427990819, 38427990279], "merge_ci_note": "security 38427990819 success; ci + developer-platform CANCELLED (superseded by SoT push)", "recommended_result": "SF_M08_SEC_PASS" },
+    "SF-M08-INT": { "pr": 138, "head": "83f843d39b3f624bfa9e7c5dbc2837920ca85c8f", "merge": "cb31a7d30fba1b912e42a633187efd786fbb3f2d", "pr_ci": [38422451382, 38422451310, 38422451431], "recommended_result": "SF_M08_INT_PASS" }
+  },
+  "ci_run_order": ["ci", "security", "developer-platform"],
+  "sot_ci": { "ci": { "run_id": 38428002476, "conclusion": "success" }, "security": { "run_id": 38428002885, "conclusion": "success" }, "developer_platform": { "run_id": 38428002606, "conclusion": "success" } },
+  "independent_rerun_at_sot": {
+    "int_vitest": "PASS_36",
+    "sec_vitest": "PASS_20",
+    "api_host_vitest": "PASS_71",
+    "gates": "PASS_10_10",
+    "contracts_lock": "PASS_29_29"
+  },
+  "cross_tenant_leakage": 0,
+  "critical_findings": 0,
+  "simulated_boundaries": ["CMP-035 SimulatedProjectionRules"],
+  "unbound_fail_closed": ["CMP-045 UnboundReplayPort", "CMP-046 UnboundSummaryPort"],
+  "statutory_retention_periods_invented": false,
+  "limitations": [
+    "M08 INT node-only; RLS via owner Postgres 16 suites + SEC static FORCE RLS + CI tenant-isolation harness",
+    "OpenSearch, CMP-038 delivery/replay, owner summary adapters not exercised",
+    "No REAL/SANDBOX connector validation",
+    "Statutory retention policy input required"
+  ],
+  "production_code_modified": false,
+  "gate_issued": false,
+  "certified": false,
+  "release_certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false
+}

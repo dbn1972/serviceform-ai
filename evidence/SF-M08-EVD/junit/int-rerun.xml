@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="1.17440466">
+    <testsuite name="tests/integration/m08/int-003-discovery-host.test.ts" timestamp="2026-10-13T16:09:32.270Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.254714352">
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; host mounts CMP-006 only and query returns pinned, non-statutory results" time="0.05870949">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; authorization input is built from server context (tenant/actor), never request data" time="0.024078272">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; selection is the single INT-003 hand-off: intent event only, no draft, contract envelopes" time="0.05810951">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; selection replays idempotently and requires an Idempotency-Key" time="0.016168805">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; a service outside the query results cannot be selected" time="0.014391753">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; only the citizen who ran the query may select (officer and other citizen refused)" time="0.021154828">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; unpublished (DRAFT) catalogue pin is refused before any persistence" time="0.010698161">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; tenant-negative: T2 cannot use T1 catalogue pin nor read T1 query; T2 sees only T2 data" time="0.016244157">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; a leaked foreign-tenant search hit is blocked (SF-TEN-002) and nothing is persisted" time="0.010267297">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; PDP unavailable fails closed (no results, no selection)" time="0.00942363">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-003-discovery-host.test.ts" name="INT-003 discovery path via API host → CMP-006 &gt; forged tenant headers on every discovery route are denied without canary leak" time="0.014107111">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m08/int-010-events-index-ops.test.ts" timestamp="2026-10-13T16:09:32.273Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.283254422">
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; bound SLA port refresh → OK snapshot, served with non_authoritative marker" time="0.073314744">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; unbound owner port is reported UNAVAILABLE (PORT_UNBOUND), never fabricated healthy" time="0.024761706">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; refresh emits contract-valid OpsViewRefreshed + audit envelopes scoped to the tenant" time="0.059758561">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; refresh requires Idempotency-Key and replays the same response" time="0.018470406">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; tenant-negative: T2 never sees T1 snapshot; ports are called with T2 server context" time="0.013937496">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; citizen actors are refused on staff dashboards; PDP outage fails closed" time="0.013037836">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 dashboards via API host (non-authoritative, tenant-scoped) &gt; forged tenant headers on every ops route are denied without canary leak" time="0.025090627">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 event → CMP-035 index (SIMULATED projection rule, CI) &gt; indexes only declared facets under the event tenant; duplicate delivery is a no-op" time="0.017269038">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 event → CMP-035 index (SIMULATED projection rule, CI) &gt; tenant partitions stay disjoint across T1/T2 ops events (CROSS_TENANT_LEAKAGE=0)" time="0.015460627">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-046 event → CMP-035 index (SIMULATED projection rule, CI) &gt; events with no published rule are skipped, not guessed" time="0.013274145">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-010-events-index-ops.test.ts" name="INT-010 CMP-045 analytics rebuild boundary &gt; unbound replay source fails explicitly (SF-INT-001 REPLAY_SOURCE_UNBOUND)" time="0.007471147">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m08/int-011-host.test.ts" timestamp="2026-10-13T16:09:32.274Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.630349785">
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; admits six M08 mounts in deterministic order; CMP-036 registered exactly once" time="0.333320111">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; every M08 read route is reachable and served with server-derived tenant only" time="0.098817884">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; forged tenant headers on every M08 read and write route → SF-TEN-002, no canary, no service call" time="0.062523461">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; tenant_id in the request body is never adopted as identity" time="0.028404445">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; M06 + M08 coexist: M06 mounts preserved, CMP-036 once, forged tenant denied on both" time="0.099707605">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-011-host.test.ts" name="INT-011 M08 host admission + forged tenant denial &gt; host without M08 deps leaves m08Mounted undefined and M08 paths unrouted" time="0.006243097">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m08/int-013-modes.test.ts" timestamp="2026-10-13T16:09:32.275Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.006086101">
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; SIMULATED rules admitted only in simulation environments" time="0.001699346">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; PRODUCTION refuses SIMULATED rules (fail-closed SF-SYS-003)" time="0.000429792">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; UAT/PREPROD refuse SIMULATED rules" time="0.000223822">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; indexer construction refuses SIMULATED rules in PRODUCTION; non-simulated port allowed" time="0.000586182">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; runtime environment comes from SF_ENVIRONMENT; unknown values are rejected" time="0.00024855">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 SIMULATED boundaries (CMP-035 projection rules) &gt; search document connector_mode is restricted to REAL/SANDBOX/SIMULATED" time="0.00061412">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 unbound external dependencies fail closed (no simulator, no fabrication) &gt; CMP-045 replay source unbound → SF-INT-001" time="0.000855633">
+        </testcase>
+        <testcase classname="tests/integration/m08/int-013-modes.test.ts" name="INT-013 M08 unbound external dependencies fail closed (no simulator, no fabrication) &gt; CMP-046 owner summary port unbound → PORT_UNBOUND rejection" time="0.000274127">
+        </testcase>
+    </testsuite>
+</testsuites>
