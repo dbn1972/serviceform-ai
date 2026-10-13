@@ -1,5 +1,8 @@
-# M08 PLANNING envelope — Data Retention / Archival Service
-# PLANNING. Not READY. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6.
+# SF-M08-005 handover — CMP-049 Data Retention / Archival Service
+# HUMAN_SF_M08_005_READY_DISPATCH_AUTHORIZATION consumed (user "continue to next" after M05 G4 + M06 G3).
+# READY + dispatched. Policy machinery and eligibility transitions only; no statutory period invented.
+# Archive/delete eligibility fails closed (POLICY_INPUT_REQUIRED) until an owner supplies a period ref.
+# Not MERGED. Not CERTIFIED. Not G3. Not G6. Host mount deferred to SF-M08-007.
 
 task_id: SF-M08-005
 title: Data Retention / Archival Service
@@ -18,8 +21,13 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M08-retention-SF-M08-005
-worktree: ../wt-SF-M08-005
+branch: cursor/m08-005-retention-91f2
+worktree: /workspace
+dispatch_base_policy:
+  source: HUMAN_SF_M08_005_READY_DISPATCH_AUTHORIZATION
+  require_exact_sha: true
+  execution_base: 69100b3f4f07a46ac91e081c8741c7de1b9d6667
+  dispatch_authorized: true
 parallel_group: M08-A
 privilege_role: sf_cmp049_rw
 schema: sf_retention
@@ -33,6 +41,7 @@ depends_on:
   - human Wave A READY granted for SF-M08-001..004 only — THIS LANE HELD
   - STATUTORY_RETENTION_POLICY_INPUT_REQUIRED (do not invent periods)
   - later separate READY auth for SF-M08-005 after policy input
+  - HUMAN_SF_M08_005_READY_DISPATCH_AUTHORIZATION granted (machinery only; statutory periods remain owner input)
 allowed_write_paths:
   - services/cmp-049-data-retention/**
   - db/migrations/*_cmp-049-*.sql
@@ -54,16 +63,17 @@ read_only_paths:
   - services/cmp-015-application-case/**
   - services/cmp-030-consent-privacy/**
   - services/cmp-032-storage/**
-wave_eligible_now: false
+wave_eligible_now: true
 serial_after:
   - SF-M08-CG-001
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+implementation_started: true
+dispatched: true
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
@@ -72,11 +82,11 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_02_contract_freeze_required: true
-freeze_authorized: false
+cg_02_contract_freeze_required: false
+freeze_authorized: true
 base_commit:
-  prefix: 88690846
-  suffix: 021a2ce082b8a7c7f35c12603effd5d9
+  prefix: 69100b3f
+  suffix: 4f07a46ac91e081c8741c7de1b9d6667
 join_separator: "_"
 contract_locks:
   - SF-CON-COMMON
@@ -98,6 +108,7 @@ contract_locks:
   - SF-CON-HUMAN-TASK
   - SF-CON-SLA-CLOCK
   - SF-CON-VERSION-PINNING
+  - SF-CON-RETENTION-POLICY
 stop_conditions:
   - FROZEN existing 19 contracts change required (CCR+STOP)
   - statutory / policy invention required
@@ -117,3 +128,16 @@ acceptance_tests_planning:
   - Stops if owner retention policy input missing
   - Host mount deferred to SF-M08-007
 statutory_retention_policy_input_required: true
+invented_statutory_period_forbidden: true
+evidence: evidence/SF-M08-005/EVIDENCE.md
+candidate:
+  implementation_commit: a5377093206fa6c3666c8dfc0a2561341c94d4aa
+  pull_request: null
+  evidence: evidence/SF-M08-005/EVIDENCE.md
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row; pnpm-lock.yaml not modified)
+    - OPA policy data for RETENTION_* actions lives in policy/** (read-only for this lane); until added the PDP denies (fail-closed)
+    - owner-supplied statutory retention period refs not provided; archive/delete eligibility stays refused (POLICY_INPUT_REQUIRED)
+    - maker-checker (CMP-051) for period-ref binding not wired; restricted to PRIVILEGED_ADMIN/SYSTEM + OPA
+    - owner consumers that act on RetentionEligibilityChanged (e.g. CMP-032 storage) not built here
+    - host mount deferred to SF-M08-007; no UI delivered

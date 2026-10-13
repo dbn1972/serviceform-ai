@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Retention subject event data (RetentionSubjectEnrolled, RetentionEligibilityChanged)",
+  "description": "Eligibility state only. Owners of the referenced record decide and perform any archive/delete; CMP-049 never does.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "subject_id",
+    "policy_id",
+    "policy_version",
+    "resource_type",
+    "resource_id",
+    "from_eligibility",
+    "to_eligibility",
+    "subject_version",
+    "owner_supplied_period_ref"
+  ],
+  "properties": {
+    "subject_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "policy_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "policy_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "resource_type": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z0-9]{1,63}$"
+    },
+    "resource_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "from_eligibility": {
+      "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD", null]
+    },
+    "to_eligibility": {
+      "enum": ["ACTIVE", "ARCHIVE_ELIGIBLE", "DELETE_ELIGIBLE", "LEGAL_HOLD"]
+    },
+    "subject_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "owner_supplied_period_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    }
+  }
+}

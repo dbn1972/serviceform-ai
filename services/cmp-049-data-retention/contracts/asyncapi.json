@@ -1,0 +1,63 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-049 Data Retention Events",
+    "version": "0.1.0",
+    "description": "Policy-neutral retention eligibility events. No statutory periods, no PII, no archive/delete execution."
+  },
+  "channels": {
+    "sf.retention.events.v1": {
+      "address": "sf.retention.events.v1",
+      "messages": {
+        "RetentionPolicyRegistered": {
+          "$ref": "#/components/messages/RetentionPolicyRegistered"
+        },
+        "RetentionPolicyPeriodRefBound": {
+          "$ref": "#/components/messages/RetentionPolicyPeriodRefBound"
+        },
+        "RetentionSubjectEnrolled": {
+          "$ref": "#/components/messages/RetentionSubjectEnrolled"
+        },
+        "RetentionEligibilityChanged": {
+          "$ref": "#/components/messages/RetentionEligibilityChanged"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "RetentionPolicyRegistered": {
+        "name": "RetentionPolicyRegistered",
+        "payload": {
+          "$ref": "./events/retention-policy-event.data.schema.json"
+        }
+      },
+      "RetentionPolicyPeriodRefBound": {
+        "name": "RetentionPolicyPeriodRefBound",
+        "payload": {
+          "$ref": "./events/retention-policy-event.data.schema.json"
+        }
+      },
+      "RetentionSubjectEnrolled": {
+        "name": "RetentionSubjectEnrolled",
+        "payload": {
+          "$ref": "./events/retention-subject-event.data.schema.json"
+        }
+      },
+      "RetentionEligibilityChanged": {
+        "name": "RetentionEligibilityChanged",
+        "payload": {
+          "$ref": "./events/retention-subject-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

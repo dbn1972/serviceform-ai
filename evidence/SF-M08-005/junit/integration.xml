@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="14" failures="0" errors="0" time="6.399388507">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-13T08:51:15.387Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.931450656">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; fails closed with POLICY_INPUT_REQUIRED, leaves state unchanged and commits a FAILED audit" time="0.098549098">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; after owner period ref binding, archive then delete eligibility commit with log, event and audit" time="0.062709616">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; idempotent replay returns the stored response without a second transition" time="0.089137366">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; tenant B cannot read, evaluate or move tenant A subjects" time="0.092460114">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; OPA denial and PDP outage fail closed; denial is audited" time="0.069509271">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-049 API over PostgreSQL (real LOGIN role, FORCE RLS) &gt; evaluation over PostgreSQL reports the blocking reason per candidate" time="0.088376132">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-13T08:51:15.388Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="5.467937851">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; roles: NOLOGIN privilege role, no SUPERUSER/BYPASSRLS, tables owned by sf_migrator with FORCE RLS" time="0.057678782">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; sf_app holds no DML on retention state; a peer privilege role cannot read or write it" time="0.075423483">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; FORCE RLS hides the other tenant; a session with no tenant sees nothing and cannot write" time="0.063906987">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; a tenant cannot enrol a subject under another tenant policy (FK + RLS)" time="0.054099535">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; database refuses invented periods and flipped markers on policies" time="0.065864355">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; DB fail-closed: ARCHIVE_ELIGIBLE / DELETE_ELIGIBLE refused while the policy period ref is null" time="0.047526645">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; DB guards: policy listing enforced, period ref bound once, identity immutable, no deletes" time="0.046249154">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-049 privilege boundary (ADR-0006), FORCE RLS and fail-closed DB guards (INT-011) &gt; isolated reversibility: down of the CMP-049 pair removes the schema and keeps the role; up restores it" time="1.482658654">
+        </testcase>
+    </testsuite>
+</testsuites>
