@@ -30,7 +30,7 @@ Routes: `POST /v1/discovery/queries`, `GET /v1/discovery/queries/{id}`,
 | Unit + contract (vitest) | 51/51 pass (14 domain/input, 23 service/API, 14 contract/static) | `unit-contract.log`, `junit/unit.xml` |
 | Integration on PostgreSQL 16.15 (full migration chain, real LOGIN roles, FORCE RLS) | 14/14 pass (9 privilege/RLS/DB-guard/reversibility, 5 API flow) | `integration-postgres16.log`, `junit/integration.xml` |
 | Repo gates `scripts/gates/run_all.py` | 10/10 PASS (migration-lint, hardcoding, contracts-lock, openapi-asyncapi, cg01 uniqueness, …) | `gates.log` |
-| Write scope `check_scope.py --envelope orchestrator/handovers/SF-M08-006.yaml --base origin/main` | see `scope.log` | `scope.log`, `write-scope-diff.txt` |
+| Write scope `check_scope.py --envelope orchestrator/handovers/SF-M08-006.yaml --base origin/main` | PASS, 57 files, 0 errors | `scope.log`, `write-scope-diff.txt` |
 
 Commands (from `services/cmp-006-service-discovery`): `tsc --noEmit -p tsconfig.json`;
 `vitest run --root . --config vitest.unit.config.ts`;
