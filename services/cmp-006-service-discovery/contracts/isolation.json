@@ -1,0 +1,54 @@
+{
+  "entities": [
+    {
+      "entity": "sf_discovery.discovery_query",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.discovery_result",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.discovery_selection",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.idempotency_record",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.outbox_event",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.inbox_event",
+      "owner_component": "CMP-006",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_discovery.outbox_event_platform",
+      "owner_component": "CMP-006",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-006 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_discovery.inbox_event_platform",
+      "owner_component": "CMP-006",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-006 consumes no tenant-less events."
+    }
+  ]
+}

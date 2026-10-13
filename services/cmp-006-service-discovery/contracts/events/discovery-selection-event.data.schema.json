@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Discovery selection event data (DiscoveryServiceSelected)",
+  "description": "INT-003 hand-off. Carries the catalogue version and TenantServiceBinding version the draft owner must pin. draft_created is always false: CMP-006 never creates the draft.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "selection_id",
+    "query_id",
+    "service_id",
+    "service_code",
+    "service_binding_version_id",
+    "catalogue_version_id",
+    "result_is_non_statutory",
+    "draft_created"
+  ],
+  "properties": {
+    "selection_id": { "type": "string", "format": "uuid" },
+    "query_id": { "type": "string", "format": "uuid" },
+    "service_id": { "type": "string", "format": "uuid" },
+    "service_code": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "service_binding_version_id": { "type": "string", "format": "uuid" },
+    "catalogue_version_id": { "type": "string", "format": "uuid" },
+    "result_is_non_statutory": { "const": true },
+    "draft_created": { "const": false }
+  }
+}

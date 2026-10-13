@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Discovery query event data (DiscoveryQueryExecuted)",
+  "description": "Pins, codes and counts only. Raw keyword text never leaves CMP-006.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "query_id",
+    "catalogue_version_id",
+    "jurisdiction_codes",
+    "service_codes",
+    "keyword_count",
+    "result_count",
+    "excluded_count",
+    "has_more",
+    "result_is_non_statutory"
+  ],
+  "properties": {
+    "query_id": { "type": "string", "format": "uuid" },
+    "catalogue_version_id": { "type": "string", "format": "uuid" },
+    "jurisdiction_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+    },
+    "service_codes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+    },
+    "keyword_count": { "type": "integer", "minimum": 0 },
+    "result_count": { "type": "integer", "minimum": 0 },
+    "excluded_count": { "type": "integer", "minimum": 0 },
+    "has_more": { "type": "boolean" },
+    "result_is_non_statutory": { "const": true }
+  }
+}
