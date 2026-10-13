@@ -1,0 +1,32 @@
+{
+  "task_id": "SF-M08-SEC",
+  "execution_base": "50a4ed3ad474a6a1395de98c9937a50f23045cfb",
+  "branch": "cursor/m08-sec-sf-m08-sec-91f2",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "runner": "vitest 5.0.3 / node v22.14.0",
+  "vitest": "PASS_20",
+  "test_files": 4,
+  "forged_tenant_routes_probed": 25,
+  "forged_header_variants": 4,
+  "cross_tenant_leakage": 0,
+  "forged_requests_reaching_component_ports": 0,
+  "m08_schemas_verified": [
+    "sf_discovery",
+    "sf_recommendation",
+    "sf_search",
+    "sf_analytics",
+    "sf_ops_dashboard",
+    "sf_retention"
+  ],
+  "tenant_scoped_tables_force_rls": 32,
+  "platform_operational_tables": 12,
+  "simulated_boundaries": ["CMP-035 projection port"],
+  "retention_periods_invented": false,
+  "production_code_modified": false,
+  "critical_findings": 0,
+  "certified": false,
+  "g3": false,
+  "g6": false,
+  "recommended_result": "SF_M08_SEC_PASS"
+}
