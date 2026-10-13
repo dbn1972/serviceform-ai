@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="0" errors="0" time="0.423125639">
+    <testsuite name="tests/security/m08/forged-tenant-http.test.ts" timestamp="2026-10-13T16:09:34.025Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.396573486">
+        <testcase classname="tests/security/m08/forged-tenant-http.test.ts" name="SF-M08-SEC forged tenant HTTP (fail-closed) &gt; covers every published M08 route and every M08 component" time="0.002025006">
+        </testcase>
+        <testcase classname="tests/security/m08/forged-tenant-http.test.ts" name="SF-M08-SEC forged tenant HTTP (fail-closed) &gt; mounted routes are live (not 404) without forged headers" time="0.267002946">
+        </testcase>
+        <testcase classname="tests/security/m08/forged-tenant-http.test.ts" name="SF-M08-SEC forged tenant HTTP (fail-closed) &gt; denies forged tenant headers on all M08 routes with SF-TEN-002; CROSS_TENANT_LEAKAGE=0" time="0.098780746">
+        </testcase>
+        <testcase classname="tests/security/m08/forged-tenant-http.test.ts" name="SF-M08-SEC forged tenant HTTP (fail-closed) &gt; does not admit or echo a foreign tenant_id supplied in a request body" time="0.027664791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m08/retention-policy-input.test.ts" timestamp="2026-10-13T16:09:34.026Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003905789">
+        <testcase classname="tests/security/m08/retention-policy-input.test.ts" name="SF-M08-SEC CMP-049 retention fails closed without owner policy input &gt; refuses archive/delete eligibility when no owner-supplied period ref exists" time="0.001451057">
+        </testcase>
+        <testcase classname="tests/security/m08/retention-policy-input.test.ts" name="SF-M08-SEC CMP-049 retention fails closed without owner policy input &gt; refuses transitions not listed in the published policy" time="0.000209448">
+        </testcase>
+        <testcase classname="tests/security/m08/retention-policy-input.test.ts" name="SF-M08-SEC CMP-049 retention fails closed without owner policy input &gt; rejects period refs that smuggle a duration value" time="0.000718623">
+        </testcase>
+        <testcase classname="tests/security/m08/retention-policy-input.test.ts" name="SF-M08-SEC CMP-049 retention fails closed without owner policy input &gt; migration stores no retention period, interval or due-date column" time="0.000486862">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m08/simulation-fail-closed.test.ts" timestamp="2026-10-13T16:09:34.027Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003169018">
+        <testcase classname="tests/security/m08/simulation-fail-closed.test.ts" name="SF-M08-SEC CMP-035 SIMULATED port fail-closed (INT-013) &gt; refuses a SIMULATED port in PRODUCTION" time="0.001185843">
+        </testcase>
+        <testcase classname="tests/security/m08/simulation-fail-closed.test.ts" name="SF-M08-SEC CMP-035 SIMULATED port fail-closed (INT-013) &gt; refuses a SIMULATED port in UAT and PREPROD" time="0.000329587">
+        </testcase>
+        <testcase classname="tests/security/m08/simulation-fail-closed.test.ts" name="SF-M08-SEC CMP-035 SIMULATED port fail-closed (INT-013) &gt; admits SIMULATED only in simulation environments and REAL everywhere" time="0.000743292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m08/static-isolation.test.ts" timestamp="2026-10-13T16:09:34.028Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.019477346">
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_discovery: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.003275129">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_recommendation: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.001244042">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_search: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.000847634">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_analytics: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.001153364">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_ops_dashboard: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.00165378">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; sf_retention: own schema, declared isolation, ENABLE+FORCE RLS on tenant tables, NOSUPERUSER/NOBYPASSRLS role" time="0.000749772">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; M08 schemas do not reference each other (no cross-component SQL in migrations)" time="0.001055466">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; M08 service sources do not import sibling components" time="0.007739674">
+        </testcase>
+        <testcase classname="tests/security/m08/static-isolation.test.ts" name="SF-M08-SEC static tenant isolation (migrations) &gt; host composition: no CMP-036 remount, no SQL, no retention period values" time="0.000579471">
+        </testcase>
+    </testsuite>
+</testsuites>
