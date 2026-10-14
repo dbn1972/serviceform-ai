@@ -151,4 +151,42 @@ candidate:
     - credential_type_ref is supplied by the minting caller from template metadata (SF-CON-CREDENTIAL carries no type ref)
     - retention of sf_qr rows awaits owner policy input via CMP-049; no period defined here
     - host mount deferred to SF-M07-005; no UI delivered
+    - "SEC follow-up: tests/security/m07/pii-logging.test.ts F05 assertion (toContain opaque) must be flipped to not.toContain by the SEC role after SF-M07-003-REM merges"
     - "SHARED-WORKTREE INCIDENT: commit e484396 (this lane's first commit) landed on sibling branch cursor/m07-004-digilocker-da99 because concurrent agents shared /workspace; SF-M07-004 then committed b83e897 on top and pushed. Identical content is on this branch as 90ce687. Orchestrator/STITCH-A must drop or account for e484396 on the SF-M07-004 branch."
+
+remediation:
+  - id: SF-M07-003-REM
+    finding: M07-SEC-F05
+    severity: HIGH
+    authorization: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+    branch: cursor/m07-003-rem-91f2
+    base_commit: dfa96a0e8b61754d2ed6323bae8455caf5a285aa
+    fix_commit: 5aa4fe589b7605d7f6bd104d36bf643b961a6460
+    builder_agent: serviceform-credential-builder
+    model_route: opus
+    model_release: claude-opus-5-5
+    summary: >-
+      CMP-023 RouteDescriptor.logRedactedParams declares bearer path params (verify route:
+      opaque_token). M07 host mount sets a route-scoped Fastify logSerializers.req that applies
+      CMP-047 sanitizeRequestForLog then replaces declared segments with the :param template,
+      covering 'incoming request' and 'request completed'. HTTP contract unchanged.
+    files:
+      - services/cmp-023-qr-verification/src/api/handler.ts
+      - services/cmp-023-qr-verification/test/contract/contracts.test.ts
+      - services/cmp-023-qr-verification/test/contract/host-log-redaction.test.ts
+      - apps/api/src/composition/m07.ts
+    apps_modified: true
+    contracts_modified: false
+    frozen_contracts_altered: false
+    shared_sanitiser_modified: false
+    test_counts:
+      cmp023_unit_contract: { passed: 66, failed: 0 }
+      apps_api_host: { passed: 81, failed: 0 }
+      negative_control_without_fix: { failed_as_expected: 3 }
+    evidence: evidence/SF-M07-003-REM/EVIDENCE.md
+    state: CANDIDATE_COMPLETE
+    self_certified: false
+    certified: false
+    g3: false
+    g6: false
+    requires_independent_reverification: SF-M07-SEC

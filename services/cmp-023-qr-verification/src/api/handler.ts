@@ -34,6 +34,11 @@ export interface RouteDescriptor {
   method: 'GET' | 'POST';
   path: string;
   operationId: string;
+  /**
+   * Path parameters that carry a bearer secret. A transport host must not write their values
+   * to access or request logs; it logs the `:param` template segment instead.
+   */
+  logRedactedParams?: readonly string[];
 }
 
 interface Route extends RouteDescriptor {
@@ -52,8 +57,17 @@ function route(
   operationId: string,
   idempotent: boolean,
   run: Route['run'],
+  logRedactedParams?: readonly string[],
 ): Route {
-  return { method, path, operationId, segments: path.split('/').filter(Boolean), idempotent, run };
+  return {
+    method,
+    path,
+    operationId,
+    segments: path.split('/').filter(Boolean),
+    idempotent,
+    run,
+    ...(logRedactedParams ? { logRedactedParams } : {}),
+  };
 }
 
 /**
@@ -69,14 +83,26 @@ const ROUTES: Route[] = [
     validateEmptyInput(p.body);
     return s.getToken(ctx, validateId(p.params['token_id'], '/token_id'));
   }),
-  route('GET', '/v1/qr/verify/:opaque_token', 'verifyCredentialByToken', false, (s, ctx, p) => {
-    validateEmptyInput(p.body);
-    return s.verify(ctx, validateOpaqueToken(p.params['opaque_token']));
-  }),
+  route(
+    'GET',
+    '/v1/qr/verify/:opaque_token',
+    'verifyCredentialByToken',
+    false,
+    (s, ctx, p) => {
+      validateEmptyInput(p.body);
+      return s.verify(ctx, validateOpaqueToken(p.params['opaque_token']));
+    },
+    ['opaque_token'],
+  ),
 ];
 
 export const ROUTE_DESCRIPTORS: readonly RouteDescriptor[] = ROUTES.map(
-  ({ method, path, operationId }) => ({ method, path, operationId }),
+  ({ method, path, operationId, logRedactedParams }) => ({
+    method,
+    path,
+    operationId,
+    ...(logRedactedParams ? { logRedactedParams } : {}),
+  }),
 );
 
 function match(

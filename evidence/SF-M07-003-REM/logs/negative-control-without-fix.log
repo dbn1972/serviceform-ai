@@ -1,0 +1,11 @@
+     × only the bearer opaque_token path parameter is declared log-redacted 6ms
+     × verify path token is replaced by the route template in incoming and completed lines 572ms
+     × a rejected token (unknown, malformed or foreign) is redacted the same way 31ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected [] to deeply equal [ [ …(2) ] ]
+AssertionError: expected '{"level":"info","time":"2026-10-14T11…' not to contain '<opaque_token redacted>'
+    116|     expect(lines.join('\n')).not.toContain(opaque);
+    117|     expect(lines.join('\n')).not.toContain('probe=1');
+AssertionError: expected '{"level":"info","time":"2026-10-14T11…' not to contain '/v1/qr/verify/UUUUUUUUUUUUUUUUUUUUUUU…'
+    136|     for (const p of probes) expect(text).not.toContain(`/v1/qr/verify/…
+      Tests  3 failed | 17 passed (20)
