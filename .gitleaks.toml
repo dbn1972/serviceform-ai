@@ -39,3 +39,16 @@ paths = [
 regexes = [
   '''(?i)[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}''',
 ]
+
+# TEST_FIXTURE only. generic-api-key matches the opaque_token property name in
+# SF-CON-VERIFICATION-TOKEN examples. Values are synthetic placeholders (verify-example-token-0001).
+[[allowlists]]
+id = "sf-con-verification-token-example-opaque-token"
+description = "TEST_FIXTURE: opaque_token placeholders in three SF-CON-VERIFICATION-TOKEN JSON fixtures (generic-api-key). Not credentials."
+targetRules = ["generic-api-key"]
+paths = [
+  '''contracts/m07/examples/valid/verification-token\.json$''',
+  '''contracts/m07/examples/invalid/verification-token\.status-writable\.json$''',
+  '''contracts/m07/examples/invalid/verification-token\.embedded-pii\.json$''',
+]
+

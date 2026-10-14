@@ -42,3 +42,10 @@ Existing lock: **29/29 MATCH**. MUST NOT silently modify the current 29 frozen c
 | `contracts/shared/**` and M05/M06/M08 files | READ-ONLY |
 
 Builders start only after freeze is on `origin/main` **and** READY promotion **and** dispatch record.
+
+## Freeze preparation status (SF-M07-CG-001)
+
+The five NEW contracts above are now **FROZEN_CANDIDATE** on branch `cursor/m07-cg-001-freeze-91f2`
+(`contracts/m07/**`, lock v2.6 with 34 rows; the existing 29 rows are unchanged). They are **not**
+`FROZEN_ON_MAIN`. The repository freeze takes effect only when that branch merges to `origin/main`
+after this planning PR. Evidence: `evidence/SF-M07-CG-001/EVIDENCE.md`.

@@ -1,4 +1,4 @@
-version: "2.5"
+version: "2.6"
 # Shared contracts. FROZEN on 3 October 2026 by the Architecture & Contract Guardian after
 # CONTRACT-REVIEW-001 and owner acceptance of ADR-0002 and decisions D-01 to D-05. Any change,
 # including to a companion file, needs a Contract Change Request; scripts/gates/contracts_lock_gate.py
@@ -6,6 +6,7 @@ version: "2.5"
 # Reconfirmed 3 Oct 2026 on PR #6: 13/13 hashes match files. ADR-0006 does not change these hashes.
 # Reconfirmed 5 Oct 2026 on PR #85 freeze candidate: 19/19 hashes match files. Original 13 unchanged.
 # CG-02 freeze candidate 9 Oct 2026: append-only ten NEW rows; existing 19 hashes unchanged; 29/29 FROZEN_CANDIDATE.
+# SF-M07-CG-001 freeze candidate 14 Oct 2026 (v2.6): APPEND-ONLY five NEW M07 rows; existing 29 hashes unchanged; 34/34 FROZEN_CANDIDATE until merge.
 # A builder that needs a frozen-contract change must STOP and open a Contract Change Request.
 verified:
   date: 2026-10-09
@@ -14,6 +15,9 @@ verified:
   original_13_unchanged: true
   existing_19_unchanged: true
   adr_0006_changes_hashes: false
+  m07_candidate_date: 2026-10-14
+  m07_candidate_result: 34_FROZEN_CANDIDATE_HASHES_MATCH
+  existing_29_unchanged: true
 contracts:
   - id: SF-CON-AUDIT-EVENT
     version: 1
@@ -346,5 +350,60 @@ contracts:
     schema_hash: 463a4c5925335019dc908d98fe5f7db71969408a2b374be5b25b76e7b9652ba0
     producers: [CMP-049]
     consumers: [SF-M08-005]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-CREDENTIAL
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-022; M07-CONTRACT-PREREQUISITES"
+    path: contracts/m07/schemas/credential.schema.json
+    schema_hash: 67ab673451ccb66a47393a78643cef7e0b9ab3503df83205dd2ea25e09fe4499
+    producers: [CMP-022]
+    consumers: [SF-M07-001, SF-M07-002, SF-M07-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-SIGNING-RECORD
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-022, CMP-037; INT-013"
+    path: contracts/m07/schemas/signing-record.schema.json
+    schema_hash: 61e1e8e7df782f9448381ade8c1df44d3259cf8aee637557cd05e49331000cd9
+    producers: [CMP-022]
+    consumers: [SF-M07-001]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-CREDENTIAL-STATUS
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-024"
+    path: contracts/m07/schemas/credential-status.schema.json
+    schema_hash: a267d5150ab217022afba7d4a3d9fe7e0a93ebf6115467ed0ac159cef9f6544d
+    producers: [CMP-024]
+    consumers: [SF-M07-002, SF-M07-003]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-VERIFICATION-TOKEN
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-023; registry status read-only from CMP-024"
+    path: contracts/m07/schemas/verification-token.schema.json
+    schema_hash: c17dc5b2b703f4dbe5648fdbedba97ef2660987d8fe5ccf3e6a49f533a22d8e0
+    producers: [CMP-023]
+    consumers: [SF-M07-003]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-DIGILOCKER-PUBLISH
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 CMP-012; INT-013; CMP-030 consent"
+    path: contracts/m07/schemas/digilocker-publish.schema.json
+    schema_hash: ca0b302aeab1c85f3f387015a74240070a9b5c715d7713adb1f7cdd4bf5e87c7
+    producers: [CMP-012]
+    consumers: [SF-M07-004]
     adr0006_could_change: false
     change_request: null

@@ -1,0 +1,84 @@
+PASS unique $id count=5
+PASS unique contract_id SF-CON-CREDENTIAL-STATUS,SF-CON-CREDENTIAL,SF-CON-DIGILOCKER-PUBLISH,SF-CON-SIGNING-RECORD,SF-CON-VERIFICATION-TOKEN
+PASS refs limited to common/v1, simulation-marker/v1 and M07 siblings
+PASS no circular M07 $ref
+PASS compile credential-status.schema.json $id=https://contracts.serviceform.ai/m07/credential-status/v1
+PASS compile credential.schema.json $id=https://contracts.serviceform.ai/m07/credential/v1
+PASS compile digilocker-publish.schema.json $id=https://contracts.serviceform.ai/m07/digilocker-publish/v1
+PASS compile signing-record.schema.json $id=https://contracts.serviceform.ai/m07/signing-record/v1
+PASS compile verification-token.schema.json $id=https://contracts.serviceform.ai/m07/verification-token/v1
+PASS valid/credential-status.json -> credential-status
+PASS valid/credential.json -> credential
+PASS valid/digilocker-publish.json -> digilocker-publish
+PASS valid/signing-record.json -> signing-record
+PASS valid/verification-token.json -> verification-token
+PASS invalid/credential-status.non-registry-authority.json -> credential-status
+PASS invalid/credential-status.revoked-without-reason.json -> credential-status
+PASS invalid/credential.approval-decided.json -> credential
+PASS invalid/credential.issued-unsigned.json -> credential
+PASS invalid/digilocker-publish.reverses-issuance.json -> digilocker-publish
+PASS invalid/digilocker-publish.simulated-without-marker.json -> digilocker-publish
+PASS invalid/signing-record.real-with-marker.json -> signing-record
+PASS invalid/signing-record.simulated-without-marker.json -> signing-record
+PASS invalid/verification-token.embedded-pii.json -> verification-token
+PASS invalid/verification-token.status-writable.json -> verification-token
+PASS valid example present for credential
+PASS invalid example present for credential
+PASS valid example present for signing-record
+PASS invalid example present for signing-record
+PASS valid example present for credential-status
+PASS invalid example present for credential-status
+PASS valid example present for verification-token
+PASS invalid example present for verification-token
+PASS valid example present for digilocker-publish
+PASS invalid example present for digilocker-publish
+PASS credential.approval_decision_by_this_component const false
+PASS credential.registry_status_owner_cmp const CMP-024
+PASS credential issuance not reversible by publish failure
+PASS credential issuance not reversible by notification failure
+PASS credential lifecycle enum GENERATED/SIGNED/ISSUED
+PASS signing-record.integration_contract const INT-013
+PASS signing-record.connector_mode REAL|SANDBOX|SIMULATED
+PASS signing-record.simulation_marker refs frozen SF-CON-SIMULATION-MARKER
+PASS signing-record conditionally requires simulation_marker when SIMULATED
+PASS digilocker-publish.integration_contract const INT-013
+PASS digilocker-publish.connector_mode REAL|SANDBOX|SIMULATED
+PASS digilocker-publish.simulation_marker refs frozen SF-CON-SIMULATION-MARKER
+PASS digilocker-publish conditionally requires simulation_marker when SIMULATED
+PASS signing-record.retry_safe const true
+PASS credential-status.status_authority_cmp const CMP-024
+PASS credential-status.history_append_only const true
+PASS credential-status enum REGISTERED/ACTIVE/SUSPENDED/REVOKED/REISSUED
+PASS verification-token.status_source_cmp const CMP-024
+PASS verification-token registry status read-only
+PASS verification-token status_write_forbidden
+PASS verification-token embedded_pii_forbidden
+PASS verification-token public_view closed
+PASS digilocker-publish never reverses issuance
+PASS digilocker-publish never changes registry status
+PASS digilocker-publish only for ISSUED credentials
+PASS digilocker-publish requires consent_ref
+PASS digilocker-publish requires purpose_code
+PASS digilocker-publish requires idempotency_key
+PASS credential-status.schema.json contract_status const FROZEN
+PASS credential-status.schema.json freeze_status const FROZEN
+PASS credential-status.schema.json tenant_id common uuid
+PASS credential-status.schema.json closed (additionalProperties false)
+PASS credential.schema.json contract_status const FROZEN
+PASS credential.schema.json freeze_status const FROZEN
+PASS credential.schema.json tenant_id common uuid
+PASS credential.schema.json closed (additionalProperties false)
+PASS digilocker-publish.schema.json contract_status const FROZEN
+PASS digilocker-publish.schema.json freeze_status const FROZEN
+PASS digilocker-publish.schema.json tenant_id common uuid
+PASS digilocker-publish.schema.json closed (additionalProperties false)
+PASS signing-record.schema.json contract_status const FROZEN
+PASS signing-record.schema.json freeze_status const FROZEN
+PASS signing-record.schema.json tenant_id common uuid
+PASS signing-record.schema.json closed (additionalProperties false)
+PASS verification-token.schema.json contract_status const FROZEN
+PASS verification-token.schema.json freeze_status const FROZEN
+PASS verification-token.schema.json tenant_id common uuid
+PASS verification-token.schema.json closed (additionalProperties false)
+
+5 M07 contracts, 0 failure(s)
