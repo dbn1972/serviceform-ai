@@ -52,3 +52,13 @@ paths = [
   '''contracts/m07/examples/invalid/verification-token\.embedded-pii\.json$''',
 ]
 
+# TEST_FIXTURE only. SF-M07-SEC pii-logging detector patterns and probe fixtures.
+# generic-api-key false positives on property names containing "key"/"token".
+[[allowlists]]
+id = "sf-m07-sec-pii-logging-test-fixture"
+description = "TEST_FIXTURE: tests/security/m07/pii-logging.test.ts (generic-api-key). Not credentials."
+targetRules = ["generic-api-key"]
+paths = [
+  '''tests/security/m07/pii-logging\.test\.ts$''',
+]
+
