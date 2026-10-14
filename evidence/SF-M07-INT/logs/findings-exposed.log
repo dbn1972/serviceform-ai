@@ -1,0 +1,75 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/integration/m07/int-013-modes.test.ts (28 tests) 71ms
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts (17 tests | 2 failed) 103ms
+   ❯ INT-008 approval → signing → credential → QR → DigiLocker (17)
+     ✓ runs the full chain end to end and every hop conforms to its FROZEN contract 55ms
+     ✓ emits CredentialGenerated → Signed → Issued and registry/QR/DigiLocker events as valid envelopes 6ms
+     ✓ never calls a cross-component port while any component transaction is open 4ms
+     ✓ refuses issuance without a recorded upstream approval and nothing downstream is created 3ms
+     ✓ refuses client-supplied approval/status/pins (LLM/client cannot decide approval) 1ms
+     ✓ refuses citizen-initiated issuance (SF-AUTH-002) 0ms
+     ✓ a FAILED eSign leaves the credential GENERATED, unregistered and not QR-mintable 2ms
+     ✓ a CMP-024 outage leaves the credential SIGNED (not ISSUED); retry resumes with one registry entry 1ms
+     ✓ replays an identical Idempotency-Key without re-signing or re-registering 2ms
+     ✓ QR verification reads status live from CMP-024: suspend/revoke is reflected immediately 6ms
+     ✓ QR verify fails closed (no cached status) when CMP-024 is unavailable 2ms
+     ✓ QR mint refuses client attempts to supply registry status 1ms
+     ✓ FINDING M07-INT-F02 (characterised): officer-initiated issuance cannot register at CMP-024 through a context-preserving bridge 1ms
+     ✓ CLOSED M07-INT-F01: CMP-012 refuses to publish a credential that CMP-022 never issued 1ms
+     ✓ CLOSED M07-INT-F01b: CMP-012 refuses to publish a GENERATED (unsigned) credential 1ms
+     × FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH 10ms
+     × FINDING M07-INT-F04: CMP-012 audit envelopes use event_type AuditEvent with envelope tenant_id null; CMP-022/023/024 (and every other component) emit tenant-scoped AuditEventSubmitted 4ms
+ ✓ tests/integration/m07/int-011-tenant-isolation.test.ts (12 tests) 56ms
+ ✓ tests/integration/m07/int-008-no-reversal.test.ts (6 tests) 39ms
+ ✓ tests/integration/m07/int-011-host.test.ts (4 tests) 181ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH
+AssertionError: expected '[{"instancePath":"","schemaPath":"#/a…' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ [{"instancePath":"","schemaPath":"#/allOf/0/then/required","keyword":"required","params":{"missingProperty":"simulation_marker"},"message":"must have required property 'simulation_marker'"},{"instancePath":"","schemaPath":"#/allOf/0/if","keyword":"if","params":{"failingKeyword":"then"},"message":"must match \"then\" schema"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"contract_id"},"message":"must have required property 'contract_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"contract_status"},"message":"must have required property 'contract_status'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"freeze_status"},"message":"must have required property 'freeze_status'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"tenant_id"},"message":"must have required property 'tenant_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"credential_lifecycle_status_at_request"},"message":"must have required property 'credential_lifecycle_status_at_request'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"consent_ref"},"message":"must have required property 'consent_ref'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"purpose_code"},"message":"must have required property 'purpose_code'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"connector_binding_id"},"message":"must have required property 'connector_binding_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"integration_contract"},"message":"must have required property 'integration_contract'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"idempotency_key"},"message":"must have required property 'idempotency_key'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"invented_statutory_policy_forbidden"},"message":"must have required property 'invented_statutory_policy_forbidden'"},{"instancePath":"","schemaPath":"#/additionalProperties","keyword":"additionalProperties","params":{"additionalProperty":"created_at"},"message":"must NOT have additional properties"}]
+
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:443:68
+    441|       );
+    442|       expect(read.status).toBe(200);
+    443|       expect(conforms('m07/digilocker-publish', read.body).errors).toB…
+       |                                                                    ^
+    444|     },
+    445|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F04: CMP-012 audit envelopes use event_type AuditEvent with envelope tenant_id null; CMP-022/023/024 (and every other component) emit tenant-scoped AuditEventSubmitted
+AssertionError: expected [ 'AuditEvent' ] to deeply equal [ 'AuditEventSubmitted' ]
+
+- Expected
++ Received
+
+  [
+-   "AuditEventSubmitted",
++   "AuditEvent",
+  ]
+
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:463:48
+    461|         .map((o) => o.envelope as { event_type: string; tenant_id: str…
+    462|       expect(dlAudit.length).toBe(1);
+    463|       expect(dlAudit.map((e) => e.event_type)).toEqual(['AuditEventSub…
+       |                                                ^
+    464|       expect(dlAudit.map((e) => e.tenant_id)).toEqual([T1]);
+    465|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  2 failed | 65 passed (67)
+   Start at  15:51:30
+   Duration  952ms (transform 41%, import 37%, tests 21%, worker 1%)
+
+JUNIT report written to /workspace/evidence/SF-M07-INT/junit/independent-int.xml

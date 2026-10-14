@@ -1,0 +1,15 @@
+{
+  "extends": "/home/ubuntu/wt-SF-M07-INT/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true, "ignoreDeprecations": "6.0", "declaration": false, "sourceMap": false, "types": ["node"],
+    "typeRoots": ["/home/ubuntu/wt-SF-M07-INT/node_modules/@types"],
+    "baseUrl": "/home/ubuntu/wt-SF-M07-INT",
+    "paths": {
+      "@serviceform/contracts": ["packages/contracts/src/index.ts"],
+      "@serviceform/observability": ["packages/observability/src/index.ts"],
+      "fastify": ["apps/api/node_modules/fastify/fastify.d.ts"],
+      "vitest": ["node_modules/vitest"]
+    }
+  },
+  "include": ["/home/ubuntu/wt-SF-M07-INT/tests/integration/m07/**/*.ts"]
+}

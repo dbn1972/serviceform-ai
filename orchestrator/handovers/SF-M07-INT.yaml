@@ -1,49 +1,75 @@
-# SF-M07-INT — M07 independent INT-008/011/013
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# SF-M07-INT — M07 independent INT-008/011/013 (re-verify after rem #152/#153)
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. HIGH findings closed. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M07-INT
-title: M07 independent INT-008/011/013
+title: M07 independent INT-008/011/013 re-verify
 module_id: M07
 agent_role: integration_stitcher
 builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
 integration_ids: [INT-008, INT-011, INT-013]
+component_ids_under_test: [CMP-022, CMP-024, CMP-023, CMP-012]
+branch: cursor/m07-int-91f2
 allowed_write_paths:
   - tests/integration/m07/**
   - evidence/SF-M07-INT/**
   - orchestrator/handovers/SF-M07-INT.yaml
-allowed_write_notes:
-  - Independent verifiers must not patch owner production code
-  - EVD recommends G3 only; cannot issue G3/CERTIFIED/G6
 read_only_paths:
   - services/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
 serial_after:
-  - SF-M07-005
+  - SF-M07-005 (merged #149)
+  - SF-M07-003-REM (merged #153)
+  - SF-M07-004-REM (merged #152)
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+authorization_source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+execution_base: e8f847afb1bfe155028dc99706399fbe2adca708
 self_certified: false
-not_certified: true
 certified: false
-release_certified: false
 g3: false
 g6: false
-ccr_required: false
-frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+owner_production_code_changed: false
+
+test_results:
+  m07_int_vitest: 67 total — 65 PASS, 2 expected-fail MEDIUM findings, 0 unexpected failures
+  m07_int_findings_exposed: 65 PASS / 2 FAIL (M07_INT_SHOW_FINDINGS=1)
+  cross_tenant_leakage: 0
+
+acceptance:
+  INT-008_approval_sign_issue_qr_digilocker: PASS
+  INT-011_tenant_isolation_host: PASS
+  INT-011_tenant_isolation_components: PASS (CMP-012 F05 CLOSED)
+  INT-013_production_simulated_fail_closed: PASS (CMP-012 F06 CLOSED)
+  issuance_not_reversed_by_digilocker_or_notification_outage: PASS
+
+findings_closed_high:
+  - M07-INT-F01
+  - M07-INT-F01b
+  - M07-INT-F01c
+  - M07-INT-F05
+  - M07-INT-F06
+
+findings_open_non_blocking:
+  - id: M07-INT-F03
+    severity: MEDIUM
+    owner: CMP-012
+  - id: M07-INT-F04
+    severity: MEDIUM
+    owner: CMP-012
+  - id: M07-INT-F02
+    severity: MEDIUM
+    owner: seam ADR
+
+recommended_result: SF_M07_INT_PASS_HIGH_CLOSED_NON_BLOCKING_MEDIUM_REMAIN
+recommendation: HIGH blocking findings closed by #152/#153; EVD may recommend G3_INTEGRATION_VERIFIED; do not issue G3/CERTIFIED/G6 here
 
 stop_conditions:
   - patch owner production code
   - CERTIFIED or G6 claim
   - issue G3 (recommend only)
+
+evidence: evidence/SF-M07-INT/EVIDENCE.md
