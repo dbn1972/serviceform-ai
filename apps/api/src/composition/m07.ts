@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import type { RequestContext } from '@serviceform/contracts';
+import { sanitizeRequestForLog } from '@serviceform/observability';
 
 /**
  * Optional M07 mounts: CMP-022 credential engine, CMP-024 credential registry,
@@ -72,7 +73,11 @@ type NeutralHandler = (req: NeutralRequest) => Promise<NeutralResponse>;
 type HeaderContextResolver = (
   headers: Readonly<Record<string, string | string[] | undefined>>,
 ) => Promise<RequestContext | null>;
-type RouteDescriptors = ReadonlyArray<{ method: 'GET' | 'POST'; path: string }>;
+type RouteDescriptors = ReadonlyArray<{
+  method: 'GET' | 'POST';
+  path: string;
+  logRedactedParams?: readonly string[];
+}>;
 
 const fastifyRequestStore = new AsyncLocalStorage<FastifyRequest>();
 
@@ -123,6 +128,38 @@ function fastifyUrlFromDescriptor(path: string): string {
   return path.replace(/\{([A-Za-z0-9_]+)\}/g, ':$1');
 }
 
+/**
+ * Route-scoped `req` log serializer: the CMP-047 path-only sanitisation, then every path
+ * segment bound to a component-declared bearer parameter is replaced by its `:param`
+ * template segment. Applies to Fastify's `incoming request` line and to CMP-047's
+ * `request completed` line, both of which log through the route's child logger.
+ */
+function logRedactingReqSerializer(
+  template: string,
+  redacted: readonly string[],
+): (req: unknown) => Record<string, unknown> {
+  const tpl = template.split('/');
+  const names = new Set(redacted);
+  return (req) => {
+    const out = sanitizeRequestForLog(
+      (req ?? {}) as { id?: unknown; method?: unknown; url?: unknown },
+    );
+    if (typeof out['url'] === 'string') {
+      const parts = out['url'].split('/');
+      out['url'] =
+        parts.length === tpl.length
+          ? parts
+              .map((part, i) => {
+                const seg = tpl[i] ?? '';
+                return seg.startsWith(':') && names.has(seg.slice(1)) ? seg : part;
+              })
+              .join('/')
+          : template;
+    }
+    return out;
+  };
+}
+
 async function mountNeutralRoutes(
   app: FastifyInstance,
   routes: RouteDescriptors,
@@ -134,9 +171,13 @@ async function mountNeutralRoutes(
     const key = `${route.method} ${url}`;
     if (seen.has(key)) continue;
     seen.add(key);
+    const redacted = route.logRedactedParams ?? [];
     app.route({
       method: route.method,
       url,
+      ...(redacted.length > 0
+        ? { logSerializers: { req: logRedactingReqSerializer(url, redacted) } }
+        : {}),
       handler: async (request, reply) =>
         fastifyRequestStore.run(request, async () => {
           const res = await handle(toNeutralRequest(request));

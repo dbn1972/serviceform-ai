@@ -235,6 +235,14 @@ describe('CMP-023 component contracts', () => {
     expect(readJson(join(root, 'contracts/topics.json'))['name']).toBe(TOPIC_DOMAIN);
   });
 
+  it('only the bearer opaque_token path parameter is declared log-redacted', () => {
+    const redacted = ROUTE_DESCRIPTORS.filter((r) => r.logRedactedParams).map((r) => [
+      `${r.method} ${r.path}`,
+      r.logRedactedParams,
+    ]);
+    expect(redacted).toEqual([['GET /v1/qr/verify/:opaque_token', ['opaque_token']]]);
+  });
+
   it('OpenAPI response schemas accept what the handler returns', async () => {
     const openapi = readJson(join(root, 'contracts/openapi.json'));
     const local = newAjv(false);
