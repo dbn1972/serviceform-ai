@@ -1,6 +1,8 @@
 # M08 G3 recommendation (independent evidence bind)
 
-**Recommended gate: `G3_INTEGRATION_VERIFIED`** — recommendation only. **Not issued.**
+**Recommended gate: `G3_INTEGRATION_VERIFIED`**
+
+> **Superseded for issuance status:** Human gate authority issued `G3_INTEGRATION_VERIFIED` via `docs/verification/M08-G3-GATE-RECORD.md` / `orchestrator/handovers/SF-M08-GATE.yaml` (`HUMAN_M08_G3_AUTHORIZATION`). This recommendation document remains the EVD bind narrative. CERTIFIED / G6 remain **false**.
 
 Independent evidence verifier (SF-M08-EVD) bind of executed builder, stitch, host, INT and SEC records on exact production SoT `cb31a7d30fba1b912e42a633187efd786fbb3f2d`. **Human/CI decides G3.** This record does **not** certify, issue G3, issue G6, or mark CERTIFIED / RELEASE CERTIFIED.
 
@@ -15,7 +17,7 @@ Independent evidence verifier (SF-M08-EVD) bind of executed builder, stitch, hos
 | Disposition | **`SF_M08_EVD_PASS_G3_RECOMMENDED`** |
 | Recommended result | **`G3_INTEGRATION_VERIFIED`** |
 | Human/CI decision | **required** (this agent does **not** issue the gate) |
-| `g3` / `gate_issued` | **false** |
+| `G3_ISSUED` / `gate_issued` / `human_gate_issued` | **true** (see `M08-G3-GATE-RECORD.md`; this EVD row was false at recommendation time) |
 | Self-certified | **false** |
 | CERTIFIED / G6 / RELEASE CERTIFIED | **false** |
 | SIMULATED boundaries | CMP-035 `SimulatedProjectionRules` (refused in UAT/PREPROD/PRODUCTION); CMP-045/CMP-046 unbound ports fail closed |
@@ -65,4 +67,4 @@ Independent evidence verifier (SF-M08-EVD) bind of executed builder, stitch, hos
 
 ## Next external gate
 
-**Human/CI: issue `G3_INTEGRATION_VERIFIED` if accepted.** Agents must not set `g3=true` / CERTIFIED / G6.
+**Issued:** see `docs/verification/M08-G3-GATE-RECORD.md` / `orchestrator/handovers/SF-M08-GATE.yaml`. Agents must not set CERTIFIED / G6.
