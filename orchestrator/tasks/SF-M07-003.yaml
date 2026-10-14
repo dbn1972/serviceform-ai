@@ -50,16 +50,16 @@ read_only_paths:
   - services/cmp-022-credential-engine/**
   - services/cmp-024-credential-registry/**
   - services/cmp-012-digilocker/**
-wave_eligible_now: false
+wave_eligible_now: true
 serial_after:
   - SF-M07-CG-001
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
+planning_only: false
+implementation_authorized: true
 dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
@@ -68,11 +68,16 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
+cg_07_contract_freeze_required: false
+freeze_authorized: true
+ready_authorization:
+  family: HUMAN_M07_THROUGH_EVD
+  status: AUTHORIZATION
+  join_separator: "_"
+  wave_a_ready: true
 base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
+  prefix: fcd6c2d3
+  suffix: 4213454f82de62c7a3e2c16c815bf46c
 join_separator: "_"
 
 contract_locks:

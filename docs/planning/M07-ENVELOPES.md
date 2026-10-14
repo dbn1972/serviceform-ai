@@ -4,7 +4,7 @@ Machine-readable copies: `orchestrator/handovers/SF-M07-*.yaml` and `orchestrato
 
 ## Normative topology
 
-PLANNING → SF-M07-CG-001 freeze (**OFF**) → Wave A `001∥002∥003∥004` (**OFF**) → STITCH-A → STITCH-B → `005` host → `INT∥SEC` → EVD recommend G3 → human G3 later.
+PLANNING → SF-M07-CG-001 freeze (**FROZEN_ON_MAIN**) → Wave A `001∥002∥003∥004` (**READY**; not yet dispatched) → STITCH-A → STITCH-B → `005` host → `INT∥SEC` → EVD recommend G3 → human G3 later.
 
 ## Path uniqueness (Wave A)
 
