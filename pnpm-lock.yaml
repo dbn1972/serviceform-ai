@@ -593,6 +593,8 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
 
+  services/cmp-012-digilocker: {}
+
   services/cmp-013-document-upload:
     dependencies:
       '@serviceform/contracts':
@@ -661,6 +663,12 @@ importers:
   services/cmp-020-fee-calculation: {}
 
   services/cmp-021-payment: {}
+
+  services/cmp-022-credential-engine: {}
+
+  services/cmp-023-qr-verification: {}
+
+  services/cmp-024-credential-registry: {}
 
   services/cmp-025-notification: {}
 
@@ -3484,7 +3492,6 @@ packages:
 
   sonic-boom@4.2.1:
     resolution: {integrity: sha512-w6AxtubXa2wTXAUsZMMWERrsIRAdrK0Sc+FUytWvYAhBJLyuI4llrMIC1DtlNSdI99EI86KZum2MMq3EAZlF9Q==}
-
     engines: {node: '>=0.10.0'}
 
   source-map-js@1.2.2:
@@ -6206,7 +6213,6 @@ snapshots:
   sonic-boom@4.2.1:
     dependencies:
       atomic-sleep: 1.0.0
-
 
   source-map-js@1.2.2: {}
 
