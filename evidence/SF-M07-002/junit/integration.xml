@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="5.590027374">
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-14T05:23:53.609Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="5.590027374">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; API flow persists status, append-only history and outbox rows" time="0.076981844">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; RLS: another tenant sees no rows and cannot write rows for the first tenant" time="0.034942232">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; no tenant context means no rows" time="0.025866768">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; history is immutable and entries are never deleted" time="0.026283834">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; database guards refuse illegal and terminal transitions and mismatched history" time="0.03741698">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; a peer component role has no access to the registry schema" time="0.027226759">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; the read transaction is READ ONLY at the database" time="0.023683796">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 on PostgreSQL through the runtime login role &gt; runtime login is not the owner and holds no BYPASSRLS" time="0.028684436">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-024 migration reversibility &gt; up -&gt; down 2 -&gt; up on an isolated database" time="1.562347953">
+        </testcase>
+    </testsuite>
+</testsuites>

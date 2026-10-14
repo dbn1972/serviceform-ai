@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="85" failures="0" errors="0" time="0.121641636">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-14T05:23:47.575Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.058924292">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-CREDENTIAL-STATUS (consumed, owned by CMP-024) &gt; frozen schema still pins authority, append-only history and the policy guard" time="0.001399382">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-CREDENTIAL-STATUS (consumed, owned by CMP-024) &gt; frozen valid example passes and both invalid examples fail (harness sanity)" time="0.001378856">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-CREDENTIAL-STATUS (consumed, owned by CMP-024) &gt; every status document CMP-024 returns validates, across all five statuses" time="0.006151415">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-CREDENTIAL-STATUS (consumed, owned by CMP-024) &gt; component status enum and reason-required set equal the frozen schema" time="0.000367383">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-024 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.025349602">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-024 &gt; PEP inputs and the request context validate against frozen authz and request-context schemas" time="0.014872225">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-024 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001211573">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-024 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000588362">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-024 component contracts &gt; OpenAPI status responses reference the frozen SF-CON-CREDENTIAL-STATUS schema" time="0.000599402">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-024 component contracts &gt; isolation declarations validate and match the migrations (every tenant table FORCE RLS)" time="0.002942173">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-024 component contracts &gt; no request body schema accepts a tenant id or a status field" time="0.000667997">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; defines no statutory revocation grounds, validity periods or eSign/DigiLocker policy" time="0.000480717">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; history is insert-only at the database and the runtime role cannot update or delete it" time="0.000238306">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; the read path opens a READ ONLY transaction with a mutator-free view" time="0.000225514">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; no hard-coded tenant, jurisdiction, service or official names in source" time="0.000283377">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; declares no runtime dependency, makes no network call and imports no peer component" time="0.000553081">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="policy invention guard, read-only posture and component boundary &gt; role and privilege posture: NOLOGIN, no SUPERUSER/BYPASSRLS, no PUBLIC grants" time="0.000196074">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-14T05:23:47.578Z" hostname="cursor" tests="29" failures="0" errors="0" skipped="0" time="0.006543259">
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REGISTERED --ACTIVATE--&gt; ACTIVE" time="0.001376572">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REGISTERED --SUSPEND--&gt; refused" time="0.000277129">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REGISTERED --REINSTATE--&gt; refused" time="0.000119218">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REGISTERED --REVOKE--&gt; REVOKED" time="0.000197909">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REGISTERED --REISSUE--&gt; refused" time="0.000094139">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; ACTIVE --ACTIVATE--&gt; refused" time="0.000147459">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; ACTIVE --SUSPEND--&gt; SUSPENDED" time="0.000120935">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; ACTIVE --REINSTATE--&gt; refused" time="0.000126779">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; ACTIVE --REVOKE--&gt; REVOKED" time="0.000321195">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; ACTIVE --REISSUE--&gt; REISSUED" time="0.000166171">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; SUSPENDED --ACTIVATE--&gt; refused" time="0.000106859">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; SUSPENDED --SUSPEND--&gt; refused" time="0.000054957">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; SUSPENDED --REINSTATE--&gt; ACTIVE" time="0.000053019">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; SUSPENDED --REVOKE--&gt; REVOKED" time="0.000039947">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; SUSPENDED --REISSUE--&gt; REISSUED" time="0.000034511">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REVOKED --ACTIVATE--&gt; refused" time="0.000065873">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REVOKED --SUSPEND--&gt; refused" time="0.000040341">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REVOKED --REINSTATE--&gt; refused" time="0.000035053">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REVOKED --REVOKE--&gt; refused" time="0.000035248">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REVOKED --REISSUE--&gt; refused" time="0.000033602">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REISSUED --ACTIVATE--&gt; refused" time="0.000036841">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REISSUED --SUSPEND--&gt; refused" time="0.000034907">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REISSUED --REINSTATE--&gt; refused" time="0.000034793">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REISSUED --REVOKE--&gt; refused" time="0.000034278">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; REISSUED --REISSUE--&gt; refused" time="0.000035657">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; terminal statuses have no outgoing transition and REGISTERED is never a target" time="0.001026272">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="registry state machine &gt; opaque refs reject free text, whitespace and over-long values" time="0.000240204">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="toContract &gt; orders history by sequence, omits null reasons and carries the successor id" time="0.000327624">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="toContract &gt; non-reissued entries carry no successor id" time="0.000078562">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/read-port.test.ts" timestamp="2026-10-14T05:23:47.579Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.013388408">
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; returns the SF-CON-CREDENTIAL-STATUS document from a read-only transaction" time="0.005022203">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; repeated reads by the QR verification workload leave status and history untouched" time="0.001342894">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; a read carrying a body or any query parameter is refused before the PDP" time="0.000934458">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; non-GET methods on the read path are refused" time="0.001363807">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; every GET route is a READ port and every READ port is a GET" time="0.000247499">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; the in-process read port is frozen and exposes only getStatus" time="0.000767704">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; the read transaction view has no mutators and rejects state changes" time="0.001378335">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; citizens do not use the tenant-internal read port (public verification is CMP-023)" time="0.000660992">
+        </testcase>
+        <testcase classname="test/unit/read-port.test.ts" name="status read port never mutates status &gt; unknown credential reads return 404" time="0.00053868">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-14T05:23:47.580Z" hostname="cursor" tests="22" failures="0" errors="0" skipped="0" time="0.031620999">
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; enters the registry as REGISTERED with history sequence 1 and emits CredentialRegistered" time="0.004471825">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; replays the same idempotency key without a second history row; a different body conflicts" time="0.004948329">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; refuses re-registering the same credential with a new key" time="0.000590818">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; only the SYSTEM workload registers; officers and citizens are refused and audited" time="0.00067299">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; rejects server-owned fields, client time, unknown fields and non-opaque issuer refs" time="0.000782048">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registration &gt; requires an idempotency key on every command" time="0.000228383">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; ACTIVE -&gt; SUSPENDED -&gt; ACTIVE -&gt; REVOKED appends one immutable entry per change" time="0.00316576">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; earlier history entries are never rewritten by later transitions" time="0.000634673">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; suspend and revoke require a reason_code_ref; free text is refused" time="0.001012812">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; terminal REVOKED refuses every further command and audits the refusal as FAILED" time="0.00145966">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; refuses transitions outside the lifecycle (REGISTERED cannot be suspended)" time="0.000475543">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; a stale expected_version is refused without a state change" time="0.002389572">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; unknown credential returns 404" time="0.000233958">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle transitions and immutable history &gt; transition commands are idempotent per key" time="0.000523485">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="reissue &gt; REISSUED requires a live successor in the registry and records it" time="0.000566041">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="reissue &gt; refuses a missing, unregistered, self or terminal successor" time="0.000911256">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="reissue &gt; superseded_by_credential_id is only accepted on reissue" time="0.000374193">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorisation (OPA PEP) and fail-closed behaviour &gt; an OPA denial is 403, audited DENIED, and changes nothing" time="0.005337851">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorisation (OPA PEP) and fail-closed behaviour &gt; a PDP outage fails closed with 503" time="0.000353526">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorisation (OPA PEP) and fail-closed behaviour &gt; citizens cannot change status" time="0.000296689">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorisation (OPA PEP) and fail-closed behaviour &gt; the PDP is consulted before any transaction opens" time="0.000363452">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="authorisation (OPA PEP) and fail-closed behaviour &gt; events and audits carry opaque refs only (no free-text or holder data)" time="0.000341677">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/tenant-negative.test.ts" timestamp="2026-10-14T05:23:47.581Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.011164678">
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; tenant B cannot read, suspend, revoke or reissue a tenant A credential" time="0.004823883">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; a reissue successor registered only in another tenant is not visible" time="0.001609905">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; the same credential id in two tenants keeps two independent registries" time="0.000829833">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; idempotency keys are tenant scoped: replaying A key in B does not return A data" time="0.000483111">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; tenant-identifying headers are refused (tenant comes from server context only)" time="0.000655048">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; a tenant_id in the body is refused as cross-tenant" time="0.000232716">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; missing or tenant-less context fails closed (401)" time="0.000255859">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (negative) &gt; every PEP input names the caller tenant as both subject and resource tenant" time="0.001157989">
+        </testcase>
+    </testsuite>
+</testsuites>
