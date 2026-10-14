@@ -1,0 +1,21 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/security/m07/authz-deny-by-default.test.ts (7 tests) 20ms
+ ✓ tests/security/m07/host-forged-tenant.test.ts (5 tests) 394ms
+ ✓ tests/security/m07/pii-logging.test.ts (4 tests) 79ms
+ ✓ tests/security/m07/tenant-isolation.test.ts (6 tests) 19ms
+ ✓ tests/security/m07/status-mutation-boundary.test.ts (7 tests) 18ms
+ ✓ tests/security/m07/component-guards.test.ts (5 tests) 9ms
+ ✓ tests/security/m07/digilocker-preconditions.test.ts (3 tests) 6ms
+ ↓ tests/security/m07/db-privilege-rls.test.ts (7 tests | 7 skipped)
+
+ Test Files  7 passed | 1 skipped (8)
+      Tests  37 passed | 7 skipped (44)
+   Start at  15:54:52
+   Duration  2.41s (import 47%, tests 30%, transform 22%, worker 1%)
+
+    Isolate  8 workers spawned · ~65ms startup each (spawn + environment, per file)
+             at least ~458ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/evidence/SF-M07-SEC/junit/security.xml
