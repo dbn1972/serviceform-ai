@@ -1,0 +1,104 @@
+# SF-M07-004 handover — CMP-012 DigiLocker Connector (M07 Wave A)
+# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# Freeze contracts and host mounts deferred. DigiLocker/eSign policy not invented.
+
+task_id: SF-M07-004
+title: CMP-012 DigiLocker Connector
+module_id: M07
+build_plan: specs/build-plan.yaml (ADR-0001)
+component_ids: [CMP-012]
+integration_ids: [INT-008, INT-011, INT-013]
+requirement_ids:
+  - Eng-v1.4-CMP-012
+  - INT-008
+  - Constitution-tenant-isolation
+agent_role: component_builder
+builder_agent: serviceform-integration-builder
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: agent/M07-012-digilocker-SF-M07-004
+worktree: ../wt-SF-M07-004
+parallel_group: M07-A
+privilege_role: sf_cmp012_rw
+schema: sf_digilocker
+hard_serial_locks: [LOCK-2, LOCK-3]
+depends_on:
+  - SF-M07-CG-001 FROZEN_ON_MAIN
+  - existing 29 FROZEN contracts MATCH plus NEW M07 rows
+  - LOCK-1 planning PR on main
+  - human Wave A READY + dispatch authorization
+allowed_write_paths:
+  - services/cmp-012-digilocker/**
+  - db/migrations/*_cmp-012-*.sql
+  - evidence/SF-M07-004/**
+  - orchestrator/handovers/SF-M07-004.yaml
+allowed_write_notes:
+  - Consume frozen contracts/ports only; no sibling SQL
+  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M07-005
+  - Issuance must not reverse on DigiLocker/notification outage
+  - INT-013 REAL|SANDBOX|SIMULATED; PRODUCTION critical SIMULATED fail-closed
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+  - specs/**
+  - policy/**
+  - infra/**
+  - services/cmp-022-credential-engine/**
+  - services/cmp-024-credential-registry/**
+  - services/cmp-023-qr-verification/**
+wave_eligible_now: false
+serial_after:
+  - SF-M07-CG-001
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_07_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: fd335e8c
+  suffix: fd6a3c616f5133d09191e721201d4ab5
+join_separator: "_"
+
+contract_locks:
+  - SF-CON-COMMON
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ERROR-CATALOGUE
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-IDEMPOTENCY
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APPLICATION-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-COMMAND-TRANSITION
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+  - SF-CON-NOTIFICATION-DISPATCH
+stop_conditions:
+  - patch frozen contracts
+  - invent DigiLocker/eSign/statutory policy
+  - CERTIFIED or G3 or G6 claim
+  - write outside allowed_write_paths
+  - reverse Issued on publish/notify failure

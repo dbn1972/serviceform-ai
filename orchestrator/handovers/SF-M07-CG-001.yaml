@@ -1,0 +1,88 @@
+# SF-M07-CG-001 — NEW M07 contract freeze (PLANNING / PROPOSED)
+# Not frozen. freeze_authorized false in LOCK-1. Not CERTIFIED. Not G6. Builders OFF.
+record: SF-M07-CG-001
+task_id: SF-M07-CG-001
+module_id: M07
+agent_role: contract_guardian
+builder_agent: serviceform-architecture-guardian
+decision:
+  family: SF_M07_CG001_FREEZE
+  status: PROPOSED
+pre_freeze_authorized: false
+freeze_authorized: false
+freeze_prepared: false
+repository_freeze_effective: false
+implementation_authorized: false
+dispatched: false
+wave_a_eligible: false
+wave_a_eligible_now: []
+contracts_status: PROPOSED
+freeze_status: PROPOSED
+in_contracts_lock: false
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_07_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: fd335e8c
+  suffix: fd6a3c616f5133d09191e721201d4ab5
+join_separator: "_"
+
+contracts_lock_mode: APPEND_NEW_M07_ROWS_ONLY
+existing_29_frozen_contracts_mutable: false
+human_authorization_for_freeze: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+decision_authority:
+  class: human_architecture_owner
+  name: Debabrata Nayak
+proposed_contracts:
+  - id: SF-CON-CREDENTIAL
+    path: contracts/m07/schemas/credential.schema.json
+    owner: CMP-022
+  - id: SF-CON-SIGNING-RECORD
+    path: contracts/m07/schemas/signing-record.schema.json
+    owner: CMP-022
+  - id: SF-CON-CREDENTIAL-STATUS
+    path: contracts/m07/schemas/credential-status.schema.json
+    owner: CMP-024
+  - id: SF-CON-VERIFICATION-TOKEN
+    path: contracts/m07/schemas/verification-token.schema.json
+    owner: CMP-023
+  - id: SF-CON-DIGILOCKER-PUBLISH
+    path: contracts/m07/schemas/digilocker-publish.schema.json
+    owner: CMP-012
+allowed_write_paths:
+  - contracts/m07/**
+  - orchestrator/contracts-lock.yaml
+  - evidence/SF-M07-CG-001/**
+  - orchestrator/handovers/SF-M07-CG-001.yaml
+allowed_write_notes:
+  - Append-only NEW lock rows; existing 29 hashes byte-identical
+  - Do not edit contracts/shared/** or M05/M06/M08 contract files
+read_only_paths:
+  - contracts/shared/**
+  - contracts/m05/**
+  - contracts/m06/**
+  - contracts/m08/**
+  - services/**
+  - apps/**
+  - pnpm-lock.yaml
+serial_after:
+  - SF-M07-PLAN
+stop_conditions:
+  - mutate existing 29 frozen contract hashes
+  - start Wave A before FROZEN_ON_MAIN
+  - CERTIFIED or G6 claim
+  - invent DigiLocker/eSign statutory policy
