@@ -1,5 +1,5 @@
-# SF-M07-EVD — M07 evidence bind; recommend G3 only
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# SF-M07-EVD — M07 evidence bind; recommend G3 only (not issued)
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M07-EVD
 title: M07 evidence bind; recommend G3 only
@@ -7,6 +7,8 @@ module_id: M07
 agent_role: evidence_verifier
 builder_agent: serviceform-evidence-verifier
 integration_ids: [INT-008, INT-011, INT-013]
+component_ids_under_test: [CMP-022, CMP-024, CMP-023, CMP-012]
+branch: cursor/m07-evd-91f2
 allowed_write_paths:
   - docs/verification/M07-G3-RECOMMENDATION.md
   - evidence/SF-M07-EVD/**
@@ -18,33 +20,52 @@ read_only_paths:
   - services/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
 serial_after:
   - SF-M07-INT
   - SF-M07-SEC
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+authorization_source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+builders_dispatched_this_envelope: true
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+execution_base: e82126b5edbfe963892bc850631e9e685c733f05
+production_sot: e82126b5edbfe963892bc850631e9e685c733f05
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
 g3: false
 g6: false
+gate_issued: false
+g3_issued: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+owner_production_code_changed: false
+
+disposition: SF_M07_EVD_PASS_G3_RECOMMENDED
+recommended_result: G3_INTEGRATION_VERIFIED
+recommendation: HIGH findings closed by rem #152/#153 and INT/SEC re-verify; recommend G3_INTEGRATION_VERIFIED for human/CI; do not issue G3 here
+
+int_pr: 150
+int_head: a7fa68cd031141e9aacc882cdde56c8a7373564f
+sec_pr: 151
+sec_head: 7213818a5d24df81d5fc34d6b9bf894ddcf19034
+
+independent_rerun:
+  int: PASS_65_EXPECTED_FAIL_2_MEDIUM
+  sec: PASS_37_SKIP_7_DB
+  api_host: PASS_81
+  gates: PASS_10_10
+  contracts_lock: PASS_34_34
 
 stop_conditions:
   - patch owner production code
   - CERTIFIED or G6 claim
   - issue G3 (recommend only)
+  - write M07-G3-GATE-RECORD without HUMAN_M07_G3_AUTHORIZATION
+
+evidence: evidence/SF-M07-EVD/EVIDENCE.md
+recommendation_doc: docs/verification/M07-G3-RECOMMENDATION.md

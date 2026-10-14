@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="67" failures="0" errors="0" time="0.512681789">
+    <testsuite name="tests/integration/m07/int-008-issuance-path.test.ts" timestamp="2026-10-14T17:02:38.244Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.124023672">
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; runs the full chain end to end and every hop conforms to its FROZEN contract" time="0.067355116">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; emits CredentialGenerated → Signed → Issued and registry/QR/DigiLocker events as valid envelopes" time="0.006889478">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; never calls a cross-component port while any component transaction is open" time="0.002682254">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; refuses issuance without a recorded upstream approval and nothing downstream is created" time="0.004690665">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; refuses client-supplied approval/status/pins (LLM/client cannot decide approval)" time="0.001029391">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; refuses citizen-initiated issuance (SF-AUTH-002)" time="0.000373635">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; a FAILED eSign leaves the credential GENERATED, unregistered and not QR-mintable" time="0.002877441">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; a CMP-024 outage leaves the credential SIGNED (not ISSUED); retry resumes with one registry entry" time="0.001963128">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; replays an identical Idempotency-Key without re-signing or re-registering" time="0.001910235">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; QR verification reads status live from CMP-024: suspend/revoke is reflected immediately" time="0.003871789">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; QR verify fails closed (no cached status) when CMP-024 is unavailable" time="0.002699937">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; QR mint refuses client attempts to supply registry status" time="0.001237039">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; FINDING M07-INT-F02 (characterised): officer-initiated issuance cannot register at CMP-024 through a context-preserving bridge" time="0.002544072">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; CLOSED M07-INT-F01: CMP-012 refuses to publish a credential that CMP-022 never issued" time="0.000559591">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; CLOSED M07-INT-F01b: CMP-012 refuses to publish a GENERATED (unsigned) credential" time="0.000807585">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH" time="0.013013439">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-issuance-path.test.ts" name="INT-008 approval → signing → credential → QR → DigiLocker &gt; FINDING M07-INT-F04: CMP-012 audit envelopes use event_type AuditEvent with envelope tenant_id null; CMP-022/023/024 (and every other component) emit tenant-scoped AuditEventSubmitted" time="0.004810454">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m07/int-008-no-reversal.test.ts" timestamp="2026-10-14T17:02:38.247Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.040760168">
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; a FAILED DigiLocker publish (provider-side failure scenario) leaves issuance and registry untouched" time="0.018355941">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; a DigiLocker transport outage (adapter throws) records FAILED and does not reverse issuance" time="0.005069814">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; a connector-binding registry outage refuses publish fail-closed (SF-SYS-004) without touching issuance" time="0.003551905">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; a notification outage recorded as a FAILED downstream outcome leaves the credential ISSUED" time="0.005893543">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; CredentialIssued declares non-reversibility and registry ownership in its payload" time="0.003778007">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-008-no-reversal.test.ts" name="INT-008 issuance not reversed by DigiLocker / notification outage &gt; downstream outcomes cannot be recorded by an OFFICER or CITIZEN (workload-only side channel)" time="0.002875595">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m07/int-011-host.test.ts" timestamp="2026-10-14T17:02:38.248Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.187139336">
+        <testcase classname="tests/integration/m07/int-011-host.test.ts" name="INT-008/INT-011 through the API host with real M07 services &gt; mounts all four real M07 services and runs approval → sign → issue → QR → DigiLocker over HTTP" time="0.085127601">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-host.test.ts" name="INT-008/INT-011 through the API host with real M07 services &gt; tenant-B sessions get 404 for every tenant-A resource through the host; CROSS_TENANT_LEAKAGE = 0" time="0.031625643">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-host.test.ts" name="INT-008/INT-011 through the API host with real M07 services &gt; forged tenant headers are refused with SF-TEN-002 by the host on every M07 route (incl. CMP-012)" time="0.052314816">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-host.test.ts" name="INT-008/INT-011 through the API host with real M07 services &gt; missing server session fails closed on every M07 route (401/403, SF-AUTH/SF-TEN)" time="0.016951846">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m07/int-011-tenant-isolation.test.ts" timestamp="2026-10-14T17:02:38.248Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.062833897">
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; tenant B cannot read any tenant-A M07 resource (not found, no identifiers echoed)" time="0.027553802">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; a tenant-A opaque QR token does not verify under a tenant-B context" time="0.003912928">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; tenant B cannot transition, mint QR for, or record outcomes on tenant-A credentials" time="0.005112401">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; the same application id in two tenants yields distinct, non-colliding credentials" time="0.001774459">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; forged tenant headers are refused with SF-TEN-002 on every CMP-022/024/023 route before any write" time="0.003989791">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; CLOSED M07-INT-F05: CMP-012 refuses forged tenant headers with SF-TEN-002 at the component boundary" time="0.003934181">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; client-supplied tenant_id in a command body is refused and nothing is written" time="0.004099304">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; CMP-023 blocks a cross-tenant record returned by a misbehaving CMP-022/CMP-024 port (SF-TEN-002)" time="0.003797972">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; CMP-012 refuses a connector binding owned by another tenant (SF-TEN-002)" time="0.001622387">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; every authorisation request carries subject.tenant_id equal to the server-derived tenant" time="0.002915924">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; CLOSED M07-INT-F01c: CMP-012 refuses tenant-B publish for a credential id that exists only in tenant A" time="0.002387086">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-011-tenant-isolation.test.ts" name="INT-011 M07 tenant isolation chain &gt; aggregate: CROSS_TENANT_LEAKAGE = 0 across all tenant-negative probes" time="0.000154141">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m07/int-013-modes.test.ts" timestamp="2026-10-14T17:02:38.249Z" hostname="cursor" tests="28" failures="0" errors="0" skipped="0" time="0.097924716">
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses a SIMULATED eSign result in UAT fail-closed: no SIGNED record, not issued, registry untouched" time="0.010366997">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses a SIMULATED eSign result in PREPROD fail-closed: no SIGNED record, not issued, registry untouched" time="0.001281086">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses a SIMULATED eSign result in PRODUCTION fail-closed: no SIGNED record, not issued, registry untouched" time="0.000956873">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; defaults to PRODUCTION when no environment is configured, so SIMULATED eSign is refused" time="0.000973972">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; accepts SIMULATED eSign in LOCAL only with a matching simulation marker" time="0.004421668">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; accepts SIMULATED eSign in CI only with a matching simulation marker" time="0.001641946">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; accepts SIMULATED eSign in DEVELOPMENT only with a matching simulation marker" time="0.001408712">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; accepts SIMULATED eSign in SIT only with a matching simulation marker" time="0.001081073">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; accepts SIMULATED eSign in PERFORMANCE only with a matching simulation marker" time="0.001832969">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses SIMULATED eSign without a simulation marker" time="0.002491537">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses a simulation marker whose environment differs from the deployment environment" time="0.000758845">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; refuses a REAL eSign result that carries a simulation marker" time="0.000696857">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; records a REAL eSign result in PRODUCTION without a marker (mode-aware, not blanket refusal)" time="0.018242733">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 eSign modes at CMP-022 &gt; OBSERVATION M07-INT-O1 (characterised): CMP-022 accepts a SANDBOX eSign result in PRODUCTION; criticality is enforced only by the CMP-037 binding resolver" time="0.004008256">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; PRODUCTION + critical + SIMULATED binding fails closed before any connector call" time="0.005359011">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; PRODUCTION + critical + SANDBOX binding fails closed" time="0.003170031">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; PRODUCTION + non-critical + SIMULATED binding is still refused" time="0.009767827">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; SIMULATED binding in UAT is refused" time="0.001396807">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; SIMULATED binding in PREPROD is refused" time="0.002626119">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; a CI-environment SIMULATED binding is refused by a PRODUCTION runtime (environment mismatch)" time="0.001132825">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; a REAL binding in CI is refused (LOCAL/CI must be SIMULATED)" time="0.001867842">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; a REAL PRODUCTION binding without a secret reference is refused" time="0.001183907">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; SIMULATED publish without test_run_id cannot build a marker and is refused" time="0.001537438">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; a non-DIGILOCKER binding type is refused" time="0.001835369">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; a missing binding is refused (no implicit default connector)" time="0.004916997">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; SIMULATED publish in CI persists a conformant SF-CON-SIMULATION-MARKER on the record" time="0.007831473">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; OBSERVATION M07-INT-O2 (characterised): CMP-012 defaults runtimeEnvironment to LOCAL when unset (CMP-022 defaults to PRODUCTION)" time="0.001135524">
+        </testcase>
+        <testcase classname="tests/integration/m07/int-013-modes.test.ts" name="INT-013 DigiLocker modes at CMP-012 &gt; CLOSED M07-INT-F06: CMP-012 refuses when injected DigiLocker adapter mode differs from binding mode" time="0.001411361">
+        </testcase>
+    </testsuite>
+</testsuites>

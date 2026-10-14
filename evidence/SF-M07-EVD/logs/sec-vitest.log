@@ -1,0 +1,23 @@
+
+ RUN  v5.0.3 /workspace
+
+ ✓ tests/security/m07/host-forged-tenant.test.ts (5 tests) 575ms
+   ✓ SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) (5)
+     ✓ refuses every forged header spelling on all 17 M07 routes before any component runs 427ms
+ ✓ tests/security/m07/pii-logging.test.ts (4 tests) 81ms
+ ✓ tests/security/m07/authz-deny-by-default.test.ts (7 tests) 22ms
+ ✓ tests/security/m07/tenant-isolation.test.ts (6 tests) 19ms
+ ✓ tests/security/m07/status-mutation-boundary.test.ts (7 tests) 19ms
+ ✓ tests/security/m07/component-guards.test.ts (5 tests) 10ms
+ ✓ tests/security/m07/digilocker-preconditions.test.ts (3 tests) 6ms
+ ↓ tests/security/m07/db-privilege-rls.test.ts (7 tests | 7 skipped)
+
+ Test Files  7 passed | 1 skipped (8)
+      Tests  37 passed | 7 skipped (44)
+   Start at  17:02:38
+   Duration  2.55s (import 45%, tests 37%, transform 17%, worker 1%)
+
+    Isolate  8 workers spawned · ~68ms startup each (spawn + environment, per file)
+             at least ~477ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/evidence/SF-M07-SEC/junit/security.xml
