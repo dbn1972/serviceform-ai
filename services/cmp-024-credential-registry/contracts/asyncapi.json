@@ -1,0 +1,45 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-024 Credential Registry Events",
+    "version": "0.1.0",
+    "description": "Registry status change events. Opaque refs only; no PII. Consumers (CMP-023, CMP-012, CMP-025) react; publish/notify failures never alter registry status."
+  },
+  "channels": {
+    "sf.credential-registry.events.v1": {
+      "address": "sf.credential-registry.events.v1",
+      "messages": {
+        "CredentialRegistered": {
+          "$ref": "#/components/messages/CredentialRegistered"
+        },
+        "CredentialStatusChanged": {
+          "$ref": "#/components/messages/CredentialStatusChanged"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "CredentialRegistered": {
+        "name": "CredentialRegistered",
+        "payload": {
+          "$ref": "./events/credential-status-event.data.schema.json"
+        }
+      },
+      "CredentialStatusChanged": {
+        "name": "CredentialStatusChanged",
+        "payload": {
+          "$ref": "./events/credential-status-event.data.schema.json"
+        }
+      }
+    }
+  }
+}
