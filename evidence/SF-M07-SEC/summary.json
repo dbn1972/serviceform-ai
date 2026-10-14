@@ -1,16 +1,34 @@
 {
   "task_id": "SF-M07-SEC",
   "module_id": "M07",
-  "component_ids": ["CMP-022", "CMP-024", "CMP-023", "CMP-012"],
-  "integration_ids": ["INT-008", "INT-011", "INT-013"],
+  "component_ids": [
+    "CMP-022",
+    "CMP-024",
+    "CMP-023",
+    "CMP-012"
+  ],
+  "integration_ids": [
+    "INT-008",
+    "INT-011",
+    "INT-013"
+  ],
   "branch": "cursor/m07-sec-91f2",
   "base_commit": "e8f847afb1bfe155028dc99706399fbe2adca708",
-  "remediations_merged": ["#153", "#152"],
-  "test_commit": "pending",
+  "remediations_merged": [
+    "#153",
+    "#152"
+  ],
+  "test_commit": "e24f284",
   "model_route": "opus",
   "model_release": "claude-opus-5-5",
   "results": {
-    "without_db": { "files": 8, "tests": 44, "passed": 37, "failed": 0, "skipped": 7 },
+    "without_db": {
+      "files": 8,
+      "tests": 44,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 7
+    },
     "eslint": "PASS",
     "prettier": "PASS"
   },
@@ -18,17 +36,60 @@
   "blocking_hard_gate_failures": 0,
   "production_code_modified": false,
   "findings_closed_high": [
-    { "id": "M07-SEC-F05", "severity": "HIGH", "status": "CLOSED_BY_#153", "component": "host-access-log/CMP-023" },
-    { "id": "M07-SEC-F06", "severity": "HIGH", "status": "CLOSED_ISSUED_BY_#152", "component": "CMP-012", "residual": "CMP-030 consent port still absent" },
-    { "id": "M07-SEC-F01", "severity": "MEDIUM", "status": "CLOSED_TENANT_HEADERS_BY_#152", "component": "CMP-012", "residual": "x-roles/x-actor-type/x-assurance/x-org-id still accepted at component boundary" }
+    {
+      "id": "M07-SEC-F05",
+      "severity": "HIGH",
+      "status": "CLOSED_BY_#153",
+      "component": "host-access-log/CMP-023"
+    },
+    {
+      "id": "M07-SEC-F06",
+      "severity": "HIGH",
+      "status": "CLOSED_ISSUED_BY_#152",
+      "component": "CMP-012",
+      "residual": "CMP-030 consent port still absent"
+    },
+    {
+      "id": "M07-SEC-F01",
+      "severity": "MEDIUM",
+      "status": "CLOSED_TENANT_HEADERS_BY_#152",
+      "component": "CMP-012",
+      "residual": "x-roles/x-actor-type/x-assurance/x-org-id still accepted at component boundary"
+    }
   ],
   "findings_open_non_blocking": [
-    { "id": "M07-SEC-F04", "severity": "MEDIUM", "component": "CMP-012", "summary": "Truthy PDP allow check; null decision yields 500" },
-    { "id": "M07-SEC-F02", "severity": "MEDIUM", "component": "CMP-012", "summary": "Context shape not validated (non-UUID tenant / actor accepted)" },
-    { "id": "M07-SEC-F03", "severity": "LOW", "component": "CMP-036/CMP-022/023/024", "summary": "x-bypass-rls passes edge; inert" },
-    { "id": "M07-SEC-F06-consent", "severity": "MEDIUM", "component": "CMP-012", "summary": "No CMP-030 consent verification port yet" }
+    {
+      "id": "M07-SEC-F04",
+      "severity": "MEDIUM",
+      "component": "CMP-012",
+      "summary": "Truthy PDP allow check; null decision yields 500"
+    },
+    {
+      "id": "M07-SEC-F02",
+      "severity": "MEDIUM",
+      "component": "CMP-012",
+      "summary": "Context shape not validated (non-UUID tenant / actor accepted)"
+    },
+    {
+      "id": "M07-SEC-F03",
+      "severity": "LOW",
+      "component": "CMP-036/CMP-022/023/024",
+      "summary": "x-bypass-rls passes edge; inert"
+    },
+    {
+      "id": "M07-SEC-F06-consent",
+      "severity": "MEDIUM",
+      "component": "CMP-012",
+      "summary": "No CMP-030 consent verification port yet"
+    }
   ],
-  "residuals": ["R1 OPA catalogue lacks M07 actions", "R2 CMP-012 no PG repo", "R3 no live OPA binary", "R4 REAL connectors deferred", "R5 fastify types unresolved for root tsc"],
+  "residuals": [
+    "R1 OPA catalogue lacks M07 actions",
+    "R2 CMP-012 no PG repo",
+    "R3 no live OPA binary",
+    "R4 REAL connectors deferred",
+    "R5 fastify types unresolved for root tsc"
+  ],
   "recommend_g3": true,
   "recommend_g3_note": "HIGH F05/F06(ISSUED) closed; remaining MEDIUM/LOW non-blocking for G3 recommend. EVD decides.",
   "self_certified": false,
