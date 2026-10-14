@@ -1,0 +1,33 @@
+{
+  "task_id": "SF-M07-002",
+  "component_ids": ["CMP-024"],
+  "integration_ids": ["INT-008", "INT-011", "INT-013"],
+  "contract": "SF-CON-CREDENTIAL-STATUS",
+  "branch": "cursor/m07-002-registry-91f2",
+  "execution_base": "c6f70f1",
+  "implementation_commit": "3de0130",
+  "authorization": "HUMAN_M07_THROUGH_EVD_AUTHORIZATION",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "read_ports_mutate_status": false,
+  "history_append_only": true,
+  "invented_statutory_policy_forbidden": true,
+  "results": {
+    "typecheck": { "exit": 0 },
+    "eslint_prettier": { "exit": 0 },
+    "unit_tenant_negative_contract": { "passed": 85, "failed": 0 },
+    "integration_postgres16": { "passed": 9, "failed": 0, "postgres": "16.15" },
+    "repo_gates": { "passed": 10, "failed": 0 }
+  },
+  "lockfile_modified": false,
+  "apps_modified": false,
+  "contracts_modified": false,
+  "frozen_contracts_altered": false,
+  "host_mount": "deferred to SF-M07-005",
+  "certified": false,
+  "release_certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_gate_status": "none (builder candidate)"
+}
