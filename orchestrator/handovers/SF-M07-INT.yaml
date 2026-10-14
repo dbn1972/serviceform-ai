@@ -1,12 +1,17 @@
 # SF-M07-INT — M07 independent INT-008/011/013
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. Executed after host #149 on main.
+# CANDIDATE_COMPLETE with BLOCKING findings against CMP-012. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M07-INT
 title: M07 independent INT-008/011/013
 module_id: M07
 agent_role: integration_stitcher
 builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
 integration_ids: [INT-008, INT-011, INT-013]
+component_ids_under_test: [CMP-022, CMP-024, CMP-023, CMP-012]
+branch: cursor/m07-int-91f2
 allowed_write_paths:
   - tests/integration/m07/**
   - evidence/SF-M07-INT/**
@@ -18,16 +23,18 @@ read_only_paths:
   - services/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
 serial_after:
-  - SF-M07-005
+  - SF-M07-005 (merged #149)
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+authorization_source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+builders_dispatched_this_envelope: true
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+execution_base: dfa96a0e8b61754d2ed6323bae8455caf5a285aa
+tests_commit: 27c0017
 self_certified: false
 not_certified: true
 certified: false
@@ -36,14 +43,95 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+owner_production_code_changed: false
+
+files_changed:
+  - tests/integration/m07/vitest.config.ts
+  - tests/integration/m07/support/{fixtures,wiring,flow}.ts
+  - tests/integration/m07/int-008-issuance-path.test.ts
+  - tests/integration/m07/int-008-no-reversal.test.ts
+  - tests/integration/m07/int-011-tenant-isolation.test.ts
+  - tests/integration/m07/int-011-host.test.ts
+  - tests/integration/m07/int-013-modes.test.ts
+  - evidence/SF-M07-INT/**
+  - orchestrator/handovers/SF-M07-INT.yaml
+
+connector_posture:
+  ESIGN: SIMULATED (signer double; REAL/SANDBOX via CMP-037 deferred)
+  DIGILOCKER: SIMULATED (owner SimulatedDigiLockerConnector; REAL deferred, never PROD)
+
+test_results:
+  m07_int_vitest: 67 total — 60 PASS, 7 expected-fail findings, 0 unexpected failures
+  m07_int_findings_exposed: 60 PASS / 7 FAIL (M07_INT_SHOW_FINDINGS=1)
+  owner_regression_m07_services: PASS 332/332 (read-only)
+  owner_regression_apps_api_composition_m07: PASS 10/10 (read-only)
+  eslint: PASS
+  prettier: PASS
+  typecheck: PASS
+  cross_tenant_leakage: 0
+
+acceptance:
+  INT-008_approval_sign_issue_qr_digilocker: PASS (CMP-012 contract findings F01/F03 recorded)
+  INT-011_tenant_isolation_host: PASS (forged tenant → SF-TEN-002 on all 13 M07 routes)
+  INT-011_tenant_isolation_components: PASS for CMP-022/024/023; FAIL CMP-012 (F05)
+  INT-013_production_simulated_fail_closed: PASS CMP-022 and CMP-012 binding; FAIL CMP-012 adapter mode (F06)
+  issuance_not_reversed_by_digilocker_or_notification_outage: PASS
+
+findings:
+  - id: M07-INT-F01
+    severity: HIGH
+    owner: CMP-012
+    blocking: true
+    summary: publish does not verify the credential is ISSUED via CMP-022 (never-issued, GENERATED and cross-tenant ids all PUBLISHED); hardcoded credential_lifecycle_status_at_request
+  - id: M07-INT-F05
+    severity: HIGH
+    owner: CMP-012
+    blocking: true
+    summary: component forged-header guard is a 3-name denylist; x-tenant-id / x-sf-* / Forwarded tenant= not refused with SF-TEN-002 (host CMP-036 mitigates; leakage 0)
+  - id: M07-INT-F06
+    severity: HIGH
+    owner: CMP-012
+    blocking: true
+    summary: injected SIMULATED adapter runs under a REAL PRODUCTION critical binding and is recorded as connector_mode REAL
+  - id: M07-INT-F03
+    severity: MEDIUM
+    owner: CMP-012
+    blocking: false
+    summary: publish response not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH
+  - id: M07-INT-F04
+    severity: MEDIUM
+    owner: CMP-012
+    blocking: false
+    summary: audit envelope event_type AuditEvent with envelope tenant_id null (all others AuditEventSubmitted, tenant-scoped)
+  - id: M07-INT-F02
+    severity: MEDIUM
+    owner: seam CMP-022/CMP-024 (orchestrator ADR)
+    blocking: false
+    summary: CMP-022 issues for SYSTEM|OFFICER but CMP-024 registers SYSTEM only; host bridge identity policy undefined
+  - id: M07-INT-O1
+    severity: LOW
+    owner: CMP-022 / CMP-037
+    summary: SANDBOX eSign accepted in PRODUCTION by CMP-022; criticality enforced only at CMP-037 binding resolver
+  - id: M07-INT-O2
+    severity: LOW
+    owner: CMP-012
+    summary: runtimeEnvironment defaults to LOCAL (CMP-022 defaults to PRODUCTION)
+  - id: M07-INT-O3
+    severity: LOW
+    owner: host composition
+    summary: issuer_ref absent from CMP-022 RegistrationRequest; CMP-023 read ports context-free while CMP-022/024 reads require TenantContext
+
+residuals:
+  - PostgreSQL RLS/privilege tests for M07 schemas not run in this envelope (owner *.int.test.ts)
+  - Persistence uses owner in-memory repository doubles unchanged; seam adapters are stitcher-owned
+  - Shared /workspace checkout was in use by SF-M07-SEC; work done in dedicated worktree /home/ubuntu/wt-SF-M07-INT
+
+recommended_result: SF_M07_INT_FINDINGS_BLOCKING
+recommendation: do not issue M07 G3 until CMP-012 remediates F01/F05/F06 (F03/F04 before EVD) and orchestrator decides F02; re-run this suite (finding tests flip to failures when fixed and must then be converted to ordinary tests)
 
 stop_conditions:
   - patch owner production code
   - CERTIFIED or G6 claim
   - issue G3 (recommend only)
+
+evidence: evidence/SF-M07-INT/EVIDENCE.md

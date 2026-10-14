@@ -1,0 +1,39 @@
+run_at=2026-10-14T10:53:46Z tests_commit=27c00171813bfbef99c3e3512831b453a83b3ab9 (owner suites, read-only)
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M07-INT
+
+ ✓ services/cmp-022-credential-engine/test/unit/issuance.test.ts (79 tests) 73ms
+ ✓ services/cmp-022-credential-engine/test/contract/contracts.test.ts (14 tests) 97ms
+ ✓ services/cmp-023-qr-verification/test/contract/contracts.test.ts (16 tests) 126ms
+ ✓ services/cmp-023-qr-verification/test/unit/service.test.ts (32 tests) 28ms
+ ✓ services/cmp-024-credential-registry/test/contract/contracts.test.ts (17 tests) 68ms
+ ✓ services/cmp-012-digilocker/test/contract/contracts.test.ts (11 tests) 36ms
+ ✓ services/cmp-024-credential-registry/test/unit/service.test.ts (22 tests) 22ms
+ ✓ services/cmp-024-credential-registry/test/unit/tenant-negative.test.ts (8 tests) 11ms
+ ✓ services/cmp-022-credential-engine/test/unit/tenant-negative.test.ts (12 tests) 18ms
+ ✓ services/cmp-024-credential-registry/test/unit/read-port.test.ts (9 tests) 14ms
+ ✓ services/cmp-023-qr-verification/test/unit/domain.test.ts (14 tests) 13ms
+ ✓ services/cmp-022-credential-engine/test/unit/domain.test.ts (40 tests) 12ms
+ ✓ services/cmp-012-digilocker/test/unit/publish.test.ts (12 tests) 10ms
+ ✓ services/cmp-024-credential-registry/test/unit/domain.test.ts (29 tests) 7ms
+ ✓ services/cmp-012-digilocker/test/unit/tenant-negative.test.ts (5 tests) 6ms
+ ✓ services/cmp-012-digilocker/test/unit/simulation.test.ts (12 tests) 5ms
+
+ Test Files  16 passed (16)
+      Tests  332 passed (332)
+   Start at  10:53:47
+   Duration  1.08s (transform 38%, import 30%, tests 30%, worker 3%)
+
+    Isolate  16 workers spawned · ~71ms startup each (spawn + environment, per file)
+             at least ~308ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /home/ubuntu/wt-SF-M07-INT/test-results/unit/junit.xml
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M07-INT/apps/api
+
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  10:53:48
+   Duration  1.17s (tests 57%, import 25%, transform 18%)
+

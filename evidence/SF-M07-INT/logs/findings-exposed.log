@@ -1,0 +1,187 @@
+run_at=2026-10-14T10:53:35Z tests_commit=27c00171813bfbef99c3e3512831b453a83b3ab9 M07_INT_SHOW_FINDINGS=1 — finding assertions run as ordinary tests to capture actual failure reasons
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M07-INT
+
+ ❯ tests/integration/m07/int-013-modes.test.ts (28 tests | 1 failed) 84ms
+   ✓ INT-013 eSign modes at CMP-022 (14)
+     ✓ refuses a SIMULATED eSign result in UAT fail-closed: no SIGNED record, not issued, registry untouched 10ms
+     ✓ refuses a SIMULATED eSign result in PREPROD fail-closed: no SIGNED record, not issued, registry untouched 1ms
+     ✓ refuses a SIMULATED eSign result in PRODUCTION fail-closed: no SIGNED record, not issued, registry untouched 1ms
+     ✓ defaults to PRODUCTION when no environment is configured, so SIMULATED eSign is refused 1ms
+     ✓ accepts SIMULATED eSign in LOCAL only with a matching simulation marker 3ms
+     ✓ accepts SIMULATED eSign in CI only with a matching simulation marker 2ms
+     ✓ accepts SIMULATED eSign in DEVELOPMENT only with a matching simulation marker 1ms
+     ✓ accepts SIMULATED eSign in SIT only with a matching simulation marker 1ms
+     ✓ accepts SIMULATED eSign in PERFORMANCE only with a matching simulation marker 2ms
+     ✓ refuses SIMULATED eSign without a simulation marker 1ms
+     ✓ refuses a simulation marker whose environment differs from the deployment environment 2ms
+     ✓ refuses a REAL eSign result that carries a simulation marker 1ms
+     ✓ records a REAL eSign result in PRODUCTION without a marker (mode-aware, not blanket refusal) 12ms
+     ✓ OBSERVATION M07-INT-O1 (characterised): CMP-022 accepts a SANDBOX eSign result in PRODUCTION; criticality is enforced only by the CMP-037 binding resolver 3ms
+   ❯ INT-013 DigiLocker modes at CMP-012 (14)
+     ✓ PRODUCTION + critical + SIMULATED binding fails closed before any connector call 2ms
+     ✓ PRODUCTION + critical + SANDBOX binding fails closed 3ms
+     ✓ PRODUCTION + non-critical + SIMULATED binding is still refused 4ms
+     ✓ SIMULATED binding in UAT is refused 10ms
+     ✓ SIMULATED binding in PREPROD is refused 4ms
+     ✓ a CI-environment SIMULATED binding is refused by a PRODUCTION runtime (environment mismatch) 1ms
+     ✓ a REAL binding in CI is refused (LOCAL/CI must be SIMULATED) 1ms
+     ✓ a REAL PRODUCTION binding without a secret reference is refused 1ms
+     ✓ SIMULATED publish without test_run_id cannot build a marker and is refused 2ms
+     ✓ a non-DIGILOCKER binding type is refused 1ms
+     ✓ a missing binding is refused (no implicit default connector) 1ms
+     ✓ SIMULATED publish in CI persists a conformant SF-CON-SIMULATION-MARKER on the record 3ms
+     ✓ OBSERVATION M07-INT-O2 (characterised): CMP-012 defaults runtimeEnvironment to LOCAL when unset (CMP-022 defaults to PRODUCTION) 4ms
+     × FINDING M07-INT-F06: CMP-012 must refuse when the injected DigiLocker adapter mode (SIMULATED) differs from a REAL PRODUCTION binding 4ms
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts (17 tests | 4 failed) 99ms
+   ❯ INT-008 approval → signing → credential → QR → DigiLocker (17)
+     ✓ runs the full chain end to end and every hop conforms to its FROZEN contract 52ms
+     ✓ emits CredentialGenerated → Signed → Issued and registry/QR/DigiLocker events as valid envelopes 6ms
+     ✓ never calls a cross-component port while any component transaction is open 3ms
+     ✓ refuses issuance without a recorded upstream approval and nothing downstream is created 3ms
+     ✓ refuses client-supplied approval/status/pins (LLM/client cannot decide approval) 1ms
+     ✓ refuses citizen-initiated issuance (SF-AUTH-002) 0ms
+     ✓ a FAILED eSign leaves the credential GENERATED, unregistered and not QR-mintable 2ms
+     ✓ a CMP-024 outage leaves the credential SIGNED (not ISSUED); retry resumes with one registry entry 2ms
+     ✓ replays an identical Idempotency-Key without re-signing or re-registering 2ms
+     ✓ QR verification reads status live from CMP-024: suspend/revoke is reflected immediately 5ms
+     ✓ QR verify fails closed (no cached status) when CMP-024 is unavailable 2ms
+     ✓ QR mint refuses client attempts to supply registry status 1ms
+     ✓ FINDING M07-INT-F02 (characterised): officer-initiated issuance cannot register at CMP-024 through a context-preserving bridge 1ms
+     × FINDING M07-INT-F01: CMP-012 must refuse to publish a credential that CMP-022 never issued (SF-CON-DIGILOCKER-PUBLISH: only ISSUED) 4ms
+     × FINDING M07-INT-F01b: CMP-012 must refuse to publish a GENERATED (unsigned) credential 1ms
+     × FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH 7ms
+     × FINDING M07-INT-F04: CMP-012 audit envelopes use event_type AuditEvent with envelope tenant_id null; CMP-022/023/024 (and every other component) emit tenant-scoped AuditEventSubmitted 4ms
+ ✓ tests/integration/m07/int-008-no-reversal.test.ts (6 tests) 35ms
+ ❯ tests/integration/m07/int-011-tenant-isolation.test.ts (12 tests | 2 failed) 55ms
+   ❯ INT-011 M07 tenant isolation chain (12)
+     ✓ tenant B cannot read any tenant-A M07 resource (not found, no identifiers echoed) 18ms
+     ✓ a tenant-A opaque QR token does not verify under a tenant-B context 3ms
+     ✓ tenant B cannot transition, mint QR for, or record outcomes on tenant-A credentials 5ms
+     ✓ the same application id in two tenants yields distinct, non-colliding credentials 2ms
+     ✓ forged tenant headers are refused with SF-TEN-002 on every CMP-022/024/023 route before any write 4ms
+     × FINDING M07-INT-F05: CMP-012 does not refuse forged tenant headers (x-tenant-id, x-sf-*, Forwarded tenant=) with SF-TEN-002 at the component boundary 7ms
+     ✓ client-supplied tenant_id in a command body is refused and nothing is written 3ms
+     ✓ CMP-023 blocks a cross-tenant record returned by a misbehaving CMP-022/CMP-024 port (SF-TEN-002) 4ms
+     ✓ CMP-012 refuses a connector binding owned by another tenant (SF-TEN-002) 2ms
+     ✓ every authorisation request carries subject.tenant_id equal to the server-derived tenant 3ms
+     × FINDING M07-INT-F01c: CMP-012 persists a tenant-B publish record for a credential id that exists only in tenant A 3ms
+     ✓ aggregate: CROSS_TENANT_LEAKAGE = 0 across all tenant-negative probes 0ms
+ ✓ tests/integration/m07/int-011-host.test.ts (4 tests) 180ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F01: CMP-012 must refuse to publish a credential that CMP-022 never issued (SF-CON-DIGILOCKER-PUBLISH: only ISSUED)
+AssertionError: expected 201 to be greater than or equal to 400
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:411:26
+    409|       expect((await credentialOf(s, T1, neverIssued)).status).toBe(404…
+    410|       const res = await publish(s, T1, neverIssued);
+    411|       expect(res.status).toBeGreaterThanOrEqual(400);
+       |                          ^
+    412|       expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0…
+    413|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F01b: CMP-012 must refuse to publish a GENERATED (unsigned) credential
+AssertionError: expected 201 to be greater than or equal to 400
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:432:26
+    430|       expect(must(row).lifecycle_status).toBe('GENERATED');
+    431|       const res = await publish(s, T1, must(row).credential_id);
+    432|       expect(res.status).toBeGreaterThanOrEqual(400);
+       |                          ^
+    433|     },
+    434|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH
+AssertionError: expected '[{"instancePath":"","schemaPath":"#/a…' to be '' // Object.is equality
+
+- Expected
++ Received
+
++ [{"instancePath":"","schemaPath":"#/allOf/0/then/required","keyword":"required","params":{"missingProperty":"simulation_marker"},"message":"must have required property 'simulation_marker'"},{"instancePath":"","schemaPath":"#/allOf/0/if","keyword":"if","params":{"failingKeyword":"then"},"message":"must match \"then\" schema"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"contract_id"},"message":"must have required property 'contract_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"contract_status"},"message":"must have required property 'contract_status'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"freeze_status"},"message":"must have required property 'freeze_status'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"tenant_id"},"message":"must have required property 'tenant_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"credential_lifecycle_status_at_request"},"message":"must have required property 'credential_lifecycle_status_at_request'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"consent_ref"},"message":"must have required property 'consent_ref'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"purpose_code"},"message":"must have required property 'purpose_code'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"connector_binding_id"},"message":"must have required property 'connector_binding_id'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"integration_contract"},"message":"must have required property 'integration_contract'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"idempotency_key"},"message":"must have required property 'idempotency_key'"},{"instancePath":"","schemaPath":"#/required","keyword":"required","params":{"missingProperty":"invented_statutory_policy_forbidden"},"message":"must have required property 'invented_statutory_policy_forbidden'"},{"instancePath":"","schemaPath":"#/additionalProperties","keyword":"additionalProperties","params":{"additionalProperty":"created_at"},"message":"must NOT have additional properties"}]
+
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:448:68
+    446|       );
+    447|       expect(read.status).toBe(200);
+    448|       expect(conforms('m07/digilocker-publish', read.body).errors).toB…
+       |                                                                    ^
+    449|     },
+    450|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/integration/m07/int-008-issuance-path.test.ts > INT-008 approval → signing → credential → QR → DigiLocker > FINDING M07-INT-F04: CMP-012 audit envelopes use event_type AuditEvent with envelope tenant_id null; CMP-022/023/024 (and every other component) emit tenant-scoped AuditEventSubmitted
+AssertionError: expected [ 'AuditEvent' ] to deeply equal [ 'AuditEventSubmitted' ]
+
+- Expected
++ Received
+
+  [
+-   "AuditEventSubmitted",
++   "AuditEvent",
+  ]
+
+ ❯ tests/integration/m07/int-008-issuance-path.test.ts:468:48
+    466|         .map((o) => o.envelope as { event_type: string; tenant_id: str…
+    467|       expect(dlAudit.length).toBe(1);
+    468|       expect(dlAudit.map((e) => e.event_type)).toEqual(['AuditEventSub…
+       |                                                ^
+    469|       expect(dlAudit.map((e) => e.tenant_id)).toEqual([T1]);
+    470|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/integration/m07/int-011-tenant-isolation.test.ts > INT-011 M07 tenant isolation chain > FINDING M07-INT-F05: CMP-012 does not refuse forged tenant headers (x-tenant-id, x-sf-*, Forwarded tenant=) with SF-TEN-002 at the component boundary
+AssertionError: CMP-012 GET /v1/digilocker-publish/43b7b14c-84f9-49d2-823a-dce1d8e851ee {"x-tenant-id":"00000000-0000-4000-8000-000000000099"}: expected 404 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 404
+
+ ❯ forgedHeaderRun tests/integration/m07/int-011-tenant-isolation.test.ts:155:83
+    153|       for (const headers of FORGED_HEADERS) {
+    154|         const res = await probe(s, [CANARY], cmp, method, path, body, …
+    155|         expect(res.status, `${cmp} ${method} ${path} ${JSON.stringify(…
+       |                                                                                   ^
+    156|         expect(res.body.error_code).toBe('SF-TEN-002');
+    157|         expect(conforms('error-response', res.body).errors).toBe('');
+ ❯ tests/integration/m07/int-011-tenant-isolation.test.ts:199:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/integration/m07/int-011-tenant-isolation.test.ts > INT-011 M07 tenant isolation chain > FINDING M07-INT-F01c: CMP-012 persists a tenant-B publish record for a credential id that exists only in tenant A
+AssertionError: expected 201 to be greater than or equal to 400
+ ❯ tests/integration/m07/int-011-tenant-isolation.test.ts:340:26
+    338|       );
+    339|       expect(leaks(res.body, [T1])).toBe(0);
+    340|       expect(res.status).toBeGreaterThanOrEqual(400);
+       |                          ^
+    341|       expect(s.repos.digilocker.tenant(T2).publishRecords.size).toBe(0…
+    342|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/integration/m07/int-013-modes.test.ts > INT-013 DigiLocker modes at CMP-012 > FINDING M07-INT-F06: CMP-012 must refuse when the injected DigiLocker adapter mode (SIMULATED) differs from a REAL PRODUCTION binding
+AssertionError: expected 201 to be greater than or equal to 400
+ ❯ tests/integration/m07/int-013-modes.test.ts:300:26
+    298|       expect(s.digilockerApi.mode).toBe('SIMULATED');
+    299|       const res = await publish(s, T1, credentialId, { test_run_id: un…
+    300|       expect(res.status).toBeGreaterThanOrEqual(400);
+       |                          ^
+    301|       expect(s.digilockerApi.calls.length).toBe(0);
+    302|       expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  3 failed | 2 passed (5)
+      Tests  7 failed | 60 passed (67)
+   Start at  10:53:37
+   Duration  949ms (transform 41%, import 37%, tests 21%, worker 1%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M07-INT/evidence/SF-M07-INT/junit/independent-int.xml
