@@ -1,0 +1,164 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-023 QR Verification Service",
+    "version": "0.1.0",
+    "description": "Opaque QR verification tokens for ISSUED credentials (SF-CON-VERIFICATION-TOKEN). Tenant comes from the server-derived request context only. registry_status is read live from CMP-024 on every response and is read-only here: no route accepts, stores, caches or overrides it, and a registry outage fails closed (503). The public verify route returns only the purpose-minimised public_view (no credential, token or tenant id, no holder data). Every route is a PEP call on OPA. Responses are Cache-Control: no-store. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/qr/tokens": {
+      "post": {
+        "operationId": "issueVerificationToken",
+        "description": "OFFICER/PRIVILEGED_ADMIN/SYSTEM. Action QR_TOKEN_ISSUE. Requires an ISSUED credential (CMP-022) with a registry record (CMP-024). One token per credential: re-minting returns the existing token (200).",
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/IssueTokenRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/Token" },
+          "201": { "$ref": "#/components/responses/Token" },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" },
+          "409": { "$ref": "#/components/responses/Error" },
+          "503": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/qr/tokens/{token_id}": {
+      "get": {
+        "operationId": "getVerificationToken",
+        "description": "OFFICER/PRIVILEGED_ADMIN/SYSTEM. Action QR_TOKEN_READ. Issuer-side token record with live registry status.",
+        "parameters": [{ "$ref": "#/components/parameters/TokenId" }],
+        "responses": {
+          "200": { "$ref": "#/components/responses/Token" },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" },
+          "503": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    },
+    "/v1/qr/verify/{opaque_token}": {
+      "get": {
+        "operationId": "verifyCredentialByToken",
+        "description": "Public verification (any server-derived actor; OPA decides). Action QR_TOKEN_VERIFY. Returns the purpose-minimised public_view with registry_status just read from CMP-024. Unknown, foreign-tenant and expired tokens are 404.",
+        "parameters": [{ "$ref": "#/components/parameters/OpaqueToken" }],
+        "responses": {
+          "200": {
+            "description": "Purpose-minimised verification result",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicVerificationResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Error" },
+          "401": { "$ref": "#/components/responses/Error" },
+          "403": { "$ref": "#/components/responses/Error" },
+          "404": { "$ref": "#/components/responses/Error" },
+          "503": { "$ref": "#/components/responses/Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "TokenId": {
+        "name": "token_id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string", "format": "uuid" }
+      },
+      "OpaqueToken": {
+        "name": "opaque_token",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "minLength": 22,
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        }
+      },
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": true,
+        "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "SF-CON-ERROR-RESPONSE",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+        }
+      },
+      "Token": {
+        "description": "SF-CON-VERIFICATION-TOKEN with live registry status",
+        "content": {
+          "application/json": { "schema": { "$ref": "#/components/schemas/TokenResponse" } }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": { "$ref": "https://contracts.serviceform.ai/error-response/v1" },
+      "VerificationToken": { "$ref": "https://contracts.serviceform.ai/m07/verification-token/v1" },
+      "PublicView": {
+        "$ref": "https://contracts.serviceform.ai/m07/verification-token/v1#/properties/public_view"
+      },
+      "IssueTokenRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Server-owned fields (tenant_id, token_id, opaque_token, issuer_ref, issued_at, signed_artifact_sha256) and any registry status are refused. Constant markers may be echoed but never changed.",
+        "required": ["credential_id", "credential_type_ref"],
+        "properties": {
+          "credential_id": { "type": "string", "format": "uuid" },
+          "credential_type_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Optional, from approved metadata only; CMP-023 defines no validity period."
+          },
+          "contract_id": { "const": "SF-CON-VERIFICATION-TOKEN" },
+          "contract_status": { "const": "FROZEN" },
+          "freeze_status": { "const": "FROZEN" },
+          "token_purpose": { "const": "PUBLIC_CREDENTIAL_VERIFICATION" },
+          "status_source_cmp": { "const": "CMP-024" },
+          "registry_status_read_only": { "const": true },
+          "status_write_forbidden": { "const": true },
+          "embedded_pii_forbidden": { "const": true }
+        }
+      },
+      "TokenResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["token"],
+        "properties": { "token": { "$ref": "#/components/schemas/VerificationToken" } }
+      },
+      "PublicVerificationResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["token_purpose", "status_source_cmp", "public_view"],
+        "properties": {
+          "token_purpose": { "const": "PUBLIC_CREDENTIAL_VERIFICATION" },
+          "status_source_cmp": { "const": "CMP-024" },
+          "public_view": { "$ref": "#/components/schemas/PublicView" }
+        }
+      }
+    }
+  }
+}

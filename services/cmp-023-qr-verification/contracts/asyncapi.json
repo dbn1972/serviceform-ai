@@ -1,0 +1,30 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-023 QR Verification Events",
+    "version": "0.1.0",
+    "description": "QR verification token events. Ids and opaque metadata refs only: no opaque token, no registry status (owned by CMP-024) and no holder or application data. Verifications are audited, not published as domain events."
+  },
+  "channels": {
+    "sf.qr.events.v1": {
+      "address": "sf.qr.events.v1",
+      "messages": {
+        "VerificationTokenIssued": { "$ref": "#/components/messages/VerificationTokenIssued" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "VerificationTokenIssued": {
+        "name": "VerificationTokenIssued",
+        "payload": { "$ref": "./events/verification-token-issued.data.schema.json" }
+      }
+    }
+  }
+}

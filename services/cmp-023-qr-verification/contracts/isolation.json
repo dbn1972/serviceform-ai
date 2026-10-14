@@ -1,0 +1,42 @@
+{
+  "entities": [
+    {
+      "entity": "sf_qr.verification_token",
+      "owner_component": "CMP-023",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_qr.idempotency_record",
+      "owner_component": "CMP-023",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_qr.outbox_event",
+      "owner_component": "CMP-023",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_qr.outbox_event_platform",
+      "owner_component": "CMP-023",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-023 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_qr.inbox_event",
+      "owner_component": "CMP-023",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_qr.inbox_event_platform",
+      "owner_component": "CMP-023",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-023 consumes no tenant-less events."
+    }
+  ]
+}
