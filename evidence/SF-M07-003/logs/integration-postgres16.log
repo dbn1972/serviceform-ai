@@ -1,0 +1,25 @@
+16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M07-003/services/cmp-023-qr-verification
+
+ ✓ test/integration/privilege-rls.int.test.ts > privilege posture (ADR-0006) > sf_cmp023_rw is NOLOGIN, NOSUPERUSER, NOBYPASSRLS; sf_migrator owns every table; FORCE RLS on tenant tables 47ms
+ ✓ test/integration/privilege-rls.int.test.ts > privilege posture (ADR-0006) > runtime may only SELECT/INSERT tokens: no UPDATE or DELETE grant, and rows are insert-only 53ms
+ ✓ test/integration/privilege-rls.int.test.ts > privilege posture (ADR-0006) > the token table has no column that could hold, cache or override a registry status 43ms
+ ✓ test/integration/privilege-rls.int.test.ts > privilege posture (ADR-0006) > a peer component role cannot read sf_qr 39ms
+ ✓ test/integration/privilege-rls.int.test.ts > FORCE RLS tenant isolation > tenant B and a tenant-less session see none of tenant A tokens 50ms
+ ✓ test/integration/privilege-rls.int.test.ts > FORCE RLS tenant isolation > a session cannot write another tenant row or a tenant-less row 29ms
+ ✓ test/integration/privilege-rls.int.test.ts > database guards > constant markers and token format are enforced by CHECK constraints 36ms
+ ✓ test/integration/privilege-rls.int.test.ts > database guards > one token per credential and unique opaque tokens per tenant 41ms
+ ✓ test/integration/privilege-rls.int.test.ts > migration reversibility > the CMP-023 pair goes down and up cleanly on an isolated database 1261ms
+ ✓ test/integration/api-flow.int.test.ts > API flow on PostgreSQL through sf_cmp023_rw > mint, verify, live revocation and audit trail 80ms
+ ✓ test/integration/api-flow.int.test.ts > API flow on PostgreSQL through sf_cmp023_rw > tenant-negative: tenant B cannot verify or read tenant A tokens 73ms
+ ✓ test/integration/api-flow.int.test.ts > API flow on PostgreSQL through sf_cmp023_rw > replay, re-mint and concurrent mints converge on a single token row 85ms
+ ✓ test/integration/api-flow.int.test.ts > API flow on PostgreSQL through sf_cmp023_rw > a registry outage fails closed and is audited FAILED in the same database 41ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  05:23:35
+   Duration  3.02s (tests 94%, transform 4%, import 2%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M07-003/evidence/SF-M07-003/junit/integration.xml
+exit=0

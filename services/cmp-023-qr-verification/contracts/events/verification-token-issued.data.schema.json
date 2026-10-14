@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Verification token issued event data (VerificationTokenIssued)",
+  "description": "A public-verification token now exists for an ISSUED credential. Carries ids and opaque metadata refs only: never the opaque token (a bearer handle), never a registry status (CMP-024 owns it) and never holder or application data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "token_id",
+    "credential_id",
+    "token_purpose",
+    "credential_type_ref",
+    "status_source_cmp",
+    "registry_status_read_only",
+    "embedded_pii_forbidden"
+  ],
+  "properties": {
+    "token_id": { "type": "string", "format": "uuid" },
+    "credential_id": { "type": "string", "format": "uuid" },
+    "token_purpose": { "const": "PUBLIC_CREDENTIAL_VERIFICATION" },
+    "credential_type_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "status_source_cmp": { "const": "CMP-024" },
+    "registry_status_read_only": { "const": true },
+    "embedded_pii_forbidden": { "const": true }
+  }
+}
