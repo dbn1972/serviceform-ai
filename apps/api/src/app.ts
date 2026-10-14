@@ -10,6 +10,7 @@ import { registerM03Plugins, type M03PluginMounts } from './composition/m03.js';
 import { registerM04Plugins, type M04PluginMounts } from './composition/m04.js';
 import { registerM05Plugins, type M05PluginMounts } from './composition/m05.js';
 import { registerM06Plugins, type M06PluginMounts } from './composition/m06.js';
+import { registerM07Plugins, type M07PluginMounts } from './composition/m07.js';
 import { registerM08Plugins, type M08PluginMounts } from './composition/m08.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
@@ -59,6 +60,12 @@ export interface AppDependencies {
    * registered above composition — do not remount it via m06. Hard serial vs SF-M08-007.
    */
   m06?: M06PluginMounts;
+  /**
+   * M07 mounts (CMP-022/024/023/012). Optional; tests supply doubles.
+   * SIMULATED DigiLocker connector only at host wiring. CMP-036 remains registered
+   * above composition — do not remount it via m07.
+   */
+  m07?: M07PluginMounts;
   /**
    * M08 mounts (CMP-035/007/045/046/049/006). Optional; tests supply doubles.
    * CMP-036 remains registered above composition — do not remount it via m08.
@@ -165,6 +172,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
   }
 
   // Decorate only when mounts are supplied so existing optional composition suites
+  // still see `m07Mounted` as undefined when M07 is absent.
+  if (deps.m07) {
+    const mounted = await registerM07Plugins(app, deps.m07);
+    app.decorate('m07Mounted', mounted);
+  }
+
+  // Decorate only when mounts are supplied so existing optional composition suites
   // still see `m08Mounted` as undefined when M08 is absent.
   if (deps.m08) {
     const mounted = await registerM08Plugins(app, deps.m08);
@@ -183,6 +197,7 @@ declare module 'fastify' {
     m04Mounted?: string[];
     m05Mounted?: string[];
     m06Mounted?: string[];
+    m07Mounted?: string[];
     m08Mounted?: string[];
   }
 }
