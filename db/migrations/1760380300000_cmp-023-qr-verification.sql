@@ -48,7 +48,9 @@ CREATE TABLE sf_qr.verification_token (
   credential_id uuid NOT NULL,
   contract_id text NOT NULL DEFAULT 'SF-CON-VERIFICATION-TOKEN'
     CHECK (contract_id = 'SF-CON-VERIFICATION-TOKEN'),
-  opaque_token text NOT NULL CHECK (opaque_token ~ '^[A-Za-z0-9_-]{22,256}$'),
+  opaque_token text NOT NULL CHECK (
+    opaque_token ~ '^[A-Za-z0-9_-]+$' AND char_length(opaque_token) BETWEEN 22 AND 256
+  ),
   token_purpose text NOT NULL DEFAULT 'PUBLIC_CREDENTIAL_VERIFICATION'
     CHECK (token_purpose = 'PUBLIC_CREDENTIAL_VERIFICATION'),
   credential_type_ref text NOT NULL CHECK (credential_type_ref ~ '^[A-Za-z0-9_.:-]{1,128}$'),

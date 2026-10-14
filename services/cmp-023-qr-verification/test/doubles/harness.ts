@@ -47,7 +47,18 @@ export function makeHarness(
     return api.handle({ method, path, headers, query: opts.query ?? {}, body });
   }
 
-  return { repo: repository, clock, authorizer, probe, registry, credentials, state, service, api, call };
+  return {
+    repo: repository,
+    clock,
+    authorizer,
+    probe,
+    registry,
+    credentials,
+    state,
+    service,
+    api,
+    call,
+  };
 }
 
 export type Harness = ReturnType<typeof makeHarness>;

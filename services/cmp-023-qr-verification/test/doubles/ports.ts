@@ -98,7 +98,10 @@ export class FakeCredentials implements CredentialPort {
     });
   }
 
-  getCredential(p: { tenantId: string; credentialId: string }): Promise<IssuedCredentialView | null> {
+  getCredential(p: {
+    tenantId: string;
+    credentialId: string;
+  }): Promise<IssuedCredentialView | null> {
     this.probe.check();
     if (this.fail) return Promise.reject(new Error('credential engine down'));
     if (this.respondWith !== undefined) {

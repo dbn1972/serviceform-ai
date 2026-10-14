@@ -61,11 +61,13 @@ describe('issue token', () => {
     });
     const s = store(h);
     expect(s.tokens.size).toBe(1);
-    expect(s.outbox.filter((o) => o.topic === TOPIC_DOMAIN).map((o) => o.envelope.event_type)).toEqual([
-      'VerificationTokenIssued',
-    ]);
+    expect(
+      s.outbox.filter((o) => o.topic === TOPIC_DOMAIN).map((o) => o.envelope.event_type),
+    ).toEqual(['VerificationTokenIssued']);
     expect(JSON.stringify(s.outbox)).not.toContain(token['opaque_token'] as string);
-    expect(audits(h).map((a) => [a['action'], a['result']])).toEqual([['QR_TOKEN_ISSUE', 'SUCCESS']]);
+    expect(audits(h).map((a) => [a['action'], a['result']])).toEqual([
+      ['QR_TOKEN_ISSUE', 'SUCCESS'],
+    ]);
     expect(h.probe.violations).toBe(0);
   });
 
@@ -108,7 +110,10 @@ describe('issue token', () => {
     const r = await mint(h, issueBody({ credential_type_ref: 'credtype:tenant-meta:0002' }));
     expect(r.res.status).toBe(409);
     expect((r.res.body as Body)['details'][0]['code']).toBe('TOKEN_EXISTS_WITH_DIFFERENT_TERMS');
-    expect(audits(h).at(-1)).toMatchObject({ result: 'FAILED', reason: 'TOKEN_EXISTS_WITH_DIFFERENT_TERMS' });
+    expect(audits(h).at(-1)).toMatchObject({
+      result: 'FAILED',
+      reason: 'TOKEN_EXISTS_WITH_DIFFERENT_TERMS',
+    });
   });
 
   it('refuses credentials that are not ISSUED, unknown, or without a registry record', async () => {
@@ -116,7 +121,10 @@ describe('issue token', () => {
     const notIssued = await mint(h, issueBody({ credential_id: CRED_DRAFT }));
     expect(notIssued.res.status).toBe(409);
     expect((notIssued.res.body as Body)['details'][0]['code']).toBe('CREDENTIAL_NOT_ISSUED');
-    const unknown = await mint(h, issueBody({ credential_id: 'c0000000-0000-4000-8000-000000000000' }));
+    const unknown = await mint(
+      h,
+      issueBody({ credential_id: 'c0000000-0000-4000-8000-000000000000' }),
+    );
     expect(unknown.res.status).toBe(404);
     h.registry.records.delete(`${TENANT_A}|${CRED_2}`);
     const unregistered = await mint(h, issueBody({ credential_id: CRED_2 }));
@@ -189,7 +197,11 @@ describe('public verification', () => {
     expect(r.headers['cache-control']).toBe('no-store');
     const body = r.body as Body;
     expect(Object.keys(body).sort()).toEqual(['public_view', 'status_source_cmp', 'token_purpose']);
-    expect(Object.keys(body['public_view']).every((k) => (PUBLIC_VIEW_KEYS as readonly string[]).includes(k))).toBe(true);
+    expect(
+      Object.keys(body['public_view']).every((k) =>
+        (PUBLIC_VIEW_KEYS as readonly string[]).includes(k),
+      ),
+    ).toBe(true);
     expect(body['public_view']['registry_status']).toBe('ACTIVE');
     expect(body['public_view']['status_checked_at']).toBe('2026-10-14T10:00:05.000Z');
     const text = JSON.stringify(body);
@@ -202,11 +214,17 @@ describe('public verification', () => {
     const h = makeHarness();
     const opaque = (await mint(h)).token['opaque_token'] as string;
     const before = h.registry.calls;
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status']).toBe('ACTIVE');
+    expect(
+      ((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status'],
+    ).toBe('ACTIVE');
     h.registry.setStatus(TENANT_A, CRED_1, 'REVOKED');
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status']).toBe('REVOKED');
+    expect(
+      ((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status'],
+    ).toBe('REVOKED');
     h.registry.setStatus(TENANT_A, CRED_1, 'REISSUED');
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status']).toBe('REISSUED');
+    expect(
+      ((await verifyAs(h, TENANT_A, opaque)).body as Body)['public_view']['registry_status'],
+    ).toBe('REISSUED');
     expect(h.registry.calls - before).toBe(3);
   });
 
@@ -226,11 +244,17 @@ describe('public verification', () => {
     const opaque = (await mint(h)).token['opaque_token'] as string;
     const good = await h.registry.getStatus({ tenantId: TENANT_A, credentialId: CRED_1 });
     h.registry.respondWith = { ...good, status_authority_cmp: 'CMP-023' };
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe('REGISTRY_RESPONSE_INVALID');
+    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe(
+      'REGISTRY_RESPONSE_INVALID',
+    );
     h.registry.respondWith = { ...good, credential_id: CRED_2 };
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe('REGISTRY_RESPONSE_INVALID');
+    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe(
+      'REGISTRY_RESPONSE_INVALID',
+    );
     h.registry.respondWith = { ...good, issuer_ref: 'issuer:tenant-meta:0999' };
-    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe('REGISTRY_ISSUER_MISMATCH');
+    expect(((await verifyAs(h, TENANT_A, opaque)).body as Body)['details'][0]['code']).toBe(
+      'REGISTRY_ISSUER_MISMATCH',
+    );
   });
 
   it('unknown and expired tokens are 404, audited by token-ref without the token itself', async () => {
@@ -239,7 +263,9 @@ describe('public verification', () => {
     const r = await verifyAs(h, TENANT_A, unknown);
     expect(r.status).toBe(404);
     expect((r.body as Body)['details'][0]['code']).toBe('TOKEN_NOT_FOUND');
-    const opaque = (await mint(h, issueBody({ expires_at: '2026-10-14T11:00:00Z' }))).token['opaque_token'] as string;
+    const opaque = (await mint(h, issueBody({ expires_at: '2026-10-14T11:00:00Z' }))).token[
+      'opaque_token'
+    ] as string;
     expect((await verifyAs(h, TENANT_A, opaque)).status).toBe(200);
     h.clock.advance(60 * 60 * 1000);
     const expired = await verifyAs(h, TENANT_A, opaque);
@@ -248,11 +274,11 @@ describe('public verification', () => {
     const text = JSON.stringify(store(h).outbox);
     expect(text).not.toContain(unknown);
     expect(text).not.toContain(opaque);
-    expect(audits(h).filter((a) => a['action'] === 'QR_TOKEN_VERIFY').map((a) => a['result'])).toEqual([
-      'FAILED',
-      'SUCCESS',
-      'FAILED',
-    ]);
+    expect(
+      audits(h)
+        .filter((a) => a['action'] === 'QR_TOKEN_VERIFY')
+        .map((a) => a['result']),
+    ).toEqual(['FAILED', 'SUCCESS', 'FAILED']);
   });
 
   it('malformed tokens are 400 before any lookup', async () => {
@@ -307,7 +333,9 @@ describe('issuer-side token read', () => {
     const r = await h.call('GET', `/v1/qr/tokens/${token['token_id'] as string}`);
     expect(r.status).toBe(200);
     expect((r.body as Body)['token']['public_view']['registry_status']).toBe('SUSPENDED');
-    expect((await h.call('GET', '/v1/qr/tokens/c0000000-0000-4000-8000-000000000000')).status).toBe(404);
+    expect((await h.call('GET', '/v1/qr/tokens/c0000000-0000-4000-8000-000000000000')).status).toBe(
+      404,
+    );
     expect((await h.call('GET', '/v1/qr/tokens/not-a-uuid')).status).toBe(400);
     h.state.ctx = publicVerifierCtx(TENANT_A);
     expect((await h.call('GET', `/v1/qr/tokens/${token['token_id'] as string}`)).status).toBe(403);
@@ -322,12 +350,16 @@ describe('routing and context', () => {
     expect(m.status).toBe(400);
     expect((m.body as Body)['details'][0]['code']).toBe('METHOD_NOT_ALLOWED');
     h.state.ctx = null;
-    expect((await h.call('GET', `/v1/qr/verify/${'a'.repeat(43)}`)).body).toMatchObject({ error_code: 'SF-AUTH-001' });
+    expect((await h.call('GET', `/v1/qr/verify/${'a'.repeat(43)}`)).body).toMatchObject({
+      error_code: 'SF-AUTH-001',
+    });
   });
 
   it('client-supplied time in the query string is refused', async () => {
     const h = makeHarness();
-    const r = await h.call('GET', `/v1/qr/verify/${'a'.repeat(43)}`, undefined, { query: { now: '2030-01-01T00:00:00Z' } });
+    const r = await h.call('GET', `/v1/qr/verify/${'a'.repeat(43)}`, undefined, {
+      query: { now: '2030-01-01T00:00:00Z' },
+    });
     expect(r.status).toBe(400);
     expect((r.body as Body)['details'][0]['code']).toBe('CLIENT_TIME_NOT_AUTHORITATIVE');
   });
@@ -364,12 +396,18 @@ describe('tenant-negative', () => {
   it('a leaked foreign credential or registry record is blocked and audited', async () => {
     const h = makeHarness();
     h.state.ctx = ctxFor(TENANT_B);
-    h.credentials.respondWith = await h.credentials.getCredential({ tenantId: TENANT_A, credentialId: CRED_1 });
+    h.credentials.respondWith = await h.credentials.getCredential({
+      tenantId: TENANT_A,
+      credentialId: CRED_1,
+    });
     const a = await mint(h, issueBody({ credential_id: CRED_1 }));
     expect(a.res.status).toBe(403);
     expect((a.res.body as Body)['details'][0]['code']).toBe('CROSS_TENANT_RECORD_BLOCKED');
     h.credentials.respondWith = undefined;
-    h.registry.respondWith = await h.registry.getStatus({ tenantId: TENANT_A, credentialId: CRED_1 });
+    h.registry.respondWith = await h.registry.getStatus({
+      tenantId: TENANT_A,
+      credentialId: CRED_1,
+    });
     const b = await mint(h, issueBody({ credential_id: CRED_B1 }));
     expect(b.res.status).toBe(403);
     expect((b.res.body as Body)['details'][0]['code']).toBe('CROSS_TENANT_RECORD_BLOCKED');
@@ -383,7 +421,10 @@ describe('tenant-negative', () => {
   it('a registry answer for another tenant never reaches a public verifier', async () => {
     const h = makeHarness();
     const opaque = (await mint(h)).token['opaque_token'] as string;
-    h.registry.respondWith = { ...(await h.registry.getStatus({ tenantId: TENANT_A, credentialId: CRED_1 })), tenant_id: TENANT_B };
+    h.registry.respondWith = {
+      ...(await h.registry.getStatus({ tenantId: TENANT_A, credentialId: CRED_1 })),
+      tenant_id: TENANT_B,
+    };
     const r = await verifyAs(h, TENANT_A, opaque);
     expect(r.status).toBe(403);
     expect(JSON.stringify(r.body)).not.toContain('public_view');
@@ -391,7 +432,11 @@ describe('tenant-negative', () => {
 
   it('tenant in headers or body is refused', async () => {
     const h = makeHarness();
-    for (const headers of [{ 'x-tenant-id': TENANT_B }, { 'X-SF-Cell': 'x' }, { forwarded: `for=1.2.3.4;tenant=${TENANT_B}` }]) {
+    for (const headers of [
+      { 'x-tenant-id': TENANT_B },
+      { 'X-SF-Cell': 'x' },
+      { forwarded: `for=1.2.3.4;tenant=${TENANT_B}` },
+    ]) {
       const r = await h.call('GET', `/v1/qr/verify/${'a'.repeat(43)}`, undefined, { headers });
       expect(r.status).toBe(403);
       expect((r.body as Body)['error_code']).toBe('SF-TEN-002');
@@ -410,8 +455,10 @@ describe('tenant-negative', () => {
 
   it('the same credential id in two tenants yields independent tokens', async () => {
     const h = makeHarness();
+    const source = h.credentials.records.get(`${TENANT_A}|${CRED_1}`);
+    expect(source).toBeDefined();
     h.credentials.records.set(`${TENANT_B}|${CRED_1}`, {
-      ...(await h.credentials.getCredential({ tenantId: TENANT_A, credentialId: CRED_1 }))!,
+      ...(source as NonNullable<typeof source>),
       tenant_id: TENANT_B,
     });
     h.registry.put(TENANT_B, CRED_1, 'REVOKED', ISSUER_REF);
@@ -419,8 +466,16 @@ describe('tenant-negative', () => {
     h.state.ctx = ctxFor(TENANT_B);
     const b = (await mint(h)).token;
     expect(b['opaque_token']).not.toBe(a['opaque_token']);
-    expect(((await verifyAs(h, TENANT_A, a['opaque_token'] as string)).body as Body)['public_view']['registry_status']).toBe('ACTIVE');
-    expect(((await verifyAs(h, TENANT_B, b['opaque_token'] as string)).body as Body)['public_view']['registry_status']).toBe('REVOKED');
+    expect(
+      ((await verifyAs(h, TENANT_A, a['opaque_token'] as string)).body as Body)['public_view'][
+        'registry_status'
+      ],
+    ).toBe('ACTIVE');
+    expect(
+      ((await verifyAs(h, TENANT_B, b['opaque_token'] as string)).body as Body)['public_view'][
+        'registry_status'
+      ],
+    ).toBe('REVOKED');
     expect((await verifyAs(h, TENANT_B, a['opaque_token'] as string)).status).toBe(404);
   });
 

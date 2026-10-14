@@ -14,7 +14,15 @@ import {
 } from '../../src/domain/token.js';
 import { Cmp023Error } from '../../src/errors.js';
 import { validateIssueToken, validateOpaqueToken } from '../../src/service/input.js';
-import { CRED_1, ISSUED_AT, ISSUER_REF, OFFICER_1, SIGNED_SHA, TENANT_A, TYPE_REF } from '../doubles/fixtures.js';
+import {
+  CRED_1,
+  ISSUED_AT,
+  ISSUER_REF,
+  OFFICER_1,
+  SIGNED_SHA,
+  TENANT_A,
+  TYPE_REF,
+} from '../doubles/fixtures.js';
 
 const row: VerificationTokenRecord = {
   tenant_id: TENANT_A,
@@ -71,7 +79,13 @@ describe('opaque token', () => {
   });
 
   it('format guard rejects short, long and non URL-safe tokens', () => {
-    for (const bad of ['short', 'a'.repeat(21), 'a'.repeat(257), `${'a'.repeat(30)}/x`, `${'a'.repeat(30)}=`]) {
+    for (const bad of [
+      'short',
+      'a'.repeat(21),
+      'a'.repeat(257),
+      `${'a'.repeat(30)}/x`,
+      `${'a'.repeat(30)}=`,
+    ]) {
       expect(code(() => validateOpaqueToken(bad))).toBe('TOKEN_FORMAT_INVALID');
     }
     expect(validateOpaqueToken('a'.repeat(22))).toBe('a'.repeat(22));
@@ -81,7 +95,9 @@ describe('opaque token', () => {
 describe('purpose-minimised public view', () => {
   it('carries only the frozen public keys and the status passed in', () => {
     const v = buildPublicView(row, 'REVOKED', new Date('2026-10-15T09:00:00Z'));
-    expect(Object.keys(v).every((k) => (PUBLIC_VIEW_KEYS as readonly string[]).includes(k))).toBe(true);
+    expect(Object.keys(v).every((k) => (PUBLIC_VIEW_KEYS as readonly string[]).includes(k))).toBe(
+      true,
+    );
     expect(v.registry_status).toBe('REVOKED');
     expect(v.status_checked_at).toBe('2026-10-15T09:00:00.000Z');
     expect(JSON.stringify(v)).not.toContain(CRED_1);
@@ -90,7 +106,11 @@ describe('purpose-minimised public view', () => {
   });
 
   it('optional facts are omitted rather than null', () => {
-    const v = buildPublicView({ ...row, issued_at: null, signed_artifact_sha256: null }, 'ACTIVE', new Date());
+    const v = buildPublicView(
+      { ...row, issued_at: null, signed_artifact_sha256: null },
+      'ACTIVE',
+      new Date(),
+    );
     expect('issued_at' in v).toBe(false);
     expect('signed_artifact_sha256' in v).toBe(false);
   });
@@ -140,7 +160,9 @@ describe('port response guards', () => {
     expect(isCredentialView(c)).toBe(true);
     expect(signedArtifactHash(c as never)).toBe(SIGNED_SHA);
     expect(isCredentialView({ ...c, lifecycle_status: 'APPROVED' })).toBe(false);
-    expect(isCredentialView({ ...c, artifacts: [{ artifact_kind: 'SIGNED_ARTIFACT', sha256: 'zz' }] })).toBe(false);
+    expect(
+      isCredentialView({ ...c, artifacts: [{ artifact_kind: 'SIGNED_ARTIFACT', sha256: 'zz' }] }),
+    ).toBe(false);
     expect(signedArtifactHash({ ...c, artifacts: [] } as never)).toBeNull();
   });
 });
@@ -163,29 +185,56 @@ describe('issue input', () => {
 
   it('refuses any attempt to supply a registry status or public view', () => {
     for (const key of ['registry_status', 'current_status', 'status', 'public_view']) {
-      expect(code(() => validateIssueToken({ ...{ credential_id: CRED_1, credential_type_ref: TYPE_REF }, [key]: 'ACTIVE' }))).toBe(
-        'STATUS_WRITE_FORBIDDEN',
-      );
+      expect(
+        code(() =>
+          validateIssueToken({
+            ...{ credential_id: CRED_1, credential_type_ref: TYPE_REF },
+            [key]: 'ACTIVE',
+          }),
+        ),
+      ).toBe('STATUS_WRITE_FORBIDDEN');
     }
   });
 
   it('refuses server-owned facts, unknown (PII-shaped) fields, tenant and client time', () => {
     const base = { credential_id: CRED_1, credential_type_ref: TYPE_REF };
-    expect(code(() => validateIssueToken({ ...base, issuer_ref: ISSUER_REF }))).toBe('SERVER_OWNED_FIELD');
-    expect(code(() => validateIssueToken({ ...base, opaque_token: 'a'.repeat(43) }))).toBe('SERVER_OWNED_FIELD');
-    expect(code(() => validateIssueToken({ ...base, holder_name: 'SYNTHETIC' }))).toBe('UNKNOWN_FIELD');
-    expect(code(() => validateIssueToken({ ...base, tenant_id: TENANT_A }))).toBe('TENANT_ID_SERVER_DERIVED');
-    expect(code(() => validateIssueToken({ ...base, created_at: ISSUED_AT }))).toBe('CLIENT_TIME_NOT_AUTHORITATIVE');
+    expect(code(() => validateIssueToken({ ...base, issuer_ref: ISSUER_REF }))).toBe(
+      'SERVER_OWNED_FIELD',
+    );
+    expect(code(() => validateIssueToken({ ...base, opaque_token: 'a'.repeat(43) }))).toBe(
+      'SERVER_OWNED_FIELD',
+    );
+    expect(code(() => validateIssueToken({ ...base, holder_name: 'SYNTHETIC' }))).toBe(
+      'UNKNOWN_FIELD',
+    );
+    expect(code(() => validateIssueToken({ ...base, tenant_id: TENANT_A }))).toBe(
+      'TENANT_ID_SERVER_DERIVED',
+    );
+    expect(code(() => validateIssueToken({ ...base, created_at: ISSUED_AT }))).toBe(
+      'CLIENT_TIME_NOT_AUTHORITATIVE',
+    );
   });
 
   it('refuses flipped markers, malformed ids, refs and timestamps', () => {
     const base = { credential_id: CRED_1, credential_type_ref: TYPE_REF };
-    expect(code(() => validateIssueToken({ ...base, status_write_forbidden: false }))).toBe('CONSTANT_MARKER_MISMATCH');
-    expect(code(() => validateIssueToken({ ...base, embedded_pii_forbidden: false }))).toBe('CONSTANT_MARKER_MISMATCH');
-    expect(code(() => validateIssueToken({ ...base, status_source_cmp: 'CMP-023' }))).toBe('CONSTANT_MARKER_MISMATCH');
-    expect(code(() => validateIssueToken({ ...base, credential_id: 'nope' }))).toBe('UUID_REQUIRED');
-    expect(code(() => validateIssueToken({ ...base, credential_type_ref: 'has space' }))).toBe('REF_INVALID');
-    expect(code(() => validateIssueToken({ ...base, expires_at: '2027-01-01' }))).toBe('TIMESTAMP_INVALID');
+    expect(code(() => validateIssueToken({ ...base, status_write_forbidden: false }))).toBe(
+      'CONSTANT_MARKER_MISMATCH',
+    );
+    expect(code(() => validateIssueToken({ ...base, embedded_pii_forbidden: false }))).toBe(
+      'CONSTANT_MARKER_MISMATCH',
+    );
+    expect(code(() => validateIssueToken({ ...base, status_source_cmp: 'CMP-023' }))).toBe(
+      'CONSTANT_MARKER_MISMATCH',
+    );
+    expect(code(() => validateIssueToken({ ...base, credential_id: 'nope' }))).toBe(
+      'UUID_REQUIRED',
+    );
+    expect(code(() => validateIssueToken({ ...base, credential_type_ref: 'has space' }))).toBe(
+      'REF_INVALID',
+    );
+    expect(code(() => validateIssueToken({ ...base, expires_at: '2027-01-01' }))).toBe(
+      'TIMESTAMP_INVALID',
+    );
     expect(code(() => validateIssueToken([]))).toBe('OBJECT_REQUIRED');
   });
 });

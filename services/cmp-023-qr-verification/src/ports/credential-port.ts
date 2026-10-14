@@ -17,5 +17,8 @@ export interface IssuedCredentialView {
 }
 
 export interface CredentialPort {
-  getCredential(p: { tenantId: string; credentialId: string }): Promise<IssuedCredentialView | null>;
+  getCredential(p: {
+    tenantId: string;
+    credentialId: string;
+  }): Promise<IssuedCredentialView | null>;
 }

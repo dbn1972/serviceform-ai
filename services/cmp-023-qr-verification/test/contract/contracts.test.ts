@@ -75,7 +75,11 @@ async function fullFlow() {
   h.state.ctx = publicVerifierCtx(TENANT_B);
   const foreign = await h.call('GET', `/v1/qr/verify/${token['opaque_token'] as string}`);
   h.state.ctx = ctxFor(TENANT_A);
-  const statusWrite = await h.call('POST', '/v1/qr/tokens', issueBody({ registry_status: 'ACTIVE' }));
+  const statusWrite = await h.call(
+    'POST',
+    '/v1/qr/tokens',
+    issueBody({ registry_status: 'ACTIVE' }),
+  );
   h.registry.fail = true;
   const outage = await h.call('GET', `/v1/qr/tokens/${token['token_id'] as string}`);
   return { h, minted, remint, read, verified, foreign, statusWrite, outage };
@@ -98,16 +102,25 @@ describe('FROZEN SF-CON-VERIFICATION-TOKEN', () => {
   it('component constants match the frozen bounds and the CMP-024 status enum', () => {
     const s = readJson(join(repoRoot, FROZEN_SCHEMA));
     const t = s['properties']['opaque_token'];
-    expect(OPAQUE_TOKEN.source).toBe(`^[A-Za-z0-9_-]{${t['minLength'] as number},${t['maxLength'] as number}}$`);
+    expect(OPAQUE_TOKEN.source).toBe(
+      `^[A-Za-z0-9_-]{${t['minLength'] as number},${t['maxLength'] as number}}$`,
+    );
     const status = readJson(join(repoRoot, STATUS_SCHEMA));
     expect([...REGISTRY_STATUSES]).toEqual(status['$defs']['registryStatus']['enum']);
   });
 
   it('frozen valid example passes and both invalid examples fail (harness sanity)', () => {
     const dir = join(repoRoot, 'contracts/m07/examples');
-    expect(validateToken(readJson(join(dir, 'valid/verification-token.json'))), JSON.stringify(validateToken.errors)).toBe(true);
-    expect(validateToken(readJson(join(dir, 'invalid/verification-token.embedded-pii.json')))).toBe(false);
-    expect(validateToken(readJson(join(dir, 'invalid/verification-token.status-writable.json')))).toBe(false);
+    expect(
+      validateToken(readJson(join(dir, 'valid/verification-token.json'))),
+      JSON.stringify(validateToken.errors),
+    ).toBe(true);
+    expect(validateToken(readJson(join(dir, 'invalid/verification-token.embedded-pii.json')))).toBe(
+      false,
+    );
+    expect(
+      validateToken(readJson(join(dir, 'invalid/verification-token.status-writable.json'))),
+    ).toBe(false);
   });
 
   it('every token CMP-023 returns validates against the frozen schema', async () => {
@@ -123,7 +136,9 @@ describe('FROZEN SF-CON-VERIFICATION-TOKEN', () => {
     const { verified, minted } = await fullFlow();
     const body = verified.body as Body;
     expect(Object.keys(body).sort()).toEqual(['public_view', 'status_source_cmp', 'token_purpose']);
-    expect(validatePublicView(body['public_view']), JSON.stringify(validatePublicView.errors)).toBe(true);
+    expect(validatePublicView(body['public_view']), JSON.stringify(validatePublicView.errors)).toBe(
+      true,
+    );
     expect(body['public_view']['registry_status']).toBe('REVOKED');
     const token = (minted.body as Body)['token'] as Body;
     for (const k of ['tenant_id', 'token_id', 'credential_id', 'opaque_token']) {
@@ -135,7 +150,9 @@ describe('FROZEN SF-CON-VERIFICATION-TOKEN', () => {
 describe('shared frozen envelopes emitted by CMP-023', () => {
   it('outbox events, audit events and error responses validate against SF-CON schemas', async () => {
     const { h, foreign, statusWrite, outage, minted } = await fullFlow();
-    const all = [TENANT_A, TENANT_B].flatMap((t) => (h.repo as MemoryQrRepository).tenant(t).outbox);
+    const all = [TENANT_A, TENANT_B].flatMap(
+      (t) => (h.repo as MemoryQrRepository).tenant(t).outbox,
+    );
     const eventData = ajv.compile(
       readJson(join(root, 'contracts/events/verification-token-issued.data.schema.json')),
     );
@@ -171,7 +188,11 @@ describe('shared frozen envelopes emitted by CMP-023', () => {
       expect(input(call), JSON.stringify(input.errors)).toBe(true);
     }
     const ctxSchema = validateShared('request-context');
-    for (const c of [ctxFor(TENANT_A), ctxFor(TENANT_A, undefined, 'SYSTEM'), publicVerifierCtx(TENANT_A)]) {
+    for (const c of [
+      ctxFor(TENANT_A),
+      ctxFor(TENANT_A, undefined, 'SYSTEM'),
+      publicVerifierCtx(TENANT_A),
+    ]) {
       expect(ctxSchema(c), JSON.stringify(ctxSchema.errors)).toBe(true);
     }
   });
@@ -282,7 +303,8 @@ describe('architecture guards (static)', () => {
 
   it('CMP-023 has no place to store, cache or write a registry status', () => {
     expect(migrationCode).not.toMatch(/registry_status\s+text|current_status|\bstatus_cache\b/i);
-    const tokenTable = /CREATE TABLE sf_qr\.verification_token \(([\s\S]*?)\n\);/.exec(migrationCode)?.[1] ?? '';
+    const tokenTable =
+      /CREATE TABLE sf_qr\.verification_token \(([\s\S]*?)\n\);/.exec(migrationCode)?.[1] ?? '';
     expect(tokenTable).not.toMatch(/^\s*(?:registry_)?status\s/m);
     const port = readFileSync(join(root, 'src/ports/registry-status-port.ts'), 'utf8');
     const methods = [...port.matchAll(/^\s+([a-zA-Z]+)\(/gm)].map((m) => m[1]);
@@ -310,7 +332,9 @@ describe('architecture guards (static)', () => {
     ]) {
       expect(text, name).not.toMatch(/\bINTERVAL\b/i);
       expect(text, name).not.toMatch(/\b\d+\s*(?:days?|weeks?|months?|years?)\b/i);
-      expect(text, name).not.toMatch(/retention_(?:days|period|until)|purge_after|delete_after|valid_for/i);
+      expect(text, name).not.toMatch(
+        /retention_(?:days|period|until)|purge_after|delete_after|valid_for/i,
+      );
     }
     expect(outbox).not.toMatch(/\bINTERVAL\b/i);
   });

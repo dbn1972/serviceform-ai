@@ -344,7 +344,10 @@ export class QrVerificationService {
     };
   }
 
-  private assertIssuerConsistent(row: VerificationTokenRecord, registry: RegistryStatusRecord): void {
+  private assertIssuerConsistent(
+    row: VerificationTokenRecord,
+    registry: RegistryStatusRecord,
+  ): void {
     if (registry.issuer_ref !== row.issuer_ref) {
       throw new Cmp023Error('SF-INT-001', detail('REGISTRY_ISSUER_MISMATCH'));
     }

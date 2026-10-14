@@ -51,6 +51,9 @@ const CONSTANT_MARKERS: Readonly<Record<string, unknown>> = {
   embedded_pii_forbidden: true,
 };
 
+const RFC3339_PREFIX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+const RFC3339_ZONE = /(?:Z|[+-]\d{2}:\d{2})$/;
+
 function bad(pointer: string, code = 'INVALID_VALUE'): never {
   throw new Cmp023Error('SF-SYS-003', detail(code, pointer));
 }
@@ -107,7 +110,8 @@ export function validateIssueToken(body: unknown): IssueTokenInput {
   if (
     expires !== undefined &&
     (typeof expires !== 'string' ||
-      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(expires) ||
+      !RFC3339_PREFIX.test(expires) ||
+      !RFC3339_ZONE.test(expires) ||
       Number.isNaN(Date.parse(expires)))
   ) {
     bad('/expires_at', 'TIMESTAMP_INVALID');

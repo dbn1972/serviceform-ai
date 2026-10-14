@@ -22,9 +22,6 @@ const isoOrNull = (v: unknown): string | null =>
   v === null || v === undefined ? null : v instanceof Date ? v.toISOString() : String(v);
 const strOrNull = (v: unknown): string | null => (v === null || v === undefined ? null : String(v));
 
-const TOKEN_COLUMNS = `tenant_id, token_id, credential_id, opaque_token, credential_type_ref, issuer_ref,
-  issued_at, signed_artifact_sha256, expires_at, actor_type, actor_id, created_at, correlation_id`;
-
 function toToken(r: Record<string, unknown>): VerificationTokenRecord {
   return {
     tenant_id: String(r['tenant_id']),
@@ -110,8 +107,11 @@ class PgTx implements QrTx {
 
   async insertToken(row: VerificationTokenRecord): Promise<void> {
     await this.c.query(
-      `INSERT INTO sf_qr.verification_token (${TOKEN_COLUMNS}, token_purpose)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+      `INSERT INTO sf_qr.verification_token (
+         tenant_id, token_id, credential_id, opaque_token, credential_type_ref, issuer_ref,
+         issued_at, signed_artifact_sha256, expires_at, actor_type, actor_id, created_at,
+         correlation_id, token_purpose
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
       [
         row.tenant_id,
         row.token_id,
@@ -131,26 +131,45 @@ class PgTx implements QrTx {
     );
   }
 
-  private async one(where: string, value: string): Promise<VerificationTokenRecord | undefined> {
-    const res = await this.c.query(
-      `SELECT ${TOKEN_COLUMNS} FROM sf_qr.verification_token
-        WHERE tenant_id = $1 AND token_purpose = $2 AND ${where} = $3`,
-      [this.tenantId, TOKEN_PURPOSE, value],
-    );
+  private first(res: SqlResult): VerificationTokenRecord | undefined {
     const r = res.rows[0];
     return r ? toToken(r) : undefined;
   }
 
-  getToken(tokenId: string): Promise<VerificationTokenRecord | undefined> {
-    return this.one('token_id', tokenId);
+  async getToken(tokenId: string): Promise<VerificationTokenRecord | undefined> {
+    const res = await this.c.query(
+      `SELECT tenant_id, token_id, credential_id, opaque_token, credential_type_ref, issuer_ref,
+              issued_at, signed_artifact_sha256, expires_at, actor_type, actor_id, created_at,
+              correlation_id
+         FROM sf_qr.verification_token
+        WHERE tenant_id = $1 AND token_purpose = $2 AND token_id = $3`,
+      [this.tenantId, TOKEN_PURPOSE, tokenId],
+    );
+    return this.first(res);
   }
 
-  getTokenByOpaque(opaqueToken: string): Promise<VerificationTokenRecord | undefined> {
-    return this.one('opaque_token', opaqueToken);
+  async getTokenByOpaque(opaqueToken: string): Promise<VerificationTokenRecord | undefined> {
+    const res = await this.c.query(
+      `SELECT tenant_id, token_id, credential_id, opaque_token, credential_type_ref, issuer_ref,
+              issued_at, signed_artifact_sha256, expires_at, actor_type, actor_id, created_at,
+              correlation_id
+         FROM sf_qr.verification_token
+        WHERE tenant_id = $1 AND token_purpose = $2 AND opaque_token = $3`,
+      [this.tenantId, TOKEN_PURPOSE, opaqueToken],
+    );
+    return this.first(res);
   }
 
-  getTokenByCredential(credentialId: string): Promise<VerificationTokenRecord | undefined> {
-    return this.one('credential_id', credentialId);
+  async getTokenByCredential(credentialId: string): Promise<VerificationTokenRecord | undefined> {
+    const res = await this.c.query(
+      `SELECT tenant_id, token_id, credential_id, opaque_token, credential_type_ref, issuer_ref,
+              issued_at, signed_artifact_sha256, expires_at, actor_type, actor_id, created_at,
+              correlation_id
+         FROM sf_qr.verification_token
+        WHERE tenant_id = $1 AND token_purpose = $2 AND credential_id = $3`,
+      [this.tenantId, TOKEN_PURPOSE, credentialId],
+    );
+    return this.first(res);
   }
 
   async insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void> {

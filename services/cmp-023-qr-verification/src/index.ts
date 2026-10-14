@@ -32,7 +32,9 @@ export function buildQrVerificationService(
   });
 }
 
-export function buildQrVerificationApi(opts: QrVerificationOptions): ReturnType<typeof createQrApi> {
+export function buildQrVerificationApi(
+  opts: QrVerificationOptions,
+): ReturnType<typeof createQrApi> {
   return createQrApi({
     service: buildQrVerificationService(opts),
     resolveContext: opts.resolveContext,
