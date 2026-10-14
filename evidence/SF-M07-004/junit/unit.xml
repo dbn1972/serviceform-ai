@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="40" failures="0" errors="0" time="0.052985405">
+    <testsuite name="services/cmp-012-digilocker/test/contract/contracts.test.ts" timestamp="2026-10-14T05:18:31.324Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.033570309">
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="SF-CON-DIGILOCKER-PUBLISH (FROZEN) hash conformance &gt; the frozen schema hash matches contracts-lock.yaml" time="0.00156391">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="SF-CON-CONNECTOR-BINDING + SF-CON-SIMULATION-MARKER hash conformance &gt; connector-binding schema hash matches contracts-lock.yaml" time="0.0020692">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="SF-CON-CONNECTOR-BINDING + SF-CON-SIMULATION-MARKER hash conformance &gt; simulation-marker schema hash matches contracts-lock.yaml" time="0.000308473">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH &gt; PUBLISHED record validates against frozen schema" time="0.013541827">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH &gt; FAILED record validates against frozen schema" time="0.000789916">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-012 &gt; outbox events validate against SF-CON-EVENT-ENVELOPE" time="0.006592055">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-012 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.001027419">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000700326">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.00066946">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.004375474">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer component schemas and never BYPASSRLS" time="0.000504023">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-012-digilocker/test/unit/publish.test.ts" timestamp="2026-10-14T05:18:31.326Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.008283495">
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 with PUBLISHED status on success" time="0.003179572">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 with FAILED status on simulated failure" time="0.000577213">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; emits domain outbox event on publish" time="0.000365148">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; issuance_reversed_on_publish_failure=false is immutable even on failure" time="0.000369505">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 400 when consent_ref is missing" time="0.000316214">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 400 when purpose_code is missing" time="0.000165417">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 on getPublishRecord after publish" time="0.000464179">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 404 for unknown publish_request_id" time="0.000243851">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; simulation_marker present in stored record for SIMULATED mode" time="0.000640596">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 405 for unsupported method" time="0.000205965">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="mode matrix &gt; SIMULATED mode stores connector_mode=SIMULATED and simulation_marker" time="0.000331182">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/publish.test.ts" name="mode matrix &gt; SIMULATED CI mode works equivalently" time="0.000223229">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-012-digilocker/test/unit/simulation.test.ts" timestamp="2026-10-14T05:18:31.326Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.005208936">
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts a valid SIMULATED DIGILOCKER binding in LOCAL" time="0.001516828">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_BINDING_NOT_FOUND when null" time="0.000301037">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CRITICAL_NON_REAL_IN_PRODUCTION for critical SIMULATED in PRODUCTION" time="0.000151095">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws NON_SIMULATED_IN_LOCAL_OR_CI_REFUSED for REAL in LOCAL" time="0.000224808">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_TYPE_MISMATCH for non-DIGILOCKER connector" time="0.000138117">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_ENVIRONMENT_MISMATCH when env does not match runtime" time="0.000154992">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts SANDBOX binding in DEVELOPMENT" time="0.000242157">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts REAL binding in PRODUCTION (non-critical)" time="0.000180204">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="buildSimulationMarker &gt; builds a valid marker for SIMULATED binding" time="0.000612462">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="buildSimulationMarker &gt; returns null for non-SIMULATED mode" time="0.000159295">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="isSimulationMarker &gt; accepts a valid marker" time="0.000169874">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/simulation.test.ts" name="isSimulationMarker &gt; rejects extra keys" time="0.00008339">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" timestamp="2026-10-14T05:18:31.327Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.005922665">
+        <testcase classname="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; a tenant cannot see another tenant publish record" time="0.003376533">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; publish for TENANT_A does not appear in TENANT_B store" time="0.000454228">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; returns 403 when authorizer denies" time="0.000456727">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; refuses x-bypass-rls header (tenant leak protection)" time="0.000290233">
+        </testcase>
+        <testcase classname="services/cmp-012-digilocker/test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; returns 401 when no tenant context" time="0.000359914">
+        </testcase>
+    </testsuite>
+</testsuites>

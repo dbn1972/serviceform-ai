@@ -1,0 +1,66 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-012 DigiLocker Connector",
+    "version": "0.0.0",
+    "description": "SF-M07-004. INT-013 REAL|SANDBOX|SIMULATED. Publishes ISSUED credentials to DigiLocker via CMP-037 connector port. Consent + purpose required. Publish failure MUST NOT reverse issuance. No statutory DigiLocker policy invented."
+  },
+  "paths": {
+    "/v1/digilocker-publish": {
+      "post": {
+        "operationId": "publishCredential",
+        "summary": "Publish an ISSUED credential to DigiLocker",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PublishCredentialRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Publish record created (PUBLISHED or FAILED; issuance never reversed)"
+          },
+          "400": { "description": "Validation error (missing consent_ref / purpose_code)" },
+          "409": { "description": "Duplicate / idempotency conflict" }
+        }
+      }
+    },
+    "/v1/digilocker-publish/{publish_request_id}": {
+      "get": {
+        "operationId": "getPublishRecord",
+        "summary": "Get a DigiLocker publish record by ID",
+        "parameters": [
+          {
+            "name": "publish_request_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Publish record" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PublishCredentialRequest": {
+        "type": "object",
+        "required": ["credential_id", "consent_ref", "purpose_code", "document_type_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "credential_id": { "type": "string", "format": "uuid" },
+          "consent_ref": { "type": "string", "format": "uuid" },
+          "purpose_code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$" },
+          "document_type_ref": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{1,128}$" },
+          "connector_binding_id": { "type": "string", "format": "uuid" },
+          "test_run_id": { "type": "string", "maxLength": 128 }
+        }
+      }
+    }
+  }
+}
