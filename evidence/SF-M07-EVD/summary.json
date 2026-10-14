@@ -17,41 +17,76 @@
   "self_certified": false,
   "recording_agent_self_issued": false,
   "merges": {
-    "gitleaks_allowlist": { "pr": 154, "merge": "df0bea4f28d7e506d4874b979e4c0bf63e45762a" },
+    "gitleaks_allowlist": {
+      "pr": 154,
+      "merge": "df0bea4f28d7e506d4874b979e4c0bf63e45762a"
+    },
     "SF-M07-003-REM": {
       "pr": 153,
       "head": "2b5b27a9bbcf49e83b77d986236804a5ee33e680",
       "merge": "d3cd30ad9f604aea7d7e824ee42086d328dccbd7",
-      "pr_ci": [38586211677, 38586211514, 38586211196]
+      "pr_ci": [
+        38586211677,
+        38586211514,
+        38586211196
+      ]
     },
     "SF-M07-004-REM": {
       "pr": 152,
       "head": "5b3b9a5e28b2d7248e5c695ed3be103e35e26982",
       "merge": "e8f847afb1bfe155028dc99706399fbe2adca708",
-      "pr_ci": [38586210994, 38586210912, 38586211117],
-      "merge_ci": [38592656781, 38592656842, 38592656800]
+      "pr_ci": [
+        38586210994,
+        38586210912,
+        38586211117
+      ],
+      "merge_ci": [
+        38592656781,
+        38592656842,
+        38592656800
+      ]
     },
     "SF-M07-SEC": {
       "pr": 151,
       "head": "7213818a5d24df81d5fc34d6b9bf894ddcf19034",
       "merge": "739443cee766c75e76124a3d573c33ca37c1ac67",
-      "pr_ci": [38593593650, 38593593519, 38593593507],
+      "pr_ci": [
+        38593593650,
+        38593593519,
+        38593593507
+      ],
       "recommended_result": "SF_M07_SEC_PASS_HIGH_CLOSED_RECOMMEND_G3"
     },
     "SF-M07-INT": {
       "pr": 150,
       "head": "a7fa68cd031141e9aacc882cdde56c8a7373564f",
       "merge": "e82126b5edbfe963892bc850631e9e685c733f05",
-      "pr_ci": [38593163376, 38593163394, 38593163250],
+      "pr_ci": [
+        38593163376,
+        38593163394,
+        38593163250
+      ],
       "recommended_result": "SF_M07_INT_PASS_HIGH_CLOSED_NON_BLOCKING_MEDIUM_REMAIN"
     }
   },
-  "ci_run_order": ["ci", "security", "developer-platform"],
+  "ci_run_order": [
+    "ci",
+    "security",
+    "developer-platform"
+  ],
   "sot_ci": {
-    "ci": { "run_id": 38603231673, "conclusion": "pending" },
-    "security": { "run_id": 38603231775, "conclusion": "pending" },
-    "developer_platform": { "run_id": 38603231596, "conclusion": "pending" },
-    "note": "Bound when tip push workflows conclude SUCCESS"
+    "ci": {
+      "run_id": 38603231673,
+      "conclusion": "success"
+    },
+    "security": {
+      "run_id": 38603231775,
+      "conclusion": "success"
+    },
+    "developer_platform": {
+      "run_id": 38603231596,
+      "conclusion": "success"
+    }
   },
   "independent_rerun_at_sot": {
     "int_vitest": "PASS_65_EXPECTED_FAIL_2_MEDIUM",
@@ -62,12 +97,15 @@
   },
   "cross_tenant_leakage": 0,
   "critical_findings_open": 0,
-  "simulated_boundaries": ["ESIGN", "DIGILOCKER"],
+  "simulated_boundaries": [
+    "ESIGN",
+    "DIGILOCKER"
+  ],
   "non_blocking_residuals": [
     "INT F03/F04 MEDIUM DigiLocker projection/audit envelope",
     "INT F02 MEDIUM OFFICER vs SYSTEM registration seam ADR",
     "SEC F04/F02 MEDIUM CMP-012 authz/context shape",
-    "SEC F06 consent residual — no CMP-030 port",
+    "SEC F06 consent residual \u2014 no CMP-030 port",
     "REAL DigiLocker/eSign deferred",
     "OPA catalogue lacks M07 actions (fail-closed)"
   ],
