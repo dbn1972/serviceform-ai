@@ -1,0 +1,34 @@
+{
+  "task_id": "SF-M07-SEC",
+  "module_id": "M07",
+  "component_ids": ["CMP-022", "CMP-024", "CMP-023", "CMP-012"],
+  "integration_ids": ["INT-008", "INT-011", "INT-013"],
+  "branch": "cursor/m07-sec-91f2",
+  "base_commit": "dfa96a0e8b61754d2ed6323bae8455caf5a285aa",
+  "test_commit": "a6ad0dc",
+  "model_route": "opus",
+  "model_release": "claude-opus-5-5",
+  "results": {
+    "with_live_pg": { "files": 8, "tests": 44, "passed": 44, "failed": 0, "skipped": 0 },
+    "without_db": { "files": 8, "tests": 44, "passed": 37, "failed": 0, "skipped": 7 },
+    "eslint": "PASS",
+    "prettier": "PASS"
+  },
+  "cross_tenant_leakage": 0,
+  "blocking_hard_gate_failures": 0,
+  "production_code_modified": false,
+  "findings": [
+    { "id": "M07-SEC-F05", "severity": "HIGH", "component": "host-access-log/CMP-023", "summary": "QR opaque bearer token in verify path is written to host access logs" },
+    { "id": "M07-SEC-F06", "severity": "HIGH", "component": "CMP-012", "summary": "Publish does not verify credential ISSUED (CMP-022) or consent/purpose (CMP-030)" },
+    { "id": "M07-SEC-F04", "severity": "MEDIUM", "component": "CMP-012", "summary": "Truthy PDP allow check; null decision yields 500" },
+    { "id": "M07-SEC-F01", "severity": "MEDIUM", "component": "CMP-012", "summary": "Component header guard blocks only three names (edge still blocks)" },
+    { "id": "M07-SEC-F02", "severity": "MEDIUM", "component": "CMP-012", "summary": "Context shape not validated (non-UUID tenant / actor accepted)" },
+    { "id": "M07-SEC-F03", "severity": "LOW", "component": "CMP-036/CMP-022/023/024", "summary": "x-bypass-rls passes edge; inert" }
+  ],
+  "residuals": ["R1 OPA catalogue lacks M07 actions", "R2 CMP-012 no PG repo", "R3 no live OPA binary", "R4 REAL connectors deferred", "R5 fastify types unresolved for root tsc"],
+  "recommend_g3": false,
+  "self_certified": false,
+  "certified": false,
+  "g3": false,
+  "g6": false
+}

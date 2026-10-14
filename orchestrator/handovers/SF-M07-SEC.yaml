@@ -1,49 +1,100 @@
-# SF-M07-SEC — M07 independent security verifier
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# M07 CANDIDATE — independent security_verifier evidence
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. After host #149 on main.
+# Not CERTIFIED. Not G3. Not G6. Recommend only.
 
 task_id: SF-M07-SEC
 title: M07 independent security verifier
 module_id: M07
+component_ids: [CMP-022, CMP-024, CMP-023, CMP-012]
+integration_ids: [INT-008, INT-011, INT-013]
+requirement_ids:
+  - independent-verification
+  - no-self-certification
+  - SF-TEN-002-forged-tenant-fail-closed
+  - status-authority-CMP-024-only
 agent_role: security_verifier
 builder_agent: serviceform-security-verifier
-integration_ids: [INT-008, INT-011, INT-013]
+model_route: opus
+model_release: claude-opus-5-5
+branch: cursor/m07-sec-91f2
 allowed_write_paths:
   - tests/security/m07/**
   - evidence/SF-M07-SEC/**
   - orchestrator/handovers/SF-M07-SEC.yaml
-allowed_write_notes:
-  - Independent verifiers must not patch owner production code
-  - EVD recommends G3 only; cannot issue G3/CERTIFIED/G6
 read_only_paths:
   - services/**
+  - apps/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
+  - pnpm-lock.yaml
 serial_after:
-  - SF-M07-005
+  - SF-M07-005 (merged #149, main dfa96a0e)
 
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+execution_authorized: true
+execution_base: dfa96a0e8b61754d2ed6323bae8455caf5a285aa
+authorization_source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
 g3: false
 g6: false
+recommend_g3: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+production_code_modified: false
+test_commit: a6ad0dc
+
+local_results:
+  vitest_with_live_pg: PASS 44/44
+  vitest_without_db: PASS 37, SKIPPED 7 (DB suite)
+  eslint: PASS
+  prettier: PASS
+cross_tenant_leakage: 0
+blocking_hard_gate_failures: 0
+
+findings:
+  - id: M07-SEC-F05
+    severity: HIGH
+    owner: CMP-047 observability / CMP-023 (route design)
+    summary: QR opaque bearer token in GET /v1/qr/verify/:opaque_token path is written to host access logs
+  - id: M07-SEC-F06
+    severity: HIGH
+    owner: CMP-012
+    summary: publish does not verify credential ISSUED (CMP-022) nor consent/purpose (CMP-030); blocks REAL enablement
+  - id: M07-SEC-F04
+    severity: MEDIUM
+    owner: CMP-012
+    summary: authorize uses truthy allow; null decision -> 500
+  - id: M07-SEC-F01
+    severity: MEDIUM
+    owner: CMP-012
+    summary: component header guard blocks only three names (CMP-036 edge still blocks)
+  - id: M07-SEC-F02
+    severity: MEDIUM
+    owner: CMP-012
+    summary: requireTenantContext does not validate tenant/actor shape
+  - id: M07-SEC-F03
+    severity: LOW
+    owner: CMP-036 / CMP-022 / CMP-023 / CMP-024
+    summary: x-bypass-rls passes edge; inert
+
+residuals:
+  - R1 OPA data catalogue has no M07 actions (live PDP denies UNKNOWN_ACTION)
+  - R2 CMP-012 has no PostgreSQL repository
+  - R3 no live OPA binary in environment; static + PEP fakes only
+  - R4 REAL DigiLocker / signer deferred
+  - R5 fastify types unresolved for root-level tsc over tests/security/m07
 
 stop_conditions:
   - patch owner production code
   - CERTIFIED or G6 claim
   - issue G3 (recommend only)
+
+evidence: evidence/SF-M07-SEC/EVIDENCE.md
