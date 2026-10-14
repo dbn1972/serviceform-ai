@@ -13,8 +13,14 @@ const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '../../..');
 type Body = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 describe('SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED)', () => {
-  it('FINDING M07-SEC-F06: publish succeeds for an unknown credential id and an unverified consent_ref', async () => {
+  it('CLOSED M07-SEC-F06 (ISSUED): publish refuses an unknown credential id via CMP-022 port', async () => {
     const h = h012();
+    h.credentialVerification.result = {
+      found: false,
+      tenantId: null,
+      lifecycle: null,
+      signed: false,
+    };
     const neverIssued = randomUUID();
     const unverifiedConsent = randomUUID();
     const res = await h.call('POST', '/v1/digilocker-publish', {
@@ -24,16 +30,12 @@ describe('SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED)', 
       document_type_ref: DOCUMENT_TYPE_REF,
       test_run_id: 'test-run-001',
     });
-    // Characterises current behaviour: nothing checks CMP-022 (ISSUED, same tenant) or CMP-030
-    // (consent active for purpose) before the connector call; the row records ISSUED regardless.
-    expect(res.status).toBe(201);
-    expect((res.body as Body)['publish_status']).toBe('PUBLISHED');
-    const row = [...h.repo.stores.values()][0]?.publishRecords.values().next().value;
-    expect(row?.credential_lifecycle_status_at_request).toBe('ISSUED');
-    expect(row?.consent_ref).toBe(unverifiedConsent);
+    expect(res.status).toBe(404);
+    expect((res.body as Body)['error_code']).toBe('SF-SYS-002');
+    expect([...h.repo.stores.values()][0]?.publishRecords.size ?? 0).toBe(0);
   });
 
-  it('CMP-012 service dependencies expose no credential-status or consent port (source evidence)', () => {
+  it('RESIDUAL M07-SEC-F06 (consent): CMP-012 still has no CMP-030 consent verification port', () => {
     const svc = readFileSync(
       join(ROOT, 'services/cmp-012-digilocker/src/service/service.ts'),
       'utf8',
@@ -47,10 +49,12 @@ describe('SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED)', 
       'repo',
       'authorizer',
       'connectorBinding',
+      'credentialVerification',
       'digilockerApi',
       'runtimeEnvironment',
       'clock',
     ]);
+    expect(keys).not.toContain('consentVerification');
     const schema = readFileSync(
       join(ROOT, 'contracts/m07/schemas/digilocker-publish.schema.json'),
       'utf8',

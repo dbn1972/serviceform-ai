@@ -96,37 +96,27 @@ describe('SF-M07-SEC component-level tenant header guards (defence in depth)', (
     }
   });
 
-  it('FINDING M07-SEC-F01: CMP-012 component guard only blocks three header names', async () => {
-    const accepted: string[] = [];
-    for (const h of [
-      'x-tenant-id',
-      'x-sf-tenant',
-      'x-roles',
-      'x-actor-type',
-      'x-assurance',
-      'x-org-id',
-      'forwarded',
-    ]) {
+  it('CLOSED M07-SEC-F01: CMP-012 refuses forged tenant-identifying headers (x-tenant-*/x-sf-*/Forwarded)', async () => {
+    for (const h of ['x-tenant-id', 'x-sf-tenant', 'forwarded']) {
       const value = h === 'forwarded' ? `for=192.0.2.1;tenant=${CANARY}` : CANARY;
-      const { res } = await statusFor('CMP-012', { [h]: value });
-      if (res.status !== 403) accepted.push(h);
+      const { res, hits } = await statusFor('CMP-012', { [h]: value });
+      expect(res.status, h).toBe(403);
+      expect(res.body).toMatchObject({ error_code: 'SF-TEN-002' });
+      expect(hits).toBe(0);
     }
-    // Characterises the current gap. The CMP-036 edge still refuses all of these
-    // (host-forged-tenant.test.ts), so there is no exploitable path through the API host today.
-    expect(accepted).toEqual([
-      'x-tenant-id',
-      'x-sf-tenant',
-      'x-roles',
-      'x-actor-type',
-      'x-assurance',
-      'x-org-id',
-      'forwarded',
-    ]);
     for (const h of ['x-real-tenant-id', 'x-bypass-rls', 'x-override-tenant']) {
       const { res, hits } = await statusFor('CMP-012', { [h]: CANARY });
       expect(res.status, h).toBe(403);
       expect(hits).toBe(0);
     }
+    // Residual (non-tenant identity headers): still accepted at the component boundary;
+    // CMP-036 edge continues to refuse them on the composed host.
+    const accepted: string[] = [];
+    for (const h of ['x-roles', 'x-actor-type', 'x-assurance', 'x-org-id']) {
+      const { res } = await statusFor('CMP-012', { [h]: CANARY });
+      if (res.status !== 403) accepted.push(h);
+    }
+    expect(accepted).toEqual(['x-roles', 'x-actor-type', 'x-assurance', 'x-org-id']);
   });
 
   it('a forged header never changes the tenant the service receives', async () => {

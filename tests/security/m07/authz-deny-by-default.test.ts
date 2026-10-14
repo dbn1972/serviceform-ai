@@ -24,6 +24,7 @@ import {
   ctxFor as ctx012,
   DOCUMENT_TYPE_REF,
   FakeConnectorBindingPort,
+  FakeCredentialVerificationPort,
   PURPOSE_CODE,
   TENANT_A as T012,
   TEST_RUN_ID,
@@ -60,6 +61,7 @@ function harness012() {
     repo,
     authorizer: { decide: (i) => state.decide(i as never) as never },
     connectorBinding: new FakeConnectorBindingPort('LOCAL'),
+    credentialVerification: new FakeCredentialVerificationPort(T012),
     digilockerApi: new SimulatedDigiLockerConnector({
       simulation: true,
       scenario: 'digilocker_publish',

@@ -110,7 +110,7 @@ describe('SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs', () =>
     expect(text).not.toContain('z'.repeat(43));
   });
 
-  it('FINDING M07-SEC-F05: host access log records the QR opaque bearer token from the verify path', async () => {
+  it('CLOSED M07-SEC-F05: host access log redacts the QR opaque bearer token from the verify path', async () => {
     const h = h023();
     const state: { ctx: TenantContext } = { ctx: ctx023(A023) };
     const logs: string[] = [];
@@ -136,7 +136,8 @@ describe('SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs', () =>
     expect(text).not.toContain('sec-pii-01');
     expect(text).not.toContain('probe=1');
     expect(text).not.toContain('credtype:tenant-meta');
-    // Finding remains until SF-M07-003-REM merges onto the evaluated tip.
-    expect(text).toContain(opaque);
+    // Closed by SF-M07-003-REM (#153): path param redacted to :opaque_token.
+    expect(text).not.toContain(opaque);
+    expect(text).toContain('/v1/qr/verify/:opaque_token');
   });
 });
