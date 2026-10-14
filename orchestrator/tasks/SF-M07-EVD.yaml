@@ -1,0 +1,50 @@
+# SF-M07-EVD — M07 evidence bind; recommend G3 only
+# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+
+task_id: SF-M07-EVD
+title: M07 evidence bind; recommend G3 only
+module_id: M07
+agent_role: evidence_verifier
+builder_agent: serviceform-evidence-verifier
+integration_ids: [INT-008, INT-011, INT-013]
+allowed_write_paths:
+  - docs/verification/M07-G3-RECOMMENDATION.md
+  - evidence/SF-M07-EVD/**
+  - orchestrator/handovers/SF-M07-EVD.yaml
+allowed_write_notes:
+  - Independent verifiers must not patch owner production code
+  - EVD recommends G3 only; cannot issue G3/CERTIFIED/G6
+read_only_paths:
+  - services/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M07-INT
+  - SF-M07-SEC
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_07_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: fd335e8c
+  suffix: fd6a3c616f5133d09191e721201d4ab5
+join_separator: "_"
+
+stop_conditions:
+  - patch owner production code
+  - CERTIFIED or G6 claim
+  - issue G3 (recommend only)

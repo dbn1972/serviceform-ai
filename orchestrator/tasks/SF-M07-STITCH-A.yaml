@@ -1,0 +1,60 @@
+# SF-M07-STITCH-A — M07 STITCH-A mechanical
+# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+
+task_id: SF-M07-STITCH-A
+title: M07 STITCH-A mechanical
+module_id: M07
+agent_role: integration_agent
+builder_agent: serviceform-integration-stitcher
+integration_ids: [INT-008, INT-011, INT-013]
+allowed_write_paths:
+  - services/cmp-022-credential-engine/**
+  - services/cmp-024-credential-registry/**
+  - services/cmp-023-qr-verification/**
+  - services/cmp-012-digilocker/**
+  - db/migrations/*_cmp-022-*.sql
+  - db/migrations/*_cmp-024-*.sql
+  - db/migrations/*_cmp-023-*.sql
+  - db/migrations/*_cmp-012-*.sql
+  - pnpm-lock.yaml
+  - evidence/SF-M07-STITCH-A/**
+  - orchestrator/handovers/SF-M07-STITCH-A.yaml
+allowed_write_notes:
+  - Independent verifiers must not patch owner production code
+  - EVD recommends G3 only; cannot issue G3/CERTIFIED/G6
+read_only_paths:
+  - services/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+wave_eligible_now: false
+serial_after:
+  - SF-M07-001
+  - SF-M07-002
+  - SF-M07-003
+  - SF-M07-004
+
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_07_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: fd335e8c
+  suffix: fd6a3c616f5133d09191e721201d4ab5
+join_separator: "_"
+
+stop_conditions:
+  - patch owner production code
+  - CERTIFIED or G6 claim
+  - issue G3 (recommend only)
