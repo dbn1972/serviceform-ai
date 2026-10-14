@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m07/signing-record/v1",
+  "title": "SigningRecord",
+  "description": "FROZEN. SF-CON-SIGNING-RECORD. Result of one signing adapter attempt (CMP-022 via CMP-037 connector port; INT-013 modes). Retry-safe: the same idempotency_key yields the same record. connector_mode is REAL, SANDBOX or SIMULATED; SF-CON-SIMULATION-MARKER is REQUIRED when SIMULATED and forbidden otherwise. SIMULATED is never valid in production (the marker environment enum excludes production). Signature material is referenced, never embedded. This contract MUST NOT invent eSign statutory policy, signer eligibility or certificate class rules; those are connector-binding metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "signing_record_id",
+    "credential_id",
+    "connector_binding_id",
+    "integration_contract",
+    "connector_mode",
+    "signing_result",
+    "attempt_number",
+    "idempotency_key",
+    "retry_safe",
+    "invented_statutory_policy_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-SIGNING-RECORD"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "signing_record_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "credential_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "connector_binding_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid",
+      "description": "SF-CON-CONNECTOR-BINDING id. Mode is resolved from the binding, not chosen by the caller."
+    },
+    "integration_contract": {
+      "const": "INT-013"
+    },
+    "connector_mode": {
+      "type": "string",
+      "enum": ["REAL", "SANDBOX", "SIMULATED"]
+    },
+    "simulation_marker": {
+      "$ref": "https://contracts.serviceform.ai/simulation-marker/v1"
+    },
+    "signing_result": {
+      "type": "string",
+      "enum": ["SIGNED", "FAILED"]
+    },
+    "signature_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9_./:-]+$",
+      "description": "Opaque storage/provider reference to the detached signature or signed artifact."
+    },
+    "signed_artifact_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provider_transaction_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "failure_code": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/errorCode"
+    },
+    "attempt_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "retry_safe": {
+      "type": "boolean",
+      "const": true
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "recorded_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "connector_mode": {
+            "const": "SIMULATED"
+          }
+        },
+        "required": ["connector_mode"]
+      },
+      "then": {
+        "required": ["simulation_marker"]
+      },
+      "else": {
+        "not": {
+          "required": ["simulation_marker"]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "signing_result": {
+            "const": "SIGNED"
+          }
+        },
+        "required": ["signing_result"]
+      },
+      "then": {
+        "required": ["signature_ref", "signed_artifact_sha256"]
+      },
+      "else": {
+        "required": ["failure_code"]
+      }
+    }
+  ]
+}

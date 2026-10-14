@@ -1,0 +1,22 @@
+PASS credential-status.schema.json no PII field names / named officials / invented statutory period fields
+PASS credential.schema.json no PII field names / named officials / invented statutory period fields
+PASS digilocker-publish.schema.json no PII field names / named officials / invented statutory period fields
+PASS signing-record.schema.json no PII field names / named officials / invented statutory period fields
+PASS verification-token.schema.json no PII field names / named officials / invented statutory period fields
+PASS contracts/m07/examples/invalid/credential-status.non-registry-authority.json synthetic only
+PASS contracts/m07/examples/invalid/credential-status.revoked-without-reason.json synthetic only
+PASS contracts/m07/examples/invalid/credential.approval-decided.json synthetic only
+PASS contracts/m07/examples/invalid/credential.issued-unsigned.json synthetic only
+PASS contracts/m07/examples/invalid/digilocker-publish.reverses-issuance.json synthetic only
+PASS contracts/m07/examples/invalid/digilocker-publish.simulated-without-marker.json synthetic only
+PASS contracts/m07/examples/invalid/signing-record.real-with-marker.json synthetic only
+PASS contracts/m07/examples/invalid/signing-record.simulated-without-marker.json synthetic only
+PASS contracts/m07/examples/invalid/verification-token.embedded-pii.json synthetic only
+PASS contracts/m07/examples/invalid/verification-token.status-writable.json synthetic only
+PASS contracts/m07/examples/valid/credential-status.json synthetic only
+PASS contracts/m07/examples/valid/credential.json synthetic only
+PASS contracts/m07/examples/valid/digilocker-publish.json synthetic only
+PASS contracts/m07/examples/valid/signing-record.json synthetic only
+PASS contracts/m07/examples/valid/verification-token.json synthetic only
+
+static-scan failures=0

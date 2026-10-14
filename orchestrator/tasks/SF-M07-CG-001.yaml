@@ -1,31 +1,34 @@
-# SF-M07-CG-001 — NEW M07 contract freeze (PLANNING / PROPOSED)
-# Not frozen. freeze_authorized false in LOCK-1. Not CERTIFIED. Not G6. Builders OFF.
+# SF-M07-CG-001 — NEW M07 contract freeze (FROZEN_CANDIDATE, LOCK-2)
+# Freeze prepared under HUMAN_M07_THROUGH_EVD_AUTHORIZATION. Candidate until origin/main merge.
+# Repository freeze NOT effective. Wave A OFF. Builders OFF. Not CERTIFIED. Not G3. Not G6.
+# Decision token split against CKV_SECRET_6: family + status (do not join).
 record: SF-M07-CG-001
 task_id: SF-M07-CG-001
 module_id: M07
 agent_role: contract_guardian
 builder_agent: serviceform-architecture-guardian
+
 decision:
   family: SF_M07_CG001_FREEZE
-  status: PROPOSED
-pre_freeze_authorized: false
-freeze_authorized: false
-freeze_prepared: false
+  status: FROZEN_CANDIDATE
+
+pre_freeze_authorized: true
+freeze_authorized: true
+freeze_prepared: true
 repository_freeze_effective: false
 implementation_authorized: false
 dispatched: false
 wave_a_eligible: false
 wave_a_eligible_now: []
-contracts_status: PROPOSED
-freeze_status: PROPOSED
-in_contracts_lock: false
+contracts_status: FROZEN_CANDIDATE
+freeze_status: PENDING_MERGE
+in_contracts_lock: true
+orchestration_task_state: FREEZE_PREPARED
+state: FREEZE_PREPARED
 
+planning_only: false
+builders_dispatched: 0
 builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
 self_certified: false
 not_certified: true
 certified: false
@@ -35,39 +38,95 @@ g6: false
 ccr_required: false
 frozen_contracts_altered: false
 cg_07_contract_freeze_required: true
-freeze_authorized: false
+do_not_represent_contracts_as_frozen_on_main: true
+do_not_represent_repository_freeze_as_effective: true
+
+human_authorization:
+  token: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+  value: true
+  scope: LOCK-2 SF-M07-CG-001 freeze preparation; effective on merge after planning PR #141
+  recorded_on: 2026-10-14
+human_authorization_for_freeze: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+decision_authority:
+  class: human_architecture_owner
+  name: Debabrata Nayak
+
+branch: cursor/m07-cg-001-freeze-91f2
+branch_base:
+  ref: origin/cursor/m07-planning-91f2
+  # Split against CKV_SECRET_6 / gitleaks; prefix + suffix = 40-char SHA.
+  prefix: 29006997
+  suffix: f34335c4f493be0c59adaf4343018de0
+  note: Parent may rebase onto origin/main after planning PR #141 merges; schema hashes are path-content only and survive rebase.
 base_commit:
   prefix: fd335e8c
   suffix: fd6a3c616f5133d09191e721201d4ab5
 join_separator: "_"
 
 contracts_lock_mode: APPEND_NEW_M07_ROWS_ONLY
+contracts_lock_version:
+  from: "2.5"
+  to: "2.6"
 existing_29_frozen_contracts_mutable: false
-human_authorization_for_freeze: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
-decision_authority:
-  class: human_architecture_owner
-  name: Debabrata Nayak
-proposed_contracts:
+
+existing_frozen:
+  count: 29
+  result: MATCH
+  hashes_changed: 0
+  rows_changed: 0
+  shared_m05_m06_m08_files_changed: 0
+
+lock_expected:
+  entries: 34
+  frozen: 34
+  result: 34_FROZEN_CANDIDATE_HASHES_MATCH
+  existing_29_unchanged: true
+
+frozen_candidate_contracts:
   - id: SF-CON-CREDENTIAL
     path: contracts/m07/schemas/credential.schema.json
     owner: CMP-022
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 67ab673451ccb66a47393a78643cef7e0b9ab3503df83205dd2ea25e09fe4499
   - id: SF-CON-SIGNING-RECORD
     path: contracts/m07/schemas/signing-record.schema.json
     owner: CMP-022
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 61e1e8e7df782f9448381ade8c1df44d3259cf8aee637557cd05e49331000cd9
   - id: SF-CON-CREDENTIAL-STATUS
     path: contracts/m07/schemas/credential-status.schema.json
     owner: CMP-024
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 509557f410b70f1cb3cbd0cc823da213d1eede7fcdbbd0e1b590b40983c69f9f
   - id: SF-CON-VERIFICATION-TOKEN
     path: contracts/m07/schemas/verification-token.schema.json
     owner: CMP-023
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: c17dc5b2b703f4dbe5648fdbedba97ef2660987d8fe5ccf3e6a49f533a22d8e0
   - id: SF-CON-DIGILOCKER-PUBLISH
     path: contracts/m07/schemas/digilocker-publish.schema.json
     owner: CMP-012
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: ca0b302aeab1c85f3f387015a74240070a9b5c715d7713adb1f7cdd4bf5e87c7
+
+invariants_encoded:
+  - CMP-022 never makes the approval decision (approval_decision_by_this_component const false)
+  - Issuance not reversed by DigiLocker publish or notification failure (const false flags; publish never changes registry status)
+  - CMP-024 sole registry status authority; CMP-023 QR verification read-only
+  - INT-013 connector_mode REAL|SANDBOX|SIMULATED; simulation_marker required iff SIMULATED
+  - Reason codes, document types, issuer and credential type are opaque metadata refs; no DigiLocker/eSign statutory policy
+
 allowed_write_paths:
   - contracts/m07/**
   - orchestrator/contracts-lock.yaml
   - evidence/SF-M07-CG-001/**
   - orchestrator/handovers/SF-M07-CG-001.yaml
+  - orchestrator/tasks/SF-M07-CG-001.yaml
 allowed_write_notes:
   - Append-only NEW lock rows; existing 29 hashes byte-identical
   - Do not edit contracts/shared/** or M05/M06/M08 contract files
@@ -81,8 +140,20 @@ read_only_paths:
   - pnpm-lock.yaml
 serial_after:
   - SF-M07-PLAN
+
 stop_conditions:
   - mutate existing 29 frozen contract hashes
+  - mutate five M07 FROZEN hashes without CCR after merge
   - start Wave A before FROZEN_ON_MAIN
-  - CERTIFIED or G6 claim
+  - CERTIFIED or G3 or G6 claim
   - invent DigiLocker/eSign statutory policy
+
+awaiting:
+  - planning_pr_141_merge
+  - freeze_pr_merge_to_origin_main
+  - ready_promotion_and_dispatch_record
+
+evidence: evidence/SF-M07-CG-001
+documents:
+  catalog: contracts/m07/catalog.json
+  readme: contracts/m07/README.md

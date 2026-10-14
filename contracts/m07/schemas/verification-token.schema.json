@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m07/verification-token/v1",
+  "title": "VerificationToken",
+  "description": "FROZEN. SF-CON-VERIFICATION-TOKEN. QR / public verification token and its purpose-minimised public view (CMP-023). The token is opaque and carries no PII. registry_status is read from CMP-024 (SF-CON-CREDENTIAL-STATUS) and is read-only here: CMP-023 MUST NOT write or cache-override registry status. public_view is closed (additionalProperties false); holder identity or application data MUST NOT appear.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "token_id",
+    "credential_id",
+    "opaque_token",
+    "token_purpose",
+    "public_view",
+    "status_source_cmp",
+    "registry_status_read_only",
+    "status_write_forbidden",
+    "embedded_pii_forbidden"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-VERIFICATION-TOKEN"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "token_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "credential_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid",
+      "description": "Internal linkage only. Not exposed in public_view."
+    },
+    "opaque_token": {
+      "type": "string",
+      "minLength": 22,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "URL-safe opaque token. Not derived from, and does not encode, any PII."
+    },
+    "token_purpose": {
+      "const": "PUBLIC_CREDENTIAL_VERIFICATION"
+    },
+    "public_view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credential_type_ref", "issuer_ref", "registry_status", "status_checked_at"],
+      "properties": {
+        "credential_type_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "issuer_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "issued_at": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+        },
+        "registry_status": {
+          "$ref": "https://contracts.serviceform.ai/m07/credential-status/v1#/$defs/registryStatus"
+        },
+        "status_checked_at": {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+        },
+        "signed_artifact_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "status_source_cmp": {
+      "const": "CMP-024"
+    },
+    "registry_status_read_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "status_write_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "embedded_pii_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "expires_at": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/timestamp"
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    }
+  }
+}

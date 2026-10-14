@@ -1,0 +1,45 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "freeze_status": "PENDING_MERGE",
+  "in_contracts_lock": true,
+  "module": "M07",
+  "task": "SF-M07-CG-001",
+  "note": "SF-M07-CG-001 freeze preparation (LOCK-2, HUMAN_M07_THROUGH_EVD_AUTHORIZATION). Candidate until origin/main merge. Repository freeze not effective. Wave A OFF. Builders OFF. No invented DigiLocker/eSign statutory policy. Issuance is never reversed by publish or notification failure. Registry (CMP-024) owns credential status; QR verification (CMP-023) reads it.",
+  "contracts": [
+    {
+      "id": "SF-CON-CREDENTIAL",
+      "path": "contracts/m07/schemas/credential.schema.json",
+      "owner": "CMP-022",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-SIGNING-RECORD",
+      "path": "contracts/m07/schemas/signing-record.schema.json",
+      "owner": "CMP-022",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-CREDENTIAL-STATUS",
+      "path": "contracts/m07/schemas/credential-status.schema.json",
+      "owner": "CMP-024",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-VERIFICATION-TOKEN",
+      "path": "contracts/m07/schemas/verification-token.schema.json",
+      "owner": "CMP-023",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-DIGILOCKER-PUBLISH",
+      "path": "contracts/m07/schemas/digilocker-publish.schema.json",
+      "owner": "CMP-012",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    }
+  ]
+}
