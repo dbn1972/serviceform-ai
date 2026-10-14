@@ -42,7 +42,6 @@ describe('tenant isolation (tenant-negative tests)', () => {
   });
 
   it('returns 403 when authorizer denies', async () => {
-    const h = makeHarness();
     const { AllowAllAuthorizer } = await import('../doubles/fixtures.js');
     const auth = new AllowAllAuthorizer();
     auth.mode = 'deny';

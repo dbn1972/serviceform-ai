@@ -162,7 +162,6 @@ export class DigiLockerService {
     }
 
     const publishStatus = apiResult.status === 'PUBLISHED' ? 'PUBLISHED' : 'FAILED';
-    const now = this.deps.clock();
 
     // ── Short TX: persist record + idempotency + outbox + audit ───────────────
     return this.idempotent(ctx, idem, async (tx, txNow) => {

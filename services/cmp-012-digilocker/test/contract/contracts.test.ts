@@ -112,30 +112,31 @@ describe('DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH'
     const store = h.repo.tenant(h.state.ctx.tenant_id);
     const row = store.publishRecords.get(publishRequestId);
     expect(row).toBeDefined();
+    if (!row) return;
 
     const contractPayload = {
       contract_id: 'SF-CON-DIGILOCKER-PUBLISH',
       contract_status: 'FROZEN',
       freeze_status: 'FROZEN',
-      tenant_id: row!.tenant_id,
-      publish_request_id: row!.publish_request_id,
-      credential_id: row!.credential_id,
-      credential_lifecycle_status_at_request: row!.credential_lifecycle_status_at_request,
-      consent_ref: row!.consent_ref,
-      purpose_code: row!.purpose_code,
-      connector_binding_id: row!.connector_binding_id,
+      tenant_id: row.tenant_id,
+      publish_request_id: row.publish_request_id,
+      credential_id: row.credential_id,
+      credential_lifecycle_status_at_request: row.credential_lifecycle_status_at_request,
+      consent_ref: row.consent_ref,
+      purpose_code: row.purpose_code,
+      connector_binding_id: row.connector_binding_id,
       integration_contract: 'INT-013',
-      connector_mode: row!.connector_mode,
-      simulation_marker: row!.simulation_marker,
-      document_type_ref: row!.document_type_ref,
-      publish_status: row!.publish_status,
-      provider_transaction_ref: row!.provider_transaction_ref,
-      attempt_number: row!.attempt_number,
-      idempotency_key: row!.idempotency_key,
-      issuance_reversed_on_publish_failure: row!.issuance_reversed_on_publish_failure,
-      registry_status_changed_by_publish: row!.registry_status_changed_by_publish,
-      invented_statutory_policy_forbidden: row!.invented_statutory_policy_forbidden,
-      correlation_id: row!.correlation_id,
+      connector_mode: row.connector_mode,
+      simulation_marker: row.simulation_marker,
+      document_type_ref: row.document_type_ref,
+      publish_status: row.publish_status,
+      provider_transaction_ref: row.provider_transaction_ref,
+      attempt_number: row.attempt_number,
+      idempotency_key: row.idempotency_key,
+      issuance_reversed_on_publish_failure: row.issuance_reversed_on_publish_failure,
+      registry_status_changed_by_publish: row.registry_status_changed_by_publish,
+      invented_statutory_policy_forbidden: row.invented_statutory_policy_forbidden,
+      correlation_id: row.correlation_id,
     };
     expect(validate(contractPayload), JSON.stringify(validate.errors)).toBe(true);
   });
@@ -150,30 +151,31 @@ describe('DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH'
     const store = h.repo.tenant(h.state.ctx.tenant_id);
     const row = store.publishRecords.get(publishRequestId);
     expect(row).toBeDefined();
+    if (!row) return;
 
     const contractPayload = {
       contract_id: 'SF-CON-DIGILOCKER-PUBLISH',
       contract_status: 'FROZEN',
       freeze_status: 'FROZEN',
-      tenant_id: row!.tenant_id,
-      publish_request_id: row!.publish_request_id,
-      credential_id: row!.credential_id,
-      credential_lifecycle_status_at_request: row!.credential_lifecycle_status_at_request,
-      consent_ref: row!.consent_ref,
-      purpose_code: row!.purpose_code,
-      connector_binding_id: row!.connector_binding_id,
+      tenant_id: row.tenant_id,
+      publish_request_id: row.publish_request_id,
+      credential_id: row.credential_id,
+      credential_lifecycle_status_at_request: row.credential_lifecycle_status_at_request,
+      consent_ref: row.consent_ref,
+      purpose_code: row.purpose_code,
+      connector_binding_id: row.connector_binding_id,
       integration_contract: 'INT-013',
-      connector_mode: row!.connector_mode,
-      simulation_marker: row!.simulation_marker,
-      document_type_ref: row!.document_type_ref,
-      publish_status: row!.publish_status,
-      failure_code: row!.failure_code,
-      attempt_number: row!.attempt_number,
-      idempotency_key: row!.idempotency_key,
-      issuance_reversed_on_publish_failure: row!.issuance_reversed_on_publish_failure,
-      registry_status_changed_by_publish: row!.registry_status_changed_by_publish,
-      invented_statutory_policy_forbidden: row!.invented_statutory_policy_forbidden,
-      correlation_id: row!.correlation_id,
+      connector_mode: row.connector_mode,
+      simulation_marker: row.simulation_marker,
+      document_type_ref: row.document_type_ref,
+      publish_status: row.publish_status,
+      failure_code: row.failure_code,
+      attempt_number: row.attempt_number,
+      idempotency_key: row.idempotency_key,
+      issuance_reversed_on_publish_failure: row.issuance_reversed_on_publish_failure,
+      registry_status_changed_by_publish: row.registry_status_changed_by_publish,
+      invented_statutory_policy_forbidden: row.invented_statutory_policy_forbidden,
+      correlation_id: row.correlation_id,
     };
     expect(validate(contractPayload), JSON.stringify(validate.errors)).toBe(true);
   });

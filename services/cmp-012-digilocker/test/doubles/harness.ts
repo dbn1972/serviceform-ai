@@ -10,7 +10,6 @@ import {
   TENANT_A,
   ACTOR_SYSTEM,
   TEST_RUN_ID,
-  simulatedBinding,
   FakeConnectorBindingPort,
 } from './fixtures.js';
 import { MemoryDigilockerRepository } from './memory-repo.js';

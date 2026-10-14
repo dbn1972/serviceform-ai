@@ -1,4 +1,4 @@
-import { createDigilockerApi, ROUTE_DESCRIPTORS } from './api/handler.js';
+import { createDigilockerApi } from './api/handler.js';
 import type { AuthorizationPort } from './authz.js';
 import type { ContextResolver } from './context.js';
 import { Cmp012Error } from './errors.js';
