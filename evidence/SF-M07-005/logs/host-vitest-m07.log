@@ -1,0 +1,19 @@
+
+ RUN  v5.0.3 /workspace/apps/api
+
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > starts without m07 deps and leaves prior decoration unchanged 51ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > mounts each M07 component independently 249ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > mounts all four M07 components with a deterministic CMP list 13ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > registers CMP-036 exactly once and does not remount it from M07 composition 13ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > exposes M07 read routes under /v1 that reach each component with server context 18ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > fails closed when the server context resolver yields no tenant context 19ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > rejects M07 commands without an Idempotency-Key before reaching the service 51ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > rejects forged tenant headers on every M07 route (SF-TEN-002) 28ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > coexists with M05/M06/M08 mounts without route collisions or regressions 184ms
+ ✓ test/composition-m07.test.ts > CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) > keeps host composition free of cross-component SQL and domain authority 2ms
+
+ Test Files  1 passed (1)
+      Tests  10 passed (10)
+   Start at  09:42:55
+   Duration  1.18s (tests 57%, import 24%, transform 19%)
+
