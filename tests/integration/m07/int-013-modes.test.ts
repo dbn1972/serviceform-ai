@@ -4,7 +4,6 @@ import {
   conforms,
   ctxFor,
   DL_BINDING_ID,
-  finding,
   must,
   T1,
   TEST_RUN_ID,
@@ -280,26 +279,23 @@ describe('INT-013 DigiLocker modes at CMP-012', () => {
     expect(res.body.connector_mode).toBe('SIMULATED');
   });
 
-  finding(
-    'FINDING M07-INT-F06: CMP-012 must refuse when the injected DigiLocker adapter mode (SIMULATED) differs from a REAL PRODUCTION binding',
-    async () => {
-      const s = prodStack('PRODUCTION', simulatedDigiLocker('CI'));
-      const { credentialId } = await issue(s);
-      s.bindings.byTenant.set(
-        T1,
-        s.bindings.simulated(T1, {
-          environment: 'PRODUCTION',
-          mode: 'REAL',
-          critical: true,
-          secret_ref: 'aws-sm://sf/m07-int/digilocker',
-          simulator_version: undefined,
-        }),
-      );
-      expect(s.digilockerApi.mode).toBe('SIMULATED');
-      const res = await publish(s, T1, credentialId, { test_run_id: undefined });
-      expect(res.status).toBeGreaterThanOrEqual(400);
-      expect(s.digilockerApi.calls.length).toBe(0);
-      expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0);
-    },
-  );
+  it('CLOSED M07-INT-F06: CMP-012 refuses when injected DigiLocker adapter mode differs from binding mode', async () => {
+    const s = prodStack('PRODUCTION', simulatedDigiLocker('CI'));
+    const { credentialId } = await issue(s);
+    s.bindings.byTenant.set(
+      T1,
+      s.bindings.simulated(T1, {
+        environment: 'PRODUCTION',
+        mode: 'REAL',
+        critical: true,
+        secret_ref: 'aws-sm://sf/m07-int/digilocker',
+        simulator_version: undefined,
+      }),
+    );
+    expect(s.digilockerApi.mode).toBe('SIMULATED');
+    const res = await publish(s, T1, credentialId, { test_run_id: undefined });
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(s.digilockerApi.calls.length).toBe(0);
+    expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0);
+  });
 });

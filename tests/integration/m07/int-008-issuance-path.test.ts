@@ -401,37 +401,32 @@ describe('INT-008 approval → signing → credential → QR → DigiLocker', ()
     expect(s.repos.registry.tenant(T1).entries.size).toBe(0);
   });
 
-  finding(
-    'FINDING M07-INT-F01: CMP-012 must refuse to publish a credential that CMP-022 never issued (SF-CON-DIGILOCKER-PUBLISH: only ISSUED)',
-    async () => {
-      const s = buildStack();
-      const neverIssued = 'f0f0f0f0-f0f0-4f0f-8f0f-f0f0f0f0f0f0';
-      expect((await credentialOf(s, T1, neverIssued)).status).toBe(404);
-      const res = await publish(s, T1, neverIssued);
-      expect(res.status).toBeGreaterThanOrEqual(400);
-      expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0);
-    },
-  );
+  it('CLOSED M07-INT-F01: CMP-012 refuses to publish a credential that CMP-022 never issued', async () => {
+    const s = buildStack();
+    const neverIssued = 'f0f0f0f0-f0f0-4f0f-8f0f-f0f0f0f0f0f0';
+    expect((await credentialOf(s, T1, neverIssued)).status).toBe(404);
+    const res = await publish(s, T1, neverIssued);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0);
+  });
 
-  finding(
-    'FINDING M07-INT-F01b: CMP-012 must refuse to publish a GENERATED (unsigned) credential',
-    async () => {
-      const s = buildStack();
-      s.casePins.approve(T1, APP_1);
-      s.signer.outcome = 'FAILED';
-      await s.call(
-        'CMP-022',
-        'POST',
-        '/v1/credentials',
-        { application_id: APP_1, issuance_key: 'issue:gen:1' },
-        { ctx: ctxFor(T1, 'SYSTEM') },
-      );
-      const [row] = [...s.repos.credential.tenant(T1).credentials.values()];
-      expect(must(row).lifecycle_status).toBe('GENERATED');
-      const res = await publish(s, T1, must(row).credential_id);
-      expect(res.status).toBeGreaterThanOrEqual(400);
-    },
-  );
+  it('CLOSED M07-INT-F01b: CMP-012 refuses to publish a GENERATED (unsigned) credential', async () => {
+    const s = buildStack();
+    s.casePins.approve(T1, APP_1);
+    s.signer.outcome = 'FAILED';
+    await s.call(
+      'CMP-022',
+      'POST',
+      '/v1/credentials',
+      { application_id: APP_1, issuance_key: 'issue:gen:1' },
+      { ctx: ctxFor(T1, 'SYSTEM') },
+    );
+    const [row] = [...s.repos.credential.tenant(T1).credentials.values()];
+    expect(must(row).lifecycle_status).toBe('GENERATED');
+    const res = await publish(s, T1, must(row).credential_id);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(s.repos.digilocker.tenant(T1).publishRecords.size).toBe(0);
+  });
 
   finding(
     'FINDING M07-INT-F03: CMP-012 publish response/record is not projectable to FROZEN SF-CON-DIGILOCKER-PUBLISH',

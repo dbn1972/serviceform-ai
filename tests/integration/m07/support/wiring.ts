@@ -25,6 +25,8 @@ import {
   createDigilockerApi,
   SimulatedDigiLockerConnector,
   type ConnectorBindingView,
+  type CredentialVerification,
+  type CredentialVerificationPort,
   type DigiLockerApiPort,
   type DigiLockerPublishRequest,
   type DigiLockerPublishResult,
@@ -224,6 +226,36 @@ export class CredentialReadBridge {
   }
 }
 
+/**
+ * CMP-012 → CMP-022 credential verification bridge (stitcher-owned host adapter).
+ * Required after SF-M07-004-REM: DigiLocker publish refuses unbound / non-ISSUED credentials.
+ */
+export class CredentialVerificationBridge implements CredentialVerificationPort {
+  down = false;
+  constructor(private readonly credentials: () => CredentialService) {}
+
+  async verify(tenantId: string, credentialId: string): Promise<CredentialVerification> {
+    if (this.down) throw new Error('credential engine unavailable');
+    try {
+      const res = await this.credentials().get(qrWorkloadCtx(tenantId), credentialId);
+      const v = res.body as IssuedCredentialView & {
+        artifacts: Array<{ artifact_kind: string }>;
+      };
+      return {
+        found: true,
+        tenantId: v.tenant_id,
+        lifecycle: v.lifecycle_status,
+        signed: v.artifacts.some((a) => a.artifact_kind === 'SIGNED_ARTIFACT'),
+      };
+    } catch (err) {
+      if (isNotFound(err)) {
+        return { found: false, tenantId: null, lifecycle: null, signed: false };
+      }
+      throw err;
+    }
+  }
+}
+
 /** CMP-023 → CMP-024 read bridge over the published createCredentialStatusReadPort. */
 export class RegistryStatusBridge {
   down = false;
@@ -377,6 +409,7 @@ export function buildStack(opts: StackOptions = {}) {
     clock: clock.now,
   });
   const credentialRead = new CredentialReadBridge(() => credentialService);
+  const credentialVerification = new CredentialVerificationBridge(() => credentialService);
   const statusRead = new RegistryStatusBridge(() => registryService);
   const qrService = buildQrVerificationService({
     repository: repos.qr,
@@ -393,6 +426,7 @@ export function buildStack(opts: StackOptions = {}) {
     repository: repos.digilocker,
     authorizer,
     connectorBinding: bindings,
+    credentialVerification,
     digilockerApi,
     ...(dlEnv === 'DEFAULT' ? {} : { runtimeEnvironment: dlEnv }),
     clock: clock.now,
@@ -455,6 +489,7 @@ export function buildStack(opts: StackOptions = {}) {
     issuerRefs,
     registryBridge,
     credentialRead,
+    credentialVerification,
     statusRead,
     bindings,
     digilockerApi,

@@ -1,15 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  APP_1,
-  CANARY,
-  conforms,
-  ctxFor,
-  finding,
-  leaks,
-  T1,
-  T2,
-  TYPE_REF,
-} from './support/fixtures.js';
+import { APP_1, CANARY, conforms, ctxFor, leaks, T1, T2, TYPE_REF } from './support/fixtures.js';
 import { issue, issueActiveWithQr, publish, REG } from './support/flow.js';
 import { buildStack, type Cmp, type Stack } from './support/wiring.js';
 
@@ -191,28 +181,25 @@ describe('INT-011 M07 tenant isolation chain', () => {
     ]);
   });
 
-  finding(
-    'FINDING M07-INT-F05: CMP-012 does not refuse forged tenant headers (x-tenant-id, x-sf-*, Forwarded tenant=) with SF-TEN-002 at the component boundary',
-    async () => {
-      const s = buildStack();
-      const t1 = await seedT1(s);
-      await forgedHeaderRun(s, [
-        ['CMP-012', 'GET', `/v1/digilocker-publish/${t1.publishId}`, undefined],
-        [
-          'CMP-012',
-          'POST',
-          '/v1/digilocker-publish',
-          {
-            credential_id: t1.credentialId,
-            consent_ref: 'd1d1d1d1-d1d1-4d1d-8d1d-d1d1d1d1d1d1',
-            purpose_code: 'CREDENTIAL_PUBLISH',
-            document_type_ref: 'doctype:x',
-            test_run_id: 'run',
-          },
-        ],
-      ]);
-    },
-  );
+  it('CLOSED M07-INT-F05: CMP-012 refuses forged tenant headers with SF-TEN-002 at the component boundary', async () => {
+    const s = buildStack();
+    const t1 = await seedT1(s);
+    await forgedHeaderRun(s, [
+      ['CMP-012', 'GET', `/v1/digilocker-publish/${t1.publishId}`, undefined],
+      [
+        'CMP-012',
+        'POST',
+        '/v1/digilocker-publish',
+        {
+          credential_id: t1.credentialId,
+          consent_ref: 'd1d1d1d1-d1d1-4d1d-8d1d-d1d1d1d1d1d1',
+          purpose_code: 'CREDENTIAL_PUBLISH',
+          document_type_ref: 'doctype:x',
+          test_run_id: 'run',
+        },
+      ],
+    ]);
+  });
 
   it('client-supplied tenant_id in a command body is refused and nothing is written', async () => {
     const s = buildStack();
@@ -318,29 +305,26 @@ describe('INT-011 M07 tenant isolation chain', () => {
     for (const c of s.authorizer.calls) expect([T1, T2]).toContain(c.subject.tenant_id);
   });
 
-  finding(
-    'FINDING M07-INT-F01c: CMP-012 persists a tenant-B publish record for a credential id that exists only in tenant A',
-    async () => {
-      const s = buildStack();
-      const t1 = await seedT1(s);
-      const res = await s.call(
-        'CMP-012',
-        'POST',
-        '/v1/digilocker-publish',
-        {
-          credential_id: t1.credentialId,
-          consent_ref: 'd1d1d1d1-d1d1-4d1d-8d1d-d1d1d1d1d1d1',
-          purpose_code: 'CREDENTIAL_PUBLISH',
-          document_type_ref: 'doctype:x',
-          test_run_id: 'run',
-        },
-        { ctx: ctxFor(T2, 'SYSTEM') },
-      );
-      expect(leaks(res.body, [T1])).toBe(0);
-      expect(res.status).toBeGreaterThanOrEqual(400);
-      expect(s.repos.digilocker.tenant(T2).publishRecords.size).toBe(0);
-    },
-  );
+  it('CLOSED M07-INT-F01c: CMP-012 refuses tenant-B publish for a credential id that exists only in tenant A', async () => {
+    const s = buildStack();
+    const t1 = await seedT1(s);
+    const res = await s.call(
+      'CMP-012',
+      'POST',
+      '/v1/digilocker-publish',
+      {
+        credential_id: t1.credentialId,
+        consent_ref: 'd1d1d1d1-d1d1-4d1d-8d1d-d1d1d1d1d1d1',
+        purpose_code: 'CREDENTIAL_PUBLISH',
+        document_type_ref: 'doctype:x',
+        test_run_id: 'run',
+      },
+      { ctx: ctxFor(T2, 'SYSTEM') },
+    );
+    expect(leaks(res.body, [T1])).toBe(0);
+    expect(res.status).toBeGreaterThanOrEqual(400);
+    expect(s.repos.digilocker.tenant(T2).publishRecords.size).toBe(0);
+  });
 
   it('aggregate: CROSS_TENANT_LEAKAGE = 0 across all tenant-negative probes', () => {
     expect(probes).toBeGreaterThanOrEqual(40);
