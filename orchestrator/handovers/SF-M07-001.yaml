@@ -1,6 +1,6 @@
 # SF-M07-001 handover — CMP-022 Credential Engine (M07 Wave A)
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
-# Freeze contracts and host mounts deferred. DigiLocker/eSign policy not invented.
+# CANDIDATE_COMPLETE builder candidate. Not merged. Not CERTIFIED. Not G3. Not G6.
+# Host mount deferred to SF-M07-005. DigiLocker/eSign policy not invented.
 
 task_id: SF-M07-001
 title: CMP-022 Credential Engine
@@ -18,7 +18,7 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M07-022-credential-engine-SF-M07-001
+branch: cursor/m07-001-credential-91f2
 worktree: ../wt-SF-M07-001
 parallel_group: M07-A
 privilege_role: sf_cmp022_rw
@@ -54,12 +54,18 @@ wave_eligible_now: true
 serial_after:
   - SF-M07-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
+# Lane token split against CKV_SECRET_6: family + status (do not join).
+builder_token:
+  family: SF-M07-001_BUILDER_CANDIDATE
+  status: READY
+merged: false
 self_certified: false
 not_certified: true
 certified: false
@@ -76,8 +82,9 @@ ready_authorization:
   join_separator: "_"
   wave_a_ready: true
 base_commit:
-  prefix: fcd6c2d3
-  suffix: 4213454f82de62c7a3e2c16c815bf46c
+  prefix: c6f70f19
+  suffix: 0b08f876a793d9f3401c50fecdbe8058
+  note: origin/main tip after Wave A READY merge (#143), verified before branching
 join_separator: "_"
 
 contract_locks:
@@ -107,3 +114,40 @@ stop_conditions:
   - CERTIFIED or G3 or G6 claim
   - write outside allowed_write_paths
   - reverse Issued on publish/notify failure
+builder_output:
+  implementation_commit:
+    prefix: f63691f1
+    suffix: 5b26aded051b8a2d73e7655f7065c243
+  schema_commit:
+    prefix: 07dd78aa
+    suffix: 81ca76ed101c035fbc2c4d8bf95f47d0
+  evidence: evidence/SF-M07-001/EVIDENCE.md
+  package: "@serviceform/cmp-022-credential-engine"
+  schema: sf_credential
+  privilege_role: sf_cmp022_rw
+  migrations:
+    - db/migrations/1760440000000_cmp-022-credential-engine.sql
+    - db/migrations/1760440000001_cmp-022-outbox.sql
+  produces: [SF-CON-CREDENTIAL, SF-CON-SIGNING-RECORD]
+  lifecycle: [GENERATED, SIGNED, ISSUED]
+  ports_unbound_fail_closed:
+    - CaseIssuancePinsPort
+    - ArtifactRenderPort
+    - SigningPort
+    - CredentialRegistryPort
+  local_results:
+    unit_contract_tenant_negative: 145/145 PASS
+    postgres_integration: 10/10 PASS
+    gates_run_all: PASS
+    gates_pytest: 30/30 PASS
+    migration_lint: PASS
+    check_scope: PASS
+    db_test: 17/17 PASS (private cluster; see evidence residual 4)
+    semgrep_lane_paths: 0 findings
+    checkov_secrets_lane_paths: PASS
+  lockfile_residual: EXPECTED_STITCH_LOCKFILE_ADMISSION_RESIDUAL
+  approval_decision_by_this_component: false
+  issuance_reversed_on_publish_failure: false
+  production_simulated_signing: fail-closed
+  invented_digilocker_or_esign_policy: false
+  host_mount: deferred to SF-M07-005
