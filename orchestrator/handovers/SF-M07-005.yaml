@@ -1,12 +1,22 @@
-# SF-M07-005 — API host M07 composition mounts
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# M07 CANDIDATE — API host M07 composition mounts
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. Host after STITCH-A (#148) on main; STITCH-B N/A (no Wave B).
+# PLANNING → CANDIDATE. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M07-005
 title: API host M07 composition mounts
 module_id: M07
+component_ids: [CMP-022, CMP-024, CMP-023, CMP-012]
+integration_ids: [INT-008, INT-011, INT-013]
+requirement_ids:
+  - Constitution-single-host
+  - apps-api-single-writer
 agent_role: foundation_builder
 builder_agent: serviceform-foundation-builder
-integration_ids: [INT-008, INT-011, INT-013]
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: cursor/m07-005-host-91f2
 allowed_write_paths:
   - apps/api/src/composition/m07.ts
   - apps/api/src/app.ts
@@ -14,22 +24,28 @@ allowed_write_paths:
   - evidence/SF-M07-005/**
   - orchestrator/handovers/SF-M07-005.yaml
 allowed_write_notes:
-  - Independent verifiers must not patch owner production code
-  - EVD recommends G3 only; cannot issue G3/CERTIFIED/G6
+  - Additive composition module only; preserve M01–M06/M08 mounts
+  - Serialized single-writer window on apps/api/src/app.ts
+  - Do not commit pnpm-lock.yaml
 read_only_paths:
+  - pnpm-lock.yaml
   - services/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
 serial_after:
-  - SF-M07-STITCH-B
+  - SF-M07-STITCH-A (merged #148)
+serial_after_notes:
+  - SF-M07-STITCH-B not applicable (no Wave B) per human authorization
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+builders_dispatched_this_envelope: true
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+execution_authorized: true
+execution_base: 6ec17a34
+authorization_source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
 self_certified: false
 not_certified: true
 certified: false
@@ -38,14 +54,77 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
-base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+implementation_commit: 8ddc91629b8164de3bb1fde2e492cb6b0be156fb
+files_changed:
+  - apps/api/src/composition/m07.ts (new)
+  - apps/api/src/app.ts (additive mount call + decoration)
+  - apps/api/test/composition-m07.test.ts (new)
+apps_api_package_json_modified: false
+pnpm_lock_modified: false
+mounts:
+  - CMP-022
+  - CMP-024
+  - CMP-023
+  - CMP-012
+not_mounted:
+  - CMP-036 (already on host)
+routes:
+  CMP-022:
+    - POST /v1/credentials
+    - GET /v1/credentials/:credential_id
+    - GET /v1/credentials/:credential_id/signing-records
+    - POST /v1/credentials/:credential_id/downstream-outcomes
+    - GET /v1/applications/:application_id/credentials
+  CMP-024:
+    - POST /v1/credential-registry/credentials
+    - GET /v1/credential-registry/credentials/:credential_id/status
+    - POST /v1/credential-registry/credentials/:credential_id/activate
+    - POST /v1/credential-registry/credentials/:credential_id/suspend
+    - POST /v1/credential-registry/credentials/:credential_id/reinstate
+    - POST /v1/credential-registry/credentials/:credential_id/revoke
+    - POST /v1/credential-registry/credentials/:credential_id/reissue
+  CMP-023:
+    - POST /v1/qr/tokens
+    - GET /v1/qr/tokens/:token_id
+    - GET /v1/qr/verify/:opaque_token
+  CMP-012:
+    - POST /v1/digilocker-publish
+    - GET /v1/digilocker-publish/:publish_request_id
+connector_posture:
+  CMP-012: SIMULATED at host wiring; REAL DigiLocker deferred (never PROD)
+  CMP-022: signing/render ports caller-supplied; REAL signer deferred
+
+test_results:
+  host_vitest_m07: PASS 10/10
+  regression_vitest_m05_m06_m08_app: PASS 44/44
+  api_host_full_vitest: PASS 81/81
+  typecheck: PASS
+  build: PASS
+  eslint: PASS
+  format: PASS
+  check_scope: PASS
+  contracts_lock: PASS 34/34 FROZEN
+  gates: PASS 10/10
+  cross_tenant_leakage: 0
+
+acceptance_tests:
+  - composition/m07.ts mounts only M07 components
+  - app.ts change is mount-call only and reviewable
+  - CMP-036 registered exactly once
+  - M05/M06/M08 mounts coexist without route collision
+  - forged tenant headers → SF-TEN-002; CROSS_TENANT_LEAKAGE=0
+  - missing server context fails closed; commands require Idempotency-Key
+  - CERTIFIED/G3/G6 remain false
+
+residuals:
+  - Service doubles only; DB-backed INT-008/011/013 owned by SF-M07-INT
+  - orchestrator/tasks/SF-M07-005.yaml still PLANNING (outside write paths); orchestrator to reconcile
 
 stop_conditions:
+  - remove or break prior module mounts
   - patch owner production code
-  - CERTIFIED or G6 claim
+  - CERTIFIED or RELEASE CERTIFIED or G6 claim
   - issue G3 (recommend only)
+  - commit pnpm-lock.yaml
+
+evidence: evidence/SF-M07-005/EVIDENCE.md

@@ -1,0 +1,32 @@
+{
+  "task_id": "SF-M07-005",
+  "execution_base": "6ec17a34",
+  "execution_base_note": "origin/main tip after STITCH-A merge #148",
+  "implementation_commit": "8ddc91629b8164de3bb1fde2e492cb6b0be156fb",
+  "branch": "cursor/m07-005-host-91f2",
+  "authorization_source": "HUMAN_M07_THROUGH_EVD_AUTHORIZATION",
+  "stitch_b": "N/A (no Wave B)",
+  "mounts": ["CMP-022", "CMP-024", "CMP-023", "CMP-012"],
+  "not_mounted": ["CMP-036"],
+  "certified": false,
+  "g3": false,
+  "g6": false,
+  "self_certified": false,
+  "host_vitest_m07": "PASS_10",
+  "regression_vitest_m05_m06_m08_app": "PASS_44",
+  "api_host_full_vitest": "PASS_81",
+  "typecheck": "PASS",
+  "build": "PASS",
+  "eslint": "PASS",
+  "format": "PASS",
+  "check_scope": "PASS",
+  "gates": "PASS_10_10",
+  "contracts_lock": "PASS_34_34",
+  "pnpm_lock_modified": false,
+  "apps_api_package_json_modified": false,
+  "cross_tenant_leakage": 0,
+  "connectors": {
+    "CMP-012": "SIMULATED at host wiring (REAL DigiLocker deferred)",
+    "CMP-022": "signing/render ports caller-supplied (REAL signer deferred)"
+  }
+}
