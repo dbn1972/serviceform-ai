@@ -17,6 +17,10 @@ import { isUuid } from '../domain/simulation.js';
 import { Cmp012Error, detail } from '../errors.js';
 import { envelopeOf, TOPIC_DOMAIN } from '../outbox.js';
 import type { ConnectorBindingPort } from '../ports/connector-binding-port.js';
+import {
+  assertCredentialIssuedForPublish,
+  type CredentialVerificationPort,
+} from '../ports/credential-verification-port.js';
 import type { DigiLockerApiPort } from '../ports/digilocker-api-port.js';
 import type { DigilockerRepository, PublishRow, DigilockerTx } from '../repo/types.js';
 import type { TenantContext } from '../types.js';
@@ -26,6 +30,7 @@ export interface DigiLockerServiceDeps {
   repo: DigilockerRepository;
   authorizer: AuthorizationPort;
   connectorBinding: ConnectorBindingPort;
+  credentialVerification: CredentialVerificationPort;
   digilockerApi: DigiLockerApiPort;
   runtimeEnvironment: DeploymentEnvironment;
   clock: () => Date;
@@ -116,6 +121,25 @@ export class DigiLockerService {
     const replay = await this.priorResult(ctx, idem);
     if (replay) return replay;
 
+    // ── F01/SEC-F06: verify credential is ISSUED via CMP-022 port ─────────────
+    // Fail-closed: never-issued, unsigned, wrong-tenant or missing credential
+    // all produce a hard error; no silent fallback.
+    this.assertNoOpenTx();
+    let credVerification;
+    try {
+      credVerification = await this.deps.credentialVerification.verify(
+        ctx.tenant_id,
+        input.credential_id,
+      );
+    } catch (err) {
+      if (err instanceof Cmp012Error) throw err;
+      throw new Cmp012Error('SF-SYS-004', {
+        ...detail('CREDENTIAL_VERIFICATION_UNAVAILABLE'),
+        cause: err,
+      });
+    }
+    assertCredentialIssuedForPublish(credVerification, ctx.tenant_id);
+
     // ── Outside TX: resolve connector binding ──────────────────────────────────
     this.assertNoOpenTx();
     let rawBinding;
@@ -136,6 +160,14 @@ export class DigiLockerService {
       runtimeEnvironment: this.deps.runtimeEnvironment,
     };
     const binding = assertBindingPolicy(rawBinding, policyCtx);
+
+    // F06: injected adapter mode must equal binding mode — fail-closed.
+    // Prevents a SIMULATED adapter from executing when the binding declares REAL/SANDBOX
+    // and especially when runtime=PRODUCTION + critical=true + binding.mode=REAL.
+    if (this.deps.digilockerApi.mode !== binding.mode) {
+      throw new Cmp012Error('SF-INT-001', detail('ADAPTER_MODE_MISMATCH'));
+    }
+
     const simulationMarker = buildSimulationMarker(binding, input.test_run_id);
 
     // ── Outside TX: call DigiLocker API ───────────────────────────────────────

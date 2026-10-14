@@ -1,6 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import type { AuthorizationPort } from '../../src/authz.js';
 import type { ConnectorBindingPort } from '../../src/ports/connector-binding-port.js';
+import type {
+  CredentialVerification,
+  CredentialVerificationPort,
+} from '../../src/ports/credential-verification-port.js';
 import type { ConnectorBindingView } from '../../src/domain/simulation.js';
 import type {
   ActorType,
@@ -67,6 +71,29 @@ export class AllowAllAuthorizer implements AuthorizationPort {
       policy_revision: 'rev-test',
       decision_id: randomUUID(),
     });
+  }
+}
+
+export class FakeCredentialVerificationPort implements CredentialVerificationPort {
+  private readonly tenantId: string;
+  result: CredentialVerification;
+  failure: Error | null = null;
+  calls = 0;
+
+  constructor(tenantId: string) {
+    this.tenantId = tenantId;
+    this.result = {
+      found: true,
+      tenantId,
+      lifecycle: 'ISSUED',
+      signed: true,
+    };
+  }
+
+  verify(_tenantId: string, _credentialId: string): Promise<CredentialVerification> {
+    this.calls += 1;
+    if (this.failure) return Promise.reject(this.failure);
+    return Promise.resolve({ ...this.result });
   }
 }
 

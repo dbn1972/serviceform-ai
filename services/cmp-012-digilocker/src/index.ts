@@ -6,6 +6,10 @@ import {
   UnboundConnectorBindingPort,
   type ConnectorBindingPort,
 } from './ports/connector-binding-port.js';
+import {
+  UnboundCredentialVerificationPort,
+  type CredentialVerificationPort,
+} from './ports/credential-verification-port.js';
 import type { DigiLockerApiPort } from './ports/digilocker-api-port.js';
 import type { DigilockerRepository } from './repo/types.js';
 import { DigiLockerService } from './service/service.js';
@@ -16,6 +20,7 @@ export interface DigilockerOptions {
   resolveContext: ContextResolver;
   authorizer: AuthorizationPort;
   connectorBinding?: ConnectorBindingPort;
+  credentialVerification?: CredentialVerificationPort;
   digilockerApi?: DigiLockerApiPort;
   runtimeEnvironment?: DeploymentEnvironment;
   clock?: () => Date;
@@ -34,6 +39,7 @@ export function buildDigiLockerService(
     repo: opts.repository,
     authorizer: opts.authorizer,
     connectorBinding: opts.connectorBinding ?? new UnboundConnectorBindingPort(),
+    credentialVerification: opts.credentialVerification ?? new UnboundCredentialVerificationPort(),
     digilockerApi: opts.digilockerApi,
     runtimeEnvironment: opts.runtimeEnvironment ?? 'LOCAL',
     clock: opts.clock ?? ((): Date => new Date()),
@@ -58,6 +64,10 @@ export type {
   DigiLockerPublishResult,
 } from './ports/digilocker-api-port.js';
 export type { ConnectorBindingPort } from './ports/connector-binding-port.js';
+export type {
+  CredentialVerificationPort,
+  CredentialVerification,
+} from './ports/credential-verification-port.js';
 export type { DigilockerRepository, PublishRow } from './repo/types.js';
 export type { AuthorizationPort } from './authz.js';
 export type { ContextResolver } from './context.js';

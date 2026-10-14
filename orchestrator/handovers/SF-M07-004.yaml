@@ -30,8 +30,8 @@ depends_on:
   - LOCK-1 planning PR on main
   - human Wave A READY + dispatch authorization
 
-state: CANDIDATE_COMPLETE
-orchestration_task_state: CANDIDATE_COMPLETE
+state: REMEDIATION_CANDIDATE_COMPLETE
+orchestration_task_state: REMEDIATION_CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -41,6 +41,38 @@ g6: false
 ccr_required: false
 frozen_contracts_altered: false
 cg_07_contract_freeze_required: false
+
+remediation_branch: cursor/m07-004-rem-3dc6
+remediation_findings_closed:
+  F01_SEC_F06:
+    description: Credential ISSUED verification via CMP-022 port
+    files_changed:
+      - services/cmp-012-digilocker/src/ports/credential-verification-port.ts (new)
+      - services/cmp-012-digilocker/src/service/service.ts
+      - services/cmp-012-digilocker/src/index.ts
+      - services/cmp-012-digilocker/test/doubles/fixtures.ts
+      - services/cmp-012-digilocker/test/doubles/harness.ts
+      - services/cmp-012-digilocker/test/unit/tenant-negative.test.ts
+    new_tests: 7
+    fail_closed: true
+  F05:
+    description: Forged tenant header defence - full SF-TEN-002 pattern set
+    files_changed:
+      - services/cmp-012-digilocker/src/context.ts
+    new_tests: 17
+    headers_covered: [x-tenant-*, x-sf-*, x-forwarded-tenant, Forwarded tenant=, legacy exact names]
+  F06:
+    description: Adapter mode / binding mode cross-check fail-closed
+    files_changed:
+      - services/cmp-012-digilocker/src/service/service.ts
+    new_tests: 3
+    fail_closed: true
+    error_code: SF-INT-001 ADAPTER_MODE_MISMATCH
+remediation_test_evidence:
+  new_tests: 26
+  all_pass: true
+  junit: evidence/SF-M07-004/junit/rem-unit.xml
+  workspace_regression: 2736 tests PASS
 
 implementation_summary:
   package: "@serviceform/cmp-012-digilocker"
