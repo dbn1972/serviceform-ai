@@ -48,9 +48,9 @@ const PII_PATTERNS: ReadonlyArray<[string, RegExp]> = [
     'email',
     /[A-Za-z0-9._%+-]+@(?!example\.(?:com|org|net|test)\b)[A-Za-z0-9-]+\.(?:com|in|org|net|gov\.in|co\.in)\b/,
   ],
-  ['private-key', new RegExp('-----BEGIN [A-Z ]*PRIVATE' + ' KEY-----')],
-  ['aws-key', new RegExp(String.raw`\bAKI` + String.raw`A[0-9A-Z]{16}\b`)],
-  ['bearer', new RegExp(String.raw`Bear` + String.raw`er\s+[A-Za-z0-9._-]{20,}`)],
+  ['private-key', /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
+  ['aws-key', /\bAKIA[0-9A-Z]{16}\b/],
+  ['bearer', /Bearer\s+[A-Za-z0-9._-]{20,}/],
 ];
 
 let app: FastifyInstance | undefined;
