@@ -1,0 +1,63 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-022 Credential Events",
+    "version": "0.1.0",
+    "description": "Issuance lifecycle events (SF-CON-CREDENTIAL). CredentialIssued is the trigger for CMP-012 DigiLocker publish and CMP-025 notification consumers; their failure never reverses issuance. References and hashes only; no PII."
+  },
+  "channels": {
+    "sf.credential.events.v1": {
+      "address": "sf.credential.events.v1",
+      "messages": {
+        "CredentialGenerated": {
+          "$ref": "#/components/messages/CredentialGenerated"
+        },
+        "CredentialSigned": {
+          "$ref": "#/components/messages/CredentialSigned"
+        },
+        "CredentialSigningFailed": {
+          "$ref": "#/components/messages/CredentialSigningFailed"
+        },
+        "CredentialIssued": {
+          "$ref": "#/components/messages/CredentialIssued"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "CredentialGenerated": {
+        "name": "CredentialGenerated",
+        "payload": {
+          "$ref": "./events/credential-event.data.schema.json"
+        }
+      },
+      "CredentialSigned": {
+        "name": "CredentialSigned",
+        "payload": {
+          "$ref": "./events/credential-event.data.schema.json"
+        }
+      },
+      "CredentialSigningFailed": {
+        "name": "CredentialSigningFailed",
+        "payload": {
+          "$ref": "./events/credential-event.data.schema.json"
+        }
+      },
+      "CredentialIssued": {
+        "name": "CredentialIssued",
+        "payload": {
+          "$ref": "./events/credential-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

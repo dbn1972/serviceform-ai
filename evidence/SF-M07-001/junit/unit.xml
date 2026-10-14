@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="145" failures="0" errors="0" time="0.211608521">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-14T05:38:29.707Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.090966016">
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; SF-CON-CREDENTIAL schema hash matches contracts-lock" time="0.001920539">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; SF-CON-SIGNING-RECORD schema hash matches contracts-lock" time="0.000230211">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; every credential response (issued, replayed, read, listed) validates as SF-CON-CREDENTIAL" time="0.023447463">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; GENERATED and SIGNED intermediate credentials validate too" time="0.001635173">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; signing records (SIGNED and FAILED, SIMULATED and REAL) validate as SF-CON-SIGNING-RECORD" time="0.013831154">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="frozen M07 contracts consumed by CMP-022 &gt; frozen valid examples pass and frozen invalid examples fail the same schemas" time="0.000684493">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-022 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.029505394">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-022 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.000976553">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000583888">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.000275121">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; test doubles conform to the consumer port schemas" time="0.00932923">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.003036397">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer component schemas and never BYPASSRLS" time="0.000653336">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the outbox migration embeds the SF-CON-OUTBOX template with only schema/CMP replaced" time="0.000356011">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-14T05:38:29.709Z" hostname="cursor" tests="40" failures="0" errors="0" skipped="0" time="0.0123717">
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; GENERATED&gt;GENERATED is rejected" time="0.002061101">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; GENERATED&gt;SIGNED is allowed" time="0.00061347">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; GENERATED&gt;ISSUED is rejected" time="0.000119297">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; SIGNED&gt;GENERATED is rejected" time="0.000094409">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; SIGNED&gt;SIGNED is rejected" time="0.000105295">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; SIGNED&gt;ISSUED is allowed" time="0.000115932">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; ISSUED&gt;GENERATED is rejected" time="0.000077517">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; ISSUED&gt;SIGNED is rejected" time="0.000066712">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="forward-only lifecycle &gt; ISSUED&gt;ISSUED is rejected" time="0.00008265">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="deterministic credential id &gt; is stable, tenant-scoped and a well-formed version-8 UUID" time="0.001509778">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; accepts SIMULATED with a matching marker in a simulation environment" time="0.000690627">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIMULATED in UAT" time="0.000176772">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIMULATED in PREPROD" time="0.000099748">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIMULATED in PRODUCTION" time="0.000085522">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; accepts REAL without a marker in PRODUCTION" time="0.000126772">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; accepts SANDBOX without a marker in PRODUCTION" time="0.000089985">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses marker on REAL" time="0.001765025">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIMULATED without marker" time="0.000154236">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses marker for another binding" time="0.000128931">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses marker environment mismatch" time="0.00011997">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses marker extra field" time="0.000100594">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses marker bad scenario" time="0.000091548">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses wrong integration contract" time="0.000084434">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses bad binding id" time="0.000148615">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses unknown mode" time="0.00009552">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIGNED without hash" time="0.000112888">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIGNED with bad ref" time="0.000093632">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses SIGNED with failure code" time="0.00011115">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses FAILED with non-SF code" time="0.000091865">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses FAILED with a signature" time="0.000095597">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses unknown result" time="0.00008734">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; refuses bad provider ref" time="0.000088272">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="INT-013 signing result validation &gt; the marker binding id is the fixture binding" time="0.000143381">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="charset checks &gt; mirror the frozen patterns" time="0.000266736">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 42501 maps to SF-TEN-002" time="0.000145991">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 55000 maps to SF-APP-001" time="0.000058524">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23505 maps to SF-APP-002" time="0.000065406">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23503 maps to SF-SYS-002" time="0.000062037">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23514 maps to SF-SYS-003" time="0.000056989">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; XX000 maps to SF-SYS-001" time="0.000058457">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/issuance.test.ts" timestamp="2026-10-14T05:38:29.712Z" hostname="cursor" tests="79" failures="0" errors="0" skipped="0" time="0.086575468">
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; issues from case pins, records artifact hash refs and the signing attempt" time="0.009924072">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; a REAL connector in PRODUCTION issues without a simulation marker" time="0.001284655">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; replays the same Idempotency-Key with the stored response and no port calls" time="0.001496989">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; a new Idempotency-Key for an issued issuance_key returns the same credential (200)" time="0.002710856">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; a different issuance_key yields a distinct credential for the same application" time="0.01031464">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="POST /v1/credentials: GENERATED -&gt; SIGNED -&gt; ISSUED &gt; the same Idempotency-Key with a different body is a conflict" time="0.001195496">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; refuses issuance when the upstream approval is not recorded; nothing is rendered" time="0.001127364">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; refuses a malformed upstream approval reference" time="0.000549796">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply tenant_id" time="0.000398119">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply credential_id" time="0.000285886">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply approval_decision_ref" time="0.000253022">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply approval_decision_by_this_component" time="0.000240263">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply approved" time="0.000242784">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply decision" time="0.000240899">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply lifecycle_status" time="0.000300901">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply version_pins" time="0.000228591">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply template_pin" time="0.000226649">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply tenant_service_binding_id" time="0.000233583">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply service_version_id" time="0.000218203">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply credential_template_id" time="0.000291116">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply credential_template_version" time="0.000313649">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply artifacts" time="0.000229687">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply storage_key" time="0.000208257">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply sha256" time="0.000213245">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply signing_record_id" time="0.000219381">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply signature_ref" time="0.000278919">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply signed_artifact_sha256" time="0.00024718">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply connector_binding_id" time="0.000250492">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply connector_mode" time="0.00023142">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply simulation_marker" time="0.000250867">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply registry_status" time="0.00028024">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply current_status" time="0.000286462">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply registry_status_owner_cmp" time="0.001821431">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply issuance_reversible_by_publish_failure" time="0.000309479">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client cannot supply issuance_reversible_by_notification_failure" time="0.000283956">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client time issued_at is not authoritative" time="0.00036363">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client time signed_at is not authoritative" time="0.000194699">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; client time now is not authoritative" time="0.00023903">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; refuses an application with no pinned credential template" time="0.000455898">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; refuses invalid case pins" time="0.000559342">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="approval is referenced, never decided &gt; an invisible application is not found; a port failure fails closed" time="0.000689929">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; rejects {&quot;application_id&quot;:&quot;nope&quot;,&quot;issuance_key&quot;:&quot;app-33333333:issue:1&quot;} with UUID_REQUIRED" time="0.000363749">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; rejects {&quot;application_id&quot;:&quot;33333333-3333-4333-8333-333333333333&quot;,&quot;issuance_key&quot;:&quot;short&quot;} with ISSUANCE_KEY_INVALID" time="0.000276589">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; rejects {&quot;application_id&quot;:&quot;33333333-3333-4333-8333-333333333333&quot;,&quot;issuance_key&quot;:&quot;has space here&quot;} with ISSUANCE_KEY_INVALID" time="0.001329154">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; rejects {&quot;application_id&quot;:&quot;33333333-3333-4333-8333-333333333333&quot;,&quot;issuance_key&quot;:&quot;app-33333333:issue:1&quot;,&quot;extra&quot;:1} with UNKNOWN_FIELD" time="0.000285155">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; rejects [1] with BODY_OBJECT_REQUIRED" time="0.000246985">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; requires an Idempotency-Key on mutations" time="0.000256352">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; CITIZEN actors cannot trigger issuance" time="0.000350466">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; INTEGRATION actors cannot trigger issuance" time="0.00025095">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; OPA deny is 403 and PDP outage fails closed with 503" time="0.000421314">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; sends a tenant-scoped Credential resource to OPA with the application id" time="0.000977351">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; unknown routes are 404 and wrong methods are 400" time="0.000334882">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="request validation and access &gt; GET routes validate path ids and refuse bodies" time="0.000431934">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; render outage persists nothing; an invalid render ref is refused" time="0.004822007">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; a FAILED attempt is recorded, leaves GENERATED, and a retry uses the next attempt key" time="0.00133638">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; a signer transport error records no attempt; the retry reuses attempt 1 key" time="0.002679779">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; SIMULATED signing in PRODUCTION fails closed and is never recorded as SIGNED" time="0.000771935">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; SIMULATED signing in PREPROD fails closed and is never recorded as SIGNED" time="0.001143108">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; SIMULATED signing in UAT fails closed and is never recorded as SIGNED" time="0.001483687">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; defaults to PRODUCTION so an undeclared environment refuses SIMULATED" time="0.000648921">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="render and signing failures are retry-safe and never fabricate a signature &gt; unbound ports fail closed" time="0.000984855">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="registry registration (CMP-024) gates ISSUED without owning status &gt; registry outage leaves SIGNED; the retry registers and issues without re-signing" time="0.001192611">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="registry registration (CMP-024) gates ISSUED without owning status &gt; a SUSPENDED registry status does not issue" time="0.000763301">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="registry registration (CMP-024) gates ISSUED without owning status &gt; a REVOKED registry status does not issue" time="0.000695121">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="registry registration (CMP-024) gates ISSUED without owning status &gt; a REISSUED registry status does not issue" time="0.000737106">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="registry registration (CMP-024) gates ISSUED without owning status &gt; accepts REGISTERED and refuses an ack for another credential" time="0.001218956">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; a FAILED DIGILOCKER_PUBLISH outcome is recorded and the credential stays ISSUED" time="0.002212936">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; a FAILED NOTIFICATION outcome is recorded and the credential stays ISSUED" time="0.001461962">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; repeating an outcome ref is idempotent; a contradicting outcome conflicts" time="0.002419068">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; outcomes require an ISSUED credential" time="0.000987537">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;SMS&quot;,&quot;outcome&quot;:&quot;FAILED&quot;,&quot;outcome_ref&quot;:&quot;r1&quot;,&quot;failure_code&quot;:&quot;SF-INT-001&quot;} with CHANNEL_INVALID" time="0.000819651">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;NOTIFICATION&quot;,&quot;outcome&quot;:&quot;MAYBE&quot;,&quot;outcome_ref&quot;:&quot;r1&quot;} with OUTCOME_INVALID" time="0.000776346">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;NOTIFICATION&quot;,&quot;outcome&quot;:&quot;FAILED&quot;,&quot;outcome_ref&quot;:&quot;r1&quot;} with FAILURE_CODE_REQUIRED" time="0.000809755">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;NOTIFICATION&quot;,&quot;outcome&quot;:&quot;SUCCEEDED&quot;,&quot;outcome_ref&quot;:&quot;r1&quot;,&quot;failure_code&quot;:&quot;SF-INT-001&quot;} with FAILURE_CODE_FORBIDDEN" time="0.000799442">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;NOTIFICATION&quot;,&quot;outcome&quot;:&quot;SUCCEEDED&quot;,&quot;outcome_ref&quot;:&quot;&quot;} with OUTCOME_REF_INVALID" time="0.001046454">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; rejects outcome {&quot;channel&quot;:&quot;NOTIFICATION&quot;,&quot;outcome&quot;:&quot;SUCCEEDED&quot;,&quot;outcome_ref&quot;:&quot;r1&quot;,&quot;lifecycle_status&quot;:&quot;GENERATED&quot;} with CLIENT_AUTHORITY_FORBIDDEN" time="0.001090268">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; CITIZEN actors cannot record outcomes" time="0.00116277">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="downstream publish/notification outcomes never reverse issuance &gt; OFFICER actors cannot record outcomes" time="0.001124453">
+        </testcase>
+        <testcase classname="test/unit/issuance.test.ts" name="reads &gt; GET credential, application list and signing records" time="0.002422133">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/tenant-negative.test.ts" timestamp="2026-10-14T05:38:29.717Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.021695337">
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant B cannot read tenant A credentials, lists or signing records" time="0.010811919">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant B cannot record a downstream outcome against tenant A credential" time="0.001886665">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant B cannot issue for an application that only tenant A can see" time="0.0010005">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; identical application id and issuance key in two tenants give distinct credentials" time="0.001454733">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; replaying tenant A Idempotency-Key from tenant B does not leak the stored response" time="0.002381727">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; missing or tenant-less context is refused before any port call" time="0.000497289">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant/role-identifying header x-tenant-id is refused" time="0.000252608">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant/role-identifying header X-SF-Tenant is refused" time="0.000156501">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant/role-identifying header x-roles is refused" time="0.000200784">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant/role-identifying header x-actor-type is refused" time="0.000143303">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; tenant/role-identifying header forwarded is refused" time="0.000197315">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative) &gt; a context whose subject and resource tenants differ is denied before OPA" time="0.001215277">
+        </testcase>
+    </testsuite>
+</testsuites>

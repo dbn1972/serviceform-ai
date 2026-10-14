@@ -1,0 +1,592 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-022 Certificate / Credential Engine",
+    "version": "0.1.0",
+    "description": "Credential issuance (SF-CON-CREDENTIAL, SF-CON-SIGNING-RECORD; FROZEN). Issues a credential for an application whose upstream workflow/human approval is already recorded by CMP-015/016/017; CMP-022 never makes or alters the approval decision. Version and template pins and the approval reference come from the case (never the client). Lifecycle GENERATED -> SIGNED -> ISSUED is forward-only; ISSUED is terminal and is never reversed by DigiLocker publish or notification failure. Artifacts are CMP-032 storage keys and SHA-256 hashes only. Signing goes through the CMP-037 INT-013 port; SIMULATED is refused outside LOCAL/CI/DEVELOPMENT/SIT/PERFORMANCE. Registry status is owned by CMP-024. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/credentials": {
+      "post": {
+        "operationId": "issueCredential",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["application_id", "issuance_key"],
+                "properties": {
+                  "application_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "issuance_key": {
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z0-9_.:-]+$",
+                    "description": "Business idempotency key: at most one credential per (tenant, application, issuance_key). A retry resumes from the persisted lifecycle step."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Credential issued by this request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m07/credential/v1"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "The issuance_key was already ISSUED; the existing credential is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m07/credential/v1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CRED-001 (RENDER_*, SIGNING_FAILED, SIGNING_UNAVAILABLE, SIMULATED_CONNECTOR_FORBIDDEN, SIMULATION_MARKER_*, REGISTRY_STATUS_NOT_ISSUABLE) / SF-INT-001 (REGISTRY_UNAVAILABLE) / SF-SYS-004 (PDP or port unavailable). Retry with the same issuance_key resumes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-WF-001 (UPSTREAM_APPROVAL_NOT_RECORDED) / SF-FORM-001 (CREDENTIAL_TEMPLATE_NOT_PINNED, CASE_PINS_INVALID) / SF-APP-002 (idempotency conflict) / SF-APP-001 (invalid transition)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/credentials/{credential_id}": {
+      "get": {
+        "operationId": "getCredential",
+        "parameters": [
+          {
+            "name": "credential_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/m07/credential/v1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/credentials/{credential_id}/signing-records": {
+      "get": {
+        "operationId": "listCredentialSigningRecords",
+        "parameters": [
+          {
+            "name": "credential_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Signing attempts in attempt order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["signing_records"],
+                  "properties": {
+                    "signing_records": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://contracts.serviceform.ai/m07/signing-record/v1"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/credentials/{credential_id}/downstream-outcomes": {
+      "post": {
+        "operationId": "recordCredentialDownstreamOutcome",
+        "parameters": [
+          {
+            "name": "credential_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "description": "Records a CMP-012 publish or CMP-025 notification outcome for an ISSUED credential (SYSTEM/INTEGRATION actors). Never changes the credential: a FAILED outcome leaves it ISSUED.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DownstreamOutcomeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Outcome recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownstreamOutcome"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Outcome already recorded for this outcome_ref",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DownstreamOutcome"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (CREDENTIAL_NOT_ISSUED) / SF-APP-002 (OUTCOME_CONFLICT, idempotency conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/applications/{application_id}/credentials": {
+      "get": {
+        "operationId": "listApplicationCredentials",
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credentials for the application",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["credentials"],
+                  "properties": {
+                    "credentials": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "https://contracts.serviceform.ai/m07/credential/v1"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP or port unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "$ref": "https://contracts.serviceform.ai/error-response/v1"
+      },
+      "DownstreamOutcomeInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["channel", "outcome", "outcome_ref"],
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": ["DIGILOCKER_PUBLISH", "NOTIFICATION"]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": ["SUCCEEDED", "FAILED"]
+          },
+          "outcome_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "failure_code": {
+            "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/errorCode",
+            "description": "Required when outcome is FAILED; forbidden otherwise."
+          }
+        }
+      },
+      "DownstreamOutcome": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "outcome_id",
+          "credential_id",
+          "channel",
+          "outcome",
+          "outcome_ref",
+          "recorded_at",
+          "credential_lifecycle_status",
+          "issuance_reversed"
+        ],
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "credential_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["DIGILOCKER_PUBLISH", "NOTIFICATION"]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": ["SUCCEEDED", "FAILED"]
+          },
+          "outcome_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "failure_code": {
+            "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/errorCode"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "credential_lifecycle_status": {
+            "const": "ISSUED"
+          },
+          "issuance_reversed": {
+            "const": false
+          }
+        }
+      }
+    }
+  }
+}
