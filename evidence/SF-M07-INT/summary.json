@@ -1,13 +1,28 @@
 {
   "task_id": "SF-M07-INT",
-  "integration_ids": ["INT-008", "INT-011", "INT-013"],
+  "integration_ids": [
+    "INT-008",
+    "INT-011",
+    "INT-013"
+  ],
   "execution_base": "e8f847afb1bfe155028dc99706399fbe2adca708",
-  "remediations_merged": ["#153", "#152"],
-  "tests_commit_prefix": "pending",
+  "remediations_merged": [
+    "#153",
+    "#152"
+  ],
+  "tests_commit_prefix": "a6a3c23",
   "model_route": "opus",
   "model_release": "claude-opus-5-5",
-  "vitest": { "total": 67, "passed": 65, "expected_fail_findings": 2, "unexpected_failures": 0 },
-  "vitest_findings_exposed": { "passed": 65, "failed": 2 },
+  "vitest": {
+    "total": 67,
+    "passed": 65,
+    "expected_fail_findings": 2,
+    "unexpected_failures": 0
+  },
+  "vitest_findings_exposed": {
+    "passed": 65,
+    "failed": 2
+  },
   "cross_tenant_leakage": 0,
   "forged_tenant_sf_ten_002": {
     "host_all_m07_routes": "PASS",
@@ -21,21 +36,68 @@
   },
   "issuance_not_reversed_by_digilocker_or_notification_outage": "PASS",
   "findings_closed_high": {
-    "M07-INT-F01": { "severity": "HIGH", "owner": "CMP-012", "status": "CLOSED_BY_#152" },
-    "M07-INT-F01b": { "severity": "HIGH", "owner": "CMP-012", "status": "CLOSED_BY_#152" },
-    "M07-INT-F01c": { "severity": "HIGH", "owner": "CMP-012", "status": "CLOSED_BY_#152" },
-    "M07-INT-F05": { "severity": "HIGH", "owner": "CMP-012", "status": "CLOSED_BY_#152" },
-    "M07-INT-F06": { "severity": "HIGH", "owner": "CMP-012", "status": "CLOSED_BY_#152" }
+    "M07-INT-F01": {
+      "severity": "HIGH",
+      "owner": "CMP-012",
+      "status": "CLOSED_BY_#152"
+    },
+    "M07-INT-F01b": {
+      "severity": "HIGH",
+      "owner": "CMP-012",
+      "status": "CLOSED_BY_#152"
+    },
+    "M07-INT-F01c": {
+      "severity": "HIGH",
+      "owner": "CMP-012",
+      "status": "CLOSED_BY_#152"
+    },
+    "M07-INT-F05": {
+      "severity": "HIGH",
+      "owner": "CMP-012",
+      "status": "CLOSED_BY_#152"
+    },
+    "M07-INT-F06": {
+      "severity": "HIGH",
+      "owner": "CMP-012",
+      "status": "CLOSED_BY_#152"
+    }
   },
   "findings_open_non_blocking": {
-    "M07-INT-F03": { "severity": "MEDIUM", "owner": "CMP-012", "blocking": false },
-    "M07-INT-F04": { "severity": "MEDIUM", "owner": "CMP-012", "blocking": false },
-    "M07-INT-F02": { "severity": "MEDIUM", "owner": "seam CMP-022/CMP-024 (orchestrator ADR)", "blocking": false },
-    "M07-INT-O1": { "severity": "LOW", "owner": "CMP-022/CMP-037", "blocking": false },
-    "M07-INT-O2": { "severity": "LOW", "owner": "CMP-012", "blocking": false },
-    "M07-INT-O3": { "severity": "LOW", "owner": "host composition", "blocking": false }
+    "M07-INT-F03": {
+      "severity": "MEDIUM",
+      "owner": "CMP-012",
+      "blocking": false
+    },
+    "M07-INT-F04": {
+      "severity": "MEDIUM",
+      "owner": "CMP-012",
+      "blocking": false
+    },
+    "M07-INT-F02": {
+      "severity": "MEDIUM",
+      "owner": "seam CMP-022/CMP-024 (orchestrator ADR)",
+      "blocking": false
+    },
+    "M07-INT-O1": {
+      "severity": "LOW",
+      "owner": "CMP-022/CMP-037",
+      "blocking": false
+    },
+    "M07-INT-O2": {
+      "severity": "LOW",
+      "owner": "CMP-012",
+      "blocking": false
+    },
+    "M07-INT-O3": {
+      "severity": "LOW",
+      "owner": "host composition",
+      "blocking": false
+    }
   },
-  "simulated_boundaries": ["ESIGN", "DIGILOCKER"],
+  "simulated_boundaries": [
+    "ESIGN",
+    "DIGILOCKER"
+  ],
   "production_code_modified": false,
   "self_certified": false,
   "certified": false,
