@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-022/ports/case-issuance-pins/v1",
+  "title": "CaseIssuancePins",
+  "description": "Component-local consumer port. Issuance inputs supplied by the CMP-015 case owner (SF-CON-VERSION-PINNING subset plus the upstream approval reference). approval_decision_ref is null until the upstream workflow/human task records an approval; CMP-022 does not decide approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "application_id",
+    "tenant_service_binding_id",
+    "service_version_id",
+    "credential_template_id",
+    "credential_template_version",
+    "approval_decision_ref"
+  ],
+  "properties": {
+    "application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "tenant_service_binding_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "service_version_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "credential_template_id": {
+      "oneOf": [
+        {
+          "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "credential_template_version": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "approval_decision_ref": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

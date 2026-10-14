@@ -1,0 +1,60 @@
+{
+  "entities": [
+    {
+      "entity": "sf_credential.credential",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.credential_artifact",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.signing_record",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.downstream_outcome",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.idempotency_record",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.outbox_event",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.inbox_event",
+      "owner_component": "CMP-022",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_credential.outbox_event_platform",
+      "owner_component": "CMP-022",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-022 emits no tenant-less events."
+    },
+    {
+      "entity": "sf_credential.inbox_event_platform",
+      "owner_component": "CMP-022",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-022 consumes no tenant-less events."
+    }
+  ]
+}
