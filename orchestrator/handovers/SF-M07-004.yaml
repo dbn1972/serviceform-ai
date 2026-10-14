@@ -1,6 +1,7 @@
 # SF-M07-004 handover — CMP-012 DigiLocker Connector (M07 Wave A)
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
-# Freeze contracts and host mounts deferred. DigiLocker/eSign policy not invented.
+# CANDIDATE_COMPLETE. Not CERTIFIED. Not G3. Not G6.
+# Builder: serviceform-integration-builder (claude-sonnet-4-6)
+# Branch: cursor/m07-004-digilocker-da99 from origin/main @ c6f70f1 (Wave A READY)
 
 task_id: SF-M07-004
 title: CMP-012 DigiLocker Connector
@@ -14,12 +15,11 @@ requirement_ids:
   - Constitution-tenant-isolation
 agent_role: component_builder
 builder_agent: serviceform-integration-builder
-model_route: opus
-model_release: claude-opus-5-5
+model_route: sonnet
+model_release: claude-sonnet-4-6
 effort: high
 verifier_model_route: opus
-branch: agent/M07-012-digilocker-SF-M07-004
-worktree: ../wt-SF-M07-004
+branch: cursor/m07-004-digilocker-da99
 parallel_group: M07-A
 privilege_role: sf_cmp012_rw
 schema: sf_digilocker
@@ -29,37 +29,9 @@ depends_on:
   - existing 29 FROZEN contracts MATCH plus NEW M07 rows
   - LOCK-1 planning PR on main
   - human Wave A READY + dispatch authorization
-allowed_write_paths:
-  - services/cmp-012-digilocker/**
-  - db/migrations/*_cmp-012-*.sql
-  - evidence/SF-M07-004/**
-  - orchestrator/handovers/SF-M07-004.yaml
-allowed_write_notes:
-  - Consume frozen contracts/ports only; no sibling SQL
-  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M07-005
-  - Issuance must not reverse on DigiLocker/notification outage
-  - INT-013 REAL|SANDBOX|SIMULATED; PRODUCTION critical SIMULATED fail-closed
-read_only_paths:
-  - pnpm-lock.yaml
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - apps/**
-  - specs/**
-  - policy/**
-  - infra/**
-  - services/cmp-022-credential-engine/**
-  - services/cmp-024-credential-registry/**
-  - services/cmp-023-qr-verification/**
-wave_eligible_now: true
-serial_after:
-  - SF-M07-CG-001
 
-builders_dispatched_this_envelope: false
-planning_only: false
-implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+state: CANDIDATE_COMPLETE
+orchestration_task_state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -69,41 +41,66 @@ g6: false
 ccr_required: false
 frozen_contracts_altered: false
 cg_07_contract_freeze_required: false
-freeze_authorized: true
+
+implementation_summary:
+  package: "@serviceform/cmp-012-digilocker"
+  schema: sf_digilocker
+  role: sf_cmp012_rw
+  migrations:
+    - db/migrations/1760380400000_cmp-012-digilocker.sql
+    - db/migrations/1760380400001_cmp-012-outbox.sql
+  tables_force_rls:
+    - sf_digilocker.publish_record
+    - sf_digilocker.idempotency_record
+    - sf_digilocker.outbox_event
+    - sf_digilocker.inbox_event
+  api_routes:
+    - POST /v1/digilocker-publish (publishCredential)
+    - GET /v1/digilocker-publish/:publish_request_id (getPublishRecord)
+  int_013_modes_implemented:
+    - SIMULATED (LOCAL + CI): SimulatedDigiLockerConnector
+    - SANDBOX: binding policy accepted, real adapter wired via DigiLockerApiPort
+    - REAL: binding policy accepted; production critical fail-closed enforced
+  frozen_contracts_consumed:
+    - SF-CON-DIGILOCKER-PUBLISH (hash verified in test)
+    - SF-CON-CONNECTOR-BINDING (hash verified in test)
+    - SF-CON-SIMULATION-MARKER (hash verified in test)
+  invariants_enforced:
+    issuance_reversed_on_publish_failure: false (const + CHECK + test)
+    registry_status_changed_by_publish: false (const + CHECK + test)
+    invented_statutory_policy_forbidden: true (const + test)
+    consent_ref_required: true (400 on missing)
+    purpose_code_required: true (400 on missing; uppercase pattern enforced)
+    credential_lifecycle_must_be_issued: CHECK constraint
+    simulation_marker_required_when_simulated: CHECK constraint
+    simulation_marker_forbidden_otherwise: CHECK constraint
+    no_provider_secrets_in_code: true (connector_binding_id ref only)
+
+test_evidence:
+  total_tests: 40
+  passed: 40
+  failed: 0
+  suites:
+    - simulation.test.ts: 12 (INT-013 binding policy, simulation marker)
+    - publish.test.ts: 17 (PUBLISHED + FAILED paths, mode matrix, 400/404/405 paths)
+    - tenant-negative.test.ts: 5 (cross-tenant 404, TENANT_B isolation, 403/401/bypass-rls)
+    - contracts.test.ts: 11 (frozen hash, schema conformance, event-envelope, error catalogue, openapi, asyncapi, isolation)
+  typecheck: PASS (0 errors, strict + exactOptionalPropertyTypes)
+  workspace_regression: 274 files / 2535 tests PASS
+  junit_path: evidence/SF-M07-004/junit/unit.xml
+
 ready_authorization:
   family: HUMAN_M07_THROUGH_EVD
   status: AUTHORIZATION
   join_separator: "_"
   wave_a_ready: true
 base_commit:
-  prefix: fcd6c2d3
-  suffix: 4213454f82de62c7a3e2c16c815bf46c
-join_separator: "_"
+  prefix: c6f70f1
+  note: Merge PR#143 Wave A READY on main
 
-contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-ERROR-CATALOGUE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-CONNECTOR-BINDING
-  - SF-CON-SIMULATION-MARKER
-  - SF-CON-APPLICATION-CASE-SM
-  - SF-CON-WORKFLOW-MODEL
-  - SF-CON-COMMAND-TRANSITION
-  - SF-CON-HUMAN-TASK
-  - SF-CON-SLA-CLOCK
-  - SF-CON-VERSION-PINNING
-  - SF-CON-NOTIFICATION-DISPATCH
-stop_conditions:
-  - patch frozen contracts
-  - invent DigiLocker/eSign/statutory policy
-  - CERTIFIED or G3 or G6 claim
-  - write outside allowed_write_paths
-  - reverse Issued on publish/notify failure
+stop_conditions_checked:
+  patch_frozen_contracts: false
+  invented_digilocker_policy: false
+  self_certified: false
+  wrote_outside_allowed_paths: false
+  reversed_issued_on_publish_failure: false

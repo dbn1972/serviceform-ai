@@ -1,0 +1,66 @@
+{
+  "asyncapi": "2.6.0",
+  "info": { "title": "CMP-012 DigiLocker Events", "version": "0.0.0" },
+  "channels": {
+    "sf.digilocker.events.v1": {
+      "subscribe": {
+        "message": {
+          "oneOf": [
+            { "$ref": "#/components/messages/DigiLockerPublishRequested" },
+            { "$ref": "#/components/messages/DigiLockerPublishSucceeded" },
+            { "$ref": "#/components/messages/DigiLockerPublishFailed" }
+          ]
+        }
+      },
+      "messages": {
+        "DigiLockerPublishRequested": {
+          "$ref": "#/components/messages/DigiLockerPublishRequested"
+        },
+        "DigiLockerPublishSucceeded": {
+          "$ref": "#/components/messages/DigiLockerPublishSucceeded"
+        },
+        "DigiLockerPublishFailed": { "$ref": "#/components/messages/DigiLockerPublishFailed" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "DigiLockerPublishRequested": {
+        "name": "DigiLockerPublishRequested",
+        "payload": { "$ref": "#/components/schemas/DigiLockerPublishEventData" }
+      },
+      "DigiLockerPublishSucceeded": {
+        "name": "DigiLockerPublishSucceeded",
+        "payload": { "$ref": "#/components/schemas/DigiLockerPublishEventData" }
+      },
+      "DigiLockerPublishFailed": {
+        "name": "DigiLockerPublishFailed",
+        "payload": { "$ref": "#/components/schemas/DigiLockerPublishEventData" }
+      }
+    },
+    "schemas": {
+      "DigiLockerPublishEventData": {
+        "type": "object",
+        "required": [
+          "publish_request_id",
+          "credential_id",
+          "publish_status",
+          "connector_mode",
+          "issuance_reversed_on_publish_failure",
+          "registry_status_changed_by_publish"
+        ],
+        "properties": {
+          "publish_request_id": { "type": "string", "format": "uuid" },
+          "credential_id": { "type": "string", "format": "uuid" },
+          "publish_status": {
+            "type": "string",
+            "enum": ["PENDING", "PUBLISHED", "FAILED", "RETRY_SCHEDULED"]
+          },
+          "connector_mode": { "type": "string", "enum": ["REAL", "SANDBOX", "SIMULATED"] },
+          "issuance_reversed_on_publish_failure": { "type": "boolean", "const": false },
+          "registry_status_changed_by_publish": { "type": "boolean", "const": false }
+        }
+      }
+    }
+  }
+}

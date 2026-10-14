@@ -1,0 +1,40 @@
+{
+  "entities": [
+    {
+      "entity": "sf_digilocker.publish_record",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-012",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_digilocker.idempotency_record",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-012",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_digilocker.outbox_event",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-012",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_digilocker.outbox_event_platform",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "owner_component": "CMP-012",
+      "rls": "NOT_APPLICABLE"
+    },
+    {
+      "entity": "sf_digilocker.inbox_event",
+      "isolation_class": "TENANT_SCOPED",
+      "owner_component": "CMP-012",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_digilocker.inbox_event_platform",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "owner_component": "CMP-012",
+      "rls": "NOT_APPLICABLE"
+    }
+  ]
+}
