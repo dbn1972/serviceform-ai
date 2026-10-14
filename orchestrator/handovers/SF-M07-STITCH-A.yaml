@@ -1,11 +1,13 @@
 # SF-M07-STITCH-A — M07 STITCH-A mechanical
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
+# CANDIDATE_COMPLETE / MERGE-READY. Not CERTIFIED. Not G3. Not G6.
 
 task_id: SF-M07-STITCH-A
 title: M07 STITCH-A mechanical
 module_id: M07
 agent_role: integration_agent
 builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_resolved: claude-opus (cursor cloud agent bc-e5e8844a-4929-5f4e-828f-333f89489cf1)
 integration_ids: [INT-008, INT-011, INT-013]
 allowed_write_paths:
   - services/cmp-022-credential-engine/**
@@ -26,19 +28,19 @@ read_only_paths:
   - services/**
   - contracts/**
   - orchestrator/contracts-lock.yaml
-wave_eligible_now: false
 serial_after:
   - SF-M07-001
   - SF-M07-002
   - SF-M07-003
   - SF-M07-004
 
-builders_dispatched_this_envelope: false
-planning_only: true
-implementation_authorized: false
-dispatched: false
-orchestration_task_state: PLANNING
-state: PLANNING
+authorization: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+merge_ready: true
 self_certified: false
 not_certified: true
 certified: false
@@ -47,12 +49,55 @@ g3: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-cg_07_contract_freeze_required: true
-freeze_authorized: false
+owner_production_code_changed: false
 base_commit:
-  prefix: fd335e8c
-  suffix: fd6a3c616f5133d09191e721201d4ab5
-join_separator: "_"
+  prefix: 53a2c865
+  ref: origin/main (Merge PR #146 SF-M07-004)
+branch: cursor/m07-stitch-a-91f2
+
+packages_admitted:
+  - "@serviceform/cmp-012-digilocker"
+  - "@serviceform/cmp-022-credential-engine"
+  - "@serviceform/cmp-023-qr-verification"
+  - "@serviceform/cmp-024-credential-registry"
+files_changed:
+  - pnpm-lock.yaml
+  - evidence/SF-M07-STITCH-A/**
+  - orchestrator/handovers/SF-M07-STITCH-A.yaml
+
+gate_results:
+  install_frozen_lockfile: PASS
+  format_check: PASS
+  lint: PASS
+  typecheck: PASS
+  root_test_coverage: PASS (279 files / 2696 tests)
+  contracts_validate: PASS
+  deps_graph: PASS
+  build: PASS
+  migration_lint: PASS
+  contracts_lock_gate: PASS
+  gates_run_all: PASS
+  unit:
+    cmp-022: 145/145 PASS
+    cmp-024: 85/85 PASS
+    cmp-023: 62/62 PASS
+    cmp-012: 40/40 PASS
+  pg_integration_full_chain_x3:
+    cmp-022: 10/10 PASS
+    cmp-024: 9/9 PASS
+    cmp-023: 13/13 PASS
+    cmp-012: N/A (no integration tests; finding F1)
+evidence: evidence/SF-M07-STITCH-A/EVIDENCE.md
+
+findings:
+  - id: F1
+    owner: SF-M07-004 (CMP-012)
+    blocking: false
+    summary: test:integration script defined with zero integration test files (exits 1)
+  - id: F2
+    owner: SF-M07-001..004
+    blocking: false
+    summary: package vitest configs write JUnit into owner evidence dirs on every local run
 
 stop_conditions:
   - patch owner production code

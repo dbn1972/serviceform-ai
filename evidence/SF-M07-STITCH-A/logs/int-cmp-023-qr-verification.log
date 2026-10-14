@@ -1,0 +1,18 @@
+
+> @serviceform/cmp-023-qr-verification@0.0.0 test:integration /workspace/services/cmp-023-qr-verification
+> vitest run --root . --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /workspace/services/cmp-023-qr-verification
+
+ ✓ test/integration/privilege-rls.int.test.ts (9 tests) 2449ms
+   ✓ migration reversibility (1)
+     ✓ the CMP-023 pair goes down and up cleanly on an isolated database 1486ms
+ ✓ test/integration/api-flow.int.test.ts (4 tests) 690ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  08:56:33
+   Duration  3.44s (tests 95%, transform 3%, import 1%)
+
+JUNIT report written to /workspace/evidence/SF-M07-003/junit/integration.xml

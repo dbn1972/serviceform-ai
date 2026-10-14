@@ -1,0 +1,326 @@
+
+> serviceform-ai@ test:coverage /workspace
+> vitest run --coverage
+
+
+ RUN  v5.0.3 /workspace
+      Coverage enabled with v8
+
+ ✓ services/cmp-022-credential-engine/test/unit/issuance.test.ts (79 tests) 89ms
+ ✓ services/cmp-007-recommendation/test/unit/recommendation-http.test.ts (42 tests) 819ms
+ ✓ apps/api/test/composition-m08.test.ts (8 tests) 917ms
+   ✓ CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) (8)
+     ✓ mounts each M08 component independently 440ms
+ ✓ apps/api/test/composition-m05.test.ts (13 tests) 2278ms
+   ✓ CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) (12)
+     ✓ mounts each M05 HTTP component independently (CMP-016 excluded) 807ms
+     ✓ keeps Wave1/2/M02/M03/M04 mount lists unchanged when M05 is registered 1119ms
+ ✓ apps/api/test/composition-m04.test.ts (10 tests) 2299ms
+   ✓ CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) (9)
+     ✓ mounts each M04 component independently 1002ms
+     ✓ keeps M01/M02/M03 mount lists unchanged when M04 is registered 720ms
+ ✓ services/cmp-013-document-upload/test/unit/upload-http.test.ts (30 tests) 672ms
+ ✓ apps/api/test/composition-m03.test.ts (5 tests) 585ms
+   ✓ CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) (4)
+     ✓ mounts CMP-001/033/034/051/052/053 under /v1 with frozen deny envelopes and no tenant-header leakage 330ms
+ ✓ apps/api/test/composition.test.ts (7 tests) 668ms
+ ✓ services/cmp-022-credential-engine/test/contract/contracts.test.ts (14 tests) 99ms
+ ✓ services/cmp-023-qr-verification/test/contract/contracts.test.ts (16 tests) 126ms
+ ✓ services/cmp-039-ai-gateway/test/unit/gateway.test.ts (23 tests) 481ms
+ ✓ services/cmp-011-evidence-requirements/test/unit/plugin-http.test.ts (27 tests) 357ms
+ ✓ apps/api/test/composition-m06.test.ts (9 tests) 570ms
+   ✓ CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) (9)
+     ✓ mounts each M06 HTTP component independently 310ms
+ ✓ services/cmp-014-document-intelligence/test/unit/intelligence-http.test.ts (12 tests) 365ms
+ ✓ services/cmp-031-audit-ledger/test/unit/service-units.test.ts (8 tests) 309ms
+ ✓ packages/security/test/decision-log-canary.test.ts (1 test) 1630ms
+   ✓ 1000 decision logs contain no canary (P11) (1)
+     ✓ writes 1000 allowlisted lines without canary 1628ms
+ ✓ apps/api/test/composition-m02.test.ts (4 tests) 325ms
+ ✓ services/cmp-007-recommendation/test/contract/contracts.test.ts (11 tests) 298ms
+ ✓ services/cmp-031-audit-ledger/test/unit/http-routes.test.ts (13 tests) 253ms
+ ✓ apps/api/test/app.test.ts (14 tests) 275ms
+ ✓ services/cmp-002-tenant-organisation/test/unit/plugin-http.test.ts (15 tests) 252ms
+ ✓ services/cmp-005-citizen-profile/test/unit/plugin-http.test.ts (8 tests) 198ms
+ ✓ services/cmp-008-rules/test/unit/plugin-http.test.ts (15 tests) 228ms
+ ✓ services/cmp-013-document-upload/test/contract/contracts.test.ts (10 tests) 166ms
+ ✓ services/cmp-053-localization/test/unit/plugin-api.test.ts (3 tests) 190ms
+ ✓ services/cmp-034-master-data/test/unit/plugin-http.test.ts (2 tests) 167ms
+ ✓ services/cmp-048-security-platform/test/service-commands.test.ts (12 tests) 165ms
+ ✓ services/cmp-001-catalogue/test/unit/plugin-http.test.ts (7 tests) 180ms
+ ✓ services/cmp-014-document-intelligence/test/contract/contracts.test.ts (8 tests) 167ms
+ ✓ services/cmp-009-dynamic-forms/test/unit/plugin-http.test.ts (9 tests) 185ms
+ ✓ services/cmp-015-application-case/test/contract/frozen-contracts.test.ts (26 tests) 173ms
+ ✓ services/cmp-004-identity-access/test/unit/plugin-http.test.ts (5 tests) 150ms
+ ✓ packages/security/test/plugin.test.ts (8 tests) 156ms
+ ✓ services/cmp-052-versioning/test/unit/plugin-http.test.ts (2 tests) 145ms
+ ✓ services/cmp-006-service-discovery/test/contract/contracts.test.ts (14 tests) 134ms
+ ✓ services/cmp-033-metadata/test/unit/plugin-http.test.ts (3 tests) 138ms
+ ✓ services/cmp-026-communication-messaging/test/contract/frozen-contracts.test.ts (11 tests) 132ms
+ ✓ services/cmp-051-maker-checker/test/unit/plugin-http.test.ts (2 tests) 144ms
+ ✓ services/cmp-037-integration-hub/test/invoke.test.ts (8 tests) 139ms
+ ✓ services/cmp-017-work-queue-tasks/test/unit/handler.test.ts (6 tests) 108ms
+ ✓ services/cmp-018-inspection-verification/test/unit/lifecycle.test.ts (3 tests) 96ms
+{"level":"warn","time":"2026-10-14T08:57:13.681Z","service":"@serviceform/outbox","version":"0.0.0","error_code":"ENVELOPE_INVALID","message":"dead-lettered"}
+{"level":"warn","time":"2026-10-14T08:57:13.687Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"8c2f0a7b-d39f-4c1b-a48c-bf7a5b9d3e08","error_code":"PARTITION_KEY_MISMATCH","message":"dead-lettered"}
+{"level":"warn","time":"2026-10-14T08:57:13.697Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"8c2f0a7b-d39f-4c1b-a48c-bf7a5b9d3e08","error_code":"DATA_SCHEMA_INVALID","message":"dead-lettered"}
+{"level":"info","time":"2026-10-14T08:57:13.700Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"8c2f0a7b-d39f-4c1b-a48c-bf7a5b9d3e08","message":"lost lease; retry skipped"}
+{"level":"info","time":"2026-10-14T08:57:13.702Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"8c2f0a7b-d39f-4c1b-a48c-bf7a5b9d3e08","message":"lost lease; mark skipped"}
+{"level":"warn","time":"2026-10-14T08:57:13.708Z","service":"@serviceform/outbox","version":"0.0.0","event_id":"8c2f0a7b-d39f-4c1b-a48c-bf7a5b9d3e08","error_code":"TENANCY_MISMATCH","message":"dead-lettered"}
+{"level":"error","time":"2026-10-14T08:57:13.715Z","service":"@serviceform/outbox","version":"0.0.0","error_code":"PUBLISHER_LOOP","message":"Error: sql-fail"}
+ ✓ services/cmp-017-work-queue-tasks/test/unit/negative.test.ts (17 tests) 103ms
+ ✓ packages/outbox/test/publisher.test.ts (8 tests) 121ms
+ ✓ services/cmp-005-citizen-profile/test/unit/domain-authz.test.ts (5 tests) 72ms
+ ✓ services/cmp-018-inspection-verification/test/unit/handler.test.ts (1 test) 96ms
+ ✓ packages/security/test/pdp-client.fault.test.ts (8 tests) 105ms
+ ✓ services/cmp-028-appeal-review/test/unit/lifecycle.test.ts (6 tests) 97ms
+ ✓ packages/contracts/test/contracts.test.ts (10 tests) 101ms
+ ✓ services/cmp-027-grievance-feedback/test/contract/frozen-contracts.test.ts (6 tests) 117ms
+ ✓ services/cmp-035-search-indexing/test/contract/frozen-contracts.test.ts (8 tests) 109ms
+ ✓ services/cmp-015-application-case/test/unit/service.test.ts (48 tests) 97ms
+ ✓ services/cmp-017-work-queue-tasks/test/unit/lifecycle.test.ts (11 tests) 91ms
+ ✓ packages/security/test/rate-limit.test.ts (3 tests) 105ms
+ ✓ services/cmp-028-appeal-review/test/contract/contracts.test.ts (2 tests) 89ms
+ ✓ services/cmp-025-notification/test/contract/contracts.test.ts (22 tests) 79ms
+ ✓ services/cmp-028-appeal-review/test/unit/negative.test.ts (12 tests) 99ms
+ ✓ services/cmp-018-inspection-verification/test/contract/contracts.test.ts (5 tests) 92ms
+ ✓ services/cmp-036-api-gateway/test/edge.test.ts (6 tests) 95ms
+ ✓ services/cmp-031-audit-ledger/test/contract/audit-event.test.ts (3 tests) 69ms
+ ✓ services/cmp-029-sla-escalation/test/contract/contracts.test.ts (14 tests) 72ms
+ ✓ services/cmp-030-consent-privacy/test/unit/authz-context.test.ts (4 tests) 75ms
+ ✓ services/cmp-045-analytics-mis/test/unit/analytics-api.test.ts (33 tests) 46ms
+ ✓ services/cmp-018-inspection-verification/test/unit/negative.test.ts (7 tests) 94ms
+ ✓ services/cmp-028-appeal-review/test/unit/handler.test.ts (1 test) 96ms
+ ✓ services/cmp-030-consent-privacy/test/unit/plugin-http.test.ts (1 test) 74ms
+ ✓ services/cmp-034-master-data/test/contract/contracts.test.ts (4 tests) 61ms
+ ✓ services/cmp-053-localization/test/contract/contracts.test.ts (5 tests) 63ms
+ ✓ services/cmp-005-citizen-profile/test/contract/contracts.test.ts (4 tests) 68ms
+ ✓ services/cmp-026-communication-messaging/test/unit/service.test.ts (47 tests) 85ms
+ ✓ services/cmp-033-metadata/test/unit/modes-authz.test.ts (6 tests) 74ms
+ ✓ services/cmp-039-ai-gateway/test/unit/redaction.test.ts (14 tests) 66ms
+ ✓ services/cmp-008-rules/test/unit/config-ports.test.ts (6 tests) 63ms
+ ✓ services/cmp-033-metadata/test/contract/contracts.test.ts (4 tests) 59ms
+ ✓ services/cmp-024-credential-registry/test/contract/contracts.test.ts (17 tests) 71ms
+ ✓ services/cmp-019-deficiency/test/contract/contracts.test.ts (12 tests) 67ms
+ ✓ services/cmp-004-identity-access/test/contract/contracts.test.ts (4 tests) 63ms
+ ✓ services/cmp-002-tenant-organisation/test/unit/db-repo.test.ts (9 tests) 77ms
+ ✓ services/cmp-030-consent-privacy/test/contract/contracts.test.ts (3 tests) 63ms
+ ✓ services/cmp-020-fee-calculation/test/unit/service.test.ts (86 tests) 63ms
+ ✓ services/cmp-045-analytics-mis/test/contract/contracts.test.ts (19 tests) 82ms
+ ✓ services/cmp-032-storage/test/contract/contracts.test.ts (4 tests) 64ms
+ ✓ services/cmp-049-data-retention/test/contract/contracts.test.ts (16 tests) 90ms
+ ✓ services/cmp-039-ai-gateway/test/unit/guards-config.test.ts (10 tests) 59ms
+ ✓ services/cmp-002-tenant-organisation/test/unit/authz-context-audit.test.ts (7 tests) 73ms
+ ✓ services/cmp-016-workflow-engine/test/unit/service.test.ts (19 tests) 86ms
+ ✓ services/cmp-052-versioning/test/unit/modes-authz.test.ts (4 tests) 76ms
+ ✓ services/cmp-051-maker-checker/test/unit/modes-authz.test.ts (6 tests) 67ms
+ ✓ services/cmp-004-identity-access/test/unit/adapters.test.ts (4 tests) 78ms
+ ✓ services/cmp-020-fee-calculation/test/contract/contracts.test.ts (10 tests) 72ms
+ ✓ services/cmp-021-payment/test/contract/contracts.test.ts (10 tests) 53ms
+ ✓ packages/security/test/contract-conformance.test.ts (1 test) 63ms
+ ✓ services/cmp-034-master-data/test/unit/authz-context.test.ts (2 tests) 60ms
+ ✓ services/cmp-039-ai-gateway/test/contract/contracts.test.ts (4 tests) 54ms
+ ✓ services/cmp-017-work-queue-tasks/test/contract/contracts.test.ts (6 tests) 71ms
+ ✓ services/cmp-034-master-data/test/unit/domain.test.ts (5 tests) 55ms
+ ✓ packages/audit-client/test/build-event.test.ts (2 tests) 72ms
+ ✓ services/cmp-003-jurisdiction/test/contract/contracts.test.ts (4 tests) 60ms
+ ✓ services/cmp-009-dynamic-forms/test/unit/config-ports.test.ts (4 tests) 68ms
+ ✓ services/cmp-011-evidence-requirements/test/contract/contracts.test.ts (7 tests) 59ms
+ ✓ services/cmp-031-audit-ledger/test/unit/repos-tx.test.ts (8 tests) 59ms
+ ✓ services/cmp-052-versioning/test/contract/contracts.test.ts (4 tests) 57ms
+ ✓ packages/outbox/test/inbox.test.ts (3 tests) 59ms
+ ✓ services/cmp-013-document-upload/test/unit/domain.test.ts (26 tests) 64ms
+ ✓ services/cmp-008-rules/test/contract/contracts.test.ts (4 tests) 62ms
+ ✓ services/cmp-051-maker-checker/test/contract/contracts.test.ts (4 tests) 54ms
+ ✓ packages/connector-sdk/test/modes.test.ts (5 tests) 54ms
+ ✓ services/cmp-025-notification/test/unit/delivery.test.ts (27 tests) 63ms
+ ✓ services/cmp-002-tenant-organisation/test/contract/contracts.test.ts (3 tests) 73ms
+ ✓ services/cmp-029-sla-escalation/test/unit/sla-api.test.ts (41 tests) 60ms
+ ✓ services/cmp-046-operational-dashboard/test/contract/contracts.test.ts (12 tests) 65ms
+ ✓ services/cmp-032-storage/test/unit/modes-authz.test.ts (4 tests) 65ms
+ ✓ services/cmp-031-audit-ledger/test/unit/handle-envelope.test.ts (5 tests) 66ms
+ ✓ services/cmp-001-catalogue/test/contract/contracts.test.ts (5 tests) 66ms
+ ✓ packages/outbox/test/producer.test.ts (8 tests) 59ms
+ ✓ services/cmp-048-security-platform/test/events.test.ts (2 tests) 58ms
+ ✓ services/cmp-053-localization/test/unit/domain.test.ts (7 tests) 60ms
+ ✓ services/cmp-009-dynamic-forms/test/contract/contracts.test.ts (4 tests) 55ms
+ ✓ services/cmp-037-integration-hub/test/echo.test.ts (2 tests) 61ms
+ ✓ services/cmp-038-event-bus/test/unit/operator-actions.test.ts (2 tests) 56ms
+ ✓ services/cmp-047-observability/test/plugin.test.ts (2 tests) 65ms
+ ✓ services/cmp-050-studio-portal/test/contract/contracts.test.ts (3 tests) 47ms
+ ✓ services/cmp-031-audit-ledger/test/unit/ledger-writer.test.ts (11 tests) 61ms
+ ✓ packages/storage/test/simulation-marker.test.ts (2 tests) 48ms
+ ✓ services/cmp-035-search-indexing/test/unit/service.test.ts (13 tests) 46ms
+ ✓ packages/security/test/deny-by-default.test.ts (1 test) 58ms
+ ✓ services/cmp-018-inspection-verification/test/unit/domain.test.ts (5 tests) 55ms
+ ✓ services/cmp-050-studio-portal/test/unit/bff-handlers.test.ts (3 tests) 54ms
+ ✓ services/cmp-005-citizen-profile/test/unit/db-repo.test.ts (1 test) 61ms
+ ✓ services/cmp-037-integration-hub/test/pg.test.ts (1 test) 57ms
+ ✓ packages/connector-sdk/test/events.test.ts (1 test) 57ms
+ ✓ services/cmp-046-operational-dashboard/test/unit/service.test.ts (25 tests) 42ms
+ ✓ packages/storage/test/simulated-store.test.ts (3 tests) 49ms
+ ✓ services/cmp-016-workflow-engine/test/unit/bpmn.test.ts (26 tests) 35ms
+ ✓ services/cmp-006-service-discovery/test/unit/service.test.ts (23 tests) 29ms
+ ✓ services/cmp-012-digilocker/test/contract/contracts.test.ts (11 tests) 38ms
+ ✓ services/cmp-016-workflow-engine/test/unit/temporal.test.ts (11 tests) 35ms
+ ✓ services/cmp-049-data-retention/test/unit/service.test.ts (24 tests) 33ms
+ ✓ services/cmp-016-workflow-engine/test/unit/versioning-migration.test.ts (8 tests) 66ms
+ ✓ services/cmp-025-notification/test/unit/service.test.ts (25 tests) 28ms
+ ✓ services/cmp-023-qr-verification/test/unit/service.test.ts (32 tests) 27ms
+ ✓ services/cmp-027-grievance-feedback/test/unit/service.test.ts (13 tests) 28ms
+ ✓ services/cmp-026-communication-messaging/test/unit/http.test.ts (10 tests) 22ms
+ ✓ services/cmp-016-workflow-engine/test/unit/interpreter.test.ts (19 tests) 25ms
+ ✓ packages/audit-client/test/http-sink.test.ts (3 tests) 26ms
+ ✓ services/cmp-016-workflow-engine/test/contract/contracts.test.ts (8 tests) 19ms
+ ✓ services/cmp-019-deficiency/test/unit/reconciliation.test.ts (14 tests) 22ms
+ ✓ services/cmp-011-evidence-requirements/test/unit/resolver.test.ts (32 tests) 16ms
+ ✓ packages/connector-sdk/test/guarded-fetch.test.ts (1 test) 19ms
+ ✓ services/cmp-016-workflow-engine/test/unit/validate.test.ts (33 tests) 20ms
+ ✓ services/cmp-035-search-indexing/test/unit/indexer.test.ts (17 tests) 22ms
+ ✓ services/cmp-024-credential-registry/test/unit/service.test.ts (22 tests) 22ms
+ ✓ apps/web-studio/test/bff.test.ts (3 tests) 21ms
+ ✓ services/cmp-015-application-case/test/unit/http.test.ts (21 tests) 27ms
+ ✓ services/cmp-029-sla-escalation/test/unit/calendar.test.ts (17 tests) 15ms
+ ✓ apps/web-admin/test/bff.test.ts (1 test) 20ms
+ ✓ services/cmp-020-fee-calculation/test/unit/calculate.test.ts (46 tests) 14ms
+ ✓ services/cmp-022-credential-engine/test/unit/domain.test.ts (40 tests) 13ms
+ ✓ services/cmp-021-payment/test/unit/service.test.ts (12 tests) 15ms
+ ✓ services/cmp-050-studio-portal/test/unit/public-api.test.ts (1 test) 18ms
+ ✓ services/cmp-024-credential-registry/test/unit/read-port.test.ts (9 tests) 13ms
+ ✓ services/cmp-017-work-queue-tasks/test/contract/boundaries.test.ts (12 tests) 13ms
+ ✓ services/cmp-016-workflow-engine/test/unit/constitution.test.ts (7 tests) 12ms
+ ✓ packages/security/test/local-kms.test.ts (2 tests) 17ms
+ ✓ services/cmp-006-service-discovery/test/unit/domain.test.ts (14 tests) 11ms
+ ✓ services/cmp-045-analytics-mis/test/unit/domain.test.ts (13 tests) 15ms
+ ✓ services/cmp-026-communication-messaging/test/unit/domain.test.ts (10 tests) 13ms
+ ✓ services/cmp-018-inspection-verification/test/contract/boundaries.test.ts (11 tests) 9ms
+ ✓ services/cmp-020-fee-calculation/test/unit/pg-repo.test.ts (11 tests) 19ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx (17 tests) 10ms
+ ✓ services/cmp-011-evidence-requirements/test/unit/policy-predicate.test.ts (42 tests) 13ms
+ ✓ services/cmp-019-deficiency/test/unit/service.test.ts (6 tests) 13ms
+ ✓ services/cmp-035-search-indexing/test/unit/domain.test.ts (24 tests) 13ms
+ ✓ services/cmp-016-workflow-engine/test/unit/temporal-sdk.test.ts (5 tests) 22ms
+ ✓ packages/observability/test/telemetry.test.ts (3 tests) 14ms
+ ✓ services/cmp-023-qr-verification/test/unit/domain.test.ts (14 tests) 14ms
+ ✓ apps/web-studio/test/markup.test.tsx (2 tests) 11ms
+ ✓ services/cmp-025-notification/test/unit/pg-repo.test.ts (7 tests) 12ms
+ ✓ services/cmp-024-credential-registry/test/unit/tenant-negative.test.ts (8 tests) 12ms
+ ✓ packages/outbox/test/kafka.test.ts (7 tests) 24ms
+ ✓ packages/security/test/local-secrets-provider.test.ts (2 tests) 6ms
+ ✓ apps/web-admin/test/markup.test.tsx (2 tests) 11ms
+ ✓ services/cmp-025-notification/test/unit/domain.test.ts (31 tests) 9ms
+ ✓ services/cmp-025-notification/test/unit/model-validators.test.ts (44 tests) 12ms
+ ✓ services/cmp-015-application-case/test/unit/domain.test.ts (18 tests) 12ms
+ ✓ services/cmp-001-catalogue/test/unit/domain.test.ts (6 tests) 5ms
+ ✓ services/cmp-008-rules/test/unit/engine.test.ts (7 tests) 16ms
+ ✓ services/cmp-021-payment/test/unit/api-flow.test.ts (8 tests) 11ms
+ ✓ services/cmp-045-analytics-mis/test/unit/pg-repo.test.ts (5 tests) 14ms
+ ✓ services/cmp-009-dynamic-forms/test/unit/runtime.test.ts (8 tests) 8ms
+ ✓ services/cmp-029-sla-escalation/test/unit/clock-domain.test.ts (18 tests) 9ms
+ ✓ services/cmp-025-notification/test/unit/wiring.test.ts (7 tests) 11ms
+ ✓ services/cmp-035-search-indexing/test/unit/http.test.ts (9 tests) 9ms
+ ✓ services/cmp-035-search-indexing/test/unit/pg-store.test.ts (16 tests) 11ms
+ ✓ packages/observability/test/access-log.test.ts (3 tests) 12ms
+ ✓ services/cmp-017-work-queue-tasks/test/unit/pg-repository.test.ts (7 tests) 9ms
+ ✓ services/cmp-012-digilocker/test/unit/publish.test.ts (12 tests) 9ms
+ ✓ services/cmp-026-communication-messaging/test/unit/pg-store.test.ts (6 tests) 11ms
+ ✓ services/cmp-055-developer-platform/test/openapi-pipeline.test.ts (5 tests) 9ms
+ ✓ services/cmp-008-rules/test/unit/jdm.test.ts (18 tests) 11ms
+ ✓ packages/observability/test/redaction.test.ts (3 tests) 11ms
+ ✓ services/cmp-049-data-retention/test/unit/domain.test.ts (28 tests) 9ms
+ ✓ services/cmp-015-application-case/test/unit/pg-store.test.ts (6 tests) 9ms
+ ✓ services/cmp-022-credential-engine/test/unit/tenant-negative.test.ts (12 tests) 22ms
+ ✓ services/cmp-027-grievance-feedback/test/unit/http.test.ts (5 tests) 9ms
+ ✓ services/cmp-017-work-queue-tasks/test/unit/domain.test.ts (15 tests) 6ms
+ ✓ services/cmp-028-appeal-review/test/contract/boundaries.test.ts (9 tests) 8ms
+ ✓ services/cmp-009-dynamic-forms/test/unit/constitution.test.ts (5 tests) 7ms
+ ✓ services/cmp-024-credential-registry/test/unit/domain.test.ts (29 tests) 8ms
+ ✓ services/cmp-015-application-case/test/unit/pipeline.test.ts (6 tests) 8ms
+ ✓ services/cmp-008-rules/test/unit/constitution.test.ts (6 tests) 7ms
+ ✓ services/cmp-021-payment/test/unit/privilege-isolation.test.ts (3 tests) 8ms
+ ✓ packages/outbox/test/tx.test.ts (2 tests) 4ms
+ ✓ services/cmp-046-operational-dashboard/test/unit/domain.test.ts (22 tests) 7ms
+ ✓ apps/api/test/readiness.test.ts (1 test) 12ms
+ ✓ services/cmp-020-fee-calculation/test/unit/money.test.ts (23 tests) 7ms
+ ✓ services/cmp-007-recommendation/test/unit/domain.test.ts (8 tests) 7ms
+ ✓ services/cmp-033-metadata/test/unit/kinds-payload.test.ts (5 tests) 7ms
+ ✓ services/cmp-012-digilocker/test/unit/tenant-negative.test.ts (5 tests) 8ms
+ ✓ services/cmp-031-audit-ledger/test/unit/query-clock.test.ts (6 tests) 6ms
+ ✓ services/cmp-031-audit-ledger/test/unit/verify-chain.test.ts (4 tests) 7ms
+ ✓ services/cmp-027-grievance-feedback/test/unit/pg-store.test.ts (4 tests) 6ms
+ ✓ services/cmp-012-digilocker/test/unit/simulation.test.ts (12 tests) 5ms
+ ✓ services/cmp-050-studio-portal/test/unit/session.test.ts (6 tests) 6ms
+ ✓ services/cmp-035-search-indexing/test/unit/no-named-branching.test.ts (3 tests) 6ms
+ ✓ services/cmp-038-event-bus/test/unit/sync.test.ts (3 tests) 6ms
+ ✓ services/cmp-021-payment/test/unit/simulation.test.ts (10 tests) 5ms
+ ✓ services/cmp-020-fee-calculation/test/unit/charset.test.ts (34 tests) 6ms
+ ✓ packages/outbox/test/role-guard.test.ts (2 tests) 5ms
+ ✓ packages/audit-client/test/pii-guard.test.ts (5 tests) 5ms
+ ✓ packages/outbox/test/in-memory-transport.test.ts (3 tests) 6ms
+ ✓ services/cmp-027-grievance-feedback/test/unit/no-named-branching.test.ts (1 test) 5ms
+ ✓ packages/outbox/test/identifiers.test.ts (5 tests) 5ms
+ ✓ services/cmp-038-event-bus/test/unit/compatibility.test.ts (4 tests) 5ms
+ ✓ services/cmp-002-tenant-organisation/test/unit/domain.test.ts (4 tests) 4ms
+ ✓ services/cmp-026-communication-messaging/test/unit/no-named-branching.test.ts (1 test) 5ms
+ ✓ services/cmp-021-payment/test/unit/gateway.test.ts (5 tests) 4ms
+ ✓ packages/connector-sdk/test/no-txn-guard.test.ts (1 test) 6ms
+ ✓ services/cmp-021-payment/test/unit/money.test.ts (7 tests) 4ms
+ ✓ services/cmp-004-identity-access/test/unit/principal-verifier.test.ts (3 tests) 5ms
+ ✓ services/cmp-038-event-bus/test/unit/registry-service.test.ts (2 tests) 5ms
+ ✓ services/cmp-038-event-bus/test/unit/relay.test.ts (2 tests) 5ms
+ ✓ services/cmp-030-consent-privacy/test/unit/access-check.test.ts (4 tests) 4ms
+ ✓ services/cmp-032-storage/test/unit/store-service.test.ts (1 test) 5ms
+ ✓ packages/connector-sdk/test/retry.test.ts (5 tests) 4ms
+ ✓ packages/storage/test/checksum.test.ts (2 tests) 4ms
+ ✓ services/cmp-003-jurisdiction/test/unit/domain.test.ts (5 tests) 4ms
+ ✓ services/cmp-050-studio-portal/test/unit/maker-checker-ux.test.ts (3 tests) 4ms
+ ✓ services/cmp-050-studio-portal/test/unit/int002-journey.test.ts (2 tests) 4ms
+ ✓ services/cmp-050-studio-portal/test/unit/kinds.test.ts (2 tests) 4ms
+ ✓ packages/storage/test/modes.test.ts (4 tests) 4ms
+ ✓ services/cmp-055-developer-platform/test/provenance.test.ts (2 tests) 4ms
+ ✓ services/cmp-037-integration-hub/test/config.test.ts (1 test) 4ms
+ ✓ services/cmp-045-analytics-mis/test/unit/timestamp.test.ts (3 tests) 4ms
+ ✓ services/cmp-055-developer-platform/test/agent-packaging.test.ts (2 tests) 7ms
+ ✓ services/cmp-027-grievance-feedback/test/unit/domain.test.ts (3 tests) 4ms
+ ✓ packages/outbox/test/registry-port.test.ts (3 tests) 3ms
+ ✓ services/cmp-050-studio-portal/test/unit/headers.test.ts (2 tests) 3ms
+ ✓ services/cmp-028-appeal-review/test/unit/pg-repository.test.ts (1 test) 3ms
+ ✓ services/cmp-050-studio-portal/test/unit/workspace-isolation.test.ts (1 test) 4ms
+ ✓ packages/security/test/secret-value.test.ts (1 test) 4ms
+ ✓ services/cmp-038-event-bus/test/unit/snapshot.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/publisher-source.test.ts (3 tests) 3ms
+ ✓ packages/connector-sdk/test/webhook.test.ts (1 test) 3ms
+ ✓ services/cmp-038-event-bus/test/unit/lag-monitor.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/partitioner.test.ts (1 test) 3ms
+ ✓ packages/ui-ux4g/test/app-shell.test.tsx (3 tests) 5ms
+ ✓ packages/outbox/test/claim.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/backoff.test.ts (2 tests) 3ms
+ ✓ packages/connector-sdk/test/egress-imports.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/discovery.test.ts (1 test) 3ms
+ ✓ packages/connector-sdk/test/circuit-breaker.test.ts (1 test) 3ms
+ ✓ services/cmp-048-security-platform/test/commands.test.ts (1 test) 4ms
+ ✓ packages/security/test/circuit-breaker.test.ts (1 test) 5ms
+ ✓ packages/storage/test/object-key.test.ts (1 test) 3ms
+ ✓ packages/security/test/decision-log-redaction.test.ts (1 test) 4ms
+ ✓ services/cmp-048-security-platform/test/outbox-template.test.ts (1 test) 3ms
+ ✓ packages/connector-sdk/test/secrets.test.ts (1 test) 3ms
+ ✓ services/cmp-019-deficiency/test/unit/domain.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/metrics.test.ts (1 test) 3ms
+
+ Test Files  279 passed (279)
+      Tests  2696 passed (2696)
+   Start at  08:57:03
+   Duration  26.38s (tests 50%, import 35%, transform 8%, worker 7%)
+
+    Isolate  279 workers spawned · ~71ms startup each (spawn + environment, per file)
+             at least ~6.49s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /workspace/test-results/unit/junit.xml
+ % Coverage report from v8
+
+=============================== Coverage summary ===============================
+Statements   : 84.58% ( 22210/26259 )
+Branches     : 76.23% ( 14649/19216 )
+Functions    : 86.57% ( 4519/5220 )
+Lines        : 88.22% ( 20025/22698 )
+================================================================================
