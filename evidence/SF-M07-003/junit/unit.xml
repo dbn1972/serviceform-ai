@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="62" failures="0" errors="0" time="0.13000796">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-14T05:23:34.833Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.087960174">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-VERIFICATION-TOKEN &gt; the frozen schema still pins read-only status, no-PII and a closed public view" time="0.001909157">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-VERIFICATION-TOKEN &gt; component constants match the frozen bounds and the CMP-024 status enum" time="0.000488911">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-VERIFICATION-TOKEN &gt; frozen valid example passes and both invalid examples fail (harness sanity)" time="0.001131792">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-VERIFICATION-TOKEN &gt; every token CMP-023 returns validates against the frozen schema" time="0.005478124">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-VERIFICATION-TOKEN &gt; the public verification body is the frozen public_view and nothing identifying" time="0.002040881">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-023 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.018219317">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-023 &gt; PEP inputs and the request contexts validate against the frozen schemas" time="0.017866641">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-023 &gt; error codes and statuses are exactly those of the frozen error catalogue" time="0.001397831">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-023 component contracts &gt; OpenAPI lists every route the handler serves, and AsyncAPI every emitted event" time="0.000885922">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-023 component contracts &gt; OpenAPI response schemas accept what the handler returns" time="0.031176274">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-023 component contracts &gt; isolation.json declares exactly the tables the migrations create, all FORCE RLS or justified" time="0.000408631">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-023 component contracts &gt; outbox migration is the SF-CON-OUTBOX template with only the documented substitutions" time="0.00012201">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no peer component imports and no SQL outside sf_qr (ports only)" time="0.000617007">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; CMP-023 has no place to store, cache or write a registry status" time="0.000824024">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no named service, tenant, issuer or jurisdiction and no statutory decision vocabulary" time="0.000652201">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="architecture guards (static) &gt; no invented validity or retention period anywhere in CMP-023 code or migrations" time="0.000954883">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-14T05:23:34.838Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.011743588">
+        <testcase classname="test/unit/domain.test.ts" name="opaque token &gt; is 43 URL-safe characters, unique and satisfies the frozen pattern" time="0.005895233">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="opaque token &gt; does not encode the credential, tenant or any input" time="0.000367949">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="opaque token &gt; token-ref is one-way and never contains the token" time="0.000481364">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="opaque token &gt; format guard rejects short, long and non URL-safe tokens" time="0.000370451">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="purpose-minimised public view &gt; carries only the frozen public keys and the status passed in" time="0.000466981">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="purpose-minimised public view &gt; optional facts are omitted rather than null" time="0.00015601">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="purpose-minimised public view &gt; contract markers are constant and the token record has no status of its own" time="0.00020953">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="purpose-minimised public view &gt; expiry only applies when an expires_at was supplied" time="0.000117604">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="port response guards &gt; registry record must come from CMP-024 with a known status" time="0.000566104">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="port response guards &gt; credential view requires a known lifecycle and hex artifact hashes" time="0.000352456">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="issue input &gt; accepts credential id, type ref, optional expiry and echoed markers" time="0.000647812">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="issue input &gt; refuses any attempt to supply a registry status or public view" time="0.000190444">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="issue input &gt; refuses server-owned facts, unknown (PII-shaped) fields, tenant and client time" time="0.000305152">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="issue input &gt; refuses flipped markers, malformed ids, refs and timestamps" time="0.000264603">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-14T05:23:34.839Z" hostname="cursor" tests="32" failures="0" errors="0" skipped="0" time="0.030304198">
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; mints one opaque token for an ISSUED credential with a live registry status" time="0.00537329">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; re-minting for the same credential returns the existing token without a second row or event" time="0.001494347">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; an Idempotency-Key replay re-renders the live status instead of the stored response" time="0.001007369">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; same key with a different body is an idempotency conflict" time="0.001120053">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; re-minting with different terms is refused and audited" time="0.001533404">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; refuses credentials that are not ISSUED, unknown, or without a registry record" time="0.001012876">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; only issuing-side actors may mint; citizens are refused before any port call" time="0.000773586">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; requires an Idempotency-Key and a future expires_at" time="0.000622017">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; a request that tries to set a registry status is refused and nothing is stored" time="0.00064648">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; a failed commit leaves no token, event or audit and a retry succeeds" time="0.001103206">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issue token &gt; upstream outages fail closed with 503 and mint nothing" time="0.00151925">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; returns only the purpose-minimised view, uncacheable" time="0.001121837">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; reads CMP-024 on every verification: revocation is visible immediately" time="0.000786405">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; a registry outage fails closed even right after a successful verification (no cached fallback)" time="0.000667523">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; malformed or inconsistent registry answers fail closed" time="0.000808768">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; unknown and expired tokens are 404, audited by token-ref without the token itself" time="0.000930642">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; malformed tokens are 400 before any lookup" time="0.000202536">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; PDP denial is 403 and audited DENIED; PDP outage is 503" time="0.000731868">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="public verification &gt; no port is ever called while a transaction is open" time="0.000809642">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="registry status is read-only for CMP-023 &gt; no flow changes a registry record and no stored row carries a status" time="0.000678648">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="issuer-side token read &gt; returns the contract record with live status; citizens and unknown ids are refused" time="0.000713169">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="routing and context &gt; unknown routes 404, wrong methods 400, missing context 401" time="0.000310511">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="routing and context &gt; client-supplied time in the query string is refused" time="0.000157637">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; a token of tenant A does not verify under tenant B (404, no existence leak)" time="0.00047725">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; tenant B cannot read tenant A token records" time="0.000366101">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; tenant B cannot mint for a tenant A credential" time="0.00028072">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; a leaked foreign credential or registry record is blocked and audited" time="0.000557295">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; a registry answer for another tenant never reaches a public verifier" time="0.00050006">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; tenant in headers or body is refused" time="0.000473377">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; a context without a tenant is refused" time="0.000201086">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; the same credential id in two tenants yields independent tokens" time="0.001020877">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant-negative &gt; PEP input binds subject and resource to the context tenant" time="0.000397636">
+        </testcase>
+    </testsuite>
+</testsuites>

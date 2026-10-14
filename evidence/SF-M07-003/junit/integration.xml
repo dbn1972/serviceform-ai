@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="2.707981429">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-14T05:23:38.125Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.710533276">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="API flow on PostgreSQL through sf_cmp023_rw &gt; mint, verify, live revocation and audit trail" time="0.079782181">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="API flow on PostgreSQL through sf_cmp023_rw &gt; tenant-negative: tenant B cannot verify or read tenant A tokens" time="0.072956158">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="API flow on PostgreSQL through sf_cmp023_rw &gt; replay, re-mint and concurrent mints converge on a single token row" time="0.085139123">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="API flow on PostgreSQL through sf_cmp023_rw &gt; a registry outage fails closed and is audited FAILED in the same database" time="0.041012473">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-14T05:23:38.126Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="1.997448153">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege posture (ADR-0006) &gt; sf_cmp023_rw is NOLOGIN, NOSUPERUSER, NOBYPASSRLS; sf_migrator owns every table; FORCE RLS on tenant tables" time="0.047234543">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege posture (ADR-0006) &gt; runtime may only SELECT/INSERT tokens: no UPDATE or DELETE grant, and rows are insert-only" time="0.052678831">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege posture (ADR-0006) &gt; the token table has no column that could hold, cache or override a registry status" time="0.043409645">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="privilege posture (ADR-0006) &gt; a peer component role cannot read sf_qr" time="0.038743126">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="FORCE RLS tenant isolation &gt; tenant B and a tenant-less session see none of tenant A tokens" time="0.049922711">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="FORCE RLS tenant isolation &gt; a session cannot write another tenant row or a tenant-less row" time="0.029499883">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database guards &gt; constant markers and token format are enforced by CHECK constraints" time="0.035557332">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="database guards &gt; one token per credential and unique opaque tokens per tenant" time="0.041021259">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="migration reversibility &gt; the CMP-023 pair goes down and up cleanly on an isolated database" time="1.260771041">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,73 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M07-003/services/cmp-023-qr-verification
+
+ ✓ test/unit/domain.test.ts > opaque token > is 43 URL-safe characters, unique and satisfies the frozen pattern 6ms
+ ✓ test/unit/domain.test.ts > opaque token > does not encode the credential, tenant or any input 0ms
+ ✓ test/unit/domain.test.ts > opaque token > token-ref is one-way and never contains the token 0ms
+ ✓ test/unit/domain.test.ts > opaque token > format guard rejects short, long and non URL-safe tokens 0ms
+ ✓ test/unit/domain.test.ts > purpose-minimised public view > carries only the frozen public keys and the status passed in 0ms
+ ✓ test/unit/domain.test.ts > purpose-minimised public view > optional facts are omitted rather than null 0ms
+ ✓ test/unit/domain.test.ts > purpose-minimised public view > contract markers are constant and the token record has no status of its own 0ms
+ ✓ test/unit/domain.test.ts > purpose-minimised public view > expiry only applies when an expires_at was supplied 0ms
+ ✓ test/unit/domain.test.ts > port response guards > registry record must come from CMP-024 with a known status 1ms
+ ✓ test/unit/domain.test.ts > port response guards > credential view requires a known lifecycle and hex artifact hashes 0ms
+ ✓ test/unit/domain.test.ts > issue input > accepts credential id, type ref, optional expiry and echoed markers 1ms
+ ✓ test/unit/domain.test.ts > issue input > refuses any attempt to supply a registry status or public view 0ms
+ ✓ test/unit/domain.test.ts > issue input > refuses server-owned facts, unknown (PII-shaped) fields, tenant and client time 0ms
+ ✓ test/unit/domain.test.ts > issue input > refuses flipped markers, malformed ids, refs and timestamps 0ms
+ ✓ test/unit/service.test.ts > issue token > mints one opaque token for an ISSUED credential with a live registry status 5ms
+ ✓ test/unit/service.test.ts > issue token > re-minting for the same credential returns the existing token without a second row or event 1ms
+ ✓ test/unit/service.test.ts > issue token > an Idempotency-Key replay re-renders the live status instead of the stored response 1ms
+ ✓ test/unit/service.test.ts > issue token > same key with a different body is an idempotency conflict 1ms
+ ✓ test/unit/service.test.ts > issue token > re-minting with different terms is refused and audited 2ms
+ ✓ test/unit/service.test.ts > issue token > refuses credentials that are not ISSUED, unknown, or without a registry record 1ms
+ ✓ test/unit/service.test.ts > issue token > only issuing-side actors may mint; citizens are refused before any port call 1ms
+ ✓ test/unit/service.test.ts > issue token > requires an Idempotency-Key and a future expires_at 1ms
+ ✓ test/unit/service.test.ts > issue token > a request that tries to set a registry status is refused and nothing is stored 1ms
+ ✓ test/unit/service.test.ts > issue token > a failed commit leaves no token, event or audit and a retry succeeds 1ms
+ ✓ test/unit/service.test.ts > issue token > upstream outages fail closed with 503 and mint nothing 2ms
+ ✓ test/unit/service.test.ts > public verification > returns only the purpose-minimised view, uncacheable 1ms
+ ✓ test/unit/service.test.ts > public verification > reads CMP-024 on every verification: revocation is visible immediately 1ms
+ ✓ test/unit/service.test.ts > public verification > a registry outage fails closed even right after a successful verification (no cached fallback) 1ms
+ ✓ test/unit/service.test.ts > public verification > malformed or inconsistent registry answers fail closed 1ms
+ ✓ test/unit/service.test.ts > public verification > unknown and expired tokens are 404, audited by token-ref without the token itself 1ms
+ ✓ test/unit/service.test.ts > public verification > malformed tokens are 400 before any lookup 0ms
+ ✓ test/unit/service.test.ts > public verification > PDP denial is 403 and audited DENIED; PDP outage is 503 1ms
+ ✓ test/unit/service.test.ts > public verification > no port is ever called while a transaction is open 1ms
+ ✓ test/unit/service.test.ts > registry status is read-only for CMP-023 > no flow changes a registry record and no stored row carries a status 1ms
+ ✓ test/unit/service.test.ts > issuer-side token read > returns the contract record with live status; citizens and unknown ids are refused 1ms
+ ✓ test/unit/service.test.ts > routing and context > unknown routes 404, wrong methods 400, missing context 401 0ms
+ ✓ test/unit/service.test.ts > routing and context > client-supplied time in the query string is refused 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > a token of tenant A does not verify under tenant B (404, no existence leak) 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > tenant B cannot read tenant A token records 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > tenant B cannot mint for a tenant A credential 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > a leaked foreign credential or registry record is blocked and audited 1ms
+ ✓ test/unit/service.test.ts > tenant-negative > a registry answer for another tenant never reaches a public verifier 1ms
+ ✓ test/unit/service.test.ts > tenant-negative > tenant in headers or body is refused 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > a context without a tenant is refused 0ms
+ ✓ test/unit/service.test.ts > tenant-negative > the same credential id in two tenants yields independent tokens 1ms
+ ✓ test/unit/service.test.ts > tenant-negative > PEP input binds subject and resource to the context tenant 0ms
+ ✓ test/contract/contracts.test.ts > FROZEN SF-CON-VERIFICATION-TOKEN > the frozen schema still pins read-only status, no-PII and a closed public view 2ms
+ ✓ test/contract/contracts.test.ts > FROZEN SF-CON-VERIFICATION-TOKEN > component constants match the frozen bounds and the CMP-024 status enum 0ms
+ ✓ test/contract/contracts.test.ts > FROZEN SF-CON-VERIFICATION-TOKEN > frozen valid example passes and both invalid examples fail (harness sanity) 1ms
+ ✓ test/contract/contracts.test.ts > FROZEN SF-CON-VERIFICATION-TOKEN > every token CMP-023 returns validates against the frozen schema 5ms
+ ✓ test/contract/contracts.test.ts > FROZEN SF-CON-VERIFICATION-TOKEN > the public verification body is the frozen public_view and nothing identifying 2ms
+ ✓ test/contract/contracts.test.ts > shared frozen envelopes emitted by CMP-023 > outbox events, audit events and error responses validate against SF-CON schemas 18ms
+ ✓ test/contract/contracts.test.ts > shared frozen envelopes emitted by CMP-023 > PEP inputs and the request contexts validate against the frozen schemas 18ms
+ ✓ test/contract/contracts.test.ts > shared frozen envelopes emitted by CMP-023 > error codes and statuses are exactly those of the frozen error catalogue 1ms
+ ✓ test/contract/contracts.test.ts > CMP-023 component contracts > OpenAPI lists every route the handler serves, and AsyncAPI every emitted event 1ms
+ ✓ test/contract/contracts.test.ts > CMP-023 component contracts > OpenAPI response schemas accept what the handler returns 31ms
+ ✓ test/contract/contracts.test.ts > CMP-023 component contracts > isolation.json declares exactly the tables the migrations create, all FORCE RLS or justified 0ms
+ ✓ test/contract/contracts.test.ts > CMP-023 component contracts > outbox migration is the SF-CON-OUTBOX template with only the documented substitutions 0ms
+ ✓ test/contract/contracts.test.ts > architecture guards (static) > no peer component imports and no SQL outside sf_qr (ports only) 1ms
+ ✓ test/contract/contracts.test.ts > architecture guards (static) > CMP-023 has no place to store, cache or write a registry status 1ms
+ ✓ test/contract/contracts.test.ts > architecture guards (static) > no named service, tenant, issuer or jurisdiction and no statutory decision vocabulary 1ms
+ ✓ test/contract/contracts.test.ts > architecture guards (static) > no invented validity or retention period anywhere in CMP-023 code or migrations 1ms
+
+ Test Files  3 passed (3)
+      Tests  62 passed (62)
+   Start at  05:23:34
+   Duration  368ms (transform 54%, tests 23%, import 22%, worker 1%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M07-003/evidence/SF-M07-003/junit/unit.xml
+exit=0

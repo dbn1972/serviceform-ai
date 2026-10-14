@@ -1,6 +1,7 @@
 # SF-M07-003 handover — CMP-023 QR Verification Service (M07 Wave A)
-# PLANNING. Not READY. Not dispatched. Not CERTIFIED. Not G3. Not G6.
-# Freeze contracts and host mounts deferred. DigiLocker/eSign policy not invented.
+# CANDIDATE_COMPLETE (builder candidate). Not MERGED. Not CERTIFIED. Not G3. Not G6.
+# HUMAN_M07_THROUGH_EVD_AUTHORIZATION consumed. Host mount deferred to SF-M07-005.
+# registry_status read-only from CMP-024; no PII in public_view; no invented validity/retention period.
 
 task_id: SF-M07-003
 title: CMP-023 QR Verification Service
@@ -18,8 +19,13 @@ model_route: opus
 model_release: claude-opus-5-5
 effort: high
 verifier_model_route: opus
-branch: agent/M07-023-qr-verification-SF-M07-003
-worktree: ../wt-SF-M07-003
+branch: cursor/m07-003-qr-91f2
+worktree: /home/ubuntu/wt-SF-M07-003
+dispatch_base_policy:
+  source: HUMAN_M07_THROUGH_EVD_AUTHORIZATION
+  require_exact_sha: true
+  execution_base: c6f70f190b08f876a793d9f3401c50fecdbe8058
+  dispatch_authorized: true
 parallel_group: M07-A
 privilege_role: sf_cmp023_rw
 schema: sf_qr
@@ -28,7 +34,7 @@ depends_on:
   - SF-M07-CG-001 FROZEN_ON_MAIN
   - existing 29 FROZEN contracts MATCH plus NEW M07 rows
   - LOCK-1 planning PR on main
-  - human Wave A READY + dispatch authorization
+  - human Wave A READY + dispatch authorization (#143, c6f70f19)
 allowed_write_paths:
   - services/cmp-023-qr-verification/**
   - db/migrations/*_cmp-023-*.sql
@@ -54,12 +60,13 @@ wave_eligible_now: true
 serial_after:
   - SF-M07-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -70,14 +77,9 @@ ccr_required: false
 frozen_contracts_altered: false
 cg_07_contract_freeze_required: false
 freeze_authorized: true
-ready_authorization:
-  family: HUMAN_M07_THROUGH_EVD
-  status: AUTHORIZATION
-  join_separator: "_"
-  wave_a_ready: true
 base_commit:
-  prefix: fcd6c2d3
-  suffix: 4213454f82de62c7a3e2c16c815bf46c
+  prefix: c6f70f19
+  suffix: 0b08f876a793d9f3401c50fecdbe8058
 join_separator: "_"
 
 contract_locks:
@@ -101,9 +103,52 @@ contract_locks:
   - SF-CON-SLA-CLOCK
   - SF-CON-VERSION-PINNING
   - SF-CON-NOTIFICATION-DISPATCH
+consumed_m07_contracts:
+  - SF-CON-VERIFICATION-TOKEN
+  - SF-CON-CREDENTIAL-STATUS (read-only, via RegistryStatusPort)
+  - SF-CON-CREDENTIAL (read-only subset, via CredentialPort)
 stop_conditions:
   - patch frozen contracts
   - invent DigiLocker/eSign/statutory policy
   - CERTIFIED or G3 or G6 claim
   - write outside allowed_write_paths
   - reverse Issued on publish/notify failure
+
+package: "@serviceform/cmp-023-qr-verification"
+migrations:
+  - db/migrations/1760380300000_cmp-023-qr-verification.sql
+  - db/migrations/1760380300001_cmp-023-outbox.sql
+routes:
+  - POST /v1/qr/tokens (issueVerificationToken)
+  - GET /v1/qr/tokens/:token_id (getVerificationToken)
+  - GET /v1/qr/verify/:opaque_token (verifyCredentialByToken)
+exports: [createQrApi, ROUTE_DESCRIPTORS, buildQrVerificationApi, buildQrVerificationService]
+registry_status_read_only: true
+registry_status_written_or_cached: false
+public_view_pii: false
+opaque_token_in_events_or_audit: false
+issuance_reversed_by_this_component: false
+invented_statutory_period_forbidden: true
+validity_or_retention_period_defined: false
+lockfile_modified: false
+apps_modified: false
+contracts_modified: false
+
+evidence: evidence/SF-M07-003/EVIDENCE.md
+candidate:
+  implementation_commit: 6160e9989378f255f179043492386a2c5ca9cbc2
+  pull_request: null
+  evidence: evidence/SF-M07-003/EVIDENCE.md
+  test_counts:
+    unit_contract: { passed: 62, failed: 0 }
+    integration_postgres16: { passed: 13, failed: 0 }
+    repo_gates: { passed: 10, failed: 0 }
+  residuals:
+    - EXPECTED_STITCH_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row for services/cmp-023-qr-verification; pnpm-lock.yaml not modified)
+    - OPA policy data for QR_TOKEN_* actions lives in policy/** (read-only for this lane); until added the PDP denies (fail-closed)
+    - real CMP-022 CredentialPort and CMP-024 RegistryStatusPort adapters are wired by the host (SF-M07-005); tests use in-process fakes
+    - public verifier context (tenant from verification-domain routing, auth_assurance NONE) is built by the host (SF-M07-005); requestContext actor enum has no anonymous type, OPA decides
+    - credential_type_ref is supplied by the minting caller from template metadata (SF-CON-CREDENTIAL carries no type ref)
+    - retention of sf_qr rows awaits owner policy input via CMP-049; no period defined here
+    - host mount deferred to SF-M07-005; no UI delivered
+    - "SHARED-WORKTREE INCIDENT: commit e484396 (this lane's first commit) landed on sibling branch cursor/m07-004-digilocker-da99 because concurrent agents shared /workspace; SF-M07-004 then committed b83e897 on top and pushed. Identical content is on this branch as 90ce687. Orchestrator/STITCH-A must drop or account for e484396 on the SF-M07-004 branch."
