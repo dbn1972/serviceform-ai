@@ -11,6 +11,7 @@ import {
   ACTOR_SYSTEM,
   TEST_RUN_ID,
   FakeConnectorBindingPort,
+  FakeCredentialVerificationPort,
 } from './fixtures.js';
 import { MemoryDigilockerRepository } from './memory-repo.js';
 
@@ -21,6 +22,7 @@ export interface HarnessState {
 export interface Harness {
   state: HarnessState;
   repo: MemoryDigilockerRepository;
+  credentialVerification: FakeCredentialVerificationPort;
   call(
     method: string,
     path: string,
@@ -42,6 +44,7 @@ export function makeHarness(opts: { scenario?: string; env?: 'LOCAL' | 'CI' } = 
   const repo = new MemoryDigilockerRepository();
   const authorizer = new AllowAllAuthorizer();
   const connectorBinding = new FakeConnectorBindingPort(env);
+  const credentialVerification = new FakeCredentialVerificationPort(TENANT_A);
   const digilockerApi = new SimulatedDigiLockerConnector(simulationMarker);
 
   const state: HarnessState = {
@@ -61,6 +64,7 @@ export function makeHarness(opts: { scenario?: string; env?: 'LOCAL' | 'CI' } = 
     repo,
     authorizer,
     connectorBinding,
+    credentialVerification,
     digilockerApi,
     runtimeEnvironment: env,
     clock: () => new Date('2026-10-14T05:00:00Z'),
@@ -74,6 +78,7 @@ export function makeHarness(opts: { scenario?: string; env?: 'LOCAL' | 'CI' } = 
   return {
     state,
     repo,
+    credentialVerification,
     call: async (method, path, body, callOpts) => {
       const resp = await api.handle({
         method,

@@ -50,7 +50,7 @@ describe('tenant isolation (tenant-negative tests)', () => {
     const { SimulatedDigiLockerConnector } =
       await import('../../src/connectors/simulated-digilocker.js');
     const { createDigilockerApi } = await import('../../src/api/handler.js');
-    const { FakeConnectorBindingPort, BINDING_ID, TENANT_A, ACTOR_SYSTEM, TEST_RUN_ID } =
+    const { FakeConnectorBindingPort, FakeCredentialVerificationPort, BINDING_ID, TENANT_A, ACTOR_SYSTEM, TEST_RUN_ID } =
       await import('../doubles/fixtures.js');
     const { randomUUID } = await import('node:crypto');
     const simulationMarker = {
@@ -62,11 +62,13 @@ describe('tenant isolation (tenant-negative tests)', () => {
     };
     const repo = new MemoryDigilockerRepository();
     const connectorBinding = new FakeConnectorBindingPort('LOCAL');
+    const credentialVerification = new FakeCredentialVerificationPort(TENANT_A);
     const digilockerApi = new SimulatedDigiLockerConnector(simulationMarker);
     const service = new DigiLockerService({
       repo,
       authorizer: auth,
       connectorBinding,
+      credentialVerification,
       digilockerApi,
       runtimeEnvironment: 'LOCAL',
       clock: () => new Date('2026-10-14T05:00:00Z'),
@@ -105,7 +107,7 @@ describe('tenant isolation (tenant-negative tests)', () => {
     const { createDigilockerApi } = await import('../../src/api/handler.js');
     const { DigiLockerService } = await import('../../src/service/service.js');
     const { MemoryDigilockerRepository } = await import('../doubles/memory-repo.js');
-    const { AllowAllAuthorizer, FakeConnectorBindingPort, BINDING_ID, TEST_RUN_ID } =
+    const { AllowAllAuthorizer, FakeConnectorBindingPort, FakeCredentialVerificationPort, BINDING_ID, TENANT_A, TEST_RUN_ID } =
       await import('../doubles/fixtures.js');
     const { SimulatedDigiLockerConnector } =
       await import('../../src/connectors/simulated-digilocker.js');
@@ -122,6 +124,7 @@ describe('tenant isolation (tenant-negative tests)', () => {
       repo,
       authorizer: new AllowAllAuthorizer(),
       connectorBinding: new FakeConnectorBindingPort('LOCAL'),
+      credentialVerification: new FakeCredentialVerificationPort(TENANT_A),
       digilockerApi: new SimulatedDigiLockerConnector(simulationMarker),
       runtimeEnvironment: 'LOCAL',
       clock: () => new Date(),
