@@ -39,8 +39,7 @@ export function buildDigiLockerService(
     repo: opts.repository,
     authorizer: opts.authorizer,
     connectorBinding: opts.connectorBinding ?? new UnboundConnectorBindingPort(),
-    credentialVerification:
-      opts.credentialVerification ?? new UnboundCredentialVerificationPort(),
+    credentialVerification: opts.credentialVerification ?? new UnboundCredentialVerificationPort(),
     digilockerApi: opts.digilockerApi,
     runtimeEnvironment: opts.runtimeEnvironment ?? 'LOCAL',
     clock: opts.clock ?? ((): Date => new Date()),

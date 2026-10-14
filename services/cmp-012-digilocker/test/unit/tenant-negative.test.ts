@@ -50,8 +50,14 @@ describe('tenant isolation (tenant-negative tests)', () => {
     const { SimulatedDigiLockerConnector } =
       await import('../../src/connectors/simulated-digilocker.js');
     const { createDigilockerApi } = await import('../../src/api/handler.js');
-    const { FakeConnectorBindingPort, FakeCredentialVerificationPort, BINDING_ID, TENANT_A, ACTOR_SYSTEM, TEST_RUN_ID } =
-      await import('../doubles/fixtures.js');
+    const {
+      FakeConnectorBindingPort,
+      FakeCredentialVerificationPort,
+      BINDING_ID,
+      TENANT_A,
+      ACTOR_SYSTEM,
+      TEST_RUN_ID,
+    } = await import('../doubles/fixtures.js');
     const { randomUUID } = await import('node:crypto');
     const simulationMarker = {
       simulation: true as const,
@@ -107,8 +113,14 @@ describe('tenant isolation (tenant-negative tests)', () => {
     const { createDigilockerApi } = await import('../../src/api/handler.js');
     const { DigiLockerService } = await import('../../src/service/service.js');
     const { MemoryDigilockerRepository } = await import('../doubles/memory-repo.js');
-    const { AllowAllAuthorizer, FakeConnectorBindingPort, FakeCredentialVerificationPort, BINDING_ID, TENANT_A, TEST_RUN_ID } =
-      await import('../doubles/fixtures.js');
+    const {
+      AllowAllAuthorizer,
+      FakeConnectorBindingPort,
+      FakeCredentialVerificationPort,
+      BINDING_ID,
+      TENANT_A,
+      TEST_RUN_ID,
+    } = await import('../doubles/fixtures.js');
     const { SimulatedDigiLockerConnector } =
       await import('../../src/connectors/simulated-digilocker.js');
     const { randomUUID } = await import('node:crypto');
