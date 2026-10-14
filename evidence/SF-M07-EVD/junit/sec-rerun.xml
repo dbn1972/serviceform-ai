@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="44" failures="0" errors="0" time="0.731750462">
+    <testsuite name="tests/security/m07/authz-deny-by-default.test.ts" timestamp="2026-10-14T17:02:41.249Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.021525848">
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; CMP-022: PDP deny → 403 SF-AUTH-002, outage → 503 SF-SYS-004, malformed → deny; no writes" time="0.004653223">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; CMP-024: every lifecycle command and the status read deny by default" time="0.007476064">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; CMP-023: token issue, issuer read and public verify deny by default" time="0.004227664">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; CMP-012: PDP deny → 403, outage → 503; nothing persisted or sent to the connector" time="0.001370445">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; FINDING M07-SEC-F04: CMP-012 treats a truthy non-boolean PDP allow as permit, and a null decision as 500" time="0.00149983">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; PEP inputs carry only the server-derived tenant on subject and resource" time="0.000785402">
+        </testcase>
+        <testcase classname="tests/security/m07/authz-deny-by-default.test.ts" name="SF-M07-SEC authz: deny-by-default on every M07 component &gt; OPA bundle: default deny and no M07 action is in the catalogue (live PDP would deny UNKNOWN_ACTION)" time="0.000484332">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/component-guards.test.ts" timestamp="2026-10-14T17:02:41.251Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.009738261">
+        <testcase classname="tests/security/m07/component-guards.test.ts" name="SF-M07-SEC component-level tenant header guards (defence in depth) &gt; CMP-022/023/024 refuse tenant- and identity-asserting headers themselves" time="0.004826142">
+        </testcase>
+        <testcase classname="tests/security/m07/component-guards.test.ts" name="SF-M07-SEC component-level tenant header guards (defence in depth) &gt; CLOSED M07-SEC-F01: CMP-012 refuses forged tenant-identifying headers (x-tenant-*/x-sf-*/Forwarded)" time="0.00120212">
+        </testcase>
+        <testcase classname="tests/security/m07/component-guards.test.ts" name="SF-M07-SEC component-level tenant header guards (defence in depth) &gt; a forged header never changes the tenant the service receives" time="0.000303279">
+        </testcase>
+        <testcase classname="tests/security/m07/component-guards.test.ts" name="SF-M07-SEC component-level tenant header guards (defence in depth) &gt; CMP-022/023/024 reject malformed server contexts (non-UUID tenant, missing actor)" time="0.001863167">
+        </testcase>
+        <testcase classname="tests/security/m07/component-guards.test.ts" name="SF-M07-SEC component-level tenant header guards (defence in depth) &gt; FINDING M07-SEC-F02: CMP-012 accepts a malformed server context (non-UUID tenant, bad actor id)" time="0.00050192">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/db-privilege-rls.test.ts" timestamp="2026-10-14T17:02:41.252Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="7" time="0">
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; all M07 tenant tables ENABLE + FORCE RLS; only *_platform tables are exempt" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; M07 runtime roles are NOSUPERUSER NOBYPASSRLS and own no M07 schema" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; only CMP-024 can write registry status; CMP-023/022/012 roles get 42501" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; no M07 role can reach another M07 component schema (no cross-component SQL)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; registry RLS: tenant B sees and updates nothing of tenant A; WITH CHECK blocks foreign tenant_id" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; QR token RLS: an opaque token stored for tenant A is invisible to tenant B lookups" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/security/m07/db-privilege-rls.test.ts" name="SF-M07-SEC live DB: privilege boundaries and RLS (PostgreSQL) &gt; DigiLocker publish records cannot be updated into another tenant or deleted" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/digilocker-preconditions.test.ts" timestamp="2026-10-14T17:02:41.252Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.006233791">
+        <testcase classname="tests/security/m07/digilocker-preconditions.test.ts" name="SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED) &gt; CLOSED M07-SEC-F06 (ISSUED): publish refuses an unknown credential id via CMP-022 port" time="0.002792617">
+        </testcase>
+        <testcase classname="tests/security/m07/digilocker-preconditions.test.ts" name="SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED) &gt; RESIDUAL M07-SEC-F06 (consent): CMP-012 still has no CMP-030 consent verification port" time="0.001270794">
+        </testcase>
+        <testcase classname="tests/security/m07/digilocker-preconditions.test.ts" name="SF-M07-SEC CMP-012 publish preconditions (consent/purpose + ISSUED) &gt; PRODUCTION never runs the SIMULATED DigiLocker connector" time="0.001108685">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/host-forged-tenant.test.ts" timestamp="2026-10-14T17:02:41.253Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.574783179">
+        <testcase classname="tests/security/m07/host-forged-tenant.test.ts" name="SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) &gt; refuses every forged header spelling on all 17 M07 routes before any component runs" time="0.426982259">
+        </testcase>
+        <testcase classname="tests/security/m07/host-forged-tenant.test.ts" name="SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) &gt; FINDING M07-SEC-F03: x-bypass-rls passes the host edge for CMP-022/023/024 but is inert" time="0.025872794">
+        </testcase>
+        <testcase classname="tests/security/m07/host-forged-tenant.test.ts" name="SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) &gt; missing server-derived context fails closed on every route without reaching services" time="0.035135161">
+        </testcase>
+        <testcase classname="tests/security/m07/host-forged-tenant.test.ts" name="SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) &gt; resolver throwing does not leak internals and does not reach services" time="0.031517061">
+        </testcase>
+        <testcase classname="tests/security/m07/host-forged-tenant.test.ts" name="SF-M07-SEC host edge: forged tenant/identity headers fail closed (SF-TEN-002) &gt; commands without a valid Idempotency-Key are refused before the service" time="0.054152529">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/pii-logging.test.ts" timestamp="2026-10-14T17:02:41.253Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.081450552">
+        <testcase classname="tests/security/m07/pii-logging.test.ts" name="SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs &gt; M07 sources and fixtures contain no PII-shaped or secret-shaped literals" time="0.015071981">
+        </testcase>
+        <testcase classname="tests/security/m07/pii-logging.test.ts" name="SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs &gt; M07 component sources never write to console or log request bodies/headers" time="0.003505008">
+        </testcase>
+        <testcase classname="tests/security/m07/pii-logging.test.ts" name="SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs &gt; QR audit records a one-way token ref, never the opaque bearer token" time="0.004317027">
+        </testcase>
+        <testcase classname="tests/security/m07/pii-logging.test.ts" name="SF-M07-SEC privacy: no PII/secrets in source, fixtures or logs &gt; CLOSED M07-SEC-F05: host access log redacts the QR opaque bearer token from the verify path" time="0.057557845">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/status-mutation-boundary.test.ts" timestamp="2026-10-14T17:02:41.253Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.018815928">
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; CMP-023 publishes no route that writes a status; only token mint + two reads" time="0.002180506">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; CMP-023 registry port is a single getStatus read; source has no registry write path or SQL" time="0.001164752">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; CMP-012 and CMP-022 have no registry mutation path (CMP-022 may only register)" time="0.001342348">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; CMP-024 read port handed to verifiers is frozen with exactly one read" time="0.004495322">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; QR workload (INTEGRATION) and citizens cannot mutate status even when OPA would allow" time="0.00374526">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; QR verify reflects a CMP-024 revocation live and fails closed on registry outage" time="0.003425772">
+        </testcase>
+        <testcase classname="tests/security/m07/status-mutation-boundary.test.ts" name="SF-M07-SEC status authority: only CMP-024 can mutate credential status &gt; public verify view is purpose-minimised: no tenant, credential, token id or holder fields" time="0.001347927">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security/m07/tenant-isolation.test.ts" timestamp="2026-10-14T17:02:41.254Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.019202903">
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-022: tenant B cannot read, list, or attach outcomes to tenant A credentials" time="0.007218368">
+        </testcase>
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-024: tenant B cannot read or mutate (suspend/revoke/reissue) tenant A registry status" time="0.003206249">
+        </testcase>
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-024: tenant B cannot reissue onto a tenant A credential id as successor" time="0.001492266">
+        </testcase>
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-023: tenant A opaque token does not verify under tenant B; token id is not an IDOR" time="0.003302368">
+        </testcase>
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-023: a registry/credential port answering with another tenant record is refused (SF-TEN-002)" time="0.000863915">
+        </testcase>
+        <testcase classname="tests/security/m07/tenant-isolation.test.ts" name="SF-M07-SEC tenant isolation (wrong-tenant / IDOR) — CROSS_TENANT_LEAKAGE must be 0 &gt; CMP-012: tenant B cannot read tenant A publish records" time="0.002041183">
+        </testcase>
+    </testsuite>
+</testsuites>
