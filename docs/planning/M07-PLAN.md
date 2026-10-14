@@ -34,7 +34,6 @@ Machine index: `orchestrator/handovers/SF-M07-PLAN.yaml`. Envelopes: `docs/plann
 7. LOCK-5: (no Wave B CMPs — all four in Wave A) reserved / no-op unless guardian adds eSign packaging envelope
 8. LOCK-6: STITCH-B (lockfile admit remaining importers if needed)
 9. LOCK-7: SF-M07-005 host mounts (`composition/m07.ts` + serialized `app.ts`)
-10. LOCK-8: INT �005 host mounts (`composition/m07.ts` + serialized `app.ts`)
 10. LOCK-8: INT ∥ SEC (INT-008 + INT-011/013 re-verify)
 11. LOCK-9: EVD recommend G3 only → human/CI may issue G3
 
@@ -44,10 +43,6 @@ Machine index: `orchestrator/handovers/SF-M07-PLAN.yaml`. Envelopes: `docs/plann
 [M06 G3 + M08 G3 on main fd335e8c…]
             |
 [THIS PASS: M07 PLANNING; builders OFF; no freeze]
-            |
-     SF-M07-CG-001 (later freeze)
-            |
- Wave A: 022 � freeze]
             |
      SF-M07-CG-001 (later freeze)
             |
