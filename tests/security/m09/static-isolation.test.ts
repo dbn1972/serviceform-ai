@@ -207,10 +207,7 @@ describe('SF-M09-SEC static tenant isolation (runtime sources)', () => {
         }
       }
       expect(setsSession, `${svc} sets a DB session context`).toBe(true);
-      const known = new Set([
-        'cmp-059-migration-workbench',
-        'cmp-060-risk-integrity',
-      ]);
+      const known = new Set(['cmp-059-migration-workbench', 'cmp-060-risk-integrity']);
       if (known.has(svc) && offenders.length > 0) {
         // FINDING: owner uses non-SF-CON-DB-SESSION-CONTEXT keys (sf.* / app.current_*).
         expect(offenders.length).toBeGreaterThan(0);

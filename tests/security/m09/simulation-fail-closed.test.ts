@@ -162,8 +162,9 @@ describe('SF-M09-SEC M09 SIMULATED / fail-closed boundaries', () => {
     } as never);
     expect(events).toContain('port.routeToReview');
     // Recorded FINDING when routing occurs before COMMIT.
-    expect(routedInsideTx === true || events.indexOf('port.routeToReview') < events.lastIndexOf('sql:COMMIT')).toBe(
-      true,
-    );
+    expect(
+      routedInsideTx === true ||
+        events.indexOf('port.routeToReview') < events.lastIndexOf('sql:COMMIT'),
+    ).toBe(true);
   });
 });
