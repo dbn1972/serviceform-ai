@@ -96,7 +96,8 @@ export function starterActors(channel: Channel): readonly ActorType[] {
   return requiresRepresentation(channel) ? ['CITIZEN', 'OFFICER'] : ['OFFICER'];
 }
 
-export const OPAQUE_REF = /^[A-Za-z0-9_.:-]{1,128}$/;
+/** Opaque owner-supplied refs only (no statute). Slash allowed for path-like owner keys. */
+export const OPAQUE_REF = /^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$/;
 
 export function isOpaqueRef(value: unknown): value is string {
   return typeof value === 'string' && OPAQUE_REF.test(value);

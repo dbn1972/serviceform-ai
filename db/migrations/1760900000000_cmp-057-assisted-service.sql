@@ -68,7 +68,7 @@ CREATE TABLE sf_assisted.assisted_session (
   session_version bigint NOT NULL CHECK (session_version >= 1),
   idempotency_key text NOT NULL CHECK (idempotency_key ~ '^[A-Za-z0-9_.:-]{8,128}$'),
   applicant_assurance_ref text CHECK (
-    applicant_assurance_ref IS NULL OR applicant_assurance_ref ~ '^[A-Za-z0-9_.:-]{1,128}$'
+    applicant_assurance_ref IS NULL OR applicant_assurance_ref ~ '^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$'
   ),
   application_id uuid,
   handoff_token_hash text CHECK (
@@ -110,7 +110,7 @@ CREATE TABLE sf_assisted.representation_authority (
   session_id uuid NOT NULL,
   representation_authority_ref text CHECK (
     representation_authority_ref IS NULL
-    OR representation_authority_ref ~ '^[A-Za-z0-9_.:-]{1,128}$'
+    OR representation_authority_ref ~ '^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$'
   ),
   valid_until timestamptz,
   verified_by_actor_id uuid NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE sf_assisted.assisted_consent (
   tenant_id uuid NOT NULL,
   consent_record_id uuid NOT NULL,
   session_id uuid NOT NULL,
-  consent_ref text NOT NULL CHECK (consent_ref ~ '^[A-Za-z0-9_.:-]{1,128}$'),
+  consent_ref text NOT NULL CHECK (consent_ref ~ '^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$'),
   read_back_acknowledged boolean NOT NULL DEFAULT true CHECK (read_back_acknowledged),
   captured_by_actor_id uuid NOT NULL,
   captured_at timestamptz NOT NULL,

@@ -126,29 +126,21 @@ const ROUTES: Route[] = [
         requireIdem(p.idem),
       ),
   ),
-  route(
-    'POST',
-    '/v1/assisted/sessions/:session_id/resume',
-    'resumeAssistedSession',
-    (s, ctx, p) =>
-      s.resume(
-        ctx,
-        validateId(p.params['session_id'], '/session_id'),
-        validateResume(p.body),
-        requireIdem(p.idem),
-      ),
+  route('POST', '/v1/assisted/sessions/:session_id/resume', 'resumeAssistedSession', (s, ctx, p) =>
+    s.resume(
+      ctx,
+      validateId(p.params['session_id'], '/session_id'),
+      validateResume(p.body),
+      requireIdem(p.idem),
+    ),
   ),
-  route(
-    'POST',
-    '/v1/assisted/sessions/:session_id/close',
-    'closeAssistedSession',
-    (s, ctx, p) =>
-      s.close(
-        ctx,
-        validateId(p.params['session_id'], '/session_id'),
-        validateClose(p.body),
-        requireIdem(p.idem),
-      ),
+  route('POST', '/v1/assisted/sessions/:session_id/close', 'closeAssistedSession', (s, ctx, p) =>
+    s.close(
+      ctx,
+      validateId(p.params['session_id'], '/session_id'),
+      validateClose(p.body),
+      requireIdem(p.idem),
+    ),
   ),
 ];
 

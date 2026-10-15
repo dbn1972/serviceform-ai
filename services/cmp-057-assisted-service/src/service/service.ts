@@ -375,14 +375,15 @@ export class AssistedSessionService implements AssistedSessionReader {
     return { before: agg, next };
   }
 
-  private assertRepresentationCurrent(
-    agg: SessionAggregate,
-    now: Date,
-    action: string,
-  ): void {
+  private assertRepresentationCurrent(agg: SessionAggregate, now: Date, action: string): void {
     const until = agg.representation?.valid_until ?? null;
     if (until !== null && Date.parse(until) <= now.getTime()) {
-      throw new AuditedRefusal('SF-APP-001', 'REPRESENTATION_EXPIRED', action, agg.session.session_id);
+      throw new AuditedRefusal(
+        'SF-APP-001',
+        'REPRESENTATION_EXPIRED',
+        action,
+        agg.session.session_id,
+      );
     }
   }
 
@@ -548,7 +549,12 @@ export class AssistedSessionService implements AssistedSessionReader {
       if (representation.representation_authority_ref !== null) {
         extra['representation_authority_ref'] = representation.representation_authority_ref;
       }
-      await this.emit(tx, ctx, { eventType: 'RepresentationVerified', session: next, now: at, extra });
+      await this.emit(tx, ctx, {
+        eventType: 'RepresentationVerified',
+        session: next,
+        now: at,
+        extra,
+      });
       await this.audit(tx, ctx, action, sessionId, at, 'DECISION', 'REPRESENTATION_AND_CONSENT');
       return { status: 200, body: sessionView({ session: next, representation, consent }) };
     });
@@ -714,7 +720,9 @@ export class AssistedSessionService implements AssistedSessionReader {
   /** Read port: authorised, then served from a READ ONLY transaction; never mutates. */
   async readSession(ctx: TenantContext, sessionId: string): Promise<CommandResult> {
     await this.pep(ctx, ACTIONS.read, sessionId);
-    const agg = await this.deps.repo.withReadTx(ctx, (tx: AssistedReadTx) => tx.getSession(sessionId));
+    const agg = await this.deps.repo.withReadTx(ctx, (tx: AssistedReadTx) =>
+      tx.getSession(sessionId),
+    );
     if (!agg) throw new Cmp057Error('SF-SYS-002', detail('SESSION_NOT_FOUND'));
     if (!canView(ctx, agg)) {
       return this.refuse(ctx, ACTIONS.read, sessionId, 'SF-SYS-002', 'SESSION_NOT_FOUND');

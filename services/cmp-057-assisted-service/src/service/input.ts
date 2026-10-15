@@ -112,7 +112,10 @@ export function validateStart(body: unknown): StartInput {
   const rec = asRecord(body);
   commonChecks(rec, ['channel', 'applied_for_citizen_id']);
   if (!isChannel(rec['channel'])) bad('/channel', 'CHANNEL_INVALID');
-  return { channel: rec['channel'], applied_for_citizen_id: uuidField(rec, 'applied_for_citizen_id') };
+  return {
+    channel: rec['channel'],
+    applied_for_citizen_id: uuidField(rec, 'applied_for_citizen_id'),
+  };
 }
 
 export interface BindApplicantInput {
@@ -153,7 +156,10 @@ export function validateRepresentation(body: unknown): RepresentationInput {
   const until = rec['representation_valid_until'];
   let validUntil: string | null = null;
   if (until !== undefined && until !== null) {
-    if (typeof until !== 'string' || !/^\d{4}-\d{2}-\d{2}T[\d:.]+(Z|[+-]\d{2}:\d{2})$/.test(until)) {
+    if (
+      typeof until !== 'string' ||
+      !/^\d{4}-\d{2}-\d{2}T[\d:.]+(Z|[+-]\d{2}:\d{2})$/.test(until)
+    ) {
       bad('/representation_valid_until', 'DATE_TIME_REQUIRED');
     }
     const ms = Date.parse(until);
@@ -179,7 +185,10 @@ export interface ApplicationLinkInput {
 export function validateApplicationLink(body: unknown): ApplicationLinkInput {
   const rec = asRecord(body);
   commonChecks(rec, ['expected_version', 'application_id']);
-  return { expected_version: expectedVersion(rec), application_id: uuidField(rec, 'application_id') };
+  return {
+    expected_version: expectedVersion(rec),
+    application_id: uuidField(rec, 'application_id'),
+  };
 }
 
 export interface CloseInput {
@@ -200,7 +209,8 @@ export function validateResume(body: unknown): ResumeInput {
   const rec = asRecord(body);
   commonChecks(rec, ['handoff_token']);
   const t = rec['handoff_token'];
-  if (typeof t !== 'string' || !HANDOFF_TOKEN.test(t)) bad('/handoff_token', 'HANDOFF_TOKEN_REQUIRED');
+  if (typeof t !== 'string' || !HANDOFF_TOKEN.test(t))
+    bad('/handoff_token', 'HANDOFF_TOKEN_REQUIRED');
   return { handoff_token: t };
 }
 

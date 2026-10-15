@@ -19,8 +19,13 @@
     "channel": {
       "type": "string",
       "enum": [
-        "COUNTER", "CSC", "KIOSK", "CALL_CENTRE",
-        "AUTHORIZED_REPRESENTATIVE", "GUARDIAN", "INSTITUTIONAL"
+        "COUNTER",
+        "CSC",
+        "KIOSK",
+        "CALL_CENTRE",
+        "AUTHORIZED_REPRESENTATIVE",
+        "GUARDIAN",
+        "INSTITUTIONAL"
       ]
     },
     "applied_by_actor_id": { "type": "string", "format": "uuid" },
@@ -29,8 +34,12 @@
     "lifecycle_status": {
       "type": "string",
       "enum": [
-        "STARTED", "APPLICANT_BOUND", "REPRESENTATION_VERIFIED",
-        "SUBMITTED", "HANDED_OFF", "CLOSED"
+        "STARTED",
+        "APPLICANT_BOUND",
+        "REPRESENTATION_VERIFIED",
+        "SUBMITTED",
+        "HANDED_OFF",
+        "CLOSED"
       ]
     },
     "session_version": { "type": "integer", "minimum": 1 },
