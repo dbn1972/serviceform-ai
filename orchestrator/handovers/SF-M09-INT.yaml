@@ -1,16 +1,53 @@
-# SF-M09-INT — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# M09 CANDIDATE — independent integration_stitcher evidence
+# HUMAN_CG03_THROUGH_EVD_AUTHORIZATION. After SF-M09-HOST #170 on main.
+# PLANNING → CANDIDATE. Not CERTIFIED. Not G3. Not G4. Not G6. Recommend only.
+
 task_id: SF-M09-INT
+title: M09 integration_stitcher — INT-011/013/014/015/016-019 host seams
 module_id: M09
-record: SF-M09-INT
-agent_role: integration_stitcher
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
+component_ids: [CMP-056, CMP-057, CMP-058, CMP-059, CMP-060, CMP-061]
+integration_ids: [INT-011, INT-013, INT-014, INT-015, INT-016, INT-017, INT-018, INT-019]
+requirement_ids:
+  - independent-verification
+  - no-self-certification
+agent_role: integration_stitcher
+builder_agent: serviceform-integration-stitcher
+model_route: opus
+model_release: claude-opus-5-5
+effort: high
+verifier_model_route: opus
+branch: cursor/m09-int-91f2
+parallel_group: M09-VERIFY
+depends_on:
+  - SF-M09-HOST on origin/main (merge #170 tip 91640ac117c2a1307682d3066d46e9cbcfd0b3c1)
+  - HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+allowed_write_paths:
+  - tests/integration/m09/**
+  - evidence/SF-M09-INT/**
+  - orchestrator/handovers/SF-M09-INT.yaml
+allowed_write_notes:
+  - Independent of builders; must not patch owner production code
+  - Cannot issue module exit gate; recommend only
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - pnpm-lock.yaml
+serial_after:
+  - SF-M09-HOST
+
 builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+readiness: READY
+authorization_source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+execution_base: 91640ac117c2a1307682d3066d46e9cbcfd0b3c1
 self_certified: false
 not_certified: true
 certified: false
@@ -19,17 +56,40 @@ g3: false
 g4: false
 g6: false
 freeze_authorized: false
-base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['tests/integration/m09/**', 'evidence/SF-M09-INT/**', 'orchestrator/handovers/SF-M09-INT.yaml']
+ccr_required: false
+frozen_contracts_altered: false
+production_code_modified: false
+cross_tenant_leakage: 0
+simulated_boundaries: [CMP-060 SimulatedReviewRoutingPort, CMP-060 SimulatedAllowAllTenantAuthz]
+unbound_fail_closed: [CMP-056 repository, CMP-057 repository, CMP-061 repository, CMP-058 authorizer, CMP-059 authorizer]
+local_results:
+  vitest: FAIL_49_OF_58
+  int_011: 10/12
+  int_013: 6/8
+  int_014: PASS_10
+  int_015: PASS_10
+  int_016_019: 13/18
+  eslint: PASS
+  prettier: PASS
+  check_scope: PASS
+findings:
+  - {id: F-01, owner: CMP-060, blocking: true, summary: error body not SF-CON-ERROR-RESPONSE}
+  - {id: F-02, owner: CMP-060, blocking: true, summary: DB session keys app.current_* violate SF-CON-DB-SESSION-CONTEXT}
+  - {id: F-03, owner: CMP-059, blocking: true, summary: DB session keys sf.* and direct current_setting RLS violate SF-CON-DB-SESSION-CONTEXT}
+  - {id: F-04, owner: CMP-060, blocking: true, summary: authz defaults to SimulatedAllowAllTenantAuthz when unbound}
+  - {id: F-05, owner: CMP-060, blocking: true, summary: SIMULATED ports admitted in PRODUCTION}
+  - {id: F-06, owner: CMP-060, blocking: true, summary: review routing called inside authoritative DB transaction}
+  - {id: F-07, owner: CMP-060, blocking: true, summary: risk-assessment response outside FROZEN schema}
+  - {id: F-08, owner: CMP-058, blocking: false, summary: body validation before authentication on POST /v1/elements}
+recommended_result: SF_M09_INT_FAIL
 stop_conditions:
   - write outside allowed_write_paths
+  - patch owner production code
   - FROZEN contract mutation without CCR
   - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-integration_ids: [INT-014, INT-015, INT-016, INT-017, INT-018, INT-019, INT-011, INT-013]
-production_code_modified: false
+  - waive critical findings
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
+  - issue G3 (recommend only)
+  - start builders
+evidence: evidence/SF-M09-INT/EVIDENCE.md
+g4_recommended: false
