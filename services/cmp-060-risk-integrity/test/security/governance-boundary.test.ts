@@ -47,6 +47,18 @@ describe('CMP-060 security / governance boundary tests', () => {
       expect(result).toBe(true);
     });
 
+    it('registerRiskRoutes defaults to DenyAllTenantAuthz (fail-closed; REM authz)', async () => {
+      const { readFileSync } = await import('node:fs');
+      const { dirname, join } = await import('node:path');
+      const { fileURLToPath } = await import('node:url');
+      const src = readFileSync(
+        join(dirname(fileURLToPath(import.meta.url)), '../../src/routes/risk-routes.ts'),
+        'utf8',
+      );
+      expect(src).toMatch(/opts\.authz\s*\?\?\s*new\s+DenyAllTenantAuthz\s*\(/);
+      expect(src).not.toMatch(/opts\.authz\s*\?\?\s*new\s+SimulatedAllowAllTenantAuthz\s*\(/);
+    });
+
     it('rejects tenant-identifying request headers', () => {
       expect(() => assertNoTenantIdentifyingHeaders({ 'x-tenant-id': 't1' })).toThrow(Cmp060Error);
     });

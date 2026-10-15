@@ -1,0 +1,22 @@
+# SF-M09-005-REM — CMP-060 authz fail-closed remediation
+task_id: SF-M09-005-REM
+module_id: M09
+component_ids: [CMP-060]
+parent_task: SF-M09-005
+agent_role: component_builder
+branch: cursor/m09-005-rem-authz-failclosed-91f2
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g6: false
+g4_recommended: false
+allowed_write_paths:
+  - services/cmp-060-risk-integrity/**
+  - evidence/SF-M09-005-REM/**
+  - orchestrator/handovers/SF-M09-005-REM.yaml
+defect: registerRiskRoutes defaulted to SimulatedAllowAllTenantAuthz
+fix: default DenyAllTenantAuthz (fail-closed)
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+note: Do not recommend G4 until independent INT/SEC re-verify PASS. Hosts must inject OPA-backed authz.
