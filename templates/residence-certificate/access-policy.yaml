@@ -1,0 +1,40 @@
+# IND-SOC-002 — Access Policy
+# Channels, authentication and consent requirements for the Residence Certificate service.
+# Role names for internal workflow assignment are POLICY_INPUT_REQUIRED.
+# No citizen impersonation (Constitution §36): applied_by ≠ applied_for in assisted channel.
+
+access_policy_id: ind-soc-002-access-v1
+catalogue_id: IND-SOC-002
+version: "0.1.0-candidate"
+immutable_after_publish: true
+invented_statutory_policy_forbidden: true
+
+channels:
+  citizen_portal:
+    authentication: AADHAAR_OTP_OR_MOBILE_OTP
+    authorisation_contract: SF-CON-AUTHZ-DECISION
+    consent_capture: true
+
+  assisted_service:
+    authentication: OPERATOR_LOGIN
+    applied_by_field: applied_by                 # must be distinct from applied_for
+    applied_for_field: applied_for
+    representation_basis_required: true
+    authorisation_contract: SF-CON-AUTHZ-DECISION
+    consent_capture: true
+    note: "Constitution §36 — operators never impersonate citizens"
+
+  mobile:
+    authentication: AADHAAR_OTP_OR_MOBILE_OTP
+    authorisation_contract: SF-CON-AUTHZ-DECISION
+    consent_capture: true
+
+# OPA policy decides actor permissions; PostgreSQL FORCE RLS enforces data boundary (Constitution §7)
+authz_engine: OPA
+rls_enforced: true
+
+# Maker-checker — roles POLICY_INPUT_REQUIRED; no named officers (Constitution §3 §19)
+maker_checker:
+  scrutiny_role: "POLICY_INPUT_REQUIRED"
+  approval_role: "POLICY_INPUT_REQUIRED"
+  issuance_role: SYSTEM_CMP022

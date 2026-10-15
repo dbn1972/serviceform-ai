@@ -1,0 +1,369 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-058 Semantic Registry",
+    "version": "1.0.0",
+    "description": "Government Semantic & Data Dictionary Registry. Opaque element refs only. INT-016+INT-011."
+  },
+  "servers": [{ "url": "/v1" }],
+  "paths": {
+    "/elements": {
+      "get": {
+        "operationId": "listElements",
+        "summary": "List latest version of all semantic elements",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "post": {
+        "operationId": "createElement",
+        "summary": "Create a DRAFT semantic element (privileged admin only)",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "element_id",
+                  "element_code",
+                  "privacy_classification",
+                  "idempotency_key"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "element_code": { "type": "string", "minLength": 1, "maxLength": 128 },
+                  "privacy_classification": {
+                    "type": "string",
+                    "enum": ["PUBLIC", "INTERNAL", "PII", "SENSITIVE_PII"]
+                  },
+                  "code_list_binding_ref": { "type": ["string", "null"], "maxLength": 128 },
+                  "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Validation error" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "409": { "description": "Conflict (duplicate)" }
+        }
+      }
+    },
+    "/elements/{id}": {
+      "get": {
+        "operationId": "getElement",
+        "summary": "Get latest version of a semantic element by ID",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/elements/{id}/versions/{version}": {
+      "get": {
+        "operationId": "getElementVersion",
+        "summary": "Get a specific version of a semantic element",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "path",
+            "name": "version",
+            "required": true,
+            "schema": { "type": "integer", "minimum": 1 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/elements/{id}/publish": {
+      "post": {
+        "operationId": "publishElement",
+        "summary": "Publish a DRAFT semantic element (privileged admin only)",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["idempotency_key"],
+                "additionalProperties": false,
+                "properties": {
+                  "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Published" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/elements/{id}/deprecate": {
+      "post": {
+        "operationId": "deprecateElement",
+        "summary": "Deprecate a PUBLISHED semantic element (privileged admin only)",
+        "tags": ["elements"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["idempotency_key"],
+                "additionalProperties": false,
+                "properties": {
+                  "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Deprecated" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/bindings": {
+      "get": {
+        "operationId": "listBindings",
+        "summary": "List tenant field bindings to semantic elements (INT-016)",
+        "tags": ["bindings"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "post": {
+        "operationId": "createBinding",
+        "summary": "Bind a tenant offering field to a published semantic element",
+        "tags": ["bindings"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "binding_id",
+                  "offering_id",
+                  "field_path",
+                  "element_id",
+                  "element_version",
+                  "idempotency_key"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "binding_id": { "type": "string", "format": "uuid" },
+                  "offering_id": { "type": "string", "format": "uuid" },
+                  "field_path": { "type": "string", "minLength": 1, "maxLength": 512 },
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "element_version": { "type": "integer", "minimum": 1 },
+                  "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Validation error" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/bindings/{id}": {
+      "get": {
+        "operationId": "getBinding",
+        "summary": "Get a specific field binding",
+        "tags": ["bindings"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteBinding",
+        "summary": "Remove a field binding",
+        "tags": ["bindings"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/mappings/validate": {
+      "post": {
+        "operationId": "validateMapping",
+        "summary": "Validate opaque field→element mapping (INT-016; no invented meanings)",
+        "tags": ["mappings"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["element_id", "element_version"],
+                "additionalProperties": false,
+                "properties": {
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "element_version": { "type": "integer", "minimum": 1 },
+                  "field_path": { "type": "string", "minLength": 1, "maxLength": 512 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Validation result (opaque refs only)" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/usage/{id}": {
+      "get": {
+        "operationId": "getElementUsage",
+        "summary": "Tenant impact: bindings referencing a semantic element",
+        "tags": ["usage"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer" }
+    }
+  }
+}

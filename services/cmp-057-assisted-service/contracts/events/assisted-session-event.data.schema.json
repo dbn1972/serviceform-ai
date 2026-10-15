@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-057/assisted-session-event/v1",
+  "title": "AssistedSessionEventData",
+  "description": "Component-local event data for CMP-057 domain events. No PII beyond opaque UUIDs and refs. No representation statute.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "session_id",
+    "channel",
+    "applied_by_actor_id",
+    "applied_for_citizen_id",
+    "applied_by_distinct_from_applied_for",
+    "lifecycle_status",
+    "session_version"
+  ],
+  "properties": {
+    "session_id": { "type": "string", "format": "uuid" },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "COUNTER",
+        "CSC",
+        "KIOSK",
+        "CALL_CENTRE",
+        "AUTHORIZED_REPRESENTATIVE",
+        "GUARDIAN",
+        "INSTITUTIONAL"
+      ]
+    },
+    "applied_by_actor_id": { "type": "string", "format": "uuid" },
+    "applied_for_citizen_id": { "type": "string", "format": "uuid" },
+    "applied_by_distinct_from_applied_for": { "type": "boolean", "const": true },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": [
+        "STARTED",
+        "APPLICANT_BOUND",
+        "REPRESENTATION_VERIFIED",
+        "SUBMITTED",
+        "HANDED_OFF",
+        "CLOSED"
+      ]
+    },
+    "session_version": { "type": "integer", "minimum": 1 },
+    "application_id": { "type": "string", "format": "uuid" },
+    "consent_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "representation_authority_ref": { "type": ["string", "null"], "maxLength": 128 },
+    "handoff_expires_at": { "type": "string", "format": "date-time" }
+  }
+}

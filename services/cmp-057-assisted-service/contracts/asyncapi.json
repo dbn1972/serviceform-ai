@@ -1,0 +1,63 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-057 Assisted Service Events",
+    "version": "0.1.0",
+    "description": "Assisted session lifecycle events (INT-015). No invented representation statute. No PII beyond opaque UUIDs/refs."
+  },
+  "channels": {
+    "sf.assisted.events.v1": {
+      "address": "sf.assisted.events.v1",
+      "messages": {
+        "AssistedSessionStarted": {
+          "$ref": "#/components/messages/AssistedSessionStarted"
+        },
+        "RepresentationVerified": {
+          "$ref": "#/components/messages/RepresentationVerified"
+        },
+        "AssistedApplicationSubmitted": {
+          "$ref": "#/components/messages/AssistedApplicationSubmitted"
+        },
+        "AssistedSessionHandedOff": {
+          "$ref": "#/components/messages/AssistedSessionHandedOff"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "AssistedSessionStarted": {
+        "name": "AssistedSessionStarted",
+        "payload": {
+          "$ref": "./events/assisted-session-event.data.schema.json"
+        }
+      },
+      "RepresentationVerified": {
+        "name": "RepresentationVerified",
+        "payload": {
+          "$ref": "./events/assisted-session-event.data.schema.json"
+        }
+      },
+      "AssistedApplicationSubmitted": {
+        "name": "AssistedApplicationSubmitted",
+        "payload": {
+          "$ref": "./events/assisted-session-event.data.schema.json"
+        }
+      },
+      "AssistedSessionHandedOff": {
+        "name": "AssistedSessionHandedOff",
+        "payload": {
+          "$ref": "./events/assisted-session-event.data.schema.json"
+        }
+      }
+    }
+  }
+}

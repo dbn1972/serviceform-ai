@@ -1,0 +1,53 @@
+{
+  "entities": [
+    {
+      "entity": "sf_migration.migration_project",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.source_profile",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.mapping_spec",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.migration_batch",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.reconciliation_result",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.cutover_manifest",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.idempotency_record",
+      "owner_component": "CMP-059",
+      "isolation_class": "TENANT_SCOPED",
+      "rls": "FORCE"
+    },
+    {
+      "entity": "sf_migration.outbox_event",
+      "owner_component": "CMP-059",
+      "isolation_class": "PLATFORM_OPERATIONAL",
+      "rls": "NOT_APPLICABLE",
+      "justification": "SF-CON-OUTBOX template table; CMP-059 emits tenant_id on every row but uses platform outbox pattern."
+    }
+  ]
+}

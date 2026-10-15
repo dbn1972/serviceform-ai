@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-056/appointment-event-data/v1",
+  "title": "AppointmentEventData",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "appointment_id",
+    "lifecycle_status",
+    "capacity_atomic",
+    "notification_failure_invalidates_booking"
+  ],
+  "properties": {
+    "appointment_id": { "type": "string", "format": "uuid" },
+    "appointment_type_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "from_slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "to_slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["BOOKED", "RESCHEDULED", "CANCELLED", "COMPLETED", "NO_SHOW"]
+    },
+    "capacity_atomic": { "const": true },
+    "notification_failure_invalidates_booking": { "const": false },
+    "invented_statutory_policy_forbidden": { "const": true }
+  }
+}

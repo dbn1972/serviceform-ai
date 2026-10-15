@@ -1,0 +1,338 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-056 Appointment / Scheduler",
+    "version": "0.1.0",
+    "description": "INT-014 booking commands bound to FROZEN SF-CON-APPOINTMENT. capacity_atomic=true; notification_failure_invalidates_booking=false. No invented statutory calendars. Tenant from server-derived request context only. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/appointments/types": {
+      "post": {
+        "operationId": "registerAppointmentType",
+        "description": "PRIVILEGED_ADMIN/SYSTEM. Owner-supplied opaque type_ref only.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterTypeRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Registered" },
+          "400": { "description": "SF-CON-ERROR-RESPONSE" },
+          "401": { "description": "SF-CON-ERROR-RESPONSE" },
+          "403": { "description": "SF-CON-ERROR-RESPONSE" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/slots": {
+      "get": {
+        "operationId": "listAppointmentSlots",
+        "description": "List slots with remaining capacity. Action APPOINTMENT_SLOT_LIST.",
+        "parameters": [
+          {
+            "name": "appointment_type_id",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Slots" },
+          "401": { "description": "SF-CON-ERROR-RESPONSE" },
+          "403": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      },
+      "post": {
+        "operationId": "publishAppointmentSlot",
+        "description": "Publish an owner-supplied capacity slot. Action APPOINTMENT_SLOT_PUBLISH.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PublishSlotRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Published" },
+          "400": { "description": "SF-CON-ERROR-RESPONSE" },
+          "403": { "description": "SF-CON-ERROR-RESPONSE" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments": {
+      "post": {
+        "operationId": "bookAppointment",
+        "description": "INT-014 book. Atomic capacity; notify failure does not invalidate.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BookRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booked",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AppointmentView" }
+              }
+            }
+          },
+          "400": { "description": "SF-CON-ERROR-RESPONSE" },
+          "403": { "description": "SF-CON-ERROR-RESPONSE" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}": {
+      "get": {
+        "operationId": "getAppointment",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Appointment",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AppointmentView" }
+              }
+            }
+          },
+          "404": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/reschedule": {
+      "post": {
+        "operationId": "rescheduleAppointment",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RescheduleRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Rescheduled" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/cancel": {
+      "post": {
+        "operationId": "cancelAppointment",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VersionedActionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Cancelled" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/complete": {
+      "post": {
+        "operationId": "completeAppointment",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VersionedActionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Completed" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/no-show": {
+      "post": {
+        "operationId": "markAppointmentNoShow",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Za-z0-9_.:-]{8,128}$" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VersionedActionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "No-show recorded" },
+          "409": { "description": "SF-CON-ERROR-RESPONSE" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterTypeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["appointment_type_ref"],
+        "properties": {
+          "appointment_type_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "resource_calendar_ref": { "type": ["string", "null"], "maxLength": 128 }
+        }
+      },
+      "PublishSlotRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["appointment_type_id", "slot_ref", "capacity", "opens_at", "closes_at"],
+        "properties": {
+          "appointment_type_id": { "type": "string", "format": "uuid" },
+          "slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "capacity": { "type": "integer", "minimum": 1, "maximum": 10000 },
+          "opens_at": { "type": "string", "format": "date-time" },
+          "closes_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "BookRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_ref"],
+        "properties": {
+          "slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "participant_ref": { "type": ["string", "null"], "maxLength": 128 }
+        }
+      },
+      "RescheduleRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_ref", "expected_version"],
+        "properties": {
+          "slot_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "expected_version": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "VersionedActionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_version"],
+        "properties": {
+          "expected_version": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "AppointmentView": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "appointment": { "type": "object", "additionalProperties": true },
+          "appointment_version": { "type": "integer" },
+          "notification_status": { "type": "string" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["error_code", "message", "correlation_id"],
+        "properties": {
+          "error_code": { "type": "string" },
+          "message": { "type": "string" },
+          "correlation_id": { "type": "string", "format": "uuid" },
+          "details": { "type": "array", "items": { "type": "object" } }
+        }
+      }
+    }
+  }
+}
