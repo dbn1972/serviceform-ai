@@ -102,7 +102,7 @@ describe('SF-M09-SEC M09 SIMULATED / fail-closed boundaries', () => {
     ]);
   });
 
-  it('FINDING: CMP-060 mounted without authz port currently allows create (default-allow risk)', async () => {
+  it('CLEARED: CMP-060 mounted without authz port fails closed (DenyAll default)', async () => {
     const events: string[] = [];
     const { pool } = recordingPool(events);
     app = await buildApp(config, {
@@ -118,9 +118,11 @@ describe('SF-M09-SEC M09 SIMULATED / fail-closed boundaries', () => {
         raw_risk_score: 0.1,
       },
     });
-    // Independent SEC records owner deviation — do not patch CMP-060 here.
-    expect(res.statusCode).not.toBe(403);
-    expect(events.length).toBeGreaterThan(0);
+    expect(res.statusCode).toBe(403);
+    // No DML — deny before authoritative write.
+    expect(events.filter((e) => e.startsWith('sql:') && !/BEGIN|COMMIT|ROLLBACK/i.test(e))).toEqual(
+      [],
+    );
   });
 
   it('FINDING: CMP-060 SIMULATED review routing lacks PRODUCTION/UAT/PREPROD environment guard', () => {

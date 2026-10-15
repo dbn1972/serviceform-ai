@@ -1,0 +1,24 @@
+{
+  "task_id": "SF-M09-SEC-REVERIFY",
+  "production_sot": "710c1ba8571f609260d1bfca11f8a57e6ed1380e",
+  "branch": "cursor/m09-sec-reverify-91f2",
+  "vitest": "PASS_36",
+  "cross_tenant_leakage_http": 0,
+  "cross_tenant_leakage_postgres_live": "not_run_offline",
+  "critical_findings": 0,
+  "criticals_cleared": ["CMP-059 outbox FORCE RLS (#175)", "CMP-060 DenyAll default (#176)"],
+  "residual_findings": [
+    "CMP-060 SIMULATED review routing lacks PRODUCTION env guard",
+    "CMP-060 review-routing may run inside authoritative DB tx",
+    "CMP-059/060 session keys use current_setting (not only sf_platform.current_tenant_id)"
+  ],
+  "production_code_modified": false,
+  "certified": false,
+  "g3": false,
+  "g4": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_result": "SF_M09_SEC_PASS_WITH_FINDINGS",
+  "g4_recommended": true,
+  "note": "Criticals cleared on SoT after #175+#176. Residuals documented; human decides G4."
+}
