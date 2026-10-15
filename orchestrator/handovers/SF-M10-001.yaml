@@ -1,35 +1,60 @@
-# SF-M10-001 — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# SF-M10-001 — IND-SOC-002 residence template + Studio package (CG-03 M10 Wave A)
+# READY. Not dispatched. Not CERTIFIED. Not G6.
+# Finding M-04: POLICY_INPUT_REQUIRED. No invented residence statute.
+
 task_id: SF-M10-001
+title: IND-SOC-002 residence template + Studio package
 module_id: M10
-record: SF-M10-001
-agent_role: studio_builder
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
+agent_role: component_builder
+builder_agent: serviceform-studio-builder
+branch: cursor/m10-001-template-91f2
+parallel_group: M10-A
+hard_serial_locks: [LOCK-2, LOCK-3]
+depends_on:
+  - SF-M09-CG-001 FROZEN_ON_MAIN (M09 contracts available for golden path)
+  - LOCK-1 CG-03 planning PR #157 on main
+  - owner POLICY_INPUT_REQUIRED fields remain placeholders
+allowed_write_paths:
+  - templates/residence-certificate/**
+  - packages/service-packages/ind-soc-002/**
+  - evidence/SF-M10-001/**
+  - orchestrator/handovers/SF-M10-001.yaml
+allowed_write_notes:
+  - POLICY_INPUT_REQUIRED fields remain placeholders; no invented statute
+  - Do not invent pilot tenant/State, legal basis, eligibility, fee, SLA, or credential statute
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+wave_eligible_now: true
+serial_after:
+  - SF-M09-CG-001
+
 builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
-g3: false
 g4: false
 g6: false
-freeze_authorized: false
+policy_input_required: true
+ready_authorization:
+  family: HUMAN_CG03_THROUGH_EVD
+  status: AUTHORIZATION
+  join_separator: "_"
+  wave_a_ready: true
 base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
+  prefix: e09ec3f1
+  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
 join_separator: "_"
-allowed_write_paths: ['templates/residence-certificate/**', 'evidence/SF-M10-001/**', 'orchestrator/handovers/SF-M10-001.yaml']
 stop_conditions:
+  - invent residence eligibility/fee/SLA/credential statute
+  - CERTIFIED or G6 claim
   - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-catalogue_id: IND-SOC-002
-statutory_owner_input_required: true
