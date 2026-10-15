@@ -99,10 +99,7 @@ export class RecordingAuthorizer {
   readonly calls: Array<{ action: string; subject: { tenant_id: string | null } }> = [];
   denyActions = new Set<string>();
 
-  decide(input: {
-    action: string;
-    subject: { tenant_id: string | null };
-  }): Promise<{
+  decide(input: { action: string; subject: { tenant_id: string | null } }): Promise<{
     allow: boolean;
     reason_code: string;
     policy_revision: string;
