@@ -95,7 +95,8 @@ export async function addSourceProfile(
   input: AddSourceProfileInput,
 ): Promise<{ project: MigrationProjectContract; profile_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['CREATED', 'PROFILED'].includes(project.lifecycle_status)) {
@@ -155,7 +156,8 @@ export async function addMappingSpec(
   input: AddMappingSpecInput,
 ): Promise<{ project: MigrationProjectContract; mapping_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['PROFILED', 'MAPPED'].includes(project.lifecycle_status)) {
@@ -215,7 +217,8 @@ export async function runDryRun(
   reconciliation: ReconciliationRow;
 }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['MAPPED', 'DRY_RUN'].includes(project.lifecycle_status)) {
@@ -329,7 +332,8 @@ export async function executeProject(
   reconciliation: ReconciliationRow;
 }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
 
@@ -453,7 +457,12 @@ export async function executeProject(
   } else {
     await insertOutbox(
       client,
-      envelopeOf(tid, 'MigrationCompleted', { project_id: projectId, batch_id: batch.batch_id }, ctx),
+      envelopeOf(
+        tid,
+        'MigrationCompleted',
+        { project_id: projectId, batch_id: batch.batch_id },
+        ctx,
+      ),
     );
   }
 
@@ -470,7 +479,8 @@ export async function getReconciliation(
   projectId: string,
 ): Promise<ReconciliationRow> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   requireProject(await getProject(client, tid, projectId), projectId);
 

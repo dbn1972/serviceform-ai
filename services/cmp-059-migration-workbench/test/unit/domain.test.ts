@@ -25,9 +25,30 @@ describe('domain invariants', () => {
   });
 
   it('deriveReconciliationStatus', () => {
-    expect(deriveReconciliationStatus({ sourceCount: 100, targetCount: 100, matchedCount: 100, failedRecords: 0 })).toBe('PASSED');
-    expect(deriveReconciliationStatus({ sourceCount: 100, targetCount: 0, matchedCount: 0, failedRecords: 100 })).toBe('FAILED');
-    expect(deriveReconciliationStatus({ sourceCount: 100, targetCount: 90, matchedCount: 90, failedRecords: 10 })).toBe('PARTIAL');
+    expect(
+      deriveReconciliationStatus({
+        sourceCount: 100,
+        targetCount: 100,
+        matchedCount: 100,
+        failedRecords: 0,
+      }),
+    ).toBe('PASSED');
+    expect(
+      deriveReconciliationStatus({
+        sourceCount: 100,
+        targetCount: 0,
+        matchedCount: 0,
+        failedRecords: 100,
+      }),
+    ).toBe('FAILED');
+    expect(
+      deriveReconciliationStatus({
+        sourceCount: 100,
+        targetCount: 90,
+        matchedCount: 90,
+        failedRecords: 10,
+      }),
+    ).toBe('PARTIAL');
   });
 
   it('validators', () => {
