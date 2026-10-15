@@ -1,0 +1,59 @@
+# SF-M10-002 — Pilot tenant overlay + TSB publish fixtures (CG-03 M10 Wave A)
+# READY. Not dispatched. Not CERTIFIED. Not G6.
+# Finding M-04: POLICY_INPUT_REQUIRED. No invented residence statute.
+
+task_id: SF-M10-002
+title: Pilot tenant overlay + TSB publish fixtures
+module_id: M10
+concurrency_group: CG-03
+agent_role: component_builder
+builder_agent: serviceform-studio-builder
+branch: cursor/m10-002-overlay-91f2
+parallel_group: M10-A
+hard_serial_locks: [LOCK-2, LOCK-3]
+depends_on:
+  - SF-M09-CG-001 FROZEN_ON_MAIN (M09 contracts available for golden path)
+  - LOCK-1 CG-03 planning PR #157 on main
+  - owner POLICY_INPUT_REQUIRED fields remain placeholders
+allowed_write_paths:
+  - fixtures/golden/ind-soc-002/**
+  - evidence/SF-M10-002/**
+  - orchestrator/handovers/SF-M10-002.yaml
+allowed_write_notes:
+  - POLICY_INPUT_REQUIRED; fail-closed placeholders only
+  - Do not invent pilot tenant/State, legal basis, eligibility, fee, SLA, or credential statute
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - apps/**
+wave_eligible_now: true
+serial_after:
+  - SF-M09-CG-001
+
+builders_dispatched_this_envelope: false
+planning_only: false
+implementation_authorized: true
+dispatched: false
+orchestration_task_state: READY
+state: READY
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g4: false
+g6: false
+policy_input_required: true
+ready_authorization:
+  family: HUMAN_CG03_THROUGH_EVD
+  status: AUTHORIZATION
+  join_separator: "_"
+  wave_a_ready: true
+base_commit:
+  prefix: e09ec3f1
+  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+join_separator: "_"
+stop_conditions:
+  - invent residence eligibility/fee/SLA/credential statute
+  - CERTIFIED or G6 claim
+  - write outside allowed_write_paths

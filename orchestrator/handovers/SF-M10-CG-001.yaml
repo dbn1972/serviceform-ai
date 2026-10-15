@@ -1,34 +1,20 @@
-# SF-M10-CG-001 — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# SF-M10-CG-001 — no NEW M10 lock rows required (CG-03)
+# Golden Residence Certificate consumes existing FROZEN contracts + Studio metadata.
+# No invented statute. POLICY_INPUT_REQUIRED remains for owner fields.
+record: SF-M10-CG-001
 task_id: SF-M10-CG-001
 module_id: M10
-record: SF-M10-CG-001
-agent_role: contract_guardian
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
-builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
-self_certified: false
-not_certified: true
+agent_role: contract_guardian
+state: NOOP_SATISFIED
+orchestration_task_state: NOOP_SATISFIED
+freeze_authorized: true
+repository_freeze_effective: true
+new_lock_rows: 0
+note: Prefer templates/residence-certificate/** over new contracts/m10 schemas
 certified: false
-release_certified: false
-g3: false
-g4: false
 g6: false
-freeze_authorized: false
 base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
+  prefix: e09ec3f1
+  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
 join_separator: "_"
-allowed_write_paths: ['contracts/m10/**', 'orchestrator/contracts-lock.yaml', 'evidence/SF-M10-CG-001/**', 'orchestrator/handovers/SF-M10-CG-001.yaml']
-stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-note: optional; only if NEW golden schemas required

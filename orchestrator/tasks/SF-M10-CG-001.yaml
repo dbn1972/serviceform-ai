@@ -1,0 +1,20 @@
+# SF-M10-CG-001 — no NEW M10 lock rows required (CG-03)
+# Golden Residence Certificate consumes existing FROZEN contracts + Studio metadata.
+# No invented statute. POLICY_INPUT_REQUIRED remains for owner fields.
+record: SF-M10-CG-001
+task_id: SF-M10-CG-001
+module_id: M10
+concurrency_group: CG-03
+agent_role: contract_guardian
+state: NOOP_SATISFIED
+orchestration_task_state: NOOP_SATISFIED
+freeze_authorized: true
+repository_freeze_effective: true
+new_lock_rows: 0
+note: Prefer templates/residence-certificate/** over new contracts/m10 schemas
+certified: false
+g6: false
+base_commit:
+  prefix: e09ec3f1
+  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+join_separator: "_"
