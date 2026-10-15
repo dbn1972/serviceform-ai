@@ -1,0 +1,11 @@
+{
+  "task_id": "SF-M09-004-REM",
+  "component": "CMP-059",
+  "defect": "outbox_event cross-tenant leakage (no FORCE RLS)",
+  "fix": "1761100000001_cmp-059-outbox-force-rls.sql + isolation.json TENANT_SCOPED",
+  "certified": false,
+  "g4": false,
+  "g6": false,
+  "self_certified": false,
+  "g4_recommended": false
+}
