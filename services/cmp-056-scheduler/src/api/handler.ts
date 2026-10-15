@@ -16,7 +16,11 @@ import {
   validateReschedule,
   validateVersionedAction,
 } from '../service/input.js';
-import type { AppointmentSchedulerService, CommandResult, Idempotency } from '../service/service.js';
+import type {
+  AppointmentSchedulerService,
+  CommandResult,
+  Idempotency,
+} from '../service/service.js';
 import type { TenantContext } from '../types.js';
 
 export interface ApiRequest {

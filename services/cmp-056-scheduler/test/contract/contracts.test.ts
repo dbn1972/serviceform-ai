@@ -98,9 +98,7 @@ describe('FROZEN SF-CON-APPOINTMENT', () => {
     const booked = await h.call('POST', '/v1/appointments', { slot_ref: SLOT_REF_1 });
     expect(booked.status).toBe(201);
     const appointment = (booked.body as Body)['appointment'];
-    expect(validateAppointment(appointment), JSON.stringify(validateAppointment.errors)).toBe(
-      true,
-    );
+    expect(validateAppointment(appointment), JSON.stringify(validateAppointment.errors)).toBe(true);
   });
 });
 
@@ -136,7 +134,9 @@ describe('component contracts and migrations', () => {
     expect(sql).toContain('CREATE SCHEMA sf_scheduler');
     expect(sql).toContain('FORCE ROW LEVEL SECURITY');
     expect(sql).toContain('capacity_atomic boolean NOT NULL DEFAULT true');
-    expect(sql).toContain('notification_failure_invalidates_booking boolean NOT NULL DEFAULT false');
+    expect(sql).toContain(
+      'notification_failure_invalidates_booking boolean NOT NULL DEFAULT false',
+    );
     expect(sql).toContain('CHECK (NOT notification_failure_invalidates_booking)');
     const outbox = readFileSync(join(repoRoot, OUTBOX_MIGRATION), 'utf8');
     expect(outbox).toContain('sf_scheduler.outbox_event');

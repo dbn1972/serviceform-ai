@@ -512,7 +512,13 @@ export class AppointmentSchedulerService {
     input: RescheduleInput,
     idem: Idempotency,
   ): Promise<CommandResult> {
-    await this.guard(ctx, ACTIONS.reschedule, APPOINTMENT_RESOURCE_TYPE, appointmentId, BOOK_ACTORS);
+    await this.guard(
+      ctx,
+      ACTIONS.reschedule,
+      APPOINTMENT_RESOURCE_TYPE,
+      appointmentId,
+      BOOK_ACTORS,
+    );
     return this.command(ctx, idem, async (tx, now) => {
       const current = await tx.getAppointment(appointmentId, true);
       if (!current) throw new Cmp056Error('SF-SYS-002', detail('APPOINTMENT_NOT_FOUND'));

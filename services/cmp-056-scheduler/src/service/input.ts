@@ -1,7 +1,4 @@
-import {
-  isMetadataRef,
-  looksLikeInventedStatutoryCalendar,
-} from '../domain/appointment.js';
+import { isMetadataRef, looksLikeInventedStatutoryCalendar } from '../domain/appointment.js';
 import { isUuid } from '../domain/uuid.js';
 import { Cmp056Error, detail } from '../errors.js';
 
@@ -112,23 +109,24 @@ export interface PublishSlotInput {
 
 export function validatePublishSlot(body: unknown): PublishSlotInput {
   const rec = asRecord(body);
-  commonChecks(rec, [
-    'appointment_type_id',
-    'slot_ref',
-    'capacity',
-    'opens_at',
-    'closes_at',
-  ]);
+  commonChecks(rec, ['appointment_type_id', 'slot_ref', 'capacity', 'opens_at', 'closes_at']);
   const typeId = rec['appointment_type_id'];
   if (typeof typeId !== 'string' || !isUuid(typeId)) bad('/appointment_type_id', 'INVALID_UUID');
   const capacity = rec['capacity'];
-  if (typeof capacity !== 'number' || !Number.isInteger(capacity) || capacity < 1 || capacity > 10000) {
+  if (
+    typeof capacity !== 'number' ||
+    !Number.isInteger(capacity) ||
+    capacity < 1 ||
+    capacity > 10000
+  ) {
     bad('/capacity', 'INVALID_CAPACITY');
   }
   const opens = rec['opens_at'];
   const closes = rec['closes_at'];
-  if (typeof opens !== 'string' || Number.isNaN(Date.parse(opens))) bad('/opens_at', 'INVALID_TIME');
-  if (typeof closes !== 'string' || Number.isNaN(Date.parse(closes))) bad('/closes_at', 'INVALID_TIME');
+  if (typeof opens !== 'string' || Number.isNaN(Date.parse(opens)))
+    bad('/opens_at', 'INVALID_TIME');
+  if (typeof closes !== 'string' || Number.isNaN(Date.parse(closes)))
+    bad('/closes_at', 'INVALID_TIME');
   if (Date.parse(closes) <= Date.parse(opens)) bad('/closes_at', 'CLOSES_BEFORE_OPENS');
   return {
     appointment_type_id: typeId,

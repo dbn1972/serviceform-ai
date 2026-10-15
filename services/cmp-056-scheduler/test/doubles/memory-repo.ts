@@ -6,11 +6,7 @@ import type {
   SlotRecord,
 } from '../../src/domain/appointment.js';
 import { Cmp056Error } from '../../src/errors.js';
-import type {
-  SchedulerRepository,
-  SchedulerTx,
-  StoredIdempotent,
-} from '../../src/repo/types.js';
+import type { SchedulerRepository, SchedulerTx, StoredIdempotent } from '../../src/repo/types.js';
 import type { EventEnvelope, RequestContext } from '../../src/types.js';
 
 export interface TenantStore {
@@ -141,7 +137,10 @@ class MemoryTx implements SchedulerTx {
   }
 
   insertType(row: AppointmentTypeRecord): Promise<void> {
-    if (this.s.types.has(row.appointment_type_id) || this.s.typesByRef.has(row.appointment_type_ref)) {
+    if (
+      this.s.types.has(row.appointment_type_id) ||
+      this.s.typesByRef.has(row.appointment_type_ref)
+    ) {
       throw new Cmp056Error('SF-APP-002');
     }
     this.s.types.set(row.appointment_type_id, structuredClone(row));
@@ -163,7 +162,8 @@ class MemoryTx implements SchedulerTx {
     if (this.s.slots.has(row.slot_id) || this.s.slotsByRef.has(row.slot_ref)) {
       throw new Cmp056Error('SF-APP-002');
     }
-    if (row.booked_count > row.capacity) throw new Cmp056Error('SF-APP-001', { details: [{ code: 'SLOT_FULL' }] });
+    if (row.booked_count > row.capacity)
+      throw new Cmp056Error('SF-APP-001', { details: [{ code: 'SLOT_FULL' }] });
     this.s.slots.set(row.slot_id, structuredClone(row));
     this.s.slotsByRef.set(row.slot_ref, row.slot_id);
     return Promise.resolve();
@@ -181,7 +181,9 @@ class MemoryTx implements SchedulerTx {
 
   listAvailableSlots(appointmentTypeId: string | undefined): Promise<SlotRecord[]> {
     const rows = [...this.s.slots.values()].filter(
-      (s) => canBook(s) && (appointmentTypeId === undefined || s.appointment_type_id === appointmentTypeId),
+      (s) =>
+        canBook(s) &&
+        (appointmentTypeId === undefined || s.appointment_type_id === appointmentTypeId),
     );
     rows.sort((a, b) => a.opens_at.localeCompare(b.opens_at));
     return Promise.resolve(structuredClone(rows));
@@ -228,7 +230,9 @@ class MemoryTx implements SchedulerTx {
   insertEventLog(row: AppointmentEventLogRow): Promise<void> {
     if (
       this.s.events.some(
-        (e) => e.appointment_id === row.appointment_id && e.appointment_version === row.appointment_version,
+        (e) =>
+          e.appointment_id === row.appointment_id &&
+          e.appointment_version === row.appointment_version,
       )
     ) {
       throw new Cmp056Error('SF-APP-002');
