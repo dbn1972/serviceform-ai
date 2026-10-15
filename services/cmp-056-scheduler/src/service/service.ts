@@ -239,13 +239,10 @@ export class AppointmentSchedulerService {
         });
       });
     } catch {
+      // Booking remains committed — only notification_status moves to FAILED.
       await this.deps.repo.withTx(ctx, async (tx) => {
         const current = await tx.getAppointment(row.appointment_id, true);
         if (!current) return;
-        // Booking stays; only the notification status moves to FAILED.
-        if (!ACTIVE_STATUSES.has(current.lifecycle_status) && current.lifecycle_status !== 'BOOKED') {
-          // still allow FAILED mark on any non-cancelled? Mark anyway for auditability.
-        }
         await tx.updateAppointment({
           ...current,
           notification_status: 'FAILED',

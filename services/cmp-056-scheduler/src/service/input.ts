@@ -62,10 +62,13 @@ function commonChecks(rec: Record<string, unknown>, allowed: readonly string[]):
 
 function requireRef(rec: Record<string, unknown>, key: string): string {
   const v = rec[key];
-  if (typeof v !== 'string' || !isMetadataRef(v)) bad(`/${key}`, 'INVALID_REF');
+  if (typeof v !== 'string') bad(`/${key}`, 'INVALID_REF');
+  // Refuse invented statutory calendars before shape checks so statute-looking free text
+  // (spaces, etc.) is rejected with the governance code, not a generic INVALID_REF.
   if (looksLikeInventedStatutoryCalendar(v)) {
     bad(`/${key}`, 'INVENTED_STATUTORY_CALENDAR_FORBIDDEN');
   }
+  if (!isMetadataRef(v)) bad(`/${key}`, 'INVALID_REF');
   return v;
 }
 
