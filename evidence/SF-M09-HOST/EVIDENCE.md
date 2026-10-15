@@ -7,7 +7,7 @@
 | Task | SF-M09-HOST (LOCK-7) |
 | Branch | `cursor/m09-host-91f2` |
 | Execution base | `435cfcea171bda817130babbda81fc5c1d077ea4` (STITCH-A #169 tip) |
-| Implementation commit | branch tip (`cursor/m09-host-91f2`) |
+| Implementation commit |  |
 | Authorization | HUMAN_CG03_THROUGH_EVD_AUTHORIZATION |
 | Mounts | CMP-056, CMP-057, CMP-058, CMP-059, CMP-060, CMP-061 |
 | Not remounted | CMP-036 (already on host) |
