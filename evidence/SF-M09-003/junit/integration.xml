@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="1.265740128">
-    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-10-15T15:43:16.915Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.710778424">
-        <testcase classname="test/integration/api.int.test.ts" name="CMP-058 API flow (PostgreSQL) &gt; draft → publish → bind → validate → usage (opaque refs only)" time="0.119936162">
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="1.302827234">
+    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-10-15T15:44:36.605Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.73442302">
+        <testcase classname="test/integration/api.int.test.ts" name="CMP-058 API flow (PostgreSQL) &gt; draft → publish → bind → validate → usage (opaque refs only)" time="0.124738568">
         </testcase>
-        <testcase classname="test/integration/api.int.test.ts" name="CMP-058 API flow (PostgreSQL) &gt; rejects binding to unpublished element" time="0.007007056">
+        <testcase classname="test/integration/api.int.test.ts" name="CMP-058 API flow (PostgreSQL) &gt; rejects binding to unpublished element" time="0.006398176">
         </testcase>
     </testsuite>
-    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-15T15:43:16.916Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.554961704">
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; sf_cmp058_rw is NOLOGIN NOSUPERUSER NOBYPASSRLS; tables owned by sf_migrator" time="0.009987799">
+    <testsuite name="test/integration/privilege-boundary.int.test.ts" timestamp="2026-10-15T15:44:36.606Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.568404214">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; sf_cmp058_rw is NOLOGIN NOSUPERUSER NOBYPASSRLS; tables owned by sf_migrator" time="0.009240591">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; own-component DML succeeds; peer-component login is denied" time="0.016594911">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; own-component DML succeeds; peer-component login is denied" time="0.016635018">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; FORCE RLS on field_binding: wrong-tenant returns zero rows" time="0.006794556">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; FORCE RLS on field_binding: wrong-tenant returns zero rows" time="0.005763086">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; published semantic element payload fields are immutable" time="0.00218377">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; published semantic element payload fields are immutable" time="0.00311347">
         </testcase>
-        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; runtime login cannot SET ROLE peer rw and has no BYPASSRLS" time="0.001056265">
+        <testcase classname="test/integration/privilege-boundary.int.test.ts" name="CMP-058 privilege boundary (ADR-0006 / INT-011) &gt; runtime login cannot SET ROLE peer rw and has no BYPASSRLS" time="0.000964057">
         </testcase>
     </testsuite>
 </testsuites>
