@@ -1,0 +1,20 @@
+task_id: SF-M09-INT-REVERIFY
+module_id: M09
+agent_role: integration_stitcher
+branch: cursor/m09-int-reverify-91f2
+production_sot: 710c1ba8571f609260d1bfca11f8a57e6ed1380e
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g6: false
+g4_recommended: true
+recommended_result: SF_M09_INT_PASS_WITH_FINDINGS
+critical_findings: 0
+allowed_write_paths:
+  - tests/integration/m09/**
+  - evidence/SF-M09-INT-REVERIFY/**
+  - evidence/SF-M09-INT/**
+  - orchestrator/handovers/SF-M09-INT-REVERIFY.yaml
+note: F-04 CLEARED. Residuals remain. Human decides G4.

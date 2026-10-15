@@ -1,129 +1,129 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="58" failures="0" errors="0" time="2.245455562">
-    <testsuite name="tests/integration/m09/int-011-host.test.ts" timestamp="2026-10-15T17:22:48.922Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="1.092055892">
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; admits CMP-056..061 in deterministic order; CMP-036 registered exactly once" time="0.331674084">
+<testsuites name="vitest tests" tests="58" failures="0" errors="0" time="2.864645532">
+    <testsuite name="tests/integration/m09/int-011-host.test.ts" timestamp="2026-10-15T17:52:57.058Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="1.416120705">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; admits CMP-056..061 in deterministic order; CMP-036 registered exactly once" time="0.482585715">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; every probed M09 route is registered on the host (not a 404 fallthrough)" time="0.152866969">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; every probed M09 route is registered on the host (not a 404 fallthrough)" time="0.145429207">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; read routes reach owner ports with the server-derived tenant only" time="0.054244563">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; read routes reach owner ports with the server-derived tenant only" time="0.067984022">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; host without M09 deps leaves m09Mounted undefined and M09 paths unrouted" time="0.01324861">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 host admission &gt; host without M09 deps leaves m09Mounted undefined and M09 paths unrouted" time="0.015271195">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; forged tenant headers on every M09 read and write route → SF-TEN-002, no canary, no port call" time="0.039447293">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; forged tenant headers on every M09 read and write route → SF-TEN-002, no canary, no port call" time="0.06785298">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; Forwarded: tenant=... is treated as a forged tenant header" time="0.036472699">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; Forwarded: tenant=... is treated as a forged tenant header" time="0.039501602">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; tenant_id in a write body is never adopted as identity on any M09 write route" time="0.066292123">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; tenant_id in a write body is never adopted as identity on any M09 write route" time="0.065346166">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; switching the server-side context switches the tenant; nothing from T1 reaches a T2 call" time="0.039398385">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0) &gt; switching the server-side context switches the tenant; nothing from T1 reaches a T2 call" time="0.060496054">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; no server-side context → request refused and no owner port or DB statement reached" time="0.049162875">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; no server-side context → request refused and no owner port or DB statement reached" time="0.067260986">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; [F-08 CMP-058] no server-side context → 401 on every M09 route (authentication precedes input validation)" time="0.049386518">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; [F-08 CMP-058] no server-side context → 401 on every M09 route (authentication precedes input validation)" time="0.059696528">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; [F-01 CMP-060] every M09 refusal body conforms to FROZEN SF-CON-ERROR-RESPONSE" time="0.034384238">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 unauthenticated requests fail closed with the frozen error envelope &gt; [F-01 CMP-060] every M09 refusal body conforms to FROZEN SF-CON-ERROR-RESPONSE" time="0.048820655">
         </testcase>
-        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 coexistence with prior host modules &gt; M06 + M08 + M09 coexist: prior mounts preserved, CMP-036 once, forged tenant denied on each" time="0.221937642">
-        </testcase>
-    </testsuite>
-    <testsuite name="tests/integration/m09/int-013-modes.test.ts" timestamp="2026-10-15T17:22:48.924Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.251551677">
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-056 scheduler refuses construction without a repository (SF-SYS-001)" time="0.001424648">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-057 assisted service refuses construction without a repository (SF-SYS-001)" time="0.000305649">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-061 privacy centre refuses construction without a repository (SF-SYS-001)" time="0.000234421">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-058 host mount without an authorizer fails closed with no data statement" time="0.168980832">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-059 host mount without an authorizer fails closed in PRODUCTION (deny-all default)" time="0.045644942">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; SIMULATED review routing is self-labelled and returns a routing ref only (never a decision)" time="0.000244477">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; [F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)" time="0.020133482">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; [F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)" time="0.013354882">
+        <testcase classname="tests/integration/m09/int-011-host.test.ts" name="INT-011 M09 coexistence with prior host modules &gt; M06 + M08 + M09 coexist: prior mounts preserved, CMP-036 once, forged tenant denied on each" time="0.293778902">
         </testcase>
     </testsuite>
-    <testsuite name="tests/integration/m09/int-014-scheduler.test.ts" timestamp="2026-10-15T17:22:48.925Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.201041531">
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; admin registers type, staff publishes slot, citizen books; tenant comes only from context" time="0.061695455">
+    <testsuite name="tests/integration/m09/int-013-modes.test.ts" timestamp="2026-10-15T17:52:57.061Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.210194219">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-056 scheduler refuses construction without a repository (SF-SYS-001)" time="0.001665716">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; capacity is atomic: the booking beyond capacity is refused and the slot is not overbooked" time="0.045179131">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-057 assisted service refuses construction without a repository (SF-SYS-001)" time="0.00033591">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; notification failure does not invalidate the committed booking; notify runs outside the tx" time="0.014733642">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-061 privacy centre refuses construction without a repository (SF-SYS-001)" time="0.000243351">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; idempotent replay returns the same booking; same key with a different body is refused" time="0.014444958">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-058 host mount without an authorizer fails closed with no data statement" time="0.14113741">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; mutations without Idempotency-Key are refused before the service writes anything" time="0.008500228">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) &gt; CMP-059 host mount without an authorizer fails closed in PRODUCTION (deny-all default)" time="0.036779816">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; client-supplied time and body tenant_id are refused (server clock / server tenant only)" time="0.009032916">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; SIMULATED review routing is self-labelled and returns a routing ref only (never a decision)" time="0.000329163">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; a citizen cannot register appointment types (actor gate) and the refusal is audited" time="0.01176617">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; [F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)" time="0.01751716">
         </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; PDP deny → SF-AUTH-002 with DENIED audit; PDP unavailable → fail closed" time="0.009095713">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; cross-tenant read: an appointment booked in T1 is not visible from T2 (CROSS_TENANT_LEAKAGE=0)" time="0.012524183">
-        </testcase>
-        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; every outbox envelope carries the server tenant only" time="0.012744688">
+        <testcase classname="tests/integration/m09/int-013-modes.test.ts" name="INT-013 M09 SIMULATED boundaries (CMP-060) &gt; [F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)" time="0.0100091">
         </testcase>
     </testsuite>
-    <testsuite name="tests/integration/m09/int-015-assisted.test.ts" timestamp="2026-10-15T17:22:48.926Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.194302521">
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; operator starts a COUNTER session for an in-tenant applicant; projection matches FROZEN contract" time="0.056949461">
+    <testsuite name="tests/integration/m09/int-014-scheduler.test.ts" timestamp="2026-10-15T17:52:57.061Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.315725659">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; admin registers type, staff publishes slot, citizen books; tenant comes only from context" time="0.088314897">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; applied_by == applied_for is refused (no self-assisted session)" time="0.012484457">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; capacity is atomic: the booking beyond capacity is refused and the slot is not overbooked" time="0.058460867">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; applicant not in the caller tenant → SF-TEN-002; check uses the server tenant, outside any tx" time="0.01580303">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; notification failure does not invalidate the committed booking; notify runs outside the tx" time="0.016215892">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; verification port unavailable → fail closed SF-INT-001, no session written" time="0.033010185">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; idempotent replay returns the same booking; same key with a different body is refused" time="0.016838265">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; a citizen may not open an operator-only COUNTER session" time="0.014242008">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; mutations without Idempotency-Key are refused before the service writes anything" time="0.019260023">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; read visibility: applied_by and applied_for may read; an unrelated officer may not" time="0.012912769">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; client-supplied time and body tenant_id are refused (server clock / server tenant only)" time="0.022629285">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; cross-tenant read: a T1 session is invisible from T2 (CROSS_TENANT_LEAKAGE=0)" time="0.00962918">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; a citizen cannot register appointment types (actor gate) and the refusal is audited" time="0.016841384">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; body tenant_id is refused; mutation without Idempotency-Key is refused" time="0.012365101">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; PDP deny → SF-AUTH-002 with DENIED audit; PDP unavailable → fail closed" time="0.019102639">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; PDP subject is the operator (never the applicant) and carries the server tenant" time="0.009287578">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; cross-tenant read: an appointment booked in T1 is not visible from T2 (CROSS_TENANT_LEAKAGE=0)" time="0.033101412">
         </testcase>
-        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; idempotent replay of start returns the same session; outbox carries the server tenant only" time="0.016250815">
+        <testcase classname="tests/integration/m09/int-014-scheduler.test.ts" name="INT-014 appointment booking through the host (CMP-056) &gt; every outbox envelope carries the server tenant only" time="0.023489723">
         </testcase>
     </testsuite>
-    <testsuite name="tests/integration/m09/int-016-019-host-seams.test.ts" timestamp="2026-10-15T17:22:48.926Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.506503941">
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; element read: PDP sees server tenant; DB tx applies FROZEN SF-CON-DB-SESSION-CONTEXT" time="0.170444153">
+    <testsuite name="tests/integration/m09/int-015-assisted.test.ts" timestamp="2026-10-15T17:52:57.062Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.253308069">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; operator starts a COUNTER session for an in-tenant applicant; projection matches FROZEN contract" time="0.071447209">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; PDP deny → SF-AUTH-002 with no data statement executed" time="0.044066283">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; applied_by == applied_for is refused (no self-assisted session)" time="0.015279373">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; PDP unavailable → fail closed with the frozen error envelope and no data statement" time="0.029430554">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; applicant not in the caller tenant → SF-TEN-002; check uses the server tenant, outside any tx" time="0.01988288">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; tenant-bound bindings refuse a tenant-less context (SF-TEN-001)" time="0.018529421">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; verification port unavailable → fail closed SF-INT-001, no session written" time="0.040147377">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; element authoring requires PRIVILEGED_ADMIN; an officer is refused before any write" time="0.028843409">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; a citizen may not open an operator-only COUNTER session" time="0.014743305">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; host mount without an authorizer fails closed (deny-all default)" time="0.023476517">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; read visibility: applied_by and applied_for may read; an unrelated officer may not" time="0.020259191">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; reconciliation read: PDP and DB tx use the server tenant only" time="0.014124114">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; cross-tenant read: a T1 session is invisible from T2 (CROSS_TENANT_LEAKAGE=0)" time="0.012359717">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; [F-03 CMP-059] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (app.tenant_id read by sf_platform.current_tenant_id())" time="0.014214964">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; body tenant_id is refused; mutation without Idempotency-Key is refused" time="0.017888939">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; body tenant_id on project creation is never adopted" time="0.011098879">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; PDP subject is the operator (never the applicant) and carries the server tenant" time="0.017317494">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-07 CMP-060] advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant" time="0.034891658">
+        <testcase classname="tests/integration/m09/int-015-assisted.test.ts" name="INT-015 assisted / omnichannel session through the host (CMP-057) &gt; idempotent replay of start returns the same session; outbox carries the server tenant only" time="0.021872263">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; statutory-outcome signal codes are refused (no automated adverse decision)" time="0.012353419">
+    </testsuite>
+    <testsuite name="tests/integration/m09/int-016-019-host-seams.test.ts" timestamp="2026-10-15T17:52:57.063Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.66929688">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; element read: PDP sees server tenant; DB tx applies FROZEN SF-CON-DB-SESSION-CONTEXT" time="0.236282141">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-04 CMP-060] host mount without an authz port fails closed (no SIMULATED allow-all default)" time="0.017128403">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; PDP deny → SF-AUTH-002 with no data statement executed" time="0.038321034">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-06 CMP-060] HIGH/CRITICAL review routing (external port) is not called inside the authoritative DB tx" time="0.014133662">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; PDP unavailable → fail closed with the frozen error envelope and no data statement" time="0.034831756">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-02 CMP-060] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (RLS reads sf_platform.current_tenant_id())" time="0.008969994">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; tenant-bound bindings refuse a tenant-less context (SF-TEN-001)" time="0.037470448">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; body tenant_id on review disposition is refused" time="0.009788263">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-016 semantic registry host seam (CMP-058) &gt; element authoring requires PRIVILEGED_ADMIN; an officer is refused before any write" time="0.048570513">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; citizen privacy reads reach the owner service with the server tenant only" time="0.02228539">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; host mount without an authorizer fails closed (deny-all default)" time="0.031133874">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; submit without Idempotency-Key, with body tenant_id or with owner-only legal basis is refused before the service" time="0.021775063">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; reconciliation read: PDP and DB tx use the server tenant only" time="0.017582984">
         </testcase>
-        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; owner-task outcome route is tenant-scoped from context; forged header denied before the service" time="0.009158416">
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; [F-03 CMP-059] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (app.tenant_id read by sf_platform.current_tenant_id())" time="0.022507964">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-017 migration workbench host seam (CMP-059) &gt; body tenant_id on project creation is never adopted" time="0.017153085">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-07 CMP-060] advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant" time="0.038954834">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; statutory-outcome signal codes are refused (no automated adverse decision)" time="0.012841538">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-04 CMP-060 CLEARED] host mount without an authz port fails closed (DenyAll default)" time="0.01664578">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-06 CMP-060] HIGH/CRITICAL review routing (external port) is not called inside the authoritative DB tx" time="0.018263016">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; [F-02 CMP-060] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (RLS reads sf_platform.current_tenant_id())" time="0.016007012">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-018 risk / integrity signal to authorized review host seam (CMP-060) &gt; body tenant_id on review disposition is refused" time="0.017951126">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; citizen privacy reads reach the owner service with the server tenant only" time="0.031455172">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; submit without Idempotency-Key, with body tenant_id or with owner-only legal basis is refused before the service" time="0.019681284">
+        </testcase>
+        <testcase classname="tests/integration/m09/int-016-019-host-seams.test.ts" name="INT-019 privacy rights centre host seam (CMP-061) &gt; owner-task outcome route is tenant-scoped from context; forged header denied before the service" time="0.011265906">
         </testcase>
     </testsuite>
 </testsuites>

@@ -249,22 +249,19 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     expect(pool.dataStatements()).toEqual([]);
   });
 
-  it.fails(
-    '[F-04 CMP-060] host mount without an authz port fails closed (no SIMULATED allow-all default)',
-    async () => {
-      const pool = new RecordingPool(rowsFor);
-      const a = await host({
-        risk: { options: { pool }, resolveContext: async () => OFFICER },
-      });
-      const res = await a.inject({
-        method: 'POST',
-        url: '/v1/risk/assessments',
-        payload: riskBody(0.3),
-      });
-      expect(res.statusCode, 'risk assessment created with no authorization port bound').toBe(403);
-      expect(pool.dataStatements()).toEqual([]);
-    },
-  );
+  it('[F-04 CMP-060 CLEARED] host mount without an authz port fails closed (DenyAll default)', async () => {
+    const pool = new RecordingPool(rowsFor);
+    const a = await host({
+      risk: { options: { pool }, resolveContext: async () => OFFICER },
+    });
+    const res = await a.inject({
+      method: 'POST',
+      url: '/v1/risk/assessments',
+      payload: riskBody(0.3),
+    });
+    expect(res.statusCode, 'risk assessment created with no authorization port bound').toBe(403);
+    expect(pool.dataStatements()).toEqual([]);
+  });
 
   it.fails(
     '[F-06 CMP-060] HIGH/CRITICAL review routing (external port) is not called inside the authoritative DB tx',
