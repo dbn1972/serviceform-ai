@@ -1,0 +1,36 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M10-HOST/apps/api
+
+ ✓ test/composition-m07.test.ts (10 tests) 1054ms
+   ✓ CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) (10)
+     ✓ mounts each M07 component independently 499ms
+ ✓ test/composition-m06.test.ts (9 tests) 588ms
+   ✓ CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) (9)
+     ✓ mounts each M06 HTTP component independently 341ms
+ ✓ test/composition-m05.test.ts (13 tests) 2331ms
+   ✓ CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) (12)
+     ✓ mounts each M05 HTTP component independently (CMP-016 excluded) 936ms
+     ✓ keeps Wave1/2/M02/M03/M04 mount lists unchanged when M05 is registered 1076ms
+ ✓ test/composition-m04.test.ts (10 tests) 2354ms
+   ✓ CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) (9)
+     ✓ mounts each M04 component independently 1062ms
+     ✓ keeps M01/M02/M03 mount lists unchanged when M04 is registered 786ms
+ ✓ test/composition-m03.test.ts (5 tests) 522ms
+ ✓ test/composition-m08.test.ts (8 tests) 862ms
+   ✓ CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) (8)
+     ✓ mounts each M08 component independently 475ms
+ ✓ test/composition.test.ts (7 tests) 599ms
+ ✓ test/app.test.ts (14 tests) 220ms
+ ✓ test/composition-m02.test.ts (4 tests) 313ms
+ ✓ test/readiness.test.ts (1 test) 6ms
+ ✓ test/composition-m09.test.ts (3 tests) 533ms
+   ✓ SF-M09-HOST composition mounts (3)
+     ✓ registers all six M09 component mounts when supplied 467ms
+ ✓ test/composition-m10.test.ts (4 tests) 60ms
+
+ Test Files  12 passed (12)
+      Tests  88 passed (88)
+   Start at  17:03:04
+   Duration  4.99s (tests 69%, import 26%, transform 5%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M10-HOST/evidence/SF-M10-HOST/junit/api-host.xml

@@ -13,6 +13,7 @@ import { registerM06Plugins, type M06PluginMounts } from './composition/m06.js';
 import { registerM07Plugins, type M07PluginMounts } from './composition/m07.js';
 import { registerM08Plugins, type M08PluginMounts } from './composition/m08.js';
 import { registerM09Plugins, type M09PluginMounts } from './composition/m09.js';
+import { registerM10Plugins, type M10PluginMounts } from './composition/m10.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -79,6 +80,12 @@ export interface AppDependencies {
    * Hard serial vs SF-M10-HOST.
    */
   m09?: M09PluginMounts;
+  /**
+   * M10 golden IND-SOC-002 metadata admission. Optional; no HTTP routes.
+   * POLICY_INPUT_REQUIRED remains — host never invents owner statute/fee/SLA.
+   * Hard serial vs SF-M09-HOST (this envelope runs after M09-HOST).
+   */
+  m10?: M10PluginMounts;
 }
 
 /**
@@ -199,6 +206,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m09Mounted', mounted);
   }
 
+  // Decorate only when mounts are supplied so existing optional composition suites
+  // still see `m10Mounted` as undefined when M10 is absent.
+  if (deps.m10) {
+    const mounted = await registerM10Plugins(app, deps.m10);
+    app.decorate('m10Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -214,5 +228,6 @@ declare module 'fastify' {
     m07Mounted?: string[];
     m08Mounted?: string[];
     m09Mounted?: string[];
+    m10Mounted?: string[];
   }
 }
