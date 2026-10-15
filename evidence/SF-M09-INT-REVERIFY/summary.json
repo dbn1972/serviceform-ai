@@ -1,0 +1,19 @@
+{
+  "task_id": "SF-M09-INT-REVERIFY",
+  "production_sot": "710c1ba8571f609260d1bfca11f8a57e6ed1380e",
+  "branch": "cursor/m09-int-reverify-91f2",
+  "vitest": "50_passed_8_expected_fail",
+  "cross_tenant_leakage_http": 0,
+  "critical_findings": 0,
+  "criticals_cleared": ["F-04 CMP-060 authz fail-closed (#176)"],
+  "residual_findings": ["F-01","F-02","F-03","F-05","F-06","F-07","F-08"],
+  "production_code_modified": false,
+  "certified": false,
+  "g3": false,
+  "g4": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_result": "SF_M09_INT_PASS_WITH_FINDINGS",
+  "g4_recommended": true,
+  "note": "F-04 CLEARED after #176. 8 residual it.fails. Criticals=0. Human decides G4."
+}
