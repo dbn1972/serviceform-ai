@@ -1,16 +1,54 @@
-# SF-M09-SEC — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# M09 CANDIDATE — independent security_verifier evidence (CG-03)
+# HUMAN_CG03_THROUGH_EVD_AUTHORIZATION. After SF-M09-HOST tip f56356e.
+# Not CERTIFIED. Not G3. Not G4. Not G6. Recommend only.
+
 task_id: SF-M09-SEC
+title: M09 security_verifier — Independent tenant/authz/privacy/risk security verification
 module_id: M09
 record: SF-M09-SEC
-agent_role: security_verifier
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
+component_ids: []
+integration_ids: ['INT-011', 'INT-018']
+requirement_ids:
+  - independent-verification
+  - no-self-certification
+agent_role: security_verifier
+builder_agent: serviceform-security-verifier
+model_route: opus
+model_release: claude-opus-5-5
+verifier_model_route: opus
+branch: cursor/m09-sec-91f2
+worktree: ../wt-SF-M09-SEC
+parallel_group: M09-VERIFY
+depends_on:
+  - SF-M09-HOST tip f56356e65f4c741da4ab95e177822d6332e4f911 (composition/m09.ts)
+  - HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+allowed_write_paths:
+  - tests/security/m09/**
+  - evidence/SF-M09-SEC/**
+  - orchestrator/handovers/SF-M09-SEC.yaml
+allowed_write_notes:
+  - Independent of builders; must not patch owner production code
+  - Cannot issue module exit gate; recommend only
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - pnpm-lock.yaml
+serial_after:
+  - SF-M09-HOST
+
 builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+readiness: READY
+execution_base: f56356e65f4c741da4ab95e177822d6332e4f911
+authorization_source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
@@ -18,17 +56,57 @@ release_certified: false
 g3: false
 g4: false
 g6: false
+ccr_required: false
+frozen_contracts_altered: false
 freeze_authorized: false
 base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['tests/security/m09/**', 'evidence/SF-M09-SEC/**', 'orchestrator/handovers/SF-M09-SEC.yaml']
+  sha: f56356e65f4c741da4ab95e177822d6332e4f911
+contract_locks:
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-ERROR-RESPONSE
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-DB-SESSION-CONTEXT
+  - SF-CON-OUTBOX
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-RISK-ASSESSMENT
+  - SF-CON-PRIVACY-REQUEST
 stop_conditions:
   - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
+  - patch owner production code
+  - waive critical findings
   - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
+  - issue G3 (recommend only)
+  - start builders
+
+acceptance_tests:
+  - forged tenant headers on all 47 M09 host routes -> 403 SF-TEN-002; zero resolveContext/port invocations; canary absent
+  - M09 schemas sf_scheduler/sf_assisted/sf_semantics/sf_migration/sf_risk/sf_privacy own CREATE SCHEMA; tenant tables ENABLE+FORCE RLS via sf_platform.current_tenant_id(); roles NOSUPERUSER NOBYPASSRLS
+  - no tenant-carrying table readable by sf_app without FORCE RLS (live PostgreSQL)
+  - M09 SIMULATED ports fail closed; OPA port never defaults to allow-all
+  - no network port call inside authoritative DB transaction
+  - CMP-061 / CMP-060 require owner-supplied policy input; no invented statute
+  - CROSS_TENANT_LEAKAGE remains 0
+  - No self-certification
+local_results:
+  vitest_with_db: 'PASS_31 FAIL_12 (43)'
+  vitest_without_db: 'PASS_32 FAIL_4 SKIP_7 (43)'
+cross_tenant_leakage:
+  http: 0
+  postgresql_live: 1
+critical_findings: 2
+findings:
+  - {id: F-01, severity: CRITICAL, owner_task: SF-M09-004, summary: 'sf_migration.outbox_event tenant data, no RLS, SELECT to sf_app (live cross-tenant read)'}
+  - {id: F-02, severity: CRITICAL, owner_task: SF-M09-005, summary: 'CMP-060 authz defaults to SimulatedAllowAllTenantAuthz; host mount fails open'}
+  - {id: F-03, severity: HIGH, owner_task: SF-M09-004, summary: 'CMP-059 private sf.tenant_id GUC; raw current_setting policies; CR-01 cast error'}
+  - {id: F-04, severity: HIGH, owner_task: SF-M09-005, summary: 'CMP-060 sets app.current_tenant_id; current_tenant_id() NULL in tx'}
+  - {id: F-05, severity: HIGH, owner_task: SF-M09-005, summary: 'CMP-060 review-routing port called inside DB transaction'}
+  - {id: F-06, severity: MEDIUM, owner_task: SF-M09-005, summary: 'CMP-060 SIMULATED ports without environment guard'}
+simulated_boundaries:
+  - CMP-060 SimulatedAllowAllTenantAuthz
+  - CMP-060 SimulatedReviewRoutingPort
+statute_or_periods_invented: false
 production_code_modified: false
+recommended_result: SF_M09_SEC_FAIL
+evidence: evidence/SF-M09-SEC/EVIDENCE.md
