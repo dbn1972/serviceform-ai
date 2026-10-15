@@ -29,7 +29,8 @@ export class DenyAllTenantAuthz implements TenantAuthzPort {
 }
 
 /**
- * Simulated allow-all for unit tests only.
+ * Simulated allow-all for explicit unit-test injection only.
+ * Must never be the default in registerRiskRoutes (fail-closed → DenyAllTenantAuthz).
  */
 export class SimulatedAllowAllTenantAuthz implements TenantAuthzPort {
   async canActOnRisk(_params: Parameters<TenantAuthzPort['canActOnRisk']>[0]): Promise<boolean> {

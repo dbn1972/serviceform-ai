@@ -12,7 +12,7 @@ import { isUuid } from '../context.js';
 import type { CreateRiskAssessmentCommand, RecordDispositionCommand } from '../domain/types.js';
 import type { TenantAuthzPort } from '../ports/tenant-authz.js';
 import type { ReviewRoutingPort } from '../ports/review-routing.js';
-import { SimulatedAllowAllTenantAuthz } from '../ports/tenant-authz.js';
+import { DenyAllTenantAuthz } from '../ports/tenant-authz.js';
 
 export interface RiskRouteOptions {
   pool: Pool;
@@ -46,7 +46,9 @@ function sendError(reply: FastifyReply, err: unknown): FastifyReply {
  * - POST /v1/risk/assessments/:id/review — record human disposition (INT-018)
  */
 export function registerRiskRoutes(fastify: FastifyInstance, opts: RiskRouteOptions): void {
-  const authz = opts.authz ?? new SimulatedAllowAllTenantAuthz();
+  // Fail closed: missing authz port must deny (never SimulatedAllowAllTenantAuthz).
+  // Hosts must inject an OPA-backed TenantAuthzPort; SimulatedAllowAll is unit-test only.
+  const authz = opts.authz ?? new DenyAllTenantAuthz();
   const svc = new RiskAssessmentService(opts.pool, authz, opts.reviewRouting ?? null);
 
   fastify.post('/v1/risk/assessments', async (request, reply) => {
