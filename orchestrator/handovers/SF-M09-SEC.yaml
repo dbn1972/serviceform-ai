@@ -1,34 +1,33 @@
-# SF-M09-SEC — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# M09 CANDIDATE — independent security_verifier (recommend only)
 task_id: SF-M09-SEC
+title: M09 security_verifier — forged-tenant + isolation + findings
 module_id: M09
-record: SF-M09-SEC
-agent_role: security_verifier
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
-builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+agent_role: security_verifier
+builder_agent: serviceform-security-verifier
+branch: cursor/m09-sec-91f2
+authorization_source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
-release_certified: false
 g3: false
 g4: false
 g6: false
-freeze_authorized: false
-base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['tests/security/m09/**', 'evidence/SF-M09-SEC/**', 'orchestrator/handovers/SF-M09-SEC.yaml']
-stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
 production_code_modified: false
+allowed_write_paths:
+  - tests/security/m09/**
+  - evidence/SF-M09-SEC/**
+  - orchestrator/handovers/SF-M09-SEC.yaml
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - pnpm-lock.yaml
+evidence: evidence/SF-M09-SEC/EVIDENCE.md
+recommended_result: SF_M09_SEC_FAIL
+g4_recommended: false

@@ -1,0 +1,125 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M09-SEC
+
+ ↓ tests/security/m09/db-rls-live.test.ts (7 tests | 7 skipped)
+ ❯ tests/security/m09/simulation-fail-closed.test.ts (4 tests | 3 failed) 88ms
+   ❯ SF-M09-SEC M09 SIMULATED / fail-closed boundaries (4)
+     ✓ inventory: only CMP-060 ships SIMULATED port implementations in M09 4ms
+     × CMP-060 mounted on the host without an authz port denies (OPA must not default to allow-all) 79ms
+     × CMP-060 SIMULATED review routing is refused outside simulation environments 2ms
+     × CMP-060 calls the review-routing port only after the authoritative DB transaction commits 1ms
+ ❯ tests/security/m09/static-isolation.test.ts (21 tests | 1 failed) 42ms
+   ❯ SF-M09-SEC static tenant isolation (migrations) (13)
+     ✓ sf_scheduler: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 5ms
+     ✓ sf_scheduler: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 1ms
+     ✓ sf_assisted: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 3ms
+     ✓ sf_assisted: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 1ms
+     ✓ sf_semantics: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 2ms
+     ✓ sf_semantics: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 0ms
+     × sf_migration: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 6ms
+     ✓ sf_migration: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 1ms
+     ✓ sf_risk: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 1ms
+     ✓ sf_risk: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 0ms
+     ✓ sf_privacy: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role 1ms
+     ✓ sf_privacy: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT) 0ms
+     ✓ M09 schemas do not reference each other (no cross-component SQL in migrations) 3ms
+   ✓ SF-M09-SEC static tenant isolation (runtime sources) (8)
+     ✓ cmp-056-scheduler: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 1ms
+     ✓ cmp-057-assisted-service: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 0ms
+     ✓ cmp-058-semantic-registry: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 0ms
+     ✓ cmp-059-migration-workbench: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 0ms
+     ✓ cmp-060-risk-integrity: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 0ms
+     ✓ cmp-061-privacy-centre: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys 0ms
+     ✓ M09 service sources do not import sibling components or query sibling schemas 12ms
+     ✓ host composition m09.ts: no CMP-036 remount, no SQL, no period values 1ms
+ ✓ tests/security/m09/forged-tenant-http.test.ts (4 tests) 609ms
+ ✓ tests/security/m09/policy-input.test.ts (7 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/security/m09/simulation-fail-closed.test.ts > SF-M09-SEC M09 SIMULATED / fail-closed boundaries > CMP-060 mounted on the host without an authz port denies (OPA must not default to allow-all)
+AssertionError: host returned success with no authz port wired: expected 201 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 201
+
+ ❯ tests/security/m09/simulation-fail-closed.test.ts:121:78
+    119|       },
+    120|     });
+    121|     expect(res.statusCode, 'host returned success with no authz port w…
+       |                                                                              ^
+    122|     expect(events, 'request must not reach the database without an aut…
+    123|       [],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/security/m09/simulation-fail-closed.test.ts > SF-M09-SEC M09 SIMULATED / fail-closed boundaries > CMP-060 SIMULATED review routing is refused outside simulation environments
+AssertionError: CMP-060 has no SIMULATED-port environment guard: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/security/m09/simulation-fail-closed.test.ts:135:84
+    133|       /PRODUCTION/.test(src) &&
+    134|       /SIMULATED[\s\S]{0,400}(throw|reject)|(throw|reject)[\s\S]{0,400…
+    135|     expect(hasEnvironmentGuard, 'CMP-060 has no SIMULATED-port environ…
+       |                                                                                    ^
+    136|   });
+    137|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/security/m09/simulation-fail-closed.test.ts > SF-M09-SEC M09 SIMULATED / fail-closed boundaries > CMP-060 calls the review-routing port only after the authoritative DB transaction commits
+AssertionError: event order: pool.connect > sql:BEGIN > sql:SELECT > sql:SELECT > sql:SELECT > sql:INSERT > sql:UPDATE > port.routeToReview > sql:INSERT > sql:COMMIT: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/security/m09/simulation-fail-closed.test.ts:166:66
+    164|     } as never);
+    165|     expect(events).toContain('port.routeToReview');
+    166|     expect(routedInsideTx, `event order: ${events.join(' > ')}`).toBe(…
+       |                                                                  ^
+    167|   });
+    168| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/security/m09/static-isolation.test.ts > SF-M09-SEC static tenant isolation (migrations) > sf_migration: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role
+AssertionError: sf_migration.outbox_event is PLATFORM_OPERATIONAL but carries tenant_id: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/security/m09/static-isolation.test.ts:140:91
+    138|           expect(NON_TENANT_CLASSES.has(cls), `${t} unknown isolation …
+    139|           // A tenant-carrying row is tenant data whatever its declare…
+    140|           expect(hasTenantColumn(body), `${schema}.${t} is ${cls} but …
+       |                                                                                           ^
+    141|             false,
+    142|           );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 2 passed | 1 skipped (5)
+      Tests  4 failed | 32 passed | 7 skipped (43)
+   Start at  17:12:37
+   Duration  2.48s (import 38%, tests 37%, transform 25%, worker 1%)
+
+    Isolate  5 workers spawned · ~81ms startup each (spawn + environment, per file)
+             at least ~325ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to evidence/SF-M09-SEC/junit/security-no-db.xml

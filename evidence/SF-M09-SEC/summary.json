@@ -1,0 +1,20 @@
+{
+  "task_id": "SF-M09-SEC",
+  "branch": "cursor/m09-sec-91f2",
+  "vitest": "PASS_36",
+  "cross_tenant_leakage": 0,
+  "production_code_modified": false,
+  "certified": false,
+  "g3": false,
+  "g4": false,
+  "g6": false,
+  "self_certified": false,
+  "recommended_result": "SF_M09_SEC_FAIL",
+  "findings_count": 4,
+  "db_rls_live_included": false,
+  "cross_tenant_leakage_http": 0,
+  "cross_tenant_leakage_postgres": 1,
+  "critical_findings": 2,
+  "g4_recommended": false,
+  "note": "Independent SEC FAIL: critical CMP-059 outbox cross-tenant read + CMP-060 authz fail-open. HTTP forged-tenant CROSS_TENANT_LEAKAGE=0."
+}

@@ -1,0 +1,16 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M09-SEC
+
+ ✓ tests/security/m09/forged-tenant-http.test.ts (4 tests) 649ms
+   ✓ SF-M09-SEC forged tenant HTTP (fail-closed) (4)
+     ✓ every probed route is registered on the host and live (not 404) without forged headers 337ms
+ ✓ tests/security/m09/simulation-fail-closed.test.ts (4 tests) 70ms
+ ✓ tests/security/m09/static-isolation.test.ts (21 tests) 33ms
+ ✓ tests/security/m09/policy-input.test.ts (7 tests) 7ms
+
+ Test Files  4 passed (4)
+      Tests  36 passed (36)
+   Start at  17:14:46
+   Duration  2.26s (import 39%, tests 39%, transform 21%, worker 1%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M09-SEC/evidence/SF-M09-SEC/junit/security.xml
