@@ -1,59 +1,107 @@
-# SF-M10-002 — Pilot tenant overlay + TSB publish fixtures (CG-03 M10 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G6.
-# Finding M-04: POLICY_INPUT_REQUIRED. No invented residence statute.
+# SF-M10-002 handover — Pilot tenant overlay + TSB publish fixtures (CG-03 M10 Wave A)
+# CANDIDATE_COMPLETE. Not CERTIFIED. Not G6. POLICY_INPUT_REQUIRED (Finding M-04).
+# Sole writer of fixtures/golden/ind-soc-002/** and evidence/SF-M10-002/** for this slice.
 
 task_id: SF-M10-002
 title: Pilot tenant overlay + TSB publish fixtures
 module_id: M10
 concurrency_group: CG-03
-agent_role: component_builder
-builder_agent: serviceform-studio-builder
 branch: cursor/m10-002-overlay-91f2
-parallel_group: M10-A
-hard_serial_locks: [LOCK-2, LOCK-3]
-depends_on:
-  - SF-M09-CG-001 FROZEN_ON_MAIN (M09 contracts available for golden path)
-  - LOCK-1 CG-03 planning PR #157 on main
-  - owner POLICY_INPUT_REQUIRED fields remain placeholders
-allowed_write_paths:
-  - fixtures/golden/ind-soc-002/**
-  - evidence/SF-M10-002/**
-  - orchestrator/handovers/SF-M10-002.yaml
-allowed_write_notes:
-  - POLICY_INPUT_REQUIRED; fail-closed placeholders only
-  - Do not invent pilot tenant/State, legal basis, eligibility, fee, SLA, or credential statute
-read_only_paths:
-  - pnpm-lock.yaml
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - apps/**
-wave_eligible_now: true
-serial_after:
-  - SF-M09-CG-001
+base_commit: fd7492b398b2945713957a53b42c4717a7940c3f
+head_commit: 0d6dddc7a47b908f8f043ba64a69eb5c17637a6c
+builder_agent: serviceform-studio-builder
+agent_subagent_id: bc-5361629f-6448-5f3c-8c79-67892b67057e
 
-builders_dispatched_this_envelope: false
-planning_only: false
-implementation_authorized: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 dispatched: false
-orchestration_task_state: READY
-state: READY
 self_certified: false
 not_certified: true
 certified: false
 release_certified: false
 g4: false
 g6: false
+
+draft_pr:
+  status: PENDING_PLATFORM_OR_HUMAN
+  reason: gh_integration_403_createPullRequest
+  head_ref: cursor/m10-002-overlay-91f2
+  head_sha: 0d6dddc7a47b908f8f043ba64a69eb5c17637a6c
+  base_ref: main
+  compare_url: https://github.com/dbn1972/serviceform-ai/compare/main...cursor/m10-002-overlay-91f2?expand=1
+  pr_number: null
+  pr_url: null
+  draft_requested: true
+
 policy_input_required: true
+overlay_status: DRAFT_PENDING_POLICY_INPUT
+tsb_publication_state: DRAFT_PENDING_POLICY_INPUT
+frozen_contracts_altered: false
+invented_statutory_policy_forbidden: true
+embedded_secrets_forbidden: true
+
 ready_authorization:
   family: HUMAN_CG03_THROUGH_EVD
   status: AUTHORIZATION
-  join_separator: "_"
   wave_a_ready: true
-base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
-join_separator: "_"
+
+deliverables:
+  - path: fixtures/golden/ind-soc-002/README.md
+    role: Fixture directory overview
+    status: CANDIDATE_COMPLETE
+  - path: fixtures/golden/ind-soc-002/POLICY_INPUT_REQUIRED.md
+    role: Owner-input inventory (12 blocked fields)
+    status: CANDIDATE_COMPLETE
+  - path: fixtures/golden/ind-soc-002/tenant-overlay.yaml
+    role: Tenant overlay metadata (fail-closed placeholders)
+    status: DRAFT_PENDING_POLICY_INPUT
+  - path: fixtures/golden/ind-soc-002/tsb-publish-fixture.json
+    role: TSB publication record (pin_graph IDs all POLICY_INPUT_REQUIRED)
+    status: DRAFT_PENDING_POLICY_INPUT
+  - path: fixtures/golden/ind-soc-002/sfpackage-manifest-fixture.json
+    role: .sfpackage manifest (synthetic hashes; real hashes at publication)
+    status: DRAFT_PENDING_POLICY_INPUT
+  - path: fixtures/golden/ind-soc-002/maker-checker-record.yaml
+    role: Maker-checker approval record (PENDING_POLICY_INPUT)
+    status: DRAFT_PENDING_POLICY_INPUT
+  - path: evidence/SF-M10-002/EVIDENCE.md
+    role: Evidence record
+    status: CANDIDATE_COMPLETE
+  - path: orchestrator/handovers/SF-M10-002.yaml
+    role: This handover
+    status: CANDIDATE_COMPLETE
+
+blocking_conditions:
+  - All 12 POLICY_INPUT_REQUIRED fields in POLICY_INPUT_REQUIRED.md must be resolved by statutory owner
+  - Maker-checker approval required before TSB publish
+  - TSB publish gate must reject while any field carries POLICY_INPUT_REQUIRED sentinel
+  - SF-M10-001 (template + Studio package) must complete before TSB can be finalised
+  - SF-M10-003 (Golden E2E) is blocked until TSB is published with real policy inputs
+
+architecture_compliance:
+  no_invented_statute: true
+  no_tsb_mutation: true
+  no_cross_tenant_data: true
+  no_pii_in_fixtures: true
+  no_service_specific_backend: true
+  no_llm_eligibility_decision: true
+  frozen_contracts_unaltered: true
+  write_paths_respected: true
+  maker_checker_enforced: true
+  immutable_tsb_once_published: true
+
+evidence_ref: evidence/SF-M10-002/EVIDENCE.md
+
+next_steps:
+  - SF-M10-001 Wave A builder to produce canonical service template and Studio package
+  - Statutory owner to supply all 12 POLICY_INPUT_REQUIRED fields
+  - Legal reviewer + tenant admin maker-checker approval
+  - Contract guardian to stamp TSB and generate real .sfpackage hashes
+  - SF-M10-003 to run Golden E2E and tenant-negative harness
+  - EVD agent to review evidence and recommend G6 (human issues; agents never self-certify)
+
 stop_conditions:
   - invent residence eligibility/fee/SLA/credential statute
   - CERTIFIED or G6 claim
   - write outside allowed_write_paths
+  - mutate published TSB version
