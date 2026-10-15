@@ -121,7 +121,8 @@ export function validateSubmitRequest(body: unknown): SubmitRequestInput {
     }
     const item = raw as Record<string, unknown>;
     for (const key of Object.keys(item)) {
-      if (key !== 'owner_component' && key !== 'scope_ref') bad(`${pointer}/${key}`, 'UNKNOWN_FIELD');
+      if (key !== 'owner_component' && key !== 'scope_ref')
+        bad(`${pointer}/${key}`, 'UNKNOWN_FIELD');
     }
     const owner = item['owner_component'];
     if (owner === 'CMP-061') bad(`${pointer}/owner_component`, 'SELF_TASK_FORBIDDEN');
@@ -215,7 +216,10 @@ export function validateTaskOutcome(body: unknown): TaskOutcomeInput {
         rec['legal_basis_or_exception_ref'],
         '/legal_basis_or_exception_ref',
       ),
-      exception_authority_ref: opaqueRef(rec['exception_authority_ref'], '/exception_authority_ref'),
+      exception_authority_ref: opaqueRef(
+        rec['exception_authority_ref'],
+        '/exception_authority_ref',
+      ),
     };
   }
   return bad('/outcome', 'OUTCOME_INVALID');

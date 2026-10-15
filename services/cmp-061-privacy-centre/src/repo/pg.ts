@@ -11,12 +11,7 @@ import type {
 import { Cmp061Error } from '../errors.js';
 import { TOPIC_AUDIT } from '../outbox.js';
 import type { EventEnvelope, RequestContext } from '../types.js';
-import type {
-  DecisionLogRow,
-  PrivacyRepository,
-  PrivacyTx,
-  StoredIdempotent,
-} from './types.js';
+import type { DecisionLogRow, PrivacyRepository, PrivacyTx, StoredIdempotent } from './types.js';
 
 export interface SqlResult<R = Record<string, unknown>> {
   rows: R[];

@@ -18,11 +18,7 @@ import { Cmp061Error, detail, type ErrorCode } from '../errors.js';
 import { envelopeOf, TOPIC_DOMAIN, type DomainEventType } from '../outbox.js';
 import type { DecisionLogRow, PrivacyRepository, PrivacyTx } from '../repo/types.js';
 import type { TenantContext } from '../types.js';
-import type {
-  DenyRequestInput,
-  SubmitRequestInput,
-  TaskOutcomeInput,
-} from './input.js';
+import type { DenyRequestInput, SubmitRequestInput, TaskOutcomeInput } from './input.js';
 
 export interface PrivacyServiceDeps {
   repo: PrivacyRepository;
@@ -277,7 +273,7 @@ export class PrivacyCentreService {
     ]);
     return this.deps.repo.withTx(ctx, async (tx) => {
       const subjectId =
-        ctx.actor.type === 'CITIZEN' ? ctx.actor.id : (await this.requireSubjectFilter(ctx));
+        ctx.actor.type === 'CITIZEN' ? ctx.actor.id : await this.requireSubjectFilter(ctx);
       const rows = await tx.listRequestsForSubject(subjectId);
       await appendAudit(tx, ctx, {
         action: ACTIONS.meRead,
@@ -563,7 +559,13 @@ export class PrivacyCentreService {
     requestId: string,
     idem: Idempotency,
   ): Promise<CommandResult> {
-    await this.guard(ctx, ACTIONS.requestComplete, REQUEST_RESOURCE_TYPE, requestId, STAFF_OR_SYSTEM);
+    await this.guard(
+      ctx,
+      ACTIONS.requestComplete,
+      REQUEST_RESOURCE_TYPE,
+      requestId,
+      STAFF_OR_SYSTEM,
+    );
     return this.command(ctx, idem, async (tx, now) => {
       const current = await tx.getRequest(requestId, true);
       if (!current) throw new Cmp061Error('SF-SYS-002', detail('REQUEST_NOT_FOUND'));
