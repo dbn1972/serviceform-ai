@@ -12,7 +12,9 @@ const { Ajv2020 } = require('ajv/dist/2020.js') as {
     getSchema(id: string): ((v: unknown) => boolean) & { errors?: unknown };
   };
 };
-const formats = require('ajv-formats') as { default?: (a: unknown) => void } & ((a: unknown) => void);
+const formats = require('ajv-formats') as { default?: (a: unknown) => void } & ((
+  a: unknown,
+) => void);
 const addFormats = formats.default ?? formats;
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
@@ -31,10 +33,7 @@ for (const f of readdirSync(join(root, 'contracts/m09/schemas'))) {
   IDS[f.replace('.schema.json', '')] = s.$id;
 }
 
-export function validateM09(
-  name: string,
-  value: unknown,
-): { valid: boolean; errors: unknown } {
+export function validateM09(name: string, value: unknown): { valid: boolean; errors: unknown } {
   const id = IDS[name];
   if (!id) throw new Error(`unknown m09 schema ${name}`);
   const fn = ajv.getSchema(id);

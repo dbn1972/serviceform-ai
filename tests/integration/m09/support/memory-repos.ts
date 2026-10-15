@@ -146,7 +146,10 @@ export class MemorySchedulerRepository implements SchedulerRepository {
         updateAppointment: async (row) => void s.appointments.set(row.appointment_id, { ...row }),
         insertEventLog: async (row) => void s.log.push({ ...row }),
         insertOutbox: async (envelope, topic) =>
-          void s.outbox.push({ topic, envelope: structuredClone(envelope) as OutboxRow['envelope'] }),
+          void s.outbox.push({
+            topic,
+            envelope: structuredClone(envelope) as OutboxRow['envelope'],
+          }),
       };
       return fn(tx);
     });
@@ -188,7 +191,8 @@ export class MemoryAssistedRepository implements AssistedRepository {
         if (con) agg.consent = { ...con };
         return agg;
       },
-      listActions: async (id) => s.actions.filter((a) => a.session_id === id).map((a) => ({ ...a })),
+      listActions: async (id) =>
+        s.actions.filter((a) => a.session_id === id).map((a) => ({ ...a })),
     };
   }
 
@@ -210,7 +214,10 @@ export class MemoryAssistedRepository implements AssistedRepository {
         insertConsent: async (row) => void s.consents.set(row.session_id, { ...row }),
         insertAction: async (row) => void s.actions.push({ ...row }),
         insertOutbox: async (envelope, topic) =>
-          void s.outbox.push({ topic, envelope: structuredClone(envelope) as OutboxRow['envelope'] }),
+          void s.outbox.push({
+            topic,
+            envelope: structuredClone(envelope) as OutboxRow['envelope'],
+          }),
       };
       return fn(tx);
     });

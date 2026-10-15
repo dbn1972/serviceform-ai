@@ -139,13 +139,6 @@ describe('INT-011 M09 forged tenant denial (CROSS_TENANT_LEAKAGE=0)', () => {
 });
 
 describe('INT-011 M09 unauthenticated requests fail closed with the frozen error envelope', () => {
-  /** Owner deviations recorded as FINDINGS (independent stitcher; no owner patch). */
-  const KNOWN_STATUS_FINDINGS = new Set(['CMP-058 POST /v1/elements']);
-  const KNOWN_ENVELOPE_FINDINGS = new Set([
-    'CMP-060 GET /v1/risk/assessments/:assessmentId',
-    'CMP-060 POST /v1/risk/assessments',
-  ]);
-
   async function unauthenticatedOutcomes(): Promise<{
     h: M09Harness;
     wrongStatus: string[];
@@ -164,10 +157,8 @@ describe('INT-011 M09 unauthenticated requests fail closed with the frozen error
       });
       const body = res.json() as Record<string, unknown>;
       const key = `${p.cmp} ${p.method} ${p.route}`;
-      if (res.statusCode !== 401 && !KNOWN_STATUS_FINDINGS.has(key)) {
-        wrongStatus.push(`${key} -> ${res.statusCode}`);
-      }
-      if (!validate('error-response', body).valid && !KNOWN_ENVELOPE_FINDINGS.has(key)) {
+      if (res.statusCode !== 401) wrongStatus.push(`${key} -> ${res.statusCode}`);
+      if (!validate('error-response', body).valid) {
         badEnvelope.push(`${key} -> ${JSON.stringify(body)}`);
       }
     }
@@ -182,39 +173,14 @@ describe('INT-011 M09 unauthenticated requests fail closed with the frozen error
     expect(h.riskPool.statements).toEqual([]);
   });
 
-  it('no server-side context → 401 on M09 routes except recorded FINDINGS', async () => {
+  it('[F-08 CMP-058] no server-side context → 401 on every M09 route (authentication precedes input validation)', async () => {
     const { wrongStatus } = await unauthenticatedOutcomes();
-    expect(wrongStatus, 'unexpected non-401 unauthenticated responses').toEqual([]);
+    expect(wrongStatus, 'routes not answering 401 to an unauthenticated caller').toEqual([]);
   });
 
-  it('FINDING: CMP-058 POST /v1/elements validates body before auth (400 SF-SYS-003)', async () => {
-    const h = m09Harness(async () => null);
-    app = await buildApp(config, { logger: silentLogger(), m09: h.mounts });
-    const res = await app.inject({
-      method: 'POST',
-      url: '/v1/elements',
-      headers: idemHeaders('int-011-finding-058'),
-      payload: {},
-    });
-    expect(res.statusCode).toBe(400);
-    expect(res.json()).toMatchObject({ error_code: 'SF-SYS-003' });
-    expect(allTenantsSeen(h)).toEqual([]);
-  });
-
-  it('refusal bodies conform to SF-CON-ERROR-RESPONSE except recorded FINDINGS', async () => {
+  it('[F-01 CMP-060] every M09 refusal body conforms to FROZEN SF-CON-ERROR-RESPONSE', async () => {
     const { badEnvelope } = await unauthenticatedOutcomes();
-    expect(badEnvelope, 'unexpected non-frozen error envelopes').toEqual([]);
-  });
-
-  it('FINDING: CMP-060 unauth uses nested {error:{code}} instead of SF-CON-ERROR-RESPONSE', async () => {
-    const h = m09Harness(async () => null);
-    app = await buildApp(config, { logger: silentLogger(), m09: h.mounts });
-    const res = await app.inject({ method: 'GET', url: `/v1/risk/assessments/${DOC}` });
-    expect(res.statusCode).toBe(401);
-    const body = res.json() as { error?: { code?: string } };
-    expect(body.error?.code).toBe('SF-TEN-001');
-    expect(validate('error-response', body).valid).toBe(false);
-    expect(allTenantsSeen(h)).toEqual([]);
+    expect(badEnvelope, 'routes emitting a non-SF-CON-ERROR-RESPONSE body').toEqual([]);
   });
 });
 

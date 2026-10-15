@@ -162,9 +162,13 @@ describe('INT-015 assisted / omnichannel session through the host (CMP-057)', ()
         await start(h, 'assist-key-0006', { channel: 'COUNTER', applied_for_citizen_id: CITIZEN_1 })
       ).json(),
     );
-    expect((await h.app.inject({ method: 'GET', url: `/v1/assisted/sessions/${id}` })).statusCode).toBe(200);
+    expect(
+      (await h.app.inject({ method: 'GET', url: `/v1/assisted/sessions/${id}` })).statusCode,
+    ).toBe(200);
     h.state.ctx = ctxFor(T1, CITIZEN_1, 'CITIZEN');
-    expect((await h.app.inject({ method: 'GET', url: `/v1/assisted/sessions/${id}` })).statusCode).toBe(200);
+    expect(
+      (await h.app.inject({ method: 'GET', url: `/v1/assisted/sessions/${id}` })).statusCode,
+    ).toBe(200);
     h.state.ctx = ctxFor(T1, OFFICER_2, 'OFFICER');
     const other = await h.app.inject({ method: 'GET', url: `/v1/assisted/sessions/${id}` });
     expect(other.statusCode).toBe(404);

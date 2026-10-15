@@ -127,7 +127,7 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     expect(Object.keys(out)).toEqual(['routing_ref']);
   });
 
-  it('FINDING: PRODUCTION host admits SIMULATED review-routing port (Constitution rule 22)', async () => {
+  it('[F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)', async () => {
     const pool = new RecordingPool(rowsFor);
     let admitted = true;
     try {
@@ -158,11 +158,10 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     } catch {
       admitted = false;
     }
-    // FINDING: CMP-060 admits SIMULATED review routing in PRODUCTION (Constitution rule 22).
-    expect(admitted).toBe(true);
+    expect(admitted, 'SIMULATED review routing admitted and used in PRODUCTION').toBe(false);
   });
 
-  it('FINDING: PRODUCTION host currently admits SimulatedAllowAllTenantAuthz', async () => {
+  it('[F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)', async () => {
     const pool = new RecordingPool(rowsFor);
     let admitted = true;
     try {
@@ -189,7 +188,6 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     } catch {
       admitted = false;
     }
-    // FINDING: SimulatedAllowAllTenantAuthz is admitted on PRODUCTION host mounts.
-    expect(admitted).toBe(true);
+    expect(admitted, 'SIMULATED allow-all authz admitted and used in PRODUCTION').toBe(false);
   });
 });

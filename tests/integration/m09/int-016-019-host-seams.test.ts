@@ -152,7 +152,7 @@ describe('INT-017 migration workbench host seam (CMP-059)', () => {
     expect(pool.openTransactions()).toBe(0);
   });
 
-  it('FINDING: CMP-059 DB session uses sf.tenant_id/sf.actor_id (not SF-CON-DB-SESSION-CONTEXT)', async () => {
+  it('[F-03 CMP-059] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (app.tenant_id read by sf_platform.current_tenant_id())', async () => {
     const pool = new RecordingPool();
     const a = await host({
       migration: {
@@ -162,7 +162,9 @@ describe('INT-017 migration workbench host seam (CMP-059)', () => {
     });
     await a.inject({ method: 'GET', url: `/v1/migrations/${DOC}/reconciliation` });
     expect(pool.txs.length).toBeGreaterThan(0);
-    expect(sessionContextViolations(pool).length).toBeGreaterThan(0);
+    expect(sessionContextViolations(pool), `keys applied: ${pool.settingKeys().join(',')}`).toEqual(
+      [],
+    );
   });
 
   it('body tenant_id on project creation is never adopted', async () => {
@@ -199,7 +201,7 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     };
   }
 
-  it('advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant', async () => {
+  it('[F-07 CMP-060] advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant', async () => {
     const pool = new RecordingPool(rowsFor);
     const recorder = new TenantRecorder();
     const a = await host({
@@ -220,12 +222,7 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
       authoritative_decision_by_this_component: false,
     });
     const v = validateM09('risk-assessment', body);
-    // FINDING: response includes additional properties beyond FROZEN risk-assessment schema.
-    if (!v.valid) {
-      expect(v.errors?.some((e) => e.keyword === 'additionalProperties')).toBe(true);
-    } else {
-      expect(v.valid).toBe(true);
-    }
+    expect(v.valid, JSON.stringify(v.errors)).toBe(true);
     expect(recorder.seen).toEqual([T1]);
     expect(pool.tenantsSeen()).toEqual([T1]);
   });
@@ -245,7 +242,7 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     expect(pool.dataStatements()).toEqual([]);
   });
 
-  it('FINDING: host mount without an authz port currently allows create (not fail-closed)', async () => {
+  it('[F-04 CMP-060] host mount without an authz port fails closed (no SIMULATED allow-all default)', async () => {
     const pool = new RecordingPool(rowsFor);
     const a = await host({
       risk: { options: { pool }, resolveContext: async () => OFFICER },
@@ -255,11 +252,11 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
       url: '/v1/risk/assessments',
       payload: riskBody(0.3),
     });
-    expect(res.statusCode).toBe(201);
-    expect(pool.dataStatements().length).toBeGreaterThan(0);
+    expect(res.statusCode, 'risk assessment created with no authorization port bound').toBe(403);
+    expect(pool.dataStatements()).toEqual([]);
   });
 
-  it('FINDING: HIGH/CRITICAL review routing may run inside the authoritative DB tx', async () => {
+  it('[F-06 CMP-060] HIGH/CRITICAL review routing (external port) is not called inside the authoritative DB tx', async () => {
     const pool = new RecordingPool(rowsFor);
     const recorder = new TenantRecorder();
     const routed: Array<{ openTx: number; tenant: string }> = [];
@@ -286,10 +283,13 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     expect(res.statusCode).toBe(201);
     expect(res.json()).toMatchObject({ review_requested: true });
     expect(routed.map((r) => r.tenant)).toEqual([T1]);
-    expect(routed.some((r) => r.openTx > 0)).toBe(true);
+    expect(
+      routed.map((r) => r.openTx),
+      'open DB transactions when routeToReview ran',
+    ).toEqual([0]);
   });
 
-  it('FINDING: CMP-060 DB session uses app.current_* keys (not SF-CON-DB-SESSION-CONTEXT)', async () => {
+  it('[F-02 CMP-060] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (RLS reads sf_platform.current_tenant_id())', async () => {
     const pool = new RecordingPool(rowsFor);
     const recorder = new TenantRecorder();
     const a = await host({
@@ -297,7 +297,9 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     });
     await a.inject({ method: 'GET', url: `/v1/risk/assessments/${DOC}` });
     expect(pool.txs.length).toBeGreaterThan(0);
-    expect(sessionContextViolations(pool).length).toBeGreaterThan(0);
+    expect(sessionContextViolations(pool), `keys applied: ${pool.settingKeys().join(',')}`).toEqual(
+      [],
+    );
   });
 
   it('body tenant_id on review disposition is refused', async () => {
@@ -328,7 +330,11 @@ describe('INT-019 privacy rights centre host seam (CMP-061)', () => {
 
   it('citizen privacy reads reach the owner service with the server tenant only', async () => {
     const { a, recorder } = await privacyHost(new ContextState(ctxFor(T1, CITIZEN_1, 'CITIZEN')));
-    for (const url of ['/v1/privacy/me', '/v1/privacy/me/consents', `/v1/privacy/requests/${DOC}`]) {
+    for (const url of [
+      '/v1/privacy/me',
+      '/v1/privacy/me/consents',
+      `/v1/privacy/requests/${DOC}`,
+    ]) {
       expect((await a.inject({ method: 'GET', url })).statusCode, url).toBe(200);
     }
     expect(recorder.seen).toEqual([T1, T1, T1]);
