@@ -1,4 +1,4 @@
-version: "2.6"
+version: "2.7"
 # Shared contracts. FROZEN on 3 October 2026 by the Architecture & Contract Guardian after
 # CONTRACT-REVIEW-001 and owner acceptance of ADR-0002 and decisions D-01 to D-05. Any change,
 # including to a companion file, needs a Contract Change Request; scripts/gates/contracts_lock_gate.py
@@ -7,6 +7,7 @@ version: "2.6"
 # Reconfirmed 5 Oct 2026 on PR #85 freeze candidate: 19/19 hashes match files. Original 13 unchanged.
 # CG-02 freeze candidate 9 Oct 2026: append-only ten NEW rows; existing 19 hashes unchanged; 29/29 FROZEN_CANDIDATE.
 # SF-M07-CG-001 freeze candidate 14 Oct 2026 (v2.6): APPEND-ONLY five NEW M07 rows; existing 29 hashes unchanged; 34/34 FROZEN_CANDIDATE until merge.
+# SF-M09-CG-001 freeze candidate 15 Oct 2026 (v2.7): APPEND-ONLY eight NEW M09 rows; existing 34 hashes unchanged; 42/42 FROZEN_CANDIDATE until merge.
 # A builder that needs a frozen-contract change must STOP and open a Contract Change Request.
 verified:
   date: 2026-10-09
@@ -18,6 +19,9 @@ verified:
   m07_candidate_date: 2026-10-14
   m07_candidate_result: 34_FROZEN_CANDIDATE_HASHES_MATCH
   existing_29_unchanged: true
+  m09_candidate_date: 2026-10-15
+  m09_candidate_result: 42_FROZEN_CANDIDATE_HASHES_MATCH
+  existing_34_unchanged: true
 contracts:
   - id: SF-CON-AUDIT-EVENT
     version: 1
@@ -405,5 +409,93 @@ contracts:
     schema_hash: ca0b302aeab1c85f3f387015a74240070a9b5c715d7713adb1f7cdd4bf5e87c7
     producers: [CMP-012]
     consumers: [SF-M07-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-APPOINTMENT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-056; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/appointment.schema.json
+    schema_hash: 9f6d8ba5f5ae6ac576bf2847ab6abf8a2e456e766343baa8ef380a27ebd57fd6
+    producers: [CMP-056]
+    consumers: [SF-M09-001]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-ASSISTED-SESSION
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-057; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/assisted-session.schema.json
+    schema_hash: 33656e9ded20833251cdd66499b30ee2bbef572ad9ebeced2ae03ad95725ff72
+    producers: [CMP-057]
+    consumers: [SF-M09-002]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-SEMANTIC-ELEMENT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-058; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/semantic-element.schema.json
+    schema_hash: 460fadf73dbe08ee14769c3d74034ef76fb26a9227e5314cc91041e2f006fe0c
+    producers: [CMP-058]
+    consumers: [SF-M09-003]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-MIGRATION-PROJECT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-059; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/migration-project.schema.json
+    schema_hash: 62e8b1645a2ce904e339034b902792eaa5bc886b0f67f4d20dd96a90c58d078b
+    producers: [CMP-059]
+    consumers: [SF-M09-004]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-RISK-ASSESSMENT
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-060; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/risk-assessment.schema.json
+    schema_hash: cd5084bbe413bae266cdea81e60de5edb54fba089ed2f0f814e4353780d61fdc
+    producers: [CMP-060]
+    consumers: [SF-M09-005]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-PRIVACY-REQUEST
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CMP-061; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/privacy-request.schema.json
+    schema_hash: 56ef4ab905024676fa1401f69c6020b5df6e41cae6098453ad4abcd0e6af2fc3
+    producers: [CMP-061]
+    consumers: [SF-M09-006]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-SFPACKAGE-MANIFEST
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CROSS; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/sfpackage-manifest.schema.json
+    schema_hash: 365d794255986bc4c036f5bba3f481c11679ee68b136ef9e80141105fcacd9c9
+    producers: [SF-M09-007]
+    consumers: [SF-M09-007]
+    adr0006_could_change: false
+    change_request: null
+  - id: SF-CON-BPMN-PROFILE
+    version: 1
+    status: FROZEN
+    owner: contract_guardian
+    source: "AWS v1.7 / world-class-extensions; CROSS; CG-03-M09-M10-CONTRACT-PREREQUISITES"
+    path: contracts/m09/schemas/bpmn-profile-report.schema.json
+    schema_hash: 7f818f0b798c89c16263135a6ad3efbc1f836674d6384c5244170de09a24c28d
+    producers: [SF-M09-007]
+    consumers: [SF-M09-007]
     adr0006_could_change: false
     change_request: null

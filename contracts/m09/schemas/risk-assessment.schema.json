@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/riskassessment/v1",
+  "title": "RiskAssessment",
+  "description": "FROZEN. SF-CON-RISK-ASSESSMENT. Explainable integrity risk assessment (CMP-060 / INT-018). Raw AI/risk score alone MUST NOT reject or penalize. Adverse effects require deterministic policy or authorized human decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "assessment_id",
+    "subject_application_id",
+    "signals",
+    "authoritative_decision_by_this_component",
+    "lifecycle_status"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-RISK-ASSESSMENT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "assessment_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "subject_application_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "signals": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["signal_code", "provenance_ref"],
+        "properties": {
+          "signal_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "provenance_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "model_or_rule_version": {
+            "type": ["string", "null"],
+            "maxLength": 64
+          }
+        }
+      }
+    },
+    "authoritative_decision_by_this_component": {
+      "type": "boolean",
+      "const": false
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["COMPLETED", "HIGH_RISK_REVIEW_REQUESTED", "DISPOSITION_RECORDED"]
+    }
+  }
+}

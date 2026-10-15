@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/bpmnprofilereport/v1",
+  "title": "BpmnProfileReport",
+  "description": "FROZEN. SF-CON-BPMN-PROFILE. BPMN 2.0 supported-profile import/export compatibility report. Temporal remains the durable runtime; BPMN is interchange over the canonical ServiceForm Workflow Model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "report_id",
+    "direction",
+    "compatibility_status",
+    "temporal_remains_runtime",
+    "canonical_model"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-BPMN-PROFILE"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "report_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["IMPORT", "EXPORT", "ROUND_TRIP"]
+    },
+    "compatibility_status": {
+      "type": "string",
+      "enum": ["SUPPORTED", "PARTIAL", "UNSUPPORTED"]
+    },
+    "unsupported_constructs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 128
+      }
+    },
+    "temporal_remains_runtime": {
+      "type": "boolean",
+      "const": true
+    },
+    "canonical_model": {
+      "type": "string",
+      "const": "ServiceForm Workflow Model"
+    }
+  }
+}

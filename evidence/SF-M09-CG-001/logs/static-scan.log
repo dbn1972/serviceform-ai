@@ -1,0 +1,29 @@
+PASS appointment.schema.json no PII field names / named officials / invented statutory period fields
+PASS assisted-session.schema.json no PII field names / named officials / invented statutory period fields
+PASS bpmn-profile-report.schema.json no PII field names / named officials / invented statutory period fields
+PASS migration-project.schema.json no PII field names / named officials / invented statutory period fields
+PASS privacy-request.schema.json no PII field names / named officials / invented statutory period fields
+PASS risk-assessment.schema.json no PII field names / named officials / invented statutory period fields
+PASS semantic-element.schema.json no PII field names / named officials / invented statutory period fields
+PASS sfpackage-manifest.schema.json no PII field names / named officials / invented statutory period fields
+PASS contracts/m09/examples/invalid/appointment.capacity-not-atomic.json synthetic only
+PASS contracts/m09/examples/invalid/appointment.notification-invalidates-booking.json synthetic only
+PASS contracts/m09/examples/invalid/assisted-session.applied-by-not-distinct.json synthetic only
+PASS contracts/m09/examples/invalid/bpmn-profile-report.temporal-replaced.json synthetic only
+PASS contracts/m09/examples/invalid/bpmn-profile-report.wrong-canonical-model.json synthetic only
+PASS contracts/m09/examples/invalid/migration-project.dry-run-optional.json synthetic only
+PASS contracts/m09/examples/invalid/privacy-request.cross-component-mutation.json synthetic only
+PASS contracts/m09/examples/invalid/privacy-request.not-orchestration-only.json synthetic only
+PASS contracts/m09/examples/invalid/risk-assessment.authoritative-decision.json synthetic only
+PASS contracts/m09/examples/invalid/semantic-element.invented-statute-allowed.json synthetic only
+PASS contracts/m09/examples/invalid/sfpackage-manifest.embedded-secrets-allowed.json synthetic only
+PASS contracts/m09/examples/valid/appointment.json synthetic only
+PASS contracts/m09/examples/valid/assisted-session.json synthetic only
+PASS contracts/m09/examples/valid/bpmn-profile-report.json synthetic only
+PASS contracts/m09/examples/valid/migration-project.json synthetic only
+PASS contracts/m09/examples/valid/privacy-request.json synthetic only
+PASS contracts/m09/examples/valid/risk-assessment.json synthetic only
+PASS contracts/m09/examples/valid/semantic-element.json synthetic only
+PASS contracts/m09/examples/valid/sfpackage-manifest.json synthetic only
+
+static-scan failures=0

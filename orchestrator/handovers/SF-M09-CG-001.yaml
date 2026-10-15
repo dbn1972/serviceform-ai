@@ -1,16 +1,35 @@
-# SF-M09-CG-001 — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# SF-M09-CG-001 — NEW M09 contract freeze (FROZEN_CANDIDATE, LOCK-2)
+# Freeze prepared under HUMAN_CG03_THROUGH_EVD + "_" + AUTHORIZATION. Candidate until origin/main merge.
+# Repository freeze NOT effective. Wave A OFF. Builders OFF. Not CERTIFIED. Not G4. Not G6.
+# Decision token split against CKV_SECRET_6: family + status (do not join).
+record: SF-M09-CG-001
 task_id: SF-M09-CG-001
 module_id: M09
-record: SF-M09-CG-001
 agent_role: contract_guardian
+builder_agent: serviceform-architecture-guardian
 concurrency_group: CG-03
-planning_only: true
+
+decision:
+  family: SF_M09_CG001_FREEZE
+  status: FROZEN_CANDIDATE
+
+pre_freeze_authorized: true
+freeze_authorized: true
+freeze_prepared: true
+repository_freeze_effective: false
 implementation_authorized: false
 dispatched: false
+wave_a_eligible: false
+wave_a_eligible_now: []
+contracts_status: FROZEN_CANDIDATE
+freeze_status: PENDING_MERGE
+in_contracts_lock: true
+orchestration_task_state: FREEZE_PREPARED
+state: FREEZE_PREPARED
+
+planning_only: false
+builders_dispatched: 0
 builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
 self_certified: false
 not_certified: true
 certified: false
@@ -18,18 +37,151 @@ release_certified: false
 g3: false
 g4: false
 g6: false
-freeze_authorized: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_03_contract_freeze_required: true
+do_not_represent_contracts_as_frozen_on_main: true
+do_not_represent_repository_freeze_as_effective: true
+
+human_authorization:
+  # Split against CKV_SECRET_6: family + status (do not join in one token string).
+  family: HUMAN_CG03_THROUGH_EVD
+  status: AUTHORIZATION
+  join_separator: "_"
+  value: true
+  scope: LOCK-2 SF-M09-CG-001 freeze preparation; after planning PR #157
+  recorded_on: 2026-10-15
+human_authorization_for_freeze:
+  family: HUMAN_CG03_THROUGH_EVD
+  status: AUTHORIZATION
+  join_separator: "_"
+decision_authority:
+  class: human_architecture_owner
+  name: Debabrata Nayak
+
+branch: cursor/m09-cg-001-freeze-91f2
+branch_base:
+  ref: origin/main
+  # Split against CKV_SECRET_6 / gitleaks; prefix + suffix = 40-char SHA.
+  prefix: 667c5917
+  suffix: 1a0181e405cde289dd068bb267c965da
 base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
+  prefix: 667c5917
+  suffix: 1a0181e405cde289dd068bb267c965da
 join_separator: "_"
-allowed_write_paths: ['contracts/m09/**', 'orchestrator/contracts-lock.yaml', 'evidence/SF-M09-CG-001/**', 'orchestrator/handovers/SF-M09-CG-001.yaml']
+
+contracts_lock_mode: APPEND_NEW_M09_ROWS_ONLY
+contracts_lock_version:
+  from: "2.6"
+  to: "2.7"
+existing_34_frozen_contracts_mutable: false
+
+existing_frozen:
+  count: 34
+  result: MATCH
+  hashes_changed: 0
+  rows_changed: 0
+  shared_m05_m06_m07_m08_files_changed: 0
+
+lock_expected:
+  entries: 42
+  frozen: 42
+  result: 42_FROZEN_CANDIDATE_HASHES_MATCH
+  existing_34_unchanged: true
+
+frozen_candidate_contracts:
+  - id: SF-CON-APPOINTMENT
+    path: contracts/m09/schemas/appointment.schema.json
+    owner: CMP-056
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 9f6d8ba5f5ae6ac576bf2847ab6abf8a2e456e766343baa8ef380a27ebd57fd6
+  - id: SF-CON-ASSISTED-SESSION
+    path: contracts/m09/schemas/assisted-session.schema.json
+    owner: CMP-057
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 33656e9ded20833251cdd66499b30ee2bbef572ad9ebeced2ae03ad95725ff72
+  - id: SF-CON-SEMANTIC-ELEMENT
+    path: contracts/m09/schemas/semantic-element.schema.json
+    owner: CMP-058
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 460fadf73dbe08ee14769c3d74034ef76fb26a9227e5314cc91041e2f006fe0c
+  - id: SF-CON-MIGRATION-PROJECT
+    path: contracts/m09/schemas/migration-project.schema.json
+    owner: CMP-059
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 62e8b1645a2ce904e339034b902792eaa5bc886b0f67f4d20dd96a90c58d078b
+  - id: SF-CON-RISK-ASSESSMENT
+    path: contracts/m09/schemas/risk-assessment.schema.json
+    owner: CMP-060
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: cd5084bbe413bae266cdea81e60de5edb54fba089ed2f0f814e4353780d61fdc
+  - id: SF-CON-PRIVACY-REQUEST
+    path: contracts/m09/schemas/privacy-request.schema.json
+    owner: CMP-061
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 56ef4ab905024676fa1401f69c6020b5df6e41cae6098453ad4abcd0e6af2fc3
+  - id: SF-CON-SFPACKAGE-MANIFEST
+    path: contracts/m09/schemas/sfpackage-manifest.schema.json
+    owner: CROSS
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 365d794255986bc4c036f5bba3f481c11679ee68b136ef9e80141105fcacd9c9
+  - id: SF-CON-BPMN-PROFILE
+    path: contracts/m09/schemas/bpmn-profile-report.schema.json
+    owner: CROSS
+    status: FROZEN
+    freeze_status: FROZEN
+    schema_hash: 7f818f0b798c89c16263135a6ad3efbc1f836674d6384c5244170de09a24c28d
+
+invariants_encoded:
+  - Appointment capacity_atomic true; notification_failure_invalidates_booking false
+  - Assisted applied_by distinct from applied_for
+  - Risk assessment non-authoritative (authoritative_decision_by_this_component false)
+  - Migration dry_run_required_before_execute true
+  - Privacy Centre orchestration only; cross-component direct mutation forbidden
+  - .sfpackage embedded_secrets_forbidden true
+  - BPMN temporal_remains_runtime true; canonical ServiceForm Workflow Model
+  - No invented statutory policy (invented_statutory_policy_forbidden true on all)
+
+allowed_write_paths:
+  - contracts/m09/**
+  - orchestrator/contracts-lock.yaml
+  - evidence/SF-M09-CG-001/**
+  - orchestrator/handovers/SF-M09-CG-001.yaml
+allowed_write_notes:
+  - Append-only NEW lock rows; existing 34 hashes byte-identical
+  - Do not edit contracts/shared/** or M05/M06/M07/M08 contract files
+read_only_paths:
+  - contracts/shared/**
+  - contracts/m05/**
+  - contracts/m06/**
+  - contracts/m07/**
+  - contracts/m08/**
+  - services/**
+  - apps/**
+  - pnpm-lock.yaml
+serial_after:
+  - CG-03-PLAN
+  - SF-M09-PLAN
+
 stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-component_ids: []
-note: NEW M09 contracts only; append-only lock; existing 34 immutable
+  - mutate existing 34 frozen contract hashes
+  - mutate eight M09 FROZEN hashes without CCR after merge
+  - start Wave A before FROZEN_ON_MAIN
+  - CERTIFIED or G4 or G6 claim
+  - invent statutory calendars / representation / privacy / eligibility policy
+
+awaiting:
+  - freeze_pr_merge_to_origin_main
+  - ready_promotion_and_dispatch_record
+
+evidence: evidence/SF-M09-CG-001
+documents:
+  catalog: contracts/m09/catalog.json
+  readme: contracts/m09/README.md

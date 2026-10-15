@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/privacyrequest/v1",
+  "title": "PrivacyRequest",
+  "description": "FROZEN. SF-CON-PRIVACY-REQUEST. Citizen privacy rights request (CMP-061 / INT-019). Orchestrates owner-domain tasks; MUST NOT directly mutate foreign component tables.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "request_id",
+    "request_type",
+    "lifecycle_status",
+    "cross_component_direct_mutation_forbidden",
+    "owner_task_orchestration_only"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-PRIVACY-REQUEST"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "request_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "request_type": {
+      "type": "string",
+      "enum": ["ACCESS", "CORRECTION", "ERASURE", "PORTABILITY", "CONSENT_WITHDRAWAL", "RESTRICT"]
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["SUBMITTED", "TASKS_REQUESTED", "COMPLETED", "WITHDRAWN", "DENIED_WITH_BASIS_REF"]
+    },
+    "legal_basis_or_exception_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128,
+      "description": "Opaque owner-supplied ref; POLICY_INPUT_REQUIRED"
+    },
+    "cross_component_direct_mutation_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "owner_task_orchestration_only": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

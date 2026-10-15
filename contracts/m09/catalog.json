@@ -1,0 +1,66 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "freeze_status": "PENDING_MERGE",
+  "in_contracts_lock": true,
+  "module": "M09",
+  "task": "SF-M09-CG-001",
+  "note": "SF-M09-CG-001 freeze preparation (LOCK-2). Candidate until origin/main merge. Existing 34 lock rows immutable. No invented statute. Wave A OFF.",
+  "contracts": [
+    {
+      "id": "SF-CON-APPOINTMENT",
+      "path": "contracts/m09/schemas/appointment.schema.json",
+      "owner": "CMP-056",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-ASSISTED-SESSION",
+      "path": "contracts/m09/schemas/assisted-session.schema.json",
+      "owner": "CMP-057",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-SEMANTIC-ELEMENT",
+      "path": "contracts/m09/schemas/semantic-element.schema.json",
+      "owner": "CMP-058",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-MIGRATION-PROJECT",
+      "path": "contracts/m09/schemas/migration-project.schema.json",
+      "owner": "CMP-059",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-RISK-ASSESSMENT",
+      "path": "contracts/m09/schemas/risk-assessment.schema.json",
+      "owner": "CMP-060",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-PRIVACY-REQUEST",
+      "path": "contracts/m09/schemas/privacy-request.schema.json",
+      "owner": "CMP-061",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-SFPACKAGE-MANIFEST",
+      "path": "contracts/m09/schemas/sfpackage-manifest.schema.json",
+      "owner": "CROSS",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-BPMN-PROFILE",
+      "path": "contracts/m09/schemas/bpmn-profile-report.schema.json",
+      "owner": "CROSS",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    }
+  ]
+}

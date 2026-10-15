@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/assistedsession/v1",
+  "title": "AssistedSession",
+  "description": "FROZEN. SF-CON-ASSISTED-SESSION. Assisted/omnichannel session (CMP-057 / INT-015). applied_by MUST be distinct from applied_for. Operator cannot exceed OPA role/jurisdiction. MUST NOT invent representation authority statute.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "session_id",
+    "channel",
+    "applied_by_actor_id",
+    "applied_for_citizen_id",
+    "applied_by_distinct_from_applied_for",
+    "lifecycle_status"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-ASSISTED-SESSION"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "session_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "COUNTER",
+        "CSC",
+        "KIOSK",
+        "CALL_CENTRE",
+        "AUTHORIZED_REPRESENTATIVE",
+        "GUARDIAN",
+        "INSTITUTIONAL"
+      ]
+    },
+    "applied_by_actor_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "applied_for_citizen_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "applied_by_distinct_from_applied_for": {
+      "type": "boolean",
+      "const": true
+    },
+    "representation_authority_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": [
+        "STARTED",
+        "APPLICANT_BOUND",
+        "REPRESENTATION_VERIFIED",
+        "SUBMITTED",
+        "HANDED_OFF",
+        "CLOSED"
+      ]
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/appointment/v1",
+  "title": "Appointment",
+  "description": "FROZEN. SF-CON-APPOINTMENT. Appointment booking record (CMP-056 / INT-014). Atomic capacity: single-capacity slots cannot overbook. Notification failure MUST NOT invalidate a committed booking. MUST NOT invent hearing/inspection statutory calendars.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "appointment_id",
+    "appointment_type_ref",
+    "lifecycle_status",
+    "slot_ref",
+    "capacity_atomic",
+    "notification_failure_invalidates_booking"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-APPOINTMENT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "appointment_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "appointment_type_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["BOOKED", "RESCHEDULED", "CANCELLED", "COMPLETED", "NO_SHOW"]
+    },
+    "slot_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "resource_calendar_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    },
+    "capacity_atomic": {
+      "type": "boolean",
+      "const": true
+    },
+    "notification_failure_invalidates_booking": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}
