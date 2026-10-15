@@ -96,7 +96,11 @@ export async function withIsolatedDatabase<T>(
   try {
     for (const file of ISOLATED_CHAIN)
       copyFileSync(join(DB_DIR, 'migrations', file), join(tmp, file));
-    await admin.query(`CREATE DATABASE ${name} TEMPLATE template0`);
+    const createDdl = await admin.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+      'CREATE DATABASE %I TEMPLATE template0',
+      name,
+    ]);
+    await admin.query(String(createDdl.rows[0]?.['s'] ?? ''));
     const iso = new pg.Client({ connectionString: isoUrl });
     await iso.connect();
     try {
@@ -109,7 +113,11 @@ export async function withIsolatedDatabase<T>(
     }
   } finally {
     try {
-      await admin.query(`DROP DATABASE IF EXISTS ${name} WITH (FORCE)`);
+      const dropDdl = await admin.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+        'DROP DATABASE IF EXISTS %I WITH (FORCE)',
+        name,
+      ]);
+      await admin.query(String(dropDdl.rows[0]?.['s'] ?? ''));
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
@@ -145,7 +153,11 @@ export async function setupHarness(): Promise<Harness> {
   await dropLoginRoles(admin);
 
   const dbName = `sf_m09_004_${randomBytes(3).toString('hex')}`;
-  await admin.query(`CREATE DATABASE ${dbName} TEMPLATE template0`);
+  const createDb = await admin.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+    'CREATE DATABASE %I TEMPLATE template0',
+    dbName,
+  ]);
+  await admin.query(String(createDb.rows[0]?.['s'] ?? ''));
   const parsed = new URL(adminUrl());
   parsed.pathname = `/${dbName}`;
   const dbUrl = parsed.toString();
@@ -183,7 +195,11 @@ export async function setupHarness(): Promise<Harness> {
       );
       await setup.query(stmt.rows[0]?.s ?? '');
     }
-    await setup.query(`GRANT CONNECT ON DATABASE ${dbName} TO ${RUNTIME_ROLE}, ${PEER_ROLE}`);
+    const grantDdl = await setup.query<{ s: string }>(
+      'SELECT format($1::text, $2::text, $3::text, $4::text) AS s',
+      ['GRANT CONNECT ON DATABASE %I TO %I, %I', dbName, RUNTIME_ROLE, PEER_ROLE],
+    );
+    await setup.query(String(grantDdl.rows[0]?.['s'] ?? ''));
   } finally {
     await setup.end();
   }
@@ -217,7 +233,11 @@ export async function closeHarness(h: Harness | undefined): Promise<void> {
   await h.admin.end();
   const root = new pg.Pool({ connectionString: adminUrl(), max: 1 });
   try {
-    await root.query(`DROP DATABASE IF EXISTS ${h.dbName} WITH (FORCE)`);
+    const dropDdl = await root.query<{ s: string }>('SELECT format($1::text, $2::text) AS s', [
+      'DROP DATABASE IF EXISTS %I WITH (FORCE)',
+      h.dbName,
+    ]);
+    await root.query(String(dropDdl.rows[0]?.['s'] ?? ''));
   } finally {
     await root.end();
   }
