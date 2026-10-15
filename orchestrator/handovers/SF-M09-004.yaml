@@ -1,89 +1,109 @@
-# SF-M09-004 — CMP-059 Migration Workbench (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
-# Consume FROZEN contracts only. No invented statutory policy.
-
-task_id: SF-M09-004
-title: CMP-059 Migration Workbench
-module_id: M09
-concurrency_group: CG-03
-build_plan: specs/build-plan.yaml (ADR-0001)
-component_ids: [CMP-059]
-integration_ids: [INT-017, INT-011]
-agent_role: component_builder
-builder_agent: serviceform-studio-builder
-model_route: opus
-effort: high
+---
+handover_id: SF-M09-004
+component: CMP-059
+component_name: Migration & Legacy Onboarding Workbench
+milestone: M09
+wave: A
+status: CANDIDATE_COMPLETE
 branch: cursor/m09-004-migration-91f2
-parallel_group: M09-A
-privilege_role: sf_cmp059_rw
-schema: sf_migration
-hard_serial_locks: [LOCK-2, LOCK-3]
-depends_on:
-  - SF-M09-CG-001 FROZEN_ON_MAIN
-  - existing 34 FROZEN contracts MATCH plus NEW M09 rows (42/42)
-  - LOCK-1 CG-03 planning PR #157 on main
-  - human Wave A READY + dispatch authorization
-allowed_write_paths:
-  - services/cmp-059-migration-workbench/**
-  - db/migrations/*_cmp-059-*.sql
-  - evidence/SF-M09-004/**
-  - orchestrator/handovers/SF-M09-004.yaml
-allowed_write_notes:
-  - Consume frozen contracts/ports only; no sibling SQL
-  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M09-HOST
-  - invented_statutory_policy_forbidden remains true
-read_only_paths:
-  - pnpm-lock.yaml
-  - contracts/**
-  - orchestrator/contracts-lock.yaml
-  - apps/**
-  - specs/**
-wave_eligible_now: true
-serial_after:
-  - SF-M09-CG-001
+base_commit: fd7492b398b2945713957a53b42c4717a7940c3f
+authored_by: bc-487d6712-04e9-51af-90d5-232c0297536c
+model: claude-sonnet-4-6
+date: "2026-10-15"
 
-builders_dispatched_this_envelope: false
-planning_only: false
-implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
-self_certified: false
-not_certified: true
-certified: false
-release_certified: false
-g3: false
-g4: false
-g6: false
-ccr_required: false
-frozen_contracts_altered: false
-freeze_authorized: true
-ready_authorization:
-  family: HUMAN_CG03_THROUGH_EVD
-  status: AUTHORIZATION
-  join_separator: "_"
-  wave_a_ready: true
-base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
-join_separator: "_"
+authorisation:
+  HUMAN_CG03_THROUGH_EVD_AUTHORIZATION: true
+  frozen_contract_consumed: SF-CON-MIGRATION-PROJECT
+  freeze_issue: 158
+  ready_issue: 159
+  ready_sha: fd7492b
 
-contract_locks:
-  - SF-CON-COMMON
-  - SF-CON-REQUEST-CONTEXT
-  - SF-CON-AUTHZ-DECISION
-  - SF-CON-ERROR-RESPONSE
-  - SF-CON-EVENT-ENVELOPE
-  - SF-CON-IDEMPOTENCY
-  - SF-CON-AUDIT-EVENT
-  - SF-CON-ISOLATION-DECLARATION
-  - SF-CON-DB-SESSION-CONTEXT
-  - SF-CON-OUTBOX
-  - SF-CON-MIGRATION-PROJECT
-stop_conditions:
-  - patch frozen contracts
-  - invent statutory calendars / representation / eligibility / privacy statute
-  - CERTIFIED or G4 or G6 claim
-  - write outside allowed_write_paths
-  - authoritative risk decision (CMP-060)
-  - cross-component SQL (CMP-061)
+deliverables:
+  migration:
+    - db/migrations/1761100000000_cmp-059-migration-workbench.sql
+  service:
+    - services/cmp-059-migration-workbench/src/index.ts
+    - services/cmp-059-migration-workbench/src/plugin.ts
+    - services/cmp-059-migration-workbench/src/config.ts
+    - services/cmp-059-migration-workbench/src/context.ts
+    - services/cmp-059-migration-workbench/src/authz.ts
+    - services/cmp-059-migration-workbench/src/errors.ts
+    - services/cmp-059-migration-workbench/src/domain/migration.ts
+    - services/cmp-059-migration-workbench/src/db/tx.ts
+    - services/cmp-059-migration-workbench/src/db/outbox.ts
+    - services/cmp-059-migration-workbench/src/repo/migration-repo.ts
+    - services/cmp-059-migration-workbench/src/service/migrations.ts
+    - services/cmp-059-migration-workbench/src/routes/migrations.ts
+    - services/cmp-059-migration-workbench/src/routes/helpers.ts
+    - services/cmp-059-migration-workbench/src/http/rate-limit.ts
+  tests:
+    - services/cmp-059-migration-workbench/test/unit/domain.test.ts
+    - services/cmp-059-migration-workbench/test/unit/plugin-http.test.ts
+    - services/cmp-059-migration-workbench/test/unit/tenant-negative.test.ts
+    - services/cmp-059-migration-workbench/test/unit/memory-pool.ts
+    - services/cmp-059-migration-workbench/test/contract/contracts.test.ts
+    - services/cmp-059-migration-workbench/test/doubles/authorizer.ts
+    - services/cmp-059-migration-workbench/test/doubles/context-resolver.ts
+  evidence:
+    - evidence/SF-M09-004/unit-test-run.md
+    - services/cmp-059-migration-workbench/evidence/junit/unit.xml
+
+schema:
+  schema_name: sf_migration
+  role: sf_cmp059_rw
+  isolation_class: TENANT_SCOPED
+  rls: FORCE
+  tables:
+    - migration_project
+    - source_profile
+    - mapping_spec
+    - migration_batch
+    - reconciliation_result
+    - cutover_manifest
+    - outbox_event
+
+integrations:
+  - id: INT-017
+    name: Legacy migration and onboarding factory
+    implementation: POST /migrations/projects, /profile, /map, /dry-run, /execute, GET /reconciliation
+  - id: INT-011
+    name: Tenant isolation enforcement chain
+    implementation: FORCE RLS on all tables, sf.tenant_id set_config, forbidden header check, OPA authz
+
+key_constraints:
+  dry_run_required_before_execute: true
+  no_cutover_statute: true
+  no_invented_policy: true
+  published_versions_immutable: true
+  pii_in_logs: false
+  cross_component_sql: false
+
+architecture_constitution_sections:
+  - "§39 mapping version, dry-run, exception list and reconciliation evidence required"
+  - "§6 FORCE RLS, tenant_id from context not client headers"
+  - "§7 OPA decides authz, PostgreSQL RLS enforces hard boundary"
+  - "§11 transactional outbox pattern"
+
+test_results:
+  unit:
+    files: 4
+    tests: 42
+    passed: 42
+    failed: 0
+    run_at: "2026-10-15T15:30:52Z"
+  typecheck:
+    exit_code: 0
+
+events_emitted:
+  - MigrationDryRunCompleted
+  - MigrationBatchApplied
+  - MigrationReconciliationFailed
+  - MigrationCompleted
+
+pending_for_gate:
+  - Integration tests against real PostgreSQL (require DB provisioned environment)
+  - Security gate (SF-M09-INT independent agent)
+  - Evidence gate (SF-M09-EVD independent agent)
+  - G4_SECURITY_VERIFIED certification (human/CI gate, not self-certified)
+
+self_certification: false
