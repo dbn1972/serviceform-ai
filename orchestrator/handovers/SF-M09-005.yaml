@@ -1,6 +1,7 @@
 # SF-M09-005 — CMP-060 Risk / Integrity (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
+# CANDIDATE_COMPLETE (builder candidate). Not MERGED. Not CERTIFIED. Not G3. Not G4. Not G6.
 # Consume FROZEN contracts only. No invented statutory policy.
+# authoritative_decision_by_this_component MUST remain false.
 
 task_id: SF-M09-005
 title: CMP-060 Risk / Integrity
@@ -32,6 +33,7 @@ allowed_write_notes:
   - Consume frozen contracts/ports only; no sibling SQL
   - Do not commit pnpm-lock.yaml; host mount deferred to SF-M09-HOST
   - invented_statutory_policy_forbidden remains true
+  - authoritative_decision_by_this_component MUST remain false
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
@@ -42,12 +44,12 @@ wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -64,8 +66,8 @@ ready_authorization:
   join_separator: "_"
   wave_a_ready: true
 base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+  prefix: fd7492b3
+  suffix: 98b2945713957a53b42c4717a7940c3f
 join_separator: "_"
 
 contract_locks:
@@ -87,3 +89,27 @@ stop_conditions:
   - write outside allowed_write_paths
   - authoritative risk decision (CMP-060)
   - cross-component SQL (CMP-061)
+
+authoritative_decision_by_this_component: false
+invented_statutory_policy_forbidden: true
+lockfile_modified: false
+apps_modified: false
+contracts_modified: false
+
+evidence: evidence/SF-M09-005/EVIDENCE.md
+candidate:
+  status: CANDIDATE_COMPLETE
+  implementation_commit: pending
+  pull_request: pending
+  evidence: evidence/SF-M09-005/EVIDENCE.md
+  test_counts:
+    unit: { passed: 30, failed: 0 }
+    contract: { passed: 8, failed: 0 }
+    security: { passed: 16, failed: 0 }
+    repo_gates: { passed: 10, failed: 0 }
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer for services/cmp-060-risk-integrity; pnpm-lock.yaml not modified)
+    - host mount of registerRiskRoutes deferred to SF-M09-HOST; no UI
+    - PostgreSQL FORCE RLS integration suite deferred to SF-M09-INT (podless builder)
+    - OPA policy data for risk actions lives in policy/** (read-only); PDP denies until wired
+    - CMP-local outbox producer shape; full SF-CON-OUTBOX publisher alignment may land at stitch/host

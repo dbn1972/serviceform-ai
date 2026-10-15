@@ -1,0 +1,47 @@
+
+> @serviceform/cmp-060-risk-integrity@0.0.0 test:unit /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+> vitest run --config vitest.unit.config.ts
+
+
+ RUN  v3.2.4 /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+
+ ✓ test/unit/context.test.ts (5 tests) 3ms
+ ✓ test/unit/risk-classifier.test.ts (21 tests) 5ms
+ ✓ test/unit/service-governance.test.ts (4 tests) 11ms
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+   Start at  15:32:44
+   Duration  282ms (transform 135ms, setup 0ms, collect 221ms, tests 19ms, environment 0ms, prepare 202ms)
+
+JUNIT report written to /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity/evidence/junit/unit.xml
+
+> @serviceform/cmp-060-risk-integrity@0.0.0 test:contract /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+> vitest run --config vitest.contract.config.ts
+
+
+ RUN  v3.2.4 /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+
+ ✓ test/contract/risk-assessment-contract.test.ts (8 tests) 3ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  15:32:45
+   Duration  177ms (transform 27ms, setup 0ms, collect 24ms, tests 3ms, environment 0ms, prepare 47ms)
+
+JUNIT report written to /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity/evidence/junit/contract.xml
+
+> @serviceform/cmp-060-risk-integrity@0.0.0 test:security /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+> vitest run --config vitest.security.config.ts
+
+
+ RUN  v3.2.4 /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity
+
+ ✓ test/security/governance-boundary.test.ts (16 tests) 10ms
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  15:32:46
+   Duration  213ms (transform 54ms, setup 0ms, collect 57ms, tests 10ms, environment 0ms, prepare 56ms)
+
+JUNIT report written to /home/ubuntu/wt-SF-M09-005/services/cmp-060-risk-integrity/evidence/junit/security.xml

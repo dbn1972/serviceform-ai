@@ -1,0 +1,30 @@
+{
+  "task_id": "SF-M09-005",
+  "component_id": "CMP-060",
+  "title": "Risk / Integrity",
+  "branch": "cursor/m09-005-risk-91f2",
+  "schema": "sf_risk",
+  "privilege_role": "sf_cmp060_rw",
+  "contract": "SF-CON-RISK-ASSESSMENT",
+  "authoritative_decision_by_this_component": false,
+  "invented_statutory_policy_forbidden": true,
+  "integration_ids": ["INT-018", "INT-011"],
+  "state": "CANDIDATE_COMPLETE",
+  "certified": false,
+  "self_certified": false,
+  "g3": false,
+  "g4": false,
+  "g6": false,
+  "execution_base": "fd7492b398b2945713957a53b42c4717a7940c3f",
+  "tests": {
+    "unit": { "passed": 30, "failed": 0 },
+    "contract": { "passed": 8, "failed": 0 },
+    "security": { "passed": 16, "failed": 0 },
+    "repo_gates": { "passed": 10, "failed": 0 }
+  },
+  "residuals": [
+    "EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL",
+    "HOST_MOUNT_DEFERRED_SF_M09_HOST",
+    "POSTGRES_INTEGRATION_DEFERRED_SF_M09_INT"
+  ]
+}
