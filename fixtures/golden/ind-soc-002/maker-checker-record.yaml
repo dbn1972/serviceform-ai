@@ -1,0 +1,54 @@
+# IND-SOC-002 Pilot TSB Maker-Checker Approval Record
+# SF-M10-002 · cursor/m10-002-overlay-91f2
+# CANDIDATE_COMPLETE · Not CERTIFIED · Not G6
+# Status: PENDING — blocked on POLICY_INPUT_REQUIRED (Finding M-04)
+# Architecture Constitution #8, #9, #35; AWS v1.7 §19.15, §20.11
+
+record_schema_version: "1.0"
+catalogue_id: IND-SOC-002
+record_type: TSB_PUBLISH_APPROVAL
+status: PENDING_POLICY_INPUT
+invented_statutory_policy_forbidden: true
+embedded_secrets_forbidden: true
+
+# ─── Maker action ─────────────────────────────────────────────────────────────
+maker:
+  user_id: POLICY_INPUT_REQUIRED
+  user_role: POLICY_INPUT_REQUIRED
+  tenant_id: POLICY_INPUT_REQUIRED
+  action: PUBLISH_TSB
+  action_taken_at: null
+  action_notes: POLICY_INPUT_REQUIRED
+  overlay_version_at_action: null
+
+# ─── Checker action ───────────────────────────────────────────────────────────
+checker:
+  user_id: POLICY_INPUT_REQUIRED
+  user_role: POLICY_INPUT_REQUIRED
+  tenant_id: POLICY_INPUT_REQUIRED
+  action: null
+  action_taken_at: null
+  action_notes: POLICY_INPUT_REQUIRED
+  checker_distinct_from_maker: true
+
+# ─── Approval subject ─────────────────────────────────────────────────────────
+subject:
+  tsb_id: POLICY_INPUT_REQUIRED
+  overlay_ref: fixtures/golden/ind-soc-002/tenant-overlay.yaml
+  sfpackage_manifest_ref: fixtures/golden/ind-soc-002/sfpackage-manifest-fixture.json
+  policy_input_fields_all_resolved: false
+
+# ─── Outcome ──────────────────────────────────────────────────────────────────
+outcome:
+  decision: null
+  decided_at: null
+  tsb_immutability_sealed: false
+  version_pinned: false
+
+# ─── Non-claims ───────────────────────────────────────────────────────────────
+non_claims:
+  certified: false
+  g6: false
+  self_certified: false
+  release_certified: false
+  llm_made_eligibility_decision: false

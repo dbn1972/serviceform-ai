@@ -1,0 +1,27 @@
+{
+  "name": "@serviceform/cmp-060-risk-integrity",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CMP-060 Risk, Fraud & Integrity Service — advisory signals only; no authoritative decisions",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest run --config vitest.unit.config.ts",
+    "test:contract": "vitest run --config vitest.contract.config.ts",
+    "test:security": "vitest run --config vitest.security.config.ts"
+  },
+  "dependencies": {
+    "@serviceform/contracts": "workspace:*",
+    "fastify": "5.12.5",
+    "fastify-plugin": "5.1.0",
+    "pg": "8.23.1"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "typescript": "5.7.2",
+    "vitest": "3.2.4"
+  }
+}

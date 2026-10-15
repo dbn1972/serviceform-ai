@@ -1,0 +1,46 @@
+# IND-SOC-002 — Evidence Policy
+# Constitution §15: evidence has separate technical acceptance state and business verification state.
+# Binary evidence stored in S3, not PostgreSQL (Constitution §5).
+# Evidence types and requirements are POLICY_INPUT_REQUIRED from statutory owner.
+# Accepted evidence list below is illustrative shape only; owner must supply the authoritative list.
+
+evidence_policy_id: ind-soc-002-evidence-v1
+catalogue_id: IND-SOC-002
+version: "0.1.0-candidate"
+immutable_after_publish: true
+invented_statutory_policy_forbidden: true
+policy_input_required: true
+
+required_evidence_count_min: "POLICY_INPUT_REQUIRED"   # e.g. at least 2 of the accepted types
+
+accepted_evidence_types:
+  # POLICY_INPUT_REQUIRED — statutory owner supplies this list with acceptance rules
+  # Examples below are common practice shapes; do not treat as authoritative:
+  - type_id: "POLICY_INPUT_REQUIRED_TYPE_1"
+    display_name: "POLICY_INPUT_REQUIRED"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+    note: "POLICY_INPUT_REQUIRED — e.g. Ration Card, Voter ID, Utility Bill"
+
+  - type_id: "POLICY_INPUT_REQUIRED_TYPE_2"
+    display_name: "POLICY_INPUT_REQUIRED"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+    note: "POLICY_INPUT_REQUIRED — e.g. Ration Card, Passport, Bank Passbook"
+
+technical_acceptance_state:
+  # Constitution §15 — independent from business verification
+  pending: UPLOADED_PENDING_SCAN
+  accepted: TECHNICALLY_ACCEPTED
+  rejected: TECHNICALLY_REJECTED
+
+business_verification_state:
+  # Separate from technical acceptance
+  pending: PENDING_OFFICER_REVIEW
+  verified: VERIFIED
+  queried: DEFICIENCY_RAISED
+  rejected: REJECTED

@@ -1,0 +1,92 @@
+# IND-SOC-002 Pilot Tenant Overlay
+# SF-M10-002 · cursor/m10-002-overlay-91f2
+# CANDIDATE_COMPLETE · Not CERTIFIED · Not G6
+# POLICY_INPUT_REQUIRED (Finding M-04): fail-closed placeholders only.
+# Do NOT invent pilot tenant, State, legal basis, eligibility, fee, SLA, or credential.
+
+overlay_schema_version: "1.0"
+catalogue_id: IND-SOC-002
+service_template_ref: templates/residence-certificate
+overlay_status: DRAFT_PENDING_POLICY_INPUT
+invented_statutory_policy_forbidden: true
+embedded_secrets_forbidden: true
+
+# ─── Tenant identity (POLICY_INPUT_REQUIRED) ───────────────────────────────────
+tenant:
+  tenant_id: POLICY_INPUT_REQUIRED
+  tenant_name: POLICY_INPUT_REQUIRED
+  state_code: POLICY_INPUT_REQUIRED
+  issuing_authority: POLICY_INPUT_REQUIRED
+
+# ─── Service localisation ──────────────────────────────────────────────────────
+service_localisation:
+  catalogue_id: IND-SOC-002
+  local_service_code: POLICY_INPUT_REQUIRED
+  display_name:
+    en: POLICY_INPUT_REQUIRED
+    hi: POLICY_INPUT_REQUIRED
+  description:
+    en: POLICY_INPUT_REQUIRED
+  department: POLICY_INPUT_REQUIRED
+  jurisdiction: POLICY_INPUT_REQUIRED
+
+# ─── Legal basis (POLICY_INPUT_REQUIRED) ──────────────────────────────────────
+legal_basis:
+  statutory_authority: POLICY_INPUT_REQUIRED
+  act_name: POLICY_INPUT_REQUIRED
+  act_section: POLICY_INPUT_REQUIRED
+  gazette_reference: POLICY_INPUT_REQUIRED
+  effective_date: POLICY_INPUT_REQUIRED
+
+# ─── Eligibility (POLICY_INPUT_REQUIRED) ──────────────────────────────────────
+# GoRules ZEN expression; do not invent
+eligibility:
+  rule_engine: gorules
+  rules_ref: POLICY_INPUT_REQUIRED
+  description: POLICY_INPUT_REQUIRED
+
+# ─── Evidence requirements (POLICY_INPUT_REQUIRED) ────────────────────────────
+evidence_requirements:
+  mandatory_documents: POLICY_INPUT_REQUIRED
+  optional_documents: POLICY_INPUT_REQUIRED
+  digilocker_document_types: POLICY_INPUT_REQUIRED
+  physical_accepted: POLICY_INPUT_REQUIRED
+
+# ─── Fee schedule (POLICY_INPUT_REQUIRED) ─────────────────────────────────────
+fee:
+  currency: INR
+  amount: POLICY_INPUT_REQUIRED
+  waivers: POLICY_INPUT_REQUIRED
+  payment_gateway_ref: POLICY_INPUT_REQUIRED
+  treasury_head: POLICY_INPUT_REQUIRED
+
+# ─── SLA policy (POLICY_INPUT_REQUIRED) ───────────────────────────────────────
+sla:
+  processing_days_working: POLICY_INPUT_REQUIRED
+  clock_start_event: POLICY_INPUT_REQUIRED
+  escalation_days: POLICY_INPUT_REQUIRED
+  statutory_reference: POLICY_INPUT_REQUIRED
+
+# ─── Credential template (POLICY_INPUT_REQUIRED) ──────────────────────────────
+credential:
+  template_id: POLICY_INPUT_REQUIRED
+  digilocker_doc_type: POLICY_INPUT_REQUIRED
+  issuing_authority: POLICY_INPUT_REQUIRED
+  validity_years: POLICY_INPUT_REQUIRED
+  vc_context: POLICY_INPUT_REQUIRED
+
+# ─── Notification templates (POLICY_INPUT_REQUIRED) ───────────────────────────
+notifications:
+  sms_dlt_pe_id: POLICY_INPUT_REQUIRED
+  sms_template_id_submitted: POLICY_INPUT_REQUIRED
+  sms_template_id_approved: POLICY_INPUT_REQUIRED
+  sms_template_id_rejected: POLICY_INPUT_REQUIRED
+  email_template_id_submitted: POLICY_INPUT_REQUIRED
+  email_template_id_approved: POLICY_INPUT_REQUIRED
+
+# ─── Non-claims ────────────────────────────────────────────────────────────────
+non_claims:
+  certified: false
+  g6: false
+  self_certified: false
+  release_certified: false

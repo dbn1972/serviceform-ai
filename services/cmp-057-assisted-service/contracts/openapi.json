@@ -1,0 +1,637 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-057 Assisted Service / Omnichannel",
+    "version": "0.1.0",
+    "description": "INT-015 assisted sessions (SF-CON-ASSISTED-SESSION). applied_by MUST be distinct from applied_for. No invented representation statute. Tenant from server-derived context only. Every route is a PEP call on OPA. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/assisted/sessions": {
+      "post": {
+        "operationId": "startAssistedSession",
+        "description": "Start assisted session. Action ASSISTED_SESSION_START. applied_by is the authenticated actor.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}": {
+      "get": {
+        "operationId": "getAssistedSession",
+        "description": "Read assisted session. Action ASSISTED_SESSION_READ.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/applicant": {
+      "post": {
+        "operationId": "bindAssistedApplicant",
+        "description": "Bind applicant assurance ref. Action ASSISTED_SESSION_BIND_APPLICANT.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BindApplicantRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/representation": {
+      "post": {
+        "operationId": "verifyAssistedRepresentation",
+        "description": "Verify representation basis + consent (opaque refs only). Action ASSISTED_SESSION_VERIFY_REPRESENTATION.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RepresentationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/submit": {
+      "post": {
+        "operationId": "submitAssistedApplication",
+        "description": "Link application and mark SUBMITTED. Action ASSISTED_SESSION_SUBMIT.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/handoff": {
+      "post": {
+        "operationId": "handoffAssistedSession",
+        "description": "Issue one-time handoff token for citizen resume. Action ASSISTED_SESSION_HANDOFF.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Handed off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/resume": {
+      "post": {
+        "operationId": "resumeAssistedSession",
+        "description": "Citizen resume with handoff token; preserves citizen_id and application identity. Action ASSISTED_SESSION_RESUME.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResumeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resumed/closed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/v1/assisted/sessions/{session_id}/close": {
+      "post": {
+        "operationId": "closeAssistedSession",
+        "description": "Operator close. Action ASSISTED_SESSION_CLOSE.",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.:-]{8,128}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Closed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Error": {
+        "description": "SF-CON-ERROR-RESPONSE",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["error_code", "message", "correlation_id"],
+        "properties": {
+          "error_code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "correlation_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "StartRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["channel", "applied_for_citizen_id"],
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": [
+              "COUNTER",
+              "CSC",
+              "KIOSK",
+              "CALL_CENTRE",
+              "AUTHORIZED_REPRESENTATIVE",
+              "GUARDIAN",
+              "INSTITUTIONAL"
+            ]
+          },
+          "applied_for_citizen_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "BindApplicantRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_version", "applicant_assurance_ref"],
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "applicant_assurance_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        }
+      },
+      "RepresentationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_version", "consent_ref", "read_back_acknowledged"],
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "representation_authority_ref": {
+            "type": ["string", "null"],
+            "maxLength": 128
+          },
+          "representation_valid_until": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "consent_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "read_back_acknowledged": {
+            "type": "boolean",
+            "const": true
+          }
+        }
+      },
+      "ApplicationLinkRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_version", "application_id"],
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "ResumeRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["handoff_token"],
+        "properties": {
+          "handoff_token": {
+            "type": "string",
+            "minLength": 43,
+            "maxLength": 43
+          }
+        }
+      },
+      "CloseRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["expected_version"],
+        "properties": {
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "SessionView": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["assisted_session", "session_version", "proof"],
+        "properties": {
+          "assisted_session": {
+            "type": "object"
+          },
+          "session_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "proof": {
+            "type": "object"
+          },
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "handoff_expires_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "closure_reason": {
+            "type": "string"
+          },
+          "handoff": {
+            "type": "object"
+          },
+          "resume": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

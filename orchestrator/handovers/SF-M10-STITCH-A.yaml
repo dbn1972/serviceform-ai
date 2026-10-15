@@ -1,16 +1,17 @@
-# SF-M10-STITCH-A — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# SF-M10-STITCH-A — CANDIDATE_COMPLETE (CG-03 co-admission)
+# Not CERTIFIED. Not G6. POLICY_INPUT_REQUIRED remains.
 task_id: SF-M10-STITCH-A
 module_id: M10
 record: SF-M10-STITCH-A
 agent_role: integration_agent
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
-builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
+merge_ready: true
+stitched_candidate: true
 self_certified: false
 not_certified: true
 certified: false
@@ -18,17 +19,17 @@ release_certified: false
 g3: false
 g4: false
 g6: false
-freeze_authorized: false
-base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['pnpm-lock.yaml', 'evidence/SF-M10-STITCH-A/**', 'orchestrator/handovers/SF-M10-STITCH-A.yaml']
-stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
+policy_input_required: true
 human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
 root_lockfile_authorized: true
+base_commit:
+  prefix: fd7492b3
+  suffix: 98b2945713957a53b42c4717a7940c3f
+  ref: origin/main (Wave A READY #159)
+join_separator: "_"
+branch: cursor/m09-stitch-a-91f2
+wave_a_tips:
+  SF-M10-001: {pr: 161, sha: ef09b75d6d3d92f27751627c1e3861372e06442d}
+  SF-M10-002: {pr: 162, sha: 382e604844ceba0eebabb0b8a06c7b3277db27e8}
+  SF-M10-003: {pr: 165, sha: 3d88793a97356f85dc17bf32244aa47c376a474a}
+note: co-admitted on SF-M09-STITCH-A branch; owner POLICY_INPUT_REQUIRED

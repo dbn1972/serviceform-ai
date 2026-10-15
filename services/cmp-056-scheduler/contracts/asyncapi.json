@@ -1,0 +1,66 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-056 Appointment / Scheduler Events",
+    "version": "0.1.0",
+    "description": "INT-014 appointment lifecycle events. capacity_atomic=true; notification failure does not invalidate a booking."
+  },
+  "channels": {
+    "sf.scheduler.events.v1": {
+      "address": "sf.scheduler.events.v1",
+      "messages": {
+        "AppointmentBooked": { "$ref": "#/components/messages/AppointmentBooked" },
+        "AppointmentRescheduled": { "$ref": "#/components/messages/AppointmentRescheduled" },
+        "AppointmentCancelled": { "$ref": "#/components/messages/AppointmentCancelled" },
+        "AppointmentCompleted": { "$ref": "#/components/messages/AppointmentCompleted" },
+        "AppointmentNoShow": { "$ref": "#/components/messages/AppointmentNoShow" },
+        "AppointmentTypeRegistered": { "$ref": "#/components/messages/AppointmentTypeRegistered" },
+        "AppointmentSlotPublished": { "$ref": "#/components/messages/AppointmentSlotPublished" }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": { "name": "AuditEventSubmitted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "AppointmentBooked": {
+        "name": "AppointmentBooked",
+        "payload": { "$ref": "./events/appointment-event.data.schema.json" }
+      },
+      "AppointmentRescheduled": {
+        "name": "AppointmentRescheduled",
+        "payload": { "$ref": "./events/appointment-event.data.schema.json" }
+      },
+      "AppointmentCancelled": {
+        "name": "AppointmentCancelled",
+        "payload": { "$ref": "./events/appointment-event.data.schema.json" }
+      },
+      "AppointmentCompleted": {
+        "name": "AppointmentCompleted",
+        "payload": { "$ref": "./events/appointment-event.data.schema.json" }
+      },
+      "AppointmentNoShow": {
+        "name": "AppointmentNoShow",
+        "payload": { "$ref": "./events/appointment-event.data.schema.json" }
+      },
+      "AppointmentTypeRegistered": {
+        "name": "AppointmentTypeRegistered",
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "AppointmentSlotPublished": {
+        "name": "AppointmentSlotPublished",
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

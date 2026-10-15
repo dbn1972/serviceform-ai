@@ -1,0 +1,69 @@
+{
+  "_fixture_note": "SF-M10-002 .sfpackage manifest fixture for IND-SOC-002 pilot tenant. CANDIDATE_COMPLETE. Not CERTIFIED. Not G6. POLICY_INPUT_REQUIRED sentinels for all owner fields. SHA-256 hashes are synthetic placeholders; real hashes are computed at publication time.",
+  "_invented_statutory_policy_forbidden": true,
+  "_embedded_secrets_forbidden": true,
+
+  "contract_id": "SF-CON-SFPACKAGE-MANIFEST",
+  "contract_status": "FROZEN",
+  "freeze_status": "FROZEN",
+
+  "tenant_id": "POLICY_INPUT_REQUIRED",
+  "idempotency_key": "POLICY_INPUT_REQUIRED",
+  "invented_statutory_policy_forbidden": true,
+  "embedded_secrets_forbidden": true,
+  "package_id": "POLICY_INPUT_REQUIRED",
+  "content_address": "sha256:POLICY_INPUT_REQUIRED_computed_at_publication_time_00000000000000",
+  "signature_ref": "sig:cmp-037:ind-soc-002-pilot:PENDING",
+  "correlation_id": "POLICY_INPUT_REQUIRED",
+
+  "artifact_hashes": [
+    {
+      "path": "templates/residence-certificate/service.yaml",
+      "_note": "Synthetic placeholder — real hash computed at publication time",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000001"
+    },
+    {
+      "path": "fixtures/golden/ind-soc-002/tenant-overlay.yaml",
+      "_note": "Synthetic placeholder — real hash computed at publication time",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000002"
+    },
+    {
+      "path": "fixtures/golden/ind-soc-002/tsb-publish-fixture.json",
+      "_note": "Synthetic placeholder — real hash computed at publication time",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000003"
+    },
+    {
+      "path": "fixtures/golden/ind-soc-002/maker-checker-record.yaml",
+      "_note": "Synthetic placeholder — real hash computed at publication time",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000004"
+    }
+  ],
+
+  "dependency_versions": {
+    "_note": "Version IDs populated by Studio publish gate after all policy inputs resolved",
+    "service_template": "POLICY_INPUT_REQUIRED",
+    "form_schema": "POLICY_INPUT_REQUIRED",
+    "rule_bundle": "POLICY_INPUT_REQUIRED",
+    "workflow_definition": "POLICY_INPUT_REQUIRED",
+    "evidence_policy": "POLICY_INPUT_REQUIRED",
+    "fee_policy": "POLICY_INPUT_REQUIRED",
+    "sla_policy": "POLICY_INPUT_REQUIRED",
+    "credential_template": "POLICY_INPUT_REQUIRED",
+    "notification_set": "POLICY_INPUT_REQUIRED"
+  },
+
+  "_publication_gate": {
+    "all_policy_inputs_resolved": false,
+    "maker_checker_approved": false,
+    "real_hashes_computed": false,
+    "signature_issued": false,
+    "tsb_published": false
+  },
+
+  "_non_claims": {
+    "certified": false,
+    "g6": false,
+    "self_certified": false,
+    "release_certified": false
+  }
+}
