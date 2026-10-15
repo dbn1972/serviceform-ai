@@ -6,7 +6,7 @@ Recommended gate status: none (builder candidate).
 
 - Authorization: `HUMAN_CG03_THROUGH_EVD` Wave A READY (main tip `fd7492b` after SF-M09-CG-001).
 - Execution base: `fd7492b398b2945713957a53b42c4717a7940c3f` (`origin/main` at build).
-- Branch: `cursor/m09-001-scheduler-91f2`. Implementation head: `d41b0c25eaf9d209fa02ac842d121974939a47e0`. DRAFT PR #164.
+- Branch: `cursor/m09-001-scheduler-91f2`. Implementation head: . DRAFT PR #164.
 - Agent / model: Cursor Cloud Agent, route `opus` (per `MODEL-ROUTING-QUALITY.md`; self-assessment is not evidence).
 
 ## SF-CON-APPOINTMENT consumption
