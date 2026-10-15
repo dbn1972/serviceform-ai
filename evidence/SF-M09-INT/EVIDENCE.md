@@ -7,13 +7,16 @@
 | Task | SF-M09-INT |
 | Branch | `cursor/m09-int-91f2` |
 | Local vitest | **49 passed · 9 expected fail (FINDINGS)** |
-| CROSS_TENANT_LEAKAGE | **0** |
+| CROSS_TENANT_LEAKAGE (HTTP) | **0** |
 | Production code modified | **false** |
-| recommended_result | `SF_M09_INT_PASS_WITH_FINDINGS` |
+| recommended_result | **`SF_M09_INT_FAIL`** |
+| G4 recommended | **false** (blocking owner FINDINGS) |
 
-## FINDINGS (owner; `it.fails` probes)
+## Blocking FINDINGS (owner; not patched)
 
-CMP-058 validation-before-auth; CMP-060 error envelope / session keys / authz default-allow / SIMULATED PRODUCTION / review-in-tx; CMP-059 session keys; risk-assessment additionalProperties.
+F-01..F-07 CMP-060/059: error envelope, session-context mismatch, authz default-allow, SIMULATED in PRODUCTION, review-in-tx, schema additionalProperties, CMP-059 session keys. F-08 CMP-058 validation-before-auth (non-blocking).
+
+Independent stitcher: [SF-M09-INT stitcher suites](bc-0a208368-24c7-5b12-a472-7aa555f0c533).
 
 ## Certification stance
 
