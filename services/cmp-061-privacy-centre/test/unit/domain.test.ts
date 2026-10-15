@@ -81,8 +81,12 @@ describe('privacy request domain', () => {
     ];
     expect(allOwnerOutcomesReceived(open)).toBe(false);
     expect(allOwnerOutcomesReceived([])).toBe(false);
-    open[0]!.task_status = 'COMPLETED';
-    open[0]!.evidence_ref = 'owner.evidence.1';
+    const first = open[0];
+    if (!first) {
+      throw new Error('expected fulfilment task fixture');
+    }
+    first.task_status = 'COMPLETED';
+    first.evidence_ref = 'owner.evidence.1';
     expect(allOwnerOutcomesReceived(open)).toBe(true);
     expect(countTasks(open).completed).toBe(1);
   });
