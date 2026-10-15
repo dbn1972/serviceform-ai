@@ -5,10 +5,13 @@ component_name: Migration & Legacy Onboarding Workbench
 milestone: M09
 wave: A
 status: CANDIDATE_COMPLETE
+orchestration_task_state: CANDIDATE_COMPLETE
 branch: cursor/m09-004-migration-91f2
 base_commit: fd7492b398b2945713957a53b42c4717a7940c3f
-authored_by: bc-487d6712-04e9-51af-90d5-232c0297536c
-model: claude-sonnet-4-6
+draft_pr: https://github.com/dbn1972/serviceform-ai/pull/163
+authored_by: bc-bbd589f5-de88-5275-b59d-b90539e00d5e
+prior_builder: bc-487d6712-04e9-51af-90d5-232c0297536c
+model: claude-opus-4-6
 date: "2026-10-15"
 
 authorisation:
@@ -18,81 +21,55 @@ authorisation:
   ready_issue: 159
   ready_sha: fd7492b
 
+self_certified: false
+not_certified: true
+certified: false
+g3: false
+g4: false
+g6: false
+frozen_contracts_altered: false
+ccr_required: false
+
 deliverables:
   migration:
     - db/migrations/1761100000000_cmp-059-migration-workbench.sql
   service:
-    - services/cmp-059-migration-workbench/src/index.ts
-    - services/cmp-059-migration-workbench/src/plugin.ts
-    - services/cmp-059-migration-workbench/src/config.ts
-    - services/cmp-059-migration-workbench/src/context.ts
-    - services/cmp-059-migration-workbench/src/authz.ts
-    - services/cmp-059-migration-workbench/src/errors.ts
-    - services/cmp-059-migration-workbench/src/domain/migration.ts
-    - services/cmp-059-migration-workbench/src/db/tx.ts
-    - services/cmp-059-migration-workbench/src/db/outbox.ts
-    - services/cmp-059-migration-workbench/src/repo/migration-repo.ts
-    - services/cmp-059-migration-workbench/src/service/migrations.ts
-    - services/cmp-059-migration-workbench/src/routes/migrations.ts
-    - services/cmp-059-migration-workbench/src/routes/helpers.ts
-    - services/cmp-059-migration-workbench/src/http/rate-limit.ts
-  tests:
-    - services/cmp-059-migration-workbench/test/unit/domain.test.ts
-    - services/cmp-059-migration-workbench/test/unit/plugin-http.test.ts
-    - services/cmp-059-migration-workbench/test/unit/tenant-negative.test.ts
-    - services/cmp-059-migration-workbench/test/unit/memory-pool.ts
-    - services/cmp-059-migration-workbench/test/contract/contracts.test.ts
-    - services/cmp-059-migration-workbench/test/doubles/authorizer.ts
-    - services/cmp-059-migration-workbench/test/doubles/context-resolver.ts
+    - services/cmp-059-migration-workbench/**
   evidence:
-    - evidence/SF-M09-004/unit-test-run.md
-    - services/cmp-059-migration-workbench/evidence/junit/unit.xml
+    - evidence/SF-M09-004/**
 
 schema:
   schema_name: sf_migration
   role: sf_cmp059_rw
   isolation_class: TENANT_SCOPED
   rls: FORCE
-  tables:
-    - migration_project
-    - source_profile
-    - mapping_spec
-    - migration_batch
-    - reconciliation_result
-    - cutover_manifest
-    - outbox_event
 
 integrations:
   - id: INT-017
     name: Legacy migration and onboarding factory
-    implementation: POST /migrations/projects, /profile, /map, /dry-run, /execute, GET /reconciliation
   - id: INT-011
     name: Tenant isolation enforcement chain
-    implementation: FORCE RLS on all tables, sf.tenant_id set_config, forbidden header check, OPA authz
 
 key_constraints:
   dry_run_required_before_execute: true
-  no_cutover_statute: true
-  no_invented_policy: true
-  published_versions_immutable: true
-  pii_in_logs: false
-  cross_component_sql: false
-
-architecture_constitution_sections:
-  - "§39 mapping version, dry-run, exception list and reconciliation evidence required"
-  - "§6 FORCE RLS, tenant_id from context not client headers"
-  - "§7 OPA decides authz, PostgreSQL RLS enforces hard boundary"
-  - "§11 transactional outbox pattern"
+  invented_statutory_policy_forbidden: true
+  lifecycle_status_enum:
+    - CREATED
+    - PROFILED
+    - MAPPED
+    - DRY_RUN
+    - EXECUTED
+    - RECONCILED
+    - FAILED
+    - ROLLED_BACK
 
 test_results:
-  unit:
-    files: 4
-    tests: 42
-    passed: 42
+  unit_contract:
+    tests: 32
+    passed: 32
     failed: 0
-    run_at: "2026-10-15T15:30:52Z"
-  typecheck:
-    exit_code: 0
+    run_at: "2026-10-15T15:51:27Z"
+    runner: root-vitest
 
 events_emitted:
   - MigrationDryRunCompleted
@@ -100,10 +77,14 @@ events_emitted:
   - MigrationReconciliationFailed
   - MigrationCompleted
 
+residuals:
+  - pnpm-lock.yaml untouched; STITCH-A/HOST admits deps
+  - rate-limit plugin registration deferred until lockfile admission
+  - Postgres FORCE RLS int harness for SF-M09-INT
+
 pending_for_gate:
-  - Integration tests against real PostgreSQL (require DB provisioned environment)
-  - Security gate (SF-M09-INT independent agent)
-  - Evidence gate (SF-M09-EVD independent agent)
-  - G4_SECURITY_VERIFIED certification (human/CI gate, not self-certified)
+  - SF-M09-INT
+  - SF-M09-SEC
+  - SF-M09-EVD
 
 self_certification: false

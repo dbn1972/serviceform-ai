@@ -242,12 +242,12 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       expect(dryRun.statusCode).toBe(200);
       const dr = dryRun.json<{
         reconciliation: {
-          reconciliation_lifecycle_status: string;
+          reconciliation_status: string;
           contract_id: string;
           dry_run_required_before_execute: boolean;
         };
       }>();
-      expect(dr.reconciliation.reconciliation_lifecycle_status).toBe('PASSED');
+      expect(dr.reconciliation.reconciliation_status).toBe('PASSED');
 
       // Execute
       const execute = await app.inject({
@@ -270,11 +270,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       });
       expect(recon.statusCode).toBe(200);
       const reconcData = recon.json<{
-        reconciliation_lifecycle_status: string;
+        reconciliation_status: string;
         contract_id: string;
         dry_run_required_before_execute: boolean;
       }>();
-      expect(reconcData.reconciliation_lifecycle_status).toBe('PASSED');
+      expect(reconcData.reconciliation_status).toBe('PASSED');
     });
   });
 });
