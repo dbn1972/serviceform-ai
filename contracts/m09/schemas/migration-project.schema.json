@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/migrationproject/v1",
+  "title": "MigrationProject",
+  "description": "FROZEN. SF-CON-MIGRATION-PROJECT. Legacy migration project (CMP-059 / INT-017). Production migration requires dry-run evidence. MUST NOT invent cutover statute.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "project_id",
+    "lifecycle_status",
+    "dry_run_required_before_execute",
+    "mapping_spec_ref"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-MIGRATION-PROJECT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "project_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "PROFILED",
+        "MAPPED",
+        "DRY_RUN",
+        "EXECUTED",
+        "RECONCILED",
+        "FAILED",
+        "ROLLED_BACK"
+      ]
+    },
+    "dry_run_required_before_execute": {
+      "type": "boolean",
+      "const": true
+    },
+    "mapping_spec_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "source_profile_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    }
+  }
+}

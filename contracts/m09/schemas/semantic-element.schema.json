@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m09/semanticelement/v1",
+  "title": "SemanticElement",
+  "description": "FROZEN. SF-CON-SEMANTIC-ELEMENT. Canonical semantic element version (CMP-058 / INT-016). Studio binds fields to semantic IDs. MUST NOT invent government field meanings beyond opaque refs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "contract_status",
+    "freeze_status",
+    "tenant_id",
+    "idempotency_key",
+    "invented_statutory_policy_forbidden",
+    "element_id",
+    "element_code",
+    "version",
+    "lifecycle_status",
+    "privacy_classification"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "SF-CON-SEMANTIC-ELEMENT"
+    },
+    "contract_status": {
+      "const": "FROZEN"
+    },
+    "freeze_status": {
+      "const": "FROZEN"
+    },
+    "tenant_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "invented_statutory_policy_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "correlation_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "element_id": {
+      "$ref": "https://contracts.serviceform.ai/common/v1#/$defs/uuid"
+    },
+    "element_code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lifecycle_status": {
+      "type": "string",
+      "enum": ["DRAFT", "PUBLISHED", "DEPRECATED"]
+    },
+    "privacy_classification": {
+      "type": "string",
+      "enum": ["PUBLIC", "INTERNAL", "PII", "SENSITIVE_PII"]
+    },
+    "code_list_binding_ref": {
+      "type": ["string", "null"],
+      "maxLength": 128
+    }
+  }
+}

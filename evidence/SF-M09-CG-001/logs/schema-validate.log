@@ -1,0 +1,99 @@
+PASS unique $id count=8
+PASS unique contract_id SF-CON-APPOINTMENT,SF-CON-ASSISTED-SESSION,SF-CON-BPMN-PROFILE,SF-CON-MIGRATION-PROJECT,SF-CON-PRIVACY-REQUEST,SF-CON-RISK-ASSESSMENT,SF-CON-SEMANTIC-ELEMENT,SF-CON-SFPACKAGE-MANIFEST
+PASS refs limited to common/v1 and M09 siblings
+PASS no circular M09 $ref
+PASS compile appointment.schema.json $id=https://contracts.serviceform.ai/m09/appointment/v1
+PASS compile assisted-session.schema.json $id=https://contracts.serviceform.ai/m09/assistedsession/v1
+PASS compile bpmn-profile-report.schema.json $id=https://contracts.serviceform.ai/m09/bpmnprofilereport/v1
+PASS compile migration-project.schema.json $id=https://contracts.serviceform.ai/m09/migrationproject/v1
+PASS compile privacy-request.schema.json $id=https://contracts.serviceform.ai/m09/privacyrequest/v1
+PASS compile risk-assessment.schema.json $id=https://contracts.serviceform.ai/m09/riskassessment/v1
+PASS compile semantic-element.schema.json $id=https://contracts.serviceform.ai/m09/semanticelement/v1
+PASS compile sfpackage-manifest.schema.json $id=https://contracts.serviceform.ai/m09/sfpackagemanifest/v1
+PASS valid/appointment.json -> appointment
+PASS valid/assisted-session.json -> assisted-session
+PASS valid/bpmn-profile-report.json -> bpmn-profile-report
+PASS valid/migration-project.json -> migration-project
+PASS valid/privacy-request.json -> privacy-request
+PASS valid/risk-assessment.json -> risk-assessment
+PASS valid/semantic-element.json -> semantic-element
+PASS valid/sfpackage-manifest.json -> sfpackage-manifest
+PASS invalid/appointment.capacity-not-atomic.json -> appointment
+PASS invalid/appointment.notification-invalidates-booking.json -> appointment
+PASS invalid/assisted-session.applied-by-not-distinct.json -> assisted-session
+PASS invalid/bpmn-profile-report.temporal-replaced.json -> bpmn-profile-report
+PASS invalid/bpmn-profile-report.wrong-canonical-model.json -> bpmn-profile-report
+PASS invalid/migration-project.dry-run-optional.json -> migration-project
+PASS invalid/privacy-request.cross-component-mutation.json -> privacy-request
+PASS invalid/privacy-request.not-orchestration-only.json -> privacy-request
+PASS invalid/risk-assessment.authoritative-decision.json -> risk-assessment
+PASS invalid/semantic-element.invented-statute-allowed.json -> semantic-element
+PASS invalid/sfpackage-manifest.embedded-secrets-allowed.json -> sfpackage-manifest
+PASS valid example present for appointment
+PASS invalid example present for appointment
+PASS valid example present for assisted-session
+PASS invalid example present for assisted-session
+PASS valid example present for semantic-element
+PASS invalid example present for semantic-element
+PASS valid example present for migration-project
+PASS invalid example present for migration-project
+PASS valid example present for risk-assessment
+PASS invalid example present for risk-assessment
+PASS valid example present for privacy-request
+PASS invalid example present for privacy-request
+PASS valid example present for sfpackage-manifest
+PASS invalid example present for sfpackage-manifest
+PASS valid example present for bpmn-profile-report
+PASS invalid example present for bpmn-profile-report
+PASS appointment.capacity_atomic const true
+PASS appointment notification failure does not invalidate booking
+PASS assisted-session applied_by distinct from applied_for
+PASS risk-assessment non-authoritative
+PASS migration-project dry_run required
+PASS privacy-request no cross-component mutation
+PASS privacy-request orchestration only
+PASS sfpackage-manifest no embedded secrets
+PASS bpmn-profile temporal remains runtime
+PASS bpmn-profile canonical model
+PASS appointment.schema.json contract_status const FROZEN
+PASS appointment.schema.json freeze_status const FROZEN
+PASS appointment.schema.json invented_statutory_policy_forbidden
+PASS appointment.schema.json tenant_id common uuid
+PASS appointment.schema.json closed (additionalProperties false)
+PASS assisted-session.schema.json contract_status const FROZEN
+PASS assisted-session.schema.json freeze_status const FROZEN
+PASS assisted-session.schema.json invented_statutory_policy_forbidden
+PASS assisted-session.schema.json tenant_id common uuid
+PASS assisted-session.schema.json closed (additionalProperties false)
+PASS bpmn-profile-report.schema.json contract_status const FROZEN
+PASS bpmn-profile-report.schema.json freeze_status const FROZEN
+PASS bpmn-profile-report.schema.json invented_statutory_policy_forbidden
+PASS bpmn-profile-report.schema.json tenant_id common uuid
+PASS bpmn-profile-report.schema.json closed (additionalProperties false)
+PASS migration-project.schema.json contract_status const FROZEN
+PASS migration-project.schema.json freeze_status const FROZEN
+PASS migration-project.schema.json invented_statutory_policy_forbidden
+PASS migration-project.schema.json tenant_id common uuid
+PASS migration-project.schema.json closed (additionalProperties false)
+PASS privacy-request.schema.json contract_status const FROZEN
+PASS privacy-request.schema.json freeze_status const FROZEN
+PASS privacy-request.schema.json invented_statutory_policy_forbidden
+PASS privacy-request.schema.json tenant_id common uuid
+PASS privacy-request.schema.json closed (additionalProperties false)
+PASS risk-assessment.schema.json contract_status const FROZEN
+PASS risk-assessment.schema.json freeze_status const FROZEN
+PASS risk-assessment.schema.json invented_statutory_policy_forbidden
+PASS risk-assessment.schema.json tenant_id common uuid
+PASS risk-assessment.schema.json closed (additionalProperties false)
+PASS semantic-element.schema.json contract_status const FROZEN
+PASS semantic-element.schema.json freeze_status const FROZEN
+PASS semantic-element.schema.json invented_statutory_policy_forbidden
+PASS semantic-element.schema.json tenant_id common uuid
+PASS semantic-element.schema.json closed (additionalProperties false)
+PASS sfpackage-manifest.schema.json contract_status const FROZEN
+PASS sfpackage-manifest.schema.json freeze_status const FROZEN
+PASS sfpackage-manifest.schema.json invented_statutory_policy_forbidden
+PASS sfpackage-manifest.schema.json tenant_id common uuid
+PASS sfpackage-manifest.schema.json closed (additionalProperties false)
+
+8 M09 contracts, 0 failure(s)
