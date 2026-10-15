@@ -1,0 +1,75 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-059 Migration Workbench Events",
+    "version": "1.0.0",
+    "description": "INT-017 Legacy migration events. dry_run_required_before_execute remains true."
+  },
+  "channels": {
+    "sf.migration": {
+      "address": "sf.migration",
+      "messages": {
+        "MigrationDryRunCompleted": { "$ref": "#/components/messages/MigrationDryRunCompleted" },
+        "MigrationBatchApplied": { "$ref": "#/components/messages/MigrationBatchApplied" },
+        "MigrationReconciliationFailed": {
+          "$ref": "#/components/messages/MigrationReconciliationFailed"
+        },
+        "MigrationCompleted": { "$ref": "#/components/messages/MigrationCompleted" }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "MigrationDryRunCompleted": {
+        "name": "MigrationDryRunCompleted",
+        "payload": {
+          "type": "object",
+          "required": ["project_id", "batch_id", "reconciliation_status"],
+          "properties": {
+            "project_id": { "type": "string", "format": "uuid" },
+            "batch_id": { "type": "string", "format": "uuid" },
+            "reconciliation_status": { "type": "string", "enum": ["PASSED", "FAILED", "PARTIAL"] },
+            "dry_run_count": { "type": "integer", "minimum": 1 }
+          }
+        }
+      },
+      "MigrationBatchApplied": {
+        "name": "MigrationBatchApplied",
+        "payload": {
+          "type": "object",
+          "required": ["project_id", "batch_id", "dry_run_batch_id"],
+          "properties": {
+            "project_id": { "type": "string", "format": "uuid" },
+            "batch_id": { "type": "string", "format": "uuid" },
+            "dry_run_batch_id": { "type": "string", "format": "uuid" },
+            "reconciliation_status": { "type": "string" }
+          }
+        }
+      },
+      "MigrationReconciliationFailed": {
+        "name": "MigrationReconciliationFailed",
+        "payload": {
+          "type": "object",
+          "required": ["project_id", "batch_id", "reconciliation_status"],
+          "properties": {
+            "project_id": { "type": "string", "format": "uuid" },
+            "batch_id": { "type": "string", "format": "uuid" },
+            "reconciliation_status": { "type": "string" },
+            "exception_count": { "type": "integer", "minimum": 0 }
+          }
+        }
+      },
+      "MigrationCompleted": {
+        "name": "MigrationCompleted",
+        "payload": {
+          "type": "object",
+          "required": ["project_id", "batch_id"],
+          "properties": {
+            "project_id": { "type": "string", "format": "uuid" },
+            "batch_id": { "type": "string", "format": "uuid" }
+          }
+        }
+      }
+    }
+  }
+}

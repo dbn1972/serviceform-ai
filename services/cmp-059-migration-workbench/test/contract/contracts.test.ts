@@ -41,13 +41,28 @@ describe('SF-CON-MIGRATION-PROJECT contract surface', () => {
   describe('reconciliation status values', () => {
     it('PASSED, FAILED and PARTIAL are derivable', () => {
       expect(
-        deriveReconciliationStatus({ sourceCount: 10, targetCount: 10, matchedCount: 10, failedRecords: 0 }),
+        deriveReconciliationStatus({
+          sourceCount: 10,
+          targetCount: 10,
+          matchedCount: 10,
+          failedRecords: 0,
+        }),
       ).toBe('PASSED');
       expect(
-        deriveReconciliationStatus({ sourceCount: 10, targetCount: 0, matchedCount: 0, failedRecords: 10 }),
+        deriveReconciliationStatus({
+          sourceCount: 10,
+          targetCount: 0,
+          matchedCount: 0,
+          failedRecords: 10,
+        }),
       ).toBe('FAILED');
       expect(
-        deriveReconciliationStatus({ sourceCount: 10, targetCount: 8, matchedCount: 8, failedRecords: 2 }),
+        deriveReconciliationStatus({
+          sourceCount: 10,
+          targetCount: 8,
+          matchedCount: 8,
+          failedRecords: 2,
+        }),
       ).toBe('PARTIAL');
     });
   });

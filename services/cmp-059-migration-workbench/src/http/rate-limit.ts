@@ -1,9 +1,6 @@
 import type { RateLimitPluginOptions } from '@fastify/rate-limit';
 
-export function migrationRateLimitOptions(
-  max: number,
-  timeWindow: number,
-): RateLimitPluginOptions {
+export function migrationRateLimitOptions(max: number, timeWindow: number): RateLimitPluginOptions {
   return {
     max,
     timeWindow,

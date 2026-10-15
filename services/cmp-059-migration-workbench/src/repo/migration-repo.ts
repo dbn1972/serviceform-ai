@@ -148,13 +148,7 @@ export async function updateProjectStatus(
             project_version = project_version + 1
       WHERE tenant_id = $2 AND project_id = $5
       RETURNING *`,
-    [
-      params.status,
-      params.tenantId,
-      params.now,
-      params.incrementDryRun ?? false,
-      params.projectId,
-    ],
+    [params.status, params.tenantId, params.now, params.incrementDryRun ?? false, params.projectId],
   );
   return res.rows[0];
 }

@@ -91,7 +91,8 @@ export async function addSourceProfile(
   input: AddSourceProfileInput,
 ): Promise<{ project: ProjectRow; profile_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['DRAFT', 'PROFILED'].includes(project.status)) {
@@ -149,7 +150,8 @@ export async function addMappingSpec(
   input: AddMappingSpecInput,
 ): Promise<{ project: ProjectRow; mapping_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['PROFILED', 'MAPPED'].includes(project.status)) {
@@ -206,7 +208,8 @@ export async function runDryRun(
   input: DryRunInput,
 ): Promise<{ batch: BatchRow; reconciliation: ReconciliationRow }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
   if (!['MAPPED', 'DRY_RUN_DONE'].includes(project.status)) {
@@ -316,7 +319,8 @@ export async function executeProject(
   input: ExecuteInput,
 ): Promise<{ batch: BatchRow; reconciliation: ReconciliationRow }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
 
@@ -451,7 +455,8 @@ export async function getReconciliation(
   projectId: string,
 ): Promise<ReconciliationRow> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId))
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   requireProject(await getProject(client, tid, projectId), projectId);
 

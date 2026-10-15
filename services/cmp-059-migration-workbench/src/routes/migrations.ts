@@ -34,7 +34,10 @@ export async function registerMigrationRoutes(
     if (typeof body.display_name !== 'string' || typeof body.source_system_ref !== 'string') {
       throw new Cmp059Error('SF-SYS-003');
     }
-    await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_PROJECT_CREATE', 'MigrationProject'));
+    await authorize(
+      deps.authorizer,
+      authzInput(ctx, 'MIGRATION_PROJECT_CREATE', 'MigrationProject'),
+    );
     const row = await withContextTx(deps.pool, ctx, (client) =>
       createProject(client, ctx, deps.clock(), {
         display_name: body.display_name as string,
@@ -55,7 +58,10 @@ export async function registerMigrationRoutes(
     if (!isUuid(request.params.id)) throw new Cmp059Error('SF-SYS-003');
     const body = request.body ?? {};
     if (typeof body.field_count !== 'number') throw new Cmp059Error('SF-SYS-003');
-    await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_PROFILE_CREATE', 'MigrationProject'));
+    await authorize(
+      deps.authorizer,
+      authzInput(ctx, 'MIGRATION_PROFILE_CREATE', 'MigrationProject'),
+    );
     const result = await withContextTx(deps.pool, ctx, (client) =>
       addSourceProfile(client, ctx, deps.clock(), request.params.id, {
         schema_descriptor: body.schema_descriptor ?? {},
@@ -82,7 +88,10 @@ export async function registerMigrationRoutes(
     if (typeof body.mapping_version_ref !== 'string' || !Array.isArray(body.field_mappings)) {
       throw new Cmp059Error('SF-SYS-003');
     }
-    await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_MAPPING_CREATE', 'MigrationProject'));
+    await authorize(
+      deps.authorizer,
+      authzInput(ctx, 'MIGRATION_MAPPING_CREATE', 'MigrationProject'),
+    );
     const result = await withContextTx(deps.pool, ctx, (client) =>
       addMappingSpec(client, ctx, deps.clock(), request.params.id, {
         mapping_version_ref: body.mapping_version_ref as string,
@@ -154,7 +163,10 @@ export async function registerMigrationRoutes(
     const ctx = request.sfContext;
     if (!ctx) throw new Cmp059Error('SF-AUTH-001');
     if (!isUuid(request.params.id)) throw new Cmp059Error('SF-SYS-003');
-    await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_RECONCILIATION_READ', 'MigrationProject'));
+    await authorize(
+      deps.authorizer,
+      authzInput(ctx, 'MIGRATION_RECONCILIATION_READ', 'MigrationProject'),
+    );
     const result = await withContextTx(deps.pool, ctx, (client) =>
       getReconciliation(client, ctx, request.params.id),
     );

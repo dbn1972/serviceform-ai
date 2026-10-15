@@ -17,10 +17,7 @@ const T1 = '11111111-1111-4111-8111-111111111111';
 const T2 = '22222222-2222-4222-8222-222222222222';
 const ACTOR = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 
-function ctx(
-  tenantId: string,
-  extra: Partial<RequestContext> = {},
-): RequestContext {
+function ctx(tenantId: string, extra: Partial<RequestContext> = {}): RequestContext {
   return {
     tenant_id: tenantId,
     cell_id: 'cell-01',
