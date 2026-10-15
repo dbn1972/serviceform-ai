@@ -1,0 +1,29 @@
+{
+  "task_id": "SF-M09-003",
+  "component_ids": ["CMP-058"],
+  "integration_ids": ["INT-016", "INT-011"],
+  "branch": "cursor/m09-003-semantic-91f2",
+  "draft_pr": "https://github.com/dbn1972/serviceform-ai/pull/160",
+  "base_commit": "fd7492b398b2945713957a53b42c4717a7940c3f",
+  "schema": "sf_semantics",
+  "privilege_role": "sf_cmp058_rw",
+  "orchestration_task_state": "CANDIDATE_COMPLETE",
+  "certified": false,
+  "g3": false,
+  "g4": false,
+  "g6": false,
+  "self_certified": false,
+  "checks": {
+    "typecheck": "PASS",
+    "eslint": "PASS",
+    "prettier": "PASS",
+    "unit_contract": "35/35 PASS",
+    "integration_postgres16": "7/7 PASS",
+    "gates": "10/10 PASS"
+  },
+  "residuals": [
+    "EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL",
+    "host_mount_deferred_SF-M09-HOST",
+    "OPA_SEMANTIC_ACTIONS_POLICY_DATA"
+  ]
+}

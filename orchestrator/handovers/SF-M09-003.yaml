@@ -1,6 +1,6 @@
 # SF-M09-003 — CMP-058 Semantic Registry (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
-# Consume FROZEN contracts only. No invented statutory policy.
+# CANDIDATE_COMPLETE DRAFT PR. Not CERTIFIED. Not G4. Not G6.
+# Consume FROZEN contracts only. No invented statutory policy / field meanings.
 
 task_id: SF-M09-003
 title: CMP-058 Semantic Registry
@@ -42,12 +42,13 @@ wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
 self_certified: false
 not_certified: true
 certified: false
@@ -64,8 +65,8 @@ ready_authorization:
   join_separator: "_"
   wave_a_ready: true
 base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+  prefix: fd7492b3
+  suffix: 98b2945713957a53b42c4717a7940c3f
 join_separator: "_"
 
 contract_locks:
@@ -87,3 +88,14 @@ stop_conditions:
   - write outside allowed_write_paths
   - authoritative risk decision (CMP-060)
   - cross-component SQL (CMP-061)
+
+candidate:
+  pull_request: https://github.com/dbn1972/serviceform-ai/pull/160
+  draft: true
+  pr_state: DRAFT_DO_NOT_MERGE
+  evidence: evidence/SF-M09-003/EVIDENCE.md
+  summary: evidence/SF-M09-003/summary.json
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+    - host mount deferred to SF-M09-HOST
+    - OPA policy data for SEMANTIC_* actions (policy/** read-only)
