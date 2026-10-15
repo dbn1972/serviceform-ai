@@ -56,19 +56,31 @@ export class RecordingPool {
     return {
       query: async (sql: string, params: readonly unknown[] = []) => {
         const text = String(sql).trim();
-        if (/^BEGIN\b/i.test(text)) {
+        const head = text.slice(0, 16).toUpperCase();
+        if (head.startsWith('BEGIN')) {
           this.seq += 1;
           current = { id: this.seq, settings: {}, outcome: 'OPEN' };
           this.txs.push(current);
           this.open += 1;
-        } else if (/^(COMMIT|ROLLBACK)\b/i.test(text) && current) {
-          current.outcome = /^COMMIT/i.test(text) ? 'COMMIT' : 'ROLLBACK';
+        } else if ((head.startsWith('COMMIT') || head.startsWith('ROLLBACK')) && current) {
+          current.outcome = head.startsWith('COMMIT') ? 'COMMIT' : 'ROLLBACK';
           current = null;
           this.open -= 1;
-        } else if (/set_config/i.test(text) && current) {
-          const literal = /set_config\('([^']+)'/i.exec(text);
-          const key = literal ? literal[1] : String(params[0]);
-          const value = literal ? String(params[0]) : String(params[1]);
+        } else if (text.toLowerCase().includes('set_config') && current) {
+          const marker = "set_config('";
+          const lower = text.toLowerCase();
+          const at = lower.indexOf(marker);
+          let key: string | undefined;
+          let value: string;
+          if (at >= 0) {
+            const start = at + marker.length;
+            const end = text.indexOf("'", start);
+            key = end > start ? text.slice(start, end) : undefined;
+            value = String(params[0]);
+          } else {
+            key = String(params[0]);
+            value = String(params[1]);
+          }
           if (key !== undefined) current.settings[key] = value;
         }
         return this.exec(current?.id ?? null, text, params);
