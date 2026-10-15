@@ -2,7 +2,7 @@
 
 **Recommended gate: `G3_INTEGRATION_VERIFIED`**
 
-> **Not issued.** Human/CI must decide. This EVD record does **not** write a G3 gate record, set `G3_ISSUED`, CERTIFIED, or G6. Authorization for recommendation: `HUMAN_M07_THROUGH_EVD_AUTHORIZATION`. Separate `HUMAN_M07_G3_AUTHORIZATION` is required before any human issues G3.
+> **Superseded for issuance status:** Human gate authority issued `G3_INTEGRATION_VERIFIED` via `docs/verification/M07-G3-GATE-RECORD.md` / `orchestrator/handovers/SF-M07-GATE.yaml` (`HUMAN_M07_G3_AUTHORIZATION`). This recommendation document remains the EVD bind narrative. CERTIFIED / G6 remain **false**.
 
 Independent evidence verifier (SF-M07-EVD) bind of executed planning, freeze, Wave A builders, stitch, host, remediations, INT and SEC records on production SoT `e82126b5edbfe963892bc850631e9e685c733f05`.
 
@@ -15,8 +15,8 @@ Independent evidence verifier (SF-M07-EVD) bind of executed planning, freeze, Wa
 | Production SoT | `origin/main` `e82126b5edbfe963892bc850631e9e685c733f05` (merge [#150](https://github.com/dbn1972/serviceform-ai/pull/150) after SEC [#151](https://github.com/dbn1972/serviceform-ai/pull/151)) |
 | Disposition | **`SF_M07_EVD_PASS_G3_RECOMMENDED`** |
 | Recommended result | **`G3_INTEGRATION_VERIFIED`** |
-| Human/CI decision | **required** (this agent does **not** issue the gate) |
-| `G3_ISSUED` / `gate_issued` / `human_gate_issued` | **false** |
+| Human gate | **`G3_INTEGRATION_VERIFIED`** — see `docs/verification/M07-G3-GATE-RECORD.md` |
+| `G3_ISSUED` / `gate_issued` / `human_gate_issued` | **true** (human; recording agent `self_certified=false`) |
 | Self-certified | **false** |
 | CERTIFIED / G6 / RELEASE CERTIFIED | **false** |
 | SIMULATED boundaries | ESIGN (CMP-022) · DigiLocker (CMP-012 SimulatedDigiLockerConnector; REAL deferred, never PROD) |
@@ -71,4 +71,4 @@ Independent evidence verifier (SF-M07-EVD) bind of executed planning, freeze, Wa
 
 ## Next external gate
 
-Human/CI may issue `G3_INTEGRATION_VERIFIED` under a separate G3 authorization. Agents must not set CERTIFIED / G6 / self_certified.
+**Issued:** see `docs/verification/M07-G3-GATE-RECORD.md` / `orchestrator/handovers/SF-M07-GATE.yaml`. Agents must not set CERTIFIED / G6.
