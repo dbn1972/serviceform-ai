@@ -3,6 +3,8 @@
 -- allowed T2 sessions to SELECT T1 outbox rows (CROSS_TENANT_LEAKAGE Postgres).
 -- Additive fix — do not rewrite 1761100000000_cmp-059-migration-workbench.sql.
 -- sf:isolation sf_migration.outbox_event TENANT_SCOPED owner=CMP-059
+--
+-- Up Migration
 
 ALTER TABLE sf_migration.outbox_event ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sf_migration.outbox_event FORCE ROW LEVEL SECURITY;
