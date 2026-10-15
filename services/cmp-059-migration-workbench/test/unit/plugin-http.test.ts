@@ -29,6 +29,12 @@ function bearer(token: string): Record<string, string> {
   return { authorization: `Bearer ${token}` };
 }
 
+let idemCounter = 0;
+function nextIdem(): string {
+  idemCounter += 1;
+  return `idem-migration-${String(idemCounter).padStart(4, '0')}`;
+}
+
 describe('CMP-059 plugin HTTP unit (memory pool)', () => {
   let app: FastifyInstance;
   const config = loadConfig({ SF_ENVIRONMENT: 'LOCAL' });
@@ -58,7 +64,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           display_name: 'Legacy Civil Registry Migration',
           source_system_ref: 'LEGACY-CR-SYSTEM-001',
@@ -66,8 +76,15 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
         }),
       });
       expect(res.statusCode).toBe(201);
-      const body = res.json<{ project_id: string; status: string }>();
-      expect(body.status).toBe('DRAFT');
+      const body = res.json<{
+        project_id: string;
+        lifecycle_status: string;
+        contract_id: string;
+        dry_run_required_before_execute: boolean;
+      }>();
+      expect(body.lifecycle_status).toBe('CREATED');
+      expect(body.contract_id).toBe('SF-CON-MIGRATION-PROJECT');
+      expect(body.dry_run_required_before_execute).toBe(true);
       expect(typeof body.project_id).toBe('string');
     });
 
@@ -75,7 +92,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({ source_system_ref: 'SYS-001' }),
       });
       expect(res.statusCode).toBe(400);
@@ -85,7 +106,7 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', 'idempotency-key': nextIdem() },
         body: JSON.stringify({ display_name: 'X', source_system_ref: 'Y' }),
       });
       expect(res.statusCode).toBe(401);
@@ -98,7 +119,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const create = await app.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           display_name: 'Gate Test Project',
           source_system_ref: 'GATE-TEST-001',
@@ -111,7 +136,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const profile = await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/profile`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           schema_descriptor: { fields: ['name', 'dob'] },
           field_count: 2,
@@ -124,7 +153,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const map = await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/map`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           mapping_version_ref: 'MAP-V1.0.0',
           field_mappings: [{ source: 'name', target: 'applicant_name' }],
@@ -136,7 +169,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const execute = await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/execute`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({ total_records: 1000 }),
       });
       expect(execute.statusCode).toBe(422);
@@ -151,7 +188,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const create = await app.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           display_name: 'Lifecycle Test Migration',
           source_system_ref: 'LIFECYCLE-001',
@@ -164,7 +205,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/profile`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({ schema_descriptor: { fields: ['id', 'name'] }, field_count: 2 }),
       });
 
@@ -172,7 +217,11 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/map`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({
           mapping_version_ref: 'MAP-V2.0',
           field_mappings: [{ source: 'id', target: 'legacy_id' }],
@@ -183,18 +232,32 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
       const dryRun = await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/dry-run`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({ total_records: 500, simulated_failed: 0 }),
       });
       expect(dryRun.statusCode).toBe(200);
-      const dr = dryRun.json<{ reconciliation: { reconciliation_status: string } }>();
-      expect(dr.reconciliation.reconciliation_status).toBe('PASSED');
+      const dr = dryRun.json<{
+        reconciliation: {
+          reconciliation_lifecycle_status: string;
+          contract_id: string;
+          dry_run_required_before_execute: boolean;
+        };
+      }>();
+      expect(dr.reconciliation.reconciliation_lifecycle_status).toBe('PASSED');
 
       // Execute
       const execute = await app.inject({
         method: 'POST',
         url: `/v1/migrations/${project_id}/execute`,
-        headers: { ...bearer('t1'), 'content-type': 'application/json' },
+        headers: {
+          ...bearer('t1'),
+          'content-type': 'application/json',
+          'idempotency-key': nextIdem(),
+        },
         body: JSON.stringify({ total_records: 500 }),
       });
       expect(execute.statusCode).toBe(200);
@@ -206,8 +269,12 @@ describe('CMP-059 plugin HTTP unit (memory pool)', () => {
         headers: bearer('t1'),
       });
       expect(recon.statusCode).toBe(200);
-      const reconcData = recon.json<{ reconciliation_status: string }>();
-      expect(reconcData.reconciliation_status).toBe('PASSED');
+      const reconcData = recon.json<{
+        reconciliation_lifecycle_status: string;
+        contract_id: string;
+        dry_run_required_before_execute: boolean;
+      }>();
+      expect(reconcData.reconciliation_lifecycle_status).toBe('PASSED');
     });
   });
 });

@@ -5,10 +5,12 @@ import { Cmp059Error } from '../errors.js';
 import {
   isUuid,
   validateDisplayName,
+  validateIdempotencyKey,
   validateMappingVersionRef,
   validateSourceSystemRef,
   deriveReconciliationStatus,
 } from '../domain/migration.js';
+import { toMigrationProjectContract, type MigrationProjectContract } from '../domain/contract.js';
 import {
   insertProject,
   getProject,
@@ -42,12 +44,11 @@ function requireProject(row: ProjectRow | undefined, projectId: string): Project
   return row;
 }
 
-// ── createProject ──────────────────────────────────────────────────────────
-
 export interface CreateProjectInput {
   display_name: string;
   source_system_ref: string;
   target_service_code?: string | null;
+  idempotency_key: string;
 }
 
 export async function createProject(
@@ -55,7 +56,7 @@ export async function createProject(
   ctx: RequestContext,
   now: Date,
   input: CreateProjectInput,
-): Promise<ProjectRow> {
+): Promise<MigrationProjectContract> {
   const tid = tenantId(ctx);
   if (!validateDisplayName(input.display_name)) {
     throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'DISPLAY_NAME_INVALID' }] });
@@ -63,19 +64,22 @@ export async function createProject(
   if (!validateSourceSystemRef(input.source_system_ref)) {
     throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'SOURCE_SYSTEM_REF_INVALID' }] });
   }
+  if (!validateIdempotencyKey(input.idempotency_key)) {
+    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'IDEMPOTENCY_KEY_INVALID' }] });
+  }
   const row = await insertProject(client, {
     projectId: randomUUID(),
     tenantId: tid,
     displayName: input.display_name,
     sourceSystemRef: input.source_system_ref,
     targetServiceCode: input.target_service_code ?? null,
+    idempotencyKey: input.idempotency_key,
+    correlationId: ctx.correlation_id,
     createdBy: ctx.actor.id,
     now,
   });
-  return row;
+  return toMigrationProjectContract(row);
 }
-
-// ── addSourceProfile ──────────────────────────────────────────────────────
 
 export interface AddSourceProfileInput {
   schema_descriptor: unknown;
@@ -89,15 +93,14 @@ export async function addSourceProfile(
   now: Date,
   projectId: string,
   input: AddSourceProfileInput,
-): Promise<{ project: ProjectRow; profile_id: string }> {
+): Promise<{ project: MigrationProjectContract; profile_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId))
-    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
-  if (!['DRAFT', 'PROFILED'].includes(project.status)) {
+  if (!['CREATED', 'PROFILED'].includes(project.lifecycle_status)) {
     throw new Cmp059Error('SF-SYS-003', {
-      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_PROFILE', pointer: project.status }],
+      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_PROFILE', pointer: project.lifecycle_status }],
     });
   }
 
@@ -129,12 +132,14 @@ export async function addSourceProfile(
     projectId,
     status: 'PROFILED',
     now,
+    sourceProfileRef: `profile:${profileId}`,
   });
 
-  return { project: updated ?? project, profile_id: profileId };
+  return {
+    project: toMigrationProjectContract(updated ?? project),
+    profile_id: profileId,
+  };
 }
-
-// ── addMappingSpec ────────────────────────────────────────────────────────
 
 export interface AddMappingSpecInput {
   mapping_version_ref: string;
@@ -148,15 +153,14 @@ export async function addMappingSpec(
   now: Date,
   projectId: string,
   input: AddMappingSpecInput,
-): Promise<{ project: ProjectRow; mapping_id: string }> {
+): Promise<{ project: MigrationProjectContract; mapping_id: string }> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId))
-    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
-  if (!['PROFILED', 'MAPPED'].includes(project.status)) {
+  if (!['PROFILED', 'MAPPED'].includes(project.lifecycle_status)) {
     throw new Cmp059Error('SF-SYS-003', {
-      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_MAPPING', pointer: project.status }],
+      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_MAPPING', pointer: project.lifecycle_status }],
     });
   }
   if (!validateMappingVersionRef(input.mapping_version_ref)) {
@@ -183,21 +187,20 @@ export async function addMappingSpec(
     projectId,
     status: 'MAPPED',
     now,
+    mappingSpecRef: input.mapping_version_ref,
   });
 
-  return { project: updated ?? project, mapping_id: mappingId };
+  return {
+    project: toMigrationProjectContract(updated ?? project),
+    mapping_id: mappingId,
+  };
 }
-
-// ── runDryRun ─────────────────────────────────────────────────────────────
-// Architecture Constitution §39: dry_run_required_before_execute = true.
-// A dry run creates a DRY_RUN batch and reconciliation evidence. It does NOT
-// mutate any production data; all mutation is within sf_migration schema only.
 
 export interface DryRunInput {
   total_records: number;
-  simulated_processed?: number | undefined;
-  simulated_failed?: number | undefined;
-  simulated_exceptions?: unknown[] | undefined;
+  simulated_processed?: number;
+  simulated_failed?: number;
+  simulated_exceptions?: unknown[];
 }
 
 export async function runDryRun(
@@ -206,15 +209,18 @@ export async function runDryRun(
   now: Date,
   projectId: string,
   input: DryRunInput,
-): Promise<{ batch: BatchRow; reconciliation: ReconciliationRow }> {
+): Promise<{
+  project: MigrationProjectContract;
+  batch: BatchRow;
+  reconciliation: ReconciliationRow;
+}> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId))
-    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
-  if (!['MAPPED', 'DRY_RUN_DONE'].includes(project.status)) {
+  if (!['MAPPED', 'DRY_RUN'].includes(project.lifecycle_status)) {
     throw new Cmp059Error('SF-SYS-003', {
-      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_DRY_RUN', pointer: project.status }],
+      details: [{ code: 'PROJECT_STATUS_INVALID_FOR_DRY_RUN', pointer: project.lifecycle_status }],
     });
   }
 
@@ -248,7 +254,7 @@ export async function runDryRun(
     processedRecords: processed,
     failedRecords: failed,
     exceptionCount: exceptions.length,
-    status: failed === 0 ? 'COMPLETED' : 'COMPLETED',
+    status: 'COMPLETED',
     now,
   });
 
@@ -274,10 +280,10 @@ export async function runDryRun(
     now,
   });
 
-  await updateProjectStatus(client, {
+  const updated = await updateProjectStatus(client, {
     tenantId: tid,
     projectId,
-    status: 'DRY_RUN_DONE',
+    status: 'DRY_RUN',
     now,
     incrementDryRun: true,
   });
@@ -297,18 +303,18 @@ export async function runDryRun(
     ),
   );
 
-  return { batch: completed ?? batch, reconciliation };
+  return {
+    project: toMigrationProjectContract(updated ?? project),
+    batch: completed ?? batch,
+    reconciliation,
+  };
 }
-
-// ── executeProject ────────────────────────────────────────────────────────
-// Architecture Constitution §39: dry_run_required_before_execute = true.
-// This operation is REFUSED unless a completed DRY_RUN batch exists.
 
 export interface ExecuteInput {
   total_records: number;
-  processed_records?: number | undefined;
-  failed_records?: number | undefined;
-  exceptions?: unknown[] | undefined;
+  processed_records?: number;
+  failed_records?: number;
+  exceptions?: unknown[];
 }
 
 export async function executeProject(
@@ -317,15 +323,23 @@ export async function executeProject(
   now: Date,
   projectId: string,
   input: ExecuteInput,
-): Promise<{ batch: BatchRow; reconciliation: ReconciliationRow }> {
+): Promise<{
+  project: MigrationProjectContract;
+  batch: BatchRow;
+  reconciliation: ReconciliationRow;
+}> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId))
-    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   const project = requireProject(await getProject(client, tid, projectId), projectId);
 
-  // Hard gate: dry run MUST have completed before execute (Architecture Constitution §39)
-  if (project.status !== 'DRY_RUN_DONE') {
+  if (project.lifecycle_status !== 'DRY_RUN' || project.dry_run_count < 1) {
+    throw new Cmp059Error('SF-SYS-003', {
+      statusCode: 422,
+      details: [{ code: 'DRY_RUN_REQUIRED_BEFORE_EXECUTE' }],
+    });
+  }
+  if (project.dry_run_required_before_execute !== true) {
     throw new Cmp059Error('SF-SYS-003', {
       statusCode: 422,
       details: [{ code: 'DRY_RUN_REQUIRED_BEFORE_EXECUTE' }],
@@ -353,7 +367,7 @@ export async function executeProject(
   const failed = input.failed_records ?? 0;
   const exceptions = input.exceptions ?? [];
 
-  await updateProjectStatus(client, { tenantId: tid, projectId, status: 'EXECUTING', now });
+  await updateProjectStatus(client, { tenantId: tid, projectId, status: 'EXECUTED', now });
 
   const batch = await insertBatch(client, {
     batchId: randomUUID(),
@@ -366,14 +380,13 @@ export async function executeProject(
     now,
   });
 
-  const batchStatus = failed === 0 ? 'COMPLETED' : 'COMPLETED';
   const completed = await completeBatch(client, {
     tenantId: tid,
     batchId: batch.batch_id,
     processedRecords: processed,
     failedRecords: failed,
     exceptionCount: exceptions.length,
-    status: batchStatus,
+    status: 'COMPLETED',
     now,
   });
 
@@ -399,8 +412,13 @@ export async function executeProject(
     now,
   });
 
-  const finalStatus = failed === 0 ? 'COMPLETED' : 'COMPLETED';
-  await updateProjectStatus(client, { tenantId: tid, projectId, status: finalStatus, now });
+  const finalStatus = reconcStatus === 'FAILED' ? 'FAILED' : 'RECONCILED';
+  const updated = await updateProjectStatus(client, {
+    tenantId: tid,
+    projectId,
+    status: finalStatus,
+    now,
+  });
 
   await insertOutbox(
     client,
@@ -435,19 +453,16 @@ export async function executeProject(
   } else {
     await insertOutbox(
       client,
-      envelopeOf(
-        tid,
-        'MigrationCompleted',
-        { project_id: projectId, batch_id: batch.batch_id },
-        ctx,
-      ),
+      envelopeOf(tid, 'MigrationCompleted', { project_id: projectId, batch_id: batch.batch_id }, ctx),
     );
   }
 
-  return { batch: completed ?? batch, reconciliation };
+  return {
+    project: toMigrationProjectContract(updated ?? project),
+    batch: completed ?? batch,
+    reconciliation,
+  };
 }
-
-// ── getReconciliation ─────────────────────────────────────────────────────
 
 export async function getReconciliation(
   client: PoolClient,
@@ -455,8 +470,7 @@ export async function getReconciliation(
   projectId: string,
 ): Promise<ReconciliationRow> {
   const tid = tenantId(ctx);
-  if (!isUuid(projectId))
-    throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
+  if (!isUuid(projectId)) throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'PROJECT_ID_INVALID' }] });
 
   requireProject(await getProject(client, tid, projectId), projectId);
 

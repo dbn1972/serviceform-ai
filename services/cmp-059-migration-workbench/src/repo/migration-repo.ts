@@ -1,14 +1,14 @@
 import type { PoolClient } from 'pg';
 
 export type ProjectStatus =
-  | 'DRAFT'
+  | 'CREATED'
   | 'PROFILED'
   | 'MAPPED'
-  | 'DRY_RUN_DONE'
-  | 'EXECUTING'
-  | 'COMPLETED'
-  | 'ROLLED_BACK'
-  | 'CANCELLED';
+  | 'DRY_RUN'
+  | 'EXECUTED'
+  | 'RECONCILED'
+  | 'FAILED'
+  | 'ROLLED_BACK';
 
 export type BatchType = 'DRY_RUN' | 'EXECUTE';
 export type BatchStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'ROLLED_BACK';
@@ -21,9 +21,15 @@ export interface ProjectRow {
   display_name: string;
   source_system_ref: string;
   target_service_code: string | null;
-  status: ProjectStatus;
+  lifecycle_status: ProjectStatus;
+  dry_run_required_before_execute: boolean;
   dry_run_count: number;
   last_dry_run_at: Date | null;
+  mapping_spec_ref: string | null;
+  source_profile_ref: string | null;
+  idempotency_key: string;
+  correlation_id: string;
+  invented_statutory_policy_forbidden: boolean;
   created_by: string;
   created_at: Date;
   updated_at: Date;
@@ -84,8 +90,6 @@ export interface ReconciliationRow {
   created_at: Date;
 }
 
-// ── project ───────────────────────────────────────────────────────────────────
-
 export async function insertProject(
   client: PoolClient,
   row: {
@@ -94,6 +98,8 @@ export async function insertProject(
     displayName: string;
     sourceSystemRef: string;
     targetServiceCode: string | null;
+    idempotencyKey: string;
+    correlationId: string;
     createdBy: string;
     now: Date;
   },
@@ -101,8 +107,10 @@ export async function insertProject(
   const res = await client.query<ProjectRow>(
     `INSERT INTO sf_migration.migration_project
        (tenant_id, project_id, display_name, source_system_ref, target_service_code,
-        status, dry_run_count, created_by, created_at, updated_at)
-     VALUES ($1,$2,$3,$4,$5,'DRAFT',0,$6,$7,$7)
+        lifecycle_status, dry_run_required_before_execute, dry_run_count,
+        idempotency_key, correlation_id, invented_statutory_policy_forbidden,
+        created_by, created_at, updated_at)
+     VALUES ($1,$2,$3,$4,$5,'CREATED',true,0,$6,$7,true,$8,$9,$9)
      RETURNING *`,
     [
       row.tenantId,
@@ -110,6 +118,8 @@ export async function insertProject(
       row.displayName,
       row.sourceSystemRef,
       row.targetServiceCode,
+      row.idempotencyKey,
+      row.correlationId,
       row.createdBy,
       row.now,
     ],
@@ -137,23 +147,33 @@ export async function updateProjectStatus(
     status: ProjectStatus;
     now: Date;
     incrementDryRun?: boolean;
+    mappingSpecRef?: string | null;
+    sourceProfileRef?: string | null;
   },
 ): Promise<ProjectRow | undefined> {
   const res = await client.query<ProjectRow>(
     `UPDATE sf_migration.migration_project
-        SET status = $1,
+        SET lifecycle_status = $1,
             dry_run_count = CASE WHEN $4 THEN dry_run_count + 1 ELSE dry_run_count END,
             last_dry_run_at = CASE WHEN $4 THEN $3 ELSE last_dry_run_at END,
+            mapping_spec_ref = COALESCE($6, mapping_spec_ref),
+            source_profile_ref = COALESCE($7, source_profile_ref),
             updated_at = $3,
             project_version = project_version + 1
       WHERE tenant_id = $2 AND project_id = $5
       RETURNING *`,
-    [params.status, params.tenantId, params.now, params.incrementDryRun ?? false, params.projectId],
+    [
+      params.status,
+      params.tenantId,
+      params.now,
+      params.incrementDryRun ?? false,
+      params.projectId,
+      params.mappingSpecRef ?? null,
+      params.sourceProfileRef ?? null,
+    ],
   );
   return res.rows[0];
 }
-
-// ── source_profile ─────────────────────────────────────────────────────────
 
 export async function insertSourceProfile(
   client: PoolClient,
@@ -187,8 +207,6 @@ export async function insertSourceProfile(
   );
   return res.rows[0] as SourceProfileRow;
 }
-
-// ── mapping_spec ──────────────────────────────────────────────────────────
 
 export async function insertMappingSpec(
   client: PoolClient,
@@ -236,8 +254,6 @@ export async function getMappingForProject(
   );
   return res.rows[0];
 }
-
-// ── migration_batch ──────────────────────────────────────────────────────
 
 export async function insertBatch(
   client: PoolClient,
@@ -321,8 +337,6 @@ export async function getLatestDryRunBatch(
   );
   return res.rows[0];
 }
-
-// ── reconciliation_result ─────────────────────────────────────────────────
 
 export async function insertReconciliation(
   client: PoolClient,

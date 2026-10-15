@@ -264,3 +264,9 @@ CREATE INDEX outbox_event_unpublished ON sf_migration.outbox_event (created_at)
 
 GRANT SELECT, INSERT, UPDATE ON TABLE sf_migration.outbox_event TO sf_cmp059_rw;
 GRANT SELECT ON TABLE sf_migration.outbox_event TO sf_app;
+
+-- Down Migration
+REVOKE ALL ON SCHEMA sf_migration FROM sf_cmp059_rw;
+REVOKE ALL ON SCHEMA sf_migration FROM sf_app;
+DROP SCHEMA IF EXISTS sf_migration CASCADE;
+-- Role sf_cmp059_rw retained (may be referenced by runtime logins); never DROP ROLE here.

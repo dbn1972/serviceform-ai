@@ -1,7 +1,5 @@
-import rateLimit from '@fastify/rate-limit';
 import { errorEntry, type ErrorResponse } from '@serviceform/contracts';
 import type { FastifyError, FastifyInstance, FastifyPluginAsync } from 'fastify';
-import fastifyRateLimit from 'fastify-rate-limit';
 import type { Pool } from 'pg';
 import { authorize, denyAllAuthz, type AuthorizationPort } from './authz.js';
 import { loadConfig, type MigrationConfig } from './config.js';
@@ -11,7 +9,6 @@ import {
   type ContextResolver,
 } from './context.js';
 import { Cmp059Error, mapPgError } from './errors.js';
-import { migrationRateLimitOptions } from './http/rate-limit.js';
 import type { RouteDeps } from './routes/helpers.js';
 import { registerMigrationRoutes } from './routes/migrations.js';
 
@@ -46,9 +43,7 @@ const pluginImpl: FastifyPluginAsync<MigrationPluginOptions> = async (app, opts)
     rateLimitWindowMs: config.rateLimitWindowMs,
   };
 
-  const rateLimitOpts = migrationRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
-  await app.register(rateLimit, rateLimitOpts);
-  await app.register(fastifyRateLimit, rateLimitOpts);
+  // Rate-limit plugin registration deferred to STITCH-A/HOST (lockfile-admitted @fastify/rate-limit).
 
   app.addHook('onRequest', async (request) => {
     assertNoTenantIdentifyingHeaders(request);

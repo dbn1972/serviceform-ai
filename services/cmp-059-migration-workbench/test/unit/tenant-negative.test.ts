@@ -61,6 +61,7 @@ describe('CMP-059 tenant-negative / INT-011', () => {
       headers: {
         authorization: 'Bearer t1',
         'content-type': 'application/json',
+        'idempotency-key': 'idem-tenant-neg-0001',
         'x-roles': 'ADMIN',
       },
       body: JSON.stringify({ display_name: 'X', source_system_ref: 'Y' }),
@@ -72,7 +73,7 @@ describe('CMP-059 tenant-negative / INT-011', () => {
     const res = await app.inject({
       method: 'POST',
       url: '/v1/migrations/projects',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', 'idempotency-key': 'idem-tenant-neg-0002' },
       body: JSON.stringify({ display_name: 'X', source_system_ref: 'Y' }),
     });
     expect(res.statusCode).toBe(401);
@@ -83,7 +84,7 @@ describe('CMP-059 tenant-negative / INT-011', () => {
     const create = await app.inject({
       method: 'POST',
       url: '/v1/migrations/projects',
-      headers: { authorization: 'Bearer t1', 'content-type': 'application/json' },
+      headers: { authorization: 'Bearer t1', 'content-type': 'application/json', 'idempotency-key': 'idem-tenant-neg-0003' },
       body: JSON.stringify({ display_name: 'T1 Project', source_system_ref: 'T1-SYS' }),
     });
     expect(create.statusCode).toBe(201);
@@ -115,7 +116,7 @@ describe('CMP-059 tenant-negative / INT-011', () => {
       const res = await denyApp.inject({
         method: 'POST',
         url: '/v1/migrations/projects',
-        headers: { authorization: 'Bearer deny-t1', 'content-type': 'application/json' },
+        headers: { authorization: 'Bearer deny-t1', 'content-type': 'application/json', 'idempotency-key': 'idem-tenant-neg-0004' },
         body: JSON.stringify({ display_name: 'X', source_system_ref: 'SYS-001' }),
       });
       expect(res.statusCode).toBe(403);

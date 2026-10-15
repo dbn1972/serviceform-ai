@@ -1,6 +1,4 @@
-import rateLimit from '@fastify/rate-limit';
 import type { FastifyInstance } from 'fastify';
-import fastifyRateLimit from 'fastify-rate-limit';
 import { authorize, authzInput } from '../authz.js';
 import { Cmp059Error } from '../errors.js';
 import { withContextTx } from '../db/tx.js';
@@ -12,21 +10,32 @@ import {
   runDryRun,
   executeProject,
   getReconciliation,
+  type DryRunInput,
+  type ExecuteInput,
 } from '../service/migrations.js';
 import type { RouteDeps } from './helpers.js';
-import { migrationRateLimitOptions } from '../http/rate-limit.js';
+
+function idempotencyKeyFrom(request: {
+  headers: Record<string, unknown>;
+  body?: { idempotency_key?: string };
+}): string | undefined {
+  const header = request.headers['idempotency-key'];
+  if (typeof header === 'string' && header.length > 0) return header;
+  if (typeof request.body?.idempotency_key === 'string') return request.body.idempotency_key;
+  return undefined;
+}
 
 export async function registerMigrationRoutes(
   app: FastifyInstance,
   deps: RouteDeps,
 ): Promise<void> {
-  const rateLimitOpts = migrationRateLimitOptions(deps.rateLimitMax, deps.rateLimitWindowMs);
-  await app.register(rateLimit, rateLimitOpts);
-  await app.register(fastifyRateLimit, rateLimitOpts);
-
-  // POST /migrations/projects
   app.post<{
-    Body: { display_name?: string; source_system_ref?: string; target_service_code?: string };
+    Body: {
+      display_name?: string;
+      source_system_ref?: string;
+      target_service_code?: string;
+      idempotency_key?: string;
+    };
   }>('/migrations/projects', async (request, reply) => {
     const ctx = request.sfContext;
     if (!ctx) throw new Cmp059Error('SF-AUTH-001');
@@ -34,6 +43,9 @@ export async function registerMigrationRoutes(
     if (typeof body.display_name !== 'string' || typeof body.source_system_ref !== 'string') {
       throw new Cmp059Error('SF-SYS-003');
     }
+    const idem = idempotencyKeyFrom(request);
+    if (!idem)
+      throw new Cmp059Error('SF-SYS-003', { details: [{ code: 'IDEMPOTENCY_KEY_REQUIRED' }] });
     await authorize(
       deps.authorizer,
       authzInput(ctx, 'MIGRATION_PROJECT_CREATE', 'MigrationProject'),
@@ -43,12 +55,12 @@ export async function registerMigrationRoutes(
         display_name: body.display_name as string,
         source_system_ref: body.source_system_ref as string,
         target_service_code: body.target_service_code ?? null,
+        idempotency_key: idem,
       }),
     );
     return reply.code(201).send(row);
   });
 
-  // POST /migrations/:id/profile
   app.post<{
     Params: { id: string };
     Body: { schema_descriptor?: unknown; field_count?: number; record_count_estimate?: number };
@@ -72,7 +84,6 @@ export async function registerMigrationRoutes(
     return reply.code(201).send(result);
   });
 
-  // POST /migrations/:id/map
   app.post<{
     Params: { id: string };
     Body: {
@@ -102,7 +113,6 @@ export async function registerMigrationRoutes(
     return reply.code(201).send(result);
   });
 
-  // POST /migrations/:id/dry-run
   app.post<{
     Params: { id: string };
     Body: {
@@ -118,20 +128,22 @@ export async function registerMigrationRoutes(
     const body = request.body ?? {};
     if (typeof body.total_records !== 'number') throw new Cmp059Error('SF-SYS-003');
     await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_DRY_RUN', 'MigrationProject'));
+    const dryRunInput: DryRunInput = { total_records: body.total_records as number };
+    if (typeof body.simulated_processed === 'number') {
+      dryRunInput.simulated_processed = body.simulated_processed;
+    }
+    if (typeof body.simulated_failed === 'number') {
+      dryRunInput.simulated_failed = body.simulated_failed;
+    }
+    if (Array.isArray(body.simulated_exceptions)) {
+      dryRunInput.simulated_exceptions = body.simulated_exceptions;
+    }
     const result = await withContextTx(deps.pool, ctx, (client) =>
-      runDryRun(client, ctx, deps.clock(), request.params.id, {
-        total_records: body.total_records as number,
-        simulated_processed: body.simulated_processed,
-        simulated_failed: body.simulated_failed,
-        simulated_exceptions: body.simulated_exceptions,
-      }),
+      runDryRun(client, ctx, deps.clock(), request.params.id, dryRunInput),
     );
     return reply.code(200).send(result);
   });
 
-  // POST /migrations/:id/execute
-  // Architecture Constitution §39: dry_run_required_before_execute = true.
-  // Service will reject with DRY_RUN_REQUIRED_BEFORE_EXECUTE if not in DRY_RUN_DONE state.
   app.post<{
     Params: { id: string };
     Body: {
@@ -147,18 +159,22 @@ export async function registerMigrationRoutes(
     const body = request.body ?? {};
     if (typeof body.total_records !== 'number') throw new Cmp059Error('SF-SYS-003');
     await authorize(deps.authorizer, authzInput(ctx, 'MIGRATION_EXECUTE', 'MigrationProject'));
+    const executeInput: ExecuteInput = { total_records: body.total_records as number };
+    if (typeof body.processed_records === 'number') {
+      executeInput.processed_records = body.processed_records;
+    }
+    if (typeof body.failed_records === 'number') {
+      executeInput.failed_records = body.failed_records;
+    }
+    if (Array.isArray(body.exceptions)) {
+      executeInput.exceptions = body.exceptions;
+    }
     const result = await withContextTx(deps.pool, ctx, (client) =>
-      executeProject(client, ctx, deps.clock(), request.params.id, {
-        total_records: body.total_records as number,
-        processed_records: body.processed_records,
-        failed_records: body.failed_records,
-        exceptions: body.exceptions,
-      }),
+      executeProject(client, ctx, deps.clock(), request.params.id, executeInput),
     );
     return reply.code(200).send(result);
   });
 
-  // GET /migrations/:id/reconciliation
   app.get<{ Params: { id: string } }>('/migrations/:id/reconciliation', async (request, reply) => {
     const ctx = request.sfContext;
     if (!ctx) throw new Cmp059Error('SF-AUTH-001');

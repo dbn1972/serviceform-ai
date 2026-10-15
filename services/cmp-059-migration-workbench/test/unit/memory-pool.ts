@@ -53,20 +53,24 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
   if (upper === 'BEGIN' || upper === 'COMMIT' || upper === 'ROLLBACK') return ok([]);
   if (s.includes('set_config')) return ok([{ set_config: '' }]);
 
-  // ── migration_project ──────────────────────────────────────────────────
-
   if (s.includes('INSERT INTO sf_migration.migration_project')) {
-    const now = new Date(String(params[6]));
+    const now = new Date(String(params[8]));
     const row: ProjectRow = {
       tenant_id: String(params[0]),
       project_id: String(params[1]),
       display_name: String(params[2]),
       source_system_ref: String(params[3]),
       target_service_code: params[4] ? String(params[4]) : null,
-      status: 'DRAFT',
+      lifecycle_status: 'CREATED',
+      dry_run_required_before_execute: true,
       dry_run_count: 0,
       last_dry_run_at: null,
-      created_by: String(params[5]),
+      mapping_spec_ref: null,
+      source_profile_ref: null,
+      idempotency_key: String(params[5]),
+      correlation_id: String(params[6]),
+      invented_statutory_policy_forbidden: true,
+      created_by: String(params[7]),
       created_at: now,
       updated_at: now,
       project_version: 1,
@@ -87,17 +91,17 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
       (p) => p.tenant_id === String(params[1]) && p.project_id === String(params[4]),
     );
     if (!row) return ok([]);
-    row.status = String(params[0]) as ProjectRow['status'];
+    row.lifecycle_status = String(params[0]) as ProjectRow['lifecycle_status'];
     row.updated_at = new Date(String(params[2]));
     row.project_version = (row.project_version ?? 1) + 1;
     if (params[3]) {
       row.dry_run_count += 1;
       row.last_dry_run_at = new Date(String(params[2]));
     }
+    if (params[5]) row.mapping_spec_ref = String(params[5]);
+    if (params[6]) row.source_profile_ref = String(params[6]);
     return ok([row], 1);
   }
-
-  // ── source_profile ─────────────────────────────────────────────────────
 
   if (s.includes('INSERT INTO sf_migration.source_profile')) {
     const now = new Date(String(params[7]));
@@ -115,8 +119,6 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
     store.profiles.push(row);
     return ok([row], 1);
   }
-
-  // ── mapping_spec ───────────────────────────────────────────────────────
 
   if (s.includes('INSERT INTO sf_migration.mapping_spec')) {
     const now = new Date(String(params[7]));
@@ -140,8 +142,6 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
       .sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
     return ok(rows.slice(0, 1));
   }
-
-  // ── migration_batch ────────────────────────────────────────────────────
 
   if (s.includes('INSERT INTO sf_migration.migration_batch')) {
     const now = new Date(String(params[6]));
@@ -191,8 +191,6 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
     return ok(rows.slice(0, 1));
   }
 
-  // ── reconciliation_result ──────────────────────────────────────────────
-
   if (s.includes('INSERT INTO sf_migration.reconciliation_result')) {
     const now = new Date(String(params[11]));
     const row: ReconciliationRow = {
@@ -219,8 +217,6 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
       .sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
     return ok(rows.slice(0, 1));
   }
-
-  // ── outbox ─────────────────────────────────────────────────────────────
 
   if (s.includes('INSERT INTO sf_migration.outbox_event')) {
     store.outbox.push(params);
