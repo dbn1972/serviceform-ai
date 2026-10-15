@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://serviceform.ai/templates/ind-soc-002/form/v1",
+  "title": "ResidenceCertificateApplication",
+  "description": "JSON Forms schema for IND-SOC-002 Residence Certificate application. Binds to canonical semantic element IDs (Constitution §38). POLICY_INPUT_REQUIRED fields are placeholders. No invented statute. Rendered through UX4G-backed JSON Forms renderer (Constitution UX4G §2).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "applicant_name",
+    "applicant_dob",
+    "applicant_gender",
+    "residence_address",
+    "residence_duration_months",
+    "purpose_of_certificate"
+  ],
+  "properties": {
+    "applicant_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "semanticElementId": "SF-SEM-PERSON-FULL-NAME",
+      "title": "Full Name (as per official record)",
+      "x-ux4g": { "widget": "text", "required": true }
+    },
+    "applicant_dob": {
+      "type": "string",
+      "format": "date",
+      "semanticElementId": "SF-SEM-PERSON-DOB",
+      "title": "Date of Birth",
+      "x-ux4g": { "widget": "date", "required": true }
+    },
+    "applicant_gender": {
+      "type": "string",
+      "enum": ["MALE", "FEMALE", "TRANSGENDER", "OTHER", "PREFER_NOT_TO_SAY"],
+      "semanticElementId": "SF-SEM-PERSON-GENDER",
+      "title": "Gender",
+      "x-ux4g": { "widget": "radio", "required": true }
+    },
+    "applicant_mobile": {
+      "type": "string",
+      "pattern": "^[0-9]{10}$",
+      "semanticElementId": "SF-SEM-PERSON-MOBILE",
+      "title": "Mobile Number",
+      "x-ux4g": { "widget": "tel" }
+    },
+    "applicant_aadhaar_last4": {
+      "type": "string",
+      "pattern": "^[0-9]{4}$",
+      "semanticElementId": "SF-SEM-PERSON-AADHAAR-LAST4",
+      "title": "Last 4 digits of Aadhaar (for verification only — not stored as PII)",
+      "x-pii_class": "SENSITIVE_MASKED",
+      "x-ux4g": { "widget": "text", "inputMode": "numeric" }
+    },
+    "residence_address": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["house_no_or_name", "locality", "district", "state_code", "pincode"],
+      "title": "Residence Address",
+      "properties": {
+        "house_no_or_name": {
+          "type": "string",
+          "maxLength": 100,
+          "semanticElementId": "SF-SEM-ADDR-HOUSE",
+          "title": "House No / Name",
+          "x-ux4g": { "widget": "text" }
+        },
+        "locality": {
+          "type": "string",
+          "maxLength": 150,
+          "semanticElementId": "SF-SEM-ADDR-LOCALITY",
+          "title": "Locality / Village / Ward",
+          "x-ux4g": { "widget": "text" }
+        },
+        "post_office": {
+          "type": "string",
+          "maxLength": 100,
+          "semanticElementId": "SF-SEM-ADDR-POST-OFFICE",
+          "title": "Post Office",
+          "x-ux4g": { "widget": "text" }
+        },
+        "district": {
+          "type": "string",
+          "maxLength": 100,
+          "semanticElementId": "SF-SEM-ADDR-DISTRICT",
+          "title": "District",
+          "x-ux4g": { "widget": "text" }
+        },
+        "state_code": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "semanticElementId": "SF-SEM-ADDR-STATE-CODE",
+          "title": "State",
+          "x-ux4g": { "widget": "select", "optionsSource": "jurisdiction_state_list" }
+        },
+        "pincode": {
+          "type": "string",
+          "pattern": "^[0-9]{6}$",
+          "semanticElementId": "SF-SEM-ADDR-PINCODE",
+          "title": "PIN Code",
+          "x-ux4g": { "widget": "text", "inputMode": "numeric" }
+        }
+      }
+    },
+    "residence_duration_months": {
+      "type": "integer",
+      "minimum": 0,
+      "semanticElementId": "SF-SEM-RESIDENCE-DURATION-MONTHS",
+      "title": "Duration of Residence at this address (months)",
+      "x-ux4g": { "widget": "number", "required": true }
+    },
+    "purpose_of_certificate": {
+      "type": "string",
+      "maxLength": 500,
+      "semanticElementId": "SF-SEM-PURPOSE-OF-CERT",
+      "title": "Purpose for which certificate is required",
+      "x-ux4g": { "widget": "textarea", "required": true }
+    },
+    "relationship_to_applicant": {
+      "type": "string",
+      "maxLength": 100,
+      "semanticElementId": "SF-SEM-ASSISTED-RELATIONSHIP",
+      "title": "Relationship (if applied on behalf of someone — Assisted Service)",
+      "description": "Populated by assisted-service channel: applied_by ≠ applied_for (Constitution §36)",
+      "x-ux4g": { "widget": "text" }
+    },
+    "supporting_evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_type", "storage_key", "sha256"],
+        "properties": {
+          "evidence_type": {
+            "type": "string",
+            "description": "POLICY_INPUT_REQUIRED — accepted evidence types supplied by statutory owner",
+            "enum": ["POLICY_INPUT_REQUIRED_EVIDENCE_TYPE_LIST"]
+          },
+          "storage_key": {
+            "type": "string",
+            "description": "S3 object key — binary stored in S3, not PostgreSQL (Constitution §5)"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      },
+      "x-ux4g": { "widget": "file_upload_list" }
+    }
+  },
+  "x-metadata": {
+    "pii_fields": ["applicant_name", "applicant_dob", "applicant_mobile", "applicant_aadhaar_last4", "residence_address"],
+    "pii_excluded_from_logs": true,
+    "invented_statutory_policy_forbidden": true,
+    "policy_input_required": ["supporting_evidence_refs[].evidence_type"]
+  }
+}

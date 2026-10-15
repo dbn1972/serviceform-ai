@@ -1,0 +1,60 @@
+# IND-SOC-002 — Notification Templates
+# Rendered through SF-CON-NOTIFICATION-DISPATCH (FROZEN).
+# Channels: citizen_portal, SMS, email.
+# Message content is illustrative; must be reviewed for language localisation.
+# No PII in logs or notification templates beyond what is explicitly needed (Constitution §21).
+
+notification_set_id: ind-soc-002-notifications-v1
+catalogue_id: IND-SOC-002
+version: "0.1.0-candidate"
+immutable_after_publish: true
+invented_statutory_policy_forbidden: true
+
+notifications:
+  - id: application_received
+    trigger: APPLICATION_SUBMITTED
+    channels: [citizen_portal, sms, email]
+    subject: "Your Residence Certificate application has been received"
+    body_template: >
+      Dear {{applicant_name_masked}}, your application (Reference No: {{application_ref}}) for
+      Residence Certificate has been received and is being processed.
+    pii_masking: applicant_name_masked
+
+  - id: payment_confirmation
+    trigger: PAYMENT_CONFIRMED
+    channels: [citizen_portal, sms, email]
+    subject: "Payment confirmed for your Residence Certificate application"
+    body_template: >
+      Payment of ₹{{fee_display_inr}} confirmed for application {{application_ref}}.
+
+  - id: deficiency_notice
+    trigger: DEFICIENCY_NOTICE_ISSUED
+    channels: [citizen_portal, sms, email]
+    subject: "Additional documents required for your Residence Certificate application"
+    body_template: >
+      Please log in to submit the required documents for application {{application_ref}} within
+      the stipulated time. Delay may result in closure of application.
+
+  - id: issued_success
+    trigger: CREDENTIAL_ISSUED
+    channels: [citizen_portal, sms, email]
+    subject: "Your Residence Certificate has been issued"
+    body_template: >
+      Your Residence Certificate (No: {{credential_ref}}) has been issued and is available
+      in your portal dashboard and DigiLocker.
+
+  - id: rejection_notice
+    trigger: APPLICATION_REJECTED
+    channels: [citizen_portal, sms, email]
+    subject: "Your Residence Certificate application — Decision"
+    body_template: >
+      Your application {{application_ref}} has not been approved. Reason: {{rejection_reason}}.
+      You may file an appeal as per applicable rules.
+
+  - id: sla_breach_citizen
+    trigger: OVERALL_SLA_BREACHED
+    channels: [citizen_portal, sms]
+    subject: "Update on your Residence Certificate application"
+    body_template: >
+      We regret the delay in processing application {{application_ref}}. The matter has been
+      escalated for priority resolution.

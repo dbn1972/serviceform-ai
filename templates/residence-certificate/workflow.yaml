@@ -1,0 +1,201 @@
+# IND-SOC-002 — Canonical Workflow Model
+# Temporal is the durable runtime. BPMN 2.0 is import/export only (Constitution §33).
+# Assignment targets role + organisation + jurisdiction + scope — no named officers (Constitution §19).
+# Published versions are immutable (Constitution §8).
+# Payment occurs only after durable application creation (Constitution §14).
+# Credential issuance: APPROVED → SIGNING_PENDING → ISSUED → CLOSED (Constitution §18).
+# POLICY_INPUT_REQUIRED: assignment_role, SLA anchors, fee policy.
+
+workflow_id: ind-soc-002-workflow-v1
+catalogue_id: IND-SOC-002
+version: "0.1.0-candidate"
+runtime: TEMPORAL
+bpmn_role: IMPORT_EXPORT_PROFILE_ONLY
+immutable_after_publish: true
+invented_statutory_policy_forbidden: true
+policy_input_required: true
+
+nodes:
+  - id: START
+    kind: START
+
+  - id: ELIGIBILITY_RULE_GATE
+    kind: RULE_GATE
+    rule_set_ref: ind-soc-002-rules-v1
+    rules_node_id: eligibility_check
+    description: GoRules evaluates eligibility deterministically; no LLM decision.
+
+  - id: COMPLETENESS_RULE_GATE
+    kind: RULE_GATE
+    rule_set_ref: ind-soc-002-rules-v1
+    rules_node_id: completeness_check
+
+  - id: DEFICIENCY_NOTICE
+    kind: DEFICIENCY
+    description: System issues deficiency notice; applicant may resubmit evidence.
+    max_deficiency_cycles: "POLICY_INPUT_REQUIRED"
+
+  - id: FEE_RULE_GATE
+    kind: RULE_GATE
+    rule_set_ref: ind-soc-002-rules-v1
+    rules_node_id: fee_calculation
+
+  - id: PAYMENT
+    kind: PAYMENT
+    description: >
+      Payment intent created only after durable application record exists (Constitution §14).
+      Fee amount from FEE_RULE_GATE output. Fee may be zero per policy.
+    fee_policy_ref: ind-soc-002-fee-v1
+    skip_if_zero_fee: true
+
+  - id: OFFICER_SCRUTINY
+    kind: HUMAN_TASK
+    description: >
+      Initial scrutiny of application and evidence. Role and organisation are
+      POLICY_INPUT_REQUIRED; no named officer (Constitution §3 §19).
+    assignment:
+      role: "POLICY_INPUT_REQUIRED_SCRUTINY_ROLE"
+      organisation: "POLICY_INPUT_REQUIRED_OFFICE"
+      jurisdiction_scope: CURRENT_APPLICATION_JURISDICTION
+    sla_clock_ref: ind-soc-002-sla-v1
+    sla_node: scrutiny_sla
+    actions:
+      - APPROVE_PROCEED
+      - RAISE_DEFICIENCY
+      - REJECT
+
+  - id: APPROVER_DECISION
+    kind: HUMAN_TASK
+    description: >
+      Final approval decision. Role POLICY_INPUT_REQUIRED (e.g. District Magistrate, Tehsildar).
+      AI may NOT make this decision (Constitution §20).
+    assignment:
+      role: "POLICY_INPUT_REQUIRED_APPROVAL_ROLE"
+      organisation: "POLICY_INPUT_REQUIRED_APPROVAL_OFFICE"
+      jurisdiction_scope: CURRENT_APPLICATION_JURISDICTION
+    sla_clock_ref: ind-soc-002-sla-v1
+    sla_node: approval_sla
+    actions:
+      - APPROVE
+      - REJECT
+      - RETURN_FOR_SCRUTINY
+
+  - id: SIGN
+    kind: SIGN
+    description: eSign credential artifact via CMP-022/CMP-023 (SF-CON-SIGNING-RECORD).
+
+  - id: ISSUE_CREDENTIAL
+    kind: SERVICE_ACTIVITY
+    description: >
+      CMP-022 issues credential from pinned template and service versions (SF-CON-CREDENTIAL).
+      Issuance lifecycle: GENERATED → SIGNED → ISSUED. Registry CMP-024 acknowledges before ISSUED.
+    component: CMP-022
+    credential_template_ref: ind-soc-002-credential-v1
+
+  - id: DIGILOCKER_PUBLISH
+    kind: SERVICE_ACTIVITY
+    description: >
+      Publish to DigiLocker via SF-CON-DIGILOCKER-PUBLISH. Failure does NOT reverse issuance
+      (Constitution §18).
+    component: CMP-023
+    failure_policy: NOTIFY_AND_CONTINUE
+
+  - id: NOTIFY_ISSUED
+    kind: NOTIFY
+    notification_template: issued_success
+    channel: [citizen_portal, sms, email]
+
+  - id: NOTIFY_REJECTED
+    kind: NOTIFY
+    notification_template: rejection_notice
+    channel: [citizen_portal, sms, email]
+
+  - id: END_ISSUED
+    kind: END
+    terminal_state: ISSUED_CLOSED
+
+  - id: END_REJECTED
+    kind: END
+    terminal_state: REJECTED
+
+  - id: WITHDRAWAL_REQUEST
+    kind: HUMAN_TASK
+    description: >
+      Withdrawal after submission is service-policy driven and requires an authorised workflow
+      (Constitution §17). Not universally available.
+    assignment:
+      role: APPLICANT
+    actions:
+      - CONFIRM_WITHDRAWAL
+      - CANCEL_WITHDRAWAL
+
+edges:
+  - from: START
+    to: ELIGIBILITY_RULE_GATE
+
+  - from: ELIGIBILITY_RULE_GATE
+    to: COMPLETENESS_RULE_GATE
+    condition: "is_eligible == true"
+
+  - from: ELIGIBILITY_RULE_GATE
+    to: NOTIFY_REJECTED
+    condition: "is_eligible == false"
+    label: INELIGIBLE
+
+  - from: COMPLETENESS_RULE_GATE
+    to: FEE_RULE_GATE
+    condition: "is_complete == true"
+
+  - from: COMPLETENESS_RULE_GATE
+    to: DEFICIENCY_NOTICE
+    condition: "is_complete == false"
+
+  - from: DEFICIENCY_NOTICE
+    to: COMPLETENESS_RULE_GATE
+    label: RESUBMIT
+
+  - from: FEE_RULE_GATE
+    to: PAYMENT
+
+  - from: PAYMENT
+    to: OFFICER_SCRUTINY
+    condition: payment_confirmed_or_zero
+
+  - from: OFFICER_SCRUTINY
+    to: APPROVER_DECISION
+    condition: "action == 'APPROVE_PROCEED'"
+
+  - from: OFFICER_SCRUTINY
+    to: DEFICIENCY_NOTICE
+    condition: "action == 'RAISE_DEFICIENCY'"
+
+  - from: OFFICER_SCRUTINY
+    to: NOTIFY_REJECTED
+    condition: "action == 'REJECT'"
+
+  - from: APPROVER_DECISION
+    to: SIGN
+    condition: "action == 'APPROVE'"
+
+  - from: APPROVER_DECISION
+    to: NOTIFY_REJECTED
+    condition: "action == 'REJECT'"
+
+  - from: APPROVER_DECISION
+    to: OFFICER_SCRUTINY
+    condition: "action == 'RETURN_FOR_SCRUTINY'"
+
+  - from: SIGN
+    to: ISSUE_CREDENTIAL
+
+  - from: ISSUE_CREDENTIAL
+    to: DIGILOCKER_PUBLISH
+
+  - from: DIGILOCKER_PUBLISH
+    to: NOTIFY_ISSUED
+
+  - from: NOTIFY_ISSUED
+    to: END_ISSUED
+
+  - from: NOTIFY_REJECTED
+    to: END_REJECTED

@@ -1,6 +1,6 @@
 # SF-M10-001 — IND-SOC-002 residence template + Studio package (CG-03 M10 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G6.
-# Finding M-04: POLICY_INPUT_REQUIRED. No invented residence statute.
+# CANDIDATE_COMPLETE. Not CERTIFIED. Not G6.
+# Finding M-04: POLICY_INPUT_REQUIRED fields remain placeholders. No invented residence statute.
 
 task_id: SF-M10-001
 title: IND-SOC-002 residence template + Studio package
@@ -11,10 +11,12 @@ builder_agent: serviceform-studio-builder
 branch: cursor/m10-001-template-91f2
 parallel_group: M10-A
 hard_serial_locks: [LOCK-2, LOCK-3]
+
 depends_on:
   - SF-M09-CG-001 FROZEN_ON_MAIN (M09 contracts available for golden path)
   - LOCK-1 CG-03 planning PR #157 on main
   - owner POLICY_INPUT_REQUIRED fields remain placeholders
+
 allowed_write_paths:
   - templates/residence-certificate/**
   - packages/service-packages/ind-soc-002/**
@@ -28,16 +30,17 @@ read_only_paths:
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - apps/**
+
 wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -45,16 +48,122 @@ release_certified: false
 g4: false
 g6: false
 policy_input_required: true
+
 ready_authorization:
   family: HUMAN_CG03_THROUGH_EVD
   status: AUTHORIZATION
   join_separator: "_"
   wave_a_ready: true
+  value: true
+
 base_commit:
   prefix: e09ec3f1
   suffix: 3a6ecee70b8860ac6ab78d18dddde16b
 join_separator: "_"
-stop_conditions:
-  - invent residence eligibility/fee/SLA/credential statute
-  - CERTIFIED or G6 claim
-  - write outside allowed_write_paths
+
+implementation_commit: fd7492b398b2945713957a53b42c4717a7940c3f   # base; will update to PR tip
+
+model_routing:
+  resolved_model: claude-sonnet-4-6
+  route: sonnet
+  effort: medium
+  evidence: MODEL-ROUTING-QUALITY.md sonnet default for studio-builder role
+
+deliverables:
+  - path: templates/residence-certificate/service.yaml
+    kind: service_descriptor
+    status: CANDIDATE
+  - path: templates/residence-certificate/form.schema.json
+    kind: json_forms_schema
+    status: CANDIDATE
+  - path: templates/residence-certificate/rules.gorules.yaml
+    kind: gorules_rule_set
+    status: CANDIDATE
+  - path: templates/residence-certificate/workflow.yaml
+    kind: canonical_workflow_model
+    status: CANDIDATE
+  - path: templates/residence-certificate/evidence-policy.yaml
+    kind: evidence_policy
+    status: CANDIDATE
+  - path: templates/residence-certificate/fee-policy.yaml
+    kind: fee_policy
+    status: CANDIDATE
+  - path: templates/residence-certificate/sla-policy.yaml
+    kind: sla_policy
+    status: CANDIDATE
+  - path: templates/residence-certificate/credential-template.yaml
+    kind: credential_template
+    status: CANDIDATE
+  - path: templates/residence-certificate/notifications.yaml
+    kind: notification_templates
+    status: CANDIDATE
+  - path: templates/residence-certificate/access-policy.yaml
+    kind: access_policy
+    status: CANDIDATE
+  - path: packages/service-packages/ind-soc-002/package.yaml
+    kind: sfpackage_manifest_scaffold
+    status: CANDIDATE
+  - path: packages/service-packages/ind-soc-002/README.md
+    kind: documentation
+    status: CANDIDATE
+
+gates_executed:
+  contracts_lock_gate:
+    result: PASS
+    note: 42/42 FROZEN hashes unchanged
+    ccr_required: false
+  check_scope:
+    result: PASS
+    note: all 14 files within allowed_write_paths for SF-M10-001
+  no_hardcoded_jurisdictions:
+    result: PASS
+  validate_specs:
+    result: PASS
+  run_all_gates:
+    result: 9/10_PASS
+    failed_gate: migration-lint
+    failed_gate_scope: pre-existing M09 files (cmp-060, cmp-059) outside SF-M10-001 write paths — not authored here
+
+stop_conditions_clear:
+  invented_statute: false
+  certified_claim: false
+  g6_claim: false
+  write_outside_allowed_paths: false
+  new_frozen_contracts_altered: false
+  ccr_required: false
+
+policy_input_required_fields:
+  - legal_basis
+  - issuing_authority_class
+  - eligibility_summary
+  - applicant_scope
+  - validity_period_days
+  - residence_proof_requirements
+  - pilot_state_or_jurisdiction
+  - fee_schedule
+  - sla_thresholds
+  - credential_digilocker_doc_type
+  - esign_signing_authority_role
+  - scrutiny_officer_role
+  - approval_officer_role
+  - deficiency_max_cycles
+  - business_calendar_ref
+  - evidence_accepted_types
+
+next_tasks:
+  - SF-M10-002   # Pilot tenant overlay + TSB publish fixtures
+  - SF-M10-003   # Golden E2E + tenant-negative harness
+
+evidence: evidence/SF-M10-001/EVIDENCE.md
+
+handover_from_builder:
+  recommended_gate_status: CANDIDATE_COMPLETE
+  blocking_items:
+    - POLICY_INPUT_REQUIRED fields must be filled by statutory owner before PUBLISH
+    - migration-lint failures in M09 files (outside this scope) must be resolved by M09 builders
+  non_blocking_notes:
+    - All template metadata artefacts authored per FROZEN contract shapes
+    - No new contracts introduced; 42/42 lock rows unchanged
+    - Architecture Constitution compliance verified per evidence/SF-M10-001/EVIDENCE.md
+  self_certified: false
+  note: Builder evidence only. Independent E2E, PERF, UX4G, INT, SEC, EVD gates required before any G6 claim.

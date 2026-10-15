@@ -1,0 +1,93 @@
+# IND-SOC-002 — Residence Certificate Service Metadata
+# ServiceForm Studio canonical template. Not a backend CMP.
+# POLICY_INPUT_REQUIRED fields marked; do NOT invent statute, legal basis, eligibility, fee, SLA,
+# credential template, or pilot tenant/State. Constitution §1 §2 §3 §8 §30 §34.
+# Published versions are immutable (Constitution §8). No bespoke backend code required.
+
+catalogue_id: IND-SOC-002
+record_type: service_template
+version: "0.1.0-candidate"
+status: CANDIDATE
+
+metadata:
+  title: "Residence Certificate"
+  description: >
+    Digital residence certificate issued by a competent government authority attesting
+    that an individual is ordinarily resident within a specified jurisdiction.
+  category: social_welfare
+  tags: [residence, domicile, address, certificate]
+
+policy_fields:
+  # POLICY_INPUT_REQUIRED — statutory owner must supply before any publish
+  legal_basis: "POLICY_INPUT_REQUIRED"
+  issuing_authority_class: "POLICY_INPUT_REQUIRED"          # e.g. District Magistrate, Tehsildar
+  eligibility_summary: "POLICY_INPUT_REQUIRED"
+  applicant_scope: "POLICY_INPUT_REQUIRED"                  # who may apply
+  validity_period_days: "POLICY_INPUT_REQUIRED"             # integer (e.g. 365)
+  residence_proof_requirements: "POLICY_INPUT_REQUIRED"     # list of accepted documents
+  pilot_state_or_jurisdiction: "POLICY_INPUT_REQUIRED"
+
+offering:
+  offering_id: "IND-SOC-002-OFFERING-V1"
+  form_schema_ref: "ind-soc-002-form-v1"                    # local: form.schema.json
+  rule_set_ref: "ind-soc-002-rules-v1"                      # local: rules.gorules.json
+  workflow_ref: "ind-soc-002-workflow-v1"                   # local: workflow.yaml
+  evidence_policy_ref: "ind-soc-002-evidence-v1"            # local: evidence-policy.yaml
+  fee_policy_ref: "ind-soc-002-fee-v1"                      # local: fee-policy.yaml
+  sla_policy_ref: "ind-soc-002-sla-v1"                      # local: sla-policy.yaml
+  credential_template_ref: "ind-soc-002-credential-v1"      # local: credential-template.yaml
+  notification_template_ref: "ind-soc-002-notifications-v1" # local: notifications.yaml
+
+consumed_frozen_contracts:
+  # Read-only. Consume existing FROZEN contracts; no new backend CMP required.
+  - SF-CON-COMMON
+  - SF-CON-AUTHZ-DECISION
+  - SF-CON-AUDIT-EVENT
+  - SF-CON-EVENT-ENVELOPE
+  - SF-CON-OUTBOX-RECORD
+  - SF-CON-IDEMPOTENCY-RECORD
+  - SF-CON-REQUEST-CONTEXT
+  - SF-CON-ISOLATION-DECLARATION
+  - SF-CON-CONNECTOR-BINDING
+  - SF-CON-SIMULATION-MARKER
+  - SF-CON-APP-CASE-SM
+  - SF-CON-WORKFLOW-MODEL
+  - SF-CON-HUMAN-TASK
+  - SF-CON-SLA-CLOCK
+  - SF-CON-VERSION-PINNING
+  - SF-CON-FEE-QUOTE
+  - SF-CON-NOTIFICATION-DISPATCH
+  - SF-CON-PAYMENT-CALLBACK
+  - SF-CON-PAYMENT-INTENT
+  - SF-CON-MESSAGE-THREAD
+  - SF-CON-CREDENTIAL
+  - SF-CON-CREDENTIAL-STATUS
+  - SF-CON-DIGILOCKER-PUBLISH
+  - SF-CON-SIGNING-RECORD
+  - SF-CON-VERIFICATION-TOKEN
+  - SF-CON-SFPACKAGE-MANIFEST
+
+access:
+  channels:
+    - citizen_portal
+    - assisted_service          # applied_by ≠ applied_for (Constitution §36)
+    - mobile
+  authentication_required: true
+  consent_capture_required: true
+
+maker_checker:
+  # POLICY_INPUT_REQUIRED — define roles per issuing authority; no named officers (Constitution §19)
+  submission_by: APPLICANT
+  initial_scrutiny_role: "POLICY_INPUT_REQUIRED"
+  approval_role: "POLICY_INPUT_REQUIRED"
+  final_issuance_role: SYSTEM_CREDENTIAL_ENGINE   # CMP-022 after workflow approval
+
+audit:
+  all_transitions_logged: true
+  pii_excluded_from_logs: true
+
+invented_statutory_policy_forbidden: true
+self_certified: false
+not_certified: true
+certified: false
+g6: false

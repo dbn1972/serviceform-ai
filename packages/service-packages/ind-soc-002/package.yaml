@@ -1,0 +1,75 @@
+# IND-SOC-002 — Service Package
+# Signed, content-addressed .sfpackage manifest (SF-CON-SFPACKAGE-MANIFEST, FROZEN).
+# Constitution §34: publishable service configuration is exportable/promotable as a signed,
+# content-addressed .sfpackage. Environment secrets and provider credentials are external refs.
+# No embedded secrets (SF-CON-SFPACKAGE-MANIFEST.embedded_secrets_forbidden = true).
+# POLICY_INPUT_REQUIRED: tenant_id, signature, content_address must be filled at publish time.
+
+package_id: ind-soc-002-package-v1
+catalogue_id: IND-SOC-002
+version: "0.1.0-candidate"
+status: CANDIDATE
+immutable_after_publish: true
+invented_statutory_policy_forbidden: true
+
+sfpackage_manifest:
+  contract_id: SF-CON-SFPACKAGE-MANIFEST
+  contract_status: FROZEN
+  freeze_status: FROZEN
+  tenant_id: "POLICY_INPUT_REQUIRED"            # supplied at tenant publish time
+  idempotency_key: "ind-soc-002-v0.1.0-candidate"
+  invented_statutory_policy_forbidden: true
+  package_id: "ind-soc-002-package-v1"
+  content_address: "POLICY_INPUT_REQUIRED"       # sha256 of the full package tree at publish time
+  embedded_secrets_forbidden: true
+  signature_ref: "POLICY_INPUT_REQUIRED"         # external signing ref, not embedded
+  dependency_versions:
+    SF-CON-SFPACKAGE-MANIFEST: "FROZEN"
+    SF-CON-WORKFLOW-MODEL: "FROZEN"
+    SF-CON-CREDENTIAL: "FROZEN"
+    SF-CON-VERSION-PINNING: "FROZEN"
+  artifact_hashes:
+    # SHA-256 values are POLICY_INPUT_REQUIRED until canonical publish; placeholders below
+    - path: "templates/residence-certificate/service.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/form.schema.json"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/rules.gorules.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/workflow.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/evidence-policy.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/fee-policy.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/sla-policy.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/credential-template.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/notifications.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+    - path: "templates/residence-certificate/access-policy.yaml"
+      sha256: "POLICY_INPUT_REQUIRED"
+
+tenant_service_binding:
+  # TSB is created at publish time by the Studio; not pre-filled here.
+  # Constitution §8 §9: TSB pins all published versions; silent repoint forbidden.
+  tenant_id: "POLICY_INPUT_REQUIRED"
+  service_version_id: "POLICY_INPUT_REQUIRED"
+  form_version_id: "POLICY_INPUT_REQUIRED"
+  rule_version_id: "POLICY_INPUT_REQUIRED"
+  workflow_version_id: "POLICY_INPUT_REQUIRED"
+  evidence_policy_version_id: "POLICY_INPUT_REQUIRED"
+  sla_version_id: "POLICY_INPUT_REQUIRED"
+  fee_version_id: "POLICY_INPUT_REQUIRED"
+  credential_template_version_id: "POLICY_INPUT_REQUIRED"
+  notification_version_id: "POLICY_INPUT_REQUIRED"
+  status: DRAFT
+  silent_repoint_forbidden: true
+
+migration:
+  # In-flight workflow migration requires explicit simulation, maker-checker approval,
+  # and evidence-backing before cutover certification (Constitution §35).
+  dry_run_required_before_execute: true
+  migration_maker_checker_required: true
+  evidence_required: true
