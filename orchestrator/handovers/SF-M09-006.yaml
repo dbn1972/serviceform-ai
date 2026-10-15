@@ -87,3 +87,27 @@ stop_conditions:
   - write outside allowed_write_paths
   - authoritative risk decision (CMP-060)
   - cross-component SQL (CMP-061)
+
+# --- builder append (do not alter envelope state fields above) ---
+builder_notes:
+  status: CANDIDATE_COMPLETE
+  recommended_gate: BUILDER_CANDIDATE_READY
+  draft_pr: https://github.com/dbn1972/serviceform-ai/pull/168
+  component: CMP-061
+  schema: sf_privacy
+  privilege_role: sf_cmp061_rw
+  contract: SF-CON-PRIVACY-REQUEST
+  gates:
+    cross_component_direct_mutation_forbidden: true
+    owner_task_orchestration_only: true
+    invented_statutory_policy_forbidden: true
+  certified: false
+  g4: false
+  g6: false
+  self_certified: false
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+    - host mount deferred to SF-M09-HOST
+    - consent summary via owner port (CMP-030); no cross-SQL
+  evidence: evidence/SF-M09-006/EVIDENCE.md
+  local_tests: 27 passed (unit+contract+security)

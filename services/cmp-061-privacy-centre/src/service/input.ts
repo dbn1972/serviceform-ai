@@ -24,7 +24,6 @@ export const CLIENT_TIME_KEYS: ReadonlySet<string> = new Set([
   'deadline',
 ]);
 
-/** Server-derived or constant fields: a client may never set them. */
 const SERVER_OWNED_KEYS: ReadonlySet<string> = new Set([
   'contract_id',
   'contract_status',
@@ -41,12 +40,13 @@ const SERVER_OWNED_KEYS: ReadonlySet<string> = new Set([
   'scope_seq',
 ]);
 
-/** Constant contract markers a client may echo but never flip. */
 const CONSTANT_TRUE_MARKERS = [
   'invented_statutory_policy_forbidden',
   'cross_component_direct_mutation_forbidden',
   'owner_task_orchestration_only',
 ] as const;
+
+const SUBMIT_ASSURANCE = new Set(['OTP', 'PASSWORD', 'MFA']);
 
 function bad(pointer: string, code = 'INVALID_VALUE'): never {
   throw new Cmp061Error('SF-SYS-003', detail(code, pointer));
@@ -95,6 +95,7 @@ export function validateEmptyInput(body: unknown): void {
 
 export interface SubmitRequestInput {
   request_type: RequestType;
+  submit_assurance: 'OTP' | 'PASSWORD' | 'MFA';
   scope: ScopeItem[];
 }
 
@@ -107,9 +108,13 @@ export function validateSubmitRequest(body: unknown): SubmitRequestInput {
   if ('legal_basis_or_exception_ref' in rec) {
     bad('/legal_basis_or_exception_ref', 'OWNER_SUPPLIED_FIELD');
   }
-  commonChecks(rec, ['request_type', 'scope']);
+  commonChecks(rec, ['request_type', 'submit_assurance', 'scope']);
   const type = rec['request_type'];
   if (!isRequestType(type)) bad('/request_type', 'REQUEST_TYPE_INVALID');
+  const assurance = rec['submit_assurance'];
+  if (typeof assurance !== 'string' || !SUBMIT_ASSURANCE.has(assurance)) {
+    bad('/submit_assurance');
+  }
   const scope = rec['scope'];
   if (!Array.isArray(scope) || scope.length === 0) bad('/scope', 'SCOPE_REQUIRED');
   if (scope.length > MAX_SCOPE_ITEMS) bad('/scope', 'SCOPE_TOO_LARGE');
@@ -121,8 +126,9 @@ export function validateSubmitRequest(body: unknown): SubmitRequestInput {
     }
     const item = raw as Record<string, unknown>;
     for (const key of Object.keys(item)) {
-      if (key !== 'owner_component' && key !== 'scope_ref')
+      if (key !== 'owner_component' && key !== 'scope_ref') {
         bad(`${pointer}/${key}`, 'UNKNOWN_FIELD');
+      }
     }
     const owner = item['owner_component'];
     if (owner === 'CMP-061') bad(`${pointer}/owner_component`, 'SELF_TASK_FORBIDDEN');
@@ -134,62 +140,55 @@ export function validateSubmitRequest(body: unknown): SubmitRequestInput {
     seen.add(key);
     return { scope_seq: i + 1, owner_component: owner, scope_ref: ref };
   });
-  return { request_type: type, scope: items };
+  return {
+    request_type: type,
+    submit_assurance: assurance as SubmitRequestInput['submit_assurance'],
+    scope: items,
+  };
 }
 
-export interface DenyInput {
+export interface DenyRequestInput {
   legal_basis_or_exception_ref: string;
-  expected_version: number;
 }
 
-function expectedVersion(value: unknown): number {
-  if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 1) {
-    bad('/expected_version', 'EXPECTED_VERSION_REQUIRED');
-  }
-  return value;
-}
+/** @deprecated alias */
+export type DenyInput = DenyRequestInput;
 
-export function validateDeny(body: unknown): DenyInput {
+export function validateDenyRequest(body: unknown): DenyRequestInput {
   const rec = asRecord(body);
-  commonChecks(rec, ['legal_basis_or_exception_ref', 'expected_version']);
+  commonChecks(rec, ['legal_basis_or_exception_ref']);
   return {
     legal_basis_or_exception_ref: opaqueRef(
       rec['legal_basis_or_exception_ref'],
       '/legal_basis_or_exception_ref',
     ),
-    expected_version: expectedVersion(rec['expected_version']),
   };
 }
 
-export function validateVersioned(body: unknown): number {
-  const rec = asRecord(body);
-  commonChecks(rec, ['expected_version']);
-  return expectedVersion(rec['expected_version']);
+export function validateDeny(body: unknown): DenyRequestInput {
+  return validateDenyRequest(body);
 }
 
 export interface TaskOutcomeInput {
-  owner_component: string;
   outcome: TaskOutcome;
-  evidence_ref: string | null;
-  legal_basis_or_exception_ref: string | null;
-  exception_authority_ref: string | null;
+  evidence_ref?: string;
+  legal_basis_or_exception_ref?: string;
+  exception_authority_ref?: string;
 }
 
 /**
- * COMPLETED carries the owner's fulfilment evidence ref. EXCEPTION_RECORDED (for example a
- * retention or legal-hold exception) carries the owner's opaque basis and authority refs.
+ * COMPLETED carries the owner's fulfilment evidence ref. EXCEPTION_RECORDED carries the owner's
+ * opaque basis and authority refs (POLICY_INPUT_REQUIRED — never interpreted here).
  */
 export function validateTaskOutcome(body: unknown): TaskOutcomeInput {
   const rec = asRecord(body);
   commonChecks(rec, [
-    'owner_component',
     'outcome',
     'evidence_ref',
     'legal_basis_or_exception_ref',
     'exception_authority_ref',
+    'owner_component',
   ]);
-  const owner = rec['owner_component'];
-  if (!isOwnerComponent(owner)) bad('/owner_component', 'OWNER_COMPONENT_INVALID');
   const outcome = rec['outcome'];
   if (outcome === 'COMPLETED') {
     if (rec['legal_basis_or_exception_ref'] !== undefined) {
@@ -199,19 +198,13 @@ export function validateTaskOutcome(body: unknown): TaskOutcomeInput {
       bad('/exception_authority_ref', 'NOT_ALLOWED_FOR_OUTCOME');
     }
     return {
-      owner_component: owner,
       outcome,
       evidence_ref: opaqueRef(rec['evidence_ref'], '/evidence_ref'),
-      legal_basis_or_exception_ref: null,
-      exception_authority_ref: null,
     };
   }
   if (outcome === 'EXCEPTION_RECORDED') {
-    const evidence = rec['evidence_ref'];
-    return {
-      owner_component: owner,
+    const result: TaskOutcomeInput = {
       outcome,
-      evidence_ref: evidence === undefined ? null : opaqueRef(evidence, '/evidence_ref'),
       legal_basis_or_exception_ref: opaqueRef(
         rec['legal_basis_or_exception_ref'],
         '/legal_basis_or_exception_ref',
@@ -221,6 +214,10 @@ export function validateTaskOutcome(body: unknown): TaskOutcomeInput {
         '/exception_authority_ref',
       ),
     };
+    if (rec['evidence_ref'] !== undefined) {
+      result.evidence_ref = opaqueRef(rec['evidence_ref'], '/evidence_ref');
+    }
+    return result;
   }
   return bad('/outcome', 'OUTCOME_INVALID');
 }

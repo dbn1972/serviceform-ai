@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-061 Citizen Privacy & Data Rights Centre",
+    "version": "0.1.0",
+    "description": "Orchestrates citizen privacy rights requests (SF-CON-PRIVACY-REQUEST / INT-019). Owner components fulfil tasks; CMP-061 never mutates foreign tables."
+  },
+  "paths": {
+    "/v1/privacy/me": {
+      "get": { "operationId": "getPrivacyMe", "summary": "Citizen privacy centre summary" }
+    },
+    "/v1/privacy/me/consents": {
+      "get": {
+        "operationId": "getPrivacyConsents",
+        "summary": "Consent summary via owner port (no CMP-030 SQL)"
+      }
+    },
+    "/v1/privacy/requests": {
+      "post": {
+        "operationId": "submitPrivacyRequest",
+        "summary": "Submit a privacy rights request"
+      }
+    },
+    "/v1/privacy/requests/{request_id}": {
+      "get": {
+        "operationId": "getPrivacyRequest",
+        "summary": "Get a privacy request with scope and owner tasks"
+      }
+    },
+    "/v1/privacy/requests/{request_id}/tasks": {
+      "post": {
+        "operationId": "requestPrivacyOwnerTasks",
+        "summary": "Request owner-domain fulfilment tasks"
+      }
+    },
+    "/v1/privacy/requests/{request_id}/withdraw": {
+      "post": { "operationId": "withdrawPrivacyRequest", "summary": "Withdraw a privacy request" }
+    },
+    "/v1/privacy/requests/{request_id}/deny": {
+      "post": {
+        "operationId": "denyPrivacyRequest",
+        "summary": "Deny with opaque owner-supplied basis ref"
+      }
+    },
+    "/v1/privacy/requests/{request_id}/complete": {
+      "post": {
+        "operationId": "completePrivacyRequest",
+        "summary": "Complete once every owner task reported"
+      }
+    },
+    "/v1/privacy/tasks/{task_id}/outcomes": {
+      "post": {
+        "operationId": "recordPrivacyTaskOutcome",
+        "summary": "Owner records fulfilment evidence or exception"
+      }
+    }
+  }
+}

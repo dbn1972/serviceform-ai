@@ -1,0 +1,26 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "CMP-061 Privacy Centre Events",
+    "version": "0.1.0",
+    "description": "INT-019 owner-task orchestration events. Consumers are owning components; CMP-061 does not execute their mutations."
+  },
+  "channels": {
+    "sf.privacy.events.v1": {
+      "publish": {
+        "message": {
+          "oneOf": [
+            { "name": "PrivacyRequestSubmitted" },
+            { "name": "ConsentWithdrawalRequested" },
+            { "name": "PrivacyTaskRequested" },
+            { "name": "PrivacyTaskOutcomeRecorded" },
+            { "name": "PrivacyTaskCancelled" },
+            { "name": "PrivacyRequestCompleted" },
+            { "name": "PrivacyRequestWithdrawn" },
+            { "name": "PrivacyRequestDenied" }
+          ]
+        }
+      }
+    }
+  }
+}

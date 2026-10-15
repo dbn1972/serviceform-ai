@@ -4,9 +4,9 @@ import type {
   PrivacyRequestRecord,
   ScopeItem,
 } from '../domain/request.js';
-import type { ActorType, EventEnvelope, RequestContext } from '../types.js';
+import type { EventEnvelope, RequestContext } from '../types.js';
 
-export interface DecisionRow {
+export interface DecisionLogRow {
   tenant_id: string;
   decision_id: string;
   request_id: string;
@@ -14,11 +14,14 @@ export interface DecisionRow {
   to_status: LifecycleStatus;
   legal_basis_or_exception_ref: string | null;
   request_version: number;
-  actor_type: ActorType;
+  actor_type: string;
   actor_id: string;
   correlation_id: string;
   decided_at: string;
 }
+
+/** Alias kept for callers that prefer the shorter name. */
+export type DecisionRow = DecisionLogRow;
 
 export interface StoredIdempotent {
   status: number;
@@ -43,15 +46,20 @@ export interface PrivacyTx {
   }): Promise<void>;
   insertRequest(row: PrivacyRequestRecord): Promise<void>;
   getRequest(requestId: string, forUpdate?: boolean): Promise<PrivacyRequestRecord | undefined>;
-  listRequestsForSubject(subjectActorId: string, limit: number): Promise<PrivacyRequestRecord[]>;
-  updateRequestStatus(row: PrivacyRequestRecord): Promise<void>;
-  insertScope(requestId: string, items: readonly ScopeItem[], createdAt: string): Promise<void>;
+  listRequestsForSubject(subjectActorId: string): Promise<PrivacyRequestRecord[]>;
+  updateRequest(row: PrivacyRequestRecord): Promise<void>;
+  insertScope(
+    tenantId: string,
+    requestId: string,
+    items: readonly ScopeItem[],
+    createdAt: string,
+  ): Promise<void>;
   listScope(requestId: string): Promise<ScopeItem[]>;
   insertTask(row: FulfilmentTaskRecord): Promise<void>;
   getTask(taskId: string, forUpdate?: boolean): Promise<FulfilmentTaskRecord | undefined>;
   listTasks(requestId: string): Promise<FulfilmentTaskRecord[]>;
   updateTask(row: FulfilmentTaskRecord): Promise<void>;
-  insertDecision(row: DecisionRow): Promise<void>;
+  insertDecision(row: DecisionLogRow): Promise<void>;
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void>;
 }
 
