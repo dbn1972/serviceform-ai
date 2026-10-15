@@ -1,7 +1,32 @@
 -- CMP-058 outbox/inbox copied from contracts/shared/sql/outbox.template.sql (SF-CON-OUTBOX).
 -- Replacements only: {schema}=sf_semantics, {cmp}=CMP-058. Grants unchanged (ADR-0006 condition 9).
---
+
 -- Up Migration
+-- SF-CON-OUTBOX v1: normative outbox and inbox layout for every component schema.
+-- Copy into the component's own migration, replacing sf_semantics with the component schema and
+-- CMP-058 with its CMP id. Do not add columns or change grants without a Contract Change Request.
+-- Requires db/migrations/1759490000000_shared-db-contracts.sql (sf_platform.current_tenant_id(),
+-- role sf_outbox_publisher).
+--
+-- Rules (summary; the schema contracts/shared/schemas/outbox-record.schema.json is authoritative
+-- for row content):
+--  1. Producers INSERT exactly one row per event in the same transaction as the state change,
+--     after validating the envelope against SF-CON-EVENT-ENVELOPE. Producers never SELECT,
+--     UPDATE or DELETE outbox rows.
+--  2. Envelopes with a tenant_id go to outbox_event; envelopes with tenant_id null go to
+--     outbox_event_platform.
+--  3. The publisher (packages/outbox, CMP-038) runs as a login role that is a member of
+--     sf_outbox_publisher only. It claims PENDING rows by setting lease_owner/lease_expires_at
+--     in one short transaction, publishes with no transaction open, then sets PUBLISHED (or
+--     schedules a retry) in another. An expired lease makes a row claimable again, so delivery
+--     is at-least-once.
+--  4. For one partition_key, a row is claimable only when no row with a lower seq is PENDING or
+--     DEAD_LETTERED. A DEAD_LETTERED row therefore holds its key until an operator replays or
+--     discards it through an audited action.
+--  5. Consumers record (consumer_group, event_id) in inbox_event or inbox_event_platform in the
+--     same transaction as their own state change; a conflict means the event was already applied.
+--  6. The publisher deletes PUBLISHED rows only after the topic's retention window in the CMP-038
+--     topic registry.
 
 -- sf:isolation sf_semantics.outbox_event TENANT_SCOPED owner=CMP-058
 CREATE TABLE sf_semantics.outbox_event (

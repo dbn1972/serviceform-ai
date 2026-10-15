@@ -44,7 +44,14 @@ export const PUBLISH_ELEMENT_BODY = {
 
 export const CREATE_BINDING_BODY = {
   type: 'object',
-  required: ['binding_id', 'offering_id', 'field_path', 'element_id', 'element_version', 'idempotency_key'],
+  required: [
+    'binding_id',
+    'offering_id',
+    'field_path',
+    'element_id',
+    'element_version',
+    'idempotency_key',
+  ],
   additionalProperties: false,
   properties: {
     binding_id: { type: 'string', format: 'uuid' },

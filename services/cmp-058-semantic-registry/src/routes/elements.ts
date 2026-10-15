@@ -1,7 +1,5 @@
-import { randomUUID } from 'node:crypto';
 import type { FastifyInstance } from 'fastify';
-import { withContextTx } from '../db/tx.js';
-import { currentClient } from '../db/tx.js';
+import { withContextTx, currentClient } from '../db/tx.js';
 import { Cmp058Error } from '../errors.js';
 import {
   CREATE_ELEMENT_BODY,
@@ -12,7 +10,6 @@ import {
 import {
   decide,
   emitDomain,
-  iso,
   requirePrivileged,
   runCommand,
   sendPrivate,
@@ -197,7 +194,6 @@ export function registerElementRoutes(app: FastifyInstance, deps: RouteDeps): vo
         resource: { resource_type: 'SemanticElement', tenant_id: null, classification: 'GLOBAL' },
         action: 'SEMANTIC_ELEMENT_PUBLISH',
       });
-      const body = request.body as unknown as { idempotency_key: string };
       const result = await runCommand(
         deps,
         request,
@@ -250,7 +246,12 @@ export function registerElementRoutes(app: FastifyInstance, deps: RouteDeps): vo
           });
           return {
             status: 200,
-            body: { element_id: request.params.id, version: row.version, lifecycle_status: 'PUBLISHED', published_at: nowIso },
+            body: {
+              element_id: request.params.id,
+              version: row.version,
+              lifecycle_status: 'PUBLISHED',
+              published_at: nowIso,
+            },
           };
         },
       );
@@ -319,7 +320,12 @@ export function registerElementRoutes(app: FastifyInstance, deps: RouteDeps): vo
           });
           return {
             status: 200,
-            body: { element_id: request.params.id, version: row.version, lifecycle_status: 'DEPRECATED', deprecated_at: nowIso },
+            body: {
+              element_id: request.params.id,
+              version: row.version,
+              lifecycle_status: 'DEPRECATED',
+              deprecated_at: nowIso,
+            },
           };
         },
       );

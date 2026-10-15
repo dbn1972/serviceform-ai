@@ -17,10 +17,9 @@ function ctx(
 ): RequestContext {
   return {
     cell_id: 'cell-01',
-    roles:
-      partial.actor.type === 'PRIVILEGED_ADMIN' ? ['PLATFORM_OPERATOR'] : ['SERVICE_CHECKER'],
+    roles: partial.actor.type === 'PRIVILEGED_ADMIN' ? ['PLATFORM_OPERATOR'] : ['SERVICE_CHECKER'],
     jurisdiction_ids: [],
-        auth_assurance: partial.auth_assurance ?? ('MFA' as const),
+    auth_assurance: partial.auth_assurance ?? ('MFA' as const),
     correlation_id: randomUUID(),
     trace_id: '0af7651916cd43dd8448eb211c80319c',
     ...partial,
@@ -157,7 +156,7 @@ describe('CMP-058 plugin HTTP unit (memory pool)', () => {
       expect(res.statusCode).toBe(200);
       const body = res.json<{ lifecycle_status: string }>();
       expect(body.lifecycle_status).toBe('PUBLISHED');
-      expect(store.elements[0].lifecycle_status).toBe('PUBLISHED');
+      expect(store.elements[0]?.lifecycle_status).toBe('PUBLISHED');
     });
 
     it('rejects publish of already published element', async () => {

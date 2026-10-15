@@ -157,8 +157,10 @@ export function registerBindingRoutes(app: FastifyInstance, deps: RouteDeps): vo
             element_version: body.element_version,
           },
         });
+        const tenantId = ctx.tenant_id;
+        if (!tenantId) throw new Cmp058Error('SF-TEN-001', { statusCode: 401 });
         const created: BindingRow = {
-          tenant_id: ctx.tenant_id!,
+          tenant_id: tenantId,
           binding_id: body.binding_id,
           offering_id: body.offering_id,
           field_path: body.field_path,
@@ -211,62 +213,58 @@ export function registerBindingRoutes(app: FastifyInstance, deps: RouteDeps): vo
 
   app.post<{
     Body: { element_id: string; element_version: number; field_path?: string };
-  }>(
-    '/mappings/validate',
-    { schema: { body: VALIDATE_MAPPING_BODY } },
-    async (request, reply) => {
-      const ctx = request.sfContext;
-      await decide(deps, ctx, {
-        subject: subject(ctx),
-        resource: { resource_type: 'SemanticElement', tenant_id: null, classification: 'GLOBAL' },
-        action: 'SEMANTIC_MAPPING_VALIDATE',
-      });
-      const body = request.body;
-      const row = await withContextTx(deps.pool, ctx, async () => {
-        const client = currentClient();
-        const result = await client.query<{
-          element_id: string;
-          version: number;
-          lifecycle_status: string;
-          element_code: string;
-        }>(
-          `SELECT element_id, version, lifecycle_status, element_code
+  }>('/mappings/validate', { schema: { body: VALIDATE_MAPPING_BODY } }, async (request, reply) => {
+    const ctx = request.sfContext;
+    await decide(deps, ctx, {
+      subject: subject(ctx),
+      resource: { resource_type: 'SemanticElement', tenant_id: null, classification: 'GLOBAL' },
+      action: 'SEMANTIC_MAPPING_VALIDATE',
+    });
+    const body = request.body;
+    const row = await withContextTx(deps.pool, ctx, async () => {
+      const client = currentClient();
+      const result = await client.query<{
+        element_id: string;
+        version: number;
+        lifecycle_status: string;
+        element_code: string;
+      }>(
+        `SELECT element_id, version, lifecycle_status, element_code
              FROM sf_semantics.semantic_element
             WHERE element_id = $1 AND version = $2`,
-          [body.element_id, body.element_version],
-        );
-        return result.rows[0] ?? null;
-      });
-      sendPrivate(reply);
-      if (!row) {
-        return {
-          valid: false,
-          reason_code: 'ELEMENT_NOT_FOUND',
-          element_id: body.element_id,
-          element_version: body.element_version,
-        };
-      }
-      if (row.lifecycle_status !== 'PUBLISHED') {
-        return {
-          valid: false,
-          reason_code: 'ELEMENT_NOT_PUBLISHED',
-          element_id: row.element_id,
-          element_version: row.version,
-          lifecycle_status: row.lifecycle_status,
-        };
-      }
-      // Opaque refs only — no field meaning / statutory interpretation.
+        [body.element_id, body.element_version],
+      );
+      return result.rows[0] ?? null;
+    });
+    sendPrivate(reply);
+    if (!row) {
       return {
-        valid: true,
-        invented_statutory_policy_forbidden: true,
+        valid: false,
+        reason_code: 'ELEMENT_NOT_FOUND',
+        element_id: body.element_id,
+        element_version: body.element_version,
+      };
+    }
+    if (row.lifecycle_status !== 'PUBLISHED') {
+      return {
+        valid: false,
+        reason_code: 'ELEMENT_NOT_PUBLISHED',
         element_id: row.element_id,
         element_version: row.version,
-        element_code: row.element_code,
         lifecycle_status: row.lifecycle_status,
-        field_path: body.field_path ?? null,
       };
-    },
-  );
+    }
+    // Opaque refs only — no field meaning / statutory interpretation.
+    return {
+      valid: true,
+      invented_statutory_policy_forbidden: true,
+      element_id: row.element_id,
+      element_version: row.version,
+      element_code: row.element_code,
+      lifecycle_status: row.lifecycle_status,
+      field_path: body.field_path ?? null,
+    };
+  });
 
   app.get<{ Params: { id: string } }>(
     '/usage/:id',

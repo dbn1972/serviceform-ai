@@ -25,7 +25,12 @@
         "tags": ["elements"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "header", "name": "idempotency-key", "required": true, "schema": { "type": "string", "minLength": 8, "maxLength": 128 } }
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -33,12 +38,20 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["element_id", "element_code", "privacy_classification", "idempotency_key"],
+                "required": [
+                  "element_id",
+                  "element_code",
+                  "privacy_classification",
+                  "idempotency_key"
+                ],
                 "additionalProperties": false,
                 "properties": {
                   "element_id": { "type": "string", "format": "uuid" },
                   "element_code": { "type": "string", "minLength": 1, "maxLength": 128 },
-                  "privacy_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "PII", "SENSITIVE_PII"] },
+                  "privacy_classification": {
+                    "type": "string",
+                    "enum": ["PUBLIC", "INTERNAL", "PII", "SENSITIVE_PII"]
+                  },
                   "code_list_binding_ref": { "type": ["string", "null"], "maxLength": 128 },
                   "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
                 }
@@ -62,7 +75,12 @@
         "tags": ["elements"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
         ],
         "responses": {
           "200": { "description": "OK" },
@@ -79,8 +97,18 @@
         "tags": ["elements"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } },
-          { "in": "path", "name": "version", "required": true, "schema": { "type": "integer", "minimum": 1 } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "path",
+            "name": "version",
+            "required": true,
+            "schema": { "type": "integer", "minimum": 1 }
+          }
         ],
         "responses": {
           "200": { "description": "OK" },
@@ -97,8 +125,18 @@
         "tags": ["elements"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } },
-          { "in": "header", "name": "idempotency-key", "required": true, "schema": { "type": "string" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -131,8 +169,18 @@
         "tags": ["elements"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } },
-          { "in": "header", "name": "idempotency-key", "required": true, "schema": { "type": "string" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -176,7 +224,12 @@
         "tags": ["bindings"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "header", "name": "idempotency-key", "required": true, "schema": { "type": "string" } }
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
         ],
         "requestBody": {
           "required": true,
@@ -184,7 +237,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["binding_id", "offering_id", "field_path", "element_id", "element_version", "idempotency_key"],
+                "required": [
+                  "binding_id",
+                  "offering_id",
+                  "field_path",
+                  "element_id",
+                  "element_version",
+                  "idempotency_key"
+                ],
                 "additionalProperties": false,
                 "properties": {
                   "binding_id": { "type": "string", "format": "uuid" },
@@ -214,7 +274,12 @@
         "tags": ["bindings"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
         ],
         "responses": {
           "200": { "description": "OK" },
@@ -229,7 +294,12 @@
         "tags": ["bindings"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
         ],
         "responses": {
           "204": { "description": "Deleted" },
@@ -276,7 +346,12 @@
         "tags": ["usage"],
         "security": [{ "BearerAuth": [] }],
         "parameters": [
-          { "in": "path", "name": "id", "required": true, "schema": { "type": "string", "format": "uuid" } }
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
         ],
         "responses": {
           "200": { "description": "OK" },

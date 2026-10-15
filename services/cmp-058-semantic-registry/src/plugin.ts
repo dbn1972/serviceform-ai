@@ -2,7 +2,7 @@ import type { ErrorResponse } from '@serviceform/contracts';
 import type { FastifyError, FastifyInstance, FastifyPluginAsync } from 'fastify';
 import type { Pool } from 'pg';
 import { outboxAuditRecorder, type AuditRecorder } from './audit.js';
-import { authorize, type AuthorizationPort } from './authz.js';
+import type { AuthorizationPort } from './authz.js';
 import {
   assertNoTenantIdentifyingHeaders,
   requireContext,
@@ -49,8 +49,7 @@ const pluginImpl: FastifyPluginAsync<SemanticPluginOptions> = async (app, opts) 
 
   app.addHook('preHandler', async (request) => {
     const raw = await opts.resolveContext(request);
-    const tenantRequired =
-      request.url.includes('/bindings') && !request.url.includes('/elements');
+    const tenantRequired = request.url.includes('/bindings') && !request.url.includes('/elements');
     request.sfContext = requireContext(raw, tenantRequired);
   });
 

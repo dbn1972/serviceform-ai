@@ -286,7 +286,19 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
     return ok([], 1);
   }
 
+  if (s.includes('DELETE FROM sf_semantics.field_binding')) {
+    const idx = store.fieldBindings.findIndex(
+      (b) => b.tenant_id === String(params[0]) && b.binding_id === String(params[1]),
+    );
+    if (idx >= 0) {
+      store.fieldBindings.splice(idx, 1);
+      return ok([], 1);
+    }
+    return ok([], 0);
+  }
+
   if (
+    s.includes('SELECT') &&
     s.includes('FROM sf_semantics.field_binding') &&
     s.includes('WHERE tenant_id = $1 AND element_id = $2')
   ) {
@@ -297,6 +309,7 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
   }
 
   if (
+    s.includes('SELECT') &&
     s.includes('FROM sf_semantics.field_binding') &&
     s.includes('WHERE tenant_id = $1') &&
     s.includes('ORDER BY offering_id, field_path')
@@ -306,6 +319,7 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
   }
 
   if (
+    s.includes('SELECT') &&
     s.includes('FROM sf_semantics.field_binding') &&
     s.includes('WHERE tenant_id = $1 AND binding_id = $2')
   ) {
@@ -313,17 +327,6 @@ function dispatch(store: MemoryStore, sql: string, params: unknown[]): QueryResu
       (b) => b.tenant_id === String(params[0]) && b.binding_id === String(params[1]),
     );
     return ok(row ? [row] : []);
-  }
-
-  if (s.includes('DELETE FROM sf_semantics.field_binding')) {
-    const idx = store.fieldBindings.findIndex(
-      (b) => b.tenant_id === String(params[0]) && b.binding_id === String(params[1]),
-    );
-    if (idx >= 0) {
-      store.fieldBindings.splice(idx, 1);
-      return ok([], 1);
-    }
-    return ok([], 0);
   }
 
   throw new Error(`unhandled sql: ${s.slice(0, 220)}`);

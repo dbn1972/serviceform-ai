@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { canonicalJson, requestFingerprint, IDEMPOTENCY_KEY } from '../../src/domain/fingerprint.js';
+import {
+  canonicalJson,
+  requestFingerprint,
+  IDEMPOTENCY_KEY,
+} from '../../src/domain/fingerprint.js';
 import { isUuid } from '../../src/domain/uuid.js';
 
 describe('CMP-058 domain utilities', () => {

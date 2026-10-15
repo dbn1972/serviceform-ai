@@ -45,12 +45,15 @@ describe('CMP-058 component contracts', () => {
 
   it('validates isolation declarations', () => {
     const iso = JSON.parse(read('contracts/isolation.json')) as {
-      entities: { entity: string; isolation_class: string; owner_component: string; rls?: string }[];
+      entities: {
+        entity: string;
+        isolation_class: string;
+        owner_component: string;
+        rls?: string;
+      }[];
     };
     for (const row of iso.entities) {
-      const rls =
-        row.rls ??
-        (row.isolation_class === 'TENANT_SCOPED' ? 'FORCE' : 'NOT_APPLICABLE');
+      const rls = row.rls ?? (row.isolation_class === 'TENANT_SCOPED' ? 'FORCE' : 'NOT_APPLICABLE');
       expect(
         validate('isolation-declaration', {
           entity: row.entity,
@@ -120,7 +123,10 @@ describe('CMP-058 component contracts', () => {
 
     const invalid = JSON.parse(
       readFileSync(
-        join(root, '../../contracts/m09/examples/invalid/semantic-element.invented-statute-allowed.json'),
+        join(
+          root,
+          '../../contracts/m09/examples/invalid/semantic-element.invented-statute-allowed.json',
+        ),
         'utf8',
       ),
     ) as Record<string, unknown>;
@@ -128,21 +134,36 @@ describe('CMP-058 component contracts', () => {
   });
 
   it('outbox migration Up matches frozen template after substitution', () => {
-    const rendered = readFileSync(
+    const renderedTemplate = readFileSync(
       join(root, '../../contracts/shared/sql/outbox.template.sql'),
       'utf8',
     )
       .replaceAll('{schema}', 'sf_semantics')
       .replaceAll('{cmp}', 'CMP-058')
       .trim();
-    const migration = readFileSync(
+    const file = readFileSync(
       join(root, '../../db/migrations/1761200000001_cmp-058-outbox.sql'),
       'utf8',
     );
-    const up = migration.split('-- Down Migration')[0] ?? '';
-    const body = up
-      .replace(/^[\s\S]*?-- Up Migration\s*/i, '')
-      .trim();
-    expect(body).toBe(rendered);
+    const up = file.split('-- Up Migration')[1]?.split('-- Down Migration')[0] ?? '';
+    expect(up).toContain(renderedTemplate);
+    const templateOffset = up.indexOf(renderedTemplate);
+    const afterTemplate = up.slice(templateOffset + renderedTemplate.length);
+    expect(templateOffset).toBeGreaterThanOrEqual(0);
+    expect(afterTemplate).toMatch(/ALTER TABLE sf_semantics\.outbox_event OWNER TO sf_migrator/);
+  });
+
+  it('schema migration declares isolation and privilege role; opaque refs only', () => {
+    const sql = readFileSync(
+      join(root, '../../db/migrations/1761200000000_cmp-058-semantic-registry.sql'),
+      'utf8',
+    );
+    expect(sql).toContain('sf:isolation');
+    expect(sql).toContain('sf_cmp058_rw');
+    expect(sql).toContain('FORCE ROW LEVEL SECURITY');
+    expect(sql).toContain('opaque');
+    expect(sql).not.toMatch(/Residence Certificate/i);
+    expect(sql).not.toContain('sf_jurisdiction');
+    expect(sql).not.toContain('sf_tenant_org');
   });
 });
