@@ -40,9 +40,6 @@ const APPOINTMENT_COLS = `tenant_id, appointment_id, appointment_type_ref, slot_
   correlation_id, actor_type, booked_by, booked_at, updated_at`;
 const SELECT_APPOINTMENT = `SELECT ${APPOINTMENT_COLS} FROM sf_scheduler.appointment`;
 
-const OUTCOME_COLS = `tenant_id, outcome_id, appointment_id, outcome, outcome_ref, failure_code,
-  actor_type, recorded_by, correlation_id, recorded_at`;
-
 function toSlot(r: Record<string, unknown>): SlotRow {
   return {
     tenant_id: String(r['tenant_id']),
@@ -225,7 +222,8 @@ class PgTx implements SchedulerTx {
 
   async lockSlots(slotIds: string[]): Promise<SlotRow[]> {
     const r = await this.c.query(
-      SELECT_SLOT + ' WHERE tenant_id = $1 AND slot_id = ANY($2::uuid[]) ORDER BY slot_id FOR UPDATE',
+      SELECT_SLOT +
+        ' WHERE tenant_id = $1 AND slot_id = ANY($2::uuid[]) ORDER BY slot_id FOR UPDATE',
       [this.tenantId, slotIds],
     );
     return r.rows.map(toSlot);
@@ -237,7 +235,9 @@ class PgTx implements SchedulerTx {
           SET booked_count = booked_count + 1, updated_at = $3
         WHERE tenant_id = $1 AND slot_id = $2 AND status = 'OPEN'
           AND starts_at > $3 AND booked_count < capacity
-        RETURNING ${SLOT_COLS}`,
+        RETURNING tenant_id, slot_id, slot_ref, appointment_type_ref, resource_calendar_ref,
+          jurisdiction_id, starts_at, ends_at, capacity, booked_count, status, actor_type,
+          created_by, correlation_id, created_at, updated_at`,
       [this.tenantId, slotId, now],
     );
     return r.rows[0] ? toSlot(r.rows[0]) : undefined;
@@ -255,8 +255,11 @@ class PgTx implements SchedulerTx {
 
   async insertAppointment(row: AppointmentRow): Promise<void> {
     await this.c.query(
-      `INSERT INTO sf_scheduler.appointment (${APPOINTMENT_COLS})
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
+      `INSERT INTO sf_scheduler.appointment (
+         tenant_id, appointment_id, appointment_type_ref, slot_id, slot_ref, resource_calendar_ref,
+         application_id, lifecycle_status, idempotency_key, version, correlation_id, actor_type,
+         booked_by, booked_at, updated_at
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
       [
         row.tenant_id,
         row.appointment_id,
@@ -343,8 +346,10 @@ class PgTx implements SchedulerTx {
 
   async insertNotificationOutcome(row: NotificationOutcomeRow): Promise<boolean> {
     const r = await this.c.query(
-      `INSERT INTO sf_scheduler.notification_outcome (${OUTCOME_COLS})
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      `INSERT INTO sf_scheduler.notification_outcome (
+         tenant_id, outcome_id, appointment_id, outcome, outcome_ref, failure_code, actor_type,
+         recorded_by, correlation_id, recorded_at
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
        ON CONFLICT (tenant_id, appointment_id, outcome_ref) DO NOTHING`,
       [
         row.tenant_id,
@@ -367,7 +372,9 @@ class PgTx implements SchedulerTx {
     outcomeRef: string,
   ): Promise<NotificationOutcomeRow | undefined> {
     const r = await this.c.query(
-      `SELECT ${OUTCOME_COLS} FROM sf_scheduler.notification_outcome
+      `SELECT tenant_id, outcome_id, appointment_id, outcome, outcome_ref, failure_code,
+              actor_type, recorded_by, correlation_id, recorded_at
+         FROM sf_scheduler.notification_outcome
         WHERE tenant_id = $1 AND appointment_id = $2 AND outcome_ref = $3`,
       [this.tenantId, appointmentId, outcomeRef],
     );

@@ -61,9 +61,7 @@ export function slotView(row: SlotRow): SlotView {
 }
 
 export type SlotUnavailableReason =
-  | 'SLOT_CLOSED'
-  | 'SLOT_ALREADY_STARTED'
-  | 'SLOT_CAPACITY_EXHAUSTED';
+  'SLOT_CLOSED' | 'SLOT_ALREADY_STARTED' | 'SLOT_CAPACITY_EXHAUSTED';
 
 /** Explains why a conditional reservation affected no row (read after the failed reserve). */
 export function unavailableReason(row: SlotRow, now: Date): SlotUnavailableReason {

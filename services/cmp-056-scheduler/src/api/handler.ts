@@ -80,7 +80,8 @@ function route(
 
 function noQuery(query: Query): void {
   const first = Object.keys(query)[0];
-  if (first !== undefined) throw new Cmp056Error('SF-SYS-003', detail('UNKNOWN_FIELD', `/query/${first}`));
+  if (first !== undefined)
+    throw new Cmp056Error('SF-SYS-003', detail('UNKNOWN_FIELD', `/query/${first}`));
 }
 
 const ID = 'appointment_id';

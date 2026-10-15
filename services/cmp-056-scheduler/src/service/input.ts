@@ -115,12 +115,44 @@ function onlyKeys(rec: Record<string, unknown>, allowed: readonly string[]): voi
   }
 }
 
-const INSTANT =
-  /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,6})?)?(?:Z|[+-]\d{2}:\d{2})$/;
+const isDigit = (s: string, i: number): boolean => {
+  const c = s.charCodeAt(i);
+  return c >= 48 && c <= 57;
+};
+
+function digitsAt(s: string, start: number, count: number): boolean {
+  for (let i = start; i < start + count; i += 1) if (!isDigit(s, i)) return false;
+  return true;
+}
+
+/** YYYY-MM-DDTHH:MM[:SS[.f{1,6}]](Z|±HH:MM), checked in one linear pass. */
+function isInstantShape(s: string): boolean {
+  if (s.length < 17) return false;
+  if (!digitsAt(s, 0, 4) || s[4] !== '-' || !digitsAt(s, 5, 2) || s[7] !== '-') return false;
+  if (!digitsAt(s, 8, 2) || s[10] !== 'T' || !digitsAt(s, 11, 2) || s[13] !== ':') return false;
+  if (!digitsAt(s, 14, 2)) return false;
+  let i = 16;
+  if (s[i] === ':') {
+    if (!digitsAt(s, i + 1, 2)) return false;
+    i += 3;
+    if (s[i] === '.') {
+      let n = 0;
+      i += 1;
+      while (i < s.length && isDigit(s, i)) {
+        n += 1;
+        i += 1;
+      }
+      if (n < 1 || n > 6) return false;
+    }
+  }
+  if (s[i] === 'Z') return i + 1 === s.length;
+  if (s[i] !== '+' && s[i] !== '-') return false;
+  return i + 6 === s.length && digitsAt(s, i + 1, 2) && s[i + 3] === ':' && digitsAt(s, i + 4, 2);
+}
 
 /** RFC 3339 instant with an explicit offset; returned normalised to UTC. */
 export function parseInstant(value: unknown, pointer: string): string {
-  if (typeof value !== 'string' || value.length > 40 || !INSTANT.test(value)) {
+  if (typeof value !== 'string' || value.length > 40 || !isInstantShape(value)) {
     bad(pointer, 'INSTANT_REQUIRED');
   }
   const ms = Date.parse(value);
@@ -255,8 +287,7 @@ export function validateSlotQuery(
     }
   }
   const out: SlotQuery = {
-    appointment_type_ref:
-      type === undefined ? null : ref(type, '/query/appointment_type_ref'),
+    appointment_type_ref: type === undefined ? null : ref(type, '/query/appointment_type_ref'),
     resource_calendar_ref:
       calendar === undefined ? null : ref(calendar, '/query/resource_calendar_ref'),
     from: from === undefined ? null : parseInstant(from, '/query/from'),

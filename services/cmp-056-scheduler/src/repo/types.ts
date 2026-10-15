@@ -1,4 +1,8 @@
-import type { AppointmentHistoryRow, AppointmentRow, LifecycleStatus } from '../domain/appointment.js';
+import type {
+  AppointmentHistoryRow,
+  AppointmentRow,
+  LifecycleStatus,
+} from '../domain/appointment.js';
 import type { NotificationOutcomeRow } from '../domain/notification.js';
 import type { SlotRow } from '../domain/slot.js';
 import type { EventEnvelope, RequestContext } from '../types.js';

@@ -229,7 +229,11 @@ export class SchedulerService {
   }
 
   /** Publishes one explicit slot from tenant metadata. Capacity is fixed at publication. */
-  async publishSlot(ctx: TenantContext, input: SlotInput, idem: Idempotency): Promise<CommandResult> {
+  async publishSlot(
+    ctx: TenantContext,
+    input: SlotInput,
+    idem: Idempotency,
+  ): Promise<CommandResult> {
     requireActor(ctx, SLOT_PUBLISH_ACTORS);
     await this.guard(ctx, SCHEDULER_ACTIONS.publishSlot, {
       resourceType: 'AppointmentSlot',
@@ -413,7 +417,11 @@ export class SchedulerService {
   }
 
   /** Cancels and returns the seat. No cancellation window is assumed; that is tenant policy. */
-  async cancel(ctx: TenantContext, appointmentId: string, idem: Idempotency): Promise<CommandResult> {
+  async cancel(
+    ctx: TenantContext,
+    appointmentId: string,
+    idem: Idempotency,
+  ): Promise<CommandResult> {
     requireActor(ctx, BOOKING_ACTORS);
     const visible = await this.loadVisible(ctx, appointmentId);
     await this.guard(ctx, SCHEDULER_ACTIONS.cancel, this.appointmentScope(visible));
@@ -547,7 +555,11 @@ export class SchedulerService {
     );
   }
 
-  private async patch(tx: SchedulerTx, current: AppointmentRow, next: AppointmentRow): Promise<void> {
+  private async patch(
+    tx: SchedulerTx,
+    current: AppointmentRow,
+    next: AppointmentRow,
+  ): Promise<void> {
     const ok = await tx.updateAppointment(current.appointment_id, current.version, {
       lifecycle_status: next.lifecycle_status,
       slot_id: next.slot_id,
