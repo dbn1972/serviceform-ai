@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="0.728397624">
-    <testsuite name="tests/security/m09/forged-tenant-http.test.ts" timestamp="2026-10-15T17:12:58.161Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.605461867">
-        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; covers every published M09 route and every M09 component" time="0.00300785">
+<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="0.75910663">
+    <testsuite name="tests/security/m09/forged-tenant-http.test.ts" timestamp="2026-10-15T17:14:48.452Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.649360457">
+        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; covers every published M09 route and every M09 component" time="0.002890607">
         </testcase>
-        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; every probed route is registered on the host and live (not 404) without forged headers" time="0.313036969">
+        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; every probed route is registered on the host and live (not 404) without forged headers" time="0.336726268">
         </testcase>
-        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; denies forged tenant headers on all M09 routes with SF-TEN-002; CROSS_TENANT_LEAKAGE=0" time="0.247336581">
+        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; denies forged tenant headers on all M09 routes with SF-TEN-002; CROSS_TENANT_LEAKAGE=0" time="0.257420346">
         </testcase>
-        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; does not admit or echo a foreign tenant_id supplied in a request body" time="0.040916255">
-        </testcase>
-    </testsuite>
-    <testsuite name="tests/security/m09/policy-input.test.ts" timestamp="2026-10-15T17:12:58.162Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.006523836">
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; denial without an owner-supplied basis ref fails closed with POLICY_INPUT_REQUIRED" time="0.002068283">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; an exception outcome requires both opaque basis and authority refs" time="0.000495404">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; the requester cannot supply a legal basis, a deadline, a tenant or flip the no-statute marker" time="0.000578508">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; privacy migration stores no response deadline/period and pins the no-statute marker" time="0.000556928">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; rejects signals that encode an authoritative / statutory outcome (SF-AI-001)" time="0.001155885">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; high tiers route to human review rather than to an outcome" time="0.000162604">
-        </testcase>
-        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; risk routes and schema never claim an authoritative decision" time="0.000368123">
+        <testcase classname="tests/security/m09/forged-tenant-http.test.ts" name="SF-M09-SEC forged tenant HTTP (fail-closed) &gt; does not admit or echo a foreign tenant_id supplied in a request body" time="0.051195218">
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m09/simulation-fail-closed.test.ts" timestamp="2026-10-15T17:12:58.163Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.077338591">
-        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; inventory: only CMP-060 ships SIMULATED port implementations in M09" time="0.003753401">
+    <testsuite name="tests/security/m09/policy-input.test.ts" timestamp="2026-10-15T17:14:48.454Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.006999044">
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; denial without an owner-supplied basis ref fails closed with POLICY_INPUT_REQUIRED" time="0.002173281">
         </testcase>
-        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 mounted without authz port currently allows create (default-allow risk)" time="0.070261353">
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; an exception outcome requires both opaque basis and authority refs" time="0.000506517">
         </testcase>
-        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 SIMULATED review routing lacks PRODUCTION/UAT/PREPROD environment guard" time="0.00075125">
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; the requester cannot supply a legal basis, a deadline, a tenant or flip the no-statute marker" time="0.000630337">
         </testcase>
-        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 review-routing port may run inside the authoritative DB transaction" time="0.001375622">
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-061 privacy rights: no invented statute, owner-supplied policy input &gt; privacy migration stores no response deadline/period and pins the no-statute marker" time="0.000652512">
+        </testcase>
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; rejects signals that encode an authoritative / statutory outcome (SF-AI-001)" time="0.001224224">
+        </testcase>
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; high tiers route to human review rather than to an outcome" time="0.000164642">
+        </testcase>
+        <testcase classname="tests/security/m09/policy-input.test.ts" name="SF-M09-SEC CMP-060 risk: advisory only, no statutory decision &gt; risk routes and schema never claim an authoritative decision" time="0.000460476">
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m09/static-isolation.test.ts" timestamp="2026-10-15T17:12:58.166Z" hostname="cursor" tests="21" failures="0" errors="0" skipped="0" time="0.03907333">
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_scheduler: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.005874796">
+    <testsuite name="tests/security/m09/simulation-fail-closed.test.ts" timestamp="2026-10-15T17:14:48.455Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.069772074">
+        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; inventory: only CMP-060 ships SIMULATED port implementations in M09" time="0.004248742">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_scheduler: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000715451">
+        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 mounted without authz port currently allows create (default-allow risk)" time="0.06261751">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_assisted: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001777466">
+        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 SIMULATED review routing lacks PRODUCTION/UAT/PREPROD environment guard" time="0.000577874">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_assisted: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000679697">
+        <testcase classname="tests/security/m09/simulation-fail-closed.test.ts" name="SF-M09-SEC M09 SIMULATED / fail-closed boundaries &gt; FINDING: CMP-060 review-routing port may run inside the authoritative DB transaction" time="0.001063843">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_semantics: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001774793">
+    </testsuite>
+    <testsuite name="tests/security/m09/static-isolation.test.ts" timestamp="2026-10-15T17:14:48.456Z" hostname="cursor" tests="21" failures="0" errors="0" skipped="0" time="0.032975055">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_scheduler: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.00462002">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_semantics: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000576074">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_scheduler: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.00080177">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_migration: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001425826">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_assisted: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.00154728">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_migration: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000512667">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_assisted: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000500557">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_risk: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.00142913">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_semantics: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001427727">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_risk: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000523196">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_semantics: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000410002">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_privacy: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001273482">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_migration: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001059252">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_privacy: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000393871">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_migration: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000377838">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; M09 schemas do not reference each other (no cross-component SQL in migrations)" time="0.00306158">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_risk: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.001322308">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-056-scheduler: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000966898">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_risk: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000350312">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-057-assisted-service: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000546762">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_privacy: own schema, declared isolation, tenant tables ENABLE+FORCE RLS, NOSUPERUSER/NOBYPASSRLS role" time="0.0010428">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-058-semantic-registry: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.00037711">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; sf_privacy: RLS policies read the tenant only via sf_platform.current_tenant_id() (SF-CON-DB-SESSION-CONTEXT)" time="0.000258864">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-059-migration-workbench: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000294397">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (migrations) &gt; M09 schemas do not reference each other (no cross-component SQL in migrations)" time="0.002857509">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-060-risk-integrity: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000260604">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-056-scheduler: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000737054">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-061-privacy-centre: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000346623">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-057-assisted-service: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.00041071">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; M09 service sources do not import sibling components or query sibling schemas" time="0.013734349">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-058-semantic-registry: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000312483">
         </testcase>
-        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; host composition m09.ts: no CMP-036 remount, no SQL, no period values" time="0.000580929">
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-059-migration-workbench: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000276906">
+        </testcase>
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-060-risk-integrity: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000257433">
+        </testcase>
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; cmp-061-privacy-centre: transaction session sets only SF-CON-DB-SESSION-CONTEXT keys" time="0.000305347">
+        </testcase>
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; M09 service sources do not import sibling components or query sibling schemas" time="0.011524904">
+        </testcase>
+        <testcase classname="tests/security/m09/static-isolation.test.ts" name="SF-M09-SEC static tenant isolation (runtime sources) &gt; host composition m09.ts: no CMP-036 remount, no SQL, no period values" time="0.000742217">
         </testcase>
     </testsuite>
 </testsuites>
