@@ -1,0 +1,20 @@
+task_id: SF-M09-SEC-REVERIFY
+module_id: M09
+agent_role: security_verifier
+branch: cursor/m09-sec-reverify-91f2
+production_sot: 710c1ba8571f609260d1bfca11f8a57e6ed1380e
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g6: false
+g4_recommended: true
+recommended_result: SF_M09_SEC_PASS_WITH_FINDINGS
+critical_findings: 0
+allowed_write_paths:
+  - tests/security/m09/**
+  - evidence/SF-M09-SEC-REVERIFY/**
+  - evidence/SF-M09-SEC/**
+  - orchestrator/handovers/SF-M09-SEC-REVERIFY.yaml
+note: Criticals cleared after #175+#176. Residuals remain. Human decides G4.

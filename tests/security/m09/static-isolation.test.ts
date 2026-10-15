@@ -136,15 +136,10 @@ describe('SF-M09-SEC static tenant isolation (migrations)', () => {
           ).toBe(true);
         } else {
           expect(NON_TENANT_CLASSES.has(cls), `${t} unknown isolation class ${cls}`).toBe(true);
-          // A tenant-carrying row is tenant data whatever its declared class (no RLS => cross-tenant read).
-          if (schema === 'sf_migration' && t === 'outbox_event' && hasTenantColumn(body)) {
-            // FINDING: PLATFORM_OPERATIONAL outbox_event carries tenant_id (live RLS risk).
-            expect(hasTenantColumn(body)).toBe(true);
-          } else {
-            expect(hasTenantColumn(body), `${schema}.${t} is ${cls} but carries tenant_id`).toBe(
-              false,
-            );
-          }
+          // PLATFORM/GLOBAL tables must not carry tenant_id (CMP-059 outbox remade TENANT_SCOPED).
+          expect(hasTenantColumn(body), `${schema}.${t} is ${cls} but carries tenant_id`).toBe(
+            false,
+          );
         }
       }
 
