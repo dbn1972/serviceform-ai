@@ -127,67 +127,73 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     expect(Object.keys(out)).toEqual(['routing_ref']);
   });
 
-  it.fails('[F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)', async () => {
-    const pool = new RecordingPool(rowsFor);
-    let admitted = true;
-    try {
-      app = await buildApp(productionConfig, {
-        logger: silentLogger(),
-        m09: {
-          risk: {
-            options: {
-              pool,
-              authz: { canActOnRisk: async () => true },
-              reviewRouting: new SimulatedReviewRoutingPort(),
+  it.fails(
+    '[F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)',
+    async () => {
+      const pool = new RecordingPool(rowsFor);
+      let admitted = true;
+      try {
+        app = await buildApp(productionConfig, {
+          logger: silentLogger(),
+          m09: {
+            risk: {
+              options: {
+                pool,
+                authz: { canActOnRisk: async () => true },
+                reviewRouting: new SimulatedReviewRoutingPort(),
+              },
+              resolveContext: async () => OFFICER,
             },
-            resolveContext: async () => OFFICER,
           },
-        },
-      });
-      const res = await app.inject({
-        method: 'POST',
-        url: '/v1/risk/assessments',
-        payload: {
-          subject_application_id: SUBJECT_APP,
-          idempotency_key: 'risk-prod-sim-0001',
-          raw_risk_score: 0.99,
-          signals: [],
-        },
-      });
-      admitted = res.statusCode < 400;
-    } catch {
-      admitted = false;
-    }
-    expect(admitted, 'SIMULATED review routing admitted and used in PRODUCTION').toBe(false);
-  });
+        });
+        const res = await app.inject({
+          method: 'POST',
+          url: '/v1/risk/assessments',
+          payload: {
+            subject_application_id: SUBJECT_APP,
+            idempotency_key: 'risk-prod-sim-0001',
+            raw_risk_score: 0.99,
+            signals: [],
+          },
+        });
+        admitted = res.statusCode < 400;
+      } catch {
+        admitted = false;
+      }
+      expect(admitted, 'SIMULATED review routing admitted and used in PRODUCTION').toBe(false);
+    },
+  );
 
-  it.fails('[F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)', async () => {
-    const pool = new RecordingPool(rowsFor);
-    let admitted = true;
-    try {
-      app = await buildApp(productionConfig, {
-        logger: silentLogger(),
-        m09: {
-          risk: {
-            options: { pool, authz: new SimulatedAllowAllTenantAuthz() },
-            resolveContext: async () => OFFICER,
+  it.fails(
+    '[F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)',
+    async () => {
+      const pool = new RecordingPool(rowsFor);
+      let admitted = true;
+      try {
+        app = await buildApp(productionConfig, {
+          logger: silentLogger(),
+          m09: {
+            risk: {
+              options: { pool, authz: new SimulatedAllowAllTenantAuthz() },
+              resolveContext: async () => OFFICER,
+            },
           },
-        },
-      });
-      const res = await app.inject({
-        method: 'POST',
-        url: '/v1/risk/assessments',
-        payload: {
-          subject_application_id: SUBJECT_APP,
-          idempotency_key: 'risk-prod-sim-0002',
-          raw_risk_score: 0.1,
-          signals: [],
-        },
-      });
-      admitted = res.statusCode < 400;
-    } catch {
-      admitted = false;
-    }
-    expect(admitted, 'SIMULATED allow-all authz admitted and used in PRODUCTION').toBe(false);
-  });
+        });
+        const res = await app.inject({
+          method: 'POST',
+          url: '/v1/risk/assessments',
+          payload: {
+            subject_application_id: SUBJECT_APP,
+            idempotency_key: 'risk-prod-sim-0002',
+            raw_risk_score: 0.1,
+            signals: [],
+          },
+        });
+        admitted = res.statusCode < 400;
+      } catch {
+        admitted = false;
+      }
+      expect(admitted, 'SIMULATED allow-all authz admitted and used in PRODUCTION').toBe(false);
+    },
+  );
 });
