@@ -8,16 +8,15 @@
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const SCHEMA_PATH = join(process.cwd(), '../../contracts/m09/schemas/risk-assessment.schema.json');
-const VALID_EXAMPLE_PATH = join(
-  process.cwd(),
-  '../../contracts/m09/examples/valid/risk-assessment.json',
-);
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
+const SCHEMA_PATH = join(REPO_ROOT, 'contracts/m09/schemas/risk-assessment.schema.json');
+const VALID_EXAMPLE_PATH = join(REPO_ROOT, 'contracts/m09/examples/valid/risk-assessment.json');
 const INVALID_EXAMPLE_PATH = join(
-  process.cwd(),
-  '../../contracts/m09/examples/invalid/risk-assessment.authoritative-decision.json',
+  REPO_ROOT,
+  'contracts/m09/examples/invalid/risk-assessment.authoritative-decision.json',
 );
 
 describe('SF-CON-RISK-ASSESSMENT contract conformance', () => {

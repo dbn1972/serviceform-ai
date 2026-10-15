@@ -139,9 +139,11 @@ describe('CMP-060 security / governance boundary tests', () => {
   describe('DB-level governance constraint (SQL CHECK)', () => {
     it('migration SQL contains authoritative_decision_by_this_component = false CHECK constraint', async () => {
       const { readFileSync } = await import('node:fs');
-      const { join } = await import('node:path');
+      const { dirname, join } = await import('node:path');
+      const { fileURLToPath } = await import('node:url');
+      const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
       const sql = readFileSync(
-        join(process.cwd(), '../../db/migrations/1760500000000_cmp-060-risk-integrity.sql'),
+        join(repoRoot, 'db/migrations/1760500000000_cmp-060-risk-integrity.sql'),
         'utf8',
       );
       expect(sql).toContain('authoritative_decision_by_this_component = false');
@@ -153,9 +155,11 @@ describe('CMP-060 security / governance boundary tests', () => {
 
     it('migration SQL enforces forward-only lifecycle (no reversals)', async () => {
       const { readFileSync } = await import('node:fs');
-      const { join } = await import('node:path');
+      const { dirname, join } = await import('node:path');
+      const { fileURLToPath } = await import('node:url');
+      const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
       const sql = readFileSync(
-        join(process.cwd(), '../../db/migrations/1760500000000_cmp-060-risk-integrity.sql'),
+        join(repoRoot, 'db/migrations/1760500000000_cmp-060-risk-integrity.sql'),
         'utf8',
       );
       expect(sql).toContain('guard_assessment_transition');
