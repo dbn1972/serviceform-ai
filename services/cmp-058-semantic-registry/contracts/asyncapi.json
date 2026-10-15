@@ -1,0 +1,73 @@
+{
+  "asyncapi": "2.6.0",
+  "info": {
+    "title": "CMP-058 Semantic Registry Events",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "sf.semantics.events.v1": {
+      "description": "Domain events published by CMP-058 Semantic Registry",
+      "subscribe": {
+        "message": {
+          "oneOf": [
+            {
+              "name": "SemanticElementDraftCreated",
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "version": { "type": "integer" },
+                  "element_code": { "type": "string" },
+                  "privacy_classification": { "type": "string" }
+                }
+              }
+            },
+            {
+              "name": "SemanticElementPublished",
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "version": { "type": "integer" }
+                }
+              }
+            },
+            {
+              "name": "SemanticElementDeprecated",
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "version": { "type": "integer" }
+                }
+              }
+            },
+            {
+              "name": "SemanticFieldBindingCreated",
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "binding_id": { "type": "string", "format": "uuid" },
+                  "tenant_id": { "type": "string", "format": "uuid" },
+                  "offering_id": { "type": "string", "format": "uuid" },
+                  "field_path": { "type": "string" },
+                  "element_id": { "type": "string", "format": "uuid" },
+                  "element_version": { "type": "integer" }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "description": "Audit events submitted by CMP-058",
+      "subscribe": {
+        "message": {
+          "name": "AuditEventSubmitted",
+          "payload": { "type": "object" }
+        }
+      }
+    }
+  }
+}
