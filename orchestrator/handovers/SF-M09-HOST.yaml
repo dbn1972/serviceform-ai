@@ -1,16 +1,65 @@
-# SF-M09-HOST — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# M09 CANDIDATE — API host composition mounts (LOCK-7)
+# HUMAN_CG03_THROUGH_EVD_AUTHORIZATION consumed. Host after STITCH-A (#169) on main.
+# Hard serial vs SF-M10-HOST (shared apps/api/src/app.ts single-writer).
+# READY → CANDIDATE. Not CERTIFIED. Not G3. Not G4. Not G6.
+
 task_id: SF-M09-HOST
+title: API host M09 composition mounts
 module_id: M09
-record: SF-M09-HOST
-agent_role: component_builder
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
-builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+component_ids: [CMP-056, CMP-057, CMP-058, CMP-059, CMP-060, CMP-061]
+integration_ids: [INT-011, INT-014, INT-015]
+requirement_ids:
+  - Constitution-single-host
+  - CG-03-apps-api-single-writer
+agent_role: component_builder
+builder_agent: serviceform-foundation-builder
+model_route: composer
+model_release: composer-1
+effort: high
+verifier_model_route: opus
+branch: cursor/m09-host-91f2
+worktree: ../wt-SF-M09-HOST
+parallel_group: M09-HOST
+privilege_role: sf_api_host_rw
+schema: null
+hard_serial_locks: [LOCK-7]
+must_not_run_concurrent_with: [SF-M10-HOST]
+depends_on:
+  - SF-M09-STITCH-A on origin/main (merge #169 tip 435cfcea171bda817130babbda81fc5c1d077ea4)
+  - 42 FROZEN contracts MATCH
+  - HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+allowed_write_paths:
+  - apps/api/src/composition/m09.ts
+  - apps/api/src/app.ts
+  - apps/api/test/**/m09*
+  - apps/api/test/composition-m09.test.ts
+  - evidence/SF-M09-HOST/**
+  - orchestrator/handovers/SF-M09-HOST.yaml
+allowed_write_notes:
+  - Additive composition module only; preserve M01–M08 mounts
+  - Serialized single-writer window vs SF-M10-HOST
+  - Do not commit pnpm-lock.yaml
+  - CMP-036 remains registered in app.ts — do not remount via m09
+read_only_paths:
+  - pnpm-lock.yaml
+  - contracts/**
+  - orchestrator/contracts-lock.yaml
+  - services/**
+wave_eligible_now: false
+serial_after:
+  - SF-M09-STITCH-A
+
+builders_dispatched_this_envelope: true
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+readiness: READY
+execution_authorized: true
+execution_base: 435cfcea171bda817130babbda81fc5c1d077ea4
+authorization_source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
 self_certified: false
 not_certified: true
 certified: false
@@ -18,17 +67,32 @@ release_certified: false
 g3: false
 g4: false
 g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_03_contract_freeze_required: true
 freeze_authorized: false
 base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['apps/api/src/composition/m09.ts', 'apps/api/src/app.ts', 'evidence/SF-M09-HOST/**', 'orchestrator/handovers/SF-M09-HOST.yaml']
+  sha: 435cfcea171bda817130babbda81fc5c1d077ea4
+mounts:
+  - CMP-056
+  - CMP-057
+  - CMP-058
+  - CMP-059
+  - CMP-060
+  - CMP-061
+not_mounted:
+  - CMP-036 (already on host)
 stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-must_not_run_concurrent_with: [SF-M10-HOST]
+  - concurrent execution with SF-M10-HOST
+  - remove or break prior module mounts
+  - CERTIFIED or RELEASE CERTIFIED or G4 or G6 claim
+  - commit pnpm-lock.yaml
+  - remount CMP-036
+
+acceptance_tests:
+  - composition/m09.ts mounts only M09 plugins
+  - app.ts change is mount-call only and reviewable
+  - CMP-036 registered exactly once (not remounted)
+  - never scheduled concurrent with SF-M10-HOST; M01–M08 mounts coexist
+  - CERTIFIED/G3/G4/G6 remain false
+evidence: evidence/SF-M09-HOST/EVIDENCE.md

@@ -12,6 +12,7 @@ import { registerM05Plugins, type M05PluginMounts } from './composition/m05.js';
 import { registerM06Plugins, type M06PluginMounts } from './composition/m06.js';
 import { registerM07Plugins, type M07PluginMounts } from './composition/m07.js';
 import { registerM08Plugins, type M08PluginMounts } from './composition/m08.js';
+import { registerM09Plugins, type M09PluginMounts } from './composition/m09.js';
 import { registerWave1Plugins, type Wave1PluginMounts } from './composition/wave1.js';
 import { registerWave2Plugins, type Wave2PluginMounts } from './composition/wave2.js';
 import { CORRELATION_HEADER, correlation, correlationIdFrom } from './plugins/correlation.js';
@@ -72,6 +73,12 @@ export interface AppDependencies {
    * Hard serial vs SF-M06-005: M06 mounts above are preserved unchanged.
    */
   m08?: M08PluginMounts;
+  /**
+   * M09 mounts (CMP-056/057/058/059/060/061). Optional; tests supply doubles.
+   * CMP-036 remains registered above composition — do not remount it via m09.
+   * Hard serial vs SF-M10-HOST.
+   */
+  m09?: M09PluginMounts;
 }
 
 /**
@@ -185,6 +192,13 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     app.decorate('m08Mounted', mounted);
   }
 
+  // Decorate only when mounts are supplied so existing optional composition suites
+  // still see `m09Mounted` as undefined when M09 is absent.
+  if (deps.m09) {
+    const mounted = await registerM09Plugins(app, deps.m09);
+    app.decorate('m09Mounted', mounted);
+  }
+
   return app;
 }
 
@@ -199,5 +213,6 @@ declare module 'fastify' {
     m06Mounted?: string[];
     m07Mounted?: string[];
     m08Mounted?: string[];
+    m09Mounted?: string[];
   }
 }
