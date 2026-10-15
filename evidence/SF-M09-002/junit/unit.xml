@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="0.071855864">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-15T15:45:48.144Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.042682515">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-ASSISTED-SESSION &gt; the frozen schema still pins applied_by_distinct_from_applied_for and statute marker" time="0.001287396">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-ASSISTED-SESSION &gt; frozen valid example passes and invalid applied-by-not-distinct fails" time="0.000851645">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-ASSISTED-SESSION &gt; every session CMP-057 returns validates against the frozen schema" time="0.006930022">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-ASSISTED-SESSION &gt; component enums equal the frozen enums" time="0.00052321">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-057 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.025197144">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; openapi operationIds match the handler route table" time="0.000571795">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; asyncapi lists every domain event type on TOPIC_DOMAIN" time="0.000340803">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; migration pair and privilege role are present; no peer schema SQL" time="0.000479683">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; source tree does not invent representation statute keywords as decision logic" time="0.001395761">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; error catalogue subset is non-empty and known" time="0.000241455">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; isolation declaration covers every sf_assisted table class" time="0.00077974">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and invention guards &gt; applied_for in frozen valid example is distinct from applied_by" time="0.000224085">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-15T15:45:48.147Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.00578752">
+        <testcase classname="test/unit/domain.test.ts" name="channel / representation metadata (no statute) &gt; pins the frozen channel and lifecycle enums" time="0.001626165">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="channel / representation metadata (no statute) &gt; marks only representation channels as requiring an opaque authority ref" time="0.000450803">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateCommand (INT-015 lifecycle) &gt; allows the documented transitions and refuses terminal/illegal ones" time="0.000354935">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="evaluateCommand (INT-015 lifecycle) &gt; submit and handoff only leave REPRESENTATION_VERIFIED (consent/representation gate)" time="0.000318888">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="toContract (SF-CON-ASSISTED-SESSION) &gt; projects the frozen constants including applied_by_distinct_from_applied_for" time="0.000318862">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="toContract (SF-CON-ASSISTED-SESSION) &gt; refuses to emit a self-assisted document" time="0.000667198">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="handoff token &gt; issues a one-time token, stores only the hash, and verifies with timing-safe compare" time="0.000845954">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-15T15:45:48.147Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.023385829">
+        <testcase classname="test/unit/service.test.ts" name="start session (SF-CON-ASSISTED-SESSION) &gt; starts a COUNTER session with server-derived applied_by and distinctness constant" time="0.006782532">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="start session (SF-CON-ASSISTED-SESSION) &gt; refuses self-assisted start (applied_by == applied_for)" time="0.000710255">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="start session (SF-CON-ASSISTED-SESSION) &gt; refuses client-supplied tenant_id and server-owned fields" time="0.000449134">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="start session (SF-CON-ASSISTED-SESSION) &gt; citizens cannot open a COUNTER session" time="0.000474099">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-015 happy path (counter → bind → verify → submit) &gt; proves who applied, for whom, under what channel, with consent" time="0.003211628">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="INT-015 happy path (counter → bind → verify → submit) &gt; submit is refused before representation/consent verification" time="0.001243501">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="representation channel (opaque authority ref; no statute) &gt; requires a third-party verifier and opaque authority ref" time="0.001572213">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="handoff + citizen resume (identity preserved) &gt; issues a one-time token and lets the applicant resume without changing identities" time="0.002923464">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA / tenant / idempotency &gt; audits OPA denials and fails closed on PDP outage" time="0.000938135">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA / tenant / idempotency &gt; replays identical idempotent starts and refuses fingerprint conflicts" time="0.000859423">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="OPA / tenant / idempotency &gt; another tenant context cannot see the session" time="0.002560727">
+        </testcase>
+    </testsuite>
+</testsuites>

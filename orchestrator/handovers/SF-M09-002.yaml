@@ -1,6 +1,7 @@
 # SF-M09-002 — CMP-057 Assisted / Omnichannel (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
-# Consume FROZEN contracts only. No invented statutory policy.
+# CANDIDATE_COMPLETE builder candidate. Not merged. Not CERTIFIED. Not G4. Not G6.
+# Consume FROZEN contracts only. No invented representation statute.
+# Host mount deferred to SF-M09-HOST. Lockfile deferred to STITCH-A.
 
 task_id: SF-M09-002
 title: CMP-057 Assisted / Omnichannel
@@ -9,11 +10,19 @@ concurrency_group: CG-03
 build_plan: specs/build-plan.yaml (ADR-0001)
 component_ids: [CMP-057]
 integration_ids: [INT-015, INT-011]
+requirement_ids:
+  - Eng-v1.4-CMP-057
+  - INT-015
+  - Constitution-tenant-isolation
+  - SF-CON-ASSISTED-SESSION
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
 model_route: opus
+model_release: claude-opus-5-5
 effort: high
+verifier_model_route: opus
 branch: cursor/m09-002-assisted-91f2
+worktree: /home/ubuntu/wt-SF-M09-002
 parallel_group: M09-A
 privilege_role: sf_cmp057_rw
 schema: sf_assisted
@@ -42,12 +51,17 @@ wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+implementation_started: true
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: candidate-complete
+builder_token:
+  family: SF-M09-002_BUILDER_CANDIDATE
+  status: READY
+merged: false
 self_certified: false
 not_certified: true
 certified: false
@@ -64,8 +78,9 @@ ready_authorization:
   join_separator: "_"
   wave_a_ready: true
 base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+  prefix: fd7492b
+  suffix: ""
+  note: origin/main tip after Wave A READY merge (#159); freeze tip e09ec3f1…
 join_separator: "_"
 
 contract_locks:
@@ -87,3 +102,54 @@ stop_conditions:
   - write outside allowed_write_paths
   - authoritative risk decision (CMP-060)
   - cross-component SQL (CMP-061)
+
+acceptance_tests_planning:
+  - applied_by distinct from applied_for (service + DB)
+  - no invented representation statute (opaque authority ref only)
+  - INT-015 representation/consent before submit/handoff
+  - citizen resume preserves citizen_id and application identity
+  - Host mount deferred to SF-M09-HOST
+invented_statutory_policy_forbidden: true
+applied_by_distinct_from_applied_for: true
+evidence: evidence/SF-M09-002/EVIDENCE.md
+
+builder_output:
+  package: "@serviceform/cmp-057-assisted-service"
+  schema: sf_assisted
+  privilege_role: sf_cmp057_rw
+  migrations:
+    - db/migrations/1760900000000_cmp-057-assisted-service.sql
+    - db/migrations/1760900000001_cmp-057-outbox.sql
+  produces: [SF-CON-ASSISTED-SESSION]
+  lifecycle:
+    - STARTED
+    - APPLICANT_BOUND
+    - REPRESENTATION_VERIFIED
+    - SUBMITTED
+    - HANDED_OFF
+    - CLOSED
+  ports_unbound_fail_closed:
+    - AssistedVerificationPort.applicantInTenant
+    - AssistedVerificationPort.consentCaptured
+  local_results:
+    unit_contract: 30/30 PASS
+    postgres_integration: 12/12 PASS
+    typecheck: PASS
+    eslint: PASS
+    prettier: PASS
+    migration_lint: PASS
+  lockfile_residual: EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL
+  invented_representation_statute: false
+  certified: false
+  g4: false
+  g6: false
+
+candidate:
+  pull_request: https://github.com/dbn1972/serviceform-ai/pull/167
+  evidence: evidence/SF-M09-002/EVIDENCE.md
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row; pnpm-lock.yaml not modified)
+    - OPA policy data for ASSISTED_SESSION_* actions lives in policy/** (read-only for this lane); until added the PDP denies (fail-closed)
+    - host verification ports (CMP-004/005/030) unbound doubles; fail closed when unavailable
+    - host mount deferred to SF-M09-HOST; no UI delivered
+    - CERTIFIED / G4 / G6 remain false
