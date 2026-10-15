@@ -1,0 +1,1117 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-056 Scheduler & Appointment Service",
+    "version": "0.1.0",
+    "description": "Reusable appointment, hearing, interview, counter-visit and inspection scheduling (INT-014). Produces SF-CON-APPOINTMENT v1 (FROZEN, contracts/m09/schemas/appointment.schema.json). Slots are explicit tenant-published metadata; CMP-056 never invents a statutory calendar. Capacity is atomic; notification failure never invalidates a committed booking. Tenant and actor are server-derived (SF-CON-REQUEST-CONTEXT); tenant-identifying headers are refused. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/appointment-slots": {
+      "post": {
+        "operationId": "publishAppointmentSlot",
+        "description": "Publishes one explicit bookable slot from tenant metadata (SYSTEM/OFFICER). CMP-056 holds no business calendar, holiday list or statutory hearing/inspection calendar; slots are concrete windows with a fixed capacity.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlotInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Slot published",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Slot"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Identical request already recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Slot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/slots": {
+      "get": {
+        "operationId": "listAppointmentSlots",
+        "description": "Lists bookable slots only: OPEN, not yet started (server clock) and with a free seat.",
+        "parameters": [
+          {
+            "name": "appointment_type_ref",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          },
+          {
+            "name": "resource_calendar_ref",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bookable slots",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlotList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments": {
+      "post": {
+        "operationId": "bookAppointment",
+        "description": "Books one seat (CITIZEN/OFFICER/SYSTEM). The seat is taken by a single conditional UPDATE in the booking transaction, so concurrent requests cannot overbook (capacity_atomic). AppointmentBooked is written to the outbox in the same commit; CMP-025 notification happens downstream and its failure never invalidates the booking.",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Appointment booked (SF-CON-APPOINTMENT)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}": {
+      "get": {
+        "operationId": "getAppointment",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "description": "Returns the SF-CON-APPOINTMENT record. Citizens only see appointments they booked.",
+        "responses": {
+          "200": {
+            "description": "Appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/reschedule": {
+      "post": {
+        "operationId": "rescheduleAppointment",
+        "description": "Moves a BOOKED/RESCHEDULED appointment to another slot of the same appointment type: the new seat is taken atomically, then the old seat is returned, in one transaction.",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RescheduleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Appointment rescheduled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/cancel": {
+      "post": {
+        "operationId": "cancelAppointment",
+        "description": "Cancels and returns the seat. No cancellation window is assumed (tenant policy via OPA).",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Appointment cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/attendance": {
+      "post": {
+        "operationId": "recordAppointmentAttendance",
+        "description": "Records COMPLETED or NO_SHOW (OFFICER/SYSTEM) once the slot has started. The seat stays consumed.",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttendanceInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Attendance recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appointments/{appointment_id}/notification-outcomes": {
+      "post": {
+        "operationId": "recordAppointmentNotificationOutcome",
+        "description": "Records a CMP-025 delivery outcome (SYSTEM/INTEGRATION). Append-only; never changes the appointment: a FAILED notification leaves the booking committed (booking_invalidated=false).",
+        "parameters": [
+          {
+            "name": "appointment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationOutcomeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Outcome recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationOutcome"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Identical request already recorded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationOutcome"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (validation; CLIENT_AUTHORITY_FORBIDDEN; CLIENT_TIME_NOT_AUTHORITATIVE; IDEMPOTENCY_KEY_REQUIRED; UUID_REQUIRED)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-AUTH-001 / SF-TEN-001",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-AUTH-002 / SF-TEN-002 (OPA deny, actor not permitted, tenant-identifying header)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-SYS-002 (not found, other tenant, or citizen not the booker)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-APP-001 (INVALID_APPOINTMENT_TRANSITION, SLOT_CAPACITY_EXHAUSTED, SLOT_CLOSED, SLOT_ALREADY_STARTED, SAME_SLOT, APPOINTMENT_TYPE_MISMATCH, APPOINTMENT_NOT_STARTED) / SF-APP-002 (idempotency or outcome conflict)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-SYS-004 (PDP unavailable; fail closed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "$ref": "https://contracts.serviceform.ai/error-response/v1"
+      },
+      "Appointment": {
+        "$ref": "https://contracts.serviceform.ai/m09/appointment/v1"
+      },
+      "EmptyInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "maxProperties": 0
+      },
+      "SlotInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_ref", "appointment_type_ref", "starts_at", "ends_at", "capacity"],
+        "properties": {
+          "slot_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "appointment_type_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "resource_calendar_ref": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "jurisdiction_id": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          }
+        }
+      },
+      "Slot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot_id",
+          "slot_ref",
+          "appointment_type_ref",
+          "resource_calendar_ref",
+          "jurisdiction_id",
+          "starts_at",
+          "ends_at",
+          "capacity",
+          "booked_count",
+          "remaining_capacity",
+          "status",
+          "capacity_atomic"
+        ],
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "slot_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "appointment_type_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "resource_calendar_ref": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "jurisdiction_id": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ends_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "capacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "booked_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "remaining_capacity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "enum": ["OPEN", "CLOSED"]
+          },
+          "capacity_atomic": {
+            "const": true
+          }
+        }
+      },
+      "SlotList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slots"],
+        "properties": {
+          "slots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Slot"
+            }
+          }
+        }
+      },
+      "BookInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_ref"],
+        "properties": {
+          "slot_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "application_id": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          }
+        }
+      },
+      "RescheduleInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_ref"],
+        "properties": {
+          "slot_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          }
+        }
+      },
+      "AttendanceInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["outcome"],
+        "properties": {
+          "outcome": {
+            "enum": ["COMPLETED", "NO_SHOW"]
+          }
+        }
+      },
+      "NotificationOutcomeInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["outcome", "outcome_ref"],
+        "properties": {
+          "outcome": {
+            "enum": ["SUCCEEDED", "FAILED"]
+          },
+          "outcome_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "failure_code": {
+            "type": "string",
+            "pattern": "^SF-(AUTH|TEN|FORM|RULE|APP|EVD|PAY|WF|CRED|INT|RATE|AI|SYS)-[0-9]{3}$"
+          }
+        },
+        "if": {
+          "properties": {
+            "outcome": {
+              "const": "FAILED"
+            }
+          }
+        },
+        "then": {
+          "required": ["failure_code"]
+        },
+        "else": {
+          "not": {
+            "required": ["failure_code"]
+          }
+        }
+      },
+      "NotificationOutcome": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "outcome_id",
+          "appointment_id",
+          "outcome",
+          "outcome_ref",
+          "failure_code",
+          "recorded_at",
+          "appointment_lifecycle_status",
+          "booking_invalidated"
+        ],
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "appointment_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "outcome": {
+            "enum": ["SUCCEEDED", "FAILED"]
+          },
+          "outcome_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          },
+          "failure_code": {
+            "type": ["string", "null"],
+            "pattern": "^SF-(AUTH|TEN|FORM|RULE|APP|EVD|PAY|WF|CRED|INT|RATE|AI|SYS)-[0-9]{3}$"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "appointment_lifecycle_status": {
+            "enum": ["BOOKED", "RESCHEDULED", "CANCELLED", "COMPLETED", "NO_SHOW"]
+          },
+          "booking_invalidated": {
+            "const": false
+          }
+        }
+      }
+    }
+  }
+}

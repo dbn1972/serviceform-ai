@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/cmp-056/appointment-event-data/v1",
+  "title": "AppointmentEventData",
+  "description": "Data of CMP-056 domain events (component-local). References only; no PII. capacity_atomic / notification_failure_invalidates_booking / invented_statutory_policy_forbidden mirror SF-CON-APPOINTMENT constants.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "appointment_id",
+    "appointment_type_ref",
+    "lifecycle_status",
+    "previous_lifecycle_status",
+    "slot_ref",
+    "previous_slot_ref",
+    "resource_calendar_ref",
+    "application_id",
+    "jurisdiction_id",
+    "slot_starts_at",
+    "slot_ends_at",
+    "version",
+    "capacity_atomic",
+    "notification_failure_invalidates_booking",
+    "invented_statutory_policy_forbidden"
+  ],
+  "properties": {
+    "appointment_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "appointment_type_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "lifecycle_status": {
+      "enum": ["BOOKED", "RESCHEDULED", "CANCELLED", "COMPLETED", "NO_SHOW"]
+    },
+    "previous_lifecycle_status": {
+      "enum": ["BOOKED", "RESCHEDULED", null]
+    },
+    "slot_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "previous_slot_ref": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "resource_calendar_ref": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "application_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "jurisdiction_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "slot_starts_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "slot_ends_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "capacity_atomic": {
+      "const": true
+    },
+    "notification_failure_invalidates_booking": {
+      "const": false
+    },
+    "invented_statutory_policy_forbidden": {
+      "const": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lifecycle_status": {
+            "const": "RESCHEDULED"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "previous_slot_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9_.:-]+$"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "previous_slot_ref": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "version": {
+            "const": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "previous_lifecycle_status": {
+            "type": "null"
+          },
+          "lifecycle_status": {
+            "const": "BOOKED"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "previous_lifecycle_status": {
+            "enum": ["BOOKED", "RESCHEDULED"]
+          }
+        }
+      }
+    }
+  ]
+}

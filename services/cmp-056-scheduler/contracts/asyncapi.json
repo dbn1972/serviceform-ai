@@ -1,0 +1,72 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "CMP-056 Appointment Events",
+    "version": "0.1.0",
+    "description": "Appointment lifecycle events (INT-014). Inspection/workflow (CMP-016/018) and notification (CMP-025) consume these instead of polling. A failed downstream notification never reverses a booking. References only; no PII."
+  },
+  "channels": {
+    "sf.scheduler.events.v1": {
+      "address": "sf.scheduler.events.v1",
+      "messages": {
+        "AppointmentBooked": {
+          "$ref": "#/components/messages/AppointmentBooked"
+        },
+        "AppointmentRescheduled": {
+          "$ref": "#/components/messages/AppointmentRescheduled"
+        },
+        "AppointmentCancelled": {
+          "$ref": "#/components/messages/AppointmentCancelled"
+        },
+        "AppointmentCompleted": {
+          "$ref": "#/components/messages/AppointmentCompleted"
+        },
+        "AppointmentNoShow": {
+          "$ref": "#/components/messages/AppointmentNoShow"
+        }
+      }
+    },
+    "sf.audit.ingest.v1": {
+      "address": "sf.audit.ingest.v1",
+      "messages": {
+        "AuditEventSubmitted": {
+          "name": "AuditEventSubmitted"
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "AppointmentBooked": {
+        "name": "AppointmentBooked",
+        "payload": {
+          "$ref": "./events/appointment-event.data.schema.json"
+        }
+      },
+      "AppointmentRescheduled": {
+        "name": "AppointmentRescheduled",
+        "payload": {
+          "$ref": "./events/appointment-event.data.schema.json"
+        }
+      },
+      "AppointmentCancelled": {
+        "name": "AppointmentCancelled",
+        "payload": {
+          "$ref": "./events/appointment-event.data.schema.json"
+        }
+      },
+      "AppointmentCompleted": {
+        "name": "AppointmentCompleted",
+        "payload": {
+          "$ref": "./events/appointment-event.data.schema.json"
+        }
+      },
+      "AppointmentNoShow": {
+        "name": "AppointmentNoShow",
+        "payload": {
+          "$ref": "./events/appointment-event.data.schema.json"
+        }
+      }
+    }
+  }
+}
