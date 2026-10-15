@@ -95,9 +95,9 @@ nodes:
   - id: DIGILOCKER_PUBLISH
     kind: SERVICE_ACTIVITY
     description: >
-      Publish to DigiLocker via SF-CON-DIGILOCKER-PUBLISH. Failure does NOT reverse issuance
-      (Constitution §18).
-    component: CMP-023
+      Publish to DigiLocker via CMP-012 / SF-CON-DIGILOCKER-PUBLISH. Failure does NOT reverse
+      issuance (Constitution §18).
+    component: CMP-012
     failure_policy: NOTIFY_AND_CONTINUE
 
   - id: NOTIFY_ISSUED

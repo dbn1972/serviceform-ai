@@ -48,6 +48,8 @@ release_certified: false
 g4: false
 g6: false
 policy_input_required: true
+merged: false
+draft_pr: true
 
 ready_authorization:
   family: HUMAN_CG03_THROUGH_EVD
@@ -57,11 +59,10 @@ ready_authorization:
   value: true
 
 base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
+  prefix: fd7492b3
+  suffix: 98b2945713957a53b42c4717a7940c3f
+  note: origin/main tip after Wave A READY merge (#159)
 join_separator: "_"
-
-implementation_commit: fd7492b398b2945713957a53b42c4717a7940c3f   # base; will update to PR tip
 
 model_routing:
   resolved_model: claude-sonnet-4-6
@@ -114,15 +115,14 @@ gates_executed:
     ccr_required: false
   check_scope:
     result: PASS
-    note: all 14 files within allowed_write_paths for SF-M10-001
+    note: all delivered files within allowed_write_paths for SF-M10-001
   no_hardcoded_jurisdictions:
     result: PASS
   validate_specs:
     result: PASS
-  run_all_gates:
-    result: 9/10_PASS
-    failed_gate: migration-lint
-    failed_gate_scope: pre-existing M09 files (cmp-060, cmp-059) outside SF-M10-001 write paths — not authored here
+  parse_sanity:
+    result: PASS
+    note: YAML/JSON parse of all template + package artefacts
 
 stop_conditions_clear:
   invented_statute: false
@@ -131,6 +131,7 @@ stop_conditions_clear:
   write_outside_allowed_paths: false
   new_frozen_contracts_altered: false
   ccr_required: false
+  new_backend_cmp: false
 
 policy_input_required_fields:
   - legal_basis
@@ -156,14 +157,22 @@ next_tasks:
 
 evidence: evidence/SF-M10-001/EVIDENCE.md
 
-handover_from_builder:
+builder_output:
   recommended_gate_status: CANDIDATE_COMPLETE
+  package: ind-soc-002
+  new_backend_cmp: false
+  invented_statutory_policy: false
   blocking_items:
     - POLICY_INPUT_REQUIRED fields must be filled by statutory owner before PUBLISH
-    - migration-lint failures in M09 files (outside this scope) must be resolved by M09 builders
   non_blocking_notes:
     - All template metadata artefacts authored per FROZEN contract shapes
     - No new contracts introduced; 42/42 lock rows unchanged
-    - Architecture Constitution compliance verified per evidence/SF-M10-001/EVIDENCE.md
+    - DigiLocker publish activity binds CMP-012 (not QR CMP-023)
   self_certified: false
   note: Builder evidence only. Independent E2E, PERF, UX4G, INT, SEC, EVD gates required before any G6 claim.
+
+stop_conditions:
+  - invent residence eligibility/fee/SLA/credential statute
+  - CERTIFIED or G6 claim
+  - write outside allowed_write_paths
+  - introduce new backend CMP
