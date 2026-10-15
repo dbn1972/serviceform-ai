@@ -1,0 +1,70 @@
+
+ RUN  v5.0.3 /home/ubuntu/wt-SF-M09-INT
+
+ ❯ tests/integration/m09/int-013-modes.test.ts (8 tests | 2 failed) 277ms
+   ✓ INT-013 M09 unbound dependencies fail closed (no simulator, no fabrication) (5)
+     ✓ CMP-056 scheduler refuses construction without a repository (SF-SYS-001) 2ms
+     ✓ CMP-057 assisted service refuses construction without a repository (SF-SYS-001) 0ms
+     ✓ CMP-061 privacy centre refuses construction without a repository (SF-SYS-001) 0ms
+     ✓ CMP-058 host mount without an authorizer fails closed with no data statement 181ms
+     ✓ CMP-059 host mount without an authorizer fails closed in PRODUCTION (deny-all default) 51ms
+   ❯ INT-013 M09 SIMULATED boundaries (CMP-060) (3)
+     ✓ SIMULATED review routing is self-labelled and returns a routing ref only (never a decision) 0ms
+     × PRODUCTION host refuses a SIMULATED review-routing port (fail closed, Constitution rule 22) 22ms
+     × PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed) 18ms
+ ✓ tests/integration/m09/int-016-019-host-seams.test.ts (18 tests) 609ms
+ ✓ tests/integration/m09/int-011-host.test.ts (14 tests) 1442ms
+   ✓ INT-011 M09 host admission (4)
+     ✓ admits CMP-056..061 in deterministic order; CMP-036 registered exactly once 430ms
+   ✓ INT-011 M09 coexistence with prior host modules (1)
+     ✓ M06 + M08 + M09 coexist: prior mounts preserved, CMP-036 once, forged tenant denied on each 319ms
+ ✓ tests/integration/m09/int-015-assisted.test.ts (10 tests) 278ms
+ ✓ tests/integration/m09/int-014-scheduler.test.ts (10 tests) 299ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/m09/int-013-modes.test.ts > INT-013 M09 SIMULATED boundaries (CMP-060) > PRODUCTION host refuses a SIMULATED review-routing port (fail closed, Constitution rule 22)
+AssertionError: SIMULATED review routing admitted and used in PRODUCTION: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/integration/m09/int-013-modes.test.ts:161:82
+    159|       admitted = false;
+    160|     }
+    161|     expect(admitted, 'SIMULATED review routing admitted and used in PR…
+       |                                                                                  ^
+    162|   });
+    163|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/integration/m09/int-013-modes.test.ts > INT-013 M09 SIMULATED boundaries (CMP-060) > PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)
+AssertionError: SIMULATED allow-all authz admitted and used in PRODUCTION: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/integration/m09/int-013-modes.test.ts:191:83
+    189|       admitted = false;
+    190|     }
+    191|     expect(admitted, 'SIMULATED allow-all authz admitted and used in P…
+       |                                                                                   ^
+    192|   });
+    193| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  2 failed | 58 passed (60)
+   Start at  17:13:55
+   Duration  2.37s (tests 45%, import 34%, transform 20%)
+
+JUNIT report written to /home/ubuntu/wt-SF-M09-INT/evidence/SF-M09-INT/junit/independent-unit.xml

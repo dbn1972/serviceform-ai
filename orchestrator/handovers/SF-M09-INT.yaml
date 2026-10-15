@@ -1,35 +1,33 @@
-# SF-M09-INT — PLANNING stub (CG-03 LOCK-1)
-# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+# M09 CANDIDATE — independent integration_stitcher (recommend only)
 task_id: SF-M09-INT
+title: M09 integration_stitcher — INT-011/014/015/016-019
 module_id: M09
-record: SF-M09-INT
-agent_role: integration_stitcher
 concurrency_group: CG-03
-planning_only: true
-implementation_authorized: false
-dispatched: false
-builders_dispatched_this_envelope: false
-orchestration_task_state: PLANNING
-state: PLANNING
+agent_role: integration_stitcher
+builder_agent: serviceform-integration-stitcher
+branch: cursor/m09-int-91f2
+authorization_source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+planning_only: false
+implementation_authorized: true
+dispatched: true
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
 self_certified: false
 not_certified: true
 certified: false
-release_certified: false
 g3: false
 g4: false
 g6: false
-freeze_authorized: false
-base_commit:
-  prefix: 6420d44f
-  suffix: d6f7555ab27594743fafccabbf043359
-join_separator: "_"
-allowed_write_paths: ['tests/integration/m09/**', 'evidence/SF-M09-INT/**', 'orchestrator/handovers/SF-M09-INT.yaml']
-stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G6 self-issue
-  - builder dispatch without freeze+READY+dispatch
-human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-integration_ids: [INT-014, INT-015, INT-016, INT-017, INT-018, INT-019, INT-011, INT-013]
 production_code_modified: false
+allowed_write_paths:
+  - tests/integration/m09/**
+  - evidence/SF-M09-INT/**
+  - orchestrator/handovers/SF-M09-INT.yaml
+read_only_paths:
+  - services/**
+  - apps/**
+  - contracts/**
+  - pnpm-lock.yaml
+integration_ids: [INT-011, INT-014, INT-015, INT-016, INT-017, INT-018, INT-019, INT-013]
+evidence: evidence/SF-M09-INT/EVIDENCE.md
+recommended_result: SF_M09_INT_PASS_WITH_FINDINGS
