@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import type { ConnectorMode, DeploymentEnvironment } from './support/fixtures.js';
 import {
   assertOwnerInputsReady,
   CATALOGUE_ID,
-  ConnectorMode,
-  DeploymentEnvironment,
   NON_SIMULATION_ENVS,
   OWNER_INPUTS_READY,
   POLICY_PLACEHOLDER,

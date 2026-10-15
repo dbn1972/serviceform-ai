@@ -229,7 +229,6 @@ describe('INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding)', () =>
 
   it('OPA authorizer subject.tenant_id always equals the server-derived tenant, never CANARY', async () => {
     const auth = new RecordingAuthorizer();
-    const repo = new InMemoryApplicationRepo();
 
     // Simulate authorizer being called with the server-derived tenant_id
     await auth.decide({ action: 'application:submit', subject: { tenant_id: T1 } });

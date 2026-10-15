@@ -136,10 +136,12 @@ export class InMemoryApplicationRepo {
   private readonly byTenant = new Map<string, Map<string, ApplicationRecord>>();
 
   tenant(tenantId: string): Map<string, ApplicationRecord> {
-    if (!this.byTenant.has(tenantId)) {
-      this.byTenant.set(tenantId, new Map());
+    let map = this.byTenant.get(tenantId);
+    if (!map) {
+      map = new Map();
+      this.byTenant.set(tenantId, map);
     }
-    return this.byTenant.get(tenantId)!;
+    return map;
   }
 
   put(record: ApplicationRecord): void {
