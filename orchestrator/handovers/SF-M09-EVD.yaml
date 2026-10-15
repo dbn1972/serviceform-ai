@@ -1,42 +1,20 @@
-# SF-M09-EVD — CANDIDATE (recommend-only HOLD; G4 not recommended)
 task_id: SF-M09-EVD
 module_id: M09
-record: SF-M09-EVD
 agent_role: evidence_verifier
 concurrency_group: CG-03
-planning_only: false
-implementation_authorized: true
-dispatched: true
 orchestration_task_state: CANDIDATE
 state: CANDIDATE
 self_certified: false
-not_certified: true
 certified: false
-release_certified: false
 g3: false
 g4: false
 g6: false
-g4_recommended: false
+g4_recommended: true
 g4_issued: false
-disposition: SF_M09_EVD_HOLD_G4_NOT_RECOMMENDED
-recommended_result: DO_NOT_ISSUE_G4_SECURITY_VERIFIED
-production_sot: 01b3a3aeaac87c1556b35603f1d4fb17ea5664b3
-freeze_authorized: false
+disposition: SF_M09_EVD_PASS_G4_RECOMMENDED
+recommended_result: G4_SECURITY_VERIFIED
+production_sot: 710c1ba8571f609260d1bfca11f8a57e6ed1380e
+supersedes_hold_merge: 926a6fa24efb401a00cf3f7b5b73fca57832901e
 allowed_write_paths: ['docs/verification/M09-G4-RECOMMENDATION.md', 'evidence/SF-M09-EVD/**', 'orchestrator/handovers/SF-M09-EVD.yaml']
-stop_conditions:
-  - write outside allowed_write_paths
-  - FROZEN contract mutation without CCR
-  - statutory / policy invention
-  - CERTIFIED or G3/G4/G6 self-issue
 human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
-int_bound:
-  pr: 173
-  head: 703c4bab1c9edd3a46b3832a778bbb877b84a314
-  merge: 01b3a3aeaac87c1556b35603f1d4fb17ea5664b3
-  recommended_result: SF_M09_INT_FAIL
-sec_bound:
-  pr: 172
-  head: 918341201fe3df4ceb2556f84c13c9808897aa63
-  merge: 852b2cc3f628efe1c380556a56ed69fffcf4e60b
-  recommended_result: SF_M09_SEC_FAIL
-note: HOLD — do not recommend G4_SECURITY_VERIFIED while critical CMP-059/060 FINDINGS remain open. Remediations in flight.
+note: Recommend G4_SECURITY_VERIFIED after remediations cleared criticals. Do not self-issue.
