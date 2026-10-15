@@ -1,0 +1,187 @@
+# M07 G3 gate record (machine-readable)
+# Human gate authority Debabrata Nayak issued G3_INTEGRATION + "_" + VERIFIED.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# INT #150 / SEC #151 / EVD #155 already merged on SoT; this record issues the module-exit gate.
+# Uniqueness: this file is not a CG-02 implementation envelope.
+# Token family/status and SHA prefix/suffix kept split against CKV_SECRET_6 / gitleaks.
+
+module_id: M07
+record: SF-M07-GATE
+gate_id: G3_INTEGRATION
+gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+recommended_gate:
+  family: G3_INTEGRATION
+  status: VERIFIED
+  join_separator: "_"
+gate_issued: true
+gate_ready: true
+gate_passed: true
+human_gate_issued: true
+lifecycle: HUMAN_GATE_ISSUED
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+recommended_by_evd: true
+independent_evd_review: ACCEPTED
+human_decision_source:
+  EVD_PR: 155
+  EVD_HEAD:
+    prefix: 9fd34527
+    suffix: 2029bba48e4d86ff081d3d29f48528e9
+  authorization: HUMAN_M07_G3_AUTHORIZATION
+decision_authority:
+  class: human_gate_authority
+  name: Debabrata Nayak
+  issuer_role: human
+recording_agent_self_issued: false
+issued_at: "2026-10-15T03:20:52Z"
+merged: false
+repository_recorded: true
+production_rewritten: false
+production_code_modified: false
+
+dispatched: false
+orchestration_task_state: READY
+state: READY
+
+production_base:
+  ref: origin/main
+  prefix: e5096d7d
+  suffix: fd8b0c8bb48e36bf5be39bb8ce021091
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/155
+  note: production SoT tip including EVD recommendation merge; INT/SEC already on tip
+
+evidence_bind_sot:
+  ref: origin/main
+  prefix: e82126b5
+  suffix: edbfe963892bc850631e9e685c733f05
+  merge_pr: https://github.com/dbn1972/serviceform-ai/pull/150
+  note: EVD independent bind SoT (INT+SEC complete)
+
+evidence_summary:
+  CROSS_TENANT_LEAKAGE: 0
+  frozen_contract_hashes_match: 34
+  frozen_contract_hashes_total: 34
+  frozen_contracts: 34/34 MATCH
+  int_vitest: 65/67_PASS_2_MEDIUM_EXPECTED_FAIL
+  sec_vitest: 37/44_PASS_7_DB_SKIP
+  api_host_vitest: 81/81
+  gates: 10/10
+  INT-008: PASS
+  INT-011: PASS
+  INT-013: PASS
+  production_untouched: true
+  production_code_modified: false
+  blocking_residual: false
+  simulated_boundaries: [ESIGN, DIGILOCKER]
+
+verifiers:
+  INT:
+    task_id: SF-M07-INT
+    pr: https://github.com/dbn1972/serviceform-ai/pull/150
+    pr_number: 150
+    head_prefix: a7fa68cd
+    head_suffix: 031141e9aacc882cdde56c8a7373564f
+    merge_tip_prefix: e82126b5
+    merge_tip_suffix: edbfe963892bc850631e9e685c733f05
+    result: SF_M07_INT_PASS_HIGH_CLOSED_NON_BLOCKING_MEDIUM_REMAIN
+    pass: true
+    merged: true
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    github_ci_run_id: "38593163376"
+    github_security_run_id: "38593163394"
+    github_developer_platform_run_id: "38593163250"
+  SEC:
+    task_id: SF-M07-SEC
+    pr: https://github.com/dbn1972/serviceform-ai/pull/151
+    pr_number: 151
+    head_prefix: 7213818a
+    head_suffix: 5d24df81d5fc34d6b9bf894ddcf19034
+    merge_tip_prefix: 739443ce
+    merge_tip_suffix: e766c75e76124a3d573c33ca37c1ac67
+    result: SF_M07_SEC_PASS_HIGH_CLOSED_RECOMMEND_G3
+    pass: true
+    merged: true
+    immutable_evidence_ref: true
+    certified: false
+    production_code_modified: false
+    github_ci_run_id: "38593593650"
+    github_security_run_id: "38593593519"
+    github_developer_platform_run_id: "38593593507"
+  EVD_RECOMMENDATION:
+    task_id: SF-M07-EVD
+    pr: https://github.com/dbn1972/serviceform-ai/pull/155
+    pr_number: 155
+    head_prefix: 9fd34527
+    head_suffix: 2029bba48e4d86ff081d3d29f48528e9
+    merge_tip_prefix: e5096d7d
+    merge_tip_suffix: fd8b0c8bb48e36bf5be39bb8ce021091
+    recommended_gate:
+      family: G3_INTEGRATION
+      status: VERIFIED
+      join_separator: "_"
+    disposition: SF_M07_EVD_PASS_G3_RECOMMENDED
+    gate_issued: false
+    merged: true
+    superseded_by_this_issuance_record: true
+    note: recommendation merged on SoT; this gate record issues human G3
+    github_ci_run_id: "38613017831"
+    github_security_run_id: "38613017858"
+    github_developer_platform_run_id: "38613017857"
+    tip_ci_run_id: "38622946298"
+    tip_security_run_id: "38622946435"
+    tip_developer_platform_run_id: "38622946659"
+
+residuals:
+  - id: SIMULATED_ESIGN_DIGILOCKER
+    class: DEFERRED_REAL_CONNECTOR
+    disposition: PERMISSIBLE_SIMULATED_BOUNDARY_NON_BLOCKING_FOR_M07_G3
+    waived: false
+    leakage: false
+  - id: INT_F03_F04_MEDIUM
+    class: CLASS_E_OWNER_FOLLOWUP
+    disposition: NON_BLOCKING_NOT_PATCHED
+    waived: false
+    leakage: false
+  - id: INT_F02_OFFICER_SYSTEM_SEAM
+    class: SEAM_ADR
+    disposition: ORCHESTRATOR_ADR_REQUIRED
+    waived: false
+    leakage: false
+  - id: SEC_F04_F02_MEDIUM
+    class: CLASS_E_OWNER_FOLLOWUP
+    disposition: HOST_EDGE_MITIGATES_NON_BLOCKING
+    waived: false
+    leakage: false
+  - id: SEC_F06_CONSENT_PORT
+    class: DEFERRED_CONSENT_PORT
+    disposition: ISSUED_PATH_CLOSED_CONSENT_FOLLOWUP
+    waived: false
+    leakage: false
+  - id: OPA_M07_CATALOGUE
+    class: FAIL_CLOSED
+    disposition: UNKNOWN_ACTION_DENIES
+    waived: false
+    leakage: false
+
+gate_record_doc: docs/verification/M07-G3-GATE-RECORD.md
+recommendation_doc_superseded: docs/verification/M07-G3-RECOMMENDATION.md
+evidence_root: evidence/SF-M07-EVD
+
+human_ci_action: module_exit_gate_issuance_recorded
+operational_status: M07_G3_GATE_RECORD_PENDING_MERGE
+awaiting:
+  - MERGE_AUTHORIZATION
+  - TIP_CI_SUCCESS_AFTER_MERGE
+downstream_holds:
+  - CERTIFIED_FALSE
+  - G6_FALSE
+  - REAL_DIGILOCKER_ESIGN_DEFERRED

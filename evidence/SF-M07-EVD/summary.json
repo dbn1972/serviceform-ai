@@ -8,10 +8,10 @@
   "disposition": "SF_M07_EVD_PASS_G3_RECOMMENDED",
   "recommended_gate": "G3_INTEGRATION_VERIFIED",
   "recommended_result": "G3_INTEGRATION_VERIFIED",
-  "g3_issued": false,
-  "gate_issued": false,
-  "human_gate_issued": false,
-  "g3": false,
+  "g3_issued": true,
+  "gate_issued": true,
+  "human_gate_issued": true,
+  "g3": true,
   "certified": false,
   "g6": false,
   "self_certified": false,
@@ -110,5 +110,9 @@
     "OPA catalogue lacks M07 actions (fail-closed)"
   ],
   "production_code_modified": false,
-  "next_external_gate": "human_or_ci_may_issue_G3_under_separate_HUMAN_M07_G3_AUTHORIZATION; CERTIFIED_and_G6_remain_false"
+  "next_external_gate": "none_for_m07_module_exit; CERTIFIED_and_G6_remain_false",
+  "tip_at_g3_record": "e5096d7dfd8b0c8bb48e36bf5be39bb8ce021091",
+  "gate_record": "orchestrator/handovers/SF-M07-GATE.yaml",
+  "gate_record_doc": "docs/verification/M07-G3-GATE-RECORD.md",
+  "authorization_g3": "HUMAN_M07_G3_AUTHORIZATION"
 }
