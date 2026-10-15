@@ -1,5 +1,6 @@
-# SF-M09-001 — CMP-056 Appointment / Scheduler (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
+# SF-M09-001 handover — CMP-056 Appointment / Scheduler (CG-03 M09 Wave A)
+# HUMAN_CG03_THROUGH_EVD_AUTHORIZATION consumed. DISPATCHED. Builder candidate complete.
+# Not MERGED. Not CERTIFIED. Not RELEASE CERTIFIED. Not G3. Not G4. Not G6.
 # Consume FROZEN contracts only. No invented statutory policy.
 
 task_id: SF-M09-001
@@ -9,45 +10,52 @@ concurrency_group: CG-03
 build_plan: specs/build-plan.yaml (ADR-0001)
 component_ids: [CMP-056]
 integration_ids: [INT-014, INT-011]
+requirement_ids:
+  - INT-014
+  - INT-011
+  - SF-CON-APPOINTMENT
 agent_role: component_builder
 builder_agent: serviceform-foundation-builder
 model_route: opus
+model_release: claude-opus-5-5
 effort: high
-branch: cursor/m09-001-scheduler-91f2
+branch: cursor/m09-001-scheduler-1281
+envelope_branch: cursor/m09-001-scheduler-91f2
+branch_note: >-
+  Envelope branch cursor/m09-001-scheduler-91f2 already carries draft PR #164 from another
+  concurrently dispatched agent. This lane did not touch it and pushed
+  cursor/m09-001-scheduler-1281. Coordinator must select exactly one candidate.
+duplicate_candidate_pr: https://github.com/dbn1972/serviceform-ai/pull/164
 parallel_group: M09-A
 privilege_role: sf_cmp056_rw
 schema: sf_scheduler
 hard_serial_locks: [LOCK-2, LOCK-3]
-depends_on:
-  - SF-M09-CG-001 FROZEN_ON_MAIN
-  - existing 34 FROZEN contracts MATCH plus NEW M09 rows (42/42)
-  - LOCK-1 CG-03 planning PR #157 on main
-  - human Wave A READY + dispatch authorization
+base_commit:
+  sha: fd7492b398b2945713957a53b42c4717a7940c3f
+implementation_commits:
+  - 8f94391 # schema, FORCE RLS, atomic occupancy
+  - 4880fb9 # service, repository, HTTP handler
+  - c726708 # lint fixes (literal SQL, linear instant parser)
+  - dab3a77 # contracts plus unit, contract, tenant-negative, PG integration tests
+
 allowed_write_paths:
   - services/cmp-056-scheduler/**
   - db/migrations/*_cmp-056-*.sql
   - evidence/SF-M09-001/**
   - orchestrator/handovers/SF-M09-001.yaml
-allowed_write_notes:
-  - Consume frozen contracts/ports only; no sibling SQL
-  - Do not commit pnpm-lock.yaml; host mount deferred to SF-M09-HOST
-  - invented_statutory_policy_forbidden remains true
 read_only_paths:
   - pnpm-lock.yaml
   - contracts/**
   - orchestrator/contracts-lock.yaml
   - apps/**
   - specs/**
-wave_eligible_now: true
-serial_after:
-  - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -57,16 +65,14 @@ g4: false
 g6: false
 ccr_required: false
 frozen_contracts_altered: false
-freeze_authorized: true
-ready_authorization:
-  family: HUMAN_CG03_THROUGH_EVD
-  status: AUTHORIZATION
-  join_separator: "_"
-  wave_a_ready: true
-base_commit:
-  prefix: e09ec3f1
-  suffix: 3a6ecee70b8860ac6ab78d18dddde16b
-join_separator: "_"
+invented_statutory_policy_forbidden: true
+invented_statutory_calendar: false
+
+dispatch:
+  source: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+  dispatch_authorized: true
+  freeze: SF-M09-CG-001 FROZEN_ON_MAIN (PR #158; 42/42)
+  wave_a_ready: PR #159 (fd7492b)
 
 contract_locks:
   - SF-CON-COMMON
@@ -80,10 +86,58 @@ contract_locks:
   - SF-CON-DB-SESSION-CONTEXT
   - SF-CON-OUTBOX
   - SF-CON-APPOINTMENT
-stop_conditions:
-  - patch frozen contracts
-  - invent statutory calendars / representation / eligibility / privacy statute
-  - CERTIFIED or G4 or G6 claim
-  - write outside allowed_write_paths
-  - authoritative risk decision (CMP-060)
-  - cross-component SQL (CMP-061)
+
+stop_conditions_respected:
+  - No frozen contracts altered (lock hash asserted by contract test)
+  - No invented statutory calendar / representation / eligibility / privacy statute
+  - CERTIFIED/G3/G4/G6 = false
+  - No writes outside allowed_write_paths (check_scope PASS)
+  - No cross-component SQL (peer login denied 42501)
+  - No network in TX (NETWORK_IN_TX guard; PDP never called inside a transaction)
+
+builder_output:
+  schema: sf_scheduler
+  privilege_role: sf_cmp056_rw
+  migrations:
+    - db/migrations/1760500560000_cmp-056-scheduler.sql
+    - db/migrations/1760500560001_cmp-056-outbox.sql
+  service_path: services/cmp-056-scheduler/
+  produces_views_of:
+    - SF-CON-APPOINTMENT
+  domain_rules_enforced:
+    capacity_atomic: conditional UPDATE + CHECK booked_count <= capacity + deferred occupancy trigger
+    notification_failure_invalidates_booking: false (append-only outcomes; booking_invalidated CHECK false)
+    lifecycle: BOOKED/RESCHEDULED -> RESCHEDULED|CANCELLED|COMPLETED|NO_SHOW; terminal refused in DB
+    outbox_and_idempotency_same_tx: true
+    opa_fail_closed: true
+  local_results:
+    typecheck: PASS
+    eslint_max_warnings_0: PASS
+    prettier: PASS
+    unit_contract_tenant_negative: 71/71 PASS
+    integration_postgres: 11/11 PASS x3 (+1 after db:test)
+    db_test: 17/17 PASS
+    gates_run_all: 10/10 PASS
+    gates_pytest: 30/30 PASS
+    migration_lint: PASS
+    check_scope: PASS
+    semgrep: 0 findings (331 rules, 29 files)
+    gitleaks: no leaks
+    checkov_secrets: PASS
+  lockfile_residual: EXPECTED_STITCH_LOCKFILE_ADMISSION_RESIDUAL
+
+evidence:
+  - evidence/SF-M09-001/EVIDENCE.md
+  - evidence/SF-M09-001/junit/unit.xml
+  - evidence/SF-M09-001/junit/integration.xml
+  - evidence/SF-M09-001/logs/
+
+residuals:
+  - Duplicate candidate PR #164 on cursor/m09-001-scheduler-91f2; coordinator selects one
+  - pnpm-lock.yaml admission of @serviceform/cmp-056-scheduler at STITCH
+  - Host mount deferred to SF-M09-HOST
+  - Integration executed on private PostgreSQL 16.15 cluster, not CI
+  - migrateDown(2) rollback test assumes CMP-056 migrations are latest; verify ordering at STITCH
+  - Not built - slot-template generation, slot close API, cancellation-window policy (OPA/tenant)
+
+host_mount: deferred_to_SF-M09-HOST

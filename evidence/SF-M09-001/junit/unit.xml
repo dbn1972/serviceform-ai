@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="71" failures="0" errors="0" time="0.235263994">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-15T15:58:12.841Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.106451415">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT consumed by CMP-056 &gt; schema hash matches orchestrator/contracts-lock.yaml (frozen contract untouched)" time="0.004947088">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT consumed by CMP-056 &gt; every appointment response in every lifecycle status validates as SF-CON-APPOINTMENT" time="0.014281138">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT consumed by CMP-056 &gt; frozen valid example passes and frozen invalid examples fail" time="0.000512506">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-056 &gt; outbox events, audit events and error responses validate against SF-CON schemas" time="0.050296822">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-056 &gt; PDP inputs validate against SF-CON-AUTHZ-DECISION input" time="0.01464657">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-056 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.001391028">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000506418">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; slot, slot list and notification outcome responses validate against the OpenAPI schemas" time="0.011835338">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.000763326">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.003283504">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer schemas, never BYPASSRLS, and keeps history append-only" time="0.000687462">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the outbox migration embeds the SF-CON-OUTBOX template with only schema/CMP replaced" time="0.000344059">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; no statutory calendar is invented: no holiday, weekday or business-day logic in src" time="0.001058648">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/booking.test.ts" timestamp="2026-10-15T15:58:12.844Z" hostname="cursor" tests="22" failures="0" errors="0" skipped="0" time="0.061242748">
+        <testcase classname="test/unit/booking.test.ts" name="slot publication and listing &gt; publishes an empty OPEN slot and lists only bookable slots" time="0.015033479">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="slot publication and listing &gt; slots that already started are neither publishable nor listed" time="0.000955539">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="slot publication and listing &gt; re-publishing the same slot_ref is idempotent only for an identical definition" time="0.001344758">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="slot publication and listing &gt; citizens cannot publish slots" time="0.00060944">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="atomic capacity &gt; a single-capacity slot takes exactly one of many concurrent bookings" time="0.002597001">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="atomic capacity &gt; capacity N admits exactly N bookings; a cancellation frees one seat" time="0.002535297">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="atomic capacity &gt; a failed booking leaves no partial state (seat, appointment, outbox, idempotency)" time="0.000906445">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="atomic capacity &gt; booking a missing slot is 404 and a started slot is 409" time="0.002354762">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; booking returns the SF-CON-APPOINTMENT record with server-derived identity" time="0.001221404">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; the same Idempotency-Key replays the stored response; a different body conflicts" time="0.004833399">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; reschedule moves the seat atomically and records the previous slot" time="0.001835082">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; reschedule into a full slot fails and leaves the original booking and seats unchanged" time="0.0011784">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; reschedule refuses the same slot and a slot of another appointment type" time="0.001162241">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; cancel returns the seat; a cancelled appointment cannot be cancelled or rescheduled again" time="0.001192476">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; attendance is recorded by officers only after the slot starts; the seat stays consumed" time="0.002112093">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="booking lifecycle &gt; every transition appends history and emits one domain event plus one audit event" time="0.006313408">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="notification failure never invalidates a booking &gt; a FAILED CMP-025 outcome is recorded append-only and the booking stays BOOKED" time="0.001445435">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="notification failure never invalidates a booking &gt; a repeated outcome_ref is idempotent; a contradicting one conflicts" time="0.007981511">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="notification failure never invalidates a booking &gt; citizens and officers cannot record delivery outcomes" time="0.000654474">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="authorization and transaction boundaries &gt; OPA deny refuses before any write; PDP outage fails closed with 503" time="0.000529886">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="authorization and transaction boundaries &gt; the PDP is never called inside a transaction and receives the slot jurisdiction scope" time="0.001683498">
+        </testcase>
+        <testcase classname="test/unit/booking.test.ts" name="authorization and transaction boundaries &gt; mutations require an Idempotency-Key; unknown routes and methods are refused" time="0.000401076">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-15T15:58:12.846Z" hostname="cursor" tests="24" failures="0" errors="0" skipped="0" time="0.017220741">
+        <testcase classname="test/unit/domain.test.ts" name="appointment lifecycle &gt; permits exactly the declared transitions" time="0.002288286">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="appointment lifecycle &gt; CANCELLED, COMPLETED and NO_SHOW are terminal; nothing returns to BOOKED" time="0.001112074">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="appointment lifecycle &gt; only CANCELLED releases a seat" time="0.000217654">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="appointment lifecycle &gt; the view carries the frozen SF-CON-APPOINTMENT constants and nothing internal" time="0.001618211">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="slot rules &gt; explains an unavailable slot from its state" time="0.000371616">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="slot rules &gt; reports remaining capacity and is always capacity_atomic" time="0.000446048">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; normalises explicit-offset instants to UTC and refuses offset-less or garbage values" time="0.001011863">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; a slot needs a positive window and a bounded integer capacity" time="0.001029807">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key tenant_id is refused on booking" time="0.000771458">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key appointment_id is refused on booking" time="0.000322489">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key lifecycle_status is refused on booking" time="0.000296718">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key capacity_atomic is refused on booking" time="0.000136734">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key notification_failure_invalidates_booking is refused on booking" time="0.000090387">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key booked_count is refused on booking" time="0.000108593">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client authority key overbook is refused on booking" time="0.000079847">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; client time is never authoritative" time="0.00019613">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; a FAILED notification needs a catalogue failure code; SUCCEEDED must not carry one" time="0.000873854">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="input validation &gt; slot queries accept known filters only and a sane range" time="0.003644613">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 42501 maps to SF-TEN-002" time="0.000209937">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 55000 maps to SF-APP-001" time="0.000075863">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23505 maps to SF-APP-002" time="0.00005458">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23503 maps to SF-SYS-002" time="0.000045361">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; 23514 maps to SF-SYS-003" time="0.000043369">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="PostgreSQL error mapping &gt; XX000 maps to SF-SYS-001" time="0.000046117">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/tenant-negative.test.ts" timestamp="2026-10-15T15:58:12.848Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.05034909">
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant B cannot read, reschedule, cancel or record outcomes on tenant A appointments" time="0.022767343">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant B neither sees nor books tenant A slots, even with the same slot_ref" time="0.005398015">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; replaying tenant A Idempotency-Key from tenant B does not leak the stored response" time="0.001217007">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; a citizen cannot see or act on another citizen appointment in the same tenant" time="0.001730619">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; missing or tenant-less context is refused before the PDP or any transaction" time="0.001145514">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant/role-identifying header x-tenant-id is refused" time="0.000572732">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant/role-identifying header X-SF-Tenant is refused" time="0.002489917">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant/role-identifying header x-roles is refused" time="0.009971395">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant/role-identifying header x-actor-type is refused" time="0.001105772">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; tenant/role-identifying header forwarded is refused" time="0.000486266">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; a client-supplied tenant_id in the body is refused, not honoured" time="0.000765673">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative, INT-011) &gt; a decision whose subject and resource tenants differ is denied before OPA" time="0.001129523">
+        </testcase>
+    </testsuite>
+</testsuites>

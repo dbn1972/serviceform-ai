@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="1.791603856">
+    <testsuite name="test/integration/scheduler-pg.int.test.ts" timestamp="2026-10-15T16:00:30.556Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="1.791603856">
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; roles are NOLOGIN/NOBYPASSRLS and every tenant table is FORCE RLS, owned by sf_migrator" time="0.027013307">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; books end-to-end through the runtime login and writes outbox rows in the same commit" time="0.037156478">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; 16 concurrent bookings of a single-capacity slot produce exactly one appointment" time="0.050356008">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; capacity 3 under 12 concurrent bookings admits exactly 3" time="0.045584399">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; concurrent reschedules into the last seat move exactly one appointment; the rest stay put" time="0.060678729">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; cancel and attendance persist with history; the database refuses illegal changes" time="0.0431133">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; a raw seat change without its appointment, or an appointment without a seat, aborts at commit" time="0.014877516">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; a FAILED notification outcome is stored append-only and the booking is untouched" time="0.016706642">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; tenant B sees none of tenant A rows and cannot write rows for tenant A" time="0.012498969">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; a peer component login cannot read sf_scheduler" time="0.00889305">
+        </testcase>
+        <testcase classname="test/integration/scheduler-pg.int.test.ts" name="CMP-056 on PostgreSQL: privilege boundary, FORCE RLS, atomic capacity &gt; migrations go down and up again (rollback path)" time="0.900007406">
+        </testcase>
+    </testsuite>
+</testsuites>
