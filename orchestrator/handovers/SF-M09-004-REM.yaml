@@ -1,0 +1,23 @@
+# SF-M09-004-REM — CMP-059 outbox FORCE RLS remediation
+task_id: SF-M09-004-REM
+module_id: M09
+component_ids: [CMP-059]
+parent_task: SF-M09-004
+agent_role: component_builder
+branch: cursor/m09-004-rem-outbox-rls-91f2
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g6: false
+g4_recommended: false
+allowed_write_paths:
+  - services/cmp-059-migration-workbench/**
+  - db/migrations/*_cmp-059-*.sql
+  - evidence/SF-M09-004-REM/**
+  - orchestrator/handovers/SF-M09-004-REM.yaml
+defect: sf_migration.outbox_event PLATFORM_OPERATIONAL with tenant_id lacked FORCE RLS
+fix: additive ENABLE+FORCE RLS + tenant policy; isolation.json TENANT_SCOPED
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+note: Do not recommend G4 until independent INT/SEC re-verify PASS.

@@ -120,14 +120,33 @@ describe('CMP-059 privilege boundary (ADR-0006), FORCE RLS and dry-run gate (INT
             AND c.relname IN (
               'migration_project','source_profile','mapping_spec',
               'migration_batch','reconciliation_result','cutover_manifest',
-              'idempotency_record'
+              'idempotency_record','outbox_event'
             )
           ORDER BY c.relname`,
       );
-      expect(check.rowCount).toBe(7);
+      expect(check.rowCount).toBe(8);
       for (const row of check.rows) {
         expect(row['relforcerowsecurity']).toBe(true);
       }
     });
+  });
+
+  it('FORCE RLS hides T1 outbox_event rows from T2 session (REM outbox leakage)', async () => {
+    await asTenant(h.rt, T1, async (c) => {
+      await c.query(
+        `INSERT INTO sf_migration.outbox_event
+           (tenant_id, topic, event_type, payload, created_at)
+         VALUES ($1, 'sf.migration', 'ProjectCreated', '{}'::jsonb, now())`,
+        [T1],
+      );
+    });
+    const t2 = await asTenant(h.rt, T2, (c) =>
+      c.query(`SELECT event_id FROM sf_migration.outbox_event`),
+    );
+    expect(t2.rowCount).toBe(0);
+    const t1 = await asTenant(h.rt, T1, (c) =>
+      c.query(`SELECT event_id FROM sf_migration.outbox_event`),
+    );
+    expect(t1.rowCount).toBe(1);
   });
 });
