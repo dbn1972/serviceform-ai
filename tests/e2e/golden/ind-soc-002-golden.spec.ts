@@ -47,9 +47,7 @@ function policyGated(
   if (OWNER_INPUTS_READY) {
     test(title, fn);
   } else {
-    test.skip(
-      `[POLICY_INPUT_REQUIRED] ${title} — needs: ${policyInputsNeeded.join(', ')}`,
-    );
+    test.skip(`[POLICY_INPUT_REQUIRED] ${title} — needs: ${policyInputsNeeded.join(', ')}`);
   }
 }
 

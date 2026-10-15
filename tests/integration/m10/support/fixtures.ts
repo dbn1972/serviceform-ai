@@ -44,14 +44,7 @@ export const POLICY_PLACEHOLDER = {
 // ── Connector modes ───────────────────────────────────────────────────────────
 export type ConnectorMode = 'REAL' | 'SANDBOX' | 'SIMULATED';
 export type DeploymentEnvironment =
-  | 'LOCAL'
-  | 'CI'
-  | 'DEVELOPMENT'
-  | 'SIT'
-  | 'PERFORMANCE'
-  | 'UAT'
-  | 'PREPROD'
-  | 'PRODUCTION';
+  'LOCAL' | 'CI' | 'DEVELOPMENT' | 'SIT' | 'PERFORMANCE' | 'UAT' | 'PREPROD' | 'PRODUCTION';
 
 export const SIMULATION_ENVS: readonly DeploymentEnvironment[] = [
   'LOCAL',
@@ -60,7 +53,11 @@ export const SIMULATION_ENVS: readonly DeploymentEnvironment[] = [
   'SIT',
   'PERFORMANCE',
 ];
-export const NON_SIMULATION_ENVS: readonly DeploymentEnvironment[] = ['UAT', 'PREPROD', 'PRODUCTION'];
+export const NON_SIMULATION_ENVS: readonly DeploymentEnvironment[] = [
+  'UAT',
+  'PREPROD',
+  'PRODUCTION',
+];
 
 // ── Request context helpers ───────────────────────────────────────────────────
 export type ActorType = 'CITIZEN' | 'OFFICER' | 'SYSTEM' | 'INTEGRATION';
@@ -105,7 +102,12 @@ export class RecordingAuthorizer {
   decide(input: {
     action: string;
     subject: { tenant_id: string | null };
-  }): Promise<{ allow: boolean; reason_code: string; policy_revision: string; decision_id: string }> {
+  }): Promise<{
+    allow: boolean;
+    reason_code: string;
+    policy_revision: string;
+    decision_id: string;
+  }> {
     this.calls.push(structuredClone(input));
     const allow = !this.denyActions.has(input.action);
     return Promise.resolve({

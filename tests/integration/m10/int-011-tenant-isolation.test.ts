@@ -60,7 +60,10 @@ function buildService(repo: InMemoryApplicationRepo): ApplicationCommandPort {
         submitted_at: new Date().toISOString(),
       };
       repo.put(record);
-      return { status: 201, body: { application_id, tenant_id: ctx.tenant_id, status: 'SUBMITTED' } };
+      return {
+        status: 201,
+        body: { application_id, tenant_id: ctx.tenant_id, status: 'SUBMITTED' },
+      };
     },
 
     async get({ ctx, application_id }) {
