@@ -200,20 +200,18 @@ class PgTx implements SchedulerTx {
   }
 
   async getSlot(slotId: string, forUpdate = false): Promise<SlotRecord | undefined> {
-    const lock = forUpdate ? ' FOR UPDATE' : '';
-    const res = await this.c.query(
-      `SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_id = $2${lock}`,
-      [this.tenantId, slotId],
-    );
+    const sql = forUpdate
+      ? 'SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_id = $2 FOR UPDATE'
+      : 'SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_id = $2';
+    const res = await this.c.query(sql, [this.tenantId, slotId]);
     return res.rows[0] ? toSlot(res.rows[0]) : undefined;
   }
 
   async getSlotByRef(slotRef: string, forUpdate = false): Promise<SlotRecord | undefined> {
-    const lock = forUpdate ? ' FOR UPDATE' : '';
-    const res = await this.c.query(
-      `SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_ref = $2${lock}`,
-      [this.tenantId, slotRef],
-    );
+    const sql = forUpdate
+      ? 'SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_ref = $2 FOR UPDATE'
+      : 'SELECT * FROM sf_scheduler.slot WHERE tenant_id = $1 AND slot_ref = $2';
+    const res = await this.c.query(sql, [this.tenantId, slotRef]);
     return res.rows[0] ? toSlot(res.rows[0]) : undefined;
   }
 
@@ -275,11 +273,10 @@ class PgTx implements SchedulerTx {
     appointmentId: string,
     forUpdate = false,
   ): Promise<AppointmentRecord | undefined> {
-    const lock = forUpdate ? ' FOR UPDATE' : '';
-    const res = await this.c.query(
-      `SELECT * FROM sf_scheduler.appointment WHERE tenant_id = $1 AND appointment_id = $2${lock}`,
-      [this.tenantId, appointmentId],
-    );
+    const sql = forUpdate
+      ? 'SELECT * FROM sf_scheduler.appointment WHERE tenant_id = $1 AND appointment_id = $2 FOR UPDATE'
+      : 'SELECT * FROM sf_scheduler.appointment WHERE tenant_id = $1 AND appointment_id = $2';
+    const res = await this.c.query(sql, [this.tenantId, appointmentId]);
     return res.rows[0] ? toAppt(res.rows[0]) : undefined;
   }
 
