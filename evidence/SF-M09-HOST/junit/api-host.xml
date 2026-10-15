@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="84" failures="0" errors="0" time="9.838868128">
+    <testsuite name="test/app.test.ts" timestamp="2026-10-15T16:54:20.755Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.227942971">
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports liveness" time="0.050629647">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; reports readiness from its checks and fails when a dependency fails" time="0.02390689">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns service identity without tenant or secret data" time="0.011542163">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; propagates a valid inbound correlation id and replaces a malformed one" time="0.012885612">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; sets security headers" time="0.007333638">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; returns a contract-valid SF-SYS-002 body for unknown routes" time="0.045428">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps schema validation failures to SF-SYS-003 with JSON pointers" time="0.027480681">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; maps PlatformError to its catalogue status and code" time="0.008701286">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; does not log client network identifiers or query strings" time="0.010526172">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; denies forged tenant headers at the edge with SF-TEN-002" time="0.006300633">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; hides internal error details and stack traces" time="0.010966331">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="API foundation (REQ: AWS v1.7 s2 probes, s13.1 contract rules, s13.3 errors) &gt; rejects oversized bodies with a contract error" time="0.009408556">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; requires DATABASE_URL outside LOCAL and CI" time="0.000731132">
+        </testcase>
+        <testcase classname="test/app.test.ts" name="configuration (REQ: AWS v1.7 s2 secrets; no secret defaults) &gt; reports invalid variable names without echoing values" time="0.00058165">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m02.test.ts" timestamp="2026-10-15T16:54:20.758Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.328429096">
+        <testcase classname="test/composition-m02.test.ts" name="CMP-036 host M02 mounts (REQ: host-mount-m02, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts CMP-004/005 under /v1 with frozen deny envelopes and no tenant-header leakage" time="0.199875417">
+        </testcase>
+        <testcase classname="test/composition-m02.test.ts" name="CMP-036 host M02 mounts (REQ: host-mount-m02, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps Wave 1/2 mounts when M02 plugins are registered" time="0.102188695">
+        </testcase>
+        <testcase classname="test/composition-m02.test.ts" name="CMP-036 host M02 mounts (REQ: host-mount-m02, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not register M03 host mounts and has no cross-component SQL in M02 composition" time="0.024244627">
+        </testcase>
+        <testcase classname="test/composition-m02.test.ts" name="registerM02Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.000879443">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m03.test.ts" timestamp="2026-10-15T16:54:20.758Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.599647009">
+        <testcase classname="test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts CMP-001/033/034/051/052/053 under /v1 with frozen deny envelopes and no tenant-header leakage" time="0.337220933">
+        </testcase>
+        <testcase classname="test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; returns SF-AUTH-001 when context is missing and never echoes the tenant canary" time="0.031225748">
+        </testcase>
+        <testcase classname="test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps Wave 1/2/M02 mounts when M03 plugins are registered" time="0.218814394">
+        </testcase>
+        <testcase classname="test/composition-m03.test.ts" name="CMP-036 host M03 mounts (REQ: host-mount-m03, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not register CMP-050 Studio or CMP-054 and has no cross-component SQL in M03 composition" time="0.010096147">
+        </testcase>
+        <testcase classname="test/composition-m03.test.ts" name="registerM03Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.000738565">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m04.test.ts" timestamp="2026-10-15T16:54:20.760Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="2.349824228">
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; starts without m04 deps and leaves Wave1/2/M02/M03 decoration unchanged" time="0.05898257">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts each M04 component independently" time="1.042362792">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts all six together with a deterministic CMP list (CMP-036 excluded)" time="0.051248537">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; registers CMP-036 exactly once and does not remount it from M04 composition" time="0.071185807">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps M01/M02/M03 mount lists unchanged when M04 is registered" time="0.70977098">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; exposes M04 routes under /v1 and rejects forged tenant headers" time="0.07024116">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; fails when duplicate or unexpected M04 routes collide" time="0.228986717">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not trust a raw tenant header as host context and never echoes the canary" time="0.065676035">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="CMP-036 host M04 mounts (REQ: host-mount-m04, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; has no cross-component SQL and CMP-014 uses a gateway port (no direct provider)" time="0.04585107">
+        </testcase>
+        <testcase classname="test/composition-m04.test.ts" name="registerM04Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.004103257">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m05.test.ts" timestamp="2026-10-15T16:54:20.761Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="2.349124172">
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; starts without m05 deps and leaves Wave1/2/M02/M03/M04 decoration unchanged" time="0.05987389">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts each M05 HTTP component independently (CMP-016 excluded)" time="0.796155728">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; mounts all seven HTTP components with a deterministic CMP list (CMP-016/036 excluded)" time="0.040511843">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; registers CMP-036 exactly once and does not remount it from M05 composition" time="0.035048383">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not invent a CMP-016 host HTTP API" time="0.043234861">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; keeps Wave1/2/M02/M03/M04 mount lists unchanged when M05 is registered" time="1.178498634">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; exposes M05 routes under /v1 and rejects forged tenant headers" time="0.061275263">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; uses server-derived context authority; forged X-Tenant-ID is not authoritative" time="0.023150049">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; preserves transport-neutral method/path/body/header/status/response semantics" time="0.040336296">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; has no cross-component SQL and couples only via public entry points" time="0.03464024">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; records CMP-019 and CMP-028 residuals as carried unwaived in composition source" time="0.000656949">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="CMP-036 host M05 mounts (REQ: host-mount-m05, INT-011, PLAN-REVIEW-single-writer-apps-api) &gt; does not re-assign query with dynamic user-controlled keys (CodeQL property injection)" time="0.016505455">
+        </testcase>
+        <testcase classname="test/composition-m05.test.ts" name="registerM05Plugins isolation (REQ: INT-011 CROSS_TENANT_LEAKAGE=0) &gt; loads plugins without importing sibling service TypeScript into the host graph" time="0.017540382">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m06.test.ts" timestamp="2026-10-15T16:54:20.762Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.664838611">
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; starts without m06 deps and leaves prior decoration unchanged" time="0.054887157">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; mounts each M06 HTTP component independently" time="0.393291263">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; mounts all four M06 components with a deterministic CMP list" time="0.020487932">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; registers CMP-036 exactly once and does not remount it from M06 composition" time="0.061918321">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; exposes M06 routes under /v1 and rejects forged tenant headers" time="0.085446556">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; uses server-derived context; forged X-Tenant-ID is not authoritative" time="0.025210687">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; preserves Wave1–M05 absence when only M06 is supplied" time="0.019144951">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; documents SIMULATED payment/SMS/email boundaries in composition source" time="0.000751745">
+        </testcase>
+        <testcase classname="test/composition-m06.test.ts" name="CMP-036 host M06 mounts (REQ: host-mount-m06, INT-011, SIMULATED connectors) &gt; does not introduce cross-component SQL in host composition" time="0.002290556">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m07.test.ts" timestamp="2026-10-15T16:54:20.763Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="0.830305821">
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; starts without m07 deps and leaves prior decoration unchanged" time="0.055175469">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; mounts each M07 component independently" time="0.39605226">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; mounts all four M07 components with a deterministic CMP list" time="0.038025252">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; registers CMP-036 exactly once and does not remount it from M07 composition" time="0.024482888">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; exposes M07 read routes under /v1 that reach each component with server context" time="0.031962294">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; fails closed when the server context resolver yields no tenant context" time="0.050969984">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; rejects M07 commands without an Idempotency-Key before reaching the service" time="0.083236516">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; rejects forged tenant headers on every M07 route (SF-TEN-002)" time="0.047610997">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; coexists with M05/M06/M08 mounts without route collisions or regressions" time="0.096127616">
+        </testcase>
+        <testcase classname="test/composition-m07.test.ts" name="CMP-036 host M07 mounts (REQ: host-mount-m07, INT-011) &gt; keeps host composition free of cross-component SQL and domain authority" time="0.005049793">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m08.test.ts" timestamp="2026-10-15T16:54:20.764Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="1.202797919">
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; starts without m08 deps and leaves prior decoration unchanged" time="0.054836703">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; mounts each M08 component independently" time="0.666506246">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; mounts all six M08 components with a deterministic CMP list" time="0.045344694">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; registers CMP-036 exactly once and does not remount it from M08 composition" time="0.053335816">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; exposes M08 routes under /v1 that reach each component with server-derived context" time="0.128641408">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; rejects forged tenant headers on every M08 route (SF-TEN-002)" time="0.059938671">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; coexists with M06 mounts without regressing them (hard serial vs SF-M06-005)" time="0.191430643">
+        </testcase>
+        <testcase classname="test/composition-m08.test.ts" name="CMP-036 host M08 mounts (REQ: host-mount-m08, INT-011) &gt; keeps host composition free of cross-component SQL and retention periods" time="0.00143135">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition-m09.test.ts" timestamp="2026-10-15T16:54:20.764Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.561595091">
+        <testcase classname="test/composition-m09.test.ts" name="SF-M09-HOST composition mounts &gt; registers all six M09 component mounts when supplied" time="0.500047866">
+        </testcase>
+        <testcase classname="test/composition-m09.test.ts" name="SF-M09-HOST composition mounts &gt; leaves m09Mounted undefined when mounts are omitted" time="0.007329009">
+        </testcase>
+        <testcase classname="test/composition-m09.test.ts" name="SF-M09-HOST composition mounts &gt; probes neutral GET routes for CMP-056/057/061" time="0.052867404">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/composition.test.ts" timestamp="2026-10-15T16:54:20.765Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.717729768">
+        <testcase classname="test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts Wave 1 plugin routes under /v1 with frozen error envelopes" time="0.179499642">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; rate-limits with SF-RATE-001 and no request leakage" time="0.014083182">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; strips query strings from access logs (G-10)" time="0.010133796">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; does not steal business logic: unknown /v1 route stays SF-SYS-002" time="0.00746287">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-036 host composition (REQ: PLAN-REVIEW-M01-W1-X-10, Eng-v1.4-CMP-036) &gt; mounts audit plugin path when deps are supplied" time="0.211040464">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-036 host Wave 2 Phase B mounts (REQ: Eng-v1.4-CMP-036, SF-M01-W2-004 Phase B) &gt; mounts CMP-003/030/032 under /v1 with frozen deny envelopes" time="0.292400269">
+        </testcase>
+        <testcase classname="test/composition.test.ts" name="CMP-047 host telemetry ordering (REQ: Eng-v1.4-CMP-047) &gt; keeps logger redaction for nested secrets on the host logger" time="0.001429065">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/readiness.test.ts" timestamp="2026-10-15T16:54:20.765Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.006633442">
+        <testcase classname="test/readiness.test.ts" name="database readiness probe (REQ: AWS v1.7 s2 readiness probes) &gt; fails when PostgreSQL is unreachable and closes its pool" time="0.005655843">
+        </testcase>
+    </testsuite>
+</testsuites>
