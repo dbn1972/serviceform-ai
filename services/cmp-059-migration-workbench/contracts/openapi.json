@@ -1,0 +1,135 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-059 Migration & Legacy Onboarding Workbench",
+    "version": "1.0.0",
+    "description": "INT-017. Produces SF-CON-MIGRATION-PROJECT. dry_run_required_before_execute=true. No invented cutover statute."
+  },
+  "servers": [{ "url": "/v1" }],
+  "paths": {
+    "/migrations/projects": {
+      "post": {
+        "operationId": "createMigrationProject",
+        "summary": "Create a migration project (SF-CON-MIGRATION-PROJECT)",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true,
+            "schema": { "type": "string", "minLength": 8, "maxLength": 128 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["display_name", "source_system_ref"],
+                "additionalProperties": false,
+                "properties": {
+                  "display_name": { "type": "string", "minLength": 1, "maxLength": 200 },
+                  "source_system_ref": { "type": "string", "minLength": 1, "maxLength": 128 },
+                  "target_service_code": { "type": ["string", "null"], "maxLength": 64 },
+                  "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 128 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created SF-CON-MIGRATION-PROJECT" },
+          "400": { "description": "Validation error" },
+          "401": { "description": "Unauthenticated" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/migrations/{id}/profile": {
+      "post": {
+        "operationId": "addSourceProfile",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "201": { "description": "Profiled" } }
+      }
+    },
+    "/migrations/{id}/map": {
+      "post": {
+        "operationId": "addMappingSpec",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "201": { "description": "Mapped" } }
+      }
+    },
+    "/migrations/{id}/dry-run": {
+      "post": {
+        "operationId": "runDryRun",
+        "summary": "Rehearse migration; required before execute",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "Dry run completed" } }
+      }
+    },
+    "/migrations/{id}/execute": {
+      "post": {
+        "operationId": "executeMigration",
+        "summary": "Execute migration; refused unless dry-run evidence exists",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Executed" },
+          "422": { "description": "DRY_RUN_REQUIRED_BEFORE_EXECUTE" }
+        }
+      }
+    },
+    "/migrations/{id}/reconciliation": {
+      "get": {
+        "operationId": "getReconciliation",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "Latest reconciliation" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer" }
+    }
+  }
+}
