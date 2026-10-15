@@ -1,0 +1,57 @@
+# M10 Golden Residence Certificate — PLANNING index
+# Planning package only. Not dispatched. Implementation OFF. Not CERTIFIED. Not G6. No freeze in this PR.
+
+module_id: M10
+record: M10-PLAN
+concurrency_group: CG-03
+name: Golden Residence Certificate Certification
+depends_on: [M07, M08]
+deliverables:
+  - canonical residence service template (IND-SOC-002)
+  - tenant overlay + published TenantServiceBinding
+  - full E2E, tenant isolation, G5 performance, UX4G evidence
+inputs_required_from_owner:
+  - pilot tenant/State
+  - legal basis
+  - eligibility
+  - evidence requirements
+  - fee anchors
+  - SLA anchors
+  - credential template
+  note: Finding M-04; POLICY_INPUT_REQUIRED until owner supplies; do not invent statute
+exit_gate:
+  id: G6_RELEASE
+  status: CERTIFIED
+  issued: false
+  note: EVD recommends G6 only; human issues; agents never self-certify
+decision:
+  family: M10_PLANNING
+  status: PLANNING
+human_authorization: HUMAN_M10_THROUGH_EVD_AUTHORIZATION
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g4: false
+g6: false
+statutory_owner_input_required: true
+ccr_required: false
+frozen_contracts_altered: false
+cg_10_contract_freeze_required: false
+freeze_authorized: false
+base_commit:
+  prefix: 6420d44f
+  suffix: d6f7555ab27594743fafccabbf043359
+join_separator: "_"
+builders_dispatched: 0
+must_not_run_concurrent_with: [SF-M09-HOST]
+template_root: templates/residence-certificate/
+catalogue_id: IND-SOC-002
+plan_doc: docs/planning/CG-03-M09-M10-PLAN.md

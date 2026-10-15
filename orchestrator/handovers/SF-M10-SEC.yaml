@@ -1,0 +1,34 @@
+# SF-M10-SEC — PLANNING stub (CG-03 LOCK-1)
+# Not READY. Not dispatched. Not CERTIFIED. Not G6. freeze_authorized=false.
+task_id: SF-M10-SEC
+module_id: M10
+record: SF-M10-SEC
+agent_role: security_verifier
+concurrency_group: CG-03
+planning_only: true
+implementation_authorized: false
+dispatched: false
+builders_dispatched_this_envelope: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g4: false
+g6: false
+freeze_authorized: false
+base_commit:
+  prefix: 6420d44f
+  suffix: d6f7555ab27594743fafccabbf043359
+join_separator: "_"
+allowed_write_paths: ['tests/security/m10/**', 'evidence/SF-M10-SEC/**', 'orchestrator/handovers/SF-M10-SEC.yaml']
+stop_conditions:
+  - write outside allowed_write_paths
+  - FROZEN contract mutation without CCR
+  - statutory / policy invention
+  - CERTIFIED or G6 self-issue
+  - builder dispatch without freeze+READY+dispatch
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+production_code_modified: false

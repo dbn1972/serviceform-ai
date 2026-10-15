@@ -1,0 +1,52 @@
+# M09 World-Class Interoperability — PLANNING index
+# Planning package only. Not dispatched. Implementation OFF. Not CERTIFIED. No freeze in this PR.
+
+module_id: M09
+record: M09-PLAN
+concurrency_group: CG-03
+name: World-Class Interoperability, Omnichannel, Integrity and Trust
+depends_on: [M05, M07, M08]
+components: [CMP-056, CMP-057, CMP-058, CMP-059, CMP-060, CMP-061]
+integrations_owned: [INT-014, INT-015, INT-016, INT-017, INT-018, INT-019]
+integrations_reverify: [INT-011, INT-013]
+exit_gate:
+  id: G4_SECURITY
+  status: VERIFIED
+  issued: false
+  note: target module exit only; EVD recommends; human issues G4
+decision:
+  family: M09_PLANNING
+  status: PLANNING
+human_authorization: HUMAN_M09_THROUGH_EVD_AUTHORIZATION
+builders_dispatched_this_envelope: false
+planning_only: true
+implementation_authorized: false
+dispatched: false
+orchestration_task_state: PLANNING
+state: PLANNING
+self_certified: false
+not_certified: true
+certified: false
+release_certified: false
+g3: false
+g4: false
+g6: false
+ccr_required: false
+frozen_contracts_altered: false
+cg_09_contract_freeze_required: true
+freeze_authorized: false
+base_commit:
+  prefix: 6420d44f
+  suffix: d6f7555ab27594743fafccabbf043359
+join_separator: "_"
+wave_a_eligible_now: [SF-M09-001, SF-M09-002, SF-M09-003, SF-M09-004, SF-M09-005, SF-M09-006]
+wave_a_components:
+  SF-M09-001: CMP-056
+  SF-M09-002: CMP-057
+  SF-M09-003: CMP-058
+  SF-M09-004: CMP-059
+  SF-M09-005: CMP-060
+  SF-M09-006: CMP-061
+builders_dispatched: 0
+must_not_run_concurrent_with: [SF-M10-HOST]
+plan_doc: docs/planning/CG-03-M09-M10-PLAN.md
