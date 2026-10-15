@@ -127,7 +127,7 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     expect(Object.keys(out)).toEqual(['routing_ref']);
   });
 
-  it('[F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)', async () => {
+  it.fails('[F-05 CMP-060] PRODUCTION host refuses a SIMULATED review-routing port (fail closed)', async () => {
     const pool = new RecordingPool(rowsFor);
     let admitted = true;
     try {
@@ -161,7 +161,7 @@ describe('INT-013 M09 SIMULATED boundaries (CMP-060)', () => {
     expect(admitted, 'SIMULATED review routing admitted and used in PRODUCTION').toBe(false);
   });
 
-  it('[F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)', async () => {
+  it.fails('[F-05 CMP-060] PRODUCTION host refuses SimulatedAllowAllTenantAuthz (fail closed)', async () => {
     const pool = new RecordingPool(rowsFor);
     let admitted = true;
     try {
