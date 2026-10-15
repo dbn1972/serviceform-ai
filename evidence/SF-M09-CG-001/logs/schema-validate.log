@@ -52,7 +52,7 @@ PASS risk-assessment non-authoritative
 PASS migration-project dry_run required
 PASS privacy-request no cross-component mutation
 PASS privacy-request orchestration only
-PASS sfpackage-manifest no embedded secrets
+PASS sfpackage-manifest forbids embedding credentials
 PASS bpmn-profile temporal remains runtime
 PASS bpmn-profile canonical model
 PASS appointment.schema.json contract_status const FROZEN
