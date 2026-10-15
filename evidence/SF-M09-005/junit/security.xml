@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="0" errors="0" time="0.009986959">
+    <testsuite name="test/security/governance-boundary.test.ts" timestamp="2026-10-15T15:32:46.369Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.009986959">
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-011: tenant isolation port &gt; DenyAllTenantAuthz always returns false (negative gate)" time="0.000819569">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-011: tenant isolation port &gt; cross-tenant request returns false from deny-all port" time="0.000114892">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-011: tenant isolation port &gt; allow-all port grants access in simulated environment" time="0.000094619">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-011: tenant isolation port &gt; rejects tenant-identifying request headers" time="0.000306238">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Architecture Constitution rule 40 — advisory-only hard gate &gt; CRITICAL: signal code APPROVE triggers governance boundary error" time="0.000260845">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Architecture Constitution rule 40 — advisory-only hard gate &gt; CRITICAL: signal code REJECT triggers governance boundary error" time="0.000542087">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Architecture Constitution rule 40 — advisory-only hard gate &gt; CRITICAL: signal code ELIGIBLE triggers governance boundary error" time="0.000096766">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Architecture Constitution rule 40 — advisory-only hard gate &gt; CRITICAL: ADJUDICATE triggers governance boundary error" time="0.000068305">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Cmp060Error — AI governance error codes &gt; SF-AI-001 carries advisory boundary violation message" time="0.000275631">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Cmp060Error — AI governance error codes &gt; SF-AI-003 carries score-only rejection prohibition" time="0.000143363">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Cmp060Error — AI governance error codes &gt; mapPgError converts 23514 to SF-AI-001 (authoritative decision blocked)" time="0.000122324">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; Cmp060Error — AI governance error codes &gt; mapPgError converts 42501 to SF-TEN-002 (tenant isolation violation)" time="0.000098381">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-018: SimulatedReviewRoutingPort &gt; returns a routing ref for review (simulated mode)" time="0.000154249">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; INT-018: SimulatedReviewRoutingPort &gt; does not return an authoritative decision (never a rejection/approval)" time="0.000412347">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; DB-level governance constraint (SQL CHECK) &gt; migration SQL contains authoritative_decision_by_this_component = false CHECK constraint" time="0.005042752">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-060 security / governance boundary tests &gt; DB-level governance constraint (SQL CHECK) &gt; migration SQL enforces forward-only lifecycle (no reversals)" time="0.000295332">
+        </testcase>
+    </testsuite>
+</testsuites>
