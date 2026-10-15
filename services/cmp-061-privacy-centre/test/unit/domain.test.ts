@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   allOwnerOutcomesReceived,
@@ -14,7 +15,10 @@ import {
 import { validateSubmitRequest } from '../../src/service/input.js';
 import { TENANT_A } from '../doubles/fixtures.js';
 
-const SCHEMA = join(process.cwd(), '../../contracts/m09/schemas/privacy-request.schema.json');
+const SCHEMA = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '../../../../contracts/m09/schemas/privacy-request.schema.json',
+);
 
 function baseRow(overrides: Partial<PrivacyRequestRecord> = {}): PrivacyRequestRecord {
   return {

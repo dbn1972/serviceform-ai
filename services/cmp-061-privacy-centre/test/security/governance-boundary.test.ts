@@ -5,13 +5,16 @@
  * - No invented privacy statute (opaque refs only)
  */
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { assertNoTenantIdentifyingHeaders } from '../../src/context.js';
 import { isOwnerComponent } from '../../src/domain/request.js';
 import { Cmp061Error, mapPgError } from '../../src/errors.js';
 import { validateSubmitRequest } from '../../src/service/input.js';
 import { denyAllAuthorizer } from '../doubles/fixtures.js';
+
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
 
 describe('CMP-061 security / governance boundary', () => {
   describe('INT-011: tenant isolation', () => {
@@ -40,7 +43,7 @@ describe('CMP-061 security / governance boundary', () => {
   describe('SF-CON-PRIVACY-REQUEST frozen gates', () => {
     it('migration SQL hard-codes both orchestration CHECK constraints', () => {
       const sql = readFileSync(
-        join(process.cwd(), '../../db/migrations/1761300000000_cmp-061-privacy-centre.sql'),
+        join(REPO_ROOT, 'db/migrations/1761300000000_cmp-061-privacy-centre.sql'),
         'utf8',
       );
       expect(sql).toContain(

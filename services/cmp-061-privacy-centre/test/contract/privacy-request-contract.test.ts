@@ -1,12 +1,13 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { CONTRACT_ID, toContract } from '../../src/domain/request.js';
 import { ROUTE_DESCRIPTORS } from '../../src/api/handler.js';
 import { DOMAIN_EVENT_TYPES } from '../../src/outbox.js';
 import { TENANT_A } from '../doubles/fixtures.js';
 
-const ROOT = join(process.cwd(), '../..');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
 const SCHEMA = join(ROOT, 'contracts/m09/schemas/privacy-request.schema.json');
 const VALID = join(ROOT, 'contracts/m09/examples/valid/privacy-request.json');
 const INVALID_MUTATION = join(
