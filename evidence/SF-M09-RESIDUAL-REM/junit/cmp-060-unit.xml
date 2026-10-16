@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="30" failures="0" errors="0" time="0.01393882">
+    <testsuite name="test/unit/context.test.ts" timestamp="2026-10-16T08:02:25.223Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.002822917">
+        <testcase classname="test/unit/context.test.ts" name="context (INT-011) &gt; accepts UUIDs" time="0.000844502">
+        </testcase>
+        <testcase classname="test/unit/context.test.ts" name="context (INT-011) &gt; rejects tenant-identifying headers" time="0.00042593">
+        </testcase>
+        <testcase classname="test/unit/context.test.ts" name="context (INT-011) &gt; allows benign headers" time="0.000439744">
+        </testcase>
+        <testcase classname="test/unit/context.test.ts" name="context (INT-011) &gt; requireTenantContext fails closed without tenant" time="0.000151844">
+        </testcase>
+        <testcase classname="test/unit/context.test.ts" name="context (INT-011) &gt; requireTenantContext accepts valid tenant context" time="0.0000854">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/risk-classifier.test.ts" timestamp="2026-10-16T08:02:25.225Z" hostname="cursor" tests="21" failures="0" errors="0" skipped="0" time="0.004768364">
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.0 as LOW" time="0.000815691">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.3 as LOW (boundary)" time="0.000107761">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.31 as MEDIUM" time="0.000073942">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.6 as MEDIUM (boundary)" time="0.000116706">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.61 as HIGH" time="0.000069864">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.8 as HIGH (boundary)" time="0.000076945">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 0.81 as CRITICAL" time="0.000061285">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; classifies 1.0 as CRITICAL" time="0.000047544">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; respects custom thresholds" time="0.000237298">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; classifyRiskTier &gt; rejects out-of-range scores" time="0.000313685">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; requiresHumanReview &gt; LOW does not require review" time="0.000081009">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; requiresHumanReview &gt; MEDIUM does not require review" time="0.00004451">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; requiresHumanReview &gt; HIGH requires review (INT-018)" time="0.000039033">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; requiresHumanReview &gt; CRITICAL requires review (INT-018)" time="0.00005457">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; allows safe advisory signal codes" time="0.000685494">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; CRITICAL: rejects APPROVE signal (Constitution rule 40)" time="0.00032361">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; CRITICAL: rejects REJECT signal" time="0.000250455">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; CRITICAL: rejects PENALTY signal" time="0.000099907">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; CRITICAL: rejects ELIGIBLE signal" time="0.000062134">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; CRITICAL: rejects FINAL_DECISION signal" time="0.000056829">
+        </testcase>
+        <testcase classname="test/unit/risk-classifier.test.ts" name="risk-classifier &gt; assertSignalsAreAdvisoryOnly — governance gate &gt; allows empty signals array" time="0.000095181">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service-governance.test.ts" timestamp="2026-10-16T08:02:25.227Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.006347539">
+        <testcase classname="test/unit/service-governance.test.ts" name="RiskAssessmentService governance &gt; createAssessment always returns authoritative_decision_by_this_component=false" time="0.003001431">
+        </testcase>
+        <testcase classname="test/unit/service-governance.test.ts" name="RiskAssessmentService governance &gt; HIGH score routes to human review (INT-018) without deciding" time="0.000766362">
+        </testcase>
+        <testcase classname="test/unit/service-governance.test.ts" name="RiskAssessmentService governance &gt; authz deny-all fails closed (INT-011)" time="0.001189768">
+        </testcase>
+        <testcase classname="test/unit/service-governance.test.ts" name="RiskAssessmentService governance &gt; rejects statutory decision signal codes before DB write" time="0.000617363">
+        </testcase>
+    </testsuite>
+</testsuites>

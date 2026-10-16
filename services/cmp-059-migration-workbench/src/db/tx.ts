@@ -1,5 +1,5 @@
 import type { Pool, PoolClient } from 'pg';
-import type { RequestContext } from '@serviceform/contracts';
+import { dbSessionSettings, type RequestContext } from '@serviceform/contracts';
 import { Cmp059Error } from '../errors.js';
 
 export async function withContextTx<T>(
@@ -7,13 +7,15 @@ export async function withContextTx<T>(
   ctx: RequestContext,
   fn: (client: PoolClient) => Promise<T>,
 ): Promise<T> {
-  const tenantId = ctx.tenant_id;
-  if (!tenantId) throw new Cmp059Error('SF-TEN-001', { statusCode: 401 });
+  if (!ctx.tenant_id) throw new Cmp059Error('SF-TEN-001', { statusCode: 401 });
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await client.query(`SELECT set_config('sf.tenant_id', $1, true)`, [tenantId]);
-    await client.query(`SELECT set_config('sf.actor_id', $1, true)`, [ctx.actor.id]);
+    const settings = dbSessionSettings(ctx);
+    for (const [key, value] of Object.entries(settings)) {
+      if (value == null) continue;
+      await client.query('SELECT set_config($1, $2, true)', [key, String(value)]);
+    }
     const result = await fn(client);
     await client.query('COMMIT');
     return result;

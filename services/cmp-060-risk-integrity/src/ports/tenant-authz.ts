@@ -5,6 +5,8 @@
  * OPA is the authoritative decision maker for access; RLS is the hard data boundary.
  */
 
+import { refuseSimulatedOutsideLab } from '../env.js';
+
 export interface TenantAuthzPort {
   /**
    * Verify that the actor is authorized to create/read risk assessments for the given tenant.
@@ -20,7 +22,7 @@ export interface TenantAuthzPort {
 }
 
 /**
- * Deny-all stub for testing tenant isolation (negative tests).
+ * Deny-all stub for testing tenant isolation (negative tests) and fail-closed host default.
  */
 export class DenyAllTenantAuthz implements TenantAuthzPort {
   async canActOnRisk(_params: Parameters<TenantAuthzPort['canActOnRisk']>[0]): Promise<boolean> {
@@ -29,10 +31,14 @@ export class DenyAllTenantAuthz implements TenantAuthzPort {
 }
 
 /**
- * Simulated allow-all for explicit unit-test injection only.
- * Must never be the default in registerRiskRoutes (fail-closed → DenyAllTenantAuthz).
+ * Simulated allow-all for explicit unit-test injection only (lab environments).
+ * Construction refuses PRODUCTION/UAT/PREPROD. Must never be the registerRiskRoutes default.
  */
 export class SimulatedAllowAllTenantAuthz implements TenantAuthzPort {
+  constructor() {
+    refuseSimulatedOutsideLab('TenantAuthz');
+  }
+
   async canActOnRisk(_params: Parameters<TenantAuthzPort['canActOnRisk']>[0]): Promise<boolean> {
     return true;
   }

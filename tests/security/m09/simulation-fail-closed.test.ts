@@ -125,17 +125,17 @@ describe('SF-M09-SEC M09 SIMULATED / fail-closed boundaries', () => {
     );
   });
 
-  it('FINDING: CMP-060 SIMULATED review routing lacks PRODUCTION/UAT/PREPROD environment guard', () => {
+  it('CLEARED: CMP-060 SIMULATED review routing refuses PRODUCTION/UAT/PREPROD', () => {
     const src = walkTs(join(ROOT, 'services/cmp-060-risk-integrity/src'))
       .map((f) => readFileSync(f, 'utf8'))
       .join('\n');
     const hasEnvironmentGuard =
       /PRODUCTION/.test(src) &&
       /SIMULATED[\s\S]{0,400}(throw|reject)|(throw|reject)[\s\S]{0,400}SIMULATED/.test(src);
-    expect(hasEnvironmentGuard).toBe(false);
+    expect(hasEnvironmentGuard).toBe(true);
   });
 
-  it('FINDING: CMP-060 review-routing port may run inside the authoritative DB transaction', async () => {
+  it('CLEARED: CMP-060 review-routing port runs after authoritative DB COMMIT', async () => {
     const events: string[] = [];
     const rec = recordingPool(events);
     let routedInsideTx: boolean | undefined;
@@ -163,10 +163,7 @@ describe('SF-M09-SEC M09 SIMULATED / fail-closed boundaries', () => {
       requested_by: CTX.actor.id,
     } as never);
     expect(events).toContain('port.routeToReview');
-    // Recorded FINDING when routing occurs before COMMIT.
-    expect(
-      routedInsideTx === true ||
-        events.indexOf('port.routeToReview') < events.lastIndexOf('sql:COMMIT'),
-    ).toBe(true);
+    expect(routedInsideTx).toBe(false);
+    expect(events.indexOf('port.routeToReview')).toBeGreaterThan(events.lastIndexOf('sql:COMMIT'));
   });
 });

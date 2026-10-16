@@ -5,6 +5,8 @@
  * Architecture Constitution rule 40.
  */
 
+import { refuseSimulatedOutsideLab } from '../env.js';
+
 export interface ReviewRoutingPort {
   /**
    * Notify the authorized review system that a HIGH/CRITICAL risk assessment
@@ -24,11 +26,15 @@ export interface ReviewRoutingPort {
 }
 
 /**
- * Simulated ReviewRoutingPort for testing and non-production environments.
- * Must not be used in production (Architecture Constitution rule 22).
+ * Simulated ReviewRoutingPort for lab environments only (LOCAL/CI/DEVELOPMENT/SIT/PERFORMANCE).
+ * Construction refuses PRODUCTION/UAT/PREPROD (Architecture Constitution rule 22).
  */
 export class SimulatedReviewRoutingPort implements ReviewRoutingPort {
   readonly mode = 'SIMULATED' as const;
+
+  constructor() {
+    refuseSimulatedOutsideLab('ReviewRouting');
+  }
 
   async routeToReview(params: {
     tenant_id: string;

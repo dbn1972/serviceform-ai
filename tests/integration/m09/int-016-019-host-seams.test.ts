@@ -152,24 +152,20 @@ describe('INT-017 migration workbench host seam (CMP-059)', () => {
     expect(pool.openTransactions()).toBe(0);
   });
 
-  it.fails(
-    '[F-03 CMP-059] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (app.tenant_id read by sf_platform.current_tenant_id())',
-    async () => {
-      const pool = new RecordingPool();
-      const a = await host({
-        migration: {
-          options: { pool, authorizer: new RecordingAuthorizer() },
-          resolveContext: async () => OFFICER,
-        },
-      });
-      await a.inject({ method: 'GET', url: `/v1/migrations/${DOC}/reconciliation` });
-      expect(pool.txs.length).toBeGreaterThan(0);
-      expect(
-        sessionContextViolations(pool),
-        `keys applied: ${pool.settingKeys().join(',')}`,
-      ).toEqual([]);
-    },
-  );
+  it('[F-03 CMP-059 CLEARED] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys', async () => {
+    const pool = new RecordingPool();
+    const a = await host({
+      migration: {
+        options: { pool, authorizer: new RecordingAuthorizer() },
+        resolveContext: async () => OFFICER,
+      },
+    });
+    await a.inject({ method: 'GET', url: `/v1/migrations/${DOC}/reconciliation` });
+    expect(pool.txs.length).toBeGreaterThan(0);
+    expect(sessionContextViolations(pool), `keys applied: ${pool.settingKeys().join(',')}`).toEqual(
+      [],
+    );
+  });
 
   it('body tenant_id on project creation is never adopted', async () => {
     const pool = new RecordingPool();
@@ -263,61 +259,54 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     expect(pool.dataStatements()).toEqual([]);
   });
 
-  it.fails(
-    '[F-06 CMP-060] HIGH/CRITICAL review routing (external port) is not called inside the authoritative DB tx',
-    async () => {
-      const pool = new RecordingPool(rowsFor);
-      const recorder = new TenantRecorder();
-      const routed: Array<{ openTx: number; tenant: string }> = [];
-      const a = await host({
-        risk: {
-          options: {
-            pool,
-            authz: recorder.riskAuthz(),
-            reviewRouting: {
-              routeToReview: async (p: { tenant_id: string; assessment_id: string }) => {
-                routed.push({ openTx: pool.openTransactions(), tenant: p.tenant_id });
-                return { routing_ref: `review-${p.assessment_id}` };
-              },
+  it('[F-06 CMP-060 CLEARED] HIGH/CRITICAL review routing is not called inside the authoritative DB tx', async () => {
+    const pool = new RecordingPool(rowsFor);
+    const recorder = new TenantRecorder();
+    const routed: Array<{ openTx: number; tenant: string }> = [];
+    const a = await host({
+      risk: {
+        options: {
+          pool,
+          authz: recorder.riskAuthz(),
+          reviewRouting: {
+            routeToReview: async (p: { tenant_id: string; assessment_id: string }) => {
+              routed.push({ openTx: pool.openTransactions(), tenant: p.tenant_id });
+              return { routing_ref: `review-${p.assessment_id}` };
             },
           },
-          resolveContext: async () => OFFICER,
         },
-      });
-      const res = await a.inject({
-        method: 'POST',
-        url: '/v1/risk/assessments',
-        payload: riskBody(0.99),
-      });
-      expect(res.statusCode).toBe(201);
-      expect(res.json()).toMatchObject({ review_requested: true });
-      expect(routed.map((r) => r.tenant)).toEqual([T1]);
-      expect(
-        routed.map((r) => r.openTx),
-        'open DB transactions when routeToReview ran',
-      ).toEqual([0]);
-    },
-  );
+        resolveContext: async () => OFFICER,
+      },
+    });
+    const res = await a.inject({
+      method: 'POST',
+      url: '/v1/risk/assessments',
+      payload: riskBody(0.99),
+    });
+    expect(res.statusCode).toBe(201);
+    expect(res.json()).toMatchObject({ review_requested: true });
+    expect(routed.map((r) => r.tenant)).toEqual([T1]);
+    expect(
+      routed.map((r) => r.openTx),
+      'open DB transactions when routeToReview ran',
+    ).toEqual([0]);
+  });
 
-  it.fails(
-    '[F-02 CMP-060] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys (RLS reads sf_platform.current_tenant_id())',
-    async () => {
-      const pool = new RecordingPool(rowsFor);
-      const recorder = new TenantRecorder();
-      const a = await host({
-        risk: {
-          options: { pool, authz: recorder.riskAuthz() },
-          resolveContext: async () => OFFICER,
-        },
-      });
-      await a.inject({ method: 'GET', url: `/v1/risk/assessments/${DOC}` });
-      expect(pool.txs.length).toBeGreaterThan(0);
-      expect(
-        sessionContextViolations(pool),
-        `keys applied: ${pool.settingKeys().join(',')}`,
-      ).toEqual([]);
-    },
-  );
+  it('[F-02 CMP-060 CLEARED] DB transaction applies FROZEN SF-CON-DB-SESSION-CONTEXT keys', async () => {
+    const pool = new RecordingPool(rowsFor);
+    const recorder = new TenantRecorder();
+    const a = await host({
+      risk: {
+        options: { pool, authz: recorder.riskAuthz() },
+        resolveContext: async () => OFFICER,
+      },
+    });
+    await a.inject({ method: 'GET', url: `/v1/risk/assessments/${DOC}` });
+    expect(pool.txs.length).toBeGreaterThan(0);
+    expect(sessionContextViolations(pool), `keys applied: ${pool.settingKeys().join(',')}`).toEqual(
+      [],
+    );
+  });
 
   it('body tenant_id on review disposition is refused', async () => {
     const pool = new RecordingPool(rowsFor);

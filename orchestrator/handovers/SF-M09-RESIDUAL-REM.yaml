@@ -1,0 +1,32 @@
+# SF-M09-RESIDUAL-REM — clear F-02/F-03/F-05/F-06 (non-critical residuals)
+task_id: SF-M09-RESIDUAL-REM
+module_id: M09
+component_ids: [CMP-059, CMP-060]
+parent_tasks: [SF-M09-004, SF-M09-005]
+agent_role: component_builder
+branch: cursor/m09-residual-rem-91f2
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g4_issued: false
+g4_recommended: true
+g6: false
+allowed_write_paths:
+  - services/cmp-059-migration-workbench/**
+  - services/cmp-060-risk-integrity/**
+  - db/migrations/*_cmp-059-*.sql
+  - tests/integration/m09/**
+  - tests/security/m09/**
+  - evidence/SF-M09-RESIDUAL-REM/**
+  - evidence/SF-M09-INT/junit/**
+  - evidence/SF-M09-SEC/junit/**
+  - evidence/SF-M09-004/junit/**
+  - orchestrator/handovers/SF-M09-RESIDUAL-REM.yaml
+cleared_findings: [F-02, F-03, F-05, F-06]
+open_findings: [F-01, F-07, F-08]
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+note: >
+  Residual owner rem after G4_RECOMMENDED on SoT 52de009. Do not issue G4.
+  Independent INT/SEC re-verify optional; F-01/F-07/F-08 remain open.
