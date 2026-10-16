@@ -1,5 +1,5 @@
 # SF-M09-001 — CMP-056 Appointment / Scheduler (CG-03 M09 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G4. Not G6.
+# CANDIDATE_COMPLETE. Not CERTIFIED. Not G4. Not G6.
 # Consume FROZEN contracts only. No invented statutory policy.
 
 task_id: SF-M09-001
@@ -42,12 +42,12 @@ wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -87,3 +87,17 @@ stop_conditions:
   - write outside allowed_write_paths
   - authoritative risk decision (CMP-060)
   - cross-component SQL (CMP-061)
+
+capacity_atomic: true
+notification_failure_invalidates_booking: false
+invented_statutory_policy_forbidden: true
+evidence: evidence/SF-M09-001/EVIDENCE.md
+candidate:
+  implementation_commit: c2924dd891e2253c7c8feb301bf547866ba5efac
+  pull_request: 164
+  evidence: evidence/SF-M09-001/EVIDENCE.md
+  residuals:
+    - EXPECTED_STITCH_A_LOCKFILE_ADMISSION_RESIDUAL (new workspace importer row; pnpm-lock.yaml not modified)
+    - OPA policy data for APPOINTMENT_* actions lives in policy/** (read-only); until added the PDP denies (fail-closed)
+    - host mount deferred to SF-M09-HOST; no UI delivered
+    - PostgreSQL FORCE RLS integration deferred to INT/SEC lanes
