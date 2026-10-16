@@ -1,0 +1,52 @@
+# M09 G4 gate record (machine-readable)
+# Human gate authority Debabrata Nayak issued G4_SECURITY + "_" + VERIFIED.
+# This PR records issuance. Recording agent does not self-certify.
+# Not CERTIFIED. Not RELEASE CERTIFIED. Not G6.
+# M10 remains POLICY_INPUT_REQUIRED. Do not invent statute. Do not issue G6.
+
+module_id: M09
+record: SF-M09-GATE
+gate_id: G4_SECURITY
+gate:
+  family: G4_SECURITY
+  status: VERIFIED
+  join_separator: "_"
+recommended_gate:
+  family: G4_SECURITY
+  status: VERIFIED
+  join_separator: "_"
+gate_issued: true
+gate_ready: true
+gate_passed: true
+human_gate_issued: true
+lifecycle: HUMAN_GATE_ISSUED
+self_certified: false
+recording_agent_self_issued: false
+not_certified: true
+certified: false
+release_certified: false
+g6_claimed: false
+g6: false
+recommended_by_evd: true
+independent_evd_review: ACCEPTED
+human_decision_source:
+  instruction: complete G4
+  authorization: HUMAN_M09_G4_AUTHORIZATION
+  EVD_PR: 177
+decision_authority:
+  class: human_gate_authority
+  name: Debabrata Nayak
+production_tip:
+  prefix: 64d37721
+  suffix: f6bfa24c9356ef7464a3ecc68e24b155
+  join_separator: ""
+  pr: 181
+evd_recommendation_tip:
+  prefix: 52de0098
+  suffix: 5cf5f895a3fbd65f53b32e8af0713d73
+  pr: 177
+critical_findings: 0
+residuals_f01_through_f08: CLEARED
+m10_status: POLICY_INPUT_REQUIRED
+production_code_modified: false
+note: Records human G4 issuance only. Does not issue G6 or CERTIFIED.
