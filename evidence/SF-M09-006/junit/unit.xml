@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="27" failures="0" errors="0" time="0.034431589">
+    <testsuite name="test/contract/privacy-request-contract.test.ts" timestamp="2026-10-15T15:48:38.741Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.005994382">
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; schema is FROZEN and owned by CMP-061 / INT-019" time="0.001591306">
+        </testcase>
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; valid example has both orchestration gates true" time="0.00034365">
+        </testcase>
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; invalid examples capture the prohibited patterns" time="0.000209894">
+        </testcase>
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; toContract output matches required frozen fields" time="0.001198752">
+        </testcase>
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; exposes the world-class privacy APIs plus owner-task orchestration routes" time="0.001065835">
+        </testcase>
+        <testcase classname="test/contract/privacy-request-contract.test.ts" name="SF-CON-PRIVACY-REQUEST contract conformance &gt; publishes INT-019 orchestration events" time="0.000376397">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/security/governance-boundary.test.ts" timestamp="2026-10-15T15:48:38.742Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.007235876">
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; INT-011: tenant isolation &gt; rejects tenant-identifying request headers" time="0.003484397">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; INT-011: tenant isolation &gt; deny-all authorizer returns allow=false" time="0.000473954">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; SF-CON-PRIVACY-REQUEST frozen gates &gt; migration SQL hard-codes both orchestration CHECK constraints" time="0.000444918">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; SF-CON-PRIVACY-REQUEST frozen gates &gt; self-component cannot be an owner (blocks self-as-cross-SQL target)" time="0.000277721">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; SF-CON-PRIVACY-REQUEST frozen gates &gt; submit validation refuses flipping frozen markers to false" time="0.00069078">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; error mapping &gt; maps RLS privilege failure to SF-TEN-002" time="0.000167821">
+        </testcase>
+        <testcase classname="test/security/governance-boundary.test.ts" name="CMP-061 security / governance boundary &gt; error mapping &gt; maps check violations to SF-SYS-003" time="0.000249621">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-15T15:48:38.744Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.004699978">
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; toContract always emits FROZEN markers as true/false constants" time="0.00140714">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; lifecycle transitions match the SQL guard" time="0.000348922">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; refuses CMP-061 as an owner_component (no self cross-SQL)" time="0.000164329">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; allOwnerOutcomesReceived requires every task terminal with evidence or exception" time="0.000286232">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; schema FROZEN markers are const true" time="0.00018694">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="privacy request domain &gt; validateSubmitRequest refuses false frozen markers and self-owner" time="0.000909794">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-10-15T15:48:38.745Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.016501353">
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; submits a request with FROZEN markers and emits PrivacyRequestSubmitted" time="0.00377882">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; orchestrates owner tasks without mutating foreign tables (events only)" time="0.003918166">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; emits ConsentWithdrawalRequested for CONSENT_WITHDRAWAL submissions" time="0.000523715">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; refuses completion while owner tasks remain open" time="0.002311189">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; OPA deny fails closed (SF-AUTH-002)" time="0.00047365">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; tenant stores are partitioned (INT-011)" time="0.000464222">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; withdraw cancels open owner tasks then terminates" time="0.003170399">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="PrivacyCentreService orchestration &gt; deny requires opaque legal_basis_or_exception_ref (POLICY_INPUT_REQUIRED)" time="0.000702416">
+        </testcase>
+    </testsuite>
+</testsuites>
