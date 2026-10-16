@@ -37,7 +37,11 @@ import { Cmp060Error } from '../errors.js';
 import type { TenantAuthzPort } from '../ports/tenant-authz.js';
 import type { ReviewRoutingPort } from '../ports/review-routing.js';
 
-/** SF-CON-RISK-ASSESSMENT shaped response (non-authoritative). */
+/**
+ * SF-CON-RISK-ASSESSMENT shaped response (non-authoritative).
+ * additionalProperties:false — do not emit risk_tier/raw_risk_score/signal_count/review_requested.
+ * Lifecycle encodes review need (HIGH_RISK_REVIEW_REQUESTED).
+ */
 export interface AssessmentResult {
   readonly contract_id: 'SF-CON-RISK-ASSESSMENT';
   readonly contract_status: 'FROZEN';
@@ -50,10 +54,6 @@ export interface AssessmentResult {
   subject_application_id: string;
   signals: RiskSignalInput[];
   lifecycle_status: string;
-  risk_tier: string | null;
-  raw_risk_score: number | null;
-  signal_count: number;
-  review_requested: boolean;
   correlation_id: string | null;
 }
 
@@ -169,10 +169,6 @@ export class RiskAssessmentService {
           subject_application_id: cmd.subject_application_id,
           signals: cmd.signals,
           lifecycle_status: reviewNeeded ? 'HIGH_RISK_REVIEW_REQUESTED' : 'COMPLETED',
-          risk_tier: riskTier,
-          raw_risk_score: cmd.raw_risk_score ?? null,
-          signal_count: cmd.signals.length,
-          review_requested: reviewNeeded,
           correlation_id: correlationId,
         },
         routeReview: reviewNeeded && riskTier !== null,
@@ -306,9 +302,6 @@ function toResult(
     subject_application_id: string;
     idempotency_key: string;
     lifecycle_status: string;
-    risk_tier: string | null;
-    raw_risk_score: number | null;
-    signal_count: number;
     correlation_id: string | null;
   },
   signals: RiskSignalInput[],
@@ -325,10 +318,6 @@ function toResult(
     subject_application_id: row.subject_application_id,
     signals,
     lifecycle_status: row.lifecycle_status,
-    risk_tier: row.risk_tier,
-    raw_risk_score: row.raw_risk_score,
-    signal_count: row.signal_count,
-    review_requested: row.lifecycle_status === 'HIGH_RISK_REVIEW_REQUESTED',
     correlation_id: row.correlation_id,
   };
 }

@@ -1,0 +1,28 @@
+# SF-M09-RESIDUAL-F-REM — clear F-01 / F-07 / F-08
+task_id: SF-M09-RESIDUAL-F-REM
+module_id: M09
+component_ids: [CMP-060, CMP-058]
+parent_tasks: [SF-M09-005, SF-M09-003]
+agent_role: component_builder
+branch: cursor/m09-residual-f-rem-91f2
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+self_certified: false
+certified: false
+g4: false
+g4_issued: false
+g4_recommended: true
+g6: false
+allowed_write_paths:
+  - services/cmp-060-risk-integrity/**
+  - services/cmp-058-semantic-registry/**
+  - tests/integration/m09/**
+  - evidence/SF-M09-RESIDUAL-F-REM/**
+  - evidence/SF-M09-INT/junit/**
+  - evidence/SF-M09-SEC/junit/**
+  - orchestrator/handovers/SF-M09-RESIDUAL-F-REM.yaml
+cleared_findings: [F-01, F-07, F-08]
+open_findings: []
+human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
+note: >
+  Residual rem after #180. Do not issue G4 without human finish g4.

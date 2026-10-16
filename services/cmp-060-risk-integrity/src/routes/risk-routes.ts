@@ -1,3 +1,4 @@
+import type { ErrorResponse } from '@serviceform/contracts';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { randomUUID } from 'node:crypto';
 import type { Pool } from 'pg';
@@ -21,19 +22,27 @@ export interface RiskRouteOptions {
   reviewRouting?: ReviewRoutingPort | null;
 }
 
-function sendError(reply: FastifyReply, err: unknown): FastifyReply {
+/** SF-CON-ERROR-RESPONSE — never nest under `error`. */
+function errorBody(
+  correlationId: string,
+  code: string,
+  message: string,
+  details?: ErrorResponse['details'],
+): ErrorResponse {
+  const out: ErrorResponse = { error_code: code, message, correlation_id: correlationId };
+  if (details && details.length > 0) out.details = details;
+  return out;
+}
+
+function sendError(request: FastifyRequest, reply: FastifyReply, err: unknown): FastifyReply {
+  const correlationId =
+    typeof request.id === 'string' && isUuid(request.id) ? request.id : randomUUID();
   if (err instanceof Cmp060Error) {
-    return reply.status(err.statusCode).send({
-      error: {
-        code: err.code,
-        message: err.message,
-        details: err.details ?? [],
-      },
-    });
+    return reply
+      .status(err.statusCode)
+      .send(errorBody(correlationId, err.code, err.message, err.details));
   }
-  return reply.status(500).send({
-    error: { code: 'SF-SYS-001', message: 'Internal error', details: [] },
-  });
+  return reply.status(500).send(errorBody(correlationId, 'SF-SYS-001', 'Internal error'));
 }
 
 /**
@@ -108,7 +117,7 @@ export function registerRiskRoutes(fastify: FastifyInstance, opts: RiskRouteOpti
       const result = await svc.createAssessment(cmd);
       return reply.status(201).send(result);
     } catch (err) {
-      return sendError(reply, err);
+      return sendError(request, reply, err);
     }
   });
 
@@ -131,7 +140,7 @@ export function registerRiskRoutes(fastify: FastifyInstance, opts: RiskRouteOpti
       });
       return reply.status(200).send(result);
     } catch (err) {
-      return sendError(reply, err);
+      return sendError(request, reply, err);
     }
   });
 
@@ -188,7 +197,7 @@ export function registerRiskRoutes(fastify: FastifyInstance, opts: RiskRouteOpti
           invented_statutory_policy_forbidden: true,
         });
       } catch (err) {
-        return sendError(reply, err);
+        return sendError(request, reply, err);
       }
     },
   );

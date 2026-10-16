@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="35" failures="0" errors="0" time="0.190751436">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-16T08:12:47.236Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.052688786">
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; parses OpenAPI and AsyncAPI JSON with semantic registry interfaces" time="0.001034858">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; validates isolation declarations" time="0.036005255">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; validates domain event envelopes and audit" time="0.013064022">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; SF-CON-SEMANTIC-ELEMENT: contract id, status, and no invented policy fields" time="0.001169598">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; outbox migration Up matches frozen template after substitution" time="0.000267418">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="CMP-058 component contracts &gt; schema migration declares isolation and privilege role; opaque refs only" time="0.000267627">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-16T08:12:47.238Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.003745426">
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; canonicalJson &gt; sorts object keys deterministically" time="0.0008428">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; canonicalJson &gt; handles nested objects and arrays" time="0.00013182">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; requestFingerprint &gt; is deterministic for same input" time="0.000430729">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; requestFingerprint &gt; differs for different body" time="0.000560846">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; requestFingerprint &gt; starts with sha256:" time="0.00018546">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; IDEMPOTENCY_KEY pattern &gt; accepts valid keys" time="0.000153975">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; IDEMPOTENCY_KEY pattern &gt; rejects too short keys" time="0.000065457">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; isUuid &gt; accepts valid UUID v4" time="0.000143545">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="CMP-058 domain utilities &gt; isUuid &gt; rejects non-uuid" time="0.000227601">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-16T08:12:47.238Z" hostname="cursor" tests="20" failures="0" errors="0" skipped="0" time="0.134317224">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Semantic Element CRUD &gt; lists elements (empty)" time="0.078603989">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Semantic Element CRUD &gt; creates a DRAFT element (privileged admin)" time="0.011932118">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Semantic Element CRUD &gt; publishes a DRAFT element" time="0.002919939">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Semantic Element CRUD &gt; rejects publish of already published element" time="0.001699693">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Semantic Element CRUD &gt; deprecates a PUBLISHED element" time="0.001536381">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Field Bindings &gt; creates a binding to a published element" time="0.00174121">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Field Bindings &gt; rejects binding to unpublished element" time="0.00088335">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Field Bindings &gt; deletes a binding" time="0.000927698">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects unauthenticated request" time="0.001070784">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects non-privileged admin creating element" time="0.000925147">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects privileged admin without MFA creating element" time="0.000668028">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects binding read without tenant context" time="0.000363464">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects tenant-identifying headers" time="0.000320356">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; tenant T1 binding not visible to T2 (FORCE RLS enforced in memory)" time="0.00081526">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Security / tenant isolation (INT-011) &gt; rejects OPA denied action" time="0.000469469">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Invented policy rejection (SF-CON-SEMANTIC-ELEMENT) &gt; does not store or return government field meanings in element records" time="0.001598176">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Idempotency &gt; repeated POST with same idempotency key returns same result" time="0.001746876">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; Outbox events (audit trail) &gt; emits domain event on element creation" time="0.000802357">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; INT-016 mappings/validate + usage &gt; validates published opaque element refs and reports tenant usage" time="0.001348864">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-058 plugin HTTP unit (memory pool) &gt; INT-016 mappings/validate + usage &gt; rejects invented meaning fields on validate body" time="0.000604325">
+        </testcase>
+    </testsuite>
+</testsuites>

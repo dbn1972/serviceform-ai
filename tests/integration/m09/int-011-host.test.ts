@@ -173,21 +173,15 @@ describe('INT-011 M09 unauthenticated requests fail closed with the frozen error
     expect(h.riskPool.statements).toEqual([]);
   });
 
-  it.fails(
-    '[F-08 CMP-058] no server-side context → 401 on every M09 route (authentication precedes input validation)',
-    async () => {
-      const { wrongStatus } = await unauthenticatedOutcomes();
-      expect(wrongStatus, 'routes not answering 401 to an unauthenticated caller').toEqual([]);
-    },
-  );
+  it('[F-08 CMP-058 CLEARED] no server-side context → 401 on every M09 route (authentication precedes input validation)', async () => {
+    const { wrongStatus } = await unauthenticatedOutcomes();
+    expect(wrongStatus, 'routes not answering 401 to an unauthenticated caller').toEqual([]);
+  });
 
-  it.fails(
-    '[F-01 CMP-060] every M09 refusal body conforms to FROZEN SF-CON-ERROR-RESPONSE',
-    async () => {
-      const { badEnvelope } = await unauthenticatedOutcomes();
-      expect(badEnvelope, 'routes emitting a non-SF-CON-ERROR-RESPONSE body').toEqual([]);
-    },
-  );
+  it('[F-01 CMP-060 CLEARED] every M09 refusal body conforms to FROZEN SF-CON-ERROR-RESPONSE', async () => {
+    const { badEnvelope } = await unauthenticatedOutcomes();
+    expect(badEnvelope, 'routes emitting a non-SF-CON-ERROR-RESPONSE body').toEqual([]);
+  });
 });
 
 describe('INT-011 M09 coexistence with prior host modules', () => {
