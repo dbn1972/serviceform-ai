@@ -1,0 +1,21 @@
+SF-M10-002 fixture verification checks
+branch: cursor/m10-002-overlay-91f2
+base: fd7492b398b2945713957a53b42c4717a7940c3f
+timestamp_utc: 2026-10-15T15:28:00Z
+
+CHECK JSON parse tsb-publish-fixture.json ........................ PASS
+CHECK JSON parse sfpackage-manifest-fixture.json ................. PASS
+CHECK YAML parse tenant-overlay.yaml ............................. PASS
+CHECK YAML parse maker-checker-record.yaml ....................... PASS
+CHECK YAML parse orchestrator/handovers/SF-M10-002.yaml .......... PASS
+CHECK POLICY_INPUT_REQUIRED sentinel count in overlay (>=12) ..... PASS (49)
+CHECK handover.state == CANDIDATE_COMPLETE ........................ PASS
+CHECK handover.g6 == false ....................................... PASS
+CHECK handover.certified == false ................................ PASS
+CHECK handover.policy_input_required == true ..................... PASS
+CHECK staged paths within allowed_write_paths .................... PASS (8 files)
+CHECK invented-statute pattern scan .............................. PASS
+CHECK non-claims present in fixtures ............................. PASS
+
+RESULT: ALL CHECKS PASS
+NON_CLAIMS: CERTIFIED=false G6=false self_certified=false
