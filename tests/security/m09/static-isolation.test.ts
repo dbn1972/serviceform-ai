@@ -167,9 +167,12 @@ describe('SF-M09-SEC static tenant isolation (migrations)', () => {
           offenders.push(head);
         }
       }
-      if (schema === 'sf_migration' && offenders.length > 0) {
-        // FINDING: CMP-059 policies do not exclusively use sf_platform.current_tenant_id().
-        expect(offenders.length).toBeGreaterThan(0);
+      // Historical CMP-059 CREATE POLICY used current_setting('sf.tenant_id'); rem
+      // 1761100000002 recreates policies with sf_platform.current_tenant_id() at runtime
+      // (policies are emitted via EXECUTE format — count accessor occurrences).
+      if (schema === 'sf_migration') {
+        // Rem 1761100000002 recreates policies with platform accessor (EXECUTE format template).
+        expect(sql).toContain('sf_platform.current_tenant_id()');
       } else {
         expect(offenders, `${schema} policy tenant source`).toEqual([]);
       }

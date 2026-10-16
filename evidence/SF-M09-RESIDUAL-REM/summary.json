@@ -1,0 +1,21 @@
+{
+  "task_id": "SF-M09-RESIDUAL-REM",
+  "components": ["CMP-059", "CMP-060"],
+  "base_sot": "52de00985cf5f895a3fbd65f53b32e8af0713d73",
+  "cleared_findings": ["F-02", "F-03", "F-05", "F-06"],
+  "open_findings": ["F-01", "F-07", "F-08"],
+  "local_results": {
+    "cmp060_unit": "30 passed",
+    "cmp060_contract": "8 passed",
+    "cmp059_unit": "32 passed",
+    "int_independent": "55 passed / 3 expected fail",
+    "sec": "36 passed"
+  },
+  "critical_findings": 0,
+  "certified": false,
+  "g4_issued": false,
+  "g4_recommended": true,
+  "g6": false,
+  "self_certified": false,
+  "note": "Owner rem for residual non-critical FINDINGS. G4 already recommended on SoT; do not issue until human finish g4."
+}

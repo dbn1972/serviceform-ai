@@ -266,8 +266,14 @@ export async function asTenant<T>(
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    await client.query('SELECT set_config($1, $2, true)', ['sf.tenant_id', tenant]);
-    await client.query('SELECT set_config($1, $2, true)', ['sf.actor_id', OFFICER]);
+    await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', tenant]);
+    await client.query('SELECT set_config($1, $2, true)', ['app.actor_id', OFFICER]);
+    await client.query('SELECT set_config($1, $2, true)', ['app.cell_id', 'cell-local']);
+    await client.query('SELECT set_config($1, $2, true)', ['app.actor_type', 'OFFICER']);
+    await client.query('SELECT set_config($1, $2, true)', [
+      'app.correlation_id',
+      '6a0e8c5f-b17d-4eaf-826a-9d5e3f7b1c86',
+    ]);
     const out = await fn(client);
     await client.query('COMMIT');
     return out;

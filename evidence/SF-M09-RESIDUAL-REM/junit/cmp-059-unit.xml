@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="32" failures="0" errors="0" time="0.221568839">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-16T08:02:26.911Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.006839447">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; frozen schema hash matches contracts-lock" time="0.001178688">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; frozen markers require dry_run_required_before_execute=true" time="0.000319251">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; valid example passes; invalid dry-run-optional fails" time="0.000626255">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; projector output validates against frozen schema" time="0.000194359">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; outbox topic is sf.migration" time="0.000158512">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; lifecycle statuses match frozen enum" time="0.001575383">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; reconciliation statuses are derivable" time="0.000169162">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; input validation contract" time="0.000715251">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint POST /migrations/projects is defined" time="0.000288908">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint POST /migrations/{id}/profile is defined" time="0.000132515">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint POST /migrations/{id}/map is defined" time="0.000042951">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint POST /migrations/{id}/dry-run is defined" time="0.000031301">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint POST /migrations/{id}/execute is defined" time="0.000030441">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 endpoint GET /migrations/{id}/reconciliation is defined" time="0.000028706">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 event MigrationDryRunCompleted naming" time="0.00010072">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 event MigrationBatchApplied naming" time="0.000052176">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 event MigrationReconciliationFailed naming" time="0.000032093">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-MIGRATION-PROJECT contract surface &gt; INT-017 event MigrationCompleted naming" time="0.000056747">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-10-16T08:02:26.916Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.002530486">
+        <testcase classname="test/unit/domain.test.ts" name="domain invariants &gt; isUuid" time="0.000847231">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="domain invariants &gt; canTransition enforces dry-run gate" time="0.000284616">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="domain invariants &gt; deriveReconciliationStatus" time="0.000174819">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="domain invariants &gt; validators" time="0.000244913">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="domain invariants &gt; toMigrationProjectContract projects FROZEN markers" time="0.000152437">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/plugin-http.test.ts" timestamp="2026-10-16T08:02:26.917Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.11250872">
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-059 plugin HTTP unit (memory pool) &gt; POST /v1/migrations/projects &gt; creates a project (201)" time="0.077307639">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-059 plugin HTTP unit (memory pool) &gt; POST /v1/migrations/projects &gt; rejects missing display_name (400)" time="0.001571408">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-059 plugin HTTP unit (memory pool) &gt; POST /v1/migrations/projects &gt; rejects without auth (401)" time="0.000705539">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-059 plugin HTTP unit (memory pool) &gt; dry_run_required_before_execute gate &gt; rejects execute before dry run with DRY_RUN_REQUIRED_BEFORE_EXECUTE" time="0.004422007">
+        </testcase>
+        <testcase classname="test/unit/plugin-http.test.ts" name="CMP-059 plugin HTTP unit (memory pool) &gt; full migration lifecycle &gt; completes dry run then execute with reconciliation" time="0.005700239">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/tenant-negative.test.ts" timestamp="2026-10-16T08:02:26.917Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.099690186">
+        <testcase classname="test/unit/tenant-negative.test.ts" name="CMP-059 tenant-negative / INT-011 &gt; rejects request with x-roles header (forbidden header)" time="0.008160297">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="CMP-059 tenant-negative / INT-011 &gt; rejects request without auth token (401)" time="0.002548869">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="CMP-059 tenant-negative / INT-011 &gt; tenant T2 cannot access T1 project (404 due to RLS filter)" time="0.064045466">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="CMP-059 tenant-negative / INT-011 &gt; returns 403 when authorizer denies" time="0.003453402">
+        </testcase>
+    </testsuite>
+</testsuites>
