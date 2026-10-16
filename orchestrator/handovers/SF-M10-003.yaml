@@ -1,6 +1,8 @@
 # SF-M10-003 — Golden E2E + tenant-negative harness (CG-03 M10 Wave A)
-# READY. Not dispatched. Not CERTIFIED. Not G6.
+# CANDIDATE_COMPLETE. Dispatched. Not CERTIFIED. Not G6.
 # Finding M-04: POLICY_INPUT_REQUIRED. No invented residence statute.
+# Harness scaffolding complete on branch cursor/m10-003-e2e-91f2.
+# Policy-gated tests blocked pending owner inputs; harness fails closed when missing.
 
 task_id: SF-M10-003
 title: Golden E2E + tenant-negative harness
@@ -32,12 +34,12 @@ wave_eligible_now: true
 serial_after:
   - SF-M09-CG-001
 
-builders_dispatched_this_envelope: false
+builders_dispatched_this_envelope: true
 planning_only: false
 implementation_authorized: true
-dispatched: false
-orchestration_task_state: READY
-state: READY
+dispatched: true
+orchestration_task_state: CANDIDATE_COMPLETE
+state: CANDIDATE_COMPLETE
 self_certified: false
 not_certified: true
 certified: false
@@ -58,3 +60,46 @@ stop_conditions:
   - invent residence eligibility/fee/SLA/credential statute
   - CERTIFIED or G6 claim
   - write outside allowed_write_paths
+
+delivery:
+  branch: cursor/m10-003-e2e-91f2
+  base_commit: fd7492b398b2945713957a53b42c4717a7940c3f
+  agent_id: bc-13e43d37-e10c-5701-8ad2-2b5f40cd819f
+  model: Composer
+  files_written:
+    - tests/integration/m10/vitest.config.ts
+    - tests/integration/m10/support/fixtures.ts
+    - tests/integration/m10/int-011-tenant-isolation.test.ts
+    - tests/integration/m10/int-013-modes.test.ts
+    - tests/e2e/golden/ind-soc-002-golden.spec.ts
+    - evidence/SF-M10-003/EVIDENCE.md
+    - evidence/SF-M10-003/summary.json
+    - evidence/SF-M10-003/junit/m10-int.xml
+    - evidence/SF-M10-003/logs/m10-int-vitest.log
+    - orchestrator/handovers/SF-M10-003.yaml
+  policy_inputs_invented: false
+  cross_tenant_leakage_target: 0
+  simulated_critical_connector_in_production: false
+  pii_in_fixtures: false
+  contracts_modified: false
+  apps_modified: false
+  pnpm_lock_modified: false
+  self_certified: false
+  certified: false
+  g6: false
+  candidate_complete: true
+  recommended_gate_status: CANDIDATE_COMPLETE
+  evidence_path: evidence/SF-M10-003/EVIDENCE.md
+  ci_run_pending: true
+  policy_gate_environment_var: SF_M10_OWNER_INPUTS_READY
+  draft_pr: true
+  head_sha: 306240dc19c513b80a5aef537d6e5f3c5dd19e83
+  head_sha_short: 306240d
+  harness_commit: 80c55226ae3620aa2171c320878cdccce4674c19
+  branch_pushed: true
+  pr_number: null
+  pr_url: null
+  pr_create_blocked: true
+  pr_create_error: "Resource not accessible by integration (createPullRequest 403)"
+  compare_url: https://github.com/dbn1972/serviceform-ai/compare/main...cursor/m10-003-e2e-91f2?expand=1
+  pull_new_url: https://github.com/dbn1972/serviceform-ai/pull/new/cursor/m10-003-e2e-91f2
