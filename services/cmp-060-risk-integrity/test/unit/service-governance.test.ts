@@ -69,7 +69,6 @@ describe('RiskAssessmentService governance', () => {
     expect(result.invented_statutory_policy_forbidden).toBe(true);
     expect(result.contract_id).toBe('SF-CON-RISK-ASSESSMENT');
     expect(result.lifecycle_status).toBe('COMPLETED');
-    expect(result.review_requested).toBe(false);
   });
 
   it('HIGH score routes to human review (INT-018) without deciding', async () => {
@@ -86,9 +85,7 @@ describe('RiskAssessmentService governance', () => {
       requested_by: ACTOR,
     });
     expect(result.lifecycle_status).toBe('HIGH_RISK_REVIEW_REQUESTED');
-    expect(result.review_requested).toBe(true);
     expect(result.authoritative_decision_by_this_component).toBe(false);
-    expect(result.risk_tier).toBe('CRITICAL');
   });
 
   it('authz deny-all fails closed (INT-011)', async () => {

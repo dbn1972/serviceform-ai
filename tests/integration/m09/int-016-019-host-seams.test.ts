@@ -201,34 +201,31 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
     };
   }
 
-  it.fails(
-    '[F-07 CMP-060] advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant',
-    async () => {
-      const pool = new RecordingPool(rowsFor);
-      const recorder = new TenantRecorder();
-      const a = await host({
-        risk: {
-          options: { pool, authz: recorder.riskAuthz() },
-          resolveContext: async () => OFFICER,
-        },
-      });
-      const res = await a.inject({
-        method: 'POST',
-        url: '/v1/risk/assessments',
-        payload: riskBody(0.1, [{ signal_code: 'DOCUMENT_MISMATCH' }]),
-      });
-      expect(res.statusCode).toBe(201);
-      const body = res.json() as Record<string, unknown>;
-      expect(body).toMatchObject({
-        tenant_id: T1,
-        authoritative_decision_by_this_component: false,
-      });
-      const v = validateM09('risk-assessment', body);
-      expect(v.valid, JSON.stringify(v.errors)).toBe(true);
-      expect(recorder.seen).toEqual([T1]);
-      expect(pool.tenantsSeen()).toEqual([T1]);
-    },
-  );
+  it('[F-07 CMP-060 CLEARED] advisory assessment: tenant from context only; response is non-authoritative and FROZEN-conformant', async () => {
+    const pool = new RecordingPool(rowsFor);
+    const recorder = new TenantRecorder();
+    const a = await host({
+      risk: {
+        options: { pool, authz: recorder.riskAuthz() },
+        resolveContext: async () => OFFICER,
+      },
+    });
+    const res = await a.inject({
+      method: 'POST',
+      url: '/v1/risk/assessments',
+      payload: riskBody(0.1, [{ signal_code: 'DOCUMENT_MISMATCH' }]),
+    });
+    expect(res.statusCode).toBe(201);
+    const body = res.json() as Record<string, unknown>;
+    expect(body).toMatchObject({
+      tenant_id: T1,
+      authoritative_decision_by_this_component: false,
+    });
+    const v = validateM09('risk-assessment', body);
+    expect(v.valid, JSON.stringify(v.errors)).toBe(true);
+    expect(recorder.seen).toEqual([T1]);
+    expect(pool.tenantsSeen()).toEqual([T1]);
+  });
 
   it('statutory-outcome signal codes are refused (no automated adverse decision)', async () => {
     const pool = new RecordingPool(rowsFor);
@@ -284,7 +281,7 @@ describe('INT-018 risk / integrity signal to authorized review host seam (CMP-06
       payload: riskBody(0.99),
     });
     expect(res.statusCode).toBe(201);
-    expect(res.json()).toMatchObject({ review_requested: true });
+    expect(res.json()).toMatchObject({ lifecycle_status: 'HIGH_RISK_REVIEW_REQUESTED' });
     expect(routed.map((r) => r.tenant)).toEqual([T1]);
     expect(
       routed.map((r) => r.openTx),

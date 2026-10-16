@@ -43,11 +43,10 @@ const pluginImpl: FastifyPluginAsync<SemanticPluginOptions> = async (app, opts) 
     clock: opts.clock ?? (() => new Date()),
   };
 
+  // Auth before Fastify schema validation (preValidation): F-08 — unauthenticated
+  // POST /v1/elements must 401, not 400 from body schema.
   app.addHook('onRequest', async (request) => {
     assertNoTenantIdentifyingHeaders(request);
-  });
-
-  app.addHook('preHandler', async (request) => {
     const raw = await opts.resolveContext(request);
     const tenantRequired = request.url.includes('/bindings') && !request.url.includes('/elements');
     request.sfContext = requireContext(raw, tenantRequired);
