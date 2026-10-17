@@ -21,9 +21,7 @@ describe('M10 G6 REAL-connector and TSB seal holds', () => {
     };
     // Critical PRODUCTION binding with SIMULATED mode or SAMPLE_LAB doc type is forbidden.
     const refuseSimulated =
-      binding.environment === 'PRODUCTION' &&
-      binding.critical &&
-      binding.mode !== 'REAL';
+      binding.environment === 'PRODUCTION' && binding.critical && binding.mode !== 'REAL';
     const refuseSampleLabDoc =
       binding.environment === 'PRODUCTION' &&
       binding.critical &&
