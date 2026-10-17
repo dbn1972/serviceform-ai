@@ -1,0 +1,17 @@
+{
+  "record": "SF-M10-G6-PREREQ",
+  "sot_tip": "e1ffa81ecf3dfc63df71038e71eb45ad1f7a23e2",
+  "g6_issued": false,
+  "certified": false,
+  "self_certified": false,
+  "policy_sample_resolved": true,
+  "holds": {
+    "g5_perf": { "ready_env": "SF_M10_G5_PERF_READY", "ready": false, "suite": "2 passed / 1 skipped" },
+    "ux4g": { "ready_env": "SF_M10_UX4G_READY", "ready": false, "suite": "2 passed / 1 skipped / 1 todo" },
+    "resilience": { "ready_env": "SF_M10_RESILIENCE_READY", "ready": false, "suite": "2 passed / 1 skipped / 1 todo" },
+    "real_digilocker": { "ready": false, "blocker": "registrar credentials + doc-type registration not on e-District portal" },
+    "tsb_seal": { "ready": false, "blocker": "deferred until REAL DigiLocker/DLT bindings" }
+  },
+  "m10_int_owner_ready": { "passed": 24, "todo": 6, "env": "SF_M10_OWNER_INPUTS_READY=1" },
+  "planning_envelopes_not_dispatched": ["SF-M10-004", "SF-M10-005", "SF-M10-PERF"]
+}

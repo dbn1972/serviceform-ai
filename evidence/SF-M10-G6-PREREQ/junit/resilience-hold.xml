@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="0" errors="0" time="0.002771948">
+    <testsuite name="tests/resilience/m10/resilience-hold.test.ts" timestamp="2026-10-17T01:19:39.360Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="2" time="0.002771948">
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; refuses to claim resilience PASS when SF_M10_RESILIENCE_READY is unset" time="0.001311645">
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; documents required resilience artifacts before a restore drill may run" time="0.000301483">
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; Resilience drill placeholder — only runs when SF_M10_RESILIENCE_READY=1" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; Backup/restore/rollback drill evidence — blocked until ops runbook + restore cell authorized" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>
