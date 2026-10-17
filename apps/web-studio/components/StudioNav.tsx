@@ -5,6 +5,7 @@ const links = [
   { href: '/session', label: 'Session' },
   { href: '/metadata', label: 'Metadata' },
   { href: '/publication', label: 'Publication' },
+  { href: '/services/new', label: 'New service' },
 ] as const;
 
 export function StudioNav() {

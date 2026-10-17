@@ -1,0 +1,14 @@
+{
+  "name": "@serviceform/m10-sample-lab",
+  "version": "0.0.0",
+  "private": true,
+  "description": "SAMPLE_LAB in-process store for IND-SOC-002 golden journey mock (SIMULATED DigiLocker). Not PRODUCTION. Not G6.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}
