@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { ODISHA_LAB_POLICY } from './policy';
+import { PUBLIC_SAMPLE_LAB_POLICY } from './policy';
 import type { LabApplication, LabStoreFile } from './types';
 
 /** Fixed SAMPLE_LAB path under /tmp — shared by citizen + officer Next apps. */
@@ -70,7 +70,7 @@ export function createApplication(
 ): LabApplication {
   const now = new Date().toISOString();
   const eligibility_pass =
-    input.residence_duration_months >= ODISHA_LAB_POLICY.min_residence_months;
+    input.residence_duration_months >= PUBLIC_SAMPLE_LAB_POLICY.min_residence_months;
   const app: LabApplication = {
     id: randomUUID(),
     catalogue_id: 'IND-SOC-002',
@@ -78,13 +78,13 @@ export function createApplication(
     created_at: now,
     updated_at: now,
     ...input,
-    fee_paisa: ODISHA_LAB_POLICY.fee_amount_paisa,
+    fee_paisa: PUBLIC_SAMPLE_LAB_POLICY.fee_amount_paisa,
     eligibility_pass,
     digilocker: {
       mode: 'SIMULATED',
-      doc_type: ODISHA_LAB_POLICY.digilocker_doc_type,
+      doc_type: PUBLIC_SAMPLE_LAB_POLICY.digilocker_doc_type,
       status: 'NOT_REQUESTED',
-      simulation_marker: `sim:pending:${ODISHA_LAB_POLICY.environment_label}`,
+      simulation_marker: `sim:pending:${PUBLIC_SAMPLE_LAB_POLICY.environment_label}`,
     },
   };
   const store = readLabStore();
@@ -100,7 +100,8 @@ export function updateApplication(
   const store = readLabStore();
   const idx = store.applications.findIndex((a) => a.id === id);
   if (idx < 0) return undefined;
-  const current = store.applications[idx]!;
+  const current = store.applications[idx];
+  if (!current) return undefined;
   const next: LabApplication = {
     ...current,
     ...patch,

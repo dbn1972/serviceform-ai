@@ -1,4 +1,8 @@
-import { getApplication, ODISHA_LAB_POLICY, updateApplication } from '@serviceform/m10-sample-lab';
+import {
+  getApplication,
+  PUBLIC_SAMPLE_LAB_POLICY,
+  updateApplication,
+} from '@serviceform/m10-sample-lab';
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 
@@ -37,7 +41,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       return NextResponse.json(
         {
           error_code: 'SF-LAB-ELIGIBILITY',
-          message: `Residence duration below Odisha sample minimum (${ODISHA_LAB_POLICY.min_residence_months} months)`,
+          message: `Residence duration below public-sample minimum (${PUBLIC_SAMPLE_LAB_POLICY.min_residence_months} months)`,
         },
         { status: 400 },
       );
@@ -49,7 +53,7 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     });
     return NextResponse.json({
       application: updated,
-      credential_template_ref: ODISHA_LAB_POLICY.credential_template_ref,
+      credential_template_ref: PUBLIC_SAMPLE_LAB_POLICY.credential_template_ref,
       g6_issued: false,
     });
   }

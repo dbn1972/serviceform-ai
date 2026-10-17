@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { ODISHA_LAB_POLICY } from './policy';
+import { PUBLIC_SAMPLE_LAB_POLICY } from './policy';
 import { getApplication, updateApplication } from './store';
 import type { LabApplication } from './types';
 
@@ -18,7 +18,7 @@ export function mockDigiLockerPublish(applicationId: string): {
   if (app.status !== 'ISSUED') {
     return { ok: false, error: 'SF-LAB-NOT_ISSUED' };
   }
-  if (!ODISHA_LAB_POLICY.digilocker_doc_type.startsWith('SAMPLE_LAB_')) {
+  if (!PUBLIC_SAMPLE_LAB_POLICY.digilocker_doc_type.startsWith('SAMPLE_LAB_')) {
     return { ok: false, error: 'SF-LAB-DOC_TYPE' };
   }
 
@@ -29,7 +29,7 @@ export function mockDigiLockerPublish(applicationId: string): {
   const updated = updateApplication(applicationId, {
     digilocker: {
       mode: 'SIMULATED',
-      doc_type: ODISHA_LAB_POLICY.digilocker_doc_type,
+      doc_type: PUBLIC_SAMPLE_LAB_POLICY.digilocker_doc_type,
       status: 'PUBLISHED',
       provider_transaction_ref: providerRef,
       simulation_marker: `simulation:digilocker_publish:${testRunId}`,

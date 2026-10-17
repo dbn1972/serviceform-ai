@@ -7,7 +7,7 @@ export default function NewServicePage() {
       <StudioNav />
       <h1>Author service metadata</h1>
       <Alert variant="info" title="IND-SOC-002 sample on tip">
-        Residence Certificate template is authored as Studio metadata (Odisha public sample). No
+        Residence Certificate template is authored as Studio metadata (public e-District sample). No
         bespoke backend. DigiLocker remains SAMPLE_LAB / SIMULATED. G6 not issued.
       </Alert>
       <Card title="Next steps in Studio">

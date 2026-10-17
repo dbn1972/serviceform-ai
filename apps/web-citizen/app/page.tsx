@@ -8,8 +8,8 @@ export default function HomePage() {
       <h1>Citizen Portal</h1>
       <Card title="Golden sample services">
         <p className="ux4g-body-m-default">
-          IND-SOC-002 Residence Certificate — Odisha e-District public sample (SAMPLE_LAB).
-          DigiLocker is SIMULATED mock. G6 not issued.
+          IND-SOC-002 Residence Certificate — public e-District sample (SAMPLE_LAB). DigiLocker is
+          SIMULATED mock. G6 not issued.
         </p>
         <p>
           <TextLink href="/services/IND-SOC-002">Apply for Residence Certificate</TextLink>

@@ -1,10 +1,30 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 /**
- * Odisha e-District public sample constants (Finding M-04 resolved).
+ * Pilot public-sample constants (Finding M-04 resolved via public e-District portal).
  * DigiLocker remains SAMPLE_LAB / SIMULATED — not a registrar-issued doc type.
+ * Jurisdiction display names live in fixtures/master data only (Constitution #3).
  */
-export const ODISHA_LAB_POLICY = {
+
+function loadPolicySourceUrl(): string {
+  const candidates = [
+    join(process.cwd(), 'fixtures/golden/ind-soc-002/SOURCE_PROVENANCE.md'),
+    join(process.cwd(), '../../fixtures/golden/ind-soc-002/SOURCE_PROVENANCE.md'),
+  ];
+  for (const path of candidates) {
+    if (!existsSync(/*turbopackIgnore: true*/ path)) continue;
+    const text = readFileSync(/*turbopackIgnore: true*/ path, 'utf8');
+    const m = text.match(/https:\/\/edistrict\.[a-z0-9.-]+\//i);
+    if (m?.[0]) return m[0];
+  }
+  // Fail closed without naming a jurisdiction in source.
+  return 'SAMPLE_LAB_POLICY_SOURCE_UNRESOLVED';
+}
+
+export const PUBLIC_SAMPLE_LAB_POLICY = {
   catalogue_id: 'IND-SOC-002',
-  policy_source_url: 'https://edistrict.odisha.gov.in/',
+  policy_source_url: loadPolicySourceUrl(),
   min_residence_months: 12,
   fee_amount_paisa: 0,
   sla_working_days: 10,
@@ -15,4 +35,4 @@ export const ODISHA_LAB_POLICY = {
   g6_issued: false,
 } as const;
 
-export type DigiLockerMockMode = typeof ODISHA_LAB_POLICY.digilocker_mode;
+export type DigiLockerMockMode = typeof PUBLIC_SAMPLE_LAB_POLICY.digilocker_mode;

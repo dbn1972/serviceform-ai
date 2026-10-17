@@ -5,7 +5,7 @@ import {
   getApplication,
   labStorePath,
   mockDigiLockerPublish,
-  ODISHA_LAB_POLICY,
+  PUBLIC_SAMPLE_LAB_POLICY,
   updateApplication,
 } from '../src/index';
 
@@ -16,7 +16,7 @@ afterEach(() => {
 });
 
 describe('m10 SAMPLE_LAB store + DigiLocker mock', () => {
-  it('creates application with Odisha eligibility rule and SIMULATED DigiLocker pending', () => {
+  it('creates application with public-sample eligibility rule and SIMULATED DigiLocker pending', () => {
     const app = createApplication({
       applicant_name: 'SAMPLE LAB Applicant',
       applicant_dob: '1990-01-01',
@@ -35,8 +35,8 @@ describe('m10 SAMPLE_LAB store + DigiLocker mock', () => {
     expect(app.eligibility_pass).toBe(true);
     expect(app.fee_paisa).toBe(0);
     expect(app.digilocker.mode).toBe('SIMULATED');
-    expect(app.digilocker.doc_type).toBe(ODISHA_LAB_POLICY.digilocker_doc_type);
-    expect(ODISHA_LAB_POLICY.g6_issued).toBe(false);
+    expect(app.digilocker.doc_type).toBe(PUBLIC_SAMPLE_LAB_POLICY.digilocker_doc_type);
+    expect(PUBLIC_SAMPLE_LAB_POLICY.g6_issued).toBe(false);
   });
 
   it('refuses DigiLocker publish before issue; publishes SIMULATED after issue', () => {

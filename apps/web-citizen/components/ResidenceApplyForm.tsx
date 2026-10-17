@@ -65,8 +65,8 @@ export function ResidenceApplyForm() {
   return (
     <Card title="Residence Certificate application (SAMPLE_LAB)">
       <Alert variant="warning" title="Sample lab only — G6 not issued">
-        Policy facts from Odisha e-District public portal. DigiLocker stays SIMULATED / SAMPLE_LAB.
-        No real PII — use synthetic values only.
+        Policy facts from the public e-District sample portal. DigiLocker stays SIMULATED /
+        SAMPLE_LAB. No real PII — use synthetic values only.
       </Alert>
       <p className="ux4g-body-m-default">
         Eligibility (sample): ≥12 months continuous residence. Fee: ₹0. SLA: 10 working days.
@@ -141,7 +141,7 @@ export function ResidenceApplyForm() {
         onChange={(e) => setPurpose(e.target.value)}
       />
       <label className="ux4g-label-m-strong" htmlFor="evidence">
-        Evidence type (from Odisha published list)
+        Evidence type (from published sample list)
       </label>
       <select
         id="evidence"

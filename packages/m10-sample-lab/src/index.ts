@@ -1,4 +1,4 @@
-export { ODISHA_LAB_POLICY } from './policy';
+export { PUBLIC_SAMPLE_LAB_POLICY } from './policy';
 export type { DigiLockerMockMode } from './policy';
 export type {
   ApplicationStatus,
