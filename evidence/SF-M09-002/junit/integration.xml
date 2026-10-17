@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="12" failures="0" errors="0" time="3.418628978">
+    <testsuite name="test/integration/api-flow.int.test.ts" timestamp="2026-10-15T15:45:52.443Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.825953003">
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-057 API flow on PostgreSQL (INT-015) &gt; runs counter start → bind → verify → submit with tenant isolation" time="0.080658676">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-057 API flow on PostgreSQL (INT-015) &gt; representation channel refuses self-verification and accepts third-party opaque ref" time="0.061824438">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-057 API flow on PostgreSQL (INT-015) &gt; citizen resume preserves application identity after handoff" time="0.08858129">
+        </testcase>
+        <testcase classname="test/integration/api-flow.int.test.ts" name="CMP-057 API flow on PostgreSQL (INT-015) &gt; refuses self-assisted start at the API boundary" time="0.062306343">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/privilege-rls.int.test.ts" timestamp="2026-10-15T15:45:52.445Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="2.592675975">
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; sf_cmp057_rw is NOLOGIN NOSUPERUSER NOBYPASSRLS; runtime inherits it" time="0.038210382">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; FORCE RLS hides cross-tenant rows from the runtime role" time="0.049682867">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; peer privilege role cannot SELECT or INSERT into sf_assisted" time="0.053014475">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; database refuses applied_by == applied_for" time="0.031201826">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; database refuses inventing statutory marker flip" time="0.033662442">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; representation channel requires third-party verifier + opaque ref" time="0.045157737">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; no-tenant session cannot see rows (FORCE RLS)" time="0.035343803">
+        </testcase>
+        <testcase classname="test/integration/privilege-rls.int.test.ts" name="CMP-057 privilege boundary (ADR-0006), FORCE RLS and distinctness guards (INT-011/015) &gt; migration pair reverses cleanly on an isolated chain" time="1.803350553">
+        </testcase>
+    </testsuite>
+</testsuites>
