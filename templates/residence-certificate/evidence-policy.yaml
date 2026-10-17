@@ -1,45 +1,103 @@
-# IND-SOC-002 — Evidence Policy
-# Constitution §15: evidence has separate technical acceptance state and business verification state.
-# Binary evidence stored in S3, not PostgreSQL (Constitution §5).
-# Evidence types and requirements are POLICY_INPUT_REQUIRED from statutory owner.
-# Accepted evidence list below is illustrative shape only; owner must supply the authoritative list.
+# IND-SOC-002 — Evidence Policy (Odisha public portal sample)
+# Documents listed on https://edistrict.odisha.gov.in/ Resident Certificate page.
+# Not CERTIFIED. G6 not self-issued.
 
 evidence_policy_id: ind-soc-002-evidence-v1
 catalogue_id: IND-SOC-002
-version: "0.1.0-candidate"
+version: "0.2.0-odisha-sample"
 immutable_after_publish: true
 invented_statutory_policy_forbidden: true
-policy_input_required: true
+policy_input_required: false
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
-required_evidence_count_min: "POLICY_INPUT_REQUIRED"   # e.g. at least 2 of the accepted types
+required_evidence_count_min: 1
 
 accepted_evidence_types:
-  # POLICY_INPUT_REQUIRED — statutory owner supplies this list with acceptance rules
-  # Examples below are common practice shapes; do not treat as authoritative:
-  - type_id: "POLICY_INPUT_REQUIRED_TYPE_1"
-    display_name: "POLICY_INPUT_REQUIRED"
+  - type_id: ELECTRICITY_BILL
+    display_name: "Electricity Bill"
     technical_acceptance_rules:
       max_size_mb: 5
       allowed_mime: [application/pdf, image/jpeg, image/png]
     business_verification_required: true
-    note: "POLICY_INPUT_REQUIRED — e.g. Ration Card, Voter ID, Utility Bill"
-
-  - type_id: "POLICY_INPUT_REQUIRED_TYPE_2"
-    display_name: "POLICY_INPUT_REQUIRED"
+  - type_id: ROR_COPY
+    display_name: "Copy of ROR"
     technical_acceptance_rules:
       max_size_mb: 5
       allowed_mime: [application/pdf, image/jpeg, image/png]
     business_verification_required: true
-    note: "POLICY_INPUT_REQUIRED — e.g. Ration Card, Passport, Bank Passbook"
+  - type_id: EPIC_OR_AADHAAR
+    display_name: "EPIC / Aadhaar card"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: LANDLINE_TELEPHONE_BILL
+    display_name: "Landline Telephone Bill"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: WATER_CONNECTION_BILL
+    display_name: "Water connection bill"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: RATION_CARD
+    display_name: "Ration Card"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: HOLDING_TAX_RECEIPT
+    display_name: "Holding Tax Receipt"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: LEASE_AGREEMENT
+    display_name: "Lease agreement with house owner"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: EMPLOYER_CERTIFICATE
+    display_name: "Certificate from the Employer"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: BANK_PASSBOOK_FIRST_PAGE
+    display_name: "First page of bank passbook"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: VOTER_LIST_EXTRACT
+    display_name: "Extract of latest voter list"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: NREGA_JOB_CARD
+    display_name: "NREGA job card"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
+  - type_id: OTHER_RELEVANT
+    display_name: "Other documents relevant to this service"
+    technical_acceptance_rules:
+      max_size_mb: 5
+      allowed_mime: [application/pdf, image/jpeg, image/png]
+    business_verification_required: true
 
 technical_acceptance_state:
-  # Constitution §15 — independent from business verification
   pending: UPLOADED_PENDING_SCAN
   accepted: TECHNICALLY_ACCEPTED
   rejected: TECHNICALLY_REJECTED
 
 business_verification_state:
-  # Separate from technical acceptance
   pending: PENDING_OFFICER_REVIEW
   verified: VERIFIED
   queried: DEFICIENCY_RAISED

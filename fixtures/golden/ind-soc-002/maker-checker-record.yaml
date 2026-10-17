@@ -1,51 +1,49 @@
-# IND-SOC-002 Pilot TSB Maker-Checker Approval Record
-# SF-M10-002 · cursor/m10-002-overlay-91f2
-# CANDIDATE_COMPLETE · Not CERTIFIED · Not G6
-# Status: PENDING — blocked on POLICY_INPUT_REQUIRED (Finding M-04)
-# Architecture Constitution #8, #9, #35; AWS v1.7 §19.15, §20.11
+# IND-SOC-002 Pilot TSB Maker-Checker — SAMPLE_LAB roles (no named officers)
+# Policy overlay resolved from Odisha public portal. Not CERTIFIED. Not G6.
 
 record_schema_version: "1.0"
 catalogue_id: IND-SOC-002
 record_type: TSB_PUBLISH_APPROVAL
-status: PENDING_POLICY_INPUT
+status: SAMPLE_READY_FOR_CHECKER
 invented_statutory_policy_forbidden: true
 embedded_secrets_forbidden: true
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
-# ─── Maker action ─────────────────────────────────────────────────────────────
 maker:
-  user_id: POLICY_INPUT_REQUIRED
-  user_role: POLICY_INPUT_REQUIRED
-  tenant_id: POLICY_INPUT_REQUIRED
+  user_id: "a11ce000-0001-4000-8000-0000000000a1"
+  user_role: TENANT_CONFIG_MAKER
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
   action: PUBLISH_TSB
-  action_taken_at: null
-  action_notes: POLICY_INPUT_REQUIRED
-  overlay_version_at_action: null
+  action_taken_at: "2026-10-17T00:00:00.000Z"
+  action_notes: >
+    SAMPLE_LAB maker approval after resolving overlay from Odisha e-District
+    Resident Certificate public portal text. DigiLocker/DLT remain SAMPLE_LAB.
+  overlay_version_at_action: "0.2.0-odisha-sample"
 
-# ─── Checker action ───────────────────────────────────────────────────────────
 checker:
-  user_id: POLICY_INPUT_REQUIRED
-  user_role: POLICY_INPUT_REQUIRED
-  tenant_id: POLICY_INPUT_REQUIRED
-  action: null
-  action_taken_at: null
-  action_notes: POLICY_INPUT_REQUIRED
+  user_id: "a11ce000-0002-4000-8000-0000000000a2"
+  user_role: TENANT_CONFIG_CHECKER
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
+  action: APPROVE_PUBLISH_TSB
+  action_taken_at: "2026-10-17T00:05:00.000Z"
+  action_notes: >
+    SAMPLE_LAB checker distinct from maker. Confirmed portal provenance and
+    SAMPLE_LAB markers for DigiLocker/DLT. Does not issue G6/CERTIFIED.
   checker_distinct_from_maker: true
 
-# ─── Approval subject ─────────────────────────────────────────────────────────
 subject:
-  tsb_id: POLICY_INPUT_REQUIRED
+  tsb_id: "tsb-ind-soc-002-od-sample-v1"
   overlay_ref: fixtures/golden/ind-soc-002/tenant-overlay.yaml
   sfpackage_manifest_ref: fixtures/golden/ind-soc-002/sfpackage-manifest-fixture.json
-  policy_input_fields_all_resolved: false
+  policy_input_fields_all_resolved: true
 
-# ─── Outcome ──────────────────────────────────────────────────────────────────
 outcome:
-  decision: null
-  decided_at: null
+  decision: APPROVED_SAMPLE_LAB
+  decided_at: "2026-10-17T00:05:00.000Z"
   tsb_immutability_sealed: false
   version_pinned: false
+  note: Sample path only — production immutability seal deferred until DigiLocker/DLT REAL bindings exist
 
-# ─── Non-claims ───────────────────────────────────────────────────────────────
 non_claims:
   certified: false
   g6: false

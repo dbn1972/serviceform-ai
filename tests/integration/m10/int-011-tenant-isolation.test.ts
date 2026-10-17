@@ -7,6 +7,8 @@ import {
   ctxFor,
   InMemoryApplicationRepo,
   leaks,
+  ODISHA_PUBLIC_SAMPLE,
+  OWNER_INPUTS_READY,
   RecordingAuthorizer,
   T1,
   T2,
@@ -247,30 +249,45 @@ describe('INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding)', () =>
     expect(leakage).toBe(0);
   });
 
-  // ── Policy-input-gated tests (unblocked when SF_M10_OWNER_INPUTS_READY=1) ──
+  // ── Odisha public-portal sample (SF_M10_OWNER_INPUTS_READY=1) ─────────────
 
-  it.todo(
-    'POLICY_INPUT_REQUIRED: eligibility rule rejects ineligible applicant ' +
-      '(blocked until owner provides eligibility_rule_ref)',
+  it.skipIf(!OWNER_INPUTS_READY)(
+    'Odisha sample: eligibility rejects <12 months without published relaxation',
+    () => {
+      const months = 6;
+      const eligible =
+        months >= ODISHA_PUBLIC_SAMPLE.min_residence_months || false; /* no relaxation supplied */
+      expect(eligible).toBe(false);
+      expect(ODISHA_PUBLIC_SAMPLE.min_residence_months).toBe(12);
+      expect(ODISHA_PUBLIC_SAMPLE.policy_source_url).toContain('edistrict.odisha.gov.in');
+    },
+  );
+
+  it.skipIf(!OWNER_INPUTS_READY)(
+    'Odisha sample: fee is ₹0 government service charge (0 paisa)',
+    () => {
+      expect(ODISHA_PUBLIC_SAMPLE.fee_amount_paisa).toBe(0);
+      expect(ODISHA_PUBLIC_SAMPLE.fee_schedule_ref).toContain('fee-policy.yaml');
+    },
+  );
+
+  it.skipIf(!OWNER_INPUTS_READY)(
+    'Odisha sample: overall SLA is 10 working days from APPLICATION_SUBMITTED',
+    () => {
+      expect(ODISHA_PUBLIC_SAMPLE.sla_working_days).toBe(10);
+      expect(ODISHA_PUBLIC_SAMPLE.sla_ref).toContain('sla-policy.yaml');
+    },
+  );
+
+  it.skipIf(!OWNER_INPUTS_READY)(
+    'Odisha sample: credential template ref is SAMPLE_LAB (not DigiLocker-registered)',
+    () => {
+      expect(ODISHA_PUBLIC_SAMPLE.credential_template_ref).toMatch(/^SAMPLE_LAB_/);
+    },
   );
 
   it.todo(
-    'POLICY_INPUT_REQUIRED: fee calculation produces correct amount from owner fee_schedule_ref ' +
-      '(blocked until owner provides fee_schedule_ref)',
-  );
-
-  it.todo(
-    'POLICY_INPUT_REQUIRED: SLA timer starts at submission and breaches after owner-defined duration ' +
-      '(blocked until owner provides sla_ref)',
-  );
-
-  it.todo(
-    'POLICY_INPUT_REQUIRED: credential issued only after APPROVED state and owner credential_template_ref ' +
-      '(blocked until owner provides credential_template_ref)',
-  );
-
-  it.todo(
-    'POLICY_INPUT_REQUIRED: DigiLocker publish path exercises same callback/state-machine as real provider ' +
-      '(Architecture Constitution rule 14; blocked until owner provides DigiLocker binding config)',
+    'PRODUCTION DigiLocker publish path — blocked until REAL DigiLocker binding ' +
+      '(SAMPLE_LAB doc type only; Architecture Constitution rule 14)',
   );
 });

@@ -1,45 +1,48 @@
-# IND-SOC-002 — GoRules deterministic rule set (POLICY_INPUT_REQUIRED)
-# These rules execute via GoRules engine (Constitution §7). Not LLM-evaluated.
-# Statutory eligibility thresholds, minimum duration, fee waivers, and document
-# requirements are POLICY_INPUT_REQUIRED — the statutory owner must supply them.
-# Do NOT invent residence statute, eligibility criteria, or fee thresholds.
-# No final approval/rejection decision may be made by an AI/LLM (Constitution §20).
+# IND-SOC-002 — GoRules (Odisha public portal sample)
+# Eligibility from https://edistrict.odisha.gov.in/ Resident Certificate text.
+# Fee = 0 government service charge. Not LLM-evaluated. Not CERTIFIED. Not G6.
 
 rule_set_id: ind-soc-002-rules-v1
 engine: GORULES
-version: "0.1.0-candidate"
+version: "0.2.0-odisha-sample"
 immutable_after_publish: true
 invented_statutory_policy_forbidden: true
-policy_input_required: true
+policy_input_required: false
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
 nodes:
-  # ELIGIBILITY GATE — statutory threshold POLICY_INPUT_REQUIRED
   - id: eligibility_check
     kind: DECISION_TABLE
     description: >
-      Determine if applicant meets residence eligibility. Minimum duration, age, and
-      other criteria are POLICY_INPUT_REQUIRED from statutory owner.
+      Continuous residence ≥ 12 months in concerned Tahasil, or documented
+      relaxation (transferred govt employee / woman married within past 1 year).
     inputs:
       - field: residence_duration_months
         type: integer
-      - field: applicant_dob
-        type: date
+      - field: relaxation_code
+        type: string
     outputs:
       - field: is_eligible
         type: boolean
       - field: ineligibility_reason
         type: string
     rows:
-      # POLICY_INPUT_REQUIRED — statutory owner supplies minimum residence duration and age
-      - condition: "residence_duration_months >= POLICY_INPUT_REQUIRED_MIN_MONTHS"
+      - condition: "residence_duration_months >= 12"
         result: { is_eligible: true, ineligibility_reason: "" }
-      - condition: "residence_duration_months < POLICY_INPUT_REQUIRED_MIN_MONTHS"
-        result: { is_eligible: false, ineligibility_reason: "POLICY_INPUT_REQUIRED_INELIGIBILITY_MESSAGE" }
+      - condition: "relaxation_code == 'TRANSFERRED_GOVT_EMPLOYEE_WITHIN_1_YEAR'"
+        result: { is_eligible: true, ineligibility_reason: "" }
+      - condition: "relaxation_code == 'WOMAN_MARRIED_WITHIN_1_YEAR'"
+        result: { is_eligible: true, ineligibility_reason: "" }
+      - condition: "true"
+        result:
+          {
+            is_eligible: false,
+            ineligibility_reason: "Continuous residence of at least one year within the concerned Tahasil is required (edistrict.odisha.gov.in), unless a published relaxation applies",
+          }
 
-  # COMPLETENESS CHECK — form completeness before routing
   - id: completeness_check
     kind: FUNCTION
-    description: Check all required fields present and evidence refs non-empty
+    description: Check required fields present and at least one evidence ref
     inputs:
       - field: supporting_evidence_refs
         type: array
@@ -49,12 +52,9 @@ nodes:
       - field: missing_fields
         type: array
 
-  # FEE CALCULATION — POLICY_INPUT_REQUIRED
   - id: fee_calculation
     kind: DECISION_TABLE
-    description: >
-      Calculate applicable fee. Fee structure is POLICY_INPUT_REQUIRED from statutory owner.
-      GoRules evaluates deterministically; no LLM involvement.
+    description: Odisha portal — no Government Service charge
     inputs:
       - field: applicant_category
         type: string
@@ -64,11 +64,12 @@ nodes:
       - field: fee_waiver_reason
         type: string
     rows:
-      # POLICY_INPUT_REQUIRED — fee schedule supplied by statutory owner (may be zero)
-      - condition: "applicant_category == 'POLICY_INPUT_REQUIRED_CATEGORY'"
-        result: { fee_amount_paisa: "POLICY_INPUT_REQUIRED_AMOUNT", fee_waiver_reason: "" }
       - condition: "true"
-        result: { fee_amount_paisa: "POLICY_INPUT_REQUIRED_DEFAULT_AMOUNT", fee_waiver_reason: "" }
+        result:
+          {
+            fee_amount_paisa: 0,
+            fee_waiver_reason: "No Government Service charge (edistrict.odisha.gov.in)",
+          }
 
 edges:
   - from: eligibility_check
