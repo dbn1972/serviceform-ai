@@ -1,0 +1,50 @@
+
+> serviceform-ai@ e2e /home/ubuntu/wt-SF-M10-G6-TODAY
+> playwright test -c tests/e2e/playwright.config.ts -- tests/e2e/golden/ind-soc-002-golden.spec.ts
+
+
+Running 32 tests using 2 workers
+
+  -   1 tests/e2e/golden/ind-soc-002-golden.spec.ts:47:3 › M10 Golden E2E — owner-input gate › fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set
+  -   2 tests/e2e/golden/ind-soc-002-golden.spec.ts:72:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal health endpoint responds 200
+  -   3 tests/e2e/golden/ind-soc-002-golden.spec.ts:77:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench health endpoint responds 200
+  -   4 tests/e2e/golden/ind-soc-002-golden.spec.ts:82:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio health endpoint responds 200
+  -   5 tests/e2e/golden/ind-soc-002-golden.spec.ts:87:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal is reachable and has correct page title
+  -   6 tests/e2e/golden/ind-soc-002-golden.spec.ts:93:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench is reachable and has correct page title
+  -   7 tests/e2e/golden/ind-soc-002-golden.spec.ts:99:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio is reachable and has correct page title
+  -   8 tests/e2e/golden/ind-soc-002-golden.spec.ts:109:3 › M10 Golden E2E — tenant isolation probes › citizen portal does not serve cross-tenant data in page source
+  -   9 tests/e2e/golden/ind-soc-002-golden.spec.ts:117:3 › M10 Golden E2E — tenant isolation probes › API health endpoint does not include tenant identifiers in response body
+  -  10 tests/e2e/golden/ind-soc-002-golden.spec.ts:131:3 › M10 Golden E2E — tenant isolation probes › forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002)
+  -  11 tests/e2e/golden/ind-soc-002-golden.spec.ts:157:3 › M10 Golden E2E — UX4G accessibility scaffolding › citizen portal has required ARIA landmarks
+  -  12 tests/e2e/golden/ind-soc-002-golden.spec.ts:161:3 › M10 Golden E2E — UX4G accessibility scaffolding › officer workbench has required ARIA landmarks
+(node:343511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:343510) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:343511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:343510) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 tests/e2e/shells.spec.ts:10:5 › web-citizen shell › serves the page with landmarks and a level-one heading (249ms)
+  ✓  15 tests/e2e/shells.spec.ts:30:5 › web-citizen shell › skip link is the first tab stop and moves focus to main (180ms)
+  ✓  16 tests/e2e/shells.spec.ts:39:5 › web-citizen shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (143ms)
+  ✓  14 tests/e2e/shells.spec.ts:22:5 › web-citizen shell › has no automatically detectable WCAG 2.1 A/AA violations (612ms)
+  ✓  17 tests/e2e/shells.spec.ts:48:5 › web-citizen shell › sends security headers and a health endpoint (30ms)
+  ✓  18 tests/e2e/shells.spec.ts:10:5 › web-officer shell › serves the page with landmarks and a level-one heading (215ms)
+  ✓  20 tests/e2e/shells.spec.ts:30:5 › web-officer shell › skip link is the first tab stop and moves focus to main (179ms)
+  ✓  21 tests/e2e/shells.spec.ts:39:5 › web-officer shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (124ms)
+  ✓  22 tests/e2e/shells.spec.ts:48:5 › web-officer shell › sends security headers and a health endpoint (22ms)
+  ✓  19 tests/e2e/shells.spec.ts:22:5 › web-officer shell › has no automatically detectable WCAG 2.1 A/AA violations (559ms)
+  ✓  23 tests/e2e/shells.spec.ts:10:5 › web-studio shell › serves the page with landmarks and a level-one heading (227ms)
+  ✓  25 tests/e2e/shells.spec.ts:30:5 › web-studio shell › skip link is the first tab stop and moves focus to main (202ms)
+  ✓  24 tests/e2e/shells.spec.ts:22:5 › web-studio shell › has no automatically detectable WCAG 2.1 A/AA violations (565ms)
+  ✓  26 tests/e2e/shells.spec.ts:39:5 › web-studio shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (136ms)
+  ✓  27 tests/e2e/shells.spec.ts:48:5 › web-studio shell › sends security headers and a health endpoint (15ms)
+  ✓  28 tests/e2e/shells.spec.ts:10:5 › web-admin shell › serves the page with landmarks and a level-one heading (229ms)
+  ✓  30 tests/e2e/shells.spec.ts:30:5 › web-admin shell › skip link is the first tab stop and moves focus to main (211ms)
+  ✓  29 tests/e2e/shells.spec.ts:22:5 › web-admin shell › has no automatically detectable WCAG 2.1 A/AA violations (553ms)
+  ✓  32 tests/e2e/shells.spec.ts:48:5 › web-admin shell › sends security headers and a health endpoint (17ms)
+  ✓  31 tests/e2e/shells.spec.ts:39:5 › web-admin shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (141ms)
+
+  12 skipped
+  20 passed (6.7s)

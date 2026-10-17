@@ -1,0 +1,26 @@
+{
+  "record": "SF-M10-G6-TODAY",
+  "base_tip": "aa5f012083b534933015d279a8e5666f43adb808",
+  "g6_issued": false,
+  "certified": false,
+  "self_certified": false,
+  "executed": {
+    "g5_hold": "3 passed / 1 skipped",
+    "resilience_hold": "3 passed / 1 skipped / 1 todo",
+    "ux4g_hold": "2 passed / 1 skipped / 1 todo",
+    "cmp012_digilocker_unit_simulated": "66 passed",
+    "e2e_shells": "20 passed",
+    "e2e_golden_ind_soc_002": "12 passed / 7 skipped (journeys not implemented)"
+  },
+  "schema_only_artifacts": [
+    "tests/performance/m10/load-profile.yaml",
+    "tests/resilience/m10/resilience-checklist.yaml"
+  ],
+  "still_blocked": [
+    "SF_M10_G5_PERF_READY",
+    "SF_M10_RESILIENCE_READY",
+    "REAL DigiLocker registrar + doc type",
+    "SF_M10_UX4G_READY + IND-SOC-002 journey screens",
+    "TSB seal after REAL DigiLocker/DLT"
+  ]
+}

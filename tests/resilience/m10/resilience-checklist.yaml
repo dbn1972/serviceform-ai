@@ -1,0 +1,17 @@
+# M10 resilience checklist — SCHEMA ONLY.
+# RTO/RPO and restore-cell IDs are OWNER_REQUIRED. Do not invent ops numbers.
+# Set SF_M10_RESILIENCE_READY=1 only after ops runbook + restore drill are authorized.
+schema_version: 1
+module: M10
+catalogue_id: IND-SOC-002
+status: OWNER_REQUIRED
+resilience_pass_claimed: false
+targets:
+  rto_minutes: null # OWNER_REQUIRED
+  rpo_minutes: null # OWNER_REQUIRED
+  restore_cell: null # OWNER_REQUIRED
+  backup_scope: null # OWNER_REQUIRED — Aurora PostgreSQL + Temporal + object store
+  rollback_against_published_tsb: null # OWNER_REQUIRED — must preserve SF_PUBLISHED_IMMUTABLE
+notes: >
+  Hold suite asserts every target is null until SF_M10_RESILIENCE_READY=1.
+  Simulated-only restore does not clear G6 resilience.

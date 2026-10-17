@@ -31,12 +31,13 @@ DigiLocker doc type and DLT PE-IDs remain **`SAMPLE_LAB_*`** (not published on t
 
 ## Holds blocking human G6 issuance
 
-See inventory: [`M10-G6-PREREQUISITES.md`](./M10-G6-PREREQUISITES.md).
+See inventory: [`M10-G6-PREREQUISITES.md`](./M10-G6-PREREQUISITES.md).  
+Today’s scaffolding evidence: `evidence/SF-M10-G6-TODAY/` (shell a11y 20/20, golden health 12 + 7 journey skips, DigiLocker SIMULATED 66 — **not** G6).
 
-1. **G5 performance / soak** evidence not on tip (`SF-M10-004` / `SF-M10-PERF` PLANNING)  
-2. **Resilience / backup-restore / rollback** evidence not on tip  
-3. **REAL DigiLocker** critical-connector validation (SAMPLE_LAB only; payment ₹0 skip OK for lab)  
-4. **UX4G** visual/a11y evidence for golden citizen path not bound (`SF-M10-005` PLANNING)  
+1. **G5 performance / soak** — schema-only `load-profile.yaml`; needs human numbers + PERF cell  
+2. **Resilience / backup-restore / rollback** — schema-only checklist; needs ops runbook + cell  
+3. **REAL DigiLocker** — SIMULATED lab only; registrar credentials + doc type still required  
+4. **UX4G journey** — shell bar PASS; IND-SOC-002 screens + `SF_M10_UX4G_READY` still required  
 5. Studio **immutability seal** of published TSB deferred until REAL DigiLocker/DLT bindings exist  
 
 ## Certification stance
