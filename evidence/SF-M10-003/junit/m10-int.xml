@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="0" errors="0" time="0.019076384">
+    <testsuite name="tests/integration/m10/int-011-tenant-isolation.test.ts" timestamp="2026-10-17T01:09:42.947Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="1" time="0.006785006">
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; tenant B cannot read a tenant-A application (404, no identifiers echoed)" time="0.001880527">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; the same application_id submitted under two tenants yields distinct, non-colliding records" time="0.000338904">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; a tenant-A application_id submitted with a tenant-B context is stored only in T2 partition" time="0.000230479">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; forged tenant header is refused at the host boundary (SF-TEN-002), no service call made" time="0.000356976">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; client-supplied tenant_id in command body is never adopted as identity" time="0.000245254">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; OPA authorizer subject.tenant_id always equals the server-derived tenant, never CANARY" time="0.001056404">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; aggregate: CROSS_TENANT_LEAKAGE = 0 across all M10 tenant-negative probes" time="0.000287823">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; Odisha sample: eligibility rejects &lt;12 months without published relaxation" time="0.000156709">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; Odisha sample: fee is ₹0 government service charge (0 paisa)" time="0.000403249">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; Odisha sample: overall SLA is 10 working days from APPLICATION_SUBMITTED" time="0.000174939">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; Odisha sample: credential template ref is SAMPLE_LAB (not DigiLocker-registered)" time="0.00025736">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-011-tenant-isolation.test.ts" name="INT-011 M10 tenant isolation (IND-SOC-002 harness scaffolding) &gt; PRODUCTION DigiLocker publish path — blocked until REAL DigiLocker binding (SAMPLE_LAB doc type only; Architecture Constitution rule 14)" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10/int-013-modes.test.ts" timestamp="2026-10-17T01:09:42.950Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="2" time="0.012291378">
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; SIMULATED mode is allowed in simulation environments for all critical connectors" time="0.00250026">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; REAL mode is allowed in every environment" time="0.001670882">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; SANDBOX mode is allowed in every environment (exercises same path as REAL)" time="0.003342445">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; PRODUCTION-tier env &apos;UAT&apos; refuses SIMULATED for every critical connector (SF-SYS-003)" time="0.001339146">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; PRODUCTION-tier env &apos;PREPROD&apos; refuses SIMULATED for every critical connector (SF-SYS-003)" time="0.000320578">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; PRODUCTION-tier env &apos;PRODUCTION&apos; refuses SIMULATED for every critical connector (SF-SYS-003)" time="0.000179413">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; connector mode enumeration is restricted to REAL/SANDBOX/SIMULATED only" time="0.000833599">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; harness fail-closed: assertOwnerInputsReady throws when SF_M10_OWNER_INPUTS_READY is unset" time="0.000235562">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; POLICY_PLACEHOLDER fields are all null until owner provides inputs" time="0.000416798">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; catalogue ID IND-SOC-002 is referenced from the M10-PLAN template_root, not invented" time="0.000214864">
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; POLICY_INPUT_REQUIRED: SANDBOX payment exercises the same Payment Service callback and state-machine path as REAL (Architecture Constitution rule 14; blocked until owner provides fee_schedule_ref)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/integration/m10/int-013-modes.test.ts" name="INT-013 M10 critical connector mode enforcement (IND-SOC-002) &gt; POLICY_INPUT_REQUIRED: REAL payment connector binding validates against connector-binding schema (blocked until pilot tenant and provider binding are supplied)" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

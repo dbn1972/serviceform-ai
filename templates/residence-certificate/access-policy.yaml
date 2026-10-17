@@ -5,9 +5,10 @@
 
 access_policy_id: ind-soc-002-access-v1
 catalogue_id: IND-SOC-002
-version: "0.1.0-candidate"
+version: "0.2.0-odisha-sample"
 immutable_after_publish: true
 invented_statutory_policy_forbidden: true
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
 channels:
   citizen_portal:
@@ -33,8 +34,8 @@ channels:
 authz_engine: OPA
 rls_enforced: true
 
-# Maker-checker — roles POLICY_INPUT_REQUIRED; no named officers (Constitution §3 §19)
+# Maker-checker — role classes only; no named officers (Constitution §3 §19)
 maker_checker:
-  scrutiny_role: "POLICY_INPUT_REQUIRED"
-  approval_role: "POLICY_INPUT_REQUIRED"
+  scrutiny_role: REVENUE_INSPECTOR_OR_EQUIVALENT
+  approval_role: TAHSILDAR
   issuance_role: SYSTEM_CMP022

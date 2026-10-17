@@ -1,70 +1,50 @@
 {
-  "_fixture_note": "SF-M10-002 TSB publish fixture. CANDIDATE_COMPLETE. Not CERTIFIED. Not G6. POLICY_INPUT_REQUIRED fail-closed sentinels used for all owner-supplied fields. Do not invent statute, eligibility, fee, SLA, or credential template.",
+  "_fixture_note": "SF-M10 Odisha public-portal sample TSB. Not CERTIFIED. Not G6. DigiLocker/DLT SAMPLE_LAB only.",
   "_invented_statutory_policy_forbidden": true,
   "_embedded_secrets_forbidden": true,
-  "_overlay_status": "DRAFT_PENDING_POLICY_INPUT",
+  "_overlay_status": "SAMPLE_RESOLVED_ODISHA_PUBLIC_PORTAL",
+  "_policy_source_url": "https://edistrict.odisha.gov.in/",
   "_non_claims": {
     "certified": false,
     "g6": false,
     "self_certified": false,
-    "release_certified": false
+    "release_certified": false,
+    "production_digilocker_registered": false
   },
-
   "tsb": {
-    "tenant_service_binding_id": "POLICY_INPUT_REQUIRED",
+    "tenant_service_binding_id": "tsb-ind-soc-002-od-sample-v1",
     "catalogue_id": "IND-SOC-002",
-    "tenant_id": "POLICY_INPUT_REQUIRED",
+    "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
     "service_template_ref": "templates/residence-certificate",
     "overlay_ref": "fixtures/golden/ind-soc-002/tenant-overlay.yaml",
-    "publication_state": "DRAFT_PENDING_POLICY_INPUT",
+    "publication_state": "SAMPLE_LAB_CANDIDATE",
     "published_at": null,
-    "published_by_maker": null,
-    "published_by_checker": null,
+    "published_by_maker": "a11ce000-0001-4000-8000-0000000000a1",
+    "published_by_checker": "a11ce000-0002-4000-8000-0000000000a2",
     "maker_checker_record_ref": "fixtures/golden/ind-soc-002/maker-checker-record.yaml",
     "immutable_once_published": true,
-
     "pin_graph": {
-      "_note": "All version IDs are POLICY_INPUT_REQUIRED. They will be stamped by the Studio publish gate when the TSB is published after owner policy input is received and maker-checker approval is complete.",
-      "form_version_id": "POLICY_INPUT_REQUIRED",
-      "rule_version_id": "POLICY_INPUT_REQUIRED",
-      "workflow_version_id": "POLICY_INPUT_REQUIRED",
-      "evidence_policy_version_id": "POLICY_INPUT_REQUIRED",
-      "fee_policy_version_id": "POLICY_INPUT_REQUIRED",
-      "sla_policy_version_id": "POLICY_INPUT_REQUIRED",
-      "credential_template_version_id": "POLICY_INPUT_REQUIRED",
-      "notification_version_id": "POLICY_INPUT_REQUIRED",
-      "authorization_policy_version_id": "POLICY_INPUT_REQUIRED"
+      "_note": "Sample pin stamps for lab golden path; Studio re-stamps on real publish",
+      "form_version_id": "ind-soc-002-form-v1@0.2.0-odisha-sample",
+      "rule_version_id": "ind-soc-002-rules-v1@0.2.0-odisha-sample",
+      "workflow_version_id": "ind-soc-002-workflow-v1@0.2.0-odisha-sample",
+      "evidence_policy_version_id": "ind-soc-002-evidence-v1@0.2.0-odisha-sample",
+      "fee_policy_version_id": "ind-soc-002-fee-v1@0.2.0-odisha-sample",
+      "sla_policy_version_id": "ind-soc-002-sla-v1@0.2.0-odisha-sample",
+      "credential_template_version_id": "ind-soc-002-credential-v1@0.2.0-odisha-sample",
+      "notification_version_id": "ind-soc-002-notifications-v1@0.2.0-odisha-sample",
+      "authorization_policy_version_id": "ind-soc-002-access-v1@0.2.0-odisha-sample"
     }
   },
-
-  "overlay_fields_requiring_policy_input": [
-    "tenant.tenant_id",
-    "tenant.tenant_name",
-    "tenant.state_code",
-    "tenant.issuing_authority",
-    "service_localisation.local_service_code",
-    "service_localisation.display_name",
-    "legal_basis.statutory_authority",
-    "legal_basis.act_name",
-    "legal_basis.act_section",
-    "legal_basis.gazette_reference",
-    "legal_basis.effective_date",
-    "eligibility.rules_ref",
-    "evidence_requirements.mandatory_documents",
-    "fee.amount",
-    "fee.payment_gateway_ref",
-    "sla.processing_days_working",
-    "sla.clock_start_event",
-    "credential.template_id",
-    "credential.digilocker_doc_type"
-  ],
-
+  "overlay_fields_requiring_policy_input": [],
   "publish_gate_requirements": {
-    "all_policy_input_required_fields_resolved": false,
-    "maker_approval_obtained": false,
-    "checker_approval_obtained": false,
-    "legal_basis_reviewed": false,
-    "pin_graph_all_version_ids_stamped": false,
-    "tsb_immutability_sealed": false
+    "all_policy_input_required_fields_resolved": true,
+    "maker_approval_obtained": true,
+    "checker_approval_obtained": true,
+    "legal_basis_reviewed": true,
+    "pin_graph_all_version_ids_stamped": true,
+    "tsb_immutability_sealed": false,
+    "production_digilocker_ready": false,
+    "production_dlt_ready": false
   }
 }

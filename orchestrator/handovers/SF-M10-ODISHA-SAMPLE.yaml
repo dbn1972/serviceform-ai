@@ -1,0 +1,29 @@
+# SF-M10-ODISHA-SAMPLE — resolve Finding M-04 from Odisha public portal
+task_id: SF-M10-ODISHA-SAMPLE
+module_id: M10
+catalogue_id: IND-SOC-002
+agent_role: component_builder
+branch: cursor/m10-odisha-sample-91f2
+orchestration_task_state: CANDIDATE
+state: CANDIDATE
+policy_source_url: "https://edistrict.odisha.gov.in/"
+state_code: IN-OD
+policy_sample_resolved: true
+self_certified: false
+certified: false
+g6: false
+g6_issued: false
+g6_issuable: false
+disposition: SF_M10_EVD_PASS_POLICY_RESOLVED_G6_HOLD
+allowed_write_paths:
+  - templates/residence-certificate/**
+  - fixtures/golden/ind-soc-002/**
+  - tests/integration/m10/**
+  - docs/verification/M10-G6-RECOMMENDATION.md
+  - evidence/SF-M10-ODISHA-SAMPLE/**
+  - evidence/SF-M10-003/junit/**
+  - orchestrator/handovers/SF-M10-ODISHA-SAMPLE.yaml
+human_authorization: HUMAN_M10_PUBLIC_STATE_SAMPLE
+note: >
+  Fills owner policy from Odisha e-District public Resident Certificate page.
+  Does not issue G6. Holds remain for G5/REAL DigiLocker/resilience/UX4G.

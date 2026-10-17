@@ -1,92 +1,111 @@
-# IND-SOC-002 Pilot Tenant Overlay
-# SF-M10-002 · cursor/m10-002-overlay-91f2
-# CANDIDATE_COMPLETE · Not CERTIFIED · Not G6
-# POLICY_INPUT_REQUIRED (Finding M-04): fail-closed placeholders only.
-# Do NOT invent pilot tenant, State, legal basis, eligibility, fee, SLA, or credential.
+# IND-SOC-002 Pilot Tenant Overlay — Odisha Resident Certificate sample
+# Public reference: https://edistrict.odisha.gov.in/ (see SOURCE_PROVENANCE.md)
+# SAMPLE_LAB DigiLocker/DLT values are not production registrations.
+# Not CERTIFIED. G6 not self-issued.
 
 overlay_schema_version: "1.0"
 catalogue_id: IND-SOC-002
 service_template_ref: templates/residence-certificate
-overlay_status: DRAFT_PENDING_POLICY_INPUT
+overlay_status: SAMPLE_RESOLVED_ODISHA_PUBLIC_PORTAL
 invented_statutory_policy_forbidden: true
 embedded_secrets_forbidden: true
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
-# ─── Tenant identity (POLICY_INPUT_REQUIRED) ───────────────────────────────────
 tenant:
-  tenant_id: POLICY_INPUT_REQUIRED
-  tenant_name: POLICY_INPUT_REQUIRED
-  state_code: POLICY_INPUT_REQUIRED
-  issuing_authority: POLICY_INPUT_REQUIRED
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
+  tenant_name: "Revenue and Disaster Management Department, Government of Odisha"
+  state_code: IN-OD
+  issuing_authority: "Tahasildar (concerned Tahasil)"
 
-# ─── Service localisation ──────────────────────────────────────────────────────
 service_localisation:
   catalogue_id: IND-SOC-002
-  local_service_code: POLICY_INPUT_REQUIRED
+  local_service_code: "OD-RDM-RESIDENT-CERTIFICATE"
   display_name:
-    en: POLICY_INPUT_REQUIRED
-    hi: POLICY_INPUT_REQUIRED
+    en: "Resident Certificate"
+    hi: "निवास प्रमाण पत्र"
+    or: "ନିବାସ ପ୍ରମାଣପତ୍ର"
   description:
-    en: POLICY_INPUT_REQUIRED
-  department: POLICY_INPUT_REQUIRED
-  jurisdiction: POLICY_INPUT_REQUIRED
+    en: >
+      Resident Certificate for a locality in Odisha, issued under the ORTPS/ORTPSA
+      notified service of the Revenue and Disaster Management Department
+      (public reference: edistrict.odisha.gov.in).
+  department: "Revenue and Disaster Management Department"
+  jurisdiction: "Tahasil within the State of Odisha"
 
-# ─── Legal basis (POLICY_INPUT_REQUIRED) ──────────────────────────────────────
 legal_basis:
-  statutory_authority: POLICY_INPUT_REQUIRED
-  act_name: POLICY_INPUT_REQUIRED
-  act_section: POLICY_INPUT_REQUIRED
-  gazette_reference: POLICY_INPUT_REQUIRED
-  effective_date: POLICY_INPUT_REQUIRED
+  statutory_authority: "Revenue and Disaster Management Department, Government of Odisha"
+  act_name: "Odisha Right to Public Services (ORTPS/ORTPSA) — notified Resident Certificate service"
+  act_section: "PORTAL_REFERENCE_ONLY_NO_SECTION_CITED"
+  gazette_reference: "PUBLIC_PORTAL:https://edistrict.odisha.gov.in/"
+  effective_date: "PORTAL_LIVE_AS_OF_2026-10-17"
 
-# ─── Eligibility (POLICY_INPUT_REQUIRED) ──────────────────────────────────────
-# GoRules ZEN expression; do not invent
 eligibility:
   rule_engine: gorules
-  rules_ref: POLICY_INPUT_REQUIRED
-  description: POLICY_INPUT_REQUIRED
+  rules_ref: "templates/residence-certificate/rules.gorules.yaml"
+  description: >
+    Continuous residence of at least one year within the jurisdiction of the concerned
+    Tahasil. May be relaxed for government employees transferred, and for women married,
+    within the past one year (edistrict.odisha.gov.in).
+  min_continuous_residence_months: 12
+  relaxation_codes:
+    - TRANSFERRED_GOVT_EMPLOYEE_WITHIN_1_YEAR
+    - WOMAN_MARRIED_WITHIN_1_YEAR
 
-# ─── Evidence requirements (POLICY_INPUT_REQUIRED) ────────────────────────────
 evidence_requirements:
-  mandatory_documents: POLICY_INPUT_REQUIRED
-  optional_documents: POLICY_INPUT_REQUIRED
-  digilocker_document_types: POLICY_INPUT_REQUIRED
-  physical_accepted: POLICY_INPUT_REQUIRED
+  mandatory_documents_min: 1
+  mandatory_documents:
+    - ELECTRICITY_BILL
+    - ROR_COPY
+    - EPIC_OR_AADHAAR
+    - LANDLINE_TELEPHONE_BILL
+    - WATER_CONNECTION_BILL
+    - RATION_CARD
+    - HOLDING_TAX_RECEIPT
+    - LEASE_AGREEMENT
+    - EMPLOYER_CERTIFICATE
+    - BANK_PASSBOOK_FIRST_PAGE
+    - VOTER_LIST_EXTRACT
+    - NREGA_JOB_CARD
+    - OTHER_RELEVANT
+  optional_documents: []
+  digilocker_document_types:
+    - SAMPLE_LAB_AADHAAR
+    - SAMPLE_LAB_EPIC
+  physical_accepted: true
 
-# ─── Fee schedule (POLICY_INPUT_REQUIRED) ─────────────────────────────────────
 fee:
   currency: INR
-  amount: POLICY_INPUT_REQUIRED
-  waivers: POLICY_INPUT_REQUIRED
-  payment_gateway_ref: POLICY_INPUT_REQUIRED
-  treasury_head: POLICY_INPUT_REQUIRED
+  amount: 0
+  amount_paisa: 0
+  waivers: []
+  payment_gateway_ref: "ZERO_FEE_SKIP"
+  treasury_head: "N/A_ZERO_GOVT_SERVICE_CHARGE"
 
-# ─── SLA policy (POLICY_INPUT_REQUIRED) ───────────────────────────────────────
 sla:
-  processing_days_working: POLICY_INPUT_REQUIRED
-  clock_start_event: POLICY_INPUT_REQUIRED
-  escalation_days: POLICY_INPUT_REQUIRED
-  statutory_reference: POLICY_INPUT_REQUIRED
+  processing_days_working: 10
+  clock_start_event: APPLICATION_SUBMITTED
+  escalation_days: 10
+  statutory_reference: "ORTPS/ORTPSA Resident Certificate — 10 working days (edistrict.odisha.gov.in)"
 
-# ─── Credential template (POLICY_INPUT_REQUIRED) ──────────────────────────────
 credential:
-  template_id: POLICY_INPUT_REQUIRED
-  digilocker_doc_type: POLICY_INPUT_REQUIRED
-  issuing_authority: POLICY_INPUT_REQUIRED
-  validity_years: POLICY_INPUT_REQUIRED
-  vc_context: POLICY_INPUT_REQUIRED
+  template_id: "SAMPLE_LAB_IND_SOC_002_OD_RESIDENT_V1"
+  digilocker_doc_type: "SAMPLE_LAB_RESIDENT_CERTIFICATE"
+  issuing_authority: "Tahasildar (concerned Tahasil)"
+  validity_years: "SAMPLE_LAB_UNSPECIFIED_ON_PORTAL"
+  vc_context: "SAMPLE_LAB_VC_CONTEXT"
 
-# ─── Notification templates (POLICY_INPUT_REQUIRED) ───────────────────────────
 notifications:
-  sms_dlt_pe_id: POLICY_INPUT_REQUIRED
-  sms_template_id_submitted: POLICY_INPUT_REQUIRED
-  sms_template_id_approved: POLICY_INPUT_REQUIRED
-  sms_template_id_rejected: POLICY_INPUT_REQUIRED
-  email_template_id_submitted: POLICY_INPUT_REQUIRED
-  email_template_id_approved: POLICY_INPUT_REQUIRED
+  sms_dlt_pe_id: "SAMPLE_LAB_DLT_PE_ID"
+  sms_template_id_submitted: "SAMPLE_LAB_SMS_SUBMITTED"
+  sms_template_id_approved: "SAMPLE_LAB_SMS_APPROVED"
+  sms_template_id_rejected: "SAMPLE_LAB_SMS_REJECTED"
+  email_template_id_submitted: "SAMPLE_LAB_EMAIL_SUBMITTED"
+  email_template_id_approved: "SAMPLE_LAB_EMAIL_APPROVED"
 
-# ─── Non-claims ────────────────────────────────────────────────────────────────
 non_claims:
   certified: false
   g6: false
   self_certified: false
   release_certified: false
+  production_digilocker_registered: false
+  production_dlt_registered: false

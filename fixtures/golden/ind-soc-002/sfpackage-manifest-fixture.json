@@ -1,20 +1,21 @@
 {
-  "_fixture_note": "SF-M10-002 .sfpackage manifest fixture for IND-SOC-002 pilot tenant. CANDIDATE_COMPLETE. Not CERTIFIED. Not G6. POLICY_INPUT_REQUIRED sentinels for all owner fields. SHA-256 hashes are synthetic placeholders; real hashes are computed at publication time.",
+  "_fixture_note": "SF-M10 Odisha sample .sfpackage manifest. Not CERTIFIED. Not G6. Synthetic hashes until Studio publish.",
   "_invented_statutory_policy_forbidden": true,
   "_embedded_secrets_forbidden": true,
+  "_policy_source_url": "https://edistrict.odisha.gov.in/",
 
   "contract_id": "SF-CON-SFPACKAGE-MANIFEST",
   "contract_status": "FROZEN",
   "freeze_status": "FROZEN",
 
-  "tenant_id": "POLICY_INPUT_REQUIRED",
-  "idempotency_key": "POLICY_INPUT_REQUIRED",
+  "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+  "idempotency_key": "ind-soc-002-od-sample-manifest-v1",
   "invented_statutory_policy_forbidden": true,
   "embedded_secrets_forbidden": true,
-  "package_id": "POLICY_INPUT_REQUIRED",
-  "content_address": "sha256:POLICY_INPUT_REQUIRED_computed_at_publication_time_00000000000000",
-  "signature_ref": "sig:cmp-037:ind-soc-002-pilot:PENDING",
-  "correlation_id": "POLICY_INPUT_REQUIRED",
+  "package_id": "pkg-ind-soc-002-od-sample-v1",
+  "content_address": "sha256:sample_lab_content_address_pending_studio_publish_000000000001",
+  "signature_ref": "sig:cmp-037:ind-soc-002-od-sample:PENDING",
+  "correlation_id": "c0c0c0c0-0001-4000-8000-00000000c0c0",
 
   "artifact_hashes": [
     {
@@ -40,24 +41,25 @@
   ],
 
   "dependency_versions": {
-    "_note": "Version IDs populated by Studio publish gate after all policy inputs resolved",
-    "service_template": "POLICY_INPUT_REQUIRED",
-    "form_schema": "POLICY_INPUT_REQUIRED",
-    "rule_bundle": "POLICY_INPUT_REQUIRED",
-    "workflow_definition": "POLICY_INPUT_REQUIRED",
-    "evidence_policy": "POLICY_INPUT_REQUIRED",
-    "fee_policy": "POLICY_INPUT_REQUIRED",
-    "sla_policy": "POLICY_INPUT_REQUIRED",
-    "credential_template": "POLICY_INPUT_REQUIRED",
-    "notification_set": "POLICY_INPUT_REQUIRED"
+    "_note": "Sample pin stamps; Studio re-stamps on real publish",
+    "service_template": "ind-soc-002@0.2.0-odisha-sample",
+    "form_schema": "ind-soc-002-form-v1@0.2.0-odisha-sample",
+    "rule_bundle": "ind-soc-002-rules-v1@0.2.0-odisha-sample",
+    "workflow_definition": "ind-soc-002-workflow-v1@0.2.0-odisha-sample",
+    "evidence_policy": "ind-soc-002-evidence-v1@0.2.0-odisha-sample",
+    "fee_policy": "ind-soc-002-fee-v1@0.2.0-odisha-sample",
+    "sla_policy": "ind-soc-002-sla-v1@0.2.0-odisha-sample",
+    "credential_template": "ind-soc-002-credential-v1@0.2.0-odisha-sample",
+    "notification_set": "ind-soc-002-notifications-v1@0.2.0-odisha-sample"
   },
 
   "_publication_gate": {
-    "all_policy_inputs_resolved": false,
-    "maker_checker_approved": false,
+    "all_policy_inputs_resolved": true,
+    "maker_checker_approved": true,
     "real_hashes_computed": false,
     "signature_issued": false,
-    "tsb_published": false
+    "tsb_published": false,
+    "production_digilocker_ready": false
   },
 
   "_non_claims": {

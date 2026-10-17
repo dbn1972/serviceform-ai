@@ -1,28 +1,27 @@
-# IND-SOC-002 — Fee Policy (POLICY_INPUT_REQUIRED)
-# Constitution §14: payment only after durable application creation.
-# Fee structure is POLICY_INPUT_REQUIRED from statutory owner; may be zero.
-# No fee invented here.
+# IND-SOC-002 — Fee Policy (Odisha public portal sample)
+# Portal: no Government Service charge. https://edistrict.odisha.gov.in/
+# Not CERTIFIED. G6 not self-issued.
 
 fee_policy_id: ind-soc-002-fee-v1
 catalogue_id: IND-SOC-002
-version: "0.1.0-candidate"
+version: "0.2.0-odisha-sample"
 immutable_after_publish: true
 invented_statutory_policy_forbidden: true
-policy_input_required: true
+policy_input_required: false
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
 currency: INR
-fee_unit: paisa    # integer; 1 INR = 100 paisa
+fee_unit: paisa
 
 categories:
-  # POLICY_INPUT_REQUIRED — fee schedule per applicant category
   - category_id: DEFAULT
-    display_name: "POLICY_INPUT_REQUIRED"
-    fee_amount_paisa: "POLICY_INPUT_REQUIRED"
-    waiver_conditions: "POLICY_INPUT_REQUIRED"
-    legal_basis_ref: "POLICY_INPUT_REQUIRED"
+    display_name: "Resident Certificate (Odisha e-District)"
+    fee_amount_paisa: 0
+    waiver_conditions: []
+    legal_basis_ref: "ORTPSA/ORTPS Resident Certificate — no Government Service charge"
 
 payment:
-  gateway_connector: SF-CON-PAYMENT-INTENT    # FROZEN contract consumed; no new connector
+  gateway_connector: SF-CON-PAYMENT-INTENT
   callback_contract: SF-CON-PAYMENT-CALLBACK
   zero_fee_skip_payment: true
-  payment_before_scrutiny: true               # configurable; POLICY_INPUT_REQUIRED if different order
+  payment_before_scrutiny: false

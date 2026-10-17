@@ -25,21 +25,61 @@ export const APP_2 = 'a2a2a2a2-a2a2-4a2a-8a2a-a2a2a2a2a2a2';
 export const CATALOGUE_ID = 'IND-SOC-002';
 
 /**
- * Owner-supplied policy inputs.  Any test that needs these to be populated
- * must skip/fail-closed rather than fabricating values.
- * Set SF_M10_OWNER_INPUTS_READY=1 in the environment to treat them as available.
+ * Owner-supplied policy inputs from Odisha e-District public Resident Certificate
+ * (https://edistrict.odisha.gov.in/). Set SF_M10_OWNER_INPUTS_READY=1 to activate.
+ * DigiLocker/DLT remain SAMPLE_LAB — not production registrations.
  */
 export const OWNER_INPUTS_READY = process.env['SF_M10_OWNER_INPUTS_READY'] === '1';
 
-export const POLICY_PLACEHOLDER = {
-  pilot_tenant: null as string | null,
-  legal_basis_ref: null as string | null,
-  eligibility_rule_ref: null as string | null,
-  evidence_types: null as string[] | null,
-  fee_schedule_ref: null as string | null,
-  sla_ref: null as string | null,
-  credential_template_ref: null as string | null,
+/** Odisha public-portal sample (active only when OWNER_INPUTS_READY). */
+export const ODISHA_PUBLIC_SAMPLE = {
+  pilot_tenant: '0d15ba00-0001-4000-8000-0d15ba0000d1',
+  legal_basis_ref:
+    'ORTPSA/ORTPS notified Resident Certificate — Revenue & Disaster Management Department (edistrict.odisha.gov.in)',
+  eligibility_rule_ref: 'templates/residence-certificate/rules.gorules.yaml',
+  evidence_types: [
+    'ELECTRICITY_BILL',
+    'ROR_COPY',
+    'EPIC_OR_AADHAAR',
+    'LANDLINE_TELEPHONE_BILL',
+    'WATER_CONNECTION_BILL',
+    'RATION_CARD',
+    'HOLDING_TAX_RECEIPT',
+    'LEASE_AGREEMENT',
+    'EMPLOYER_CERTIFICATE',
+    'BANK_PASSBOOK_FIRST_PAGE',
+    'VOTER_LIST_EXTRACT',
+    'NREGA_JOB_CARD',
+    'OTHER_RELEVANT',
+  ],
+  fee_schedule_ref: 'templates/residence-certificate/fee-policy.yaml',
+  fee_amount_paisa: 0,
+  min_residence_months: 12,
+  sla_ref: 'templates/residence-certificate/sla-policy.yaml',
+  sla_working_days: 10,
+  credential_template_ref: 'SAMPLE_LAB_IND_SOC_002_OD_RESIDENT_V1',
+  policy_source_url: 'https://edistrict.odisha.gov.in/',
 } as const;
+
+export const POLICY_PLACEHOLDER = OWNER_INPUTS_READY
+  ? {
+      pilot_tenant: ODISHA_PUBLIC_SAMPLE.pilot_tenant,
+      legal_basis_ref: ODISHA_PUBLIC_SAMPLE.legal_basis_ref,
+      eligibility_rule_ref: ODISHA_PUBLIC_SAMPLE.eligibility_rule_ref,
+      evidence_types: [...ODISHA_PUBLIC_SAMPLE.evidence_types],
+      fee_schedule_ref: ODISHA_PUBLIC_SAMPLE.fee_schedule_ref,
+      sla_ref: ODISHA_PUBLIC_SAMPLE.sla_ref,
+      credential_template_ref: ODISHA_PUBLIC_SAMPLE.credential_template_ref,
+    }
+  : {
+      pilot_tenant: null as string | null,
+      legal_basis_ref: null as string | null,
+      eligibility_rule_ref: null as string | null,
+      evidence_types: null as string[] | null,
+      fee_schedule_ref: null as string | null,
+      sla_ref: null as string | null,
+      credential_template_ref: null as string | null,
+    };
 
 // ── Connector modes ───────────────────────────────────────────────────────────
 export type ConnectorMode = 'REAL' | 'SANDBOX' | 'SIMULATED';

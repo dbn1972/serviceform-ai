@@ -2,7 +2,7 @@
 
 Target shape for M10 Golden Vertical Slice (`SF-M10-001`). Canonical service, form, rules, evidence, workflow, access, SLA, fee, credential and notification definitions for ServiceForm Studio. **No service-specific backend code.** Bundled by `packages/service-packages/ind-soc-002/`.
 
-Owner inputs (Finding M-04) remain `POLICY_INPUT_REQUIRED` until supplied: pilot tenant/State, legal basis, eligibility, evidence, fee, SLA, credential template. Do **not** invent statute. CERTIFIED/G6 remain false until human issues after EVD.
+Owner inputs (Finding M-04) are resolved from the **Odisha e-District Resident Certificate** public portal (`https://edistrict.odisha.gov.in/`) — see `fixtures/golden/ind-soc-002/SOURCE_PROVENANCE.md`. DigiLocker/DLT remain `SAMPLE_LAB_*`. CERTIFIED/G6 remain false until human issues after EVD; production G6 still held for G5/REAL connectors.
 
 ## Artefacts
 

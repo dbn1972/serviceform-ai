@@ -1,48 +1,47 @@
-# IND-SOC-002 — SLA Policy (POLICY_INPUT_REQUIRED)
-# Constitution §16: SLA explicitly specifies start anchor, business calendar, pause/resume,
-# completion anchor and breach/escalation behaviour.
-# All SLA thresholds are POLICY_INPUT_REQUIRED from statutory owner.
-# Do NOT invent SLA figures.
+# IND-SOC-002 — SLA Policy (Odisha public portal sample)
+# Portal: 10 working days. https://edistrict.odisha.gov.in/
+# Not CERTIFIED. G6 not self-issued.
 
 sla_policy_id: ind-soc-002-sla-v1
 catalogue_id: IND-SOC-002
-version: "0.1.0-candidate"
+version: "0.2.0-odisha-sample"
 immutable_after_publish: true
 invented_statutory_policy_forbidden: true
-policy_input_required: true
+policy_input_required: false
+policy_source_url: "https://edistrict.odisha.gov.in/"
 
-business_calendar_ref: "POLICY_INPUT_REQUIRED"   # e.g. state government working-day calendar
+business_calendar_ref: "IN-OD-GOVERNMENT-WORKING-DAYS"
 
 sla_clocks:
   scrutiny_sla:
-    start_anchor: APPLICATION_PAYMENT_CONFIRMED
-    business_days: "POLICY_INPUT_REQUIRED"
+    start_anchor: APPLICATION_SUBMITTED
+    business_days: 5
     pause_conditions:
       - DEFICIENCY_ISSUED
     resume_conditions:
       - APPLICANT_RESUBMITTED
     completion_anchor: OFFICER_SCRUTINY_COMPLETE
     breach_action: ESCALATE_TO_SUPERVISOR
-    breach_escalation_role: "POLICY_INPUT_REQUIRED"
-    legal_basis_ref: "POLICY_INPUT_REQUIRED"
+    breach_escalation_role: TAHSILDAR
+    legal_basis_ref: "ORTPSA/ORTPS Resident Certificate — 10 working days overall"
 
   approval_sla:
     start_anchor: SCRUTINY_COMPLETE
-    business_days: "POLICY_INPUT_REQUIRED"
+    business_days: 5
     pause_conditions: []
     resume_conditions: []
     completion_anchor: APPROVER_DECISION_COMPLETE
     breach_action: ESCALATE_TO_SENIOR_OFFICER
-    breach_escalation_role: "POLICY_INPUT_REQUIRED"
-    legal_basis_ref: "POLICY_INPUT_REQUIRED"
+    breach_escalation_role: SUB_COLLECTOR_OR_EQUIVALENT
+    legal_basis_ref: "ORTPSA/ORTPS Resident Certificate — 10 working days overall"
 
   overall_sla:
     start_anchor: APPLICATION_SUBMITTED
-    business_days: "POLICY_INPUT_REQUIRED"
+    business_days: 10
     pause_conditions:
       - DEFICIENCY_ISSUED
     resume_conditions:
       - APPLICANT_RESUBMITTED
     completion_anchor: CREDENTIAL_ISSUED
     breach_action: NOTIFY_CITIZEN_DELAY
-    legal_basis_ref: "POLICY_INPUT_REQUIRED"
+    legal_basis_ref: "edistrict.odisha.gov.in — In 10 working days the service will be delivered"
