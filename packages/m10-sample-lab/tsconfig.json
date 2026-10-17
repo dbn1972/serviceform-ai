@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "types": ["node"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "verbatimModuleSyntax": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

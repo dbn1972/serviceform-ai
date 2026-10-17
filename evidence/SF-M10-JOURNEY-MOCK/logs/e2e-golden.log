@@ -1,0 +1,25 @@
+
+Running 16 tests using 1 worker
+
+(node:360660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:360660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/golden/ind-soc-002-golden.spec.ts:20:3 › M10 Golden E2E — owner-input gate › fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set (4ms)
+  ✓   2 tests/e2e/golden/ind-soc-002-golden.spec.ts:36:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal health endpoint responds 200 (20ms)
+  ✓   3 tests/e2e/golden/ind-soc-002-golden.spec.ts:41:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench health endpoint responds 200 (11ms)
+  ✓   4 tests/e2e/golden/ind-soc-002-golden.spec.ts:46:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio health endpoint responds 200 (8ms)
+  ✓   5 tests/e2e/golden/ind-soc-002-golden.spec.ts:51:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal is reachable and has correct page title (143ms)
+  ✓   6 tests/e2e/golden/ind-soc-002-golden.spec.ts:57:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench is reachable and has correct page title (114ms)
+  ✓   7 tests/e2e/golden/ind-soc-002-golden.spec.ts:63:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio is reachable and has correct page title (115ms)
+  ✓   8 tests/e2e/golden/ind-soc-002-golden.spec.ts:71:3 › M10 Golden E2E — tenant isolation probes › citizen portal does not serve cross-tenant data in page source (99ms)
+  ✓   9 tests/e2e/golden/ind-soc-002-golden.spec.ts:78:3 › M10 Golden E2E — tenant isolation probes › API health endpoint does not include tenant identifiers in response body (6ms)
+  ✓  10 tests/e2e/golden/ind-soc-002-golden.spec.ts:92:3 › M10 Golden E2E — tenant isolation probes › forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002) (5ms)
+  ✓  11 tests/e2e/golden/ind-soc-002-golden.spec.ts:114:3 › M10 Golden E2E — UX4G accessibility scaffolding › citizen portal has required ARIA landmarks (110ms)
+  ✓  12 tests/e2e/golden/ind-soc-002-golden.spec.ts:118:3 › M10 Golden E2E — UX4G accessibility scaffolding › officer workbench has required ARIA landmarks (112ms)
+  ✓  13 tests/e2e/golden/ind-soc-002-golden.spec.ts:124:3 › M10 Golden E2E — SAMPLE_LAB journey routes › Studio: author IND-SOC-002 service metadata without bespoke backend code (113ms)
+  ✓  14 tests/e2e/golden/ind-soc-002-golden.spec.ts:133:3 › M10 Golden E2E — SAMPLE_LAB journey routes › Citizen: residence certificate apply page loads (128ms)
+  ✓  15 tests/e2e/golden/ind-soc-002-golden.spec.ts:139:3 › M10 Golden E2E — SAMPLE_LAB journey routes › Officer: applications queue loads (105ms)
+  ✓  16 tests/e2e/golden/ind-soc-002-golden.spec.ts:144:3 › M10 Golden E2E — SAMPLE_LAB journey routes › SAMPLE_LAB end-to-end: apply → approve → DigiLocker SIMULATED publish (593ms)
+
+  16 passed (2.3s)
