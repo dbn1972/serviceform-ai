@@ -1,0 +1,57 @@
+
+> serviceform-ai@ e2e /home/ubuntu/wt-SF-M10-G6-TODAY
+> playwright test -c tests/e2e/playwright.config.ts -- tests/e2e/shells.spec.ts tests/e2e/golden/ind-soc-002-golden.spec.ts
+
+
+Running 39 tests using 2 workers
+
+(node:344537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:344538) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:344538) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:344537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 tests/e2e/golden/ind-soc-002-golden.spec.ts:48:3 › M10 Golden E2E — owner-input gate › fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set (4ms)
+  ✓   1 tests/e2e/golden/ind-soc-002-golden.spec.ts:73:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal health endpoint responds 200 (28ms)
+  ✓   4 tests/e2e/golden/ind-soc-002-golden.spec.ts:83:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio health endpoint responds 200 (11ms)
+  ✓   3 tests/e2e/golden/ind-soc-002-golden.spec.ts:78:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench health endpoint responds 200 (34ms)
+  ✓   5 tests/e2e/golden/ind-soc-002-golden.spec.ts:88:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal is reachable and has correct page title (204ms)
+  ✓   6 tests/e2e/golden/ind-soc-002-golden.spec.ts:94:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench is reachable and has correct page title (212ms)
+  ✓   8 tests/e2e/golden/ind-soc-002-golden.spec.ts:110:3 › M10 Golden E2E — tenant isolation probes › citizen portal does not serve cross-tenant data in page source (153ms)
+  ✓   9 tests/e2e/golden/ind-soc-002-golden.spec.ts:118:3 › M10 Golden E2E — tenant isolation probes › API health endpoint does not include tenant identifiers in response body (16ms)
+  ✓   7 tests/e2e/golden/ind-soc-002-golden.spec.ts:100:3 › M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio is reachable and has correct page title (205ms)
+  ✓  11 tests/e2e/golden/ind-soc-002-golden.spec.ts:132:3 › M10 Golden E2E — tenant isolation probes › forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002) (8ms)
+  ✓  10 tests/e2e/golden/ind-soc-002-golden.spec.ts:158:3 › M10 Golden E2E — UX4G accessibility scaffolding › citizen portal has required ARIA landmarks (168ms)
+  -  13 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Studio: author IND-SOC-002 service metadata without bespoke backend code
+  ✓  12 tests/e2e/golden/ind-soc-002-golden.spec.ts:162:3 › M10 Golden E2E — UX4G accessibility scaffolding › officer workbench has required ARIA landmarks (164ms)
+  -  14 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Citizen: submit residence certificate application end-to-end
+  -  15 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Officer: approve application and trigger credential issuance
+  -  17 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Payment: SANDBOX connector exercises same callback/state-machine as REAL (Architecture Constitution §14)
+  -  16 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Citizen: receive issued residence certificate and verify via QR
+  -  18 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › DigiLocker: publish issued certificate; verify delivery failure does not undo issued state
+  -  19 tests/e2e/golden/ind-soc-002-golden.spec.ts:42:3 › Second service reuse: onboard a second service largely through configuration (Architecture Constitution §31)
+  ✓  20 tests/e2e/shells.spec.ts:10:5 › web-citizen shell › serves the page with landmarks and a level-one heading (169ms)
+  ✓  22 tests/e2e/shells.spec.ts:30:5 › web-citizen shell › skip link is the first tab stop and moves focus to main (158ms)
+  ✓  23 tests/e2e/shells.spec.ts:39:5 › web-citizen shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (156ms)
+  ✓  21 tests/e2e/shells.spec.ts:22:5 › web-citizen shell › has no automatically detectable WCAG 2.1 A/AA violations (515ms)
+  ✓  24 tests/e2e/shells.spec.ts:48:5 › web-citizen shell › sends security headers and a health endpoint (19ms)
+  ✓  25 tests/e2e/shells.spec.ts:10:5 › web-officer shell › serves the page with landmarks and a level-one heading (169ms)
+  ✓  27 tests/e2e/shells.spec.ts:30:5 › web-officer shell › skip link is the first tab stop and moves focus to main (162ms)
+  ✓  28 tests/e2e/shells.spec.ts:39:5 › web-officer shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (130ms)
+  ✓  29 tests/e2e/shells.spec.ts:48:5 › web-officer shell › sends security headers and a health endpoint (18ms)
+  ✓  26 tests/e2e/shells.spec.ts:22:5 › web-officer shell › has no automatically detectable WCAG 2.1 A/AA violations (498ms)
+  ✓  30 tests/e2e/shells.spec.ts:10:5 › web-studio shell › serves the page with landmarks and a level-one heading (213ms)
+  ✓  32 tests/e2e/shells.spec.ts:30:5 › web-studio shell › skip link is the first tab stop and moves focus to main (203ms)
+  ✓  33 tests/e2e/shells.spec.ts:39:5 › web-studio shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (144ms)
+  ✓  31 tests/e2e/shells.spec.ts:22:5 › web-studio shell › has no automatically detectable WCAG 2.1 A/AA violations (592ms)
+  ✓  34 tests/e2e/shells.spec.ts:48:5 › web-studio shell › sends security headers and a health endpoint (18ms)
+  ✓  35 tests/e2e/shells.spec.ts:10:5 › web-admin shell › serves the page with landmarks and a level-one heading (241ms)
+  ✓  37 tests/e2e/shells.spec.ts:30:5 › web-admin shell › skip link is the first tab stop and moves focus to main (204ms)
+  ✓  36 tests/e2e/shells.spec.ts:22:5 › web-admin shell › has no automatically detectable WCAG 2.1 A/AA violations (589ms)
+  ✓  38 tests/e2e/shells.spec.ts:39:5 › web-admin shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10) (141ms)
+  ✓  39 tests/e2e/shells.spec.ts:48:5 › web-admin shell › sends security headers and a health endpoint (22ms)
+
+  7 skipped
+  32 passed (7.2s)

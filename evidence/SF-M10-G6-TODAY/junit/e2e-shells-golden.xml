@@ -1,0 +1,126 @@
+<testsuites id="" name="" tests="39" failures="0" skipped="7" errors="0" time="7.2345559999999995">
+<testsuite name="golden/ind-soc-002-golden.spec.ts" timestamp="2026-10-17T02:34:53.370Z" hostname="" tests="19" failures="0" skipped="7" time="1.207" errors="0">
+<testcase name="M10 Golden E2E — owner-input gate › fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set" classname="golden/ind-soc-002-golden.spec.ts" time="0.004">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.028">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.034">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.011">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.204">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.212">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.205">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › citizen portal does not serve cross-tenant data in page source" classname="golden/ind-soc-002-golden.spec.ts" time="0.153">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › API health endpoint does not include tenant identifiers in response body" classname="golden/ind-soc-002-golden.spec.ts" time="0.016">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002)" classname="golden/ind-soc-002-golden.spec.ts" time="0.008">
+</testcase>
+<testcase name="M10 Golden E2E — UX4G accessibility scaffolding › citizen portal has required ARIA landmarks" classname="golden/ind-soc-002-golden.spec.ts" time="0.168">
+</testcase>
+<testcase name="M10 Golden E2E — UX4G accessibility scaffolding › officer workbench has required ARIA landmarks" classname="golden/ind-soc-002-golden.spec.ts" time="0.164">
+</testcase>
+<testcase name="Studio: author IND-SOC-002 service metadata without bespoke backend code" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, legal_basis_ref, eligibility_rule_ref, credential_template_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Citizen: submit residence certificate application end-to-end" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, eligibility_rule_ref, fee_schedule_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Officer: approve application and trigger credential issuance" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, credential_template_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Citizen: receive issued residence certificate and verify via QR" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, credential_template_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Payment: SANDBOX connector exercises same callback/state-machine as REAL (Architecture Constitution §14)" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, fee_schedule_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="DigiLocker: publish issued certificate; verify delivery failure does not undo issued state" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant, credential_template_ref">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Second service reuse: onboard a second service largely through configuration (Architecture Constitution §31)" classname="golden/ind-soc-002-golden.spec.ts">
+<properties>
+<property name="skip" value="POLICY_INPUT_REQUIRED — needs: pilot_tenant">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="shells.spec.ts" timestamp="2026-10-17T02:34:53.370Z" hostname="" tests="20" failures="0" skipped="0" time="4.361" errors="0">
+<testcase name="web-citizen shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.169">
+</testcase>
+<testcase name="web-citizen shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.515">
+</testcase>
+<testcase name="web-citizen shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.158">
+</testcase>
+<testcase name="web-citizen shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.156">
+</testcase>
+<testcase name="web-citizen shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.019">
+</testcase>
+<testcase name="web-officer shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.169">
+</testcase>
+<testcase name="web-officer shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.498">
+</testcase>
+<testcase name="web-officer shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.162">
+</testcase>
+<testcase name="web-officer shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.13">
+</testcase>
+<testcase name="web-officer shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.018">
+</testcase>
+<testcase name="web-studio shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.213">
+</testcase>
+<testcase name="web-studio shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.592">
+</testcase>
+<testcase name="web-studio shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.203">
+</testcase>
+<testcase name="web-studio shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.144">
+</testcase>
+<testcase name="web-studio shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.018">
+</testcase>
+<testcase name="web-admin shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.241">
+</testcase>
+<testcase name="web-admin shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.589">
+</testcase>
+<testcase name="web-admin shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.204">
+</testcase>
+<testcase name="web-admin shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.141">
+</testcase>
+<testcase name="web-admin shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.022">
+</testcase>
+</testsuite>
+</testsuites>

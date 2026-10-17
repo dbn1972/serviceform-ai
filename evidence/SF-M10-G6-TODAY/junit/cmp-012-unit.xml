@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="66" failures="0" errors="0" time="0.069714657">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-10-17T02:32:00.348Z" hostname="cursor" tests="11" failures="0" errors="0" skipped="0" time="0.036075649">
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-DIGILOCKER-PUBLISH (FROZEN) hash conformance &gt; the frozen schema hash matches contracts-lock.yaml" time="0.001557113">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-CONNECTOR-BINDING + SF-CON-SIMULATION-MARKER hash conformance &gt; connector-binding schema hash matches contracts-lock.yaml" time="0.000354847">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="SF-CON-CONNECTOR-BINDING + SF-CON-SIMULATION-MARKER hash conformance &gt; simulation-marker schema hash matches contracts-lock.yaml" time="0.00025692">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH &gt; PUBLISHED record validates against frozen schema" time="0.020515317">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="DigiLocker publish record validates against SF-CON-DIGILOCKER-PUBLISH &gt; FAILED record validates against frozen schema" time="0.000718683">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-012 &gt; outbox events validate against SF-CON-EVENT-ENVELOPE" time="0.006014473">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="shared frozen envelopes emitted by CMP-012 &gt; error subset codes, messages and statuses match the frozen catalogue" time="0.000885546">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; OpenAPI operations match the implemented routes" time="0.000643119">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; AsyncAPI declares every emitted domain event on the domain topic" time="0.000566554">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; isolation.json matches the migration sf:isolation declarations and FORCE RLS" time="0.00265045">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component-local contracts &gt; the migration grants nothing on peer component schemas and never BYPASSRLS" time="0.000433433">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/publish.test.ts" timestamp="2026-10-17T02:32:00.350Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.010201271">
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 with PUBLISHED status on success" time="0.003873881">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 with FAILED status on simulated failure" time="0.000734074">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; emits domain outbox event on publish" time="0.000451176">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; issuance_reversed_on_publish_failure=false is immutable even on failure" time="0.000432456">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 400 when consent_ref is missing" time="0.000388677">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 400 when purpose_code is missing" time="0.000272065">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 201 on getPublishRecord after publish" time="0.000599386">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 404 for unknown publish_request_id" time="0.000278289">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; simulation_marker present in stored record for SIMULATED mode" time="0.00068367">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="publishCredential (SIMULATED mode - LOCAL) &gt; returns 405 for unsupported method" time="0.000327563">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="mode matrix &gt; SIMULATED mode stores connector_mode=SIMULATED and simulation_marker" time="0.00045107">
+        </testcase>
+        <testcase classname="test/unit/publish.test.ts" name="mode matrix &gt; SIMULATED CI mode works equivalently" time="0.000324361">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/remediation.test.ts" timestamp="2026-10-17T02:32:00.351Z" hostname="cursor" tests="26" failures="0" errors="0" skipped="0" time="0.011522407">
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; publish succeeds when credential is ISSUED, signed, and belongs to tenant" time="0.003406433">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 404 when credential is not found (fail-closed)" time="0.000606932">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 403 when credential belongs to a different tenant (fail-closed)" time="0.000279893">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 400 when credential is not signed (fail-closed)" time="0.000332408">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 400 when credential lifecycle is DRAFT, not ISSUED (fail-closed)" time="0.000334109">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 400 when credential lifecycle is REVOKED (fail-closed)" time="0.000199651">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F01/SEC-F06: credential verification via CMP-022 port &gt; returns 503 when CMP-022 port throws (fail-closed, no silent fallback)" time="0.000290616">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-real-tenant-id" time="0.000240573">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-bypass-rls" time="0.000417229">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-override-tenant" time="0.000160221">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-tenant-id" time="0.00017896">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-tenant-override" time="0.000071363">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-tenant-scope" time="0.000078491">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-sf-tenant" time="0.000075041">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-sf-scope" time="0.000112891">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-sf-internal-tenant" time="0.000062553">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: x-forwarded-tenant" time="0.000062564">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: Forwarded tenant= param" time="0.000167082">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses header: Forwarded with spaces" time="0.000080305">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; does not refuse legitimate non-tenant headers" time="0.000552853">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses via API handler and returns 403 for x-tenant-id header" time="0.000202378">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses via API handler and returns 403 for x-sf-tenant header" time="0.000296184">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F05: forged tenant header defence (SF-TEN-002 full pattern set) &gt; refuses via API handler for Forwarded with tenant= param" time="0.000161457">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F06: adapter mode must match binding mode (fail-closed) &gt; fails-closed when SIMULATED adapter is injected but binding is REAL in PRODUCTION" time="0.000721757">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F06: adapter mode must match binding mode (fail-closed) &gt; assertBindingPolicy still rejects critical SIMULATED binding in PRODUCTION" time="0.000132691">
+        </testcase>
+        <testcase classname="test/unit/remediation.test.ts" name="F06: adapter mode must match binding mode (fail-closed) &gt; mode mismatch error is SF-INT-001 (fail-closed integration error)" time="0.000934243">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/simulation.test.ts" timestamp="2026-10-17T02:32:00.353Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.005175472">
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts a valid SIMULATED DIGILOCKER binding in LOCAL" time="0.001620558">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_BINDING_NOT_FOUND when null" time="0.000254626">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CRITICAL_NON_REAL_IN_PRODUCTION for critical SIMULATED in PRODUCTION" time="0.00013846">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws NON_SIMULATED_IN_LOCAL_OR_CI_REFUSED for REAL in LOCAL" time="0.000210796">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_TYPE_MISMATCH for non-DIGILOCKER connector" time="0.000138857">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; throws CONNECTOR_ENVIRONMENT_MISMATCH when env does not match runtime" time="0.000149251">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts SANDBOX binding in DEVELOPMENT" time="0.000231097">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="assertBindingPolicy (INT-013) &gt; accepts REAL binding in PRODUCTION (non-critical)" time="0.000180182">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="buildSimulationMarker &gt; builds a valid marker for SIMULATED binding" time="0.000590866">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="buildSimulationMarker &gt; returns null for non-SIMULATED mode" time="0.000157199">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="isSimulationMarker &gt; accepts a valid marker" time="0.000167379">
+        </testcase>
+        <testcase classname="test/unit/simulation.test.ts" name="isSimulationMarker &gt; rejects extra keys" time="0.000078604">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/tenant-negative.test.ts" timestamp="2026-10-17T02:32:00.354Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.006739858">
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; a tenant cannot see another tenant publish record" time="0.003825365">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; publish for TENANT_A does not appear in TENANT_B store" time="0.000495545">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; returns 403 when authorizer denies" time="0.000527742">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; refuses x-bypass-rls header (tenant leak protection)" time="0.000417054">
+        </testcase>
+        <testcase classname="test/unit/tenant-negative.test.ts" name="tenant isolation (tenant-negative tests) &gt; returns 401 when no tenant context" time="0.000375963">
+        </testcase>
+    </testsuite>
+</testsuites>
