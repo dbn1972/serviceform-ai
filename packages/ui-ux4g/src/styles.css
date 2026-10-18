@@ -8392,6 +8392,15 @@
   color: var(--ux4g-text-neutral-secondary, var(--ux4g-color-neutral-600));
 }
 
+.sf-session-chip {
+  margin: 0;
+  padding: var(--ux4g-gap-3) var(--ux4g-gap-4);
+  border-radius: var(--ux4g-radius-md, 0.5rem);
+  background: var(--ux4g-color-neutral-0, #fff);
+  border: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-default);
+  color: var(--ux4g-text-neutral-secondary, var(--ux4g-color-neutral-600));
+}
+
 @media (max-width: 47.99rem) {
   .sf-header-wrap {
     flex-direction: column;

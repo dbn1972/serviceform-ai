@@ -1,7 +1,20 @@
-import { AppShell, Card, TextLink } from '@serviceform/ui-ux4g';
+'use client';
+
+import { AppShell, Alert, Card, TextLink, Button } from '@serviceform/ui-ux4g';
+import { useEffect, useState } from 'react';
 import { CitizenNav } from '../components/CitizenNav';
 
+type Session = { authenticated: boolean; display_name?: string };
+
 export default function HomePage() {
+  const [session, setSession] = useState<Session>({ authenticated: false });
+
+  useEffect(() => {
+    void fetch('/api/lab/session')
+      .then((r) => r.json())
+      .then((body: Session) => setSession(body));
+  }, []);
+
   return (
     <AppShell
       surface="citizen_web"
@@ -21,21 +34,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Card
-        title="Residence Certificate"
-        subtitle="Public e-District sample · fee ₹0 · DigiLocker SIMULATED"
-        footer={
-          <div className="sf-actions">
-            <TextLink href="/services/IND-SOC-002">Start application</TextLink>
-            <TextLink href="/certificates">View my certificates</TextLink>
-          </div>
-        }
-      >
-        <p className="ux4g-body-m-default">
-          Eligibility ≥12 months continuous residence. SLA 10 working days. No real PII — synthetic
-          applicants only.
-        </p>
-      </Card>
+      {!session.authenticated ? (
+        <Card
+          title="Start here — sign in"
+          subtitle="SAMPLE_LAB simulated citizen identity"
+          footer={
+            <div className="sf-actions">
+              <TextLink href="/login">Citizen login</TextLink>
+            </div>
+          }
+        >
+          <Alert variant="warning" title="Sign-in required for the journey">
+            Login → Services → Residence Certificate → Apply → Track → DigiLocker (SIMULATED).
+          </Alert>
+          <p className="ux4g-body-m-default">
+            Use synthetic name <strong>SAMPLE LAB Citizen</strong>, mobile <strong>9876543210</strong>,
+            OTP <strong>123456</strong>.
+          </p>
+        </Card>
+      ) : (
+        <Card
+          title={`Welcome, ${session.display_name}`}
+          subtitle="You are signed into SAMPLE_LAB"
+          footer={
+            <div className="sf-actions">
+              <TextLink href="/services">Browse services</TextLink>
+              <TextLink href="/certificates">My certificates</TextLink>
+              <Button
+                variant="text-neutral"
+                onClick={() => {
+                  void fetch('/api/lab/session', { method: 'DELETE' }).then(() => {
+                    setSession({ authenticated: false });
+                  });
+                }}
+              >
+                Sign out
+              </Button>
+            </div>
+          }
+        >
+          <p className="ux4g-body-m-default">
+            Continue the Residence Certificate journey from the services catalogue.
+          </p>
+        </Card>
+      )}
     </AppShell>
   );
 }

@@ -130,8 +130,11 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
     await expect(page.getByText(/G6 not issued/i)).toBeVisible();
   });
 
-  test('Citizen: residence certificate apply page loads', async ({ page }) => {
-    await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002`);
+  test('Citizen: residence certificate apply page loads after SAMPLE_LAB login', async ({ page }) => {
+    await page.goto(`${CITIZEN_PORTAL}/login`);
+    await page.getByRole('button', { name: /Continue to services/i }).click();
+    await expect(page).toHaveURL(/\/services/);
+    await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002/apply`);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Residence Certificate/i);
     await expect(page.getByRole('button', { name: /Submit application/i })).toBeVisible();
   });
@@ -147,7 +150,10 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
   }) => {
     if (existsSync(LAB_STORE)) unlinkSync(LAB_STORE);
 
-    await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002`);
+    await page.goto(`${CITIZEN_PORTAL}/login`);
+    await page.getByRole('button', { name: /Continue to services/i }).click();
+    await expect(page).toHaveURL(/\/services/);
+    await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002/apply`);
     await page.getByRole('button', { name: /Submit application/i }).click();
     await expect(page).toHaveURL(/\/certificates\//);
     await expect(page.getByText(/Awaiting officer decision/i)).toBeVisible();

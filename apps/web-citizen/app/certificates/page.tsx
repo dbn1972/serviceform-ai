@@ -3,6 +3,7 @@
 import { AppShell, Alert, Card, TextLink } from '@serviceform/ui-ux4g';
 import { useEffect, useState } from 'react';
 import { CitizenNav } from '../../components/CitizenNav';
+import { RequireCitizenSession } from '../../components/RequireCitizenSession';
 
 type App = { id: string; status: string; applicant_name: string; digilocker: { status: string } };
 
@@ -36,6 +37,7 @@ export default function CertificatesPage() {
       environmentLabel="SAMPLE_LAB"
       nav={<CitizenNav />}
     >
+      <RequireCitizenSession>
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">My certificates</h1>
         <p className="ux4g-body-m-default">
@@ -50,7 +52,7 @@ export default function CertificatesPage() {
       {apps.length === 0 ? (
         <Card title="No applications yet">
           <p className="ux4g-body-m-default">
-            <TextLink href="/services/IND-SOC-002">Apply for Residence Certificate</TextLink>
+            <TextLink href="/services/IND-SOC-002/apply">Apply for Residence Certificate</TextLink>
           </p>
         </Card>
       ) : (
@@ -73,6 +75,7 @@ export default function CertificatesPage() {
           ))}
         </div>
       )}
+      </RequireCitizenSession>
     </AppShell>
   );
 }
