@@ -1,4 +1,3 @@
-
 # SDD — ServiceForm AI MVP (system design)
 
 **Document class:** System Design Document (synthesized)  
@@ -7,6 +6,18 @@
 
 Extends — does not replace — AWS v1.7 DOCX, Eng v1.4 DOCX, and `ARCHITECTURE-CONSTITUTION.md`.
 
+---
+
+## 1. Design goals
+
+1. **Metadata over code** for normal services.  
+2. **Separation of concerns:** OPA (authz) · GoRules (deterministic business rules) · Temporal (sequencing) · PostgreSQL (authoritative state/RLS).  
+3. **Immutable published versions** with applications pinning TenantServiceBinding versions.  
+4. **Connector SPI** with REAL / SANDBOX / SIMULATED modes (INT-013).  
+5. **Fail closed** on missing owner policy, SIMULATED-in-prod, and cross-tenant access.  
+6. **No LLM statutory decisions.**
+
+---
 
 ## 2. Logical architecture
 
@@ -32,6 +43,22 @@ Extends — does not replace — AWS v1.7 DOCX, Eng v1.4 DOCX, and `ARCHITECTURE
 
 \* DigiLocker/Payment REAL adapters = **G6-HOLD** on tip.
 
+---
+
+## 3. Key design decisions (accepted ADRs)
+
+| ADR | Decision impact on MVP |
+|---|---|
+| ADR-0001 | Canonical build sequence M00–M12; golden after credentials/discovery |
+| ADR-0002 | Canonical event envelope |
+| ADR-0003 | Withdrawal/cancellation request states |
+| ADR-0004 | Greenfield repository layout |
+| ADR-0005 | AuthZ policy version for in-flight cases |
+| ADR-0006 | Per-component write roles |
+
+Frozen contracts: `orchestrator/contracts-lock.yaml`.
+
+---
 
 ## 4. Runtime data & control flow (target golden path)
 
@@ -45,8 +72,22 @@ Extends — does not replace — AWS v1.7 DOCX, Eng v1.4 DOCX, and `ARCHITECTURE
 
 ### Tip SAMPLE_LAB deviation (documented)
 
-Journey mock bypasses durable case/Temporal/RLS engines and uses `@serviceform/m10-sample-lab` JSON persistence + in-app DigiLocker mock. This is **intentional demo scaffolding**, not the system design target. G6 evidence MUST use the target path.
+Journey mock bypasses durable case/Temporal/RLS engines and uses `packages/m10-sample-lab` (`@serviceform/m10-sample-lab`) JSON persistence + in-app DigiLocker mock (`mockDigiLockerPublish`). This is **intentional demo scaffolding**, not the system design target. G6 evidence MUST use the target path. CMP-012 on tip exports `SimulatedDigiLockerConnector` only — no REAL/SANDBOX HTTP adapter.
 
+---
+
+## 5. Tenancy & security design
+
+| Control | Design |
+|---|---|
+| Tenant context | Request envelope + RLS session vars |
+| Isolation | FORCE RLS; negative tests INT-011 |
+| AuthZ | OPA decisions pinned per case policy version (ADR-0005) |
+| Secrets | Vault/SM refs for non-SIMULATED connectors |
+| Audit | CMP-030; no PII in logs |
+| AI boundary | CMP-039 gateway; assistance only |
+
+---
 
 ## 6. Connector design
 
@@ -58,6 +99,16 @@ Journey mock bypasses durable case/Temporal/RLS engines and uses `@serviceform/m
 
 Mode mismatch between adapter and binding MUST fail closed (`ADAPTER_MODE_MISMATCH`).
 
+---
+
+## 7. UX design baseline
+
+- UX4G 3.0 mandatory (`DESIGN-SYSTEM.md`, `specs/design-system.yaml`).  
+- JSON Forms = schema/runtime; UX4G-backed renderers.  
+- Tenant branding = token overlay only.  
+- Journey UX4G READY flag separate from shell a11y pass — **G6-HOLD**.
+
+---
 
 ## 8. Deployment / env design (summary)
 
@@ -67,3 +118,14 @@ Mode mismatch between adapter and binding MUST fail closed (`ADAPTER_MODE_MISMAT
 | SIT | SIMULATED or SANDBOX | per binding | Lab evidence |
 | PRODUCTION | REAL for critical | REAL if fee>0 | Only after G6 |
 
+---
+
+## 9. Open design items (not invented here)
+
+1. REAL DigiLocker HTTP adapter + registrar doc type.  
+2. PERF cell capacity / load-profile numbers.  
+3. Resilience RTO/RPO targets.  
+4. Retiring lab store from G6 evidence path.  
+5. Visual regression tooling (none on tip).
+
+**Self-score:** SDD **8/10** (aligned to Constitution; lab deviation explicit).

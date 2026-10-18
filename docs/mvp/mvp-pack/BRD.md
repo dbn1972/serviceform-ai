@@ -1,4 +1,3 @@
-
 # BRD — ServiceForm AI MVP (Golden Residence Certificate)
 
 **Document class:** Business Requirements Document (synthesized)  
@@ -8,6 +7,17 @@
 
 This BRD consolidates existing authoritative business sources. It does **not** invent statutory policy. Where Odisha portal facts are used, they are labeled SAMPLE_LAB pilot inputs (Finding M-04).
 
+---
+
+## 1. Purpose
+
+Deliver a **metadata-driven, multi-tenant government service platform** whose first golden vertical slice is **Residence Certificate (catalogue ID `IND-SOC-002`)**, proving that a normal service can be onboarded through Studio configuration without a bespoke backend.
+
+**Business outcome for MVP demo:** A stakeholder can walk citizen apply → officer decision → credential publish under **SIMULATED** DigiLocker in a lab cell, with clear non-production labeling.
+
+**Business outcome for G6 release (not claimed):** Same journey on authoritative engines (Aurora RLS, Temporal, OPA, REAL DigiLocker where critical), with G5/resilience/UX4G evidence and human `G6_RELEASE_CERTIFIED`.
+
+---
 
 ## 2. Stakeholders
 
@@ -20,6 +30,15 @@ This BRD consolidates existing authoritative business sources. It does **not** i
 | Security / tenancy reviewers | FORCE RLS, OPA, INT-011 isolation |
 | Independent verifiers | Evidence packs; agents cannot self-certify |
 
+---
+
+## 3. Problem statement
+
+Indian government services today are often rebuilt as one-off applications. ServiceForm AI’s business thesis (`SERVICE-MODEL.md`, Eng v1.4 / AWS v1.7 DOCX): **services are configuration** — form, rules, evidence, fee, workflow, SLA, credential, notifications — bound per tenant via immutable published versions.
+
+MVP must prove that thesis with **one golden service** before claiming platform reuse (M11).
+
+---
 
 ## 4. Scope
 
@@ -40,12 +59,25 @@ This BRD consolidates existing authoritative business sources. It does **not** i
 
 | ID | Hold | Reason |
 |---|---|---|
-| BR-H1 | DigiLocker **REAL** production publish | Registrar credentials + registered doc type inventable ≠ available |
+| BR-H1 | DigiLocker **REAL** production publish | Registrar credentials + registered doc type **not inventable**; not available on tip |
 | BR-H2 | Payment **REAL** PSP | Deferred M06 residual; Odisha fee ₹0 allows lab skip |
 | BR-H3 | Human `G6_RELEASE_CERTIFIED` | Prerequisites in `docs/verification/M10-G6-PREREQUISITES.md` |
 | BR-H4 | Second-service production reuse (M11) | Depends on M10 G6 decision |
 | BR-H5 | AI assistants as decision makers (M12) | Assistance only; never statutory approve/reject |
 
+---
+
+## 5. Business objectives & success criteria
+
+| Objective | Demo success (SAMPLE_LAB) | Release success (G6) |
+|---|---|---|
+| Prove metadata onboarding | Template + Odisha sample on tip | Studio-authored + sealed TSB |
+| Prove end-to-end citizen value | Golden E2E 16 passed (journey mock) | Platform-path E2E + REAL DigiLocker |
+| Prove multi-tenant safety | INT harness / holds | Full INT-011 + security exit re-bind |
+| Prove connector discipline | SIMULATED markers only | REAL critical connectors in prod |
+| Prove non-self-certification | Disposition `…_G6_HOLD` | Human gate issuance only |
+
+---
 
 ## 6. Golden service business facts (SAMPLE_LAB)
 
@@ -66,6 +98,17 @@ This BRD consolidates existing authoritative business sources. It does **not** i
 
 **Forbidden:** Inventing Act section numbers, real officer names, real PII, or claiming DigiLocker registration.
 
+---
+
+## 7. Assumptions & constraints
+
+1. Architecture Constitution + ADRs + FROZEN contracts are normative; this BRD cannot override them.  
+2. Aurora PostgreSQL is authoritative v1 datastore; OPA=authz; GoRules=business rules; Temporal=sequencing.  
+3. Published versions are immutable; applications pin TenantServiceBinding versions.  
+4. Agents propose gate status; only human/CI issues CERTIFIED/G6.  
+5. Owner may replace SAMPLE_LAB Odisha facts with another authorized pilot without changing platform architecture.
+
+---
 
 ## 8. Risks (business)
 
@@ -76,6 +119,18 @@ This BRD consolidates existing authoritative business sources. It does **not** i
 | Connector credential delay | Explicit G6-HOLD; SIMULATED allowed only non-prod per INT-013 |
 | Scope creep into bespoke service code | Constitution §1; M11 reuse rule |
 
+---
+
+## 9. Traceability to build-plan
+
+| Module | Business relevance |
+|---|---|
+| M00–M09 | Platform capability enabling any service |
+| **M10** | Golden Residence Certificate certification (`G6_RELEASE_CERTIFIED`) — **HOLD** |
+| M11 | Second-service reuse proof (business ROI of platform) |
+| M12 | AI assist (non-authoritative) |
+
+---
 
 ## 10. Source map (do not duplicate conflicting text)
 

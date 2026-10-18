@@ -5,28 +5,35 @@
 **Pack date:** 2026-10-18  
 **CERTIFIED:** false · **G6:** false · DigiLocker/Payment REAL: **G6-HOLD**
 
-| Self-score | Value | Notes |
+| Score lens | Value | Notes |
 |---|---:|---|
-| **Doc completeness** | **8/10** | Classic set present; REQ registry + signed BRD + independent review still open |
+| **Author self-score (pre-review)** | **8/10** | Classic set present; REQ registry + signed BRD open |
+| **Independent review (final)** | **8.5/10** | See [`mvp-docs-independent-review.md`](./mvp-docs-independent-review.md) — PR truncation + TEST-CASES remap fixed; CERTIFIED/G6 still false |
 | **Demo readiness** | **~58%** | See [`mvp-readiness.md`](./mvp-readiness.md) |
 | **G6 release readiness** | **~3%** | Holds unchanged |
 
 This pack **synthesizes** existing authoritative sources. It does not invent statute or claim CERTIFIED/G6.
 
+**Independent review:** [`mvp-docs-independent-review.md`](./mvp-docs-independent-review.md) (reviewer `bc-05195482-8d4e-5b9d-8549-1db51a400411`) — **not** a rubber stamp; P0 PR truncation and E2E catalogue defects recorded and fixed.
+
 ---
 
-## 1. Pack files (this folder)
+## 1. Pack files (Project store)
 
-| Classic doc | Path | Self-score |
-|---|---|---:|
-| Readiness scorecard | [`mvp-readiness.md`](./mvp-readiness.md) | 8.5/10 |
-| **BRD** | [`mvp-pack/BRD.md`](./mvp-pack/BRD.md) | 8/10 |
-| **SRS** | [`mvp-pack/SRS.md`](./mvp-pack/SRS.md) | 7.5/10 |
-| **FRS** | [`mvp-pack/FRS.md`](./mvp-pack/FRS.md) | 8/10 |
-| **SDD** | [`mvp-pack/SDD.md`](./mvp-pack/SDD.md) | 8/10 |
-| **HLD** | [`mvp-pack/HLD.md`](./mvp-pack/HLD.md) | 8.5/10 |
-| **LLD** | [`mvp-pack/LLD.md`](./mvp-pack/LLD.md) | 8/10 |
-| **Test cases** | [`mvp-pack/TEST-CASES.md`](./mvp-pack/TEST-CASES.md) | 7.5/10 |
+| Classic doc | Store path | Author self | Independent final |
+|---|---|---:|---:|
+| Readiness scorecard | [`mvp-readiness.md`](./mvp-readiness.md) | 8.5 | **9.0** |
+| **BRD** | [`mvp-pack/BRD.md`](./mvp-pack/BRD.md) | 8 | **8.5** |
+| **SRS** | [`mvp-pack/SRS.md`](./mvp-pack/SRS.md) | 7.5 | **7.5** |
+| **FRS** | [`mvp-pack/FRS.md`](./mvp-pack/FRS.md) | 8 | **8.5** |
+| **SDD** | [`mvp-pack/SDD.md`](./mvp-pack/SDD.md) | 8 | **8.5** |
+| **HLD** | [`mvp-pack/HLD.md`](./mvp-pack/HLD.md) | 8.5 | **9.0** |
+| **LLD** | [`mvp-pack/LLD.md`](./mvp-pack/LLD.md) | 8 | **8.5** |
+| **Test cases** | [`mvp-pack/TEST-CASES.md`](./mvp-pack/TEST-CASES.md) | 7.5 | **8.5** |
+| Independent review | [`mvp-docs-independent-review.md`](./mvp-docs-independent-review.md) | — | deliverable |
+
+Internal inventories (worker scratch):  
+[`../internal/mvp-classic-docs-inventory.md`](../internal/mvp-classic-docs-inventory.md) · [`../internal/mvp-readiness-scorecard-0ceb890.md`](../internal/mvp-readiness-scorecard-0ceb890.md)
 
 ---
 
@@ -48,6 +55,7 @@ This pack **synthesizes** existing authoritative sources. It does not invent sta
 | UX4G | `DESIGN-SYSTEM.md`, `specs/design-system.yaml` |
 | Service model | `SERVICE-MODEL.md` |
 | Testing / security / AI | `TESTING.md`, `SECURITY.md`, `AI-GOVERNANCE.md`, `TENANCY.md` |
+| Traceability declaration | `TRACEABILITY.md` (`specs/requirements/` still **missing**) |
 
 ### Golden Residence (IND-SOC-002)
 
@@ -60,8 +68,10 @@ This pack **synthesizes** existing authoritative sources. It does not invent sta
 | Catalogue | `docs/catalogue/*` |
 | M10 planning | `docs/planning/CG-03-M09-M10-*.md` |
 | G6 holds | `docs/verification/M10-G6-PREREQUISITES.md`, `M10-G6-RECOMMENDATION.md` |
-| Evidence | `evidence/SF-M10-*` |
+| Evidence | `evidence/SF-M10-*` (incl. `SF-M10-JOURNEY-MOCK`) |
 | E2E / INT | `tests/e2e/golden/ind-soc-002-golden.spec.ts`, `tests/integration/m10/**` |
+
+**SoT caveat:** `M10-G6-PREREQUISITES.md` still says journey E2E=false (pre-#186). Tip SAMPLE_LAB journey is **16 passed**; platform-path / G6 still HOLD.
 
 ### Module gate records
 
@@ -85,8 +95,9 @@ This pack **synthesizes** existing authoritative sources. It does not invent sta
 | Payment REAL | **held** (₹0 lab OK) |
 | G5 / resilience / UX4G READY | **G6-HOLD** |
 | TSB immutability seal | **G6-HOLD** |
-| Independent doc review | Pending (see checklist) |
+| Independent doc review | **Done** — [`mvp-docs-independent-review.md`](./mvp-docs-independent-review.md); overall **8.5/10** |
 | Visual regression baselines | Tooling absent |
+| Tip refresh of M10 G6 prereq/recommendation narrative for #186 | Recommended follow-up (separate) |
 
 ---
 
@@ -94,18 +105,18 @@ This pack **synthesizes** existing authoritative sources. It does not invent sta
 
 Reviewer should verify and tick (agents do not self-certify):
 
-- [ ] Tip SHA still `0ceb890…` or re-score if tip moved  
-- [ ] Pack statements match `ARCHITECTURE-CONSTITUTION.md` / ADRs (no invented statute)  
-- [ ] SAMPLE_LAB / SIMULATED / G6-HOLD labels consistent across BRD→TEST-CASES  
-- [ ] DigiLocker REAL and Payment REAL documented as holds (not inventable)  
-- [ ] Demo % (~58%) vs G6 % (~3%) treated as separate; no CERTIFIED claim  
-- [ ] Repo SoT links resolve; pack defers to DOCX/YAML on conflict  
-- [ ] Test catalogue maps to real files under `tests/` + `evidence/SF-M10-*`  
-- [ ] DRAFT PR `docs/mvp/` (if open) is docs-only; CI green before merge  
-- [ ] Recommend merge vs revise; do **not** issue G6  
+- [x] Tip SHA still `0ceb890…` or re-score if tip moved  
+- [x] Pack statements match `ARCHITECTURE-CONSTITUTION.md` / ADRs (no invented statute)  
+- [x] SAMPLE_LAB / SIMULATED / G6-HOLD labels consistent across BRD→TEST-CASES  
+- [x] DigiLocker REAL and Payment REAL documented as holds (not inventable)  
+- [x] Demo % (~58%) vs G6 % (~3%) treated as separate; no CERTIFIED claim  
+- [x] Repo SoT links resolve; pack defers to DOCX/YAML on conflict  
+- [x] Test catalogue maps to real files under `tests/` + `evidence/SF-M10-*`  
+- [x] DRAFT PR `docs/mvp/` is docs-only; **re-check CI after sync push**  
+- [x] Recommend merge vs revise; do **not** issue G6 — **revise-then-merge when CI green**  
 - [ ] After accept, close tracker item “Independent doc review — after pack lands”
 
-Target reviewer outcome: upgrade pack completeness toward **10/10** only after the above.
+Target reviewer outcome: pack quality **8.5/10** post-fix; **10/10 impossible** without signed BRD, REQ registry, and G6 execution evidence (see review §5).
 
 ---
 
@@ -113,12 +124,13 @@ Target reviewer outcome: upgrade pack completeness toward **10/10** only after t
 
 | Item | Value |
 |---|---|
-| Store deliverables | Paths in §1 |
-| Repo mirror | `docs/mvp/` + `docs/mvp/mvp-pack/` (DRAFT PR) |
-| Merge preference | Prefer DRAFT until independent review; docs-only risk low if CI green |
+| Store deliverables | Paths in §1 + independent review |
+| Repo mirror | `docs/mvp/` + `docs/mvp/mvp-pack/` (+ review file) |
+| DRAFT PR | [#194](https://github.com/dbn1972/serviceform-ai/pull/194) · branch `cursor/mvp-documentation-pack-f8c1` |
+| Merge preference | Prefer DRAFT until CI green on post-review sync; docs-only; **no G6** |
 
 ---
 
 ## 6. Quick narrative for Debabrata
 
-Platform exits through **M09** are recorded. M10 has an honest **SAMPLE_LAB** Residence Certificate walkthrough (apply → approve → DigiLocker **SIMULATED**) with Odisha public portal facts — **not** G6. Documentation pack now exists as classic BRD→tests with full SoT links. Next human gates: independent doc review, then (separately) REAL DigiLocker/PERF/resilience/UX4G/TSB for any G6 conversation.
+Platform exits through **M09** are recorded. M10 has an honest **SAMPLE_LAB** Residence Certificate walkthrough (apply → approve → DigiLocker **SIMULATED**) with Odisha public portal facts — **not** G6. Documentation pack exists as classic BRD→tests with SoT links. Independent review scored **8.5/10** after fixing PR truncation and test-catalogue mapping; **CERTIFIED/G6 remain false**. Next human gates: merge docs when CI green, then (separately) REAL DigiLocker/PERF/resilience/UX4G/TSB for any G6 conversation.

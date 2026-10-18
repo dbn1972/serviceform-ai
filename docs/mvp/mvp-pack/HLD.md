@@ -1,4 +1,3 @@
-
 # HLD — ServiceForm AI MVP (high-level design)
 
 **Document class:** High-Level Design  
@@ -7,6 +6,32 @@
 
 Primary machine-readable HLD: `specs/build-plan.yaml` (v2.5-adr0001) + `specs/component-map.yaml` + `specs/integration-map.yaml`.
 
+---
+
+## 1. Module graph (M00–M12)
+
+```text
+M00 Bootstrap
+  └─ M01 Foundation/Security (G4) ──┬── M02 Identity (G3)
+                                    └── M03 Catalogue/Studio/UX4G (G3)
+                                          └─ M04 Forms/Rules/Evidence/AI (G3)
+                                                └─ M05 Case/Workflow (G4)
+                                                      ├── M06 Fees/Pay/Notify (G3) ── M07 Credentials/DigiLocker (G3)
+                                                      └── M08 Search/Analytics (G3)
+                                                            └─ CG-03: M09 Interop (G4) ∥ M10 Golden (G6) ← HOLD
+                                                                  └─ CG-04: M11 Reuse ∥ M12 AI Assist
+```
+
+| Concurrency group | After | Parallel |
+|---|---|---|
+| CG-01 | M01 | M02 ∥ M03 |
+| CG-02 | M05 | M06 ∥ M08 |
+| CG-03 | M07+M08 | M09 ∥ M10 |
+| CG-04 | M10 | M11 ∥ M12 |
+
+**Tip status:** M01–M09 exits issued; M10 G6 **HOLD**; M11/M12 not started.
+
+---
 
 ## 2. Component landscape (MVP cut)
 
@@ -23,6 +48,25 @@ Primary machine-readable HLD: `specs/build-plan.yaml` (v2.5-adr0001) + `specs/co
 | Interop extensions | 056–061 | M09 (parallel to golden metadata) |
 | Golden deliverables | templates/fixtures/E2E (no new CMP) | M10 |
 
+---
+
+## 3. Integration landscape (golden spine)
+
+```text
+INT-001 Auth/Profile
+   → INT-003 Discovery→Draft
+   → INT-004 Submit/Outbox
+   → INT-005 Temporal/Officer/OPA
+   → INT-006 Evidence
+   → INT-007 Fee/Payment (₹0 skip SAMPLE_LAB)
+   → INT-008 Credential/QR/DigiLocker (SIMULATED tip / REAL G6-HOLD)
+INT-002 Studio publish (TSB seal G6-HOLD)
+INT-009 Deficiency/SLA
+INT-011 Tenant isolation (every exit)
+INT-013 Connector modes
+```
+
+---
 
 ## 4. Golden Residence HLD (M10)
 
@@ -31,12 +75,26 @@ Primary machine-readable HLD: `specs/build-plan.yaml` (v2.5-adr0001) + `specs/co
 | Canonical template | Studio metadata package | `templates/residence-certificate/` SAMPLE_CANDIDATE |
 | Tenant overlay | Odisha SAMPLE_LAB pins | `fixtures/golden/ind-soc-002/tenant-overlay.yaml` |
 | TSB publish | Immutable pin graph | Fixture `tsb_immutability_sealed: false` |
-| E2E harness | Playwright + INT | Journey mock 16 passed; platform path incomplete |
+| E2E harness | Playwright + INT | Journey mock **16 passed** (`evidence/SF-M10-JOURNEY-MOCK/`); platform-path E2E still incomplete. Note: `M10-G6-PREREQUISITES.md` still says “journey E2E=false” from pre-#186 tip — treat SAMPLE_LAB journey as present, platform path as not G6 |
 | Policy sample | Owner Finding M-04 | Odisha e-District public facts |
 | G5 / resilience / UX4G READY | Release gates | Fail-closed holds |
 
 Planning detail: `docs/planning/CG-03-M09-M10-PLAN.md`, `orchestrator/handovers/M10-PLAN.yaml`.
 
+---
+
+## 5. Application surfaces (HLD)
+
+| App | HLD responsibility | Tip maturity |
+|---|---|---|
+| `web-citizen` | Apply, status, credentials | SAMPLE_LAB journey present |
+| `web-officer` | Queue, scrutiny, decision | SAMPLE_LAB journey present |
+| `web-studio` | Metadata + publication | Partial product shells |
+| `web-admin` | Bindings/branding/reviews | Partial |
+| `mobile` | Flutter citizen | Bootstrap |
+| `apps/api` | Host composition | M05+ plugins; M10 metadata admission |
+
+---
 
 ## 6. Data ownership (high level)
 
@@ -50,6 +108,24 @@ Planning detail: `docs/planning/CG-03-M09-M10-PLAN.md`, `orchestrator/handovers/
 
 No cross-component SQL (Constitution).
 
+---
+
+## 7. Release HLD (G6)
+
+Human `G6_RELEASE_CERTIFIED` requires (see `M10-G6-PREREQUISITES.md` + tip #186 update):
+
+1. Platform-path golden E2E (retire lab store as G6 evidence) + tenant isolation  
+2. G5 PERF numbers + cell  
+3. Resilience/backup/restore/rollback  
+4. REAL DigiLocker for production critical  
+5. UX4G journey READY (`SF_M10_UX4G_READY`)  
+6. TSB immutability seal  
+7. Payment REAL when fee > 0 (Odisha ₹0 lab skip OK; general path held)  
+8. Independent EVD re-bind + human issuance  
+
+**None of the above authorize agents to claim G6.**
+
+---
 
 ## 8. Risks & mitigations (design-level)
 

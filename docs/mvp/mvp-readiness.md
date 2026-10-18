@@ -14,7 +14,7 @@
 
 **Explicit non-claims:** `CERTIFIED=false` · `G6=false` · `g6_issued=false` · DigiLocker REAL=**held** · Payment REAL=**held** · `self_certified=false`
 
-Related pack index: [`mvp-documentation-pack.md`](./mvp-documentation-pack.md)
+Related pack index: [`mvp-documentation-pack.md`](./mvp-documentation-pack.md) · Internal scorecard detail: [`../internal/mvp-readiness-scorecard-0ceb890.md`](../internal/mvp-readiness-scorecard-0ceb890.md)
 
 ---
 
@@ -71,7 +71,7 @@ Journey uses `@serviceform/m10-sample-lab` JSON file store — **not** CMP-015/0
 
 ### G6-release-ready (~3%) — blockers
 
-From `docs/verification/M10-G6-PREREQUISITES.md`:
+From `docs/verification/M10-G6-PREREQUISITES.md` (plus tip #186 journey mock):
 
 1. **REAL DigiLocker** — registrar credentials + registered doc type + REAL adapter (**G6-HOLD**)  
 2. Wire UI → real APIs (retire lab store as G6 evidence)  
@@ -81,6 +81,8 @@ From `docs/verification/M10-G6-PREREQUISITES.md`:
 6. **TSB immutability seal** — deferred until REAL DigiLocker/DLT  
 7. **Payment REAL** — held for non-zero fee tenants (Odisha ₹0 lab skip OK)  
 8. Human issues `G6_RELEASE_CERTIFIED` after independent EVD re-bind  
+
+**SoT caveat:** `M10-G6-PREREQUISITES.md` non-claims still say `journey E2E=false` from the pre-#186 inventory. On tip `0ceb890`, SAMPLE_LAB journey E2E is **16 passed** (`SF-M10-JOURNEY-MOCK`); that does **not** clear platform-path / G6 journey requirements.  
 
 ---
 

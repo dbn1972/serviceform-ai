@@ -1,4 +1,3 @@
-
 # SRS — ServiceForm AI MVP (system requirements)
 
 **Document class:** Software / System Requirements Specification (synthesized)  
@@ -9,6 +8,15 @@
 Normative precedence: ADRs → `ARCHITECTURE-CONSTITUTION.md` → authoritative DOCX → this pack.  
 REQ IDs below are **pack-local** (TRACEABILITY.md’s `specs/requirements/` directory is still missing on tip).
 
+---
+
+## 1. System overview
+
+ServiceForm AI is a metadata-driven multi-tenant platform. Normal services are onboarded via Studio metadata; runtime engines (forms, rules, case, workflow, fee, credential, connectors) execute pinned published bindings.
+
+**MVP golden service:** `IND-SOC-002` Residence Certificate (Odisha SAMPLE_LAB policy sample).
+
+---
 
 ## 2. Functional requirement groups
 
@@ -49,10 +57,26 @@ REQ IDs below are **pack-local** (TRACEABILITY.md’s `specs/requirements/` dire
 | REQ | Statement | Trace |
 |---|---|---|
 | SRS-F-030 | System SHALL provide IND-SOC-002 template + tenant overlay + TSB fixture. | `templates/`, `fixtures/golden/ind-soc-002/` |
-| SRS-F-031 | SAMPLE_LAB journey SHALL demonstrate apply → approve → DigiLocker SIMULATED without claiming G6. | #186; `evidence/SF-M10-JOURNEY-MOCK/` |
-| SRS-F-032 | Platform-path golden E2E SHALL fail closed until owner/REAL prerequisites met. | `M10-G6-PREREQUISITES.md` |
+| SRS-F-031 | SAMPLE_LAB journey SHALL demonstrate apply → approve → DigiLocker SIMULATED without claiming G6. | #186; `evidence/SF-M10-JOURNEY-MOCK/` (**16 passed** on tip) |
+| SRS-F-032 | Platform-path golden E2E SHALL fail closed until owner/REAL prerequisites met. | `M10-G6-PREREQUISITES.md` (note: its “journey E2E=false” line is pre-#186 SAMPLE_LAB inventory; platform path still incomplete) |
 | SRS-F-033 | Odisha portal facts (eligibility/fee/SLA/evidence) SHALL be used only as labeled SAMPLE_LAB inputs. | `SOURCE_PROVENANCE.md` |
 
+---
+
+## 3. Non-functional requirements
+
+| REQ | Category | Statement | Trace |
+|---|---|---|---|
+| SRS-N-001 | Security | ASVS-oriented controls; no secrets/PII in logs/prompts/fixtures. | SECURITY.md |
+| SRS-N-002 | Tenancy | Cross-tenant negative tests at every module exit layer. | INT-011; TESTING.md |
+| SRS-N-003 | Audit | All state transitions audited; PII excluded from audit payloads where required. | CMP-030 |
+| SRS-N-004 | Performance (G5) | Load/soak profiles MUST be owner-authorized; schema-only until `SF_M10_G5_PERF_READY=1`. **G6-HOLD** | `tests/performance/m10/` |
+| SRS-N-005 | Resilience | Backup/restore/rollback evidence required for release; **G6-HOLD** | `tests/resilience/m10/` |
+| SRS-N-006 | Accessibility | Shell axe WCAG 2.1 A/AA; journey UX4G READY flag for G6. | `tests/e2e/shells.spec.ts`; UX4G hold |
+| SRS-N-007 | Observability | Outbox + correlation IDs; no network calls inside authoritative DB transactions. | Constitution |
+| SRS-N-008 | Immutability | Published artifact/binding mutations MUST fail closed. | CMP-052 triggers |
+
+---
 
 ## 4. External interface requirements
 
@@ -63,6 +87,17 @@ REQ IDs below are **pack-local** (TRACEABILITY.md’s `specs/requirements/` dire
 | SMS/Email | SIMULATED / SAMPLE_LAB templates | Provider + DLT PE-ID when required |
 | OPA / Temporal / PostgreSQL | Local/CI harnesses | Deployed cells per env |
 
+---
+
+## 5. Constraints
+
+1. No service-specific backend for normal configurable services (Constitution §1).  
+2. No mutation of published versions.  
+3. No SIMULATED critical connector in production.  
+4. No self-certification; Design → Develop → Verify → Certify with executed evidence.  
+5. Do not invent statutory eligibility/approval policy.
+
+---
 
 ## 6. Acceptance (system-level)
 
@@ -74,3 +109,15 @@ REQ IDs below are **pack-local** (TRACEABILITY.md’s `specs/requirements/` dire
 
 Demo acceptance ≠ G6 acceptance. See [`../mvp-readiness.md`](../mvp-readiness.md).
 
+---
+
+## 7. Source map
+
+| Primary | Path |
+|---|---|
+| AWS functional/technical | `docs/authoritative/ServiceForm_AI_Component_Functional_Technical_Specification_AWS_v1.7.docx` |
+| Engineering building blocks | `docs/authoritative/ServiceForm_AI_Building_Block_Engineering_Specifications_v1.4.docx` |
+| Tenant isolation | `docs/authoritative/ServiceForm_AI_Tenant_Isolation_Architecture_v1.0.docx` |
+| Constitution / security / testing | root `ARCHITECTURE-CONSTITUTION.md`, `SECURITY.md`, `TESTING.md`, `AI-GOVERNANCE.md` |
+
+**Self-score:** SRS **7.5/10** (REQ IDs local; formal `specs/requirements/` still absent).

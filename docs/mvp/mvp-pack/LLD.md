@@ -1,4 +1,3 @@
-
 # LLD — ServiceForm AI MVP (low-level design)
 
 **Document class:** Low-Level Design (golden slice + critical seams)  
@@ -7,6 +6,25 @@
 
 Per-CMP LLD remains in OpenAPI/AsyncAPI/migrations/READMEs. This document deep-dives the MVP golden slice.
 
+---
+
+## 1. Repository layout (implementation units)
+
+| Path | LLD role |
+|---|---|
+| `services/cmp-*/` | Bounded component services + `contracts/openapi.*` |
+| `contracts/shared|m05|m06|m07|m08|m09/` | FROZEN schemas / examples |
+| `db/migrations/` | Schema + RLS + immutability triggers |
+| `policy/` | OPA bundles |
+| `apps/api/src/composition/` | Host plugin mounts |
+| `apps/web-*` | UX4G surfaces |
+| `templates/residence-certificate/` | Golden metadata LLD |
+| `fixtures/golden/ind-soc-002/` | Overlay + TSB + maker-checker fixtures |
+| `packages/service-packages/ind-soc-002/` | `.sfpackage` scaffold |
+| `packages/m10-sample-lab/` | SAMPLE_LAB JSON store — demo only (`@serviceform/m10-sample-lab`) |
+| `tests/e2e/golden/`, `tests/integration/m10/` | Executable LLD verification |
+
+---
 
 ## 2. IND-SOC-002 metadata LLD
 
@@ -60,6 +78,21 @@ Deterministic nodes: eligibility_check, completeness_check, fee_calculation. No 
 | `sfpackage-manifest-fixture.json` | Package manifest candidate |
 | `POLICY_INPUT_REQUIRED.md` / `SOURCE_PROVENANCE.md` | Owner input resolution trail |
 
+---
+
+## 3. SAMPLE_LAB journey LLD (tip)
+
+| Concern | Design |
+|---|---|
+| Citizen route | `apps/web-citizen/app/services/IND-SOC-002/page.tsx` + `ResidenceApplyForm.tsx` |
+| Persist | POST `/api/lab/applications` → JSON file store (e.g. `/tmp/sf-m10-ind-soc-002-lab.json`) |
+| Officer | `apps/web-officer/app/applications/**` reads same store |
+| DigiLocker | `mockDigiLockerPublish` → markers `sim:…` / `SAMPLE_LAB_RESIDENT_CERTIFICATE` |
+| Labels | UI must show SAMPLE_LAB / SIMULATED / not G6 |
+
+**Not LLD for G6:** replace lab store with CMP-015 submit + Temporal + CMP-012 connector bound REAL/SANDBOX per env.
+
+---
 
 ## 4. DigiLocker connector LLD (CMP-012)
 
@@ -71,6 +104,19 @@ Deterministic nodes: eligibility_check, completeness_check, fee_calculation. No 
 | SAMPLE_LAB doc types in PRODUCTION critical | Refused (`g6-connector-hold.test.ts`) |
 | Mode mismatch | Fail closed vs binding |
 
+---
+
+## 5. TSB publish LLD (CMP-052)
+
+1. `POST /v1/tenant-service-bindings/{id}/publish`  
+2. Requires CMP-051 approval on `artifact_hash`  
+3. Inserts immutable `artifact_version`; marks binding `PUBLISHED`  
+4. Outbox: `TenantServiceBindingPublished` + `ArtifactVersionPublished`  
+5. DB triggers `prevent_published_*_mutation` → `SF_PUBLISHED_IMMUTABLE`  
+
+G6 fixture keeps `tsb_immutability_sealed: false` until REAL DigiLocker/DLT bindings exist.
+
+---
 
 ## 6. Host composition LLD
 
@@ -78,6 +124,21 @@ Deterministic nodes: eligibility_check, completeness_check, fee_calculation. No 
 - M10 host evidence: metadata admission only (`evidence/SF-M10-HOST/`).  
 - No golden HTTP that claims sealed production publish on tip.
 
+---
+
+## 7. Test harness LLD hooks
+
+| Flag / artifact | Effect |
+|---|---|
+| `SF_M10_OWNER_INPUTS_READY=1` | Unlocks Odisha-filled INT fixtures |
+| `SF_M10_G5_PERF_READY` | Unset → G5 hold PASS refused |
+| `SF_M10_RESILIENCE_READY` | Unset → resilience hold |
+| `SF_M10_UX4G_READY` | Unset → UX4G journey PASS refused |
+| `load-profile.yaml` / `resilience-checklist.yaml` | Schema-only null targets |
+
+Agents MUST NOT invent numbers or set READY flags.
+
+---
 
 ## 8. Error / isolation contracts
 
