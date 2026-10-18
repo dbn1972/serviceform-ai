@@ -3,19 +3,37 @@ import { CitizenNav } from '../components/CitizenNav';
 
 export default function HomePage() {
   return (
-    <AppShell surface="citizen_web" title="Citizen Portal">
-      <CitizenNav />
-      <h1>Citizen Portal</h1>
-      <Card title="Golden sample services">
+    <AppShell
+      surface="citizen_web"
+      title="Citizen Portal"
+      environmentLabel="SAMPLE_LAB"
+      nav={<CitizenNav />}
+    >
+      <section className="sf-page-hero">
+        <h1 className="ux4g-heading-2xl-strong">Citizen Portal</h1>
         <p className="ux4g-body-m-default">
-          IND-SOC-002 Residence Certificate — public e-District sample (SAMPLE_LAB). DigiLocker is
-          SIMULATED mock. G6 not issued.
+          Apply for services, track applications, and publish issued credentials to DigiLocker
+          (SIMULATED in this lab).
         </p>
-        <p>
-          <TextLink href="/services/IND-SOC-002">Apply for Residence Certificate</TextLink>
-        </p>
-        <p>
-          <TextLink href="/certificates">View my certificates</TextLink>
+        <div className="sf-meta-row">
+          <span className="ux4g-tag-tonal-primary">IND-SOC-002</span>
+          <span className="ux4g-tag-outline-warning">G6 not issued</span>
+        </div>
+      </section>
+
+      <Card
+        title="Residence Certificate"
+        subtitle="Public e-District sample · fee ₹0 · DigiLocker SIMULATED"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/services/IND-SOC-002">Start application</TextLink>
+            <TextLink href="/certificates">View my certificates</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Eligibility ≥12 months continuous residence. SLA 10 working days. No real PII — synthetic
+          applicants only.
         </p>
       </Card>
     </AppShell>

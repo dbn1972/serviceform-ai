@@ -85,13 +85,24 @@ export function Alert({ variant = 'info', title, children }: AlertProps) {
   );
 }
 
-export type CardProps = { children: ReactNode; title?: string };
+export type CardProps = {
+  children: ReactNode;
+  title?: string;
+  subtitle?: string;
+  footer?: ReactNode;
+};
 
-export function Card({ title, children }: CardProps) {
+export function Card({ title, subtitle, children, footer }: CardProps) {
   return (
-    <section className="ux4g-card">
-      {title ? <h2 className="ux4g-heading-xl-default">{title}</h2> : null}
-      <div>{children}</div>
+    <section className="ux4g-card ux4g-card-outline ux4g-card-solid ux4g-card-vertical sf-card">
+      {title || subtitle ? (
+        <div className="ux4g-card-header">
+          {title ? <h2 className="ux4g-card-title">{title}</h2> : null}
+          {subtitle ? <p className="ux4g-card-sub-title">{subtitle}</p> : null}
+        </div>
+      ) : null}
+      <div className="ux4g-card-body sf-card-body">{children}</div>
+      {footer ? <div className="ux4g-card-footer">{footer}</div> : null}
     </section>
   );
 }

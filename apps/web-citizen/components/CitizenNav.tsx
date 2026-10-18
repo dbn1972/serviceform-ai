@@ -8,13 +8,11 @@ const links = [
 
 export function CitizenNav() {
   return (
-    <nav aria-label="Citizen" className="ux4g-navbar">
-      <ul>
+    <nav aria-label="Citizen">
+      <ul className="ux4g-navbar-links">
         {links.map((link) => (
           <li key={link.href}>
-            <Link className="ux4g-text-link-md" href={link.href}>
-              {link.label}
-            </Link>
+            <Link href={link.href}>{link.label}</Link>
           </li>
         ))}
       </ul>

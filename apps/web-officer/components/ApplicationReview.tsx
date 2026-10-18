@@ -15,6 +15,19 @@ type App = {
   rejection_reason?: string;
 };
 
+function statusTag(status: string): string {
+  switch (status) {
+    case 'ISSUED':
+      return 'ux4g-tag-tonal-success';
+    case 'REJECTED':
+      return 'ux4g-tag-tonal-error';
+    case 'SUBMITTED':
+      return 'ux4g-tag-tonal-info';
+    default:
+      return 'ux4g-tag-tonal-neutral';
+  }
+}
+
 export function ApplicationReview({ id }: { id: string }) {
   const [app, setApp] = useState<App | null>(null);
   const [error, setError] = useState('');
@@ -69,22 +82,52 @@ export function ApplicationReview({ id }: { id: string }) {
   if (!app) return null;
 
   return (
-    <Card title="Application review (SAMPLE_LAB)">
+    <Card
+      title="Review application"
+      subtitle="SAMPLE_LAB decision — issues a lab credential, not a production seal"
+      footer={
+        app.status === 'SUBMITTED' ? (
+          <div className="sf-actions">
+            <Button onClick={() => void act('APPROVE')}>Approve &amp; issue</Button>
+            <Button variant="outline-danger" onClick={() => void act('REJECT')}>
+              Reject
+            </Button>
+          </div>
+        ) : null
+      }
+    >
       <Alert variant="warning" title="Sample lab — G6 not issued">
         Approve issues a SAMPLE_LAB credential. DigiLocker publish is citizen-side SIMULATED mock.
       </Alert>
-      <p className="ux4g-body-m-default">Applicant: {app.applicant_name}</p>
-      <p className="ux4g-body-m-default">
-        Status: {app.status} · Residence months: {app.residence_duration_months} · Eligibility:{' '}
-        {app.eligibility_pass ? 'PASS' : 'FAIL'}
-      </p>
-      <p className="ux4g-body-m-default">Evidence: {app.evidence_type}</p>
-      <p className="ux4g-body-m-default">Purpose: {app.purpose_of_certificate}</p>
-      {app.credential_id ? (
-        <Alert variant="success" title="Credential">
-          {app.credential_id}
-        </Alert>
-      ) : null}
+
+      <div className="sf-meta-row">
+        <span className={statusTag(app.status)}>{app.status}</span>
+        <span
+          className={
+            app.eligibility_pass ? 'ux4g-tag-tonal-success' : 'ux4g-tag-tonal-error'
+          }
+        >
+          Eligibility {app.eligibility_pass ? 'PASS' : 'FAIL'}
+        </span>
+      </div>
+
+      <dl className="sf-dl">
+        <dt>Applicant</dt>
+        <dd>{app.applicant_name}</dd>
+        <dt>Residence</dt>
+        <dd>{app.residence_duration_months} months</dd>
+        <dt>Evidence</dt>
+        <dd>{app.evidence_type}</dd>
+        <dt>Purpose</dt>
+        <dd>{app.purpose_of_certificate}</dd>
+        {app.credential_id ? (
+          <>
+            <dt>Credential</dt>
+            <dd>{app.credential_id}</dd>
+          </>
+        ) : null}
+      </dl>
+
       {app.rejection_reason ? (
         <Alert variant="error" title="Rejection">
           {app.rejection_reason}
@@ -99,14 +142,6 @@ export function ApplicationReview({ id }: { id: string }) {
         <Alert variant="error" title="Action failed">
           {error}
         </Alert>
-      ) : null}
-      {app.status === 'SUBMITTED' ? (
-        <>
-          <Button onClick={() => void act('APPROVE')}>Approve &amp; issue</Button>
-          <Button variant="outline-danger" onClick={() => void act('REJECT')}>
-            Reject
-          </Button>
-        </>
       ) : null}
     </Card>
   );

@@ -10,13 +10,11 @@ const links = [
 
 export function StudioNav() {
   return (
-    <nav aria-label="Studio" className="ux4g-navbar">
-      <ul>
+    <nav aria-label="Studio">
+      <ul className="ux4g-navbar-links">
         {links.map((link) => (
           <li key={link.href}>
-            <Link className="ux4g-text-link-md" href={link.href}>
-              {link.label}
-            </Link>
+            <Link href={link.href}>{link.label}</Link>
           </li>
         ))}
       </ul>

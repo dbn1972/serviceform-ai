@@ -3,15 +3,35 @@ import { OfficerNav } from '../components/OfficerNav';
 
 export default function HomePage() {
   return (
-    <AppShell surface="officer_workbench" title="Officer Workbench">
-      <OfficerNav />
-      <h1>Officer Workbench</h1>
-      <Card title="SAMPLE_LAB queue">
+    <AppShell
+      surface="officer_workbench"
+      title="Officer Workbench"
+      environmentLabel="SAMPLE_LAB"
+      nav={<OfficerNav />}
+    >
+      <section className="sf-page-hero">
+        <h1 className="ux4g-heading-2xl-strong">Officer Workbench</h1>
         <p className="ux4g-body-m-default">
-          Review IND-SOC-002 Residence Certificate applications from the shared lab store.
-          DigiLocker remains SIMULATED. G6 not issued.
+          Review submitted applications, record decisions, and issue SAMPLE_LAB credentials.
         </p>
-        <TextLink href="/applications">Open applications</TextLink>
+        <div className="sf-meta-row">
+          <span className="ux4g-tag-tonal-primary">IND-SOC-002 queue</span>
+          <span className="ux4g-tag-outline-warning">G6 not issued</span>
+        </div>
+      </section>
+
+      <Card
+        title="Residence Certificate queue"
+        subtitle="Shared SAMPLE_LAB store with Citizen Portal"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/applications">Open applications</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          DigiLocker publish stays on the citizen side as a SIMULATED mock after issue.
+        </p>
       </Card>
     </AppShell>
   );
