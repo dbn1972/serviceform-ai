@@ -126,7 +126,7 @@ Target reviewer outcome: pack quality **8.5/10** post-fix; **10/10 impossible** 
 |---|---|
 | Store deliverables | Paths in §1 + independent review |
 | Repo mirror | `docs/mvp/` + `docs/mvp/mvp-pack/` (+ review file) |
-| DRAFT PR | [#194](https://github.com/dbn1972/serviceform-ai/pull/194) · branch `cursor/mvp-documentation-pack-f8c1` |
+| DRAFT PR | [#194](https://github.com/dbn1972/serviceform-ai/pull/194) · branch `cursor/mvp-documentation-pack-f8c1` @ `ebace7b` (review sync) |
 | Merge preference | Prefer DRAFT until CI green on post-review sync; docs-only; **no G6** |
 
 ---
