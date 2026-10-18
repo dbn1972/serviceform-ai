@@ -7,7 +7,23 @@ type App = {
   id: string;
   status: string;
   applicant_name: string;
+  applicant_dob?: string;
+  applicant_gender?: string;
+  applicant_mobile?: string;
+  applicant_aadhaar_last4?: string;
+  residence_address?: {
+    house_no_or_name: string;
+    locality: string;
+    post_office?: string;
+    district: string;
+    state_code: string;
+    pincode: string;
+  };
   residence_duration_months: number;
+  purpose_of_certificate?: string;
+  evidence_type?: string;
+  evidence_file_name?: string;
+  evidence_mime?: string;
   eligibility_pass: boolean;
   fee_paisa: number;
   credential_id?: string;
@@ -80,6 +96,8 @@ export function CertificateDetail({ id }: { id: string }) {
   }
   if (!app) return null;
 
+  const addr = app.residence_address;
+
   return (
     <Card
       title="Certificate / application"
@@ -103,30 +121,73 @@ export function CertificateDetail({ id }: { id: string }) {
         <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
       </div>
 
-      <dl className="sf-dl">
-        <dt>Applicant</dt>
-        <dd>{app.applicant_name}</dd>
-        <dt>Eligibility</dt>
-        <dd>{app.eligibility_pass ? 'PASS' : 'FAIL'}</dd>
-        <dt>Residence</dt>
-        <dd>{app.residence_duration_months} months</dd>
-        <dt>Fee</dt>
-        <dd>₹{(app.fee_paisa / 100).toFixed(0)}</dd>
-        <dt>Doc type</dt>
-        <dd>{app.digilocker.doc_type}</dd>
-        {app.credential_id ? (
-          <>
-            <dt>Credential</dt>
-            <dd>{app.credential_id}</dd>
-          </>
-        ) : null}
-        {app.digilocker.provider_transaction_ref ? (
-          <>
-            <dt>Provider ref</dt>
-            <dd>{app.digilocker.provider_transaction_ref}</dd>
-          </>
-        ) : null}
-      </dl>
+      <div className="sf-preview-grid">
+        <section className="sf-preview-block">
+          <h3 className="ux4g-heading-s-strong">Applicant</h3>
+          <dl className="sf-dl">
+            <dt>Name</dt>
+            <dd>{app.applicant_name}</dd>
+            <dt>DOB</dt>
+            <dd>{app.applicant_dob ?? '—'}</dd>
+            <dt>Gender</dt>
+            <dd>{app.applicant_gender ?? '—'}</dd>
+            <dt>Mobile</dt>
+            <dd>{app.applicant_mobile ?? '—'}</dd>
+            <dt>Aadhaar (last 4)</dt>
+            <dd>
+              {app.applicant_aadhaar_last4 ? `•••• ${app.applicant_aadhaar_last4}` : '—'}
+            </dd>
+          </dl>
+        </section>
+        <section className="sf-preview-block">
+          <h3 className="ux4g-heading-s-strong">Residence &amp; policy</h3>
+          <dl className="sf-dl">
+            <dt>Address</dt>
+            <dd>
+              {addr
+                ? `${addr.house_no_or_name}, ${addr.locality}${
+                    addr.post_office ? `, ${addr.post_office}` : ''
+                  }, ${addr.district}, ${addr.state_code} ${addr.pincode}`
+                : '—'}
+            </dd>
+            <dt>Duration</dt>
+            <dd>{app.residence_duration_months} months</dd>
+            <dt>Eligibility</dt>
+            <dd>{app.eligibility_pass ? 'PASS' : 'FAIL'}</dd>
+            <dt>Fee</dt>
+            <dd>₹{(app.fee_paisa / 100).toFixed(0)}</dd>
+            <dt>Purpose</dt>
+            <dd>{app.purpose_of_certificate ?? '—'}</dd>
+          </dl>
+        </section>
+        <section className="sf-preview-block sf-span-2">
+          <h3 className="ux4g-heading-s-strong">Evidence &amp; credential</h3>
+          <dl className="sf-dl">
+            <dt>Evidence</dt>
+            <dd>{app.evidence_type ?? '—'}</dd>
+            <dt>File</dt>
+            <dd>
+              {app.evidence_file_name
+                ? `${app.evidence_file_name}${app.evidence_mime ? ` (${app.evidence_mime})` : ''}`
+                : '—'}
+            </dd>
+            <dt>Doc type</dt>
+            <dd>{app.digilocker.doc_type}</dd>
+            {app.credential_id ? (
+              <>
+                <dt>Credential</dt>
+                <dd>{app.credential_id}</dd>
+              </>
+            ) : null}
+            {app.digilocker.provider_transaction_ref ? (
+              <>
+                <dt>Provider ref</dt>
+                <dd>{app.digilocker.provider_transaction_ref}</dd>
+              </>
+            ) : null}
+          </dl>
+        </section>
+      </div>
 
       {!app.credential_id ? (
         <Alert variant="warning" title="Awaiting officer decision">

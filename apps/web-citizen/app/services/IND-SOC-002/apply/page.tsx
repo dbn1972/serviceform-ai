@@ -17,7 +17,8 @@ export default function ResidenceApplyPage() {
         <section className="sf-page-hero">
           <h1 className="ux4g-heading-2xl-strong">Apply — Residence Certificate</h1>
           <p className="ux4g-body-m-default">
-            Step 3 of the citizen journey · complete the form with synthetic values only.
+            Four steps: applicant → residence → evidence → preview &amp; submit. Fee ₹0 · SAMPLE_LAB
+            only.
           </p>
         </section>
         <ResidenceApplyForm />

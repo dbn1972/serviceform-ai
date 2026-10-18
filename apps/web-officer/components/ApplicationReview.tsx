@@ -7,10 +7,19 @@ type App = {
   id: string;
   status: string;
   applicant_name: string;
+  applicant_mobile?: string;
   residence_duration_months: number;
   eligibility_pass: boolean;
   purpose_of_certificate: string;
   evidence_type: string;
+  evidence_file_name?: string;
+  residence_address?: {
+    house_no_or_name: string;
+    locality: string;
+    district: string;
+    state_code: string;
+    pincode: string;
+  };
   credential_id?: string;
   rejection_reason?: string;
 };
@@ -113,11 +122,20 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <dl className="sf-dl">
         <dt>Applicant</dt>
-        <dd>{app.applicant_name}</dd>
+        <dd>{app.applicant_name}{app.applicant_mobile ? ` · ${app.applicant_mobile}` : ''}</dd>
+        <dt>Address</dt>
+        <dd>
+          {app.residence_address
+            ? `${app.residence_address.house_no_or_name}, ${app.residence_address.locality}, ${app.residence_address.district}, ${app.residence_address.state_code} ${app.residence_address.pincode}`
+            : '—'}
+        </dd>
         <dt>Residence</dt>
         <dd>{app.residence_duration_months} months</dd>
         <dt>Evidence</dt>
-        <dd>{app.evidence_type}</dd>
+        <dd>
+          {app.evidence_type}
+          {app.evidence_file_name ? ` · ${app.evidence_file_name}` : ''}
+        </dd>
         <dt>Purpose</dt>
         <dd>{app.purpose_of_certificate}</dd>
         {app.credential_id ? (

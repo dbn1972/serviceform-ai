@@ -5,6 +5,7 @@ export type DigiLockerPublishStatus = 'NOT_REQUESTED' | 'PUBLISHED' | 'FAILED';
 export interface LabAddress {
   house_no_or_name: string;
   locality: string;
+  post_office?: string;
   district: string;
   state_code: string;
   pincode: string;
@@ -19,10 +20,14 @@ export interface LabApplication {
   applicant_name: string;
   applicant_dob: string;
   applicant_gender: string;
+  applicant_mobile?: string;
+  applicant_aadhaar_last4?: string;
   residence_address: LabAddress;
   residence_duration_months: number;
   purpose_of_certificate: string;
   evidence_type: string;
+  evidence_file_name?: string;
+  evidence_mime?: string;
   fee_paisa: number;
   eligibility_pass: boolean;
   rejection_reason?: string;
