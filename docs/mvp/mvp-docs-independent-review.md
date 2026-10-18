@@ -4,7 +4,7 @@
 **Author pack agent:** `bc-bd901fb4-83fa-5b50-93b9-9c19d0f4f8c1`  
 **Tip verified:** `0ceb890e4007242be7b4fd3800c208063b6d7502` (`origin/main`, merge #186)  
 **Review date:** 2026-10-18  
-**DRAFT PR reviewed:** [#194](https://github.com/dbn1972/serviceform-ai/pull/194) @ `4becf3f` (pre-fix) → post-fix sync `ebace7b` on `cursor/mvp-documentation-pack-f8c1`  
+**DRAFT PR reviewed:** [#194](https://github.com/dbn1972/serviceform-ai/pull/194) @ `4becf3f` (pre-fix) → post-fix sync `ae6802f` on `cursor/mvp-documentation-pack-f8c1`  
 
 **Explicit:** **CERTIFIED = false** · **G6 = false** · DigiLocker REAL = **G6-HOLD** · Payment REAL = **held** · `self_certified = false` · This review does **not** issue any gate.
 
