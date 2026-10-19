@@ -146,22 +146,31 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /home/runner/kafka
-          # Prefer a fast Apache mirror; archive.apache.org is currently glacial (~hours).
-          KAFKA_TGZ_URLS=(
-            "https://mirror.lyrahosting.com/apache/kafka/4.1.0/kafka_2.13-4.1.0.tgz"
-            "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz"
-          )
-          ok=0
-          for url in "${KAFKA_TGZ_URLS[@]}"; do
-            echo "Trying Kafka download: ${url}"
-            if curl -fsSL --connect-timeout 20 --max-time 180 "$url" | tar -xz -C /home/runner/kafka; then
-              ok=1
-              break
-            fi
-            echo "Kafka download failed from ${url}; trying next mirror..."
-            rm -rf /home/runner/kafka/*
-          done
-          test "$ok" -eq 1
+          EXPECTED_SHA512="2f611fa1117747a3567ab5d8e59c24a3dc5cd3c0d50a67cf718ab5203bd5ca69d9a1e2c705ee07b8363d71de48964bfd65fac31100a91b458fbd6a2eb3c8ede5"
+          TGZ="/home/runner/kafka/kafka_2.13-4.1.0.tgz"
+          # Official Apache SHA512 (small) — integrity anchor for mirror downloads.
+          curl -fsSL --connect-timeout 20 --max-time 60 \
+            "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz.sha512" \
+            -o /tmp/kafka.sha512.txt
+          # Prefer fast mirror (cert currently expired on some runners — verify SHA512).
+          # Fall back to archive.apache.org with a long timeout (it is currently glacial).
+          download_ok=0
+          if curl -fsSL --insecure --connect-timeout 20 --max-time 120 \
+              "https://mirror.lyrahosting.com/apache/kafka/4.1.0/kafka_2.13-4.1.0.tgz" \
+              -o "$TGZ"; then
+            download_ok=1
+          else
+            echo "Fast mirror failed; falling back to archive.apache.org (may take ~30–60m)"
+            curl -fsSL --connect-timeout 30 --max-time 3600 --retry 3 --retry-delay 5 \
+              "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz" \
+              -o "$TGZ"
+            download_ok=1
+          fi
+          test "$download_ok" -eq 1
+          ACTUAL_SHA512="$(sha512sum "$TGZ" | awk '{print $1}')"
+          test "$ACTUAL_SHA512" = "$EXPECTED_SHA512"
+          tar -xz -C /home/runner/kafka -f "$TGZ"
+          rm -f "$TGZ"
           test -x "${KAFKA_HOME}/bin/kafka-server-start.sh"
           test -x "${KAFKA_HOME}/bin/kafka-storage.sh"
       - name: Kafka KRaft preflight (bind 19092 then stop)
