@@ -134,9 +134,7 @@ export function CertificateDetail({ id }: { id: string }) {
             <dt>Mobile</dt>
             <dd>{app.applicant_mobile ?? '—'}</dd>
             <dt>Aadhaar (last 4)</dt>
-            <dd>
-              {app.applicant_aadhaar_last4 ? `•••• ${app.applicant_aadhaar_last4}` : '—'}
-            </dd>
+            <dd>{app.applicant_aadhaar_last4 ? `•••• ${app.applicant_aadhaar_last4}` : '—'}</dd>
           </dl>
         </section>
         <section className="sf-preview-block">

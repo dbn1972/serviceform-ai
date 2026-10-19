@@ -82,7 +82,8 @@ export function ResidenceApplyForm() {
       if (!dob) return 'Date of birth is required';
       if (!gender) return 'Gender is required';
       if (mobile && !/^[0-9]{10}$/.test(mobile)) return 'Mobile must be 10 digits';
-      if (aadhaarLast4 && !/^[0-9]{4}$/.test(aadhaarLast4)) return 'Aadhaar last 4 must be 4 digits';
+      if (aadhaarLast4 && !/^[0-9]{4}$/.test(aadhaarLast4))
+        return 'Aadhaar last 4 must be 4 digits';
     }
     if (step === 'address') {
       if (!house.trim() || !locality.trim() || !district.trim() || !stateCode.trim()) {
@@ -185,8 +186,7 @@ export function ResidenceApplyForm() {
       <nav className="sf-stepper" aria-label="Application steps">
         <ol className="sf-stepper-list">
           {STEPS.map((s, i) => {
-            const state =
-              i < stepIndex ? 'done' : i === stepIndex ? 'current' : 'todo';
+            const state = i < stepIndex ? 'done' : i === stepIndex ? 'current' : 'todo';
             return (
               <li key={s.id} className={`sf-stepper-item sf-stepper-${state}`}>
                 <button
@@ -216,8 +216,8 @@ export function ResidenceApplyForm() {
 
       <div className="sf-wizard-main">
         <Alert variant="warning" title="Sample lab only — G6 not issued">
-          Fields follow the IND-SOC-002 form schema. DigiLocker stays SIMULATED. Use synthetic values
-          only — no real PII.
+          Fields follow the IND-SOC-002 form schema. DigiLocker stays SIMULATED. Use synthetic
+          values only — no real PII.
         </Alert>
 
         <div className="sf-meta-row" aria-label="Service policy summary">

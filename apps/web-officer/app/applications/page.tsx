@@ -43,7 +43,9 @@ export default function ApplicationsPage() {
     >
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Applications</h1>
-        <p className="ux4g-body-m-default">Review and decide IND-SOC-002 Residence Certificate cases.</p>
+        <p className="ux4g-body-m-default">
+          Review and decide IND-SOC-002 Residence Certificate cases.
+        </p>
       </section>
 
       <Alert variant="info" title="Shared SAMPLE_LAB store">

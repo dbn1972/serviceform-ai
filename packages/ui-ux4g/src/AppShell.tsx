@@ -2,11 +2,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import type { TenantOverlay } from './tenant-overlay';
 
 export type Surface =
-  | 'citizen_web'
-  | 'officer_workbench'
-  | 'service_studio'
-  | 'tenant_admin'
-  | 'platform_ops';
+  'citizen_web' | 'officer_workbench' | 'service_studio' | 'tenant_admin' | 'platform_ops';
 
 export type AppShellProps = {
   surface: Surface;

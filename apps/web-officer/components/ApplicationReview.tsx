@@ -111,18 +111,17 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <div className="sf-meta-row">
         <span className={statusTag(app.status)}>{app.status}</span>
-        <span
-          className={
-            app.eligibility_pass ? 'ux4g-tag-tonal-success' : 'ux4g-tag-tonal-error'
-          }
-        >
+        <span className={app.eligibility_pass ? 'ux4g-tag-tonal-success' : 'ux4g-tag-tonal-error'}>
           Eligibility {app.eligibility_pass ? 'PASS' : 'FAIL'}
         </span>
       </div>
 
       <dl className="sf-dl">
         <dt>Applicant</dt>
-        <dd>{app.applicant_name}{app.applicant_mobile ? ` · ${app.applicant_mobile}` : ''}</dd>
+        <dd>
+          {app.applicant_name}
+          {app.applicant_mobile ? ` · ${app.applicant_mobile}` : ''}
+        </dd>
         <dt>Address</dt>
         <dd>
           {app.residence_address

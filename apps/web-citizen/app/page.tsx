@@ -48,8 +48,8 @@ export default function HomePage() {
             Login → Services → Residence Certificate → Apply → Track → DigiLocker (SIMULATED).
           </Alert>
           <p className="ux4g-body-m-default">
-            Use synthetic name <strong>SAMPLE LAB Citizen</strong>, mobile <strong>9876543210</strong>,
-            OTP <strong>123456</strong>.
+            Use synthetic name <strong>SAMPLE LAB Citizen</strong>, mobile{' '}
+            <strong>9876543210</strong>, OTP <strong>123456</strong>.
           </p>
         </Card>
       ) : (
