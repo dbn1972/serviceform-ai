@@ -146,8 +146,22 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /home/runner/kafka
-          curl -fsSL "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz" \
-            | tar -xz -C /home/runner/kafka
+          # Prefer a fast Apache mirror; archive.apache.org is currently glacial (~hours).
+          KAFKA_TGZ_URLS=(
+            "https://mirror.lyrahosting.com/apache/kafka/4.1.0/kafka_2.13-4.1.0.tgz"
+            "https://archive.apache.org/dist/kafka/4.1.0/kafka_2.13-4.1.0.tgz"
+          )
+          ok=0
+          for url in "${KAFKA_TGZ_URLS[@]}"; do
+            echo "Trying Kafka download: ${url}"
+            if curl -fsSL --connect-timeout 20 --max-time 180 "$url" | tar -xz -C /home/runner/kafka; then
+              ok=1
+              break
+            fi
+            echo "Kafka download failed from ${url}; trying next mirror..."
+            rm -rf /home/runner/kafka/*
+          done
+          test "$ok" -eq 1
           test -x "${KAFKA_HOME}/bin/kafka-server-start.sh"
           test -x "${KAFKA_HOME}/bin/kafka-storage.sh"
       - name: Kafka KRaft preflight (bind 19092 then stop)
