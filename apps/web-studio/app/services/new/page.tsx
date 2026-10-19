@@ -3,23 +3,36 @@ import { StudioNav } from '../../../components/StudioNav';
 
 export default function NewServicePage() {
   return (
-    <AppShell surface="service_studio" title="Service Design Studio">
-      <StudioNav />
-      <h1>Author service metadata</h1>
+    <AppShell
+      surface="service_studio"
+      title="Service Design Studio"
+      environmentLabel="SAMPLE_LAB"
+      nav={<StudioNav />}
+    >
+      <section className="sf-page-hero">
+        <h1 className="ux4g-heading-2xl-strong">Author service metadata</h1>
+        <p className="ux4g-body-m-default">
+          Configure IND-SOC-002 Residence Certificate from Studio metadata — not custom code.
+        </p>
+      </section>
+
       <Alert variant="info" title="IND-SOC-002 sample on tip">
         Residence Certificate template is authored as Studio metadata (public e-District sample). No
         bespoke backend. DigiLocker remains SAMPLE_LAB / SIMULATED. G6 not issued.
       </Alert>
-      <Card title="Next steps in Studio">
+
+      <Card
+        title="Next steps in Studio"
+        subtitle="Template path: templates/residence-certificate/"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/metadata">Open Metadata designer</TextLink>
+            <TextLink href="/publication">Open Publication desk</TextLink>
+          </div>
+        }
+      >
         <p className="ux4g-body-m-default">
           Use the Metadata designer for generic document kinds, then Publication for maker/checker.
-          Template path: <code>templates/residence-certificate/</code>
-        </p>
-        <p>
-          <TextLink href="/metadata">Open Metadata designer</TextLink>
-        </p>
-        <p>
-          <TextLink href="/publication">Open Publication desk</TextLink>
         </p>
       </Card>
     </AppShell>
