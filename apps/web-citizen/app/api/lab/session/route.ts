@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server';
+import { findLabAccount, validateOtpCode, verifyLabOtp } from '@serviceform/m10-sample-lab';
+import {
+  asString,
+  labError,
+  otpFailure,
+  readJsonBody,
+  sessionResponse,
+} from '../../../../lib/lab-api';
 import {
   CITIZEN_LAB_COOKIE,
   cookieValue,
-  encodeCitizenSession,
   parseCitizenSession,
   setCitizenCookie,
-  type CitizenLabSession,
 } from '../../../../lib/lab-session';
 
 export const runtime = 'nodejs';
@@ -21,56 +27,28 @@ export function GET(request: Request) {
   return NextResponse.json({ authenticated: true, ...session });
 }
 
+/** Sign in: verify a SIGN_IN OTP challenge, then resolve the synthetic account by mobile. */
 export async function POST(request: Request) {
-  const body = (await request.json()) as {
-    display_name?: string;
-    mobile?: string;
-  };
-  const display_name = (body.display_name ?? '').trim();
-  const mobile = (body.mobile ?? '').trim();
-  if (!display_name || !mobile) {
-    return NextResponse.json(
-      { error_code: 'SF-LAB-SESSION-INPUT', message: 'display_name and mobile are required' },
-      { status: 400 },
-    );
+  const body = await readJsonBody(request);
+  const challenge_id = asString(body?.['challenge_id']);
+  const code = asString(body?.['code']);
+  const codeError = validateOtpCode(code);
+  if (!challenge_id || codeError) {
+    return labError(400, 'SF-SYS-003', codeError ?? 'challenge_id is required', { field: 'code' });
   }
-  if (!/^SAMPLE/i.test(display_name) && !/^Lab /i.test(display_name)) {
-    // Keep fixtures synthetic: require SAMPLE/Lab prefix so real PII is not encouraged.
-    return NextResponse.json(
-      {
-        error_code: 'SF-LAB-SESSION-SYNTHETIC',
-        message: 'SAMPLE_LAB requires a synthetic display name starting with SAMPLE or Lab',
-      },
-      { status: 400 },
-    );
-  }
-  if (!/^9\d{9}$/.test(mobile)) {
-    return NextResponse.json(
-      {
-        error_code: 'SF-LAB-SESSION-MOBILE',
-        message: 'Use a synthetic 10-digit mobile starting with 9 (SAMPLE_LAB)',
-      },
-      { status: 400 },
-    );
-  }
+  const verified = verifyLabOtp({ challenge_id, code, purpose: 'SIGN_IN' });
+  if (!verified.ok) return otpFailure(verified.reason, verified.attempts_remaining);
 
-  const session: CitizenLabSession = {
-    surface: 'citizen_web',
-    display_name,
-    mobile,
-    tenant_label: 'SAMPLE_LAB',
-    simulation: true,
-    g6_issued: false,
-    created_at: new Date().toISOString(),
-  };
-  const token = encodeCitizenSession(session);
-  return new NextResponse(JSON.stringify({ authenticated: true, ...session }), {
-    status: 201,
-    headers: {
-      'content-type': 'application/json',
-      'set-cookie': setCitizenCookie(token, 28800),
-    },
-  });
+  const account = findLabAccount(verified.challenge.mobile);
+  if (!account) {
+    // Disclosed only after the OTP proves possession of the number (no pre-OTP enumeration).
+    return labError(
+      404,
+      'SF-LAB-ACCOUNT-NOT-FOUND',
+      'There is no citizen account for this mobile number yet. Create an account to continue.',
+    );
+  }
+  return sessionResponse(account);
 }
 
 export function DELETE() {

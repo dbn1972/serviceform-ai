@@ -40,7 +40,8 @@ export default function HomePage() {
           subtitle="SAMPLE_LAB simulated citizen identity"
           footer={
             <div className="sf-actions">
-              <TextLink href="/login">Citizen login</TextLink>
+              <TextLink href="/login">Sign in</TextLink>
+              <TextLink href="/register">Create an account</TextLink>
             </div>
           }
         >

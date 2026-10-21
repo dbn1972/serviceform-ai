@@ -1,16 +1,38 @@
 /** SAMPLE_LAB citizen session — SIMULATED only; not production IAM. */
 
+import type { LabCitizenAccount } from '@serviceform/m10-sample-lab';
+
 export const CITIZEN_LAB_COOKIE = 'sf_citizen_lab_session';
 
 export type CitizenLabSession = {
   surface: 'citizen_web';
+  citizen_id: string;
   display_name: string;
   mobile: string;
+  email?: string;
+  preferred_language: LabCitizenAccount['preferred_language'];
+  auth_assurance: 'OTP';
   tenant_label: string;
   simulation: true;
   g6_issued: false;
   created_at: string;
 };
+
+export function sessionForAccount(account: LabCitizenAccount): CitizenLabSession {
+  return {
+    surface: 'citizen_web',
+    citizen_id: account.citizen_id,
+    display_name: account.display_name,
+    mobile: account.mobile,
+    ...(account.email ? { email: account.email } : {}),
+    preferred_language: account.preferred_language,
+    auth_assurance: 'OTP',
+    tenant_label: 'SAMPLE_LAB',
+    simulation: true,
+    g6_issued: false,
+    created_at: new Date().toISOString(),
+  };
+}
 
 export function encodeCitizenSession(session: CitizenLabSession): string {
   return Buffer.from(JSON.stringify(session), 'utf8').toString('base64url');

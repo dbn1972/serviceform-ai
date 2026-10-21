@@ -5,6 +5,10 @@ export type {
   DigiLockerPublishStatus,
   LabAddress,
   LabApplication,
+  LabCitizenAccount,
+  LabIdentityStoreFile,
+  LabOtpChallenge,
+  LabOtpChallengeStatus,
   LabStoreFile,
 } from './types';
 export {
@@ -17,3 +21,18 @@ export {
   updateApplication,
 } from './store';
 export { mockDigiLockerPublish } from './digilocker-mock';
+export {
+  LAB_SEED_ACCOUNT,
+  LAB_SIMULATED_OTP_CODE,
+  findLabAccount,
+  identityStorePath,
+  readIdentityStore,
+  registerLabAccount,
+  requestLabOtp,
+  verifyLabOtp,
+  type LabOtpFailureReason,
+  type LabOtpRequestResult,
+  type LabOtpVerifyResult,
+  type LabRegistrationResult,
+} from './identity';
+export * from './identity-rules';
