@@ -23,6 +23,18 @@
 | E2E (shells + golden + citizen auth) | `pnpm e2e` | **54 passed** (17 new citizen-auth) | `logs/e2e-all.log`, `junit/e2e-all.xml` |
 | Flake check | `pnpm e2e tests/e2e/citizen-auth.spec.ts tests/e2e/golden --repeat-each=3` | **102 passed** | (local run, not archived) |
 
+### Follow-up: SAST fix `b0a4f5d`
+
+PR CI `security / SAST (semgrep)` flagged 3 njsscan findings introduced by `4488ab3`
+(`Math.random()` in two test helpers; single-character regex in `OtpInput`). Fixed without
+suppressions; re-verified at `b0a4f5d68754184082af314abb129901f5f4d4c0`:
+
+| Suite | Result | Log |
+|---|---|---|
+| semgrep 1.179.0, CI rulesets, touched paths | **0 findings** (reproduced 3 on the prior code) | `logs/semgrep-touched.log` |
+| Lab identity + UX4G primitives unit | **52 passed** | — |
+| `pnpm e2e` | **54 passed** | — |
+
 Citizen-auth E2E covers: OTP sign-in to `next`, mobile validation, wrong OTP with attempts left,
 keyboard auto-advance/backspace, verified-but-unregistered number, open-redirect guard, error
 summary focus/links, registration → auto sign-in → later sign-in, duplicate account refusal,
