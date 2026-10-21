@@ -6,6 +6,7 @@ export type ServiceFacts = {
   fee: string;
   serviceTime: string;
   delivery: string;
+  eligibility: string;
 };
 
 export type AuthContextPanelProps = {

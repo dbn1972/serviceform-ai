@@ -49,6 +49,10 @@ export function listApplications(): LabApplication[] {
   return readLabStore().applications;
 }
 
+export function listApplicationsForCitizen(citizenId: string): LabApplication[] {
+  return listApplications().filter((a) => a.citizen_id === citizenId);
+}
+
 export function getApplication(id: string): LabApplication | undefined {
   return listApplications().find((a) => a.id === id);
 }

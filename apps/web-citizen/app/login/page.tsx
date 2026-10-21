@@ -14,7 +14,7 @@ import {
 export const metadata: Metadata = { title: 'Sign in - ServiceForm AI - Citizen Portal' };
 
 export default async function LoginPage({ searchParams }: { searchParams: AuthSearchParams }) {
-  const { nextParam, initialMobile } = await readAuthParams(searchParams);
+  const { nextParam, initialMobile, signedOut } = await readAuthParams(searchParams);
   return (
     <AppShell
       surface="citizen_web"
@@ -31,7 +31,7 @@ export default async function LoginPage({ searchParams }: { searchParams: AuthSe
           </>
         }
       >
-        <SignInFlow nextParam={nextParam} initialMobile={initialMobile} />
+        <SignInFlow nextParam={nextParam} initialMobile={initialMobile} signedOut={signedOut} />
       </AuthLayout>
     </AppShell>
   );

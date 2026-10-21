@@ -19,9 +19,10 @@ import {
   type OtpChallenge,
   type SessionSummary,
 } from '../../lib/auth-client';
-import { ErrorSummary, FormAlert } from './FormFeedback';
+import { ErrorSummary, FormAlert } from '../FormFeedback';
 import { OtpVerifyStep, type VerifyOutcome } from './OtpVerifyStep';
-import { SignedInPanel, useExistingSession } from './SignedInPanel';
+import { SignedInPanel } from './SignedInPanel';
+import { announceSessionChange, useCitizenSession } from '../../lib/use-citizen-session';
 import type { AuthFlowProps } from './SignInFlow';
 
 type Step = 'details' | 'otp' | 'done';
@@ -78,7 +79,7 @@ export function RegisterFlow({ nextParam, initialMobile = '', serviceSummary }: 
   const rawNext = nextParam;
   const next = safeNext(rawNext, DEFAULT_NEXT_SERVICE);
   const signInHref = `/login${rawNext ? `?next=${encodeURIComponent(next)}` : ''}`;
-  const { session, clear } = useExistingSession();
+  const session = useCitizenSession();
   const [step, setStep] = useState<Step>('details');
   const [values, setValues] = useState<Values>(() => ({
     display_name: '',
@@ -162,6 +163,7 @@ export function RegisterFlow({ nextParam, initialMobile = '', serviceSummary }: 
     if (res.ok) {
       setAccount(res.data);
       setStep('done');
+      announceSessionChange();
       return { ok: true };
     }
     if (res.error.error_code === 'SF-LAB-ACCOUNT-EXISTS') {
@@ -189,7 +191,9 @@ export function RegisterFlow({ nextParam, initialMobile = '', serviceSummary }: 
   }
 
   if (session.status === 'signed-in' && step === 'details') {
-    return <SignedInPanel name={session.name} next={next} onSignedOut={clear} />;
+    return (
+      <SignedInPanel name={session.profile.display_name} next={next} onSignOut={session.signOut} />
+    );
   }
 
   if (step === 'done' && account) {

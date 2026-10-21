@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
-import { findLabAccount, validateOtpCode, verifyLabOtp } from '@serviceform/m10-sample-lab';
+import {
+  findLabAccount,
+  maskMobile,
+  validateOtpCode,
+  verifyLabOtp,
+} from '@serviceform/m10-sample-lab';
 import {
   asString,
   labError,
@@ -7,24 +12,21 @@ import {
   readJsonBody,
   sessionResponse,
 } from '../../../../lib/lab-api';
-import {
-  CITIZEN_LAB_COOKIE,
-  cookieValue,
-  parseCitizenSession,
-  setCitizenCookie,
-} from '../../../../lib/lab-session';
+import { readCitizenSession, setCitizenCookie } from '../../../../lib/lab-session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export function GET(request: Request) {
-  const session = parseCitizenSession(
-    cookieValue(request.headers.get('cookie'), CITIZEN_LAB_COOKIE),
-  );
+  const session = readCitizenSession(request);
   if (!session) {
     return NextResponse.json({ authenticated: false, g6_issued: false, simulation: true });
   }
-  return NextResponse.json({ authenticated: true, ...session });
+  return NextResponse.json({
+    authenticated: true,
+    ...session,
+    masked_mobile: maskMobile(session.mobile),
+  });
 }
 
 /** Sign in: verify a SIGN_IN OTP challenge, then resolve the synthetic account by mobile. */

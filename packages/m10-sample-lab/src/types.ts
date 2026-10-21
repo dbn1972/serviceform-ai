@@ -16,6 +16,8 @@ export interface LabAddress {
 export interface LabApplication {
   id: string;
   catalogue_id: 'IND-SOC-002';
+  /** Lab citizen who submitted (from the OTP session); absent on pre-auth lab records. */
+  citizen_id?: string;
   status: ApplicationStatus;
   created_at: string;
   updated_at: string;

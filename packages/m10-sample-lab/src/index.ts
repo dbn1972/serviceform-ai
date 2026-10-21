@@ -16,6 +16,7 @@ export {
   readLabStore,
   writeLabStore,
   listApplications,
+  listApplicationsForCitizen,
   getApplication,
   createApplication,
   updateApplication,

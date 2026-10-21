@@ -81,3 +81,16 @@ export function formatCountdown(seconds: number): string {
   const s = seconds % 60;
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
+
+/** Avatar initials, ignoring the synthetic `SAMPLE`/`Lab` prefix used in SAMPLE_LAB names. */
+export function initials(name: string): string {
+  const words = name
+    .replace(/^(SAMPLE|Lab)\s+/i, '')
+    .split(/\s+/)
+    .filter(Boolean);
+  const letters = words
+    .slice(0, 2)
+    .map((w) => w.charAt(0).toUpperCase())
+    .join('');
+  return letters || name.charAt(0).toUpperCase();
+}

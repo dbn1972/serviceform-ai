@@ -146,6 +146,12 @@ describe('vendored UX4G 3.0 Identity & Access rules', () => {
     expect(UX4G_FIGMA_INVENTORY.map((row) => row.code)).toContain('OtpInput');
   });
 
+  it('styles every in-form alert tone (success/info do not fall back to error red)', () => {
+    expect(css).toContain('.ux4g-form-alert.sf-tone-success {');
+    expect(css).toContain('.ux4g-form-alert.sf-tone-info {');
+    expect(css).toContain('.ux4g-form-alert.ux4g-alert-warning {');
+  });
+
   it('honours reduced motion for the OTP shake and caret', () => {
     expect(css).toMatch(/prefers-reduced-motion: reduce\)\s*{\s*\.ux4g-otp-group\.ux4g-otp-shake/);
   });

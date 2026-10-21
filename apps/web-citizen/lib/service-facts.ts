@@ -14,6 +14,7 @@ export function residenceServiceFacts(): ServiceFacts {
     fee: `₹${(policy.fee_amount_paisa / 100).toLocaleString('en-IN')}`,
     serviceTime: `${policy.sla_working_days} working days`,
     delivery: `DigiLocker (${policy.digilocker_mode})`,
+    eligibility: `${policy.min_residence_months}+ months at your address`,
   };
 }
 
@@ -30,5 +31,9 @@ export async function readAuthParams(searchParams: AuthSearchParams) {
     const value = params[key];
     return Array.isArray(value) ? value[0] : value;
   };
-  return { nextParam: first('next'), initialMobile: first('mobile') ?? '' };
+  return {
+    nextParam: first('next'),
+    initialMobile: first('mobile') ?? '',
+    signedOut: first('signed_out') === '1',
+  };
 }

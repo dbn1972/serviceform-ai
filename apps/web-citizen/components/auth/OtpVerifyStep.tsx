@@ -9,7 +9,7 @@ import {
   type ApiError,
   type OtpChallenge,
 } from '../../lib/auth-client';
-import { FormAlert } from './FormFeedback';
+import { FormAlert } from '../FormFeedback';
 import { SimulatedSms } from './SimulatedSms';
 
 export type VerifyOutcome = { ok: true } | { ok: false; error: ApiError };

@@ -17,9 +17,10 @@ import {
   type OtpChallenge,
   type SessionSummary,
 } from '../../lib/auth-client';
-import { FormAlert } from './FormFeedback';
+import { FormAlert } from '../FormFeedback';
 import { OtpVerifyStep, type VerifyOutcome } from './OtpVerifyStep';
-import { SignedInPanel, useExistingSession } from './SignedInPanel';
+import { SignedInPanel } from './SignedInPanel';
+import { useCitizenSession } from '../../lib/use-citizen-session';
 
 const MOBILE_ID = 'signin-mobile';
 
@@ -29,11 +30,13 @@ export type AuthFlowProps = {
   initialMobile?: string | undefined;
 };
 
-export function SignInFlow({ nextParam, initialMobile = '' }: AuthFlowProps) {
+export type SignInFlowProps = AuthFlowProps & { signedOut?: boolean };
+
+export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }: SignInFlowProps) {
   const router = useRouter();
   const next = safeNext(nextParam);
   const nextQuery = nextParam ? `next=${encodeURIComponent(next)}` : '';
-  const { session, clear } = useExistingSession();
+  const session = useCitizenSession();
   const [mobile, setMobile] = useState(() => normaliseMobile(initialMobile).slice(0, 10));
   const [mobileError, setMobileError] = useState<string>();
   const [notice, setNotice] = useState<ApiError | null>(null);
@@ -96,7 +99,9 @@ export function SignInFlow({ nextParam, initialMobile = '' }: AuthFlowProps) {
   }
 
   if (session.status === 'signed-in' && !challenge) {
-    return <SignedInPanel name={session.name} next={next} onSignedOut={clear} />;
+    return (
+      <SignedInPanel name={session.profile.display_name} next={next} onSignOut={session.signOut} />
+    );
   }
 
   if (challenge) {
@@ -146,6 +151,11 @@ export function SignInFlow({ nextParam, initialMobile = '' }: AuthFlowProps) {
           {LAB_OTP_LENGTH}-digit one-time password (OTP) — there is no password to remember.
         </p>
       </header>
+      {signedOut && !notice ? (
+        <FormAlert tone="success" testId="signed-out-notice">
+          You have signed out. Sign in again to continue.
+        </FormAlert>
+      ) : null}
       {notice ? <FormAlert tone="error">{notice.message}</FormAlert> : null}
       <form className="sf-auth-form" noValidate onSubmit={(e) => void sendOtp(e)}>
         <TextInput

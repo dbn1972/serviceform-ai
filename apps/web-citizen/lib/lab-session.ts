@@ -43,6 +43,7 @@ export function parseCitizenSession(raw: string | undefined): CitizenLabSession 
   try {
     const parsed = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8')) as CitizenLabSession;
     if (parsed.surface !== 'citizen_web' || parsed.simulation !== true) return null;
+    if (typeof parsed.citizen_id !== 'string' || !parsed.citizen_id) return null;
     return parsed;
   } catch {
     return null;
@@ -58,6 +59,10 @@ export function cookieValue(header: string | null | undefined, name: string): st
     if (part.slice(0, eq) === name) return decodeURIComponent(part.slice(eq + 1));
   }
   return undefined;
+}
+
+export function readCitizenSession(request: Request): CitizenLabSession | null {
+  return parseCitizenSession(cookieValue(request.headers.get('cookie'), CITIZEN_LAB_COOKIE));
 }
 
 export function setCitizenCookie(token: string, maxAgeSec: number): string {
