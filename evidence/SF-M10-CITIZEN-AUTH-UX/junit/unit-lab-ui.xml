@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="52" failures="0" errors="0" time="0.057537467">
+    <testsuite name="packages/m10-sample-lab/test/lab-identity.test.ts" timestamp="2026-10-21T02:28:08.342Z" hostname="cursor" tests="18" failures="0" errors="0" skipped="0" time="0.01715627">
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity rules (client + server shared) &gt; accepts only synthetic 10-digit mobiles starting with 9 and strips +91" time="0.002074986">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity rules (client + server shared) &gt; requires a synthetic display name so real PII is not entered" time="0.000555119">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity rules (client + server shared) &gt; treats email as optional but validates its format" time="0.000401085">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity rules (client + server shared) &gt; validates OTP shape and masks mobile numbers for display" time="0.000524777">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; issues a SIMULATED challenge with 5 min TTL and 30 s resend hint" time="0.001862867">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; refuses non-synthetic mobiles without creating a challenge" time="0.000612375">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; keeps parallel challenges independently verifiable and prunes ones older than a day" time="0.00244996">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; verifies the SIMULATED code once and refuses reuse" time="0.000539176">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; counts wrong codes and locks after max attempts (failure path)" time="0.001716353">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; expires challenges after the TTL even with the right code" time="0.001280701">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) &gt; rejects unknown challenges and cross-purpose reuse without consuming an attempt" time="0.000549544">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity store isolation &gt; keeps identity state out of the applications store that golden E2E resets" time="0.000541761">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB identity store isolation &gt; falls back to an empty store when the file is corrupt or from another version" time="0.000488528">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB citizen accounts &gt; always resolves the seeded synthetic citizen on an empty store" time="0.0002201">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB citizen accounts &gt; registers a synthetic account with recorded consent purpose" time="0.000509349">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB citizen accounts &gt; omits a blank optional email" time="0.000344002">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB citizen accounts &gt; refuses duplicates, including the seeded mobile" time="0.000441797">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-identity.test.ts" name="SAMPLE_LAB citizen accounts &gt; returns field-level errors for invalid input (failure path)" time="0.000392362">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/lab-store.test.ts" timestamp="2026-10-21T02:28:08.347Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.004418823">
+        <testcase classname="packages/m10-sample-lab/test/lab-store.test.ts" name="m10 SAMPLE_LAB store + DigiLocker mock &gt; creates application with public-sample eligibility rule and SIMULATED DigiLocker pending" time="0.002031673">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/lab-store.test.ts" name="m10 SAMPLE_LAB store + DigiLocker mock &gt; refuses DigiLocker publish before issue; publishes SIMULATED after issue" time="0.001329488">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/app-shell.test.tsx" timestamp="2026-10-21T02:28:08.348Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.00245546">
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; renders banner, main and contentinfo landmarks" time="0.00118344">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; starts with a skip link targeting main content" time="0.000226629">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/app-shell.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; marks the surface for theming and tests" time="0.000103452">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/foundation.test.tsx" timestamp="2026-10-21T02:28:08.348Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.014397547">
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; renders banner, main and contentinfo landmarks" time="0.001179092">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; starts with a skip link targeting main content" time="0.000270199">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; marks the surface for theming and tests" time="0.000113921">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) &gt; uses UX4G navbar and footer classes" time="0.000169587">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G baseline tokens &gt; pins UX4G Design System 3.0" time="0.000337419">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G baseline tokens &gt; meets WCAG AA for body text on elevated background" time="0.000306804">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G baseline tokens &gt; uses rem-capable spacing (200% reflow)" time="0.000160239">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) &gt; scopes overlay CSS to data-tenant-id and forbids foreign tokens" time="0.001217995">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) &gt; does not leak overlay style into another AppShell tree" time="0.001379998">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) &gt; rejects a primary overlay that fails UI contrast" time="0.000347557">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G-backed JSON Forms registry &gt; maps schema types to UX4G renderer ids, not a second design system" time="0.00024041">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G-backed JSON Forms registry &gt; renders a metadata-driven form with UX4G field classes" time="0.001186947">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G primitives keyboard and names &gt; associates labels, default button type, and alert roles" time="0.002180103">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="UX4G primitives keyboard and names &gt; keeps Figma inventory names aligned with coded components" time="0.000522347">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="security headers (G-04 nonce path) &gt; keeps the M00 signature without nonce" time="0.000163676">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="security headers (G-04 nonce path) &gt; drops unsafe-inline when a nonce is provided" time="0.000142049">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/foundation.test.tsx" name="WCAG 1.4.10 reflow (320 CSS px) &gt; uses border-box and clips html overflow instead of off-screen skip-link offset" time="0.002876112">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/identity-access.test.tsx" timestamp="2026-10-21T02:28:08.349Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="0.019109367">
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="TextInput follows the UX4G field DOM contract &gt; wraps the native input in the bordered ux4g-input box" time="0.005328852">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="TextInput follows the UX4G field DOM contract &gt; announces the prefix and hint, and marks optional fields in the label" time="0.001311797">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="TextInput follows the UX4G field DOM contract &gt; switches to the error state and replaces the hint with the error message" time="0.000589801">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="OtpInput (UX4G ux4g-otp) &gt; renders one labelled numeric slot per digit inside a fieldset" time="0.002071963">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="OtpInput (UX4G ux4g-otp) &gt; keeps positions when middle slots are empty" time="0.001153684">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="OtpInput (UX4G ux4g-otp) &gt; exposes error status through a polite live region linked to every slot" time="0.001086712">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="OtpInput (UX4G ux4g-otp) &gt; disables slots when locked but leaves the meta row (resend) interactive" time="0.001062664">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="Checkbox and RadioGroup render the UX4G marks &gt; renders ux4g-checkmark inside the control" time="0.0006229">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="Checkbox and RadioGroup render the UX4G marks &gt; renders ux4g-radiomark and accepts rich labels (lang of parts)" time="0.001155781">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="Icon &gt; is decorative by default and named when labelled; inherits currentColor" time="0.000731757">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="vendored UX4G 3.0 Identity &amp; Access rules &gt; ships the OTP, divider, checkmark and radiomark primitives from ux4g-web-components" time="0.000908068">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/identity-access.test.tsx" name="vendored UX4G 3.0 Identity &amp; Access rules &gt; honours reduced motion for the OTP shake and caret" time="0.000287051">
+        </testcase>
+    </testsuite>
+</testsuites>

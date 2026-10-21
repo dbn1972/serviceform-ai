@@ -1,0 +1,64 @@
+commit=4488ab3f145e9d817aa15c5a5f2f3edfe4f2ac71
+2026-10-21T02:28:07Z
+
+ RUN  v5.0.3 /workspace
+
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity rules (client + server shared) > accepts only synthetic 10-digit mobiles starting with 9 and strips +91 2ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity rules (client + server shared) > requires a synthetic display name so real PII is not entered 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity rules (client + server shared) > treats email as optional but validates its format 0ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity rules (client + server shared) > validates OTP shape and masks mobile numbers for display 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > issues a SIMULATED challenge with 5 min TTL and 30 s resend hint 2ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > refuses non-synthetic mobiles without creating a challenge 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > keeps parallel challenges independently verifiable and prunes ones older than a day 2ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > verifies the SIMULATED code once and refuses reuse 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > counts wrong codes and locks after max attempts (failure path) 2ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > expires challenges after the TTL even with the right code 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB OTP challenge (mirrors CMP-004 TTL/attempt semantics) > rejects unknown challenges and cross-purpose reuse without consuming an attempt 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity store isolation > keeps identity state out of the applications store that golden E2E resets 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB identity store isolation > falls back to an empty store when the file is corrupt or from another version 0ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB citizen accounts > always resolves the seeded synthetic citizen on an empty store 0ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB citizen accounts > registers a synthetic account with recorded consent purpose 1ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB citizen accounts > omits a blank optional email 0ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB citizen accounts > refuses duplicates, including the seeded mobile 0ms
+ ✓ packages/m10-sample-lab/test/lab-identity.test.ts > SAMPLE_LAB citizen accounts > returns field-level errors for invalid input (failure path) 0ms
+ ✓ packages/m10-sample-lab/test/lab-store.test.ts > m10 SAMPLE_LAB store + DigiLocker mock > creates application with public-sample eligibility rule and SIMULATED DigiLocker pending 2ms
+ ✓ packages/m10-sample-lab/test/lab-store.test.ts > m10 SAMPLE_LAB store + DigiLocker mock > refuses DigiLocker publish before issue; publishes SIMULATED after issue 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > TextInput follows the UX4G field DOM contract > wraps the native input in the bordered ux4g-input box 5ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > TextInput follows the UX4G field DOM contract > announces the prefix and hint, and marks optional fields in the label 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > TextInput follows the UX4G field DOM contract > switches to the error state and replaces the hint with the error message 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > OtpInput (UX4G ux4g-otp) > renders one labelled numeric slot per digit inside a fieldset 2ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > OtpInput (UX4G ux4g-otp) > keeps positions when middle slots are empty 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > OtpInput (UX4G ux4g-otp) > exposes error status through a polite live region linked to every slot 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > OtpInput (UX4G ux4g-otp) > disables slots when locked but leaves the meta row (resend) interactive 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > Checkbox and RadioGroup render the UX4G marks > renders ux4g-checkmark inside the control 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > Checkbox and RadioGroup render the UX4G marks > renders ux4g-radiomark and accepts rich labels (lang of parts) 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > Icon > is decorative by default and named when labelled; inherits currentColor 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > vendored UX4G 3.0 Identity & Access rules > ships the OTP, divider, checkmark and radiomark primitives from ux4g-web-components 1ms
+ ✓ packages/ui-ux4g/test/identity-access.test.tsx > vendored UX4G 3.0 Identity & Access rules > honours reduced motion for the OTP shake and caret 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > renders banner, main and contentinfo landmarks 1ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > starts with a skip link targeting main content 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > marks the surface for theming and tests 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > uses UX4G navbar and footer classes 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G baseline tokens > pins UX4G Design System 3.0 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G baseline tokens > meets WCAG AA for body text on elevated background 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G baseline tokens > uses rem-capable spacing (200% reflow) 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) > scopes overlay CSS to data-tenant-id and forbids foreign tokens 1ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) > does not leak overlay style into another AppShell tree 1ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > INT-011 tenant overlay isolation (CROSS_TENANT_LEAKAGE=0) > rejects a primary overlay that fails UI contrast 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G-backed JSON Forms registry > maps schema types to UX4G renderer ids, not a second design system 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G-backed JSON Forms registry > renders a metadata-driven form with UX4G field classes 1ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G primitives keyboard and names > associates labels, default button type, and alert roles 2ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > UX4G primitives keyboard and names > keeps Figma inventory names aligned with coded components 1ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > security headers (G-04 nonce path) > keeps the M00 signature without nonce 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > security headers (G-04 nonce path) > drops unsafe-inline when a nonce is provided 0ms
+ ✓ packages/ui-ux4g/test/foundation.test.tsx > WCAG 1.4.10 reflow (320 CSS px) > uses border-box and clips html overflow instead of off-screen skip-link offset 3ms
+ ✓ packages/ui-ux4g/test/app-shell.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > renders banner, main and contentinfo landmarks 1ms
+ ✓ packages/ui-ux4g/test/app-shell.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > starts with a skip link targeting main content 0ms
+ ✓ packages/ui-ux4g/test/app-shell.test.tsx > AppShell (REQ: DESIGN-SYSTEM.md rule 6, TESTING.md UX4G verification) > marks the surface for theming and tests 0ms
+
+ Test Files  5 passed (5)
+      Tests  52 passed (52)
+   Start at  02:28:07
+   Duration  448ms (transform 65%, import 25%, tests 8%, worker 2%)
+
+JUNIT report written to /workspace/evidence/SF-M10-CITIZEN-AUTH-UX/junit/unit-lab-ui.xml
