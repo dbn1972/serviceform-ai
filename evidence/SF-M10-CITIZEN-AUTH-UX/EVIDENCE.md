@@ -35,6 +35,22 @@ suppressions; re-verified at `b0a4f5d68754184082af314abb129901f5f4d4c0`:
 | Lab identity + UX4G primitives unit | **52 passed** | — |
 | `pnpm e2e` | **54 passed** | — |
 
+### Follow-up: journey stitch `bd16548`
+
+Sign-in session and design carried through the citizen journey (header account + sign-out,
+gated routes with `next`, application filed under `citizen_id`, `GET ?mine=1`, wizard pre-filled
+from the verified account, navy page header on home/services/overview/apply/my applications/
+detail). Also fixes unstyled success/info in-form alerts. Re-verified at
+`bd1654823fe93c0a79c3a5214afba6a8d8ab83f4`:
+
+| Suite | Result | Log |
+|---|---|---|
+| Web builds | **4/4 compiled** | `logs/journey/web-build.log` |
+| `pnpm e2e` | **59 passed** (5 new journey: gate redirect, header/sign-out, pre-fill + per-citizen list, anonymous API refusal, axe + 320 px on 6 signed-in pages) | `logs/journey/e2e-all.log`, `junit/e2e-journey.xml` |
+| Root unit suite | **2985 passed** (+7 citizen helpers, +1 citizen isolation, +1 alert tones) | `logs/journey/unit-all.log` |
+| Gates + semgrep (CI rulesets, touched paths) | **10/10 · 0 findings** | `logs/journey/gates-semgrep.log` |
+| Flake check (journey + auth + golden × 3) | **117 passed** | (local run, not archived) |
+
 Citizen-auth E2E covers: OTP sign-in to `next`, mobile validation, wrong OTP with attempts left,
 keyboard auto-advance/backspace, verified-but-unregistered number, open-redirect guard, error
 summary focus/links, registration → auto sign-in → later sign-in, duplicate account refusal,
@@ -44,8 +60,8 @@ error summary and success states, 320 px reflow.
 
 ## Screens
 
-Agent store `media/citizen-auth-ux/index.html` (11 PNGs: desktop sign-in/OTP/error/unregistered,
-sign-up/validation/OTP/success, mobile sign-in/OTP/validation).
+Agent store `media/citizen-auth-ux/index.html` (23 PNGs: 11 sign-in/sign-up states plus 12 stitched
+journey screens from home to DigiLocker SIMULATED publish and sign-out).
 
 ## Known limitations
 
