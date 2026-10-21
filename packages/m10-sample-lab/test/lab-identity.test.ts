@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { existsSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -31,7 +32,7 @@ const later = (seconds: number) => new Date(NOW.getTime() + seconds * 1000);
 beforeEach(() => {
   process.env['SF_M10_IDENTITY_STORE_PATH'] = join(
     tmpdir(),
-    `sf-m10-identity-${process.pid}-${Math.random().toString(36).slice(2)}.json`,
+    `sf-m10-identity-${process.pid}-${randomUUID()}.json`,
   );
 });
 

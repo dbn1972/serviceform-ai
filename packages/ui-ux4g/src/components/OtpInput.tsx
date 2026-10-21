@@ -34,8 +34,8 @@ const STATUS_ICON = { error: 'alert', success: 'check-circle', locked: 'lock' } 
 
 function toSlots(value: string, length: number): string[] {
   return Array.from({ length }, (_, i) => {
-    const ch = value[i] ?? '';
-    return /\d/.test(ch) ? ch : '';
+    const ch = value.charAt(i);
+    return ch >= '0' && ch <= '9' ? ch : '';
   });
 }
 

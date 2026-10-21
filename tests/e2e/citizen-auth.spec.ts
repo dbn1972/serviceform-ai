@@ -4,6 +4,7 @@
  * DESIGN-SYSTEM.md rule 6 (journey-level accessibility). Not production IAM; G6 not issued.
  */
 import AxeBuilder from '@axe-core/playwright';
+import { randomInt } from 'node:crypto';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 
 const CITIZEN = 'http://127.0.0.1:3000';
@@ -11,7 +12,7 @@ const SEED_MOBILE = '9876543210';
 const OTP = '123456';
 const WCAG = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
-const uniqueMobile = () => `9${Math.floor(100_000_000 + Math.random() * 899_999_999)}`;
+const uniqueMobile = () => `9${randomInt(100_000_000, 1_000_000_000)}`;
 
 async function open(page: Page, path: string): Promise<void> {
   await page.goto(`${CITIZEN}${path}`);
