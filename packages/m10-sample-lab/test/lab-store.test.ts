@@ -4,6 +4,7 @@ import {
   createApplication,
   getApplication,
   labStorePath,
+  listApplicationsForCitizen,
   mockDigiLockerPublish,
   PUBLIC_SAMPLE_LAB_POLICY,
   updateApplication,
@@ -61,5 +62,28 @@ describe('m10 SAMPLE_LAB store + DigiLocker mock', () => {
     expect(pub.ok).toBe(true);
     expect(getApplication(app.id)?.digilocker.status).toBe('PUBLISHED');
     expect(getApplication(app.id)?.digilocker.provider_transaction_ref).toMatch(/^sim:/);
+  });
+
+  it('lists only the signed-in citizen’s applications (citizen isolation)', () => {
+    const base = {
+      applicant_name: 'SAMPLE LAB Applicant',
+      applicant_dob: '1990-01-01',
+      applicant_gender: 'OTHER',
+      residence_address: {
+        house_no_or_name: '1',
+        locality: 'Lab',
+        district: 'Lab',
+        state_code: 'OD',
+        pincode: '751001',
+      },
+      residence_duration_months: 18,
+      purpose_of_certificate: 'SAMPLE_LAB',
+      evidence_type: 'ELECTRICITY_BILL',
+    };
+    const mine = createApplication({ ...base, citizen_id: 'citizen-a' });
+    createApplication({ ...base, citizen_id: 'citizen-b' });
+    createApplication(base);
+    expect(listApplicationsForCitizen('citizen-a').map((a) => a.id)).toEqual([mine.id]);
+    expect(listApplicationsForCitizen('citizen-c')).toEqual([]);
   });
 });

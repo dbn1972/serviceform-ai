@@ -120,6 +120,17 @@ test.describe('M10 Golden E2E — UX4G accessibility scaffolding', () => {
   });
 });
 
+/** SAMPLE_LAB citizen sign-in: seeded synthetic mobile + SIMULATED OTP (CMP-004 semantics). */
+async function signInAsSampleCitizen(page: Page): Promise<void> {
+  await page.goto(`${CITIZEN_PORTAL}/login`);
+  await page.waitForLoadState('networkidle');
+  await page.getByLabel('Mobile number', { exact: true }).fill('9876543210');
+  await page.getByRole('button', { name: 'Get OTP' }).click();
+  await page.getByLabel('Digit 1 of 6').fill('123456');
+  await page.getByRole('button', { name: 'Verify and sign in' }).click();
+  await expect(page).toHaveURL(/\/services/);
+}
+
 /** Walk SAMPLE_LAB Residence Certificate wizard: applicant → residence → evidence → preview. */
 async function completeResidenceWizardToPreview(page: Page): Promise<void> {
   await expect(page.getByRole('navigation', { name: /Application steps/i })).toBeVisible();
@@ -146,9 +157,7 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
   test('Citizen: residence certificate apply page loads after SAMPLE_LAB login', async ({
     page,
   }) => {
-    await page.goto(`${CITIZEN_PORTAL}/login`);
-    await page.getByRole('button', { name: /Continue to services/i }).click();
-    await expect(page).toHaveURL(/\/services/);
+    await signInAsSampleCitizen(page);
     await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002/apply`);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Residence Certificate/i);
     await completeResidenceWizardToPreview(page);
@@ -165,9 +174,7 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
   }) => {
     if (existsSync(LAB_STORE)) unlinkSync(LAB_STORE);
 
-    await page.goto(`${CITIZEN_PORTAL}/login`);
-    await page.getByRole('button', { name: /Continue to services/i }).click();
-    await expect(page).toHaveURL(/\/services/);
+    await signInAsSampleCitizen(page);
     await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002/apply`);
     await completeResidenceWizardToPreview(page);
     await page.getByRole('button', { name: /Submit application/i }).click();

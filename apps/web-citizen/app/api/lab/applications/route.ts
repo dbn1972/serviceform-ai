@@ -1,22 +1,34 @@
 import {
   createApplication,
   listApplications,
+  listApplicationsForCitizen,
   PUBLIC_SAMPLE_LAB_POLICY,
 } from '@serviceform/m10-sample-lab';
 import { NextResponse } from 'next/server';
+import { labError } from '../../../../lib/lab-api';
+import { readCitizenSession } from '../../../../lib/lab-session';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
-export function GET() {
+const SIGN_IN_REQUIRED = 'Sign in with your mobile number to continue';
+
+/** `?mine=1` returns the signed-in citizen's applications; the default list is the shared lab store. */
+export function GET(req: Request) {
+  const mine = new URL(req.url).searchParams.get('mine') === '1';
+  const session = mine ? readCitizenSession(req) : null;
+  if (mine && !session) return labError(401, 'SF-AUTH-001', SIGN_IN_REQUIRED);
   return NextResponse.json({
     label: 'SAMPLE_LAB',
     g6_issued: false,
     digilocker_mode: PUBLIC_SAMPLE_LAB_POLICY.digilocker_mode,
-    applications: listApplications(),
+    applications: session ? listApplicationsForCitizen(session.citizen_id) : listApplications(),
   });
 }
 
 export async function POST(req: Request) {
+  const session = readCitizenSession(req);
+  if (!session) return labError(401, 'SF-AUTH-001', SIGN_IN_REQUIRED);
   const body = (await req.json()) as {
     applicant_name?: string;
     applicant_dob?: string;
@@ -56,6 +68,7 @@ export async function POST(req: Request) {
   }
 
   const app = createApplication({
+    citizen_id: session.citizen_id,
     applicant_name: body.applicant_name,
     applicant_dob: body.applicant_dob,
     applicant_gender: body.applicant_gender,

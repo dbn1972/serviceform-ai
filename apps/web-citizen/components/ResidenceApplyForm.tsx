@@ -1,23 +1,11 @@
 'use client';
 
-import { Alert, Button, Card, RadioGroup, TextInput } from '@serviceform/ui-ux4g';
+import { Button, Card, RadioGroup, TextInput } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-
-/** Accepted types from published IND-SOC-002 evidence policy sample (fixtures). */
-const EVIDENCE_OPTIONS = [
-  { value: 'ELECTRICITY_BILL', label: 'Electricity bill' },
-  { value: 'ROR_COPY', label: 'Copy of RoR' },
-  { value: 'EPIC_OR_AADHAAR', label: 'EPIC / Aadhaar card' },
-  { value: 'LANDLINE_TELEPHONE_BILL', label: 'Landline telephone bill' },
-  { value: 'WATER_CONNECTION_BILL', label: 'Water connection bill' },
-  { value: 'RATION_CARD', label: 'Ration card' },
-  { value: 'HOLDING_TAX_RECEIPT', label: 'Holding tax receipt' },
-  { value: 'LEASE_AGREEMENT', label: 'Lease agreement with house owner' },
-  { value: 'EMPLOYER_CERTIFICATE', label: 'Certificate from the employer' },
-  { value: 'BANK_PASSBOOK_FIRST_PAGE', label: 'First page of bank passbook' },
-  { value: 'VOTER_LIST_EXTRACT', label: 'Extract of latest voter list' },
-] as const;
+import { EVIDENCE_OPTIONS, GENDER_LABEL, evidenceLabel } from '../lib/ind-soc-002';
+import { FormAlert } from './FormFeedback';
+import { useCitizen } from './RequireCitizenSession';
 
 const STEPS = [
   { id: 'applicant', label: 'Applicant', hint: 'Identity details' },
@@ -28,27 +16,16 @@ const STEPS = [
 
 type StepId = (typeof STEPS)[number]['id'];
 
-const GENDER_LABEL: Record<string, string> = {
-  MALE: 'Male',
-  FEMALE: 'Female',
-  TRANSGENDER: 'Transgender',
-  OTHER: 'Other',
-  PREFER_NOT_TO_SAY: 'Prefer not to say',
-};
-
-function evidenceLabel(value: string): string {
-  return EVIDENCE_OPTIONS.find((o) => o.value === value)?.label ?? value;
-}
-
 export function ResidenceApplyForm() {
   const router = useRouter();
+  const citizen = useCitizen();
   const [step, setStep] = useState<StepId>('applicant');
 
-  // Applicant (form.schema.json)
-  const [name, setName] = useState('SAMPLE LAB Applicant');
+  // Applicant (form.schema.json), pre-filled from the OTP-verified account
+  const [name, setName] = useState(citizen.display_name);
   const [dob, setDob] = useState('1990-01-15');
   const [gender, setGender] = useState('PREFER_NOT_TO_SAY');
-  const [mobile, setMobile] = useState('9876543210');
+  const [mobile, setMobile] = useState(citizen.mobile);
   const [aadhaarLast4, setAadhaarLast4] = useState('4321');
 
   // Address
@@ -215,10 +192,10 @@ export function ResidenceApplyForm() {
       </nav>
 
       <div className="sf-wizard-main">
-        <Alert variant="warning" title="Sample lab only — G6 not issued">
-          Fields follow the IND-SOC-002 form schema. DigiLocker stays SIMULATED. Use synthetic
-          values only — no real PII.
-        </Alert>
+        <FormAlert tone="info" title="Pre-filled from your verified account">
+          Name and mobile come from your OTP sign-in ({citizen.masked_mobile}). Fields follow the
+          IND-SOC-002 form schema; use synthetic values only — SAMPLE_LAB, G6 not issued.
+        </FormAlert>
 
         <div className="sf-meta-row" aria-label="Service policy summary">
           <span className="ux4g-tag-tonal-info">Eligibility ≥12 months</span>
@@ -258,7 +235,12 @@ export function ResidenceApplyForm() {
                   inputMode="numeric"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
-                  hint="10 digits · synthetic only"
+                  state={mobile === citizen.mobile ? 'success' : 'default'}
+                  hint={
+                    mobile === citizen.mobile
+                      ? 'Verified by OTP at sign-in'
+                      : '10 digits · synthetic only · not verified'
+                  }
                 />
                 <div className="sf-span-2">
                   <RadioGroup
@@ -456,13 +438,13 @@ export function ResidenceApplyForm() {
             title="4. Preview application"
             subtitle="Review every field before you submit — fee ₹0"
           >
-            <Alert
-              variant={eligibilityPass ? 'success' : 'error'}
+            <FormAlert
+              tone={eligibilityPass ? 'success' : 'error'}
               title={eligibilityPass ? 'Eligibility check: PASS' : 'Eligibility check: FAIL'}
             >
               Residence duration {monthsNum} months · sample rule ≥12 months · fee ₹0 · DigiLocker
               after officer issue (SIMULATED).
-            </Alert>
+            </FormAlert>
 
             <div className="sf-preview-grid">
               <section className="sf-preview-block">
@@ -531,9 +513,9 @@ export function ResidenceApplyForm() {
         ) : null}
 
         {error ? (
-          <Alert variant="error" title="Cannot continue">
+          <FormAlert tone="error" title="Cannot continue">
             {error}
-          </Alert>
+          </FormAlert>
         ) : null}
 
         <div className="sf-wizard-actions">

@@ -1,3 +1,5 @@
+import type { LabOtpPurpose, LabPreferredLanguage } from './identity-rules';
+
 export type ApplicationStatus = 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'ISSUED';
 
 export type DigiLockerPublishStatus = 'NOT_REQUESTED' | 'PUBLISHED' | 'FAILED';
@@ -14,6 +16,8 @@ export interface LabAddress {
 export interface LabApplication {
   id: string;
   catalogue_id: 'IND-SOC-002';
+  /** Lab citizen who submitted (from the OTP session); absent on pre-auth lab records. */
+  citizen_id?: string;
   status: ApplicationStatus;
   created_at: string;
   updated_at: string;
@@ -41,9 +45,42 @@ export interface LabApplication {
   };
 }
 
+export interface LabCitizenAccount {
+  citizen_id: string;
+  display_name: string;
+  mobile: string;
+  email?: string;
+  preferred_language: LabPreferredLanguage;
+  consent: { purpose_code: 'CITIZEN_AUTH_AND_UPDATES'; accepted_at: string };
+  created_at: string;
+}
+
+export type LabOtpChallengeStatus = 'PENDING' | 'VERIFIED' | 'LOCKED' | 'EXPIRED' | 'SUPERSEDED';
+
+export interface LabOtpChallenge {
+  challenge_id: string;
+  mobile: string;
+  purpose: LabOtpPurpose;
+  status: LabOtpChallengeStatus;
+  attempts: number;
+  max_attempts: number;
+  created_at: string;
+  expires_at: string;
+  resend_after: string;
+  simulation: { simulation: true; scenario: 'otp_challenge'; environment: 'SAMPLE_LAB' };
+}
+
 export interface LabStoreFile {
   version: 1;
   label: 'SAMPLE_LAB';
   g6_issued: false;
   applications: LabApplication[];
+}
+
+/** Citizen identity lives in its own file so resetting applications never drops OTP state. */
+export interface LabIdentityStoreFile {
+  version: 1;
+  label: 'SAMPLE_LAB';
+  citizen_accounts: LabCitizenAccount[];
+  otp_challenges: LabOtpChallenge[];
 }
