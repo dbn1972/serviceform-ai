@@ -76,6 +76,9 @@ describe('CMP-015 HTTP surface (contracts/openapi.json)', () => {
       'POST /applications/:applicationId/commands',
       'POST /applications/:applicationId/requests',
       'POST /applications/:applicationId/requests/:requestId/status',
+      'GET /applications',
+      'GET /applications/:applicationId/working-data',
+      'PUT /applications/:applicationId/working-data',
     ]);
   });
 
@@ -185,7 +188,7 @@ describe('CMP-015 HTTP surface (contracts/openapi.json)', () => {
       { route: (o) => registered.push(o) },
       { service: h.service, resolveContext },
     );
-    expect(list).toHaveLength(6);
+    expect(list).toHaveLength(9);
     const sent: { code?: number; headers: Record<string, string>; body?: unknown } = {
       headers: {},
     };
@@ -265,7 +268,7 @@ describe('configuration and port mode guards (Constitution #22; INT-013)', () =>
       permitted: false,
       policy_ref: 'unconfigured',
     });
-    expect(await new OutboxOnlyWorkflowAdvance().advance()).toBeUndefined();
+    expect(await new OutboxOnlyWorkflowAdvance().advance()).toBe('DEFERRED_TO_OUTBOX');
     expect((await denyAllAuthorization().decide({} as never)).allow).toBe(false);
   });
 });

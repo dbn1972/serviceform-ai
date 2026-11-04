@@ -53,6 +53,12 @@ export function applicationStatus(app: Pick<ApplicationSummary, 'status' | 'digi
       return { label: 'Certificate issued', tone: 'success' };
     case 'REJECTED':
       return { label: 'Not approved', tone: 'error' };
+    case 'ACTION_REQUIRED':
+      return { label: 'Action needed · more information requested', tone: 'info' };
+    case 'WITHDRAWN':
+      return { label: 'Withdrawn or cancelled', tone: 'neutral' };
+    case 'CLOSED':
+      return { label: 'Closed', tone: 'neutral' };
     default:
       return { label: 'Draft', tone: 'neutral' };
   }

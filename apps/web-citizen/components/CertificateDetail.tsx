@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Icon } from '@serviceform/ui-ux4g';
+import { Icon } from '@serviceform/ui-ux4g';
 import { maskMobile } from '@serviceform/m10-sample-lab/identity-rules';
 import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
@@ -28,16 +28,13 @@ type App = {
   evidence_type?: string;
   evidence_file_name?: string;
   evidence_mime?: string;
-  eligibility_pass: boolean;
-  fee_paisa: number;
+  platform_state?: string;
   rejection_reason?: string;
   credential_id?: string;
   digilocker: {
     mode: string;
-    doc_type: string;
     status: string;
     provider_transaction_ref?: string;
-    simulation_marker: string;
   };
 };
 
@@ -84,14 +81,12 @@ function timeline(app: App): Step[] {
 export function CertificateDetail({ id }: { id: string }) {
   const [app, setApp] = useState<App | null>(null);
   const [error, setError] = useState('');
-  const [info, setInfo] = useState('');
-  const [publishing, setPublishing] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/lab/applications/${id}`);
-    const body = (await res.json()) as { application?: App; error_code?: string };
+    const res = await fetch(`/api/portal/applications/${id}`);
+    const body = (await res.json().catch(() => ({}))) as { application?: App; message?: string };
     if (!res.ok || !body.application) {
-      setError(body.error_code ?? 'SF-LAB-404');
+      setError(body.message ?? 'We could not find this application.');
       return;
     }
     setApp(body.application);
@@ -100,21 +95,6 @@ export function CertificateDetail({ id }: { id: string }) {
   useEffect(() => {
     void load();
   }, [load]);
-
-  async function publishDigiLocker() {
-    setError('');
-    setInfo('');
-    setPublishing(true);
-    const res = await fetch(`/api/lab/applications/${id}/digilocker-publish`, { method: 'POST' });
-    const body = (await res.json()) as { error_code?: string; note?: string; application?: App };
-    setPublishing(false);
-    if (!res.ok) {
-      setError(body.error_code ?? 'SF-LAB-DIGILOCKER');
-      return;
-    }
-    setInfo(body.note ?? 'SIMULATED DigiLocker publish complete');
-    if (body.application) setApp(body.application);
-  }
 
   if (!app && !error) {
     return (
@@ -135,7 +115,6 @@ export function CertificateDetail({ id }: { id: string }) {
 
   const status = applicationStatus(app);
   const addr = app.residence_address;
-  const canPublish = app.status === 'ISSUED' && app.digilocker.status !== 'PUBLISHED';
 
   return (
     <div className="sf-section">
@@ -176,28 +155,11 @@ export function CertificateDetail({ id }: { id: string }) {
             {app.rejection_reason ?? 'The officer recorded a decision on this application.'}
           </FormAlert>
         ) : null}
-        {canPublish ? (
-          <FormAlert tone="success" title="Certificate issued (SAMPLE_LAB)">
-            Publish it to DigiLocker to keep a digital copy. DigiLocker is SIMULATED in this lab.
+        {app.status === 'APPROVED' ? (
+          <FormAlert tone="info" title="Approved — certificate not yet issued">
+            The officer approved your application. Certificate issuance and DigiLocker publishing
+            are not yet connected on this platform path (Phase B, next slice).
           </FormAlert>
-        ) : null}
-        {info ? (
-          <FormAlert tone="success" title="Saved to DigiLocker">
-            {info}
-          </FormAlert>
-        ) : null}
-        {error ? (
-          <FormAlert tone="error" title="DigiLocker publish failed">
-            {error}
-          </FormAlert>
-        ) : null}
-        {canPublish ? (
-          <div className="sf-tile-actions">
-            <Button size="l" disabled={publishing} onClick={() => void publishDigiLocker()}>
-              <Icon name="inbox" size={18} />
-              Publish to DigiLocker (SIMULATED)
-            </Button>
-          </div>
         ) : null}
       </section>
 
@@ -239,9 +201,7 @@ export function CertificateDetail({ id }: { id: string }) {
             <dt>Duration</dt>
             <dd>{app.residence_duration_months} months</dd>
             <dt>Eligibility</dt>
-            <dd>{app.eligibility_pass ? 'Meets sample policy' : 'Does not meet sample policy'}</dd>
-            <dt>Fee</dt>
-            <dd>₹{(app.fee_paisa / 100).toFixed(0)}</dd>
+            <dd>Not evaluated yet (rules engine not connected on this path)</dd>
             <dt>Purpose</dt>
             <dd>{app.purpose_of_certificate ?? '—'}</dd>
           </dl>
@@ -264,8 +224,6 @@ export function CertificateDetail({ id }: { id: string }) {
                 ? `${app.evidence_file_name}${app.evidence_mime ? ` (${app.evidence_mime})` : ''}`
                 : '—'}
             </dd>
-            <dt>Doc type</dt>
-            <dd>{app.digilocker.doc_type}</dd>
             {app.credential_id ? (
               <>
                 <dt>Credential</dt>

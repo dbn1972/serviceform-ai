@@ -68,6 +68,26 @@ export interface RequestRow {
   last_correlation_id: string;
 }
 
+/** CCR-M10-001 mutable working data (pii=CITIZEN_SUPPLIED). One row per application. */
+export interface WorkingDataRow {
+  tenant_id: string;
+  application_id: string;
+  revision: number;
+  form_version_id: string;
+  data: Record<string, unknown>;
+  data_hash: string;
+  updated_by: string;
+  updated_at: string;
+  last_correlation_id: string;
+}
+
+export interface CaseListFilter {
+  /** When set, only that applicant's cases (citizen "mine" view). */
+  applicantId: string | null;
+  state: CaseState | null;
+  limit: number;
+}
+
 export interface StoredResponse {
   status: number;
   body: unknown;
@@ -124,6 +144,10 @@ export interface CaseTx {
     correlationId: string;
   }): Promise<boolean>;
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void>;
+  listCases(filter: CaseListFilter): Promise<CaseRow[]>;
+  getWorkingData(applicationId: string): Promise<WorkingDataRow | null>;
+  /** Insert when expectedRevision is 0, else compare-and-set on revision. False on conflict. */
+  writeWorkingData(row: WorkingDataRow, expectedRevision: number): Promise<boolean>;
 }
 
 export interface CaseStore {

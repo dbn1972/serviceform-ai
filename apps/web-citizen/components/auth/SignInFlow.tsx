@@ -30,9 +30,19 @@ export type AuthFlowProps = {
   initialMobile?: string | undefined;
 };
 
-export type SignInFlowProps = AuthFlowProps & { signedOut?: boolean };
+export type SignInFlowProps = AuthFlowProps & {
+  signedOut?: boolean;
+  /** Register uses the same CMP-004 OTP flow; the citizen principal is created on first verify. */
+  mode?: 'sign-in' | 'register';
+};
 
-export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }: SignInFlowProps) {
+export function SignInFlow({
+  nextParam,
+  initialMobile = '',
+  signedOut = false,
+  mode = 'sign-in',
+}: SignInFlowProps) {
+  const registering = mode === 'register';
   const router = useRouter();
   const next = safeNext(nextParam);
   const nextQuery = nextParam ? `next=${encodeURIComponent(next)}` : '';
@@ -71,7 +81,7 @@ export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }:
         ok: false,
         error: { status: 0, error_code: 'SF-SYS-003', message: 'Request a new OTP' },
       };
-    const res = await postJson<SessionSummary>('/api/lab/session', {
+    const res = await postJson<SessionSummary>('/api/portal/session', {
       challenge_id: challenge.challenge_id,
       code,
     });
@@ -79,13 +89,6 @@ export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }:
       router.push(next);
       router.refresh();
       return { ok: true };
-    }
-    if (res.error.error_code === 'SF-LAB-ACCOUNT-NOT-FOUND') {
-      const query = [`mobile=${mobile}`, nextQuery].filter(Boolean).join('&');
-      return {
-        ok: false,
-        error: { ...res.error, action: { href: `/register?${query}`, label: 'Create an account' } },
-      };
     }
     return { ok: false, error: res.error };
   }
@@ -113,11 +116,11 @@ export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }:
         eyebrow={
           <>
             <Icon name="lock" size={16} />
-            Secure sign in
+            {registering ? 'Create your account' : 'Secure sign in'}
           </>
         }
         title="Enter the OTP"
-        submitLabel="Verify and sign in"
+        submitLabel={registering ? 'Verify and create account' : 'Verify and sign in'}
         busyLabel="Verifying…"
         successLabel="Verified. Signing you in…"
         backLabel="Change mobile number"
@@ -143,12 +146,17 @@ export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }:
       <header className="sf-auth-head">
         <p className="sf-auth-eyebrow ux4g-label-s-strong">
           <Icon name="user" size={16} />
-          Citizen sign in
+          {registering ? 'New citizen account' : 'Citizen sign in'}
         </p>
-        <h1 className="ux4g-heading-xl-strong">Sign in to your account</h1>
+        <h1 className="ux4g-heading-xl-strong">
+          {registering ? 'Create your account' : 'Sign in to your account'}
+        </h1>
         <p className="ux4g-body-m-default">
-          Enter the mobile number linked to your citizen account. We will send you a{' '}
-          {LAB_OTP_LENGTH}-digit one-time password (OTP) — there is no password to remember.
+          {registering
+            ? 'Verify your mobile number to create your citizen account. '
+            : 'Enter the mobile number linked to your citizen account. '}
+          We will send you a {LAB_OTP_LENGTH}-digit one-time password (OTP) — there is no password
+          to remember.
         </p>
       </header>
       {signedOut && !notice ? (
@@ -184,14 +192,16 @@ export function SignInFlow({ nextParam, initialMobile = '', signedOut = false }:
         </div>
       </form>
       <div className="ux4g-divider-horizontal-text sf-auth-divider">
-        <span className="ux4g-divider-text">New to the Citizen Portal?</span>
+        <span className="ux4g-divider-text">
+          {registering ? 'Already have an account?' : 'New to the Citizen Portal?'}
+        </span>
       </div>
       <div className="sf-auth-actions">
         <Link
           className="ux4g-btn-outline-neutral ux4g-btn-l"
-          href={nextQuery ? `/register?${nextQuery}` : '/register'}
+          href={`${registering ? '/login' : '/register'}${nextQuery ? `?${nextQuery}` : ''}`}
         >
-          Create an account
+          {registering ? 'Sign in' : 'Create an account'}
         </Link>
       </div>
       <p className="sf-auth-privacy">

@@ -177,12 +177,13 @@ export class WorkflowAdvanceGate {
       throw new Cmp015Error('SF-WF-001', { details: detail('TEMPORAL_ADVANCE_BEFORE_COMMIT') });
     }
     try {
-      await this.port.advance({
+      const outcome = await this.port.advance({
         ...signal,
         tenant_id: receipt.tenantId,
         application_id: receipt.applicationId,
         aggregate_version: receipt.aggregateVersion,
       });
+      if (outcome === 'DEFERRED_TO_OUTBOX') return 'DEFERRED_TO_OUTBOX';
     } catch {
       return 'DEFERRED_TO_OUTBOX';
     }

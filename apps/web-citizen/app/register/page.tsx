@@ -2,7 +2,7 @@ import { AppShell } from '@serviceform/ui-ux4g';
 import type { Metadata } from 'next';
 import { AuthContextPanel } from '../../components/auth/AuthContextPanel';
 import { AuthLayout } from '../../components/auth/AuthLayout';
-import { RegisterFlow } from '../../components/auth/RegisterFlow';
+import { SignInFlow } from '../../components/auth/SignInFlow';
 import { CitizenNav } from '../../components/CitizenNav';
 import {
   SAMPLE_CITIZEN_HINT,
@@ -27,15 +27,11 @@ export default async function RegisterPage({ searchParams }: { searchParams: Aut
         context={<AuthContextPanel variant="register" service={service} />}
         sampleHint={
           <>
-            Simulated OTP <strong>{SAMPLE_CITIZEN_HINT.otp}</strong>
+            OTP <strong>{SAMPLE_CITIZEN_HINT.otp}</strong>
           </>
         }
       >
-        <RegisterFlow
-          nextParam={nextParam}
-          initialMobile={initialMobile}
-          serviceSummary={`Fee ${service.fee} · service time ${service.serviceTime} · delivered to ${service.delivery}`}
-        />
+        <SignInFlow mode="register" nextParam={nextParam} initialMobile={initialMobile} />
       </AuthLayout>
     </AppShell>
   );

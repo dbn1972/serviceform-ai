@@ -12,6 +12,7 @@ import type { ApplicationCaseService, ServiceResult } from './service.js';
 export interface HttpRequestLike {
   headers: HeaderBag;
   params?: unknown;
+  query?: unknown;
   body?: unknown;
 }
 
@@ -24,7 +25,7 @@ export interface HttpResponse {
 export type ContextResolver = (request: HttpRequestLike) => Promise<unknown>;
 
 export interface RouteDefinition {
-  method: 'GET' | 'POST';
+  method: 'GET' | 'POST' | 'PUT';
   url: string;
   handle(request: HttpRequestLike): Promise<HttpResponse>;
 }
@@ -48,6 +49,9 @@ export interface ApplicationCaseHttpOptions {
   resolveContext: ContextResolver;
 }
 
+/** Case and working-data bodies are tenant- and citizen-private (pii=CITIZEN_SUPPLIED). */
+const NO_STORE = { 'content-type': 'application/json', 'cache-control': 'no-store' } as const;
+
 function param(request: HttpRequestLike, name: string): unknown {
   const p = request.params;
   return typeof p === 'object' && p !== null ? (p as Record<string, unknown>)[name] : undefined;
@@ -66,11 +70,11 @@ export function errorResponse(err: unknown, correlationId: string): HttpResponse
     correlation_id: correlationId,
   };
   if (e.details && e.details.length > 0 && e.statusCode < 500) body['details'] = e.details;
-  return { status: e.statusCode, body, headers: { 'content-type': 'application/json' } };
+  return { status: e.statusCode, body, headers: { ...NO_STORE } };
 }
 
 function ok(result: ServiceResult): HttpResponse {
-  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  const headers: Record<string, string> = { ...NO_STORE };
   if (result.replayed) headers['idempotent-replayed'] = 'true';
   return { status: result.status, body: result.body, headers };
 }
@@ -139,6 +143,28 @@ export function createApplicationCaseRoutes(opts: ApplicationCaseHttpOptions): R
           ctx,
           param(r, 'applicationId'),
           param(r, 'requestId'),
+          r.body,
+          header(r, 'idempotency-key'),
+        ),
+      ),
+    },
+    {
+      method: 'GET',
+      url: '/applications',
+      handle: wrap((ctx, r) => service.listApplications(ctx, r.query)),
+    },
+    {
+      method: 'GET',
+      url: '/applications/:applicationId/working-data',
+      handle: wrap((ctx, r) => service.getWorkingData(ctx, param(r, 'applicationId'))),
+    },
+    {
+      method: 'PUT',
+      url: '/applications/:applicationId/working-data',
+      handle: wrap((ctx, r) =>
+        service.putWorkingData(
+          ctx,
+          param(r, 'applicationId'),
           r.body,
           header(r, 'idempotency-key'),
         ),

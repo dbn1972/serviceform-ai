@@ -62,3 +62,15 @@ paths = [
   '''tests/security/m07/pii-logging\.test\.ts$''',
 ]
 
+
+# TEST_FIXTURE only. curl-auth-header matched `-H "authorization: Bearer $C1"` lines in the
+# SF-M10-B-2 SAMPLE_LAB API smoke script (commit f334df8): the bearer values are shell variables
+# holding per-run synthetic CMP-004 session tokens minted against a local host, never literals.
+# History-only after the script switched to an auth() helper. Rule and path are both pinned.
+[[allowlists]]
+id = "sf-m10-b-2-api-smoke-bearer-variables"
+description = "TEST_FIXTURE: shell-variable bearer headers in evidence/SF-M10-B-2/api-smoke.sh (curl-auth-header). Not credentials."
+targetRules = ["curl-auth-header"]
+paths = [
+  '''evidence/SF-M10-B-2/api-smoke\.sh$''',
+]

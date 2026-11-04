@@ -24,7 +24,7 @@ export function announceSessionChange(): void {
   window.dispatchEvent(new Event(SESSION_EVENT));
 }
 
-/** Reads the SAMPLE_LAB OTP session; refreshes on navigation so the header follows sign-in/out. */
+/** Reads the CMP-004 session through the portal BFF; refreshes on navigation so the header follows sign-in/out. */
 export function useCitizenSession(): CitizenSessionState & { signOut: () => Promise<void> } {
   const pathname = usePathname();
   const router = useRouter();
@@ -39,18 +39,18 @@ export function useCitizenSession(): CitizenSessionState & { signOut: () => Prom
 
   useEffect(() => {
     let cancelled = false;
-    void fetch('/api/lab/session')
+    void fetch('/api/portal/session')
       .then((r) => r.json() as Promise<SessionBody>)
       .then((body) => {
         if (cancelled) return;
-        if (body.authenticated && body.citizen_id && body.display_name && body.mobile) {
+        if (body.authenticated && body.display_name) {
           setState({
             status: 'signed-in',
             profile: {
-              citizen_id: body.citizen_id,
+              citizen_id: body.citizen_id ?? '',
               display_name: body.display_name,
-              mobile: body.mobile,
-              masked_mobile: body.masked_mobile ?? body.mobile,
+              mobile: body.mobile ?? '',
+              masked_mobile: body.masked_mobile ?? '',
               ...(body.email ? { email: body.email } : {}),
               preferred_language: body.preferred_language === 'hi' ? 'hi' : 'en',
             },
@@ -70,7 +70,7 @@ export function useCitizenSession(): CitizenSessionState & { signOut: () => Prom
   // No announceSessionChange(): a gate on the current page would re-read the session and race this
   // navigation with its own `/login?next=…` redirect. Leaving the page refreshes every consumer.
   const signOut = useCallback(async () => {
-    await fetch('/api/lab/session', { method: 'DELETE' });
+    await fetch('/api/portal/session', { method: 'DELETE' });
     setState({ status: 'anon' });
     router.replace('/login?signed_out=1');
     router.refresh();

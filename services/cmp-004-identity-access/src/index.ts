@@ -2,6 +2,7 @@ export { identityAccessPlugin, registerIdentityAccess } from './plugin.js';
 export type { IdentityAccessPluginOptions } from './plugin.js';
 export { IdentityService } from './commands.js';
 export { Cmp004Error } from './errors.js';
+export { outboxAuditRecorder, type AuditRecorder } from './audit.js';
 export { isForbiddenHeaderName, assertNoTenantIdentifyingHeaders } from './context.js';
 export {
   IdentityPrincipalVerifier,
