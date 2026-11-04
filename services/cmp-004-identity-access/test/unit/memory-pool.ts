@@ -148,6 +148,16 @@ function execSql(store: MemoryIdentityStore, sql: string, params: unknown[]): Qu
     const row = store.challenges.find((c) => c.challenge_id === params[0]);
     return result(row ? [row] : []);
   }
+  if (q.includes("SET status = 'EXPIRED'") && q.includes('WHERE channel_hash')) {
+    let n = 0;
+    for (const c of store.challenges) {
+      if (c.channel_hash === params[0] && c.status === 'PENDING') {
+        c.status = 'EXPIRED';
+        n += 1;
+      }
+    }
+    return result([], n);
+  }
   if (q.includes("UPDATE sf_identity.citizen_otp_challenge SET status = 'EXPIRED'")) {
     const row = store.challenges.find((c) => c.challenge_id === params[0]);
     if (row) row.status = 'EXPIRED';
@@ -228,13 +238,17 @@ function execSql(store: MemoryIdentityStore, sql: string, params: unknown[]): Qu
     return result([], 1);
   }
   if (q.includes('INSERT INTO sf_identity.officer_principal')) {
+    const existing = store.officers.find(
+      (o) => o.tenant_id === String(params[0]) && o.officer_id === String(params[1]),
+    );
+    if (existing) return result([{ status: existing.status }], 1);
     store.officers.push({
       tenant_id: String(params[0]),
       officer_id: String(params[1]),
       idp_subject_hash: String(params[2]),
       status: 'ACTIVE',
     });
-    return result([], 1);
+    return result([{ status: 'ACTIVE' }], 1);
   }
   if (q.includes('INSERT INTO sf_identity.officer_session')) {
     store.officerSessions.push({

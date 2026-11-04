@@ -20,7 +20,15 @@ export type CaseState =
   | 'WITHDRAWN'
   | 'CANCELLED';
 
-export type PortalStatus = 'DRAFT' | 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'ISSUED' | 'CLOSED';
+export type PortalStatus =
+  | 'DRAFT'
+  | 'SUBMITTED'
+  | 'ACTION_REQUIRED'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'WITHDRAWN'
+  | 'ISSUED'
+  | 'CLOSED';
 
 export interface ResidenceForm {
   applicant_name: string;
@@ -77,9 +85,12 @@ export function portalStatus(state: CaseState): PortalStatus {
     case 'SIGNING_PENDING':
       return 'APPROVED';
     case 'REJECTED':
+      return 'REJECTED';
     case 'WITHDRAWN':
     case 'CANCELLED':
-      return 'REJECTED';
+      return 'WITHDRAWN';
+    case 'DEFICIENCY_RAISED':
+      return 'ACTION_REQUIRED';
     case 'ISSUED':
       return 'ISSUED';
     case 'CLOSED':

@@ -289,6 +289,8 @@ describe('CCR-M10-001 HTTP routes', () => {
     expect(get.status).toBe(200);
     const list = await find('GET', '/applications').handle({ headers: {}, query: {} });
     expect(ids(list)).toEqual([id]);
+    expect(get.headers['cache-control']).toBe('no-store');
+    expect(list.headers['cache-control']).toBe('no-store');
     const refused = await find('GET', '/applications').handle({
       headers: { 'x-tenant-id': T2 },
       query: {},

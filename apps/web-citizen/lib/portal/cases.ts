@@ -16,10 +16,11 @@ export async function command(
   citizen: Citizen,
   app: PlatformApplication,
   name: string,
+  idempotencyKey?: string,
 ): Promise<{ ok: true; app: PlatformApplication } | { ok: false; res: PlatformResponse }> {
   const res = await platform('POST', `/v1/applications/${app.application_id}/commands`, {
     token: citizen.token,
-    idempotent: true,
+    ...(idempotencyKey ? { idempotencyKey } : { idempotent: true }),
     body: { command: name, expected_state: app.state, expected_version: app.aggregate_version },
   });
   const next = res.body['application'] as PlatformApplication | undefined;
