@@ -11,6 +11,7 @@ import {
   platform,
   portalPlacement,
   relay,
+  crossSiteRefusal,
 } from '../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -46,6 +47,8 @@ function stepKeys(raw: string | null) {
 }
 
 export async function POST(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const keys = stepKeys(request.headers.get('idempotency-key'));
   const citizen = await currentCitizen(request);
   if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });

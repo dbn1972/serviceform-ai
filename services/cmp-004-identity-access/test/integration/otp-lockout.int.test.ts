@@ -72,6 +72,26 @@ describe('CMP-004 OTP failure state is durable on PostgreSQL', () => {
     await app.close();
   });
 
+  it('a new challenge supersedes earlier pending ones for the same number (SEC F-06)', async () => {
+    const { app } = await buildApp(h);
+    const first = await challenge(app, '+10000000024');
+    const second = await challenge(app, '+10000000024');
+    const rows = await h.admin.query<{ challenge_id: string; status: string }>(
+      'SELECT challenge_id, status FROM sf_identity.citizen_otp_challenge WHERE challenge_id = ANY($1::uuid[])',
+      [[first.challengeId, second.challengeId]],
+    );
+    const status = Object.fromEntries(rows.rows.map((r) => [r.challenge_id, r.status]));
+    expect(status[first.challengeId]).toBe('EXPIRED');
+    expect(status[second.challengeId]).toBe('PENDING');
+    const stale = await app.inject({
+      method: 'POST',
+      url: '/v1/identity/citizen/otp/verify',
+      payload: { challenge_id: first.challengeId, code: first.code },
+    });
+    expect(stale.statusCode).toBe(401);
+    await app.close();
+  });
+
   it('a verified code cannot be replayed', async () => {
     const { app } = await buildApp(h);
     const { challengeId, code } = await challenge(app, '+10000000022');
