@@ -24,13 +24,13 @@ export const observabilityPlugin = fp(
   async (app: FastifyInstance, opts: ObservabilityPluginOptions) => {
     if (opts.accessLog === false) return;
     app.addHook('onResponse', async (request, reply) => {
-      request.log.info(
-        {
-          req: { id: request.id, method: request.method, url: sanitizeUrlForLog(request.url) },
-          res: { statusCode: reply.statusCode },
-        },
-        'request completed',
-      );
+      const line = {
+        req: { id: request.id, method: request.method, url: sanitizeUrlForLog(request.url) },
+        res: { statusCode: reply.statusCode },
+      };
+      // Components may answer 5xx without throwing, so the host error handler never sees them.
+      if (reply.statusCode >= 500) request.log.error(line, 'request failed');
+      else request.log.info(line, 'request completed');
     });
   },
   { name: 'cmp-047-observability', fastify: '5.x' },

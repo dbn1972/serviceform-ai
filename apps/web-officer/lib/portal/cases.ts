@@ -15,7 +15,9 @@ export type DecisionAction = 'APPROVE' | 'REJECT';
 export function workbenchStatus(state: string): string {
   if (['DRAFT', 'READY_TO_SUBMIT'].includes(state)) return 'DRAFT';
   if (['APPROVED', 'SIGNING_PENDING'].includes(state)) return 'APPROVED';
-  if (['REJECTED', 'WITHDRAWN', 'CANCELLED'].includes(state)) return 'REJECTED';
+  if (state === 'REJECTED') return 'REJECTED';
+  if (['WITHDRAWN', 'CANCELLED', 'DEFICIENCY_RAISED', 'CITIZEN_RESPONSE'].includes(state))
+    return state;
   if (['ISSUED', 'CLOSED'].includes(state)) return state;
   return 'SUBMITTED';
 }

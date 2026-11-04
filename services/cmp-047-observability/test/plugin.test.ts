@@ -38,6 +38,34 @@ describe('CMP-047 observability plugin (REQ: Eng-v1.4-CMP-047, Constitution #21)
     expect(text).not.toContain('123456');
   });
 
+  it('logs 5xx responses at error level so they surface at warn-level hosts', async () => {
+    const lines: string[] = [];
+    const destination = new Writable({
+      write(chunk: Buffer, _e, cb) {
+        lines.push(chunk.toString());
+        cb();
+      },
+    });
+    const logger = createLogger({
+      service: 'obs-test',
+      version: 'test',
+      level: 'warn',
+      destination,
+    });
+    const app = Fastify({ loggerInstance: logger as never });
+    apps.push(app);
+    await app.register(observabilityPlugin, { logger });
+    app.get('/v1/ok', async () => ({ ok: true }));
+    app.get('/v1/fails', async (_req, reply) => reply.code(500).send({ error_code: 'SF-SYS-001' }));
+    await app.inject({ method: 'GET', url: '/v1/ok' });
+    await app.inject({ method: 'GET', url: '/v1/fails?otp=123456' });
+    const text = lines.join('');
+    expect(text).toContain('request failed');
+    expect(text).toContain('/v1/fails');
+    expect(text).not.toContain('/v1/ok');
+    expect(text).not.toContain('123456');
+  });
+
   it('bootstraps telemetry off when no OTLP endpoint is set', async () => {
     const { telemetry, logger } = bootstrapObservability({
       logger: { service: 'obs', version: '0', level: 'silent' },

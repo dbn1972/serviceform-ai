@@ -61,9 +61,10 @@ export function ctx(
 export class RecordingWorkflow implements WorkflowAdvancePort {
   readonly signals: WorkflowAdvanceSignal[] = [];
   fail = false;
-  async advance(signal: WorkflowAdvanceSignal): Promise<void> {
+  async advance(signal: WorkflowAdvanceSignal): Promise<undefined> {
     if (this.fail) throw new Error('temporal unavailable');
     this.signals.push(signal);
+    return undefined;
   }
 }
 

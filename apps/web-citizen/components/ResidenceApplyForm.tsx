@@ -48,6 +48,8 @@ export function ResidenceApplyForm() {
 
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  // One submission key per form session, so a retried submit cannot file a second application.
+  const [submissionKey] = useState(() => crypto.randomUUID().replace(/-/g, ''));
 
   const stepIndex = STEPS.findIndex((s) => s.id === step);
   const monthsNum = Number(months);
@@ -124,7 +126,7 @@ export function ResidenceApplyForm() {
     setBusy(true);
     const res = await fetch('/api/portal/applications', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', 'idempotency-key': submissionKey },
       body: JSON.stringify({
         applicant_name: name,
         applicant_dob: dob,
