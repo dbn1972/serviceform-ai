@@ -181,3 +181,41 @@ test_officer_cross_tenant_denied if {
 	d.allow == false
 	d.reason_code == "TENANT_MISMATCH"
 }
+
+officer_session_role := {T1: {"roles": {"CASE_OFFICER": {
+	"actions": ["OFFICER_SESSION_ISSUE", "OFFICER_SESSION_REVOKE"],
+	"resource_types": ["OfficerSession"],
+	"jurisdiction_scope": "TENANT_WIDE",
+}}}}
+
+officer_session_input := {
+	"subject": {
+		"user_id": U1,
+		"actor_type": "OFFICER",
+		"tenant_id": T1,
+		"roles": ["CASE_OFFICER"],
+		"jurisdiction_ids": [],
+		"assurance": "MFA",
+	},
+	"resource": {"resource_type": "OfficerSession", "tenant_id": T1, "classification": "TENANT_SCOPED"},
+	"action": "OFFICER_SESSION_ISSUE",
+}
+
+test_cmp004_officer_session_issue_by_role if {
+	eval(officer_session_input, officer_session_role).allow == true
+}
+
+test_cmp004_officer_session_needs_role if {
+	d := eval(officer_session_input, {})
+	d.allow == false
+	d.reason_code == "ROLE_NOT_PERMITTED"
+}
+
+test_cmp004_officer_session_not_citizen_owned if {
+	inp := json.patch(officer_session_input, [
+		{"op": "replace", "path": "/subject/actor_type", "value": "CITIZEN"},
+		{"op": "replace", "path": "/subject/roles", "value": []},
+		{"op": "add", "path": "/resource/owner_id", "value": U1},
+	])
+	eval(inp, officer_session_role).allow == false
+}

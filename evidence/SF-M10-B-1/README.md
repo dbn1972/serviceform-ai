@@ -11,7 +11,7 @@
 
 | Check | Result | Log |
 |---|---|---|
-| `scripts/opa-test.sh` (check --strict, fmt --fail, test --coverage, build, mutation) | PASS, 65/65 Rego tests (17 new); `citizen.rego` 100% coverage; mutation check holds | `opa-test.log`, `opa-test-summary.log` |
+| `scripts/opa-test.sh` (check --strict, fmt --fail, test --coverage, build, mutation) | PASS, 68/68 Rego tests (20 new, incl. CMP-004 officer-session actions); `citizen.rego` 100% coverage; mutation check holds | `opa-test.log`, `opa-test-summary.log` |
 | `contracts_lock_gate.py` | 44 FROZEN, 0 errors (existing 42 hashes unchanged) | `contracts-lock.log` |
 | M10 contract tests + lock-cardinality consumers (CMP-018, CMP-028) | 36/36 | `contract-tests.log` |
 | `pnpm test` (root unit/component) | 311 files, 2996 tests passed | `unit-summary.log` |
