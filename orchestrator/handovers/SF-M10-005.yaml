@@ -32,3 +32,21 @@ stop_conditions:
   - builder dispatch without freeze+READY+dispatch
 human_authorization: HUMAN_CG03_THROUGH_EVD_AUTHORIZATION
 note: UX4G journey/a11y evidence
+evidence_status:
+  # Evidence recorded 2026-11-04 by independent ux4g_builder agent (bc-e3f3f628-9d46-53af-8a55-53fcc4b45598)
+  # NOT a READY or CERTIFIED flag — human/EVD gate required
+  commit_under_test: f334df88053d5b39a27bd4546e04817b66280497
+  evidence_branch: cursor/m10-phase-b-ux4g-evidence-0b20
+  tests_total: 86
+  tests_passed: 86
+  tests_failed: 0
+  axe_violations: 0
+  responsive_320px_pass: 16
+  visual_baselines_established: 25
+  keyboard_checks_passed: 7
+  design_system_gate: PASS
+  recommendation: RECOMMEND-WITH-FINDINGS
+  gaps: [screen_reader_smoke, zoom_200pct, firefox_safari_a11y]
+  evidence_path: evidence/SF-M10-005/README.md
+  screens_path: evidence/SF-M10-005/screens/
+  snapshots_path: tests/ux4g/m10/snapshots/
