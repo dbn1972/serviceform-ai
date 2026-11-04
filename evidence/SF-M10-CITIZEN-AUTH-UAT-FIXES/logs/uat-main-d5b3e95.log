@@ -1,0 +1,121 @@
+
+Running 15 tests using 1 worker
+
+(node:5531) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test-results/uat/phase-a-lab-uat.spec.ts:48:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-01 seeded citizen signs in with SIMULATED OTP 123456 (1.2s)
+  ✓   2 test-results/uat/phase-a-lab-uat.spec.ts:67:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-02 wrong OTP shows attempts left; 5 wrong attempts lock the challenge (960ms)
+  ✓   3 test-results/uat/phase-a-lab-uat.spec.ts:98:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-03 OTP is single-use and bound to its purpose (23ms)
+  ✓   4 test-results/uat/phase-a-lab-uat.spec.ts:122:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-04 OTP request does not reveal whether an account exists (11ms)
+  ✓   5 test-results/uat/phase-a-lab-uat.spec.ts:134:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-05 unregistered mobile is offered "Create an account" only after OTP (944ms)
+  ✓   6 test-results/uat/phase-a-lab-uat.spec.ts:143:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-06 sign-up rejects non-synthetic name and missing consent (907ms)
+  ✓   7 test-results/uat/phase-a-lab-uat.spec.ts:154:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-07 new citizen signs up with SIMULATED OTP and is signed in (987ms)
+  ✓   8 test-results/uat/phase-a-lab-uat.spec.ts:163:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-08..12b gated apply, prefill, officer approve, DigiLocker publish, My applications (5.4s)
+  ✓   9 test-results/uat/phase-a-lab-uat.spec.ts:225:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12c sign-out from a gated page clears the session (1.7s)
+  ✘  10 test-results/uat/phase-a-lab-uat.spec.ts:236:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation (6.6s)
+(node:5679) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 test-results/uat/phase-a-lab-uat.spec.ts:245:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-13 a second citizen does not see the first citizen applications (1.5s)
+  ✓  12 test-results/uat/phase-a-lab-uat.spec.ts:251:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-14 anonymous "mine" listing and anonymous submit are refused (19ms)
+  ✘  13 test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a tab cannot leave the portal (2.4s)
+(node:5761) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  14 test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a newline cannot leave the portal (2.4s)
+(node:5835) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 test-results/uat/phase-a-lab-uat.spec.ts:278:3 › Phase A lab UAT — security probes › UAT-16 [known limitation] unsigned lab session cookie can be forged (31ms)
+
+
+  1) test-results/uat/phase-a-lab-uat.spec.ts:236:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login\?signed_out=1$/
+    Received string:  "http://127.0.0.1:3000/login?next=%2Fcertificates"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        2 × locator resolved to <html lang="en">…</html>
+          - unexpected value "http://127.0.0.1:3000/certificates"
+        12 × locator resolved to <html lang="en">…</html>
+           - unexpected value "http://127.0.0.1:3000/login?next=%2Fcertificates"
+
+
+      238 |     await open(page, '/certificates');
+      239 |     await page.getByTestId('citizen-account').getByRole('button', { name: 'Sign out' }).click();
+    > 240 |     await expect(page).toHaveURL(/\/login\?signed_out=1$/);
+          |                        ^
+      241 |     await expect(page.getByTestId('signed-out-notice')).toContainText('You have signed out');
+      242 |     await shot(page, 'uat-12d-signed-out-notice');
+      243 |   });
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:240:24
+
+    Error Context: ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a tab cannot leave the portal 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "127.0.0.1:3000"
+    Received: "evil.example"
+
+      272 |       await signIn(page, SEED_MOBILE);
+      273 |       await page.waitForTimeout(1500);
+    > 274 |       expect(new URL(page.url()).host).toBe('127.0.0.1:3000');
+          |                                        ^
+      275 |     });
+      276 |   }
+      277 |
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:274:40
+
+    Error Context: ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a newline cannot leave the portal 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "127.0.0.1:3000"
+    Received: "evil.example"
+
+      272 |       await signIn(page, SEED_MOBILE);
+      273 |       await page.waitForTimeout(1500);
+    > 274 |       expect(new URL(page.url()).host).toBe('127.0.0.1:3000');
+          |                                        ^
+      275 |     });
+      276 |   }
+      277 |
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:274:40
+
+    Error Context: ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3 failed
+    test-results/uat/phase-a-lab-uat.spec.ts:236:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation 
+    test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a tab cannot leave the portal 
+    test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a newline cannot leave the portal 
+  12 passed (28.8s)
+exit=1

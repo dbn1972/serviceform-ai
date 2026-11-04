@@ -1,0 +1,152 @@
+<testsuites id="" name="" tests="15" failures="3" skipped="0" errors="0" time="28.811730999999998">
+<testsuite name="phase-a-lab-uat.spec.ts" timestamp="2026-11-04T09:16:16.655Z" hostname="" tests="15" failures="3" skipped="0" time="25.132" errors="0">
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-01 seeded citizen signs in with SIMULATED OTP 123456" classname="phase-a-lab-uat.spec.ts" time="1.217">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-02 wrong OTP shows attempts left; 5 wrong attempts lock the challenge" classname="phase-a-lab-uat.spec.ts" time="0.96">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-03 OTP is single-use and bound to its purpose" classname="phase-a-lab-uat.spec.ts" time="0.023">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-04 OTP request does not reveal whether an account exists" classname="phase-a-lab-uat.spec.ts" time="0.011">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-05 unregistered mobile is offered &quot;Create an account&quot; only after OTP" classname="phase-a-lab-uat.spec.ts" time="0.944">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-06 sign-up rejects non-synthetic name and missing consent" classname="phase-a-lab-uat.spec.ts" time="0.907">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-07 new citizen signs up with SIMULATED OTP and is signed in" classname="phase-a-lab-uat.spec.ts" time="0.987">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-08..12b gated apply, prefill, officer approve, DigiLocker publish, My applications" classname="phase-a-lab-uat.spec.ts" time="5.411">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12c sign-out from a gated page clears the session" classname="phase-a-lab-uat.spec.ts" time="1.713">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation" classname="phase-a-lab-uat.spec.ts" time="6.607">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/error-context.md]]
+
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/trace.zip]]
+]]>
+</system-out>
+<failure message="expect(page).toHaveURL(expected) failed" type="expect.toHaveURL">
+<![CDATA[  phase-a-lab-uat.spec.ts:236:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/login\?signed_out=1$/
+    Received string:  "http://127.0.0.1:3000/login?next=%2Fcertificates"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        2 × locator resolved to <html lang="en">…</html>
+          - unexpected value "http://127.0.0.1:3000/certificates"
+        12 × locator resolved to <html lang="en">…</html>
+           - unexpected value "http://127.0.0.1:3000/login?next=%2Fcertificates"
+
+
+      238 |     await open(page, '/certificates');
+      239 |     await page.getByTestId('citizen-account').getByRole('button', { name: 'Sign out' }).click();
+    > 240 |     await expect(page).toHaveURL(/\/login\?signed_out=1$/);
+          |                        ^
+      241 |     await expect(page.getByTestId('signed-out-notice')).toContainText('You have signed out');
+      242 |     await shot(page, 'uat-12d-signed-out-notice');
+      243 |   });
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:240:24
+
+    Error Context: ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-cfbb5-the-signed-out-confirmation/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-13 a second citizen does not see the first citizen applications" classname="phase-a-lab-uat.spec.ts" time="1.539">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-14 anonymous &quot;mine&quot; listing and anonymous submit are refused" classname="phase-a-lab-uat.spec.ts" time="0.019">
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-15 post-sign-in &quot;next&quot; with a tab cannot leave the portal" classname="phase-a-lab-uat.spec.ts" time="2.368">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/error-context.md]]
+
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/trace.zip]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a tab cannot leave the portal 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "127.0.0.1:3000"
+    Received: "evil.example"
+
+      272 |       await signIn(page, SEED_MOBILE);
+      273 |       await page.waitForTimeout(1500);
+    > 274 |       expect(new URL(page.url()).host).toBe('127.0.0.1:3000');
+          |                                        ^
+      275 |     });
+      276 |   }
+      277 |
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:274:40
+
+    Error Context: ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-e015f-tab-cannot-leave-the-portal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-15 post-sign-in &quot;next&quot; with a newline cannot leave the portal" classname="phase-a-lab-uat.spec.ts" time="2.395">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/error-context.md]]
+
+[[ATTACHMENT|artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/trace.zip]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a newline cannot leave the portal 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "127.0.0.1:3000"
+    Received: "evil.example"
+
+      272 |       await signIn(page, SEED_MOBILE);
+      273 |       await page.waitForTimeout(1500);
+    > 274 |       expect(new URL(page.url()).host).toBe('127.0.0.1:3000');
+          |                                        ^
+      275 |     });
+      276 |   }
+      277 |
+        at /agent/repos/serviceform-ai/test-results/uat/phase-a-lab-uat.spec.ts:274:40
+
+    Error Context: ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../../../../../tmp/phase-a/artifacts/phase-a-lab-uat-Phase-A-la-eb697-ine-cannot-leave-the-portal/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-16 [known limitation] unsigned lab session cookie can be forged" classname="phase-a-lab-uat.spec.ts" time="0.031">
+<properties>
+<property name="known-limitation" value="SAMPLE_LAB cookie is unsigned base64 JSON (inherited from main); not production IAM">
+</property>
+</properties>
+</testcase>
+</testsuite>
+</testsuites>

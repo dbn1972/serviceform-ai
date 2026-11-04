@@ -1,0 +1,170 @@
+<testsuites id="" name="" tests="78" failures="0" skipped="0" errors="0" time="59.358392">
+<testsuite name="citizen-auth.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="20" failures="0" skipped="0" time="19.272" errors="0">
+<testcase name="citizen sign in (mobile OTP) › signs in the seeded synthetic citizen and returns to the requested page" classname="citizen-auth.spec.ts" time="1.119">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › validates the mobile number before sending an OTP" classname="citizen-auth.spec.ts" time="1.006">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › rejects a wrong OTP, reports remaining attempts and returns focus to the code" classname="citizen-auth.spec.ts" time="1.001">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › supports keyboard entry with auto-advance and backspace navigation" classname="citizen-auth.spec.ts" time="0.827">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › a verified but unregistered number is offered account creation, not a retry" classname="citizen-auth.spec.ts" time="0.894">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%2Fevil.example%2Fphish (open-redirect guard)" classname="citizen-auth.spec.ts" time="1.001">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%09%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.992">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%0A%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.963">
+</testcase>
+<testcase name="citizen account creation › summarises errors, focuses the summary and links each error to its field" classname="citizen-auth.spec.ts" time="0.914">
+</testcase>
+<testcase name="citizen account creation › creates an account after mobile OTP, signs the citizen in, and allows sign-in later" classname="citizen-auth.spec.ts" time="1.935">
+</testcase>
+<testcase name="citizen account creation › refuses to create a second account for a registered mobile" classname="citizen-auth.spec.ts" time="0.917">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › rejects non-synthetic mobiles and malformed requests" classname="citizen-auth.spec.ts" time="0.025">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › locks a challenge after five wrong codes (SF-AUTH-001)" classname="citizen-auth.spec.ts" time="0.036">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › binds challenges to their purpose and validates profiles before consuming the OTP" classname="citizen-auth.spec.ts" time="0.023">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.308">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.694">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.252">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.663">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › OTP step (incl. error state) has no axe violations and reflows at 320 px" classname="citizen-auth.spec.ts" time="1.8">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › registration error summary and success screen have no axe violations" classname="citizen-auth.spec.ts" time="1.902">
+</testcase>
+</testsuite>
+<testsuite name="citizen-auth.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="20" failures="0" skipped="0" time="17.802" errors="0">
+<testcase name="citizen sign in (mobile OTP) › signs in the seeded synthetic citizen and returns to the requested page" classname="citizen-auth.spec.ts" time="0.993">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › validates the mobile number before sending an OTP" classname="citizen-auth.spec.ts" time="0.757">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › rejects a wrong OTP, reports remaining attempts and returns focus to the code" classname="citizen-auth.spec.ts" time="0.856">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › supports keyboard entry with auto-advance and backspace navigation" classname="citizen-auth.spec.ts" time="0.804">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › a verified but unregistered number is offered account creation, not a retry" classname="citizen-auth.spec.ts" time="0.881">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%2Fevil.example%2Fphish (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.933">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%09%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.826">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%0A%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.842">
+</testcase>
+<testcase name="citizen account creation › summarises errors, focuses the summary and links each error to its field" classname="citizen-auth.spec.ts" time="0.817">
+</testcase>
+<testcase name="citizen account creation › creates an account after mobile OTP, signs the citizen in, and allows sign-in later" classname="citizen-auth.spec.ts" time="1.74">
+</testcase>
+<testcase name="citizen account creation › refuses to create a second account for a registered mobile" classname="citizen-auth.spec.ts" time="0.899">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › rejects non-synthetic mobiles and malformed requests" classname="citizen-auth.spec.ts" time="0.023">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › locks a challenge after five wrong codes (SF-AUTH-001)" classname="citizen-auth.spec.ts" time="0.032">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › binds challenges to their purpose and validates profiles before consuming the OTP" classname="citizen-auth.spec.ts" time="0.023">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.145">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.656">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.22">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.675">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › OTP step (incl. error state) has no axe violations and reflows at 320 px" classname="citizen-auth.spec.ts" time="1.809">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › registration error summary and success screen have no axe violations" classname="citizen-auth.spec.ts" time="1.871">
+</testcase>
+</testsuite>
+<testsuite name="citizen-auth.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="20" failures="0" skipped="0" time="18.014" errors="0">
+<testcase name="citizen sign in (mobile OTP) › signs in the seeded synthetic citizen and returns to the requested page" classname="citizen-auth.spec.ts" time="0.911">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › validates the mobile number before sending an OTP" classname="citizen-auth.spec.ts" time="0.77">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › rejects a wrong OTP, reports remaining attempts and returns focus to the code" classname="citizen-auth.spec.ts" time="0.834">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › supports keyboard entry with auto-advance and backspace navigation" classname="citizen-auth.spec.ts" time="0.828">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › a verified but unregistered number is offered account creation, not a retry" classname="citizen-auth.spec.ts" time="0.897">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%2Fevil.example%2Fphish (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.932">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%09%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.863">
+</testcase>
+<testcase name="citizen sign in (mobile OTP) › ignores off-site next target %2F%0A%2Fevil.example (open-redirect guard)" classname="citizen-auth.spec.ts" time="0.84">
+</testcase>
+<testcase name="citizen account creation › summarises errors, focuses the summary and links each error to its field" classname="citizen-auth.spec.ts" time="0.808">
+</testcase>
+<testcase name="citizen account creation › creates an account after mobile OTP, signs the citizen in, and allows sign-in later" classname="citizen-auth.spec.ts" time="1.787">
+</testcase>
+<testcase name="citizen account creation › refuses to create a second account for a registered mobile" classname="citizen-auth.spec.ts" time="0.899">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › rejects non-synthetic mobiles and malformed requests" classname="citizen-auth.spec.ts" time="0.023">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › locks a challenge after five wrong codes (SF-AUTH-001)" classname="citizen-auth.spec.ts" time="0.031">
+</testcase>
+<testcase name="citizen identity API failure paths (SAMPLE_LAB) › binds challenges to their purpose and validates profiles before consuming the OTP" classname="citizen-auth.spec.ts" time="0.022">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.184">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › sign in: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.669">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: unique title, single h1, landmarks and no axe violations" classname="citizen-auth.spec.ts" time="1.298">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › create account: reflows at 320 CSS px without horizontal scrolling" classname="citizen-auth.spec.ts" time="0.666">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › OTP step (incl. error state) has no axe violations and reflows at 320 px" classname="citizen-auth.spec.ts" time="1.815">
+</testcase>
+<testcase name="citizen auth accessibility (WCAG 2.1 AA, UX4G rule 6) › registration error summary and success screen have no axe violations" classname="citizen-auth.spec.ts" time="1.937">
+</testcase>
+</testsuite>
+<testsuite name="citizen-journey.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="6" failures="0" skipped="0" time="16.637" errors="0">
+<testcase name="citizen journey stitched to OTP sign-in › gated pages send anonymous visitors to sign in and bring them back" classname="citizen-journey.spec.ts" time="0.911">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › header shows the verified account and sign-out returns to sign in" classname="citizen-journey.spec.ts" time="1.084">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › sign-out from a gated page lands on the signed-out confirmation" classname="citizen-journey.spec.ts" time="1.607">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › the application is pre-filled from the account and filed under that citizen only" classname="citizen-journey.spec.ts" time="5.2">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › applications API refuses anonymous submit and anonymous &quot;mine&quot; listing" classname="citizen-journey.spec.ts" time="0.011">
+</testcase>
+<testcase name="citizen journey accessibility (WCAG 2.1 AA, UX4G rule 6) › signed-in journey pages have no axe violations and reflow at 320 px" classname="citizen-journey.spec.ts" time="7.824">
+</testcase>
+</testsuite>
+<testsuite name="citizen-journey.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="6" failures="0" skipped="0" time="16.173" errors="0">
+<testcase name="citizen journey stitched to OTP sign-in › gated pages send anonymous visitors to sign in and bring them back" classname="citizen-journey.spec.ts" time="0.885">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › header shows the verified account and sign-out returns to sign in" classname="citizen-journey.spec.ts" time="1.004">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › sign-out from a gated page lands on the signed-out confirmation" classname="citizen-journey.spec.ts" time="1.621">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › the application is pre-filled from the account and filed under that citizen only" classname="citizen-journey.spec.ts" time="5.035">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › applications API refuses anonymous submit and anonymous &quot;mine&quot; listing" classname="citizen-journey.spec.ts" time="0.009">
+</testcase>
+<testcase name="citizen journey accessibility (WCAG 2.1 AA, UX4G rule 6) › signed-in journey pages have no axe violations and reflow at 320 px" classname="citizen-journey.spec.ts" time="7.619">
+</testcase>
+</testsuite>
+<testsuite name="citizen-journey.spec.ts" timestamp="2026-11-04T09:19:07.130Z" hostname="" tests="6" failures="0" skipped="0" time="16.391" errors="0">
+<testcase name="citizen journey stitched to OTP sign-in › gated pages send anonymous visitors to sign in and bring them back" classname="citizen-journey.spec.ts" time="0.889">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › header shows the verified account and sign-out returns to sign in" classname="citizen-journey.spec.ts" time="1.066">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › sign-out from a gated page lands on the signed-out confirmation" classname="citizen-journey.spec.ts" time="1.682">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › the application is pre-filled from the account and filed under that citizen only" classname="citizen-journey.spec.ts" time="5.144">
+</testcase>
+<testcase name="citizen journey stitched to OTP sign-in › applications API refuses anonymous submit and anonymous &quot;mine&quot; listing" classname="citizen-journey.spec.ts" time="0.018">
+</testcase>
+<testcase name="citizen journey accessibility (WCAG 2.1 AA, UX4G rule 6) › signed-in journey pages have no axe violations and reflow at 320 px" classname="citizen-journey.spec.ts" time="7.592">
+</testcase>
+</testsuite>
+</testsuites>
