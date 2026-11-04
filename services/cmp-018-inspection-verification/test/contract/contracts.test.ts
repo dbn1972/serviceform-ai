@@ -21,17 +21,17 @@ function fileHash(rel: string): string {
     .digest('hex');
 }
 
-describe('42 frozen contracts MATCH (M09 candidate registry; read-only)', () => {
+describe('44 frozen contracts MATCH (M10 Phase B registry; read-only)', () => {
   it('lock file hashes equal on-disk artifacts', () => {
     const raw = text(join(repoRoot, 'orchestrator/contracts-lock.yaml'));
     const ids = [...raw.matchAll(/^\s+- id: (SF-CON-[A-Z0-9-]+)$/gm)].map((m) => m[1]);
-    expect(ids).toHaveLength(42);
+    expect(ids).toHaveLength(44);
     const hashes = [...raw.matchAll(/^\s+schema_hash: ([0-9a-f]{64})$/gm)].map((m) => m[1]);
-    expect(hashes).toHaveLength(42);
+    expect(hashes).toHaveLength(44);
     const paths = [...raw.matchAll(/^\s+path: "?([^"\n]+)"?$/gm)]
       .map((m) => m[1])
       .filter((p): p is string => typeof p === 'string' && p.startsWith('contracts/'));
-    expect(paths).toHaveLength(42);
+    expect(paths).toHaveLength(44);
     expect(ids).toHaveLength(hashes.length);
     expect(ids).toHaveLength(paths.length);
     for (let i = 0; i < ids.length; i++) {
@@ -41,6 +41,7 @@ describe('42 frozen contracts MATCH (M09 candidate registry; read-only)', () => 
     expect(raw).toContain('29_FROZEN_CANDIDATE_HASHES_MATCH');
     expect(raw).toContain('34_FROZEN_CANDIDATE_HASHES_MATCH');
     expect(raw).toContain('42_FROZEN_CANDIDATE_HASHES_MATCH');
+    expect(raw).toContain('44_FROZEN_HASHES_MATCH');
   });
 });
 
