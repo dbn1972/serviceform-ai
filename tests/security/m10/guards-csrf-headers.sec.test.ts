@@ -1,3 +1,4 @@
+import { request } from 'node:http';
 import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -23,6 +24,25 @@ import {
   SAMPLE_FORM,
   submittedCase,
 } from './lib/lab';
+
+/** Loopback liveness probe via node:http (no fetch('http://...') for SAST); null when refused. */
+function probeLoopback(port: number, path: string): Promise<number | null> {
+  return new Promise((resolve) => {
+    const req = request(
+      { hostname: '127.0.0.1', port, path, method: 'GET', timeout: 2000 },
+      (res) => {
+        res.resume();
+        resolve(res.statusCode ?? null);
+      },
+    );
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(null);
+    });
+    req.end();
+  });
+}
 
 const placement = JSON.parse(
   readFileSync(join(ROOT, 'fixtures/lab/platform/placement.citizen.json'), 'utf8'),
@@ -100,7 +120,7 @@ describe('SEC-SIM simulators refused outside LOCAL/CI', () => {
     expect(code).not.toBe(0);
     expect(code).not.toBe(-1);
     expect(out).toMatch(/refused in UAT/);
-    const probe = await fetch('http://127.0.0.1:4199/health/ready').catch(() => null);
+    const probe = await probeLoopback(4199, '/health/ready');
     expect(probe).toBeNull();
   });
 
