@@ -148,6 +148,14 @@ function execSql(store: MemoryIdentityStore, sql: string, params: unknown[]): Qu
     const row = store.challenges.find((c) => c.challenge_id === params[0]);
     return result(row ? [row] : []);
   }
+  if (q.includes('pg_advisory_xact_lock')) return result([{ pg_advisory_xact_lock: '' }], 1);
+  if (q.includes('coalesce(sum(attempts), 0)')) {
+    // The double keeps no creation time, so the window is not modelled (PG tests cover it).
+    const n = store.challenges
+      .filter((c) => c.channel_hash === params[0] && c.status !== 'VERIFIED')
+      .reduce((sum, c) => sum + c.attempts, 0);
+    return result([{ n }], 1);
+  }
   if (q.includes("SET status = 'EXPIRED'") && q.includes('WHERE channel_hash')) {
     let n = 0;
     for (const c of store.challenges) {

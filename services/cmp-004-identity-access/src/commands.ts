@@ -22,6 +22,12 @@ const CHANNEL_RE = /^\+[1-9][0-9]{7,14}$/;
 const OTP_TTL_MS = 5 * 60 * 1000;
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
+/**
+ * Per-number failed-attempt budget across challenges: superseding or abandoning a challenge must
+ * not reset the attacker's count. Applies to every number alike, so it discloses no registration.
+ */
+export const CHANNEL_FAILED_ATTEMPT_BUDGET = 10;
+export const CHANNEL_BUDGET_WINDOW_MS = 15 * 60 * 1000;
 
 export interface IdentityServiceOptions {
   pool: Pool;
@@ -56,8 +62,18 @@ export class IdentityService {
     const expires = new Date(now.getTime() + OTP_TTL_MS);
     const fp = fingerprintRequest({ channel_hash: channelHash });
     const result = await withContextTx(this.opts.pool, ctx, async (c) => {
+      // Serialise challenge issuance per number so concurrent requests cannot leave several live.
+      await c.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [channelHash]);
       const claimed = await this.claim(c, ctx, 'citizen.otp.challenge', idempotencyKey, fp, now);
       if (claimed !== 'claimed') return claimed.body as typeof out;
+      const failed = await c.query<{ n: string | number }>(
+        `SELECT coalesce(sum(attempts), 0) AS n FROM sf_identity.citizen_otp_challenge
+          WHERE channel_hash = $1 AND status <> 'VERIFIED' AND created_at > $2`,
+        [channelHash, new Date(now.getTime() - CHANNEL_BUDGET_WINDOW_MS).toISOString()],
+      );
+      if (Number(failed.rows[0]?.n ?? 0) >= CHANNEL_FAILED_ATTEMPT_BUDGET) {
+        throw new Cmp004Error('SF-RATE-001', { statusCode: 429 });
+      }
       let citizenId: string;
       const existing = await c.query<{ citizen_id: string; status: string }>(
         `SELECT citizen_id, status FROM sf_identity.citizen_principal WHERE channel_hash = $1`,
