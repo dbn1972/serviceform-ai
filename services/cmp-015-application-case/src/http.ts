@@ -12,6 +12,7 @@ import type { ApplicationCaseService, ServiceResult } from './service.js';
 export interface HttpRequestLike {
   headers: HeaderBag;
   params?: unknown;
+  query?: unknown;
   body?: unknown;
 }
 
@@ -24,7 +25,7 @@ export interface HttpResponse {
 export type ContextResolver = (request: HttpRequestLike) => Promise<unknown>;
 
 export interface RouteDefinition {
-  method: 'GET' | 'POST';
+  method: 'GET' | 'POST' | 'PUT';
   url: string;
   handle(request: HttpRequestLike): Promise<HttpResponse>;
 }
@@ -139,6 +140,28 @@ export function createApplicationCaseRoutes(opts: ApplicationCaseHttpOptions): R
           ctx,
           param(r, 'applicationId'),
           param(r, 'requestId'),
+          r.body,
+          header(r, 'idempotency-key'),
+        ),
+      ),
+    },
+    {
+      method: 'GET',
+      url: '/applications',
+      handle: wrap((ctx, r) => service.listApplications(ctx, r.query)),
+    },
+    {
+      method: 'GET',
+      url: '/applications/:applicationId/working-data',
+      handle: wrap((ctx, r) => service.getWorkingData(ctx, param(r, 'applicationId'))),
+    },
+    {
+      method: 'PUT',
+      url: '/applications/:applicationId/working-data',
+      handle: wrap((ctx, r) =>
+        service.putWorkingData(
+          ctx,
+          param(r, 'applicationId'),
           r.body,
           header(r, 'idempotency-key'),
         ),

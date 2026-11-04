@@ -1,6 +1,7 @@
 import type { EventEnvelope } from '../../src/domain/validate.js';
 import { Cmp015Error, mapPgError } from '../../src/errors.js';
 import type {
+  CaseListFilter,
   CaseRow,
   CaseStore,
   CaseTx,
@@ -10,6 +11,7 @@ import type {
   RequestRow,
   StoredResponse,
   TransitionRow,
+  WorkingDataRow,
 } from '../../src/store/types.js';
 
 interface IdemRow {
@@ -30,6 +32,7 @@ export interface State {
   requests: Map<string, RequestRow>;
   idem: Map<string, IdemRow>;
   outbox: OutboxRow[];
+  workingData: Map<string, WorkingDataRow>;
 }
 
 function clone(s: State): State {
@@ -47,6 +50,7 @@ export class MemoryCaseStore implements CaseStore {
     requests: new Map(),
     idem: new Map(),
     outbox: [],
+    workingData: new Map(),
   };
   sessions: DbSession[] = [];
   txCount = 0;
@@ -239,5 +243,31 @@ class MemoryTx implements CaseTx {
       topic,
       envelope: structuredClone(envelope),
     });
+  }
+
+  async listCases(filter: CaseListFilter): Promise<CaseRow[]> {
+    return [...this.s.cases.values()]
+      .filter(
+        (c) =>
+          c.tenant_id === this.session.tenantId &&
+          (filter.applicantId === null || c.applicant_id === filter.applicantId) &&
+          (filter.state === null || c.state === filter.state),
+      )
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+      .slice(0, filter.limit)
+      .map((c) => structuredClone(c));
+  }
+
+  async getWorkingData(applicationId: string): Promise<WorkingDataRow | null> {
+    return this.visible(this.s.workingData.get(applicationId));
+  }
+
+  async writeWorkingData(row: WorkingDataRow, expectedRevision: number): Promise<boolean> {
+    if (row.tenant_id !== this.session.tenantId)
+      throw Object.assign(new Error('rls'), { code: '42501' });
+    const current = this.s.workingData.get(row.application_id);
+    if ((current?.revision ?? 0) !== expectedRevision) return false;
+    this.s.workingData.set(row.application_id, structuredClone(row));
+    return true;
   }
 }

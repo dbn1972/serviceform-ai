@@ -4,6 +4,7 @@ import { OPTIONAL_PINS, REQUIRED_PINS } from '../domain/pins.js';
 import type { ActorType, EventEnvelope } from '../domain/validate.js';
 import { Cmp015Error, mapPgError } from '../errors.js';
 import type {
+  CaseListFilter,
   CaseRow,
   CaseStore,
   CaseTx,
@@ -13,6 +14,7 @@ import type {
   RequestRow,
   StoredResponse,
   TransitionRow,
+  WorkingDataRow,
 } from './types.js';
 
 /** Structural subset of node-postgres (pg.Pool / pg.PoolClient); the host injects the real pool. */
@@ -90,6 +92,18 @@ const REQUEST_COLUMNS = [
   'last_correlation_id',
 ] as const;
 
+const WORKING_DATA_COLUMNS = [
+  'tenant_id',
+  'application_id',
+  'revision',
+  'form_version_id',
+  'data',
+  'data_hash',
+  'updated_by',
+  'updated_at',
+  'last_correlation_id',
+] as const;
+
 function placeholders(n: number): string {
   return Array.from({ length: n }, (_, i) => `$${i + 1}`).join(',');
 }
@@ -102,6 +116,15 @@ const SQL = {
   listTransitions: `SELECT ${TRANSITION_COLUMNS.join(',')} FROM sf_application_case.case_transition WHERE application_id = $1 ORDER BY aggregate_version`,
   insertRequest: `INSERT INTO sf_application_case.case_request_reference (${REQUEST_COLUMNS.join(',')}) VALUES (${placeholders(REQUEST_COLUMNS.length)})`,
   selectRequest: `SELECT ${REQUEST_COLUMNS.join(',')} FROM sf_application_case.case_request_reference WHERE request_id = $1`,
+  listCases: `SELECT ${CASE_COLUMNS.join(',')} FROM sf_application_case.application_case
+     WHERE tenant_id = $1 AND ($2::uuid IS NULL OR applicant_id = $2::uuid) AND ($3::text IS NULL OR state = $3::text)
+     ORDER BY created_at DESC, application_id LIMIT $4`,
+  selectWorkingData: `SELECT ${WORKING_DATA_COLUMNS.join(',')} FROM sf_application_case.application_working_data WHERE tenant_id = $1 AND application_id = $2`,
+  insertWorkingData: `INSERT INTO sf_application_case.application_working_data (${WORKING_DATA_COLUMNS.join(',')}) VALUES (${placeholders(WORKING_DATA_COLUMNS.length)})
+     ON CONFLICT (tenant_id, application_id) DO NOTHING`,
+  updateWorkingData: `UPDATE sf_application_case.application_working_data
+        SET revision = $3, form_version_id = $4, data = $5::jsonb, data_hash = $6, updated_by = $7, updated_at = $8, last_correlation_id = $9
+      WHERE tenant_id = $1 AND application_id = $2 AND revision = $10`,
 } as const;
 
 function iso(value: unknown): string {
@@ -142,6 +165,20 @@ function caseFromRow(r: Record<string, unknown>): CaseRow {
     created_at: iso(r['created_at']),
     updated_at: iso(r['updated_at']),
     submitted_at: isoOrNull(r['submitted_at']),
+    last_correlation_id: str(r['last_correlation_id']),
+  };
+}
+
+function workingDataFromRow(r: Record<string, unknown>): WorkingDataRow {
+  return {
+    tenant_id: str(r['tenant_id']),
+    application_id: str(r['application_id']),
+    revision: Number(r['revision']),
+    form_version_id: str(r['form_version_id']),
+    data: r['data'] as Record<string, unknown>,
+    data_hash: str(r['data_hash']),
+    updated_by: str(r['updated_by']),
+    updated_at: iso(r['updated_at']),
     last_correlation_id: str(r['last_correlation_id']),
   };
 }
@@ -410,6 +447,51 @@ class PgCaseTx implements CaseTx {
         JSON.stringify(envelope),
       ],
     );
+  }
+
+  async listCases(filter: CaseListFilter): Promise<CaseRow[]> {
+    const { rows } = await this.client.query(SQL.listCases, [
+      this.tenantId,
+      filter.applicantId,
+      filter.state,
+      filter.limit,
+    ]);
+    return rows.map(caseFromRow);
+  }
+
+  async getWorkingData(applicationId: string): Promise<WorkingDataRow | null> {
+    const { rows } = await this.client.query(SQL.selectWorkingData, [this.tenantId, applicationId]);
+    return rows[0] ? workingDataFromRow(rows[0]) : null;
+  }
+
+  async writeWorkingData(row: WorkingDataRow, expectedRevision: number): Promise<boolean> {
+    if (expectedRevision === 0) {
+      const res = await this.client.query(SQL.insertWorkingData, [
+        row.tenant_id,
+        row.application_id,
+        row.revision,
+        row.form_version_id,
+        JSON.stringify(row.data),
+        row.data_hash,
+        row.updated_by,
+        row.updated_at,
+        row.last_correlation_id,
+      ]);
+      return (res.rowCount ?? 0) === 1;
+    }
+    const res = await this.client.query(SQL.updateWorkingData, [
+      row.tenant_id,
+      row.application_id,
+      row.revision,
+      row.form_version_id,
+      JSON.stringify(row.data),
+      row.data_hash,
+      row.updated_by,
+      row.updated_at,
+      row.last_correlation_id,
+      expectedRevision,
+    ]);
+    return (res.rowCount ?? 0) === 1;
   }
 }
 

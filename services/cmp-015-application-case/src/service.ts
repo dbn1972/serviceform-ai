@@ -10,11 +10,13 @@ import {
 import {
   DECISION_COMMANDS,
   REQUEST_STATUSES,
+  isLegalState,
   isRequestStatusChangeLegal,
   isTransitionCommand,
   requestKindFor,
   requestSources,
   type RequestKind,
+  type CaseState,
   type RequestStatus,
   type TransitionCommand,
 } from './domain/model.js';
@@ -55,6 +57,7 @@ import type {
   RequestRow,
   StoredResponse,
   TransitionRow,
+  WorkingDataRow,
 } from './store/types.js';
 import { guardOutboundPort, runInDomainTransaction } from './tx-scope.js';
 
@@ -63,7 +66,93 @@ export const ENDPOINTS = {
   command: 'POST /v1/applications/{application_id}/commands',
   request: 'POST /v1/applications/{application_id}/requests',
   requestStatus: 'POST /v1/applications/{application_id}/requests/{request_id}/status',
+  workingData: 'PUT /v1/applications/{application_id}/working-data',
 } as const;
+
+export const LIST_LIMIT_DEFAULT = 50;
+export const LIST_LIMIT_MAX = 100;
+export const WORKING_DATA_MAX_BYTES = 65_536;
+/** CCR-M10-001: working data is mutable only before submission or while a deficiency is open. */
+export const WORKING_DATA_EDITABLE_STATES: ReadonlySet<CaseState> = new Set([
+  'DRAFT',
+  'DEFICIENCY_RAISED',
+]);
+
+export interface WorkingDataView {
+  application_id: string;
+  revision: number;
+  form_version_id: string;
+  data: Record<string, unknown>;
+  data_hash: string;
+  updated_at: string;
+}
+
+function workingDataView(row: WorkingDataRow): WorkingDataView {
+  return {
+    application_id: row.application_id,
+    revision: row.revision,
+    form_version_id: row.form_version_id,
+    data: structuredClone(row.data),
+    data_hash: row.data_hash,
+    updated_at: row.updated_at,
+  };
+}
+
+function singleQueryValue(value: unknown, pointer: string): string | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== 'string') {
+    throw new Cmp015Error('SF-SYS-003', { details: detail('QUERY_INVALID', pointer) });
+  }
+  return value;
+}
+
+function parseListQuery(raw: unknown): { state: CaseState | null; limit: number } {
+  const query = raw === undefined || raw === null ? {} : raw;
+  if (!isPlainObject(query)) {
+    throw new Cmp015Error('SF-SYS-003', { details: detail('QUERY_INVALID') });
+  }
+  assertOnlyKeys(query, ['state', 'limit']);
+  const state = singleQueryValue(query['state'], '/state');
+  if (state !== undefined && !isLegalState(state)) {
+    throw new Cmp015Error('SF-SYS-003', { details: detail('STATE_INVALID', '/state') });
+  }
+  const limitRaw = singleQueryValue(query['limit'], '/limit');
+  let limit = LIST_LIMIT_DEFAULT;
+  if (limitRaw !== undefined) {
+    if (!/^[0-9]{1,3}$/.test(limitRaw)) {
+      throw new Cmp015Error('SF-SYS-003', { details: detail('LIMIT_INVALID', '/limit') });
+    }
+    limit = Number(limitRaw);
+    if (limit < 1 || limit > LIST_LIMIT_MAX) {
+      throw new Cmp015Error('SF-SYS-003', { details: detail('LIMIT_INVALID', '/limit') });
+    }
+  }
+  return { state: state ?? null, limit };
+}
+
+function parseWorkingDataBody(raw: unknown): {
+  form_version_id: string;
+  data: Record<string, unknown>;
+  expected_revision: number;
+} {
+  const body = requireBody(raw);
+  assertOnlyKeys(body, ['form_version_id', 'data', 'expected_revision']);
+  const formVersionId = requireId(body['form_version_id'], '/form_version_id');
+  const data = body['data'];
+  if (!isPlainObject(data)) {
+    throw new Cmp015Error('SF-SYS-003', { details: detail('DATA_OBJECT_REQUIRED', '/data') });
+  }
+  if (Buffer.byteLength(JSON.stringify(data), 'utf8') > WORKING_DATA_MAX_BYTES) {
+    throw new Cmp015Error('SF-SYS-003', { details: detail('DATA_TOO_LARGE', '/data') });
+  }
+  const expected = body['expected_revision'];
+  if (typeof expected !== 'number' || !Number.isSafeInteger(expected) || expected < 0) {
+    throw new Cmp015Error('SF-SYS-003', {
+      details: detail('EXPECTED_REVISION_INVALID', '/expected_revision'),
+    });
+  }
+  return { form_version_id: formVersionId, data, expected_revision: expected };
+}
 
 export interface ApplicationCaseDeps {
   store: CaseStore;
@@ -925,5 +1014,120 @@ export class ApplicationCaseService {
       body: { application_id: applicationId, transitions: found.transitions.map(transitionView) },
       replayed: false,
     };
+  }
+
+  /**
+   * CCR-M10-001 list. A citizen only ever sees rows they own: the owner filter is applied in SQL
+   * inside the RLS tenant, and OPA authorizes the list as the owner. Others use the role path.
+   */
+  async listApplications(rawCtx: unknown, rawQuery: unknown): Promise<ServiceResult> {
+    const ctx = requireTenantContext(rawCtx);
+    const { state, limit } = parseListQuery(rawQuery);
+    const own = ctx.actor.type === 'CITIZEN';
+    await this.authorize(ctx, 'APPLICATION_LIST', own ? { ownerId: ctx.actor.id } : {});
+    const rows = await this.domainTx(ctx, (tx) =>
+      tx.listCases({ applicantId: own ? ctx.actor.id : null, state, limit }),
+    );
+    return { status: 200, body: { applications: rows.map(caseView) }, replayed: false };
+  }
+
+  async getWorkingData(rawCtx: unknown, rawApplicationId: unknown): Promise<ServiceResult> {
+    const ctx = requireTenantContext(rawCtx);
+    const applicationId = requireId(rawApplicationId, '/application_id');
+    const found = await this.domainTx(ctx, async (tx) => {
+      const row = await tx.getCase(applicationId);
+      return row ? { row, data: await tx.getWorkingData(applicationId) } : null;
+    });
+    if (!found) throw new Cmp015Error('SF-SYS-002');
+    await this.authorize(ctx, 'APPLICATION_WORKING_DATA_READ', this.resourceOf(found.row));
+    if (!found.data) throw new Cmp015Error('SF-SYS-002', { details: detail('NO_WORKING_DATA') });
+    return { status: 200, body: { working_data: workingDataView(found.data) }, replayed: false };
+  }
+
+  async putWorkingData(
+    rawCtx: unknown,
+    rawApplicationId: unknown,
+    rawBody: unknown,
+    rawKey: unknown,
+  ): Promise<ServiceResult> {
+    const ctx = requireTenantContext(rawCtx);
+    const applicationId = requireId(rawApplicationId, '/application_id');
+    const key = parseIdempotencyKey(rawKey);
+    const input = parseWorkingDataBody(rawBody);
+    const ref: IdempotencyKeyRef = {
+      principalId: ctx.actor.id,
+      endpoint: ENDPOINTS.workingData,
+      key,
+    };
+    const dataHash = sha256Of(input.data);
+    const fingerprint = sha256Of({
+      applicationId,
+      form_version_id: input.form_version_id,
+      data_hash: dataHash,
+      expected_revision: input.expected_revision,
+    });
+
+    const pre = await this.domainTx(ctx, async (tx) => ({
+      row: await tx.getCase(applicationId),
+      idem: await tx.lookupIdempotency(ref),
+    }));
+    if (!pre.row) throw new Cmp015Error('SF-SYS-002');
+    await this.authorize(ctx, 'APPLICATION_WORKING_DATA_WRITE', this.resourceOf(pre.row));
+    if (pre.idem.state !== 'absent' && pre.idem.fingerprint !== fingerprint) {
+      throw new Cmp015Error('SF-APP-002');
+    }
+    if (pre.idem.state === 'completed') return { ...pre.idem.response, replayed: true };
+    this.assertPinIntegrity(pre.row);
+    if (pre.row.pins.form_version_id !== input.form_version_id) {
+      throw new Cmp015Error('SF-FORM-001', {
+        details: detail('FORM_VERSION_NOT_PINNED', '/form_version_id'),
+      });
+    }
+
+    const nowIso = this.clock().toISOString();
+    const outcome = await this.domainTx(ctx, async (tx) => {
+      const claim = await tx.claimIdempotency({ ...ref, fingerprint, now: new Date(nowIso) });
+      if (claim !== 'claimed') return { replay: claim };
+      const current = await tx.getCase(applicationId, { forUpdate: true });
+      if (!current) throw new Cmp015Error('SF-SYS-002');
+      if (!WORKING_DATA_EDITABLE_STATES.has(current.state)) {
+        throw new Cmp015Error('SF-APP-001', { details: detail('WORKING_DATA_NOT_EDITABLE') });
+      }
+      const row: WorkingDataRow = {
+        tenant_id: ctx.tenant_id,
+        application_id: applicationId,
+        revision: input.expected_revision + 1,
+        form_version_id: input.form_version_id,
+        data: input.data,
+        data_hash: dataHash,
+        updated_by: ctx.actor.id,
+        updated_at: nowIso,
+        last_correlation_id: ctx.correlation_id,
+      };
+      if (!(await tx.writeWorkingData(row, input.expected_revision))) {
+        throw new Cmp015Error('SF-APP-001', {
+          details: detail('STALE_REVISION', '/expected_revision'),
+        });
+      }
+      await tx.insertOutbox(
+        auditEnvelope(ctx, {
+          action: 'APPLICATION_WORKING_DATA_WRITE',
+          actionClass: 'WRITE',
+          resourceId: applicationId,
+          result: 'SUCCESS',
+          occurredAt: nowIso,
+          afterRef: `application_working_data:${applicationId}:r${row.revision}:${dataHash}`,
+        }),
+        TOPIC_AUDIT,
+      );
+      const response: StoredResponse = {
+        status: 200,
+        body: { working_data: workingDataView(row) },
+      };
+      await tx.completeIdempotency({ ...ref, response });
+      return { response };
+    });
+    if ('replay' in outcome) return { ...outcome.replay, replayed: true };
+    return { ...outcome.response, replayed: false };
   }
 }
