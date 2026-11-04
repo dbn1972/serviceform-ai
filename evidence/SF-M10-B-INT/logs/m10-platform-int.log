@@ -1,0 +1,31 @@
+platform-lab-bootstrap: migrations applied; 2 runtime logins; env written
+platform-lab: API http://127.0.0.1:4200 (SAMPLE_LAB, SIMULATED connectors, G6=false)
+tenant-b: fixtures written (tenant 0d15ba00-0001-4000-8000-0d15ba0000b1)
+m10-platform: host A :4200 (OPA :8381), host B :4201 (OPA :8382)
+
+ RUN  v5.0.3 /agent/repos/sf-wt-int
+
+ ✓ tests/integration/m10-platform/int-013-simulation.test.ts (12 tests) 5072ms
+   ✓ INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments (7)
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=DEVELOPMENT 770ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=SIT 806ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=UAT 776ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PREPROD 831ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PRODUCTION 811ms
+     ✓ a CI runtime refuses a LOCAL placement (placement environment must match) 843ms
+ ✓ tests/integration/m10-platform/bff-seam.test.ts (13 tests) 951ms
+ ✓ tests/integration/m10-platform/journey-state-machine.test.ts (8 tests) 604ms
+ ✓ tests/integration/m10-platform/int-011-two-tenants.test.ts (7 tests) 382ms
+ ✓ tests/integration/m10-platform/int-004-outbox.test.ts (4 tests) 330ms
+ ✓ tests/integration/m10-platform/contract-conformance.test.ts (13 tests) 274ms
+ ✓ tests/integration/m10-platform/int-005-posture.test.ts (5 tests) 138ms
+
+ Test Files  7 passed (7)
+      Tests  58 passed | 4 expected fail (62)
+   Start at  15:41:59
+   Duration  8.73s (tests 95%, import 4%, transform 1%)
+
+    Isolate  7 workers spawned · ~75ms startup each (spawn + environment, per file)
+             at least ~451ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /agent/repos/sf-wt-int/evidence/SF-M10-B-INT/junit/m10-platform-int.xml
