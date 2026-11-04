@@ -64,7 +64,12 @@ export interface PlatformResponse {
 export async function platform(
   method: 'GET' | 'POST' | 'PUT',
   path: string,
-  opts: { token?: string | null; body?: unknown; idempotent?: boolean } = {},
+  opts: {
+    token?: string | null;
+    body?: unknown;
+    idempotent?: boolean;
+    idempotencyKey?: string;
+  } = {},
 ): Promise<PlatformResponse> {
   const headers: Record<string, string> = {
     accept: 'application/json',
@@ -72,7 +77,8 @@ export async function platform(
   };
   if (opts.body !== undefined) headers['content-type'] = 'application/json';
   if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;
-  if (opts.idempotent) headers['idempotency-key'] = `portal-${randomUUID()}`;
+  if (opts.idempotencyKey) headers['idempotency-key'] = opts.idempotencyKey;
+  else if (opts.idempotent) headers['idempotency-key'] = `portal-${randomUUID()}`;
   let res: Response;
   try {
     res = await fetch(`${apiBase()}${path}`, {

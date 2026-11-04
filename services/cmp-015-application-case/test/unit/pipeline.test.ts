@@ -11,6 +11,7 @@ import {
   inDomainTransaction,
   runInDomainTransaction,
 } from '../../src/tx-scope.js';
+import { OutboxOnlyWorkflowAdvance } from '../../src/ports/workflow-advance.js';
 import { CITIZEN, pinsFor, RecordingWorkflow, T1, TSB_T1 } from '../doubles/fixtures.js';
 
 function pipeline(): CommandPipeline {
@@ -103,6 +104,14 @@ describe('command pipeline ordering (SF-CON-COMMAND-TRANSITION)', () => {
       code: 'SF-WF-001',
     });
     expect(wf.signals.filter((s) => s.aggregate_version === 3)).toHaveLength(1);
+  });
+
+  it('the outbox-only port defers to the outbox and never records a Temporal advance', async () => {
+    const gate = new WorkflowAdvanceGate(new OutboxOnlyWorkflowAdvance());
+    const p = pipeline();
+    const receipt = toCommitted(p);
+    expect(await gate.advance(p, receipt, signal)).toBe('DEFERRED_TO_OUTBOX');
+    expect(p.record()).toMatchObject({ temporal_advanced: false, domain_committed: true });
   });
 
   it('NEGATIVE: the gate refuses to run inside a domain transaction', async () => {

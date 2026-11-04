@@ -236,6 +236,47 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
     expect(await res.json()).toMatchObject({ field: 'applicant_name' });
   });
 
+  test('a retried submit with the same form-session key files one application (INT-F5)', async ({
+    page,
+  }) => {
+    await signIn(page, uniqueMobile());
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    const form = {
+      applicant_name: 'SAMPLE Retry Citizen',
+      applicant_dob: '1990-01-01',
+      applicant_gender: 'FEMALE',
+      residence_address: {
+        house_no_or_name: 'SAMPLE 1',
+        locality: 'SAMPLE',
+        district: 'SAMPLE',
+        state_code: 'OD',
+        pincode: '751001',
+      },
+      residence_duration_months: 24,
+      purpose_of_certificate: 'SAMPLE',
+      evidence_type: 'ELECTRICITY_BILL',
+    };
+    const key = `retry${randomInt(1_000_000_000, 9_999_999_999)}abcdef`;
+    const submit = () =>
+      page.request.post(`${CITIZEN}/api/portal/applications`, {
+        headers: { cookie, 'idempotency-key': key },
+        data: form,
+      });
+    const first = await submit();
+    const second = await submit();
+    expect(first.status()).toBe(201);
+    expect(second.status()).toBe(201);
+    const id = ((await first.json()) as { application: { id: string } }).application.id;
+    expect(((await second.json()) as { application: { id: string } }).application.id).toBe(id);
+    const list = await page.request.get(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie },
+    });
+    const ids = ((await list.json()) as { applications: { id: string }[] }).applications.map(
+      (a) => a.id,
+    );
+    expect(ids).toEqual([id]);
+  });
+
   test('anonymous submit and anonymous listing are refused', async ({ request }) => {
     expect((await request.get(`${CITIZEN}/api/portal/applications`)).status()).toBe(401);
     expect((await request.post(`${CITIZEN}/api/portal/applications`, { data: {} })).status()).toBe(
