@@ -1,3 +1,4 @@
+import { request } from 'node:http';
 import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -17,6 +18,25 @@ import {
   type CitizenSession,
   type OfficerSession,
 } from './support/platform.js';
+
+/** Loopback liveness probe via node:http (no fetch('http://...') for SAST); null when refused. */
+function probeLoopback(port: number, path: string): Promise<number | null> {
+  return new Promise((resolve) => {
+    const req = request(
+      { hostname: '127.0.0.1', port, path, method: 'GET', timeout: 2000 },
+      (res) => {
+        res.resume();
+        resolve(res.statusCode ?? null);
+      },
+    );
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(null);
+    });
+    req.end();
+  });
+}
 
 const SIM_MARKER = 'https://contracts.serviceform.ai/simulation-marker/v1';
 
@@ -142,7 +162,7 @@ describe('INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI envir
       expect(res.out).toMatch(
         /SIMULATED lab simulators are refused|not accepted for production|does not match SF_ENVIRONMENT/,
       );
-      const probe = await fetch(`http://127.0.0.1:${port}/health/ready`).catch(() => null);
+      const probe = await probeLoopback(port, '/health/ready');
       expect(probe).toBeNull();
     });
   }
