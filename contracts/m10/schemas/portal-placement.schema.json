@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m10/portal-placement/v1",
+  "title": "SF-CON-PORTAL-PLACEMENT",
+  "description": "Server-side deployment binding of one portal to one tenant and cell (ADR-0007 D-1). Loaded by the API host from deployment configuration, never from a request. Citizen RequestContext tenant/cell come from this record; the citizen identity comes from CMP-004. PREPROD/PRODUCTION are excluded until the owner accepts ADR-0007 for production (D-4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "portal_id",
+    "surface",
+    "tenant_id",
+    "cell_id",
+    "environment",
+    "offerings",
+    "citizen_tenant_derivation",
+    "client_tenant_input_accepted",
+    "decision_ref"
+  ],
+  "properties": {
+    "portal_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{2,62}$",
+      "description": "Stable deployment identifier. Not a tenant name and not shown to users."
+    },
+    "surface": { "enum": ["CITIZEN_PORTAL", "OFFICER_WORKBENCH"] },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "cell_id": { "type": "string", "pattern": "^cell-[a-z0-9-]{1,40}$" },
+    "environment": {
+      "enum": ["LOCAL", "CI", "DEVELOPMENT", "SIT", "UAT"],
+      "description": "PREPROD and PRODUCTION require owner acceptance of ADR-0007 and a Contract Change Request."
+    },
+    "environment_label": {
+      "enum": ["SAMPLE_LAB"],
+      "description": "Present when the placement serves synthetic SAMPLE_LAB data only."
+    },
+    "offerings": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["catalogue_id", "tenant_service_binding_id"],
+        "properties": {
+          "catalogue_id": { "type": "string", "pattern": "^[A-Z]{3}-[A-Z]{3}-[0-9]{3}$" },
+          "tenant_service_binding_id": { "type": "string", "format": "uuid" }
+        }
+      }
+    },
+    "citizen_tenant_derivation": { "const": "PORTAL_PLACEMENT" },
+    "client_tenant_input_accepted": { "const": false },
+    "decision_ref": { "const": "ADR-0007" }
+  }
+}

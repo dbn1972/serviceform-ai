@@ -7,6 +7,87 @@
   },
   "paths": {
     "/v1/applications": {
+      "get": {
+        "operationId": "listApplications",
+        "summary": "List applications (CCR-M10-001). A citizen sees only applications they own; officers see the tenant queue.",
+        "x-authorization": {
+          "action": "APPLICATION_LIST",
+          "citizen": "owner filter applied in SQL inside the RLS tenant (ADR-0007 D-2)"
+        },
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CaseState"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Applications, newest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "operationId": "createApplicationDraft",
         "summary": "Create a DRAFT pinned to the exact published TenantServiceBinding",
@@ -611,6 +692,200 @@
           }
         }
       }
+    },
+    "/v1/applications/{applicationId}/working-data": {
+      "get": {
+        "operationId": "getApplicationWorkingData",
+        "summary": "Read the application's mutable working data (CCR-M10-001)",
+        "x-authorization": {
+          "action": "APPLICATION_WORKING_DATA_READ"
+        },
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Working data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkingDataResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "putApplicationWorkingData",
+        "summary": "Write working data while DRAFT or DEFICIENCY_RAISED; optimistic revision (CCR-M10-001)",
+        "x-authorization": {
+          "action": "APPLICATION_WORKING_DATA_WRITE"
+        },
+        "x-pii": "CITIZEN_SUPPLIED; audit and events carry data_hash and revision only",
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9_.:-]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkingDataWriteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Working data stored (or idempotent replay with header Idempotent-Replayed: true)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkingDataResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "SF-CON-ERROR-RESPONSE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://contracts.serviceform.ai/error-response/v1"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -988,6 +1263,86 @@
           },
           "application": {
             "$ref": "#/components/schemas/Application"
+          }
+        }
+      },
+      "ApplicationListResponse": {
+        "type": "object",
+        "required": ["applications"],
+        "properties": {
+          "applications": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Application"
+            }
+          }
+        }
+      },
+      "WorkingDataWriteRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["form_version_id", "data", "expected_revision"],
+        "properties": {
+          "form_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Must equal the case's pinned form_version_id."
+          },
+          "data": {
+            "type": "object",
+            "description": "Applicant-supplied values, at most 64 KiB serialized."
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "0 when no working data exists yet."
+          }
+        }
+      },
+      "WorkingData": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "application_id",
+          "revision",
+          "form_version_id",
+          "data",
+          "data_hash",
+          "updated_at"
+        ],
+        "properties": {
+          "application_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "form_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "data": {
+            "type": "object"
+          },
+          "data_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "WorkingDataResponse": {
+        "type": "object",
+        "required": ["working_data"],
+        "properties": {
+          "working_data": {
+            "$ref": "#/components/schemas/WorkingData"
           }
         }
       }

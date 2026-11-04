@@ -21,8 +21,8 @@ export function ResidenceApplyForm() {
   const citizen = useCitizen();
   const [step, setStep] = useState<StepId>('applicant');
 
-  // Applicant (form.schema.json), pre-filled from the OTP-verified account
-  const [name, setName] = useState(citizen.display_name);
+  // Applicant (form.schema.json). Profile prefill returns when CMP-005 is wired on this path.
+  const [name, setName] = useState('SAMPLE Lab Citizen');
   const [dob, setDob] = useState('1990-01-15');
   const [gender, setGender] = useState('PREFER_NOT_TO_SAY');
   const [mobile, setMobile] = useState(citizen.mobile);
@@ -48,6 +48,8 @@ export function ResidenceApplyForm() {
 
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  // One submission key per form session, so a retried submit cannot file a second application.
+  const [submissionKey] = useState(() => crypto.randomUUID().replace(/-/g, ''));
 
   const stepIndex = STEPS.findIndex((s) => s.id === step);
   const monthsNum = Number(months);
@@ -122,9 +124,9 @@ export function ResidenceApplyForm() {
       return;
     }
     setBusy(true);
-    const res = await fetch('/api/lab/applications', {
+    const res = await fetch('/api/portal/applications', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', 'idempotency-key': submissionKey },
       body: JSON.stringify({
         applicant_name: name,
         applicant_dob: dob,
@@ -146,13 +148,14 @@ export function ResidenceApplyForm() {
         evidence_mime: evidenceMime,
       }),
     });
-    const body = (await res.json()) as {
+    const body = (await res.json().catch(() => ({}))) as {
       error_code?: string;
+      message?: string;
       application?: { id: string };
     };
     setBusy(false);
     if (!res.ok || !body.application) {
-      setError(body.error_code ?? 'SF-LAB-SUBMIT');
+      setError(body.message ?? 'We could not submit your application. Try again.');
       return;
     }
     router.push(`/certificates/${body.application.id}`);

@@ -16,7 +16,7 @@ export function MyApplications() {
   const [state, setState] = useState<LoadState>({ status: 'loading' });
 
   useEffect(() => {
-    void fetch('/api/lab/applications?mine=1')
+    void fetch('/api/portal/applications')
       .then(async (r) => {
         const body = (await r.json()) as { applications?: ApplicationSummary[]; message?: string };
         setState(

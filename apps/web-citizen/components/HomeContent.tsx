@@ -16,7 +16,7 @@ export function HomeContent({ service }: { service: ServiceFacts }) {
 
   useEffect(() => {
     if (!signedIn) return;
-    void fetch('/api/lab/applications?mine=1')
+    void fetch('/api/portal/applications')
       .then((r) => r.json())
       .then((body: { applications?: ApplicationSummary[] }) =>
         setLatest(body.applications?.[0] ?? null),

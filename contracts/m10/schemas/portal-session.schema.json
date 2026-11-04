@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.serviceform.ai/m10/portal-session/v1",
+  "title": "SF-CON-PORTAL-SESSION",
+  "description": "What a portal BFF may keep in the browser and how it derives identity (ADR-0007 D-3). The cookie holds only the CMP-004 opaque session token: no identity claims, no tenant, no roles. Identity is re-derived server-side on every request; the token is forwarded to the platform as a bearer credential.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "surface",
+    "cookie_name",
+    "cookie_value",
+    "claims_in_cookie",
+    "token_issuer",
+    "identity_derivation",
+    "platform_credential",
+    "attributes",
+    "max_age_seconds",
+    "revocation"
+  ],
+  "properties": {
+    "surface": { "enum": ["CITIZEN_PORTAL", "OFFICER_WORKBENCH"] },
+    "cookie_name": { "type": "string", "pattern": "^sf_[a-z]{2,20}_session$" },
+    "cookie_value": { "const": "CMP004_OPAQUE_SESSION_TOKEN" },
+    "claims_in_cookie": { "const": false },
+    "token_issuer": { "const": "CMP-004" },
+    "identity_derivation": {
+      "const": "CMP004_IDENTITY_ME_PER_REQUEST",
+      "description": "GET /v1/identity/me with the token, on every BFF request that needs identity."
+    },
+    "platform_credential": { "const": "AUTHORIZATION_BEARER" },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["http_only", "same_site", "path", "secure"],
+      "properties": {
+        "http_only": { "const": true },
+        "same_site": { "enum": ["Lax", "Strict"] },
+        "path": { "const": "/" },
+        "secure": {
+          "enum": ["ALWAYS", "WHEN_NOT_LOCAL_HTTP"],
+          "description": "WHEN_NOT_LOCAL_HTTP is allowed only for LOCAL/CI placements."
+        }
+      }
+    },
+    "max_age_seconds": { "type": "integer", "minimum": 60, "maximum": 43200 },
+    "revocation": { "const": "CMP004_SESSIONS_REVOKE" }
+  }
+}

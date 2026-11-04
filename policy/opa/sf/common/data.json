@@ -1,17 +1,155 @@
 {
   "actions": {
-    "VIEW": { "action_class": "READ_ONLY" },
-    "CREATE": { "action_class": "PROTECTED" },
-    "UPDATE": { "action_class": "PROTECTED" },
-    "PRIVILEGED_ACCESS_REQUEST": { "action_class": "PRIVILEGED" },
-    "PRIVILEGED_ACCESS_APPROVE": { "action_class": "PRIVILEGED" },
-    "PRIVILEGED_ACCESS_REVOKE": { "action_class": "PRIVILEGED" },
-    "PRIVILEGED_ACCESS_REVIEW": { "action_class": "PRIVILEGED" },
-    "SECURITY_POLICY_REGISTER": { "action_class": "PRIVILEGED" },
-    "SECURITY_POLICY_ACTIVATE": { "action_class": "PRIVILEGED" },
-    "SECURITY_INCIDENT_REPORT": { "action_class": "PROTECTED" }
+    "VIEW": {
+      "action_class": "READ_ONLY"
+    },
+    "CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "UPDATE": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVILEGED_ACCESS_REQUEST": {
+      "action_class": "PRIVILEGED"
+    },
+    "PRIVILEGED_ACCESS_APPROVE": {
+      "action_class": "PRIVILEGED"
+    },
+    "PRIVILEGED_ACCESS_REVOKE": {
+      "action_class": "PRIVILEGED"
+    },
+    "PRIVILEGED_ACCESS_REVIEW": {
+      "action_class": "PRIVILEGED"
+    },
+    "SECURITY_POLICY_REGISTER": {
+      "action_class": "PRIVILEGED"
+    },
+    "SECURITY_POLICY_ACTIVATE": {
+      "action_class": "PRIVILEGED"
+    },
+    "SECURITY_INCIDENT_REPORT": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_CREATE_DRAFT": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "APPLICATION_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "APPLICATION_TRANSITIONS_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "APPLICATION_WORKING_DATA_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "APPLICATION_WORKING_DATA_WRITE": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_MARK_READY_TO_SUBMIT": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RETURN_TO_DRAFT": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_SUBMIT": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_ENTER_PAYMENT_PENDING": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_MARK_RECEIVED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_ENTER_SCRUTINY": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RAISE_DEFICIENCY": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RECORD_CITIZEN_RESPONSE": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_ENTER_VERIFICATION": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_ENTER_DECISION_PENDING": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RECORD_APPROVED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RECORD_REJECTED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_ENTER_SIGNING_PENDING": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_RECORD_ISSUED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_CLOSE": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_COMMIT_WITHDRAWAL": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_COMMIT_CANCELLATION": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_WITHDRAWAL": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_CANCELLATION": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_UNDER_REVIEW": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_REJECTED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_EXPIRED": {
+      "action_class": "PROTECTED"
+    },
+    "APPLICATION_REQUEST_COMMITTED": {
+      "action_class": "PROTECTED"
+    },
+    "OFFICER_SESSION_ISSUE": {
+      "action_class": "PROTECTED"
+    },
+    "OFFICER_SESSION_REVOKE": {
+      "action_class": "PROTECTED"
+    }
   },
-  "resource_types": ["ExampleAggregate", "PrivilegedAccess", "SecurityPolicy", "SecurityIncident"],
+  "resource_types": [
+    "ExampleAggregate",
+    "PrivilegedAccess",
+    "SecurityPolicy",
+    "SecurityIncident",
+    "ApplicationCase",
+    "OfficerSession"
+  ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
-  "global_writable_actions": []
+  "global_writable_actions": [],
+  "citizen_owner_grants": {
+    "ApplicationCase": {
+      "actions": [
+        "APPLICATION_CREATE_DRAFT",
+        "APPLICATION_READ",
+        "APPLICATION_LIST",
+        "APPLICATION_TRANSITIONS_READ",
+        "APPLICATION_WORKING_DATA_READ",
+        "APPLICATION_WORKING_DATA_WRITE",
+        "APPLICATION_MARK_READY_TO_SUBMIT",
+        "APPLICATION_RETURN_TO_DRAFT",
+        "APPLICATION_SUBMIT",
+        "APPLICATION_RECORD_CITIZEN_RESPONSE",
+        "APPLICATION_REQUEST_WITHDRAWAL"
+      ],
+      "assurance": ["OTP", "MFA"]
+    }
+  }
 }

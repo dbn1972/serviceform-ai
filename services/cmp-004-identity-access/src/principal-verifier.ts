@@ -1,6 +1,6 @@
 import type { AuthAssurance, RequestContext } from '@serviceform/contracts';
 import type { FastifyRequest } from 'fastify';
-import type { Pool } from 'pg';
+import type { Pool, PoolClient } from 'pg';
 import type { ContextResolver, PrincipalVerifier, VerifiedPrincipal } from '@serviceform/security';
 import { tokenFingerprint } from './hashing.js';
 
@@ -17,7 +17,38 @@ export interface SessionLookupRow {
 
 export interface SessionDirectory {
   lookupByToken(token: string): Promise<SessionLookupRow | null>;
-  lookupActiveBySubject(principal: VerifiedPrincipal): Promise<SessionLookupRow | null>;
+}
+
+/**
+ * Officer role codes live in the tenant-scoped officer_session row, read under that tenant's RLS.
+ * Null when the session or its officer principal is no longer ACTIVE (a DISABLED officer's
+ * existing sessions stop working at once).
+ */
+async function activeOfficerRoleCodes(
+  client: PoolClient,
+  tenantId: string,
+  sessionId: string,
+): Promise<string[] | null> {
+  await client.query('BEGIN');
+  try {
+    await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', tenantId]);
+    const sess = await client.query<{ role_codes: string[] }>(
+      `SELECT s.role_codes FROM sf_identity.officer_session s
+         JOIN sf_identity.officer_principal p
+           ON p.tenant_id = s.tenant_id AND p.officer_id = s.officer_id
+        WHERE s.tenant_id = $1 AND s.session_id = $2 AND s.status = 'ACTIVE' AND p.status = 'ACTIVE'`,
+      [tenantId, sessionId],
+    );
+    await client.query('COMMIT');
+    return sess.rows[0] ? sess.rows[0].role_codes : null;
+  } catch (err) {
+    try {
+      await client.query('ROLLBACK');
+    } catch {
+      /* ignore */
+    }
+    throw err;
+  }
 }
 
 export class PgSessionDirectory implements SessionDirectory {
@@ -48,56 +79,10 @@ export class PgSessionDirectory implements SessionDirectory {
       if (!row) return null;
       if (row.status !== 'ACTIVE') return null;
       if (row.expires_at.getTime() <= this.clock().getTime()) return null;
-      let role_codes: string[] = [];
-      if (row.actor_type === 'OFFICER' && row.tenant_id) {
-        await client.query('BEGIN');
-        try {
-          await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', row.tenant_id]);
-          const sess = await client.query<{ role_codes: string[] }>(
-            `SELECT role_codes FROM sf_identity.officer_session
-              WHERE tenant_id = $1 AND session_id = $2 AND status = 'ACTIVE'`,
-            [row.tenant_id, row.session_id],
-          );
-          role_codes = sess.rows[0]?.role_codes ?? [];
-          await client.query('COMMIT');
-        } catch (err) {
-          try {
-            await client.query('ROLLBACK');
-          } catch {
-            /* ignore */
-          }
-          throw err;
-        }
-      }
-      return { ...row, role_codes };
-    } finally {
-      client.release();
-    }
-  }
-
-  async lookupActiveBySubject(principal: VerifiedPrincipal): Promise<SessionLookupRow | null> {
-    const client = await this.pool.connect();
-    try {
-      const found = await client.query<{
-        session_id: string;
-        actor_type: 'CITIZEN' | 'OFFICER';
-        subject_id: string;
-        tenant_id: string | null;
-        assurance: AuthAssurance;
-        status: string;
-        expires_at: Date;
-      }>(
-        `SELECT session_id, actor_type, subject_id, tenant_id, assurance, status, expires_at
-           FROM sf_identity.session_lookup
-          WHERE subject_id = $1 AND actor_type = $2 AND status = 'ACTIVE'
-          ORDER BY expires_at DESC
-          LIMIT 1`,
-        [principal.subject_id, principal.actor_type],
-      );
-      const row = found.rows[0];
-      if (!row) return null;
-      if (row.expires_at.getTime() <= this.clock().getTime()) return null;
-      return { ...row, role_codes: [] };
+      if (row.actor_type !== 'OFFICER') return { ...row, role_codes: [] };
+      if (!row.tenant_id) return null;
+      const role_codes = await activeOfficerRoleCodes(client, row.tenant_id, row.session_id);
+      return role_codes ? { ...row, role_codes } : null;
     } finally {
       client.release();
     }
@@ -112,6 +97,13 @@ function bearerToken(request: FastifyRequest): string | null {
   return token.length > 0 ? token : null;
 }
 
+/**
+ * The session row behind each verified principal. The context is resolved from the presented
+ * token's own session only, never from another session of the same subject: an officer with
+ * sessions in two tenants must get exactly the tenant and roles of the token they presented.
+ */
+const verifiedSessions = new WeakMap<VerifiedPrincipal, SessionLookupRow>();
+
 export class IdentityPrincipalVerifier implements PrincipalVerifier {
   constructor(private readonly directory: SessionDirectory) {}
 
@@ -125,6 +117,7 @@ export class IdentityPrincipalVerifier implements PrincipalVerifier {
       actor_type: row.actor_type,
       assurance: row.assurance,
     };
+    verifiedSessions.set(principal, row);
     return principal;
   }
 }
@@ -139,8 +132,11 @@ export class IdentityContextResolver implements ContextResolver {
     principal: VerifiedPrincipal,
     opts: { cellId: string },
   ): Promise<Omit<RequestContext, 'correlation_id' | 'trace_id'> | null> {
-    const row = await this.directory.lookupActiveBySubject(principal);
+    const row = verifiedSessions.get(principal);
     if (!row) return null;
+    if (row.subject_id !== principal.subject_id || row.actor_type !== principal.actor_type)
+      return null;
+    if (row.status !== 'ACTIVE') return null;
     if (principal.actor_type === 'CITIZEN') {
       return {
         tenant_id: null,
@@ -157,7 +153,7 @@ export class IdentityContextResolver implements ContextResolver {
         tenant_id: row.tenant_id,
         cell_id: opts.cellId || this.cellId,
         actor: { type: 'OFFICER', id: principal.subject_id },
-        roles: row.role_codes.length > 0 ? row.role_codes : ['SERVICE_CHECKER'],
+        roles: [...row.role_codes],
         jurisdiction_ids: [],
         auth_assurance: principal.assurance,
       };

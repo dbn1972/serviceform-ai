@@ -22,6 +22,7 @@ export default defineConfig({
       // root job does not double-count int-only surfaces (SF-M01-W2-STITCH).
       exclude: [
         'apps/api/src/server.ts',
+        'apps/api/src/platform/lab-server.ts',
         'services/cmp-003-jurisdiction/src/routes/**',
         'services/cmp-003-jurisdiction/src/repositories/**',
         'services/cmp-003-jurisdiction/src/db/**',

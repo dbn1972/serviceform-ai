@@ -1,0 +1,25 @@
+draft created by citizen 1: yes
+working data write (owner): 200
+citizen 2 GET citizen 1 case (expect 403): 403
+citizen 2 GET citizen 1 working data (expect 403): 403
+citizen 2 list size (expect 0): 0
+forged bearer (expect 401): 401
+tenant header (expect 403): 403
+citizen MARK_RECEIVED (expect SF-AUTH-002): SF-AUTH-002 
+citizen MARK_READY_TO_SUBMIT: READY_TO_SUBMIT 
+citizen SUBMIT: SUBMITTED 
+unknown IdP subject (expect 401): 401
+officer MARK_RECEIVED: RECEIVED 
+officer ENTER_SCRUTINY: UNDER_SCRUTINY 
+officer ENTER_DECISION_PENDING: DECISION_PENDING 
+AI final decision (expect refusal): SF-AUTH-002 [{'code': 'AI_FINAL_DECISION_FORBIDDEN'}]
+HUMAN decision: APPROVED 
+transitions (command, actor_type, policy_revision):
+   CREATE_DRAFT CITIZEN m10-b1
+   MARK_READY_TO_SUBMIT CITIZEN m10-b1
+   SUBMIT CITIZEN m10-b1
+   MARK_RECEIVED OFFICER m10-b1
+   ENTER_SCRUTINY OFFICER m10-b1
+   ENTER_DECISION_PENDING OFFICER m10-b1
+   RECORD_APPROVED OFFICER m10-b1
+citizen 1 revoke then reuse (expect 401): 401

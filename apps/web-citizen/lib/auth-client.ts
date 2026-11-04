@@ -63,14 +63,16 @@ export async function postJson<T>(url: string, body: unknown): Promise<ApiResult
 }
 
 export function requestOtp(mobile: string, purpose: LabOtpPurpose) {
-  return postJson<OtpChallenge>('/api/lab/otp/challenges', { mobile, purpose });
+  return postJson<OtpChallenge>('/api/portal/otp/challenges', { mobile, purpose });
 }
 
 const NEXT_BASE = 'http://citizen-portal.invalid';
 
 /**
  * Only same-origin absolute paths are honoured as post-sign-in destinations. Browsers strip tabs
- * and newlines and read `\` as `/`, so the target is resolved before its origin is compared.
+ * and newlines and read `\` as `/`, so the target is resolved before its origin is compared. The
+ * resolved path is returned, so it must not itself start with `//` (dot segments can collapse
+ * `/.//host` into the protocol-relative `//host`).
  */
 export function safeNext(raw: string | null | undefined, fallback = '/services'): string {
   if (!raw || !raw.startsWith('/')) return fallback;
@@ -81,6 +83,7 @@ export function safeNext(raw: string | null | undefined, fallback = '/services')
     return fallback;
   }
   if (url.origin !== NEXT_BASE) return fallback;
+  if (url.pathname.startsWith('//')) return fallback;
   return `${url.pathname}${url.search}${url.hash}`;
 }
 

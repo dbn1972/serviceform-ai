@@ -1,16 +1,15 @@
 /**
  * Golden E2E harness — IND-SOC-002 Residence Certificate (M10).
  *
- * Odisha e-District public sample on tip. DigiLocker is SIMULATED SAMPLE_LAB mock.
- * G6 is not claimed. No invented statute.
+ * Odisha e-District public sample on tip, on the SAMPLE_LAB platform path (CMP-004 + CMP-015 on
+ * PostgreSQL/OPA, `scripts/dev/platform-lab.sh up`). OTP/IdP SIMULATED. Certificate issuance and
+ * DigiLocker are not wired on this slice. G6 is not claimed. No invented statute.
  */
 
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { unlinkSync, existsSync } from 'node:fs';
 
 const OWNER_INPUTS_READY = process.env['SF_M10_OWNER_INPUTS_READY'] === '1';
-const LAB_STORE = process.env['SF_M10_LAB_STORE_PATH'] ?? '/tmp/sf-m10-ind-soc-002-lab.json';
 
 const CITIZEN_PORTAL = `http://127.0.0.1:3000`;
 const OFFICER_WORKBENCH = `http://127.0.0.1:3001`;
@@ -120,15 +119,25 @@ test.describe('M10 Golden E2E — UX4G accessibility scaffolding', () => {
   });
 });
 
-/** SAMPLE_LAB citizen sign-in: seeded synthetic mobile + SIMULATED OTP (CMP-004 semantics). */
+/** SAMPLE_LAB citizen sign-in: synthetic mobile + CMP-004 OTP read from the SIMULATED SMS. */
 async function signInAsSampleCitizen(page: Page): Promise<void> {
   await page.goto(`${CITIZEN_PORTAL}/login`);
   await page.waitForLoadState('networkidle');
   await page.getByLabel('Mobile number', { exact: true }).fill('9876543210');
   await page.getByRole('button', { name: 'Get OTP' }).click();
-  await page.getByLabel('Digit 1 of 6').fill('123456');
+  const code = page.getByTestId('simulated-sms').locator('.sf-auth-sms-code');
+  await expect(code).toHaveText(/^\d{6}$/);
+  await page.getByLabel('Digit 1 of 6').fill((await code.textContent()) ?? '');
   await page.getByRole('button', { name: 'Verify and sign in' }).click();
   await expect(page).toHaveURL(/\/services/);
+}
+
+/** SAMPLE_LAB officer sign-in through the SIMULATED IdP; the session is issued by CMP-004. */
+async function signInAsSampleOfficer(page: Page): Promise<void> {
+  await page.goto(`${OFFICER_WORKBENCH}/login?next=%2Fapplications`);
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await expect(page).toHaveURL(`${OFFICER_WORKBENCH}/applications`);
 }
 
 /** Walk SAMPLE_LAB Residence Certificate wizard: applicant → residence → evidence → preview. */
@@ -163,37 +172,31 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
     await completeResidenceWizardToPreview(page);
   });
 
-  test('Officer: applications queue loads', async ({ page }) => {
-    await page.goto(`${OFFICER_WORKBENCH}/applications`);
+  test('Officer: applications queue loads after SIMULATED IdP sign-in', async ({ page }) => {
+    await signInAsSampleOfficer(page);
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Applications/i);
   });
 
-  test('SAMPLE_LAB end-to-end: apply → approve → DigiLocker SIMULATED publish', async ({
+  test('SAMPLE_LAB platform end-to-end: apply → officer approves (HUMAN) on CMP-015', async ({
     page,
-    request,
+    browser,
   }) => {
-    if (existsSync(LAB_STORE)) unlinkSync(LAB_STORE);
-
     await signInAsSampleCitizen(page);
     await page.goto(`${CITIZEN_PORTAL}/services/IND-SOC-002/apply`);
     await completeResidenceWizardToPreview(page);
     await page.getByRole('button', { name: /Submit application/i }).click();
     await expect(page).toHaveURL(/\/certificates\//);
     await expect(page.getByText(/Awaiting officer decision/i)).toBeVisible();
+    const id = page.url().split('/').pop() ?? '';
 
-    const list = await request.get(`${CITIZEN_PORTAL}/api/lab/applications`);
-    expect(list.status()).toBe(200);
-    const listBody = (await list.json()) as { applications: { id: string }[] };
-    const id = listBody.applications[0]?.id;
-    expect(id).toBeTruthy();
-
-    await page.goto(`${OFFICER_WORKBENCH}/applications/${id}`);
-    await page.getByRole('button', { name: /Approve & issue/i }).click();
-    await expect(page.getByText(/SAMPLE_LAB_CRED_/)).toBeVisible();
+    const officer = await (await browser.newContext()).newPage();
+    await signInAsSampleOfficer(officer);
+    await officer.goto(`${OFFICER_WORKBENCH}/applications/${id}`);
+    await officer.getByRole('button', { name: 'Approve' }).click();
+    await expect(officer.getByText(/recorded on the case as a human decision/i)).toBeVisible();
+    await officer.close();
 
     await page.goto(`${CITIZEN_PORTAL}/certificates/${id}`);
-    await page.getByRole('button', { name: /Publish to DigiLocker \(SIMULATED\)/i }).click();
-    await expect(page.getByText(/SIMULATED DigiLocker publish/i)).toBeVisible();
-    await expect(page.getByText(/sim:/)).toBeVisible();
+    await expect(page.getByText(/Approved — certificate not yet issued/i)).toBeVisible();
   });
 });
