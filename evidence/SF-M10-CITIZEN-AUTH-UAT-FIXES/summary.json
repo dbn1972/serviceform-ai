@@ -1,0 +1,19 @@
+{
+  "record": "SF-M10-CITIZEN-AUTH-UAT-FIXES",
+  "source_commit": "cbdbb44",
+  "base_main": "d5b3e957a48a3a8e7ebdb1c0cf20326d24b93ba8",
+  "requirements": ["SRS-F-010", "INT-001"],
+  "defects_fixed": ["D-1 open redirect via control characters in next", "D-2 gated sign-out confirmation race"],
+  "otp_mode": "SIMULATED",
+  "digilocker_mode": "SIMULATED",
+  "uat_main_d5b3e95": "12 passed, 3 failed",
+  "uat_fix": "15 passed",
+  "unit_citizen_lab": "30 passed",
+  "e2e": "62 passed",
+  "e2e_flake_check": "78 passed (repeat-each=3)",
+  "gates": "10/10 passed",
+  "known_limitations": ["unsigned SAMPLE_LAB session cookie; shared lab list exposes citizen_id"],
+  "g6_issued": false,
+  "certified": false,
+  "self_certified": false
+}

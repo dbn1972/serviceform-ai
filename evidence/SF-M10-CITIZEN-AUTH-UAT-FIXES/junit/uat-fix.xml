@@ -1,0 +1,38 @@
+<testsuites id="" name="" tests="15" failures="0" skipped="0" errors="0" time="22.509713">
+<testsuite name="phase-a-lab-uat.spec.ts" timestamp="2026-11-04T09:18:33.340Z" hostname="" tests="15" failures="0" skipped="0" time="20.124" errors="0">
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-01 seeded citizen signs in with SIMULATED OTP 123456" classname="phase-a-lab-uat.spec.ts" time="1.276">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-02 wrong OTP shows attempts left; 5 wrong attempts lock the challenge" classname="phase-a-lab-uat.spec.ts" time="1.001">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-03 OTP is single-use and bound to its purpose" classname="phase-a-lab-uat.spec.ts" time="0.022">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-04 OTP request does not reveal whether an account exists" classname="phase-a-lab-uat.spec.ts" time="0.012">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-05 unregistered mobile is offered &quot;Create an account&quot; only after OTP" classname="phase-a-lab-uat.spec.ts" time="0.956">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-06 sign-up rejects non-synthetic name and missing consent" classname="phase-a-lab-uat.spec.ts" time="0.891">
+</testcase>
+<testcase name="Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-07 new citizen signs up with SIMULATED OTP and is signed in" classname="phase-a-lab-uat.spec.ts" time="0.994">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-08..12b gated apply, prefill, officer approve, DigiLocker publish, My applications" classname="phase-a-lab-uat.spec.ts" time="5.34">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12c sign-out from a gated page clears the session" classname="phase-a-lab-uat.spec.ts" time="1.713">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation" classname="phase-a-lab-uat.spec.ts" time="1.679">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-13 a second citizen does not see the first citizen applications" classname="phase-a-lab-uat.spec.ts" time="1.549">
+</testcase>
+<testcase name="Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-14 anonymous &quot;mine&quot; listing and anonymous submit are refused" classname="phase-a-lab-uat.spec.ts" time="0.014">
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-15 post-sign-in &quot;next&quot; with a tab cannot leave the portal" classname="phase-a-lab-uat.spec.ts" time="2.337">
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-15 post-sign-in &quot;next&quot; with a newline cannot leave the portal" classname="phase-a-lab-uat.spec.ts" time="2.329">
+</testcase>
+<testcase name="Phase A lab UAT — security probes › UAT-16 [known limitation] unsigned lab session cookie can be forged" classname="phase-a-lab-uat.spec.ts" time="0.011">
+<properties>
+<property name="known-limitation" value="SAMPLE_LAB cookie is unsigned base64 JSON (inherited from main); not production IAM">
+</property>
+</properties>
+</testcase>
+</testsuite>
+</testsuites>

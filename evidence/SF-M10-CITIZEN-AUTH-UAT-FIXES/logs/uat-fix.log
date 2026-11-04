@@ -1,0 +1,23 @@
+
+Running 15 tests using 1 worker
+
+(node:7346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test-results/uat/phase-a-lab-uat.spec.ts:48:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-01 seeded citizen signs in with SIMULATED OTP 123456 (1.3s)
+  ✓   2 test-results/uat/phase-a-lab-uat.spec.ts:67:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-02 wrong OTP shows attempts left; 5 wrong attempts lock the challenge (1.0s)
+  ✓   3 test-results/uat/phase-a-lab-uat.spec.ts:98:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-03 OTP is single-use and bound to its purpose (22ms)
+  ✓   4 test-results/uat/phase-a-lab-uat.spec.ts:122:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-04 OTP request does not reveal whether an account exists (12ms)
+  ✓   5 test-results/uat/phase-a-lab-uat.spec.ts:134:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-05 unregistered mobile is offered "Create an account" only after OTP (956ms)
+  ✓   6 test-results/uat/phase-a-lab-uat.spec.ts:143:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-06 sign-up rejects non-synthetic name and missing consent (891ms)
+  ✓   7 test-results/uat/phase-a-lab-uat.spec.ts:154:3 › Phase A lab UAT — sign in / sign up (SIMULATED OTP) › UAT-07 new citizen signs up with SIMULATED OTP and is signed in (994ms)
+  ✓   8 test-results/uat/phase-a-lab-uat.spec.ts:163:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-08..12b gated apply, prefill, officer approve, DigiLocker publish, My applications (5.3s)
+  ✓   9 test-results/uat/phase-a-lab-uat.spec.ts:225:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12c sign-out from a gated page clears the session (1.7s)
+  ✓  10 test-results/uat/phase-a-lab-uat.spec.ts:236:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-12d sign-out from a gated page shows the signed-out confirmation (1.7s)
+  ✓  11 test-results/uat/phase-a-lab-uat.spec.ts:245:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-13 a second citizen does not see the first citizen applications (1.5s)
+  ✓  12 test-results/uat/phase-a-lab-uat.spec.ts:251:3 › Phase A lab UAT — apply → approve → DigiLocker SIMULATED › UAT-14 anonymous "mine" listing and anonymous submit are refused (14ms)
+  ✓  13 test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a tab cannot leave the portal (2.3s)
+  ✓  14 test-results/uat/phase-a-lab-uat.spec.ts:267:5 › Phase A lab UAT — security probes › UAT-15 post-sign-in "next" with a newline cannot leave the portal (2.3s)
+  ✓  15 test-results/uat/phase-a-lab-uat.spec.ts:278:3 › Phase A lab UAT — security probes › UAT-16 [known limitation] unsigned lab session cookie can be forged (11ms)
+
+  15 passed (22.5s)
+exit=0

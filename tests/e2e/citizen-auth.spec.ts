@@ -131,13 +131,22 @@ test.describe('citizen sign in (mobile OTP)', () => {
     await expect(page.getByRole('button', { name: 'Verify and sign in' })).toBeDisabled();
   });
 
-  test('ignores off-site next targets (open-redirect guard)', async ({ page }) => {
-    await open(page, '/login?next=%2F%2Fevil.example%2Fphish');
-    await requestSignInOtp(page, SEED_MOBILE);
-    await page.getByLabel('Digit 1 of 6').fill(OTP);
-    await page.getByRole('button', { name: 'Verify and sign in' }).click();
-    await expect(page).toHaveURL(`${CITIZEN}/services`);
-  });
+  for (const next of [
+    '%2F%2Fevil.example%2Fphish',
+    '%2F%09%2Fevil.example',
+    '%2F%0A%2Fevil.example',
+  ]) {
+    test(`ignores off-site next target ${next} (open-redirect guard)`, async ({ page }) => {
+      await page.route('**://evil.example/**', (route) =>
+        route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>off-site</h1>' }),
+      );
+      await open(page, `/login?next=${next}`);
+      await requestSignInOtp(page, SEED_MOBILE);
+      await page.getByLabel('Digit 1 of 6').fill(OTP);
+      await page.getByRole('button', { name: 'Verify and sign in' }).click();
+      await expect(page).toHaveURL(`${CITIZEN}/services`);
+    });
+  }
 });
 
 test.describe('citizen account creation', () => {

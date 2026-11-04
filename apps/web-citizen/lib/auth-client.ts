@@ -66,10 +66,22 @@ export function requestOtp(mobile: string, purpose: LabOtpPurpose) {
   return postJson<OtpChallenge>('/api/lab/otp/challenges', { mobile, purpose });
 }
 
-/** Only same-origin absolute paths are honoured as post-sign-in destinations. */
+const NEXT_BASE = 'http://citizen-portal.invalid';
+
+/**
+ * Only same-origin absolute paths are honoured as post-sign-in destinations. Browsers strip tabs
+ * and newlines and read `\` as `/`, so the target is resolved before its origin is compared.
+ */
 export function safeNext(raw: string | null | undefined, fallback = '/services'): string {
-  if (!raw || !raw.startsWith('/') || raw.startsWith('//') || raw.includes('\\')) return fallback;
-  return raw;
+  if (!raw || !raw.startsWith('/')) return fallback;
+  let url: URL;
+  try {
+    url = new URL(raw, NEXT_BASE);
+  } catch {
+    return fallback;
+  }
+  if (url.origin !== NEXT_BASE) return fallback;
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 export function secondsUntil(iso: string, now: number): number {
