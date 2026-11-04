@@ -155,86 +155,92 @@ export class IdentityService {
     const tokenHash = tokenFingerprint(token);
     const expires = new Date(now.getTime() + SESSION_TTL_MS);
     const sessionId = newId();
-    const citizenId = await withContextTx(this.opts.pool, ctx, async (c) => {
-      const row = await c.query<{
-        citizen_id: string;
-        status: string;
-        code_hash: string;
-        attempts: number;
-        max_attempts: number;
-        expires_at: Date;
-      }>(
-        `SELECT citizen_id, status, code_hash, attempts, max_attempts, expires_at
-           FROM sf_identity.citizen_otp_challenge WHERE challenge_id = $1`,
-        [body.challenge_id],
-      );
-      const ch = row.rows[0];
-      if (!ch) throw new Cmp004Error('SF-AUTH-001');
-      if (ch.status !== 'PENDING') throw new Cmp004Error('SF-AUTH-001');
-      if (ch.expires_at.getTime() <= now.getTime()) {
-        await c.query(
-          `UPDATE sf_identity.citizen_otp_challenge SET status = 'EXPIRED' WHERE challenge_id = $1`,
+    // Failed attempts and expiry must commit, so the transaction returns null instead of throwing.
+    const citizenId = await withContextTx(
+      this.opts.pool,
+      ctx,
+      async (c): Promise<string | null> => {
+        const row = await c.query<{
+          citizen_id: string;
+          status: string;
+          code_hash: string;
+          attempts: number;
+          max_attempts: number;
+          expires_at: Date;
+        }>(
+          `SELECT citizen_id, status, code_hash, attempts, max_attempts, expires_at
+           FROM sf_identity.citizen_otp_challenge WHERE challenge_id = $1 FOR UPDATE`,
           [body.challenge_id],
         );
-        throw new Cmp004Error('SF-AUTH-001');
-      }
-      if (ch.code_hash !== codeHash) {
-        const attempts = ch.attempts + 1;
-        const locked = attempts >= ch.max_attempts;
+        const ch = row.rows[0];
+        if (!ch) throw new Cmp004Error('SF-AUTH-001');
+        if (ch.status !== 'PENDING') throw new Cmp004Error('SF-AUTH-001');
+        if (ch.expires_at.getTime() <= now.getTime()) {
+          await c.query(
+            `UPDATE sf_identity.citizen_otp_challenge SET status = 'EXPIRED' WHERE challenge_id = $1`,
+            [body.challenge_id],
+          );
+          return null;
+        }
+        if (ch.code_hash !== codeHash) {
+          const attempts = ch.attempts + 1;
+          const locked = attempts >= ch.max_attempts;
+          await c.query(
+            `UPDATE sf_identity.citizen_otp_challenge SET attempts = $1, status = $2 WHERE challenge_id = $3`,
+            [attempts, locked ? 'LOCKED' : 'PENDING', body.challenge_id],
+          );
+          return null;
+        }
         await c.query(
-          `UPDATE sf_identity.citizen_otp_challenge SET attempts = $1, status = $2 WHERE challenge_id = $3`,
-          [attempts, locked ? 'LOCKED' : 'PENDING', body.challenge_id],
+          `UPDATE sf_identity.citizen_otp_challenge SET status = 'VERIFIED', attempts = attempts + 1 WHERE challenge_id = $1`,
+          [body.challenge_id],
         );
-        throw new Cmp004Error('SF-AUTH-001');
-      }
-      await c.query(
-        `UPDATE sf_identity.citizen_otp_challenge SET status = 'VERIFIED', attempts = attempts + 1 WHERE challenge_id = $1`,
-        [body.challenge_id],
-      );
-      await c.query(
-        `INSERT INTO sf_identity.citizen_session (
+        await c.query(
+          `INSERT INTO sf_identity.citizen_session (
            session_id, citizen_id, token_hash, status, assurance, expires_at, created_at
          ) VALUES ($1,$2,$3,'ACTIVE','OTP',$4,$5)`,
-        [sessionId, ch.citizen_id, tokenHash, expires.toISOString(), now.toISOString()],
-      );
-      await c.query(
-        `INSERT INTO sf_identity.session_lookup (
+          [sessionId, ch.citizen_id, tokenHash, expires.toISOString(), now.toISOString()],
+        );
+        await c.query(
+          `INSERT INTO sf_identity.session_lookup (
            token_hash, session_id, actor_type, subject_id, tenant_id, assurance, status, expires_at
          ) VALUES ($1,$2,'CITIZEN',$3,NULL,'OTP','ACTIVE',$4)`,
-        [tokenHash, sessionId, ch.citizen_id, expires.toISOString()],
-      );
-      await insertOutbox(
-        c,
-        envelopeOf({
-          eventType: 'CitizenSessionIssued',
-          tenantId: null,
-          cellId: ctx.cell_id,
-          aggregateType: 'CitizenSession',
-          aggregateId: sessionId,
-          aggregateVersion: 1,
-          occurredAt: now.toISOString(),
-          correlationId: ctx.correlation_id,
-          actor: { type: 'CITIZEN', id: ch.citizen_id },
-          data: { session_id: sessionId, citizen_id: ch.citizen_id, assurance: 'OTP' },
-        }),
-        TOPIC_DOMAIN,
-      );
-      await this.opts.audit.append(
-        c,
-        auditEvent(
-          { ...ctx, actor: { type: 'CITIZEN', id: ch.citizen_id } },
-          {
-            action: 'CITIZEN_SESSION_ISSUE',
-            actionClass: 'WRITE',
-            resourceType: 'CitizenSession',
-            resourceId: sessionId,
-            result: 'SUCCESS',
-            now,
-          },
-        ),
-      );
-      return ch.citizen_id;
-    });
+          [tokenHash, sessionId, ch.citizen_id, expires.toISOString()],
+        );
+        await insertOutbox(
+          c,
+          envelopeOf({
+            eventType: 'CitizenSessionIssued',
+            tenantId: null,
+            cellId: ctx.cell_id,
+            aggregateType: 'CitizenSession',
+            aggregateId: sessionId,
+            aggregateVersion: 1,
+            occurredAt: now.toISOString(),
+            correlationId: ctx.correlation_id,
+            actor: { type: 'CITIZEN', id: ch.citizen_id },
+            data: { session_id: sessionId, citizen_id: ch.citizen_id, assurance: 'OTP' },
+          }),
+          TOPIC_DOMAIN,
+        );
+        await this.opts.audit.append(
+          c,
+          auditEvent(
+            { ...ctx, actor: { type: 'CITIZEN', id: ch.citizen_id } },
+            {
+              action: 'CITIZEN_SESSION_ISSUE',
+              actionClass: 'WRITE',
+              resourceType: 'CitizenSession',
+              resourceId: sessionId,
+              result: 'SUCCESS',
+              now,
+            },
+          ),
+        );
+        return ch.citizen_id;
+      },
+    );
+    if (citizenId === null) throw new Cmp004Error('SF-AUTH-001');
     return { session_token: token, citizen_id: citizenId, expires_at: expires.toISOString() };
   }
 
