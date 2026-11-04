@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="62" failures="0" errors="0" time="7.751021016">
+    <testsuite name="tests/integration/m10-platform/bff-seam.test.ts" timestamp="2026-11-04T15:42:08.703Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.951422799">
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; OTP sign-in sets a cookie holding only the CMP-004 opaque token (SF-CON-PORTAL-SESSION)" time="0.121786306">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; a forged or unknown cookie is never decoded for identity" time="0.037950952">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; apply drives CMP-015 draft → working data → ready → submitted and the view mirrors CMP-015" time="0.110725971">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; another citizen&apos;s application is a uniform 404 through the BFF (no existence disclosure)" time="0.029379062">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; observed: the BFF apply is not idempotent — a repeated submit creates a second SUBMITTED case (INT-F5)" time="0.070703695">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen BFF on the platform path &gt; sign-out revokes the CMP-004 session" time="0.012271486">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen view maps every CMP-015 state &gt; every CaseState maps to a defined portal status and platform_state is passed through unchanged" time="0.001645417">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="citizen view maps every CMP-015 state &gt; withdrawn/cancelled cases are not shown as REJECTED, and DEFICIENCY_RAISED is not shown as plain SUBMITTED" time="0.00470855">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="officer BFF decide() drives only legal transitions &gt; APPROVE from SUBMITTED walks received → scrutiny → decision_pending → approved" time="0.14557319">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="officer BFF decide() drives only legal transitions &gt; REJECT records a HUMAN rejection with a reason code" time="0.08454235">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="officer BFF decide() drives only legal transitions &gt; decide() issues no command on decided, draft, deficiency or citizen-response cases" time="0.265961221">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="officer BFF decide() drives only legal transitions &gt; bad actions and citizen cookies are refused by the officer BFF" time="0.034476957">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/bff-seam.test.ts" name="officer BFF decide() drives only legal transitions &gt; every CaseState maps to a workbench status without inventing states" time="0.00085578">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/contract-conformance.test.ts" timestamp="2026-11-04T15:42:08.707Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.273503342">
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; documents every route the host serves" time="0.001126027">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; declares request/response schemas for every operation" time="0.004971286">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; OTP challenge/verify/me shapes are stable and carry no OTP or channel" time="0.00052128">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; me returns a platform-global citizen (tenant_id null) and the OFFICER tenant for officers" time="0.005779948">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; error bodies validate against error-response/v1" time="0.050107978">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; revoke invalidates citizen and officer sessions (INT-001 sign-out)" time="0.032894742">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-004 contract surface on the platform host &gt; wrong OTP issues no session" time="0.007432937">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-015 responses validate against the component OpenAPI schemas &gt; createApplicationDraft → CreateDraftResponse (+ version-pinning/v1)" time="0.017098483">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-015 responses validate against the component OpenAPI schemas &gt; put/get working data → WorkingDataResponse" time="0.013656318">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-015 responses validate against the component OpenAPI schemas &gt; commands → CommandResponse; get → ApplicationResponse; list → ApplicationListResponse; transitions → TransitionListResponse" time="0.047356077">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="CMP-015 responses validate against the component OpenAPI schemas &gt; CMP-015 error responses validate against error-response/v1" time="0.009467412">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="SF-CON-PORTAL-PLACEMENT &gt; both lab placements (tenant A fixture, tenant B derived) satisfy the contract" time="0.004138013">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/contract-conformance.test.ts" name="SF-CON-PORTAL-PLACEMENT &gt; a client-supplied tenant header is refused (ADR-0007 D-1)" time="0.009557916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/int-004-outbox.test.ts" timestamp="2026-11-04T15:42:08.708Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.329822706">
+        <testcase classname="tests/integration/m10-platform/int-004-outbox.test.ts" name="INT-004 outbox and audit in the same transaction &gt; draft, working data and every command write their events atomically; pins equal the published binding" time="0.142155912">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-004-outbox.test.ts" name="INT-004 outbox and audit in the same transaction &gt; denied, stale and illegal commands write no domain event and leave the case unchanged" time="0.050888728">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-004-outbox.test.ts" name="INT-004 outbox and audit in the same transaction &gt; a failing outbox insert rolls back the command; the idempotency key stays unconsumed" time="0.04314572">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-004-outbox.test.ts" name="INT-004 outbox and audit in the same transaction &gt; a failing audit insert rolls back the working-data write" time="0.021317139">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/int-005-posture.test.ts" timestamp="2026-11-04T15:42:08.708Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.137669874">
+        <testcase classname="tests/integration/m10-platform/int-005-posture.test.ts" name="INT-005 posture: no Temporal sequencing on the Phase B path &gt; observed: the no-op OutboxOnlyWorkflowAdvance reports SIGNALLED / temporal_advanced=true" time="0.002015714">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-005-posture.test.ts" name="INT-005 posture: no Temporal sequencing on the Phase B path &gt; CMP-015 reports DEFERRED_TO_OUTBOX and temporal_advanced=false when nothing was signalled" time="0.007202373">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-005-posture.test.ts" name="INT-005 posture: no Temporal sequencing on the Phase B path &gt; no CMP-016 workflow instance, request or outbox row exists for the case (sf_workflow empty)" time="0.020441561">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-005-posture.test.ts" name="INT-005 posture: no Temporal sequencing on the Phase B path &gt; the host is configured without a Temporal endpoint" time="0.000420911">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-005-posture.test.ts" name="INT-005 posture: no Temporal sequencing on the Phase B path &gt; the officer action is OPA-authorized and records the decision id and policy revision" time="0.006707517">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/int-011-two-tenants.test.ts" timestamp="2026-11-04T15:42:08.709Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.382109905">
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; the same mobile is the same CMP-004 citizen on both portals; case rows carry different tenants" time="0.016776072">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; a citizen sees only the current portal tenant" time="0.044250105">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; the citizen token from portal A works on portal B but only with B&apos;s tenant (ADR-0007 D-1)" time="0.005529841">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; an officer sees only their tenant&apos;s queue and is refused on the other tenant&apos;s host" time="0.036963114">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; a citizen cannot create a draft on a binding offered by the other tenant" time="0.003019205">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; outbox rows for each case carry only that case tenant" time="0.003075505">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-011-two-tenants.test.ts" name="INT-011 tenant isolation across two portal placements &gt; runtime logins cannot bypass RLS (NOSUPERUSER, NOBYPASSRLS, FORCE RLS on case tables)" time="0.003484019">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/int-013-simulation.test.ts" timestamp="2026-11-04T15:42:08.709Z" hostname="cursor" tests="12" failures="0" errors="0" skipped="0" time="5.072460612">
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 SIMULATED connectors are labelled &gt; the CMP-004 OTP challenge carries a simulation-marker/v1 for the LOCAL environment" time="0.037696029">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 SIMULATED connectors are labelled &gt; lab simulator endpoints label every response" time="0.007092337">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 SIMULATED connectors are labelled &gt; sessions minted from SIMULATED OTP/IdP carry a simulation marker in the HTTP response" time="0.003609442">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 SIMULATED connectors are labelled &gt; observed: CMP-004 domain events — OfficerSessionIssued and CitizenOtpChallengeCreated are marked; CitizenSessionIssued is not" time="0.016273585">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 SIMULATED connectors are labelled &gt; the OTP inbox returns 404 for unknown or malformed challenge ids" time="0.003855172">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; lab-server exits without listening when SF_ENVIRONMENT=DEVELOPMENT" time="0.770075069">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; lab-server exits without listening when SF_ENVIRONMENT=SIT" time="0.805553225">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; lab-server exits without listening when SF_ENVIRONMENT=UAT" time="0.775749086">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; lab-server exits without listening when SF_ENVIRONMENT=PREPROD" time="0.830928927">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; lab-server exits without listening when SF_ENVIRONMENT=PRODUCTION" time="0.810810247">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; the bootstrap refuses UAT before touching the database" time="0.041281752">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/int-013-simulation.test.ts" name="INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments &gt; a CI runtime refuses a LOCAL placement (placement environment must match)" time="0.842866959">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10-platform/journey-state-machine.test.ts" timestamp="2026-11-04T15:42:08.710Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.604031778">
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; draft → ready → submitted → received → scrutiny → decision_pending → approved" time="0.082796612">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; … → decision_pending → rejected → closed" time="0.077356034">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; deficiency loop: officer raises, citizen edits working data and responds, scrutiny resumes" time="0.100407514">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; illegal transitions and wrong actors are refused" time="0.093101564">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; stale expected_version / expected_state / expected_revision are refused" time="0.066925608">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; idempotent replays return Idempotent-Replayed with the original body; key reuse with a different body is refused" time="0.044359182">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; another citizen reusing an idempotency key never receives the first citizen&apos;s replay" time="0.020201603">
+        </testcase>
+        <testcase classname="tests/integration/m10-platform/journey-state-machine.test.ts" name="journey state machine on the platform path &gt; concurrent commands on the same expected_version: exactly one wins" time="0.060207916">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="2.205422319">
+    <testsuite name="test/integration/api.int.test.ts" timestamp="2026-11-04T15:39:55.162Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.595535298">
+        <testcase classname="test/integration/api.int.test.ts" name="CMP-004 API integration &gt; citizen OTP + officer session + PrincipalVerifier" time="0.128664532">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/officer-roles.int.test.ts" timestamp="2026-11-04T15:39:55.163Z" hostname="cursor" tests="1" failures="0" errors="0" skipped="0" time="0.550419126">
+        <testcase classname="test/integration/officer-roles.int.test.ts" name="CMP-004 officer context carries the session role codes (PostgreSQL) &gt; resolves exactly the issued roles, never an invented default" time="0.105613025">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/otp-lockout.int.test.ts" timestamp="2026-11-04T15:39:55.164Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.585354334">
+        <testcase classname="test/integration/otp-lockout.int.test.ts" name="CMP-004 OTP failure state is durable on PostgreSQL &gt; five wrong codes lock the challenge; the correct code is then refused" time="0.117746901">
+        </testcase>
+        <testcase classname="test/integration/otp-lockout.int.test.ts" name="CMP-004 OTP failure state is durable on PostgreSQL &gt; a verified code cannot be replayed" time="0.012019033">
+        </testcase>
+        <testcase classname="test/integration/otp-lockout.int.test.ts" name="CMP-004 OTP failure state is durable on PostgreSQL &gt; an expired challenge is marked EXPIRED durably and refused" time="0.009973256">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/integration/rls-isolation.int.test.ts" timestamp="2026-11-04T15:39:55.164Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.474113561">
+        <testcase classname="test/integration/rls-isolation.int.test.ts" name="INT-011 CMP-004 tenant isolation &gt; FORCE RLS on tenant-owned officer tables; CROSS_TENANT_LEAKAGE=0" time="0.015346196">
+        </testcase>
+        <testcase classname="test/integration/rls-isolation.int.test.ts" name="INT-011 CMP-004 tenant isolation &gt; wrong-component login cannot SELECT/INSERT identity tables" time="0.004981148">
+        </testcase>
+        <testcase classname="test/integration/rls-isolation.int.test.ts" name="INT-011 CMP-004 tenant isolation &gt; simulated IdP assertion encodes tenant from IdP not from the client" time="0.00034521">
+        </testcase>
+    </testsuite>
+</testsuites>

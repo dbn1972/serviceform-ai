@@ -1,0 +1,18 @@
+
+ RUN  v5.0.3 /agent/repos/sf-wt-int/services/cmp-015-application-case
+
+ ✓ test/integration/migration.int.test.ts (3 tests) 1933ms
+   ✓ CMP-015 migrations (isolated database; up -> down -> up) (3)
+     ✓ applies on top of the platform baseline + shared DB contracts only (no cross-component dependency) 541ms
+     ✓ rolls back both CMP-015 migrations cleanly and keeps the NOLOGIN role 428ms
+     ✓ re-applies after rollback 880ms
+ ✓ test/integration/service-flow.int.test.ts (13 tests) 1152ms
+ ✓ test/integration/journey-reads.int.test.ts (4 tests) 644ms
+ ✓ test/integration/privilege-rls.int.test.ts (11 tests) 577ms
+
+ Test Files  4 passed (4)
+      Tests  31 passed (31)
+   Start at  15:39:55
+   Duration  5.01s (tests 92%, transform 6%, import 2%)
+
+JUNIT report written to /agent/repos/sf-wt-int/evidence/SF-M10-B-INT/junit/cmp015-integration.xml
