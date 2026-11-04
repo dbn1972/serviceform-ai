@@ -69,6 +69,8 @@ export type {
   CredentialVerification,
 } from './ports/credential-verification-port.js';
 export type { DigilockerRepository, PublishRow } from './repo/types.js';
+export { PgDigilockerRepository } from './repo/pg.js';
+export type { SqlClient, SqlPool, SqlResult } from './repo/pg.js';
 export type { AuthorizationPort } from './authz.js';
 export type { ContextResolver } from './context.js';
 export type { ConnectorBindingView, SimulationMarker } from './domain/simulation.js';

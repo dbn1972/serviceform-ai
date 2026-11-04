@@ -1,0 +1,20 @@
+
+> @serviceform/cmp-012-digilocker@0.0.0 test:unit /agent/repos/sf-wt-cmp012/services/cmp-012-digilocker
+> vitest run --root . --config vitest.unit.config.ts
+
+
+ RUN  v5.0.3 /agent/repos/sf-wt-cmp012/services/cmp-012-digilocker
+
+ ✓ test/unit/publish.test.ts (12 tests) 9ms
+ ✓ test/unit/remediation.test.ts (26 tests) 11ms
+ ✓ test/contract/contracts.test.ts (11 tests) 31ms
+ ✓ test/unit/pg-repo.test.ts (7 tests) 7ms
+ ✓ test/unit/tenant-negative.test.ts (5 tests) 7ms
+ ✓ test/unit/simulation.test.ts (12 tests) 5ms
+
+ Test Files  6 passed (6)
+      Tests  73 passed (73)
+   Start at  14:40:12
+   Duration  418ms (transform 52%, import 32%, tests 13%, worker 3%)
+
+JUNIT report written to /agent/repos/sf-wt-cmp012/evidence/SF-M07-004/junit/unit.xml

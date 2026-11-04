@@ -1,0 +1,85 @@
+
+ RUN  v5.0.3 /agent/repos/sf-wt-cmp012/services/cmp-012-digilocker
+
+ ❯ test/integration/digilocker-pg.int.test.ts (19 tests | 2 failed) 752ms
+   ❯ CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) (19)
+     ✓ publish record round-trip (5)
+       ✓ inserts, reads and updates a record with the outbox rows committed in the same tx 29ms
+       ✓ rolls back the record and its outbox rows together when the tx fails 17ms
+       ✓ routes tenant-null (audit) envelopes to outbox_event_platform keyed by audit_id 12ms
+       ✓ enforces the publish-failure invariants as CHECK constraints (issuance never reversed) 3ms
+       ✓ cannot mutate immutable provenance columns or delete publish records 8ms
+     ✓ idempotency claim / peek / complete (2)
+       ✓ claims once, replays the stored record, then round-trips the completed response 29ms
+       ✓ does not let tenant B see or replay tenant A idempotency records 8ms
+     ❯ tenant-negative (FORCE RLS) (4)
+       × a T1 record is invisible and unupdatable under T2 11ms
+       × sees nothing without a tenant context 6ms
+       ✓ refuses writes whose tenant does not match the transaction tenant 5ms
+       ✓ rejects a transaction without tenant context before touching the database 0ms
+     ✓ privilege boundary (ADR-0006) (3)
+       ✓ peer login cannot read or write CMP-012 tables 40ms
+       ✓ appOnly login cannot read or write CMP-012 tables 44ms
+       ✓ runtime login is not the table owner and cannot bypass RLS 2ms
+     ✓ inTransaction() (2)
+       ✓ is true only inside withTx 4ms
+       ✓ refuses a nested withTx 1ms
+     ✓ DigiLockerService publish flow on PostgreSQL (SIMULATED connector) (3)
+       ✓ publishes, persists the record + domain/audit outbox, and replays idempotently 31ms
+       ✓ records a FAILED publish without reversing issuance 5ms
+       ✓ persists nothing when the credential is not ISSUED (fail-closed) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/integration/digilocker-pg.int.test.ts > CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) > tenant-negative (FORCE RLS) > a T1 record is invisible and unupdatable under T2
+AssertionError: expected { sel: 1, upd: 1 } to deeply equal { sel: +0, upd: +0 }
+
+- Expected
++ Received
+
+  {
+-   "sel": 0,
+-   "upd": 0,
++   "sel": 1,
++   "upd": 1,
+  }
+
+ ❯ test/integration/digilocker-pg.int.test.ts:395:19
+    393|         return { sel: sel.rows.length, upd: upd.rowCount };
+    394|       });
+    395|       expect(raw).toEqual({ sel: 0, upd: 0 });
+       |                   ^
+    396|
+    397|       const still = await repo.withTx(ctxFor(TENANT_A), (tx) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/integration/digilocker-pg.int.test.ts > CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) > tenant-negative (FORCE RLS) > sees nothing without a tenant context
+AssertionError: expected 3 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 3
+
+ ❯ test/integration/digilocker-pg.int.test.ts:409:17
+    407|         return r.rows.length;
+    408|       });
+    409|       expect(n).toBe(0);
+       |                 ^
+    410|     });
+    411|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  14:40:58
+   Duration  1.09s (tests 77%, transform 17%, import 6%)
+
+undefined
+/agent/repos/sf-wt-cmp012/services/cmp-012-digilocker:
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command failed with exit code 1: vitest run --root . --config vitest.integration.config.ts --reporter=default
+exit=1
