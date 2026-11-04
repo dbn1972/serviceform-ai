@@ -7,6 +7,7 @@ import {
   sessionCookie,
   sessionToken,
   simulationAllowed,
+  crossSiteRefusal,
 } from '../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -25,6 +26,8 @@ export async function GET(request: Request) {
 
 /** SIMULATED IdP assertion → CMP-004 `issueOfficerSession`; the cookie gets only the token. */
 export async function POST(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   if (!simulationAllowed()) {
     return json(404, { error_code: 'SF-SYS-002', message: 'Not found' });
   }
@@ -56,6 +59,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const token = sessionToken(request);
   if (token) await platform('POST', '/v1/identity/officer/sessions/revoke', { token, body: {} });
   return new Response(null, { status: 204, headers: { 'set-cookie': sessionCookie('', 0) } });

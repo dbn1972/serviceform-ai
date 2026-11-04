@@ -11,6 +11,7 @@ import {
   platform,
   portalPlacement,
   relay,
+  crossSiteRefusal,
 } from '../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -35,7 +36,20 @@ export async function GET(request: Request) {
  * Apply: CMP-015 draft pinned to the placement's published binding, working data, then
  * MARK_READY_TO_SUBMIT and SUBMIT. Each step is OPA-authorized as the owning citizen.
  */
+const SUBMISSION_KEY = /^[A-Za-z0-9_-]{16,64}$/;
+
+/** One key per form session: a retried submit replays every CMP-015 step instead of duplicating. */
+function stepKeys(raw: string | null) {
+  const base = raw && SUBMISSION_KEY.test(raw) ? `apply-${raw}` : null;
+  const key = (step: string) =>
+    base ? { idempotencyKey: `${base}-${step}` } : { idempotent: true };
+  return { key, base };
+}
+
 export async function POST(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
+  const keys = stepKeys(request.headers.get('idempotency-key'));
   const citizen = await currentCitizen(request);
   if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
   const checked = checkResidenceForm(
@@ -51,7 +65,7 @@ export async function POST(request: Request) {
 
   const draft = await platform('POST', '/v1/applications', {
     token: citizen.token,
-    idempotent: true,
+    ...keys.key('draft'),
     body: { tenant_service_binding_id: offering.tenant_service_binding_id },
   });
   let app = draft.body['application'] as PlatformApplication | undefined;
@@ -59,13 +73,18 @@ export async function POST(request: Request) {
 
   const wd = await platform('PUT', `/v1/applications/${app.application_id}/working-data`, {
     token: citizen.token,
-    idempotent: true,
+    ...keys.key('data'),
     body: { form_version_id: app.pins.form_version_id, data: checked.form, expected_revision: 0 },
   });
   if (wd.status !== 200) return relay(wd);
 
   for (const step of ['MARK_READY_TO_SUBMIT', 'SUBMIT']) {
-    const next = await command(citizen, app, step);
+    const next = await command(
+      citizen,
+      app,
+      step,
+      keys.base ? `${keys.base}-${step.toLowerCase()}` : undefined,
+    );
     if (!next.ok) return relay(next.res);
     app = next.app;
   }

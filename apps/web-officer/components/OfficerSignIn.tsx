@@ -3,20 +3,9 @@
 import { Alert, Button, Card, RadioGroup } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { safeNext } from '../lib/safe-next';
 
 type LabOfficer = { subject: string; display_name: string; roles: string[] };
-
-function safeNext(raw: string | undefined): string {
-  if (!raw || !raw.startsWith('/')) return '/applications';
-  try {
-    const url = new URL(raw, 'http://workbench.invalid');
-    return url.origin === 'http://workbench.invalid'
-      ? `${url.pathname}${url.search}`
-      : '/applications';
-  } catch {
-    return '/applications';
-  }
-}
 
 /** SAMPLE_LAB sign-in through the SIMULATED IdP; the session itself is issued by CMP-004. */
 export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined }) {

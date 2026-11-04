@@ -268,7 +268,7 @@ describe('configuration and port mode guards (Constitution #22; INT-013)', () =>
       permitted: false,
       policy_ref: 'unconfigured',
     });
-    expect(await new OutboxOnlyWorkflowAdvance().advance()).toBeUndefined();
+    expect(await new OutboxOnlyWorkflowAdvance().advance()).toBe('DEFERRED_TO_OUTBOX');
     expect((await denyAllAuthorization().decide({} as never)).allow).toBe(false);
   });
 });

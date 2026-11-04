@@ -133,7 +133,13 @@ test.describe('citizen identity on CMP-004 (opaque session, ADR-0007 D-3)', () =
     await expect(page).toHaveURL(/\/login/);
   });
 
-  for (const next of ['/%09/evil.example', '/%0A/evil.example', '//evil.example']) {
+  for (const next of [
+    '/%09/evil.example',
+    '/%0A/evil.example',
+    '//evil.example',
+    '/.//evil.example',
+    '/..//evil.example',
+  ]) {
     test(`ignores off-site next target ${next} (open-redirect guard)`, async ({ page }) => {
       await open(page, `${CITIZEN}/login?next=${next}`);
       const code = await requestOtp(page, uniqueMobile());
@@ -234,6 +240,72 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
     });
     expect(res.status()).toBe(400);
     expect(await res.json()).toMatchObject({ field: 'applicant_name' });
+  });
+
+  test('a retried submit with the same form-session key files one application (INT-F5)', async ({
+    page,
+  }) => {
+    await signIn(page, uniqueMobile());
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    const form = {
+      applicant_name: 'SAMPLE Retry Citizen',
+      applicant_dob: '1990-01-01',
+      applicant_gender: 'FEMALE',
+      residence_address: {
+        house_no_or_name: 'SAMPLE 1',
+        locality: 'SAMPLE',
+        district: 'SAMPLE',
+        state_code: 'OD',
+        pincode: '751001',
+      },
+      residence_duration_months: 24,
+      purpose_of_certificate: 'SAMPLE',
+      evidence_type: 'ELECTRICITY_BILL',
+    };
+    const key = `retry${randomInt(1_000_000_000, 9_999_999_999)}abcdef`;
+    const submit = () =>
+      page.request.post(`${CITIZEN}/api/portal/applications`, {
+        headers: { cookie, 'idempotency-key': key },
+        data: form,
+      });
+    const first = await submit();
+    const second = await submit();
+    expect(first.status()).toBe(201);
+    expect(second.status()).toBe(201);
+    const id = ((await first.json()) as { application: { id: string } }).application.id;
+    expect(((await second.json()) as { application: { id: string } }).application.id).toBe(id);
+    const list = await page.request.get(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie },
+    });
+    const ids = ((await list.json()) as { applications: { id: string }[] }).applications.map(
+      (a) => a.id,
+    );
+    expect(ids).toEqual([id]);
+  });
+
+  test('NEGATIVE: cross-site writes are refused on both portals (SEC F-07)', async ({ page }) => {
+    await signIn(page, uniqueMobile());
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    const crossSite = await page.request.post(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie, origin: 'https://evil.example', 'content-type': 'application/json' },
+      data: {},
+    });
+    expect(crossSite.status()).toBe(403);
+    const fetchSite = await page.request.post(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie, 'sec-fetch-site': 'cross-site', 'content-type': 'application/json' },
+      data: {},
+    });
+    expect(fetchSite.status()).toBe(403);
+    const plain = await page.request.post(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie, 'content-type': 'text/plain' },
+      data: '{}',
+    });
+    expect(plain.status()).toBe(415);
+    const officer = await page.request.post(
+      `${OFFICER}/api/portal/applications/00000000-0000-4000-8000-000000000001`,
+      { headers: { origin: 'https://evil.example', 'content-type': 'text/plain' }, data: '{}' },
+    );
+    expect(officer.status()).toBe(403);
   });
 
   test('anonymous submit and anonymous listing are refused', async ({ request }) => {

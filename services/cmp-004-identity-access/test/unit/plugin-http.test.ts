@@ -49,30 +49,6 @@ class MemoryDirectory implements SessionDirectory {
       role_codes: roles,
     };
   }
-  async lookupActiveBySubject(principal: {
-    subject_id: string;
-    actor_type: string;
-  }): Promise<SessionLookupRow | null> {
-    const row = this.store.lookups.find(
-      (l) =>
-        l.subject_id === principal.subject_id &&
-        l.actor_type === principal.actor_type &&
-        l.status === 'ACTIVE',
-    );
-    if (!row) return null;
-    const roles =
-      this.store.officerSessions.find((s) => s.session_id === row.session_id)?.role_codes ?? [];
-    return {
-      session_id: row.session_id,
-      actor_type: row.actor_type as 'CITIZEN' | 'OFFICER',
-      subject_id: row.subject_id,
-      tenant_id: row.tenant_id,
-      assurance: row.assurance as SessionLookupRow['assurance'],
-      status: row.status,
-      expires_at: row.expires_at,
-      role_codes: roles,
-    };
-  }
 }
 
 function platformCtx(): RequestContext {

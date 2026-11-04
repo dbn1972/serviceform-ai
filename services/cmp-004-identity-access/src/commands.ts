@@ -74,6 +74,13 @@ export class IdentityService {
           [citizenId, channelHash, now.toISOString()],
         );
       }
+      // One live challenge per channel: a new OTP supersedes earlier ones, so the attempt budget
+      // cannot be multiplied by opening parallel challenges.
+      await c.query(
+        `UPDATE sf_identity.citizen_otp_challenge SET status = 'EXPIRED'
+          WHERE channel_hash = $1 AND status = 'PENDING'`,
+        [channelHash],
+      );
       await c.query(
         `INSERT INTO sf_identity.citizen_otp_challenge (
            challenge_id, citizen_id, channel_hash, purpose, code_hash, status, attempts, max_attempts, expires_at, simulation, created_at
@@ -409,13 +416,16 @@ export class IdentityService {
       if (claimed !== 'claimed') {
         throw new Cmp004Error('SF-APP-002');
       }
-      await c.query(
+      const principal = await c.query<{ status: string }>(
         `INSERT INTO sf_identity.officer_principal (
            tenant_id, officer_id, idp_subject_hash, status, created_at, updated_at
          ) VALUES ($1,$2,$3,'ACTIVE',$4,$4)
-         ON CONFLICT (tenant_id, officer_id) DO UPDATE SET updated_at = EXCLUDED.updated_at, status = 'ACTIVE'`,
+         ON CONFLICT (tenant_id, officer_id) DO UPDATE SET updated_at = EXCLUDED.updated_at
+         RETURNING status`,
         [claims.tenant_id, claims.officer_id, subjectHash, now.toISOString()],
       );
+      // A DISABLED officer stays disabled: sign-in never re-activates the principal.
+      if (principal.rows[0]?.status !== 'ACTIVE') throw new Cmp004Error('SF-AUTH-002');
       await c.query(
         `INSERT INTO sf_identity.officer_session (
            tenant_id, session_id, officer_id, token_hash, status, assurance, role_codes, expires_at, created_at

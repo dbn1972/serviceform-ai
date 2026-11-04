@@ -9,6 +9,7 @@ import {
   SESSION_MAX_AGE_SECONDS,
   sessionCookie,
   sessionToken,
+  crossSiteRefusal,
 } from '../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -39,6 +40,8 @@ export async function GET(request: Request) {
 
 /** CMP-004 `verifyCitizenOtp`; the cookie receives only the opaque session token. */
 export async function POST(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   const challengeId = body?.['challenge_id'];
   const code = typeof body?.['code'] === 'string' ? body['code'] : '';
@@ -65,6 +68,8 @@ export async function POST(request: Request) {
 
 /** CMP-004 `revokeCitizenSession`, then clear the cookie whatever the platform answers. */
 export async function DELETE(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const token = sessionToken(request);
   if (token) await platform('POST', '/v1/identity/citizen/sessions/revoke', { token, body: {} });
   return new Response(null, { status: 204, headers: { 'set-cookie': clearSessionCookie() } });

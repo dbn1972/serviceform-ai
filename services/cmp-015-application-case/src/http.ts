@@ -49,6 +49,9 @@ export interface ApplicationCaseHttpOptions {
   resolveContext: ContextResolver;
 }
 
+/** Case and working-data bodies are tenant- and citizen-private (pii=CITIZEN_SUPPLIED). */
+const NO_STORE = { 'content-type': 'application/json', 'cache-control': 'no-store' } as const;
+
 function param(request: HttpRequestLike, name: string): unknown {
   const p = request.params;
   return typeof p === 'object' && p !== null ? (p as Record<string, unknown>)[name] : undefined;
@@ -67,11 +70,11 @@ export function errorResponse(err: unknown, correlationId: string): HttpResponse
     correlation_id: correlationId,
   };
   if (e.details && e.details.length > 0 && e.statusCode < 500) body['details'] = e.details;
-  return { status: e.statusCode, body, headers: { 'content-type': 'application/json' } };
+  return { status: e.statusCode, body, headers: { ...NO_STORE } };
 }
 
 function ok(result: ServiceResult): HttpResponse {
-  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  const headers: Record<string, string> = { ...NO_STORE };
   if (result.replayed) headers['idempotent-replayed'] = 'true';
   return { status: result.status, body: result.body, headers };
 }

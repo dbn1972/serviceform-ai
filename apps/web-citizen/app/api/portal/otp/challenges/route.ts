@@ -12,6 +12,7 @@ import {
   platform,
   relay,
   simulationAllowed,
+  crossSiteRefusal,
 } from '../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -22,6 +23,8 @@ export const dynamic = 'force-dynamic';
  * LOCAL/CI placements the SIMULATED SMS is read from the host's OTP inbox by challenge id.
  */
 export async function POST(request: Request) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const body = (await request.json().catch(() => null)) as { mobile?: unknown } | null;
   const mobile = normaliseMobile(typeof body?.mobile === 'string' ? body.mobile : '');
   const invalid = validateMobile(mobile);

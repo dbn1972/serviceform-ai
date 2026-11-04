@@ -15,12 +15,13 @@ export interface WorkflowAdvanceSignal {
 }
 
 export interface WorkflowAdvancePort {
-  advance(signal: WorkflowAdvanceSignal): Promise<void>;
+  /** Resolves `DEFERRED_TO_OUTBOX` when no signal was sent and the outbox event is the trigger. */
+  advance(signal: WorkflowAdvanceSignal): Promise<'DEFERRED_TO_OUTBOX' | undefined>;
 }
 
 /** Default: rely solely on the committed outbox event for CMP-016 to advance Temporal. */
 export class OutboxOnlyWorkflowAdvance implements WorkflowAdvancePort {
-  async advance(): Promise<void> {
-    return undefined;
+  async advance(): Promise<'DEFERRED_TO_OUTBOX'> {
+    return 'DEFERRED_TO_OUTBOX';
   }
 }
