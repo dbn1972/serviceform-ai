@@ -23,6 +23,17 @@ describe('safeNext (post sign-in destination)', () => {
     expect(safeNext('/\t\\evil.example')).toBe('/services');
   });
 
+  it('rejects dot segments that collapse into a protocol-relative URL (SEC F-04)', () => {
+    for (const next of [
+      '/.//evil.example',
+      '/..//evil.example',
+      '/%2e//evil.example',
+      '/a/..//evil.example',
+    ]) {
+      expect(safeNext(next), next).toBe('/services');
+    }
+  });
+
   it('keeps query and fragment on same-origin targets', () => {
     expect(safeNext('/certificates?mine=1#latest')).toBe('/certificates?mine=1#latest');
   });

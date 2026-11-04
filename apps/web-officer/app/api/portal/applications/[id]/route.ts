@@ -4,7 +4,14 @@ import {
   toWorkbenchApplication,
   type PlatformApplication,
 } from '../../../../../lib/portal/cases';
-import { currentOfficer, isUuid, json, platform, relay } from '../../../../../lib/portal/platform';
+import {
+  currentOfficer,
+  isUuid,
+  json,
+  platform,
+  relay,
+  crossSiteRefusal,
+} from '../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,6 +38,8 @@ export async function GET(request: Request, ctx: Ctx) {
 
 /** Human decision (`APPROVE` | `REJECT`) recorded on CMP-015 by the signed-in officer. */
 export async function POST(request: Request, ctx: Ctx) {
+  const refusal = crossSiteRefusal(request);
+  if (refusal) return refusal;
   const { id } = await ctx.params;
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
