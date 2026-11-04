@@ -1,0 +1,27 @@
+{
+  "0d15ba00-0001-4000-8000-0d15ba0000d1": {
+    "_note": "SAMPLE_LAB runtime tenant data loaded beside the bundle (never committed under policy/opa).",
+    "roles": {
+      "SAMPLE_LAB_CASE_OFFICER": {
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "APPLICATION_READ",
+          "APPLICATION_LIST",
+          "APPLICATION_TRANSITIONS_READ",
+          "APPLICATION_WORKING_DATA_READ",
+          "APPLICATION_MARK_RECEIVED",
+          "APPLICATION_ENTER_SCRUTINY",
+          "APPLICATION_ENTER_DECISION_PENDING",
+          "APPLICATION_RAISE_DEFICIENCY",
+          "APPLICATION_RECORD_APPROVED",
+          "APPLICATION_RECORD_REJECTED",
+          "APPLICATION_CLOSE"
+        ],
+        "resource_types": ["ApplicationCase", "OfficerSession"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      }
+    }
+  }
+}

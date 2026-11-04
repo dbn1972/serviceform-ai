@@ -1,6 +1,6 @@
 import type { AuthAssurance, RequestContext } from '@serviceform/contracts';
 import type { FastifyRequest } from 'fastify';
-import type { Pool } from 'pg';
+import type { Pool, PoolClient } from 'pg';
 import type { ContextResolver, PrincipalVerifier, VerifiedPrincipal } from '@serviceform/security';
 import { tokenFingerprint } from './hashing.js';
 
@@ -18,6 +18,32 @@ export interface SessionLookupRow {
 export interface SessionDirectory {
   lookupByToken(token: string): Promise<SessionLookupRow | null>;
   lookupActiveBySubject(principal: VerifiedPrincipal): Promise<SessionLookupRow | null>;
+}
+
+/** Officer role codes live in the tenant-scoped officer_session row, read under that tenant's RLS. */
+async function officerRoleCodes(
+  client: PoolClient,
+  tenantId: string,
+  sessionId: string,
+): Promise<string[]> {
+  await client.query('BEGIN');
+  try {
+    await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', tenantId]);
+    const sess = await client.query<{ role_codes: string[] }>(
+      `SELECT role_codes FROM sf_identity.officer_session
+        WHERE tenant_id = $1 AND session_id = $2 AND status = 'ACTIVE'`,
+      [tenantId, sessionId],
+    );
+    await client.query('COMMIT');
+    return sess.rows[0]?.role_codes ?? [];
+  } catch (err) {
+    try {
+      await client.query('ROLLBACK');
+    } catch {
+      /* ignore */
+    }
+    throw err;
+  }
 }
 
 export class PgSessionDirectory implements SessionDirectory {
@@ -48,27 +74,10 @@ export class PgSessionDirectory implements SessionDirectory {
       if (!row) return null;
       if (row.status !== 'ACTIVE') return null;
       if (row.expires_at.getTime() <= this.clock().getTime()) return null;
-      let role_codes: string[] = [];
-      if (row.actor_type === 'OFFICER' && row.tenant_id) {
-        await client.query('BEGIN');
-        try {
-          await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', row.tenant_id]);
-          const sess = await client.query<{ role_codes: string[] }>(
-            `SELECT role_codes FROM sf_identity.officer_session
-              WHERE tenant_id = $1 AND session_id = $2 AND status = 'ACTIVE'`,
-            [row.tenant_id, row.session_id],
-          );
-          role_codes = sess.rows[0]?.role_codes ?? [];
-          await client.query('COMMIT');
-        } catch (err) {
-          try {
-            await client.query('ROLLBACK');
-          } catch {
-            /* ignore */
-          }
-          throw err;
-        }
-      }
+      const role_codes =
+        row.actor_type === 'OFFICER' && row.tenant_id
+          ? await officerRoleCodes(client, row.tenant_id, row.session_id)
+          : [];
       return { ...row, role_codes };
     } finally {
       client.release();
@@ -97,7 +106,11 @@ export class PgSessionDirectory implements SessionDirectory {
       const row = found.rows[0];
       if (!row) return null;
       if (row.expires_at.getTime() <= this.clock().getTime()) return null;
-      return { ...row, role_codes: [] };
+      const role_codes =
+        row.actor_type === 'OFFICER' && row.tenant_id
+          ? await officerRoleCodes(client, row.tenant_id, row.session_id)
+          : [];
+      return { ...row, role_codes };
     } finally {
       client.release();
     }
@@ -157,7 +170,7 @@ export class IdentityContextResolver implements ContextResolver {
         tenant_id: row.tenant_id,
         cell_id: opts.cellId || this.cellId,
         actor: { type: 'OFFICER', id: principal.subject_id },
-        roles: row.role_codes.length > 0 ? row.role_codes : ['SERVICE_CHECKER'],
+        roles: [...row.role_codes],
         jurisdiction_ids: [],
         auth_assurance: principal.assurance,
       };
