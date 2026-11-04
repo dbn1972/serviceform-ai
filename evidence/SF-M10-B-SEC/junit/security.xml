@@ -1,59 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="115" failures="19" errors="0" time="14.323364986">
-    <testsuite name="tests/security/m10/guards-csrf-headers.sec.test.ts" timestamp="2026-11-04T15:43:19.800Z" hostname="cursor" tests="20" failures="4" errors="0" skipped="0" time="1.130547901">
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;UAT&quot;" time="0.001524205">
+<testsuites name="vitest tests" tests="137" failures="7" errors="0" time="15.032843584">
+    <testsuite name="tests/security/m10/guards-csrf-headers.sec.test.ts" timestamp="2026-11-04T16:08:35.107Z" hostname="cursor" tests="23" failures="1" errors="0" skipped="0" time="1.4494489">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;UAT&quot;" time="0.001471951">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;PREPROD&quot;" time="0.000213898">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;PREPROD&quot;" time="0.000220027">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;PRODUCTION&quot;" time="0.000127883">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;PRODUCTION&quot;" time="0.000123726">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;SIT&quot;" time="0.00018566">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;SIT&quot;" time="0.000189753">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;DEVELOPMENT&quot;" time="0.000154151">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;DEVELOPMENT&quot;" time="0.00015332">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;&quot;" time="0.000092964">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;&quot;" time="0.000094813">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;local&quot;" time="0.000120855">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; assertSimulatorEnvironment refuses &quot;local&quot;" time="0.000122845">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; registerLabSimulators refuses to mount routes in UAT" time="0.000985237">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; registerLabSimulators refuses to mount routes in UAT" time="0.001070844">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; buildPlatformLab refuses UAT before touching the database" time="0.000747304">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; buildPlatformLab refuses UAT before touching the database" time="0.000738085">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; portal placement is refused for PRODUCTION/PREPROD and on environment mismatch" time="0.032987568">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; portal placement is refused for PRODUCTION/PREPROD and on environment mismatch" time="0.03646565">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; runtime: the platform host process refuses to start with SF_ENVIRONMENT=UAT" time="0.842843049">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; runtime: the platform host process refuses to start with SF_ENVIRONMENT=UAT" time="0.849193328">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; officer BFF refuses SIMULATED IdP sign-in when SF_ENVIRONMENT is not LOCAL/CI" time="0.005253833">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-SIM simulators refused outside LOCAL/CI &gt; officer BFF refuses SIMULATED IdP sign-in when SF_ENVIRONMENT is not LOCAL/CI" time="0.009810504">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes &gt; FINDING: officer decision POST is accepted cross-origin with a simple (text/plain) request" time="0.103334431">
-            <failure message="cross-origin text/plain decision: expected 200 to be 403 // Object.is equality" type="AssertionError">
-AssertionError: cross-origin text/plain decision: expected 200 to be 403 // Object.is equality
-
-- Expected
-+ Received
-
-- 403
-+ 200
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:135:63
-            </failure>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) &gt; officer decision POST refuses every cross-site / non-JSON variant and the case is unchanged" time="0.14510944">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes &gt; FINDING: citizen apply POST is accepted cross-origin with a simple (text/plain) request" time="0.040578275">
-            <failure message="cross-origin text/plain apply: expected 201 to be 403 // Object.is equality" type="AssertionError">
-AssertionError: cross-origin text/plain apply: expected 201 to be 403 // Object.is equality
-
-- Expected
-+ Received
-
-- 403
-+ 201
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:149:60
-            </failure>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) &gt; citizen apply, OTP challenge and session POSTs refuse every cross-site / non-JSON variant" time="0.104401343">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) &gt; BFF refuses a non-synthetic applicant name" time="0.016061636">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) &gt; officer sign-in POST (login CSRF) refuses cross-site variants" time="0.024561708">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) &gt; FINDING: the host (CMP-015) accepts a non-synthetic name directly; L-2 is BFF-only" time="0.017394216">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) &gt; a body without any Content-Type (no-cors Blob shape) is refused on officer decision and citizen apply" time="0.0610871">
+        </testcase>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) &gt; cross-site sign-out (DELETE) is refused and the session survives" time="0.097919714">
+        </testcase>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) &gt; BFF refuses a non-synthetic applicant name" time="0.020576503">
+        </testcase>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) &gt; F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB" time="0.025257698">
             <failure message="non-synthetic name via host: expected 200 to be 400 // Object.is equality" type="AssertionError">
 AssertionError: non-synthetic name via host: expected 200 to be 400 // Object.is equality
 
@@ -63,41 +47,30 @@ AssertionError: non-synthetic name via host: expected 200 to be 400 // Object.is
 - 400
 + 200
 
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:188:58
+ ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:310:58
             </failure>
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; host: malformed JSON, oversized and unexpected input return generic errors without internals" time="0.014801013">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; host: malformed JSON, oversized and unexpected input return generic errors without internals" time="0.016068792">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; BFF: platform outage maps to a generic 5xx and no upstream detail" time="0.002207348">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; BFF: platform outage maps to a generic 5xx and no upstream detail" time="0.002321378">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; portal pages send frame-ancestors none and nosniff, and no x-powered-by" time="0.015107107">
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; portal pages send frame-ancestors none and nosniff, and no x-powered-by" time="0.017549738">
         </testcase>
-        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; FINDING: host CMP-015 working-data (PII) responses carry no Cache-Control" time="0.034125097">
-            <failure message="host working-data cache-control: expected &apos;&apos; to match /no-store/" type="AssertionError">
-AssertionError: host working-data cache-control: expected &apos;&apos; to match /no-store/
-
-- Expected:
-/no-store/
-
-+ Received:
-&quot;&quot;
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:243:8
-            </failure>
+        <testcase classname="tests/security/m10/guards-csrf-headers.sec.test.ts" name="SEC-ERR error responses and headers &gt; F-12: host CMP-015 working-data (PII) responses are Cache-Control: no-store" time="0.032970291">
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/idor-authz.sec.test.ts" timestamp="2026-11-04T15:43:19.804Z" hostname="cursor" tests="28" failures="1" errors="0" skipped="0" time="0.43798365">
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot read A case, transitions or working data" time="0.015574316">
+    <testsuite name="tests/security/m10/idor-authz.sec.test.ts" timestamp="2026-11-04T16:08:35.111Z" hostname="cursor" tests="28" failures="1" errors="0" skipped="0" time="0.433901992">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot read A case, transitions or working data" time="0.018422532">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B list never contains A applications; state filter does not widen it" time="0.01238761">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B list never contains A applications; state filter does not widen it" time="0.011367468">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; list rejects extra query keys that could carry owner/tenant overrides" time="0.003683209">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; list rejects extra query keys that could carry owner/tenant overrides" time="0.003537786">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot write A working data or drive A commands" time="0.028361787">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot write A working data or drive A commands" time="0.024983871">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot register requests on A case" time="0.001779656">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; B cannot register requests on A case" time="0.001388419">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; FINDING: host get-by-id distinguishes another citizen case (403) from a missing id (404)" time="0.010005172">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR host: citizen B against citizen A (same placement tenant) &gt; F-09: host get-by-id answers another citizen case like a missing id" time="0.00937881">
             <failure message="existence oracle (other citizen case vs absent id): expected 403 to be 404 // Object.is equality" type="AssertionError">
 AssertionError: existence oracle (other citizen case vs absent id): expected 403 to be 404 // Object.is equality
 
@@ -110,100 +83,73 @@ AssertionError: existence oracle (other citizen case vs absent id): expected 403
  ❯ tests/security/m10/idor-authz.sec.test.ts:133:8
             </failure>
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-tenant-id" time="0.001047893">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-tenant-id" time="0.001068371">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-sf-tenant" time="0.000961395">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-sf-tenant" time="0.000796631">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses tenant-id" time="0.000983232">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses tenant-id" time="0.001147497">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-roles" time="0.001004183">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-roles" time="0.000806486">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-actor-type" time="0.000947618">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-actor-type" time="0.000637344">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-actor-id" time="0.001138809">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses x-actor-id" time="0.001264166">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses forwarded" time="0.000750792">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; CMP-015 refuses forwarded" time="0.001110181">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; citizen BFF does not forward client tenant/role headers (list unchanged, no officer view)" time="0.020672387">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-TEN tenant-identifying headers refused (SF-TEN-002) &gt; citizen BFF does not forward client tenant/role headers (list unchanged, no officer view)" time="0.022563322">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF get-by-id for another citizen case is 404 with no PII" time="0.029197301">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF get-by-id for another citizen case is 404 with no PII" time="0.02746051">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF path traversal / non-UUID ids are refused before reaching the host" time="0.024337251">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF path traversal / non-UUID ids are refused before reaching the host" time="0.022539913">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF responses with PII carry Cache-Control: no-store" time="0.045914081">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-IDOR BFF: citizen B against citizen A &gt; BFF responses with PII carry Cache-Control: no-store" time="0.053715228">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute MARK_RECEIVED on own case" time="0.007697032">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute MARK_RECEIVED on own case" time="0.007965961">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute ENTER_SCRUTINY on own case" time="0.008629195">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute ENTER_SCRUTINY on own case" time="0.007301795">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute ENTER_DECISION_PENDING on own case" time="0.008190867">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute ENTER_DECISION_PENDING on own case" time="0.00722969">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RAISE_DEFICIENCY on own case" time="0.00513556">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RAISE_DEFICIENCY on own case" time="0.00444858">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RECORD_APPROVED on own case" time="0.004507276">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RECORD_APPROVED on own case" time="0.004491459">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RECORD_REJECTED on own case" time="0.00486632">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute RECORD_REJECTED on own case" time="0.005132805">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute CLOSE on own case" time="0.008061532">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; owning citizen cannot execute CLOSE on own case" time="0.008062231">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer decision without HUMAN attestation, or attested AI, is refused" time="0.073173163">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer decision without HUMAN attestation, or attested AI, is refused" time="0.066081122">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer can not write citizen working data (no WORKING_DATA_WRITE grant)" time="0.010318262">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer can not write citizen working data (no WORKING_DATA_WRITE grant)" time="0.011302411">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer cannot create a draft as a citizen (no APPLICATION_CREATE_DRAFT grant)" time="0.00943386">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; officer cannot create a draft as a citizen (no APPLICATION_CREATE_DRAFT grant)" time="0.008862416">
         </testcase>
-        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; citizen BFF exposes no command/decision route; officer BFF decision route refuses citizens" time="0.018268438">
+        <testcase classname="tests/security/m10/idor-authz.sec.test.ts" name="SEC-AUTHZ officer commands and decision boundary &gt; citizen BFF exposes no command/decision route; officer BFF decision route refuses citizens" time="0.016412874">
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/officer-session-binding.sec.test.ts" timestamp="2026-11-04T15:43:19.806Z" hostname="cursor" tests="5" failures="5" errors="0" skipped="0" time="0.135548192">
-        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; FINDING: token for a tenant-A session resolves to the later tenant-B session context" time="0.054055977">
-            <failure message="context taken from a different session: expected &apos;0d15ba00-0001-4000-8000-0d15ba00ffff&apos; to be &apos;0d15ba00-0001-4000-8000-0d15ba0000d1&apos; // Object.is equality" type="AssertionError">
-AssertionError: context taken from a different session: expected &apos;0d15ba00-0001-4000-8000-0d15ba00ffff&apos; to be &apos;0d15ba00-0001-4000-8000-0d15ba0000d1&apos; // Object.is equality
-
-Expected: &quot;0d15ba00-0001-4000-8000-0d15ba0000d1&quot;
-Received: &quot;0d15ba00-0001-4000-8000-0d15ba00ffff&quot;
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:78:84
-            </failure>
-            <failure message="tenant-A token denied on tenant-A host: expected 401 to be 200 // Object.is equality" type="AssertionError">
-AssertionError: tenant-A token denied on tenant-A host: expected 401 to be 200 // Object.is equality
-
-- Expected
-+ Received
-
-- 200
-+ 401
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:80:73
-            </failure>
+    <testsuite name="tests/security/m10/officer-session-binding.sec.test.ts" timestamp="2026-11-04T16:08:35.113Z" hostname="cursor" tests="10" failures="1" errors="0" skipped="0" time="0.220886148">
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-01: a tenant-A token keeps the tenant-A context when a later tenant-B session exists" time="0.051407034">
         </testcase>
-        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; FINDING: a credential issued for a tenant-B session reads tenant-A cases on the tenant-A host" time="0.01520527">
-            <failure message="tenant-B credential accepted for tenant-A list: expected 200 to be 401 // Object.is equality" type="AssertionError">
-AssertionError: tenant-B credential accepted for tenant-A list: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:91:81
-            </failure>
-            <failure message="tenant-A cases returned to a tenant-B credential: expected 30 to be +0 // Object.is equality" type="AssertionError">
-AssertionError: tenant-A cases returned to a tenant-B credential: expected 30 to be +0 // Object.is equality
-
-- Expected
-+ Received
-
-- 0
-+ 30
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:92:72
-            </failure>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-01: a credential issued for a tenant-B session gets no tenant-A context or cases" time="0.011241158">
         </testcase>
-        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; FINDING: signing out with the tenant-A token does not revoke the tenant-A session while a later session exists" time="0.018694107">
-            <failure message="revoke response: expected 403 to be 200 // Object.is equality" type="AssertionError">
-AssertionError: revoke response: expected 403 to be 200 // Object.is equality
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-02: signing out with the tenant-A token revokes it while a later tenant-B session exists" time="0.015853464">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-03: roles come from the presented session, not a later same-tenant session" time="0.012521179">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-05: a DISABLED officer is not re-activated by sign-in and live sessions stop" time="0.01276309">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-01/F-02/F-03 with three sessions: each token gets exactly its own tenant and roles; sign-out revokes the presented tenant only" time="0.030833328">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; F-05 across tenants: disabling the tenant-B principal does not affect tenant A; disabling A stops A and never yields B" time="0.02380523">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; inconsistent or stale rows never resolve: expired lookup, revoked officer_session behind an ACTIVE lookup" time="0.012571968">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; officer BFF sign-out revokes the presented session on the platform" time="0.019437184">
+        </testcase>
+        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; N-1: a role-less officer session can still sign itself out" time="0.011341796">
+            <failure message="role-less revoke status: expected 403 to be 200 // Object.is equality" type="AssertionError">
+AssertionError: role-less revoke status: expected 403 to be 200 // Object.is equality
 
 - Expected
 + Received
@@ -211,87 +157,38 @@ AssertionError: revoke response: expected 403 to be 200 // Object.is equality
 - 200
 + 403
 
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:110:51
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:251:54
             </failure>
-            <failure message="presented session status after revoke: expected &apos;ACTIVE&apos; to be &apos;REVOKED&apos; // Object.is equality" type="AssertionError">
-AssertionError: presented session status after revoke: expected &apos;ACTIVE&apos; to be &apos;REVOKED&apos; // Object.is equality
+            <failure message="role-less session after revoke: expected &apos;ACTIVE&apos; to be &apos;REVOKED&apos; // Object.is equality" type="AssertionError">
+AssertionError: role-less session after revoke: expected &apos;ACTIVE&apos; to be &apos;REVOKED&apos; // Object.is equality
 
 Expected: &quot;REVOKED&quot;
 Received: &quot;ACTIVE&quot;
 
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:111:79
-            </failure>
-            <failure message="token reusable after sign-out: expected 200 to be 401 // Object.is equality" type="AssertionError">
-AssertionError: token reusable after sign-out: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:112:64
-            </failure>
-        </testcase>
-        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; FINDING: roles come from the latest same-tenant session, not the presented one" time="0.012808414">
-            <failure message="presented session roles replaced by another session: expected 403 to be 200 // Object.is equality" type="AssertionError">
-AssertionError: presented session roles replaced by another session: expected 403 to be 200 // Object.is equality
-
-- Expected
-+ Received
-
-- 200
-+ 403
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:122:86
-            </failure>
-        </testcase>
-        <testcase classname="tests/security/m10/officer-session-binding.sec.test.ts" name="SEC-SESSION-BINDING officer context comes from the presented session &gt; FINDING: a DISABLED officer principal is re-activated by the next IdP sign-in" time="0.018165531">
-            <failure message="existing session of a disabled officer: expected 200 to be 401 // Object.is equality" type="AssertionError">
-AssertionError: existing session of a disabled officer: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:142:72
-            </failure>
-            <failure message="new session for a disabled officer: expected 200 not to be 200 // Object.is equality" type="AssertionError">
-AssertionError: new session for a disabled officer: expected 200 not to be 200 // Object.is equality
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:143:77
-            </failure>
-            <failure message="principal status after sign-in: expected &apos;ACTIVE&apos; to be &apos;DISABLED&apos; // Object.is equality" type="AssertionError">
-AssertionError: principal status after sign-in: expected &apos;ACTIVE&apos; to be &apos;DISABLED&apos; // Object.is equality
-
-Expected: &quot;DISABLED&quot;
-Received: &quot;ACTIVE&quot;
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:144:71
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:252:72
             </failure>
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/opa.sec.test.ts" timestamp="2026-11-04T15:43:19.809Z" hostname="cursor" tests="12" failures="1" errors="0" skipped="0" time="5.423169741">
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; owner read is allowed (control)" time="0.024490435">
+    <testsuite name="tests/security/m10/opa.sec.test.ts" timestamp="2026-11-04T16:08:35.114Z" hostname="cursor" tests="12" failures="1" errors="0" skipped="0" time="5.684691401">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; owner read is allowed (control)" time="0.024626289">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; non-owner citizen is denied" time="0.003737636">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; non-owner citizen is denied" time="0.004111332">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; missing, empty or non-string owner_id is denied" time="0.013826336">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; missing, empty or non-string owner_id is denied" time="0.010923949">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; citizen presenting roles is denied CITIZEN_ROLES_FORBIDDEN (even with a valid tenant role)" time="0.002546783">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; citizen presenting roles is denied CITIZEN_ROLES_FORBIDDEN (even with a valid tenant role)" time="0.002378847">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; owning citizen cannot take officer actions" time="0.00720661">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; owning citizen cannot take officer actions" time="0.010490563">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; citizen with insufficient assurance is denied" time="0.005773765">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; citizen with insufficient assurance is denied" time="0.003596403">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; tenant mismatch and unknown tenant are denied for the owner" time="0.00315481">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; tenant mismatch and unknown tenant are denied for the owner" time="0.002868112">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; actor_type spoofing (OFFICER with no roles, owner match) is denied" time="0.001291681">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; actor_type spoofing (OFFICER with no roles, owner match) is denied" time="0.001315687">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; OPA management API is not reachable with the PEP token (no data/policy writes)" time="0.003006667">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; OPA management API is not reachable with the PEP token (no data/policy writes)" time="0.002617578">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; FINDING (pre-existing CMP-048): OPA bearer tokens are literal identity names" time="0.004713008">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) &gt; F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names" time="0.004575178">
             <failure message="grant-publisher literal token accepted: expected 200 to be 401 // Object.is equality" type="AssertionError">
 AssertionError: grant-publisher literal token accepted: expected 200 to be 401 // Object.is equality
 
@@ -304,158 +201,73 @@ AssertionError: grant-publisher literal token accepted: expected 200 to be 401 /
  ❯ tests/security/m10/opa.sec.test.ts:118:71
             </failure>
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA-FAILCLOSED host with OPA stopped &gt; every OPA-guarded read and write is refused while OPA is down (fail closed)" time="0.048591081">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA-FAILCLOSED host with OPA stopped &gt; every OPA-guarded read and write is refused while OPA is down (fail closed)" time="0.31128598">
         </testcase>
-        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA-FAILCLOSED host with OPA stopped &gt; after OPA returns, the host recovers (PEP breaker closes) without a restart" time="5.301362007">
+        <testcase classname="tests/security/m10/opa.sec.test.ts" name="SEC-OPA-FAILCLOSED host with OPA stopped &gt; after OPA returns, the host recovers (PEP breaker closes) without a restart" time="5.302037961">
             <system-err>
-SEC-OPA-FAILCLOSED: host recovered in 5034 ms
+SEC-OPA-FAILCLOSED: host recovered in 5036 ms
 
             </system-err>
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/open-redirect.sec.test.ts" timestamp="2026-11-04T15:43:19.810Z" hostname="cursor" tests="12" failures="6" errors="0" skipped="0" time="6.497731738">
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;https://evil.example/x&quot;" time="0.001137717">
+    <testsuite name="tests/security/m10/open-redirect.sec.test.ts" timestamp="2026-11-04T16:08:35.116Z" hostname="cursor" tests="23" failures="0" errors="0" skipped="0" time="6.46604037">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; the officer sign-in component uses the tested lib helper (no private copy)" time="0.001220847">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;//evil.example&quot;" time="0.000196589">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; same-origin targets are preserved (control)" time="0.00033404">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;/\\evil.example&quot;" time="0.000112151">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;https://evil.example/x&quot;" time="0.000125242">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;/\t/evil.example&quot;" time="0.000153778">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;//evil.example&quot;" time="0.00016787">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;javascript:alert(1)&quot;" time="0.000149426">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;/\\evil.example&quot;" time="0.000142867">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot; /x&quot;" time="0.000071369">
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;/\t/evil.example&quot;" time="0.000115209">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; FINDING: dot-segment &quot;/.//evil.example&quot; must not yield a protocol-relative target" time="0.004119523">
-            <failure message="citizen -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: citizen -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:49:10
-            </failure>
-            <failure message="officer -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: officer -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:50:83
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot;javascript:alert(1)&quot;" time="0.000098248">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; FINDING: dot-segment &quot;/..//evil.example&quot; must not yield a protocol-relative target" time="0.000702633">
-            <failure message="citizen -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: citizen -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:49:10
-            </failure>
-            <failure message="officer -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: officer -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:50:83
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; both sanitisers fall back for &quot; /x&quot;" time="0.000070538">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; FINDING: dot-segment &quot;/%2e//evil.example&quot; must not yield a protocol-relative target" time="0.001147903">
-            <failure message="citizen -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: citizen -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:49:10
-            </failure>
-            <failure message="officer -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: officer -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:50:83
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.//evil.example&quot; must not yield a protocol-relative target" time="0.00042151">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; FINDING: dot-segment &quot;/a/..//evil.example&quot; must not yield a protocol-relative target" time="0.000631193">
-            <failure message="citizen -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: citizen -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:49:10
-            </failure>
-            <failure message="officer -&gt; //evil.example: expected true to be false // Object.is equality" type="AssertionError">
-AssertionError: officer -&gt; //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:50:83
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/..//evil.example&quot; must not yield a protocol-relative target" time="0.00014156">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT runtime (headless Chromium against the built BFFs) &gt; FINDING: officer sign-in with next=/.//evil.example navigates off-site" time="3.18554044">
-            <failure message="officer landed on: expected &apos;evil.example&apos; not to be &apos;evil.example&apos; // Object.is equality" type="AssertionError">
-AssertionError: officer landed on: expected &apos;evil.example&apos; not to be &apos;evil.example&apos; // Object.is equality
- ❯ tests/security/m10/open-redirect.sec.test.ts:72:48
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/%2e//evil.example&quot; must not yield a protocol-relative target" time="0.000135057">
         </testcase>
-        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT runtime (headless Chromium against the built BFFs) &gt; FINDING: citizen signed-in &quot;Continue&quot; link honours next=/.//evil.example" time="3.223798222">
-            <failure message="Continue href: expected &apos;//evil.example&apos; not to match /^\/\//\" type="AssertionError">
-AssertionError: Continue href: expected &apos;//evil.example&apos; not to match /^\/\//\
-
-- Expected:
-/^\/\//
-
-+ Received:
-&quot;//evil.example&quot;
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:99:44
-            </failure>
-            <failure message="citizen landed on: expected &apos;evil.example&apos; not to be &apos;evil.example&apos; // Object.is equality" type="AssertionError">
-AssertionError: citizen landed on: expected &apos;evil.example&apos; not to be &apos;evil.example&apos; // Object.is equality
- ❯ tests/security/m10/open-redirect.sec.test.ts:100:48
-            </failure>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/a/..//evil.example&quot; must not yield a protocol-relative target" time="0.00006183">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/./\\evil.example&quot; must not yield a protocol-relative target" time="0.00004989">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.\\/evil.example&quot; must not yield a protocol-relative target" time="0.000051944">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/%2e%2e//evil.example&quot; must not yield a protocol-relative target" time="0.000042039">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/%2E/%2E%2E//evil.example&quot; must not yield a protocol-relative target" time="0.00004251">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.//evil.example?next=/x#y&quot; must not yield a protocol-relative target" time="0.000040811">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.\t//evil.example&quot; must not yield a protocol-relative target" time="0.000042943">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.\n//evil.example&quot; must not yield a protocol-relative target" time="0.000036727">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/a/b/../..//evil.example&quot; must not yield a protocol-relative target" time="0.000036805">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT next parameter sanitisers (unit) &gt; F-04: &quot;/.///evil.example&quot; must not yield a protocol-relative target" time="0.000035215">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT runtime (headless Chromium against the built BFFs) &gt; F-04: officer sign-in with next=/.//evil.example stays on the workbench" time="3.177340687">
+        </testcase>
+        <testcase classname="tests/security/m10/open-redirect.sec.test.ts" name="SEC-REDIRECT runtime (headless Chromium against the built BFFs) &gt; F-04: citizen signed-in &quot;Continue&quot; link ignores next=/.//evil.example" time="3.208202034">
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/otp.sec.test.ts" timestamp="2026-11-04T15:43:19.812Z" hostname="cursor" tests="8" failures="2" errors="0" skipped="0" time="0.195500784">
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; locks the challenge after 5 wrong codes; the right code is then refused; LOCKED is persisted" time="0.051110213">
+    <testsuite name="tests/security/m10/otp.sec.test.ts" timestamp="2026-11-04T16:08:35.118Z" hostname="cursor" tests="11" failures="3" errors="0" skipped="0" time="0.305741599">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; locks the challenge after 5 wrong codes; the right code is then refused; LOCKED is persisted" time="0.055323227">
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; lockout is also enforced through the BFF (same generic message for wrong/locked)" time="0.033506863">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; lockout is also enforced through the BFF (same generic message for wrong/locked)" time="0.032457915">
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; a verified challenge cannot be replayed" time="0.008387935">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; a verified challenge cannot be replayed" time="0.008527079">
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; challenge response is indistinguishable for new and existing numbers (host and BFF)" time="0.023337235">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; challenge response is indistinguishable for new and existing numbers (host and BFF)" time="0.024510255">
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; FINDING: a non-ACTIVE citizen principal is distinguishable at challenge time" time="0.017135129">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time" time="0.019094849">
             <failure message="locked principal answered 403 SF-AUTH-002: expected 403 to be 200 // Object.is equality" type="AssertionError">
 AssertionError: locked principal answered 403 SF-AUTH-002: expected 403 to be 200 // Object.is equality
 
@@ -468,79 +280,96 @@ AssertionError: locked principal answered 403 SF-AUTH-002: expected 403 to be 20
  ❯ tests/security/m10/otp.sec.test.ts:110:10
             </failure>
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; FINDING: challenges per number are not capped and earlier challenges stay PENDING" time="0.033972665">
-            <failure message="concurrently PENDING challenges for one number: expected 12 to be less than or equal to 1" type="AssertionError">
-AssertionError: concurrently PENDING challenges for one number: expected 12 to be less than or equal to 1
- ❯ tests/security/m10/otp.sec.test.ts:134:8
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; F-06: a new challenge supersedes earlier PENDING challenges for the number" time="0.036417433">
+        </testcase>
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; OTP inbox: unknown/non-UUID ids are 404 and responses are no-store" time="0.007091723">
+        </testcase>
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; rate-limit key ignores client-supplied X-Forwarded-For (no bucket rotation)" time="0.005568085">
+        </testcase>
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; F-06: a superseded challenge cannot be verified with its own (correct) code" time="0.00956551">
+        </testcase>
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; F-06: concurrent challenge requests for one number leave at most one PENDING" time="0.028446057">
+            <failure message="PENDING after 20 concurrent requests: expected 5 to be less than or equal to 1" type="AssertionError">
+AssertionError: PENDING after 20 concurrent requests: expected 5 to be less than or equal to 1
+ ❯ tests/security/m10/otp.sec.test.ts:187:8
             </failure>
         </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; OTP inbox: unknown/non-UUID ids are 404 and responses are no-store" time="0.005292169">
-        </testcase>
-        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; rate-limit key ignores client-supplied X-Forwarded-For (no bucket rotation)" time="0.005222698">
-        </testcase>
-    </testsuite>
-    <testsuite name="tests/security/m10/rls-pii.sec.test.ts" timestamp="2026-11-04T15:43:19.813Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.184905736">
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; runtime logins are NOSUPERUSER and NOBYPASSRLS" time="0.002879493">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.application_case are invisible under another tenant and with no tenant" time="0.004030596">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.application_working_data are invisible under another tenant and with no tenant" time="0.00127442">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.case_transition are invisible under another tenant and with no tenant" time="0.001167198">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.idempotency_record are invisible under another tenant and with no tenant" time="0.001492448">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the case written through the API is visible only under the placement tenant" time="0.001389545">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; another tenant cannot update or delete placement-tenant rows (0 rows affected)" time="0.002183419">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the outbox is insert-only for the runtime login (no read-back of events) and FORCE RLS" time="0.001561781">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; tenant_id cannot be rewritten by the runtime login (column privilege + WITH CHECK)" time="0.000978914">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the cmp015 login cannot read CMP-004 tables and vice versa (no cross-component SQL)" time="0.002387196">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; runtime logins cannot disable RLS or alter policies" time="0.000828265">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; no working-data values or mobile numbers in any outbox, inbox or audit table" time="0.072158534">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; working data PII lives only in the RLS-protected working-data table" time="0.000478557">
-        </testcase>
-        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; CMP-004 stores channel and token only as hashes" time="0.000865467">
+        <testcase classname="tests/security/m10/otp.sec.test.ts" name="SEC-OTP CMP-004 citizen OTP &gt; F-06: wrong-code budget is per channel, not per challenge (sequential re-challenge)" time="0.059536872">
+            <failure message="20 wrong codes then challenge 200, verify 200: expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: 20 wrong codes then challenge 200, verify 200: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/security/m10/otp.sec.test.ts:217:8
+            </failure>
         </testcase>
     </testsuite>
-    <testsuite name="tests/security/m10/session.sec.test.ts" timestamp="2026-11-04T15:43:19.814Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.317977244">
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats legacy lab cookie name (base64 JSON) as anonymous" time="0.026856819">
+    <testsuite name="tests/security/m10/rls-pii.sec.test.ts" timestamp="2026-11-04T16:08:35.120Z" hostname="cursor" tests="14" failures="0" errors="0" skipped="0" time="0.18795108">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; runtime logins are NOSUPERUSER and NOBYPASSRLS" time="0.002972469">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats base64 JSON in the portal cookie as anonymous" time="0.004681138">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.application_case are invisible under another tenant and with no tenant" time="0.004371298">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats base64url JSON in the portal cookie as anonymous" time="0.005174555">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.application_working_data are invisible under another tenant and with no tenant" time="0.00149129">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats random 43-char token-shaped value as anonymous" time="0.00780827">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.case_transition are invisible under another tenant and with no tenant" time="0.00130847">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats JWT-shaped alg=none as anonymous" time="0.004784101">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; placement-tenant rows in sf_application_case.idempotency_record are invisible under another tenant and with no tenant" time="0.001372081">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats duplicate cookie, forged first as anonymous" time="0.00644414">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the case written through the API is visible only under the placement tenant" time="0.000985287">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen session cookie is HttpOnly, SameSite=Lax, Path=/ and holds only an opaque token" time="0.020107514">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; another tenant cannot update or delete placement-tenant rows (0 rows affected)" time="0.002439014">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer session cookie is HttpOnly, SameSite=Lax and holds only an opaque token" time="0.010203789">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the outbox is insert-only for the runtime login (no read-back of events) and FORCE RLS" time="0.001599661">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen token placed in the officer cookie gets no officer session or queue" time="0.020502971">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; tenant_id cannot be rewritten by the runtime login (column privilege + WITH CHECK)" time="0.001019558">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer token placed in the citizen cookie gets no citizen session or applications" time="0.016340873">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; the cmp015 login cannot read CMP-004 tables and vice versa (no cross-component SQL)" time="0.002831932">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; a revoked citizen session (BFF sign-out) is unusable on the BFF and on the host" time="0.030659626">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-RLS runtime logins created by the bootstrap &gt; runtime logins cannot disable RLS or alter policies" time="0.000908844">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; a revoked officer session is unusable" time="0.085604822">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; no working-data values or mobile numbers in any outbox, inbox or audit table" time="0.071614186">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; host: missing, malformed and unknown bearer tokens are 401" time="0.004885889">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; working data PII lives only in the RLS-protected working-data table" time="0.000557442">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer assertion for a tenant other than the placement tenant yields no session or context" time="0.048014719">
+        <testcase classname="tests/security/m10/rls-pii.sec.test.ts" name="SEC-PII no applicant PII in outbox/audit rows &gt; CMP-004 stores channel and token only as hashes" time="0.000922046">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer assertion with a forged signature, expired exp or tampered tenant is refused" time="0.005489411">
+    </testsuite>
+    <testsuite name="tests/security/m10/session.sec.test.ts" timestamp="2026-11-04T16:08:35.121Z" hostname="cursor" tests="16" failures="0" errors="0" skipped="0" time="0.284182094">
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats legacy lab cookie name (base64 JSON) as anonymous" time="0.027379356">
         </testcase>
-        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; host: a citizen session from CMP-004 never resolves officer roles on CMP-015" time="0.018794334">
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats base64 JSON in the portal cookie as anonymous" time="0.004958671">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats base64url JSON in the portal cookie as anonymous" time="0.004430464">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats random 43-char token-shaped value as anonymous" time="0.008532137">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats JWT-shaped alg=none as anonymous" time="0.005302216">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen BFF treats duplicate cookie, forged first as anonymous" time="0.008622969">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen session cookie is HttpOnly, SameSite=Lax, Path=/ and holds only an opaque token" time="0.015852165">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer session cookie is HttpOnly, SameSite=Lax and holds only an opaque token" time="0.011496018">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; citizen token placed in the officer cookie gets no officer session or queue" time="0.021089857">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer token placed in the citizen cookie gets no citizen session or applications" time="0.015994591">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; a revoked citizen session (BFF sign-out) is unusable on the BFF and on the host" time="0.032067721">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; a revoked officer session is unusable" time="0.057900718">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; host: missing, malformed and unknown bearer tokens are 401" time="0.004540894">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer assertion for a tenant other than the placement tenant yields no session or context" time="0.051143713">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; officer assertion with a forged signature, expired exp or tampered tenant is refused" time="0.005474888">
+        </testcase>
+        <testcase classname="tests/security/m10/session.sec.test.ts" name="SEC-SESSION portal cookies (ADR-0007 D-3, closes L-1) &gt; host: a citizen session from CMP-004 never resolves officer roles on CMP-015" time="0.008045729">
         </testcase>
     </testsuite>
 </testsuites>

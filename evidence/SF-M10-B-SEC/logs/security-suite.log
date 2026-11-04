@@ -1,42 +1,27 @@
 
  RUN  v5.0.3 /agent/repos/sf-wt-sec
 
- ❯ tests/security/m10/open-redirect.sec.test.ts (12 tests | 6 failed) 6498ms
-   ❯ SEC-REDIRECT next parameter sanitisers (unit) (10)
-     ✓ both sanitisers fall back for "https://evil.example/x" 1ms
-     ✓ both sanitisers fall back for "//evil.example" 0ms
-     ✓ both sanitisers fall back for "/\\evil.example" 0ms
-     ✓ both sanitisers fall back for "/\t/evil.example" 0ms
-     ✓ both sanitisers fall back for "javascript:alert(1)" 0ms
-     ✓ both sanitisers fall back for " /x" 0ms
-     × FINDING: dot-segment "/.//evil.example" must not yield a protocol-relative target 4ms
-     × FINDING: dot-segment "/..//evil.example" must not yield a protocol-relative target 1ms
-     × FINDING: dot-segment "/%2e//evil.example" must not yield a protocol-relative target 1ms
-     × FINDING: dot-segment "/a/..//evil.example" must not yield a protocol-relative target 1ms
-   ❯ SEC-REDIRECT runtime (headless Chromium against the built BFFs) (2)
-     × FINDING: officer sign-in with next=/.//evil.example navigates off-site 3186ms
-     × FINDING: citizen signed-in "Continue" link honours next=/.//evil.example 3224ms
 stderr | tests/security/m10/opa.sec.test.ts > SEC-OPA-FAILCLOSED host with OPA stopped > after OPA returns, the host recovers (PEP breaker closes) without a restart
-SEC-OPA-FAILCLOSED: host recovered in 5034 ms
+SEC-OPA-FAILCLOSED: host recovered in 5036 ms
 
- ❯ tests/security/m10/opa.sec.test.ts (12 tests | 1 failed) 5423ms
+ ❯ tests/security/m10/opa.sec.test.ts (12 tests | 1 failed) 5685ms
    ❯ SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) (10)
-     ✓ owner read is allowed (control) 24ms
+     ✓ owner read is allowed (control) 25ms
      ✓ non-owner citizen is denied 4ms
-     ✓ missing, empty or non-string owner_id is denied 14ms
-     ✓ citizen presenting roles is denied CITIZEN_ROLES_FORBIDDEN (even with a valid tenant role) 3ms
-     ✓ owning citizen cannot take officer actions 7ms
-     ✓ citizen with insufficient assurance is denied 6ms
+     ✓ missing, empty or non-string owner_id is denied 11ms
+     ✓ citizen presenting roles is denied CITIZEN_ROLES_FORBIDDEN (even with a valid tenant role) 2ms
+     ✓ owning citizen cannot take officer actions 10ms
+     ✓ citizen with insufficient assurance is denied 4ms
      ✓ tenant mismatch and unknown tenant are denied for the owner 3ms
      ✓ actor_type spoofing (OFFICER with no roles, owner match) is denied 1ms
      ✓ OPA management API is not reachable with the PEP token (no data/policy writes) 3ms
-     × FINDING (pre-existing CMP-048): OPA bearer tokens are literal identity names 5ms
+     × F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names 5ms
    ✓ SEC-OPA-FAILCLOSED host with OPA stopped (2)
-     ✓ every OPA-guarded read and write is refused while OPA is down (fail closed) 49ms
-     ✓ after OPA returns, the host recovers (PEP breaker closes) without a restart 5301ms
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts (20 tests | 4 failed) 1131ms
+     ✓ every OPA-guarded read and write is refused while OPA is down (fail closed) 311ms
+     ✓ after OPA returns, the host recovers (PEP breaker closes) without a restart 5302ms
+ ❯ tests/security/m10/guards-csrf-headers.sec.test.ts (23 tests | 1 failed) 1449ms
    ✓ SEC-SIM simulators refused outside LOCAL/CI (12)
-     ✓ assertSimulatorEnvironment refuses "UAT" 2ms
+     ✓ assertSimulatorEnvironment refuses "UAT" 1ms
      ✓ assertSimulatorEnvironment refuses "PREPROD" 0ms
      ✓ assertSimulatorEnvironment refuses "PRODUCTION" 0ms
      ✓ assertSimulatorEnvironment refuses "SIT" 0ms
@@ -45,35 +30,31 @@ SEC-OPA-FAILCLOSED: host recovered in 5034 ms
      ✓ assertSimulatorEnvironment refuses "local" 0ms
      ✓ registerLabSimulators refuses to mount routes in UAT 1ms
      ✓ buildPlatformLab refuses UAT before touching the database 1ms
-     ✓ portal placement is refused for PRODUCTION/PREPROD and on environment mismatch 33ms
-     ✓ runtime: the platform host process refuses to start with SF_ENVIRONMENT=UAT 843ms
-     ✓ officer BFF refuses SIMULATED IdP sign-in when SF_ENVIRONMENT is not LOCAL/CI 5ms
-   ❯ SEC-CSRF cookie-authenticated state-changing BFF routes (2)
-     × FINDING: officer decision POST is accepted cross-origin with a simple (text/plain) request 103ms
-     × FINDING: citizen apply POST is accepted cross-origin with a simple (text/plain) request 41ms
+     ✓ portal placement is refused for PRODUCTION/PREPROD and on environment mismatch 36ms
+     ✓ runtime: the platform host process refuses to start with SF_ENVIRONMENT=UAT 849ms
+     ✓ officer BFF refuses SIMULATED IdP sign-in when SF_ENVIRONMENT is not LOCAL/CI 10ms
+   ✓ SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) (5)
+     ✓ officer decision POST refuses every cross-site / non-JSON variant and the case is unchanged 145ms
+     ✓ citizen apply, OTP challenge and session POSTs refuse every cross-site / non-JSON variant 104ms
+     ✓ officer sign-in POST (login CSRF) refuses cross-site variants 25ms
+     ✓ a body without any Content-Type (no-cors Blob shape) is refused on officer decision and citizen apply 61ms
+     ✓ cross-site sign-out (DELETE) is refused and the session survives 98ms
    ❯ SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) (2)
-     ✓ BFF refuses a non-synthetic applicant name 16ms
-     × FINDING: the host (CMP-015) accepts a non-synthetic name directly; L-2 is BFF-only 17ms
-   ❯ SEC-ERR error responses and headers (4)
-     ✓ host: malformed JSON, oversized and unexpected input return generic errors without internals 15ms
+     ✓ BFF refuses a non-synthetic applicant name 21ms
+     × F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB 25ms
+   ✓ SEC-ERR error responses and headers (4)
+     ✓ host: malformed JSON, oversized and unexpected input return generic errors without internals 16ms
      ✓ BFF: platform outage maps to a generic 5xx and no upstream detail 2ms
-     ✓ portal pages send frame-ancestors none and nosniff, and no x-powered-by 15ms
-     × FINDING: host CMP-015 working-data (PII) responses carry no Cache-Control 34ms
- ❯ tests/security/m10/officer-session-binding.sec.test.ts (5 tests | 5 failed) 136ms
-   ❯ SEC-SESSION-BINDING officer context comes from the presented session (5)
-     × FINDING: token for a tenant-A session resolves to the later tenant-B session context 54ms
-     × FINDING: a credential issued for a tenant-B session reads tenant-A cases on the tenant-A host 15ms
-     × FINDING: signing out with the tenant-A token does not revoke the tenant-A session while a later session exists 19ms
-     × FINDING: roles come from the latest same-tenant session, not the presented one 13ms
-     × FINDING: a DISABLED officer principal is re-activated by the next IdP sign-in 18ms
- ❯ tests/security/m10/idor-authz.sec.test.ts (28 tests | 1 failed) 438ms
+     ✓ portal pages send frame-ancestors none and nosniff, and no x-powered-by 18ms
+     ✓ F-12: host CMP-015 working-data (PII) responses are Cache-Control: no-store 33ms
+ ❯ tests/security/m10/idor-authz.sec.test.ts (28 tests | 1 failed) 434ms
    ❯ SEC-IDOR host: citizen B against citizen A (same placement tenant) (6)
-     ✓ B cannot read A case, transitions or working data 16ms
-     ✓ B list never contains A applications; state filter does not widen it 12ms
+     ✓ B cannot read A case, transitions or working data 18ms
+     ✓ B list never contains A applications; state filter does not widen it 11ms
      ✓ list rejects extra query keys that could carry owner/tenant overrides 4ms
-     ✓ B cannot write A working data or drive A commands 28ms
-     ✓ B cannot register requests on A case 2ms
-     × FINDING: host get-by-id distinguishes another citizen case (403) from a missing id (404) 10ms
+     ✓ B cannot write A working data or drive A commands 25ms
+     ✓ B cannot register requests on A case 1ms
+     × F-09: host get-by-id answers another citizen case like a missing id 9ms
    ✓ SEC-TEN tenant-identifying headers refused (SF-TEN-002) (8)
      ✓ CMP-015 refuses x-tenant-id 1ms
      ✓ CMP-015 refuses x-sf-tenant 1ms
@@ -82,77 +63,58 @@ SEC-OPA-FAILCLOSED: host recovered in 5034 ms
      ✓ CMP-015 refuses x-actor-type 1ms
      ✓ CMP-015 refuses x-actor-id 1ms
      ✓ CMP-015 refuses forwarded 1ms
-     ✓ citizen BFF does not forward client tenant/role headers (list unchanged, no officer view) 21ms
+     ✓ citizen BFF does not forward client tenant/role headers (list unchanged, no officer view) 23ms
    ✓ SEC-IDOR BFF: citizen B against citizen A (3)
-     ✓ BFF get-by-id for another citizen case is 404 with no PII 29ms
-     ✓ BFF path traversal / non-UUID ids are refused before reaching the host 24ms
-     ✓ BFF responses with PII carry Cache-Control: no-store 46ms
+     ✓ BFF get-by-id for another citizen case is 404 with no PII 27ms
+     ✓ BFF path traversal / non-UUID ids are refused before reaching the host 23ms
+     ✓ BFF responses with PII carry Cache-Control: no-store 54ms
    ✓ SEC-AUTHZ officer commands and decision boundary (11)
      ✓ owning citizen cannot execute MARK_RECEIVED on own case 8ms
-     ✓ owning citizen cannot execute ENTER_SCRUTINY on own case 9ms
-     ✓ owning citizen cannot execute ENTER_DECISION_PENDING on own case 8ms
-     ✓ owning citizen cannot execute RAISE_DEFICIENCY on own case 5ms
-     ✓ owning citizen cannot execute RECORD_APPROVED on own case 5ms
+     ✓ owning citizen cannot execute ENTER_SCRUTINY on own case 7ms
+     ✓ owning citizen cannot execute ENTER_DECISION_PENDING on own case 7ms
+     ✓ owning citizen cannot execute RAISE_DEFICIENCY on own case 4ms
+     ✓ owning citizen cannot execute RECORD_APPROVED on own case 4ms
      ✓ owning citizen cannot execute RECORD_REJECTED on own case 5ms
      ✓ owning citizen cannot execute CLOSE on own case 8ms
-     ✓ officer decision without HUMAN attestation, or attested AI, is refused 73ms
-     ✓ officer can not write citizen working data (no WORKING_DATA_WRITE grant) 10ms
+     ✓ officer decision without HUMAN attestation, or attested AI, is refused 66ms
+     ✓ officer can not write citizen working data (no WORKING_DATA_WRITE grant) 11ms
      ✓ officer cannot create a draft as a citizen (no APPLICATION_CREATE_DRAFT grant) 9ms
-     ✓ citizen BFF exposes no command/decision route; officer BFF decision route refuses citizens 18ms
- ✓ tests/security/m10/session.sec.test.ts (16 tests) 318ms
- ❯ tests/security/m10/otp.sec.test.ts (8 tests | 2 failed) 196ms
-   ❯ SEC-OTP CMP-004 citizen OTP (8)
-     ✓ locks the challenge after 5 wrong codes; the right code is then refused; LOCKED is persisted 51ms
-     ✓ lockout is also enforced through the BFF (same generic message for wrong/locked) 34ms
-     ✓ a verified challenge cannot be replayed 8ms
-     ✓ challenge response is indistinguishable for new and existing numbers (host and BFF) 23ms
-     × FINDING: a non-ACTIVE citizen principal is distinguishable at challenge time 17ms
-     × FINDING: challenges per number are not capped and earlier challenges stay PENDING 34ms
-     ✓ OTP inbox: unknown/non-UUID ids are 404 and responses are no-store 5ms
-     ✓ rate-limit key ignores client-supplied X-Forwarded-For (no bucket rotation) 5ms
- ✓ tests/security/m10/rls-pii.sec.test.ts (14 tests) 185ms
+     ✓ citizen BFF exposes no command/decision route; officer BFF decision route refuses citizens 16ms
+ ❯ tests/security/m10/otp.sec.test.ts (11 tests | 3 failed) 306ms
+   ❯ SEC-OTP CMP-004 citizen OTP (11)
+     ✓ locks the challenge after 5 wrong codes; the right code is then refused; LOCKED is persisted 55ms
+     ✓ lockout is also enforced through the BFF (same generic message for wrong/locked) 32ms
+     ✓ a verified challenge cannot be replayed 9ms
+     ✓ challenge response is indistinguishable for new and existing numbers (host and BFF) 25ms
+     × F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time 19ms
+     ✓ F-06: a new challenge supersedes earlier PENDING challenges for the number 36ms
+     ✓ OTP inbox: unknown/non-UUID ids are 404 and responses are no-store 7ms
+     ✓ rate-limit key ignores client-supplied X-Forwarded-For (no bucket rotation) 6ms
+     ✓ F-06: a superseded challenge cannot be verified with its own (correct) code 10ms
+     × F-06: concurrent challenge requests for one number leave at most one PENDING 28ms
+     × F-06: wrong-code budget is per channel, not per challenge (sequential re-challenge) 60ms
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts (10 tests | 1 failed) 221ms
+   ❯ SEC-SESSION-BINDING officer context comes from the presented session (10)
+     ✓ F-01: a tenant-A token keeps the tenant-A context when a later tenant-B session exists 51ms
+     ✓ F-01: a credential issued for a tenant-B session gets no tenant-A context or cases 11ms
+     ✓ F-02: signing out with the tenant-A token revokes it while a later tenant-B session exists 16ms
+     ✓ F-03: roles come from the presented session, not a later same-tenant session 13ms
+     ✓ F-05: a DISABLED officer is not re-activated by sign-in and live sessions stop 13ms
+     ✓ F-01/F-02/F-03 with three sessions: each token gets exactly its own tenant and roles; sign-out revokes the presented tenant only 31ms
+     ✓ F-05 across tenants: disabling the tenant-B principal does not affect tenant A; disabling A stops A and never yields B 24ms
+     ✓ inconsistent or stale rows never resolve: expired lookup, revoked officer_session behind an ACTIVE lookup 13ms
+     ✓ officer BFF sign-out revokes the presented session on the platform 19ms
+     × N-1: a role-less officer session can still sign itself out 11ms
+ ✓ tests/security/m10/open-redirect.sec.test.ts (23 tests) 6466ms
+   ✓ SEC-REDIRECT runtime (headless Chromium against the built BFFs) (2)
+     ✓ F-04: officer sign-in with next=/.//evil.example stays on the workbench 3177ms
+     ✓ F-04: citizen signed-in "Continue" link ignores next=/.//evil.example 3208ms
+ ✓ tests/security/m10/session.sec.test.ts (16 tests) 284ms
+ ✓ tests/security/m10/rls-pii.sec.test.ts (14 tests) 188ms
 
-⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
 
- FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-CSRF cookie-authenticated state-changing BFF routes > FINDING: officer decision POST is accepted cross-origin with a simple (text/plain) request
-AssertionError: cross-origin text/plain decision: expected 200 to be 403 // Object.is equality
-
-- Expected
-+ Received
-
-- 403
-+ 200
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:135:63
-    133|     });
-    134|     // Expected (defence in depth): refuse foreign Origin / non-JSON c…
-    135|     expect.soft(r.status, 'cross-origin text/plain decision').toBe(403…
-       |                                                               ^
-    136|   });
-    137|
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/30]⎯
-
- FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-CSRF cookie-authenticated state-changing BFF routes > FINDING: citizen apply POST is accepted cross-origin with a simple (text/plain) request
-AssertionError: cross-origin text/plain apply: expected 201 to be 403 // Object.is equality
-
-- Expected
-+ Received
-
-- 403
-+ 201
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:149:60
-    147|       body: JSON.stringify(SAMPLE_FORM),
-    148|     });
-    149|     expect.soft(r.status, 'cross-origin text/plain apply').toBe(403);
-       |                                                            ^
-    150|   });
-    151| });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/30]⎯
-
- FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) > FINDING: the host (CMP-015) accepts a non-synthetic name directly; L-2 is BFF-only
+ FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) > F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB
 AssertionError: non-synthetic name via host: expected 200 to be 400 // Object.is equality
 
 - Expected
@@ -161,36 +123,17 @@ AssertionError: non-synthetic name via host: expected 200 to be 400 // Object.is
 - 400
 + 200
 
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:188:58
-    186|       },
-    187|     });
-    188|     expect.soft(r.status, 'non-synthetic name via host').toBe(400);
+ ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:310:58
+    308|       },
+    309|     });
+    310|     expect.soft(r.status, 'non-synthetic name via host').toBe(400);
        |                                                          ^
-    189|   });
-    190| });
+    311|   });
+    312| });
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
 
- FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-ERR error responses and headers > FINDING: host CMP-015 working-data (PII) responses carry no Cache-Control
-AssertionError: host working-data cache-control: expected '' to match /no-store/
-
-- Expected:
-/no-store/
-
-+ Received:
-""
-
- ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:243:8
-    241|     expect
-    242|       .soft(wd.headers.get('cache-control') ?? '', 'host working-data …
-    243|       .toMatch(/no-store/);
-       |        ^
-    244|   });
-    245| });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/30]⎯
-
- FAIL  tests/security/m10/idor-authz.sec.test.ts > SEC-IDOR host: citizen B against citizen A (same placement tenant) > FINDING: host get-by-id distinguishes another citizen case (403) from a missing id (404)
+ FAIL  tests/security/m10/idor-authz.sec.test.ts > SEC-IDOR host: citizen B against citizen A (same placement tenant) > F-09: host get-by-id answers another citizen case like a missing id
 AssertionError: existence oracle (other citizen case vs absent id): expected 403 to be 404 // Object.is equality
 
 - Expected
@@ -207,83 +150,10 @@ AssertionError: existence oracle (other citizen case vs absent id): expected 403
     134|   });
     135| });
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
 
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: token for a tenant-A session resolves to the later tenant-B session context
-AssertionError: context taken from a different session: expected '0d15ba00-0001-4000-8000-0d15ba00ffff' to be '0d15ba00-0001-4000-8000-0d15ba0000d1' // Object.is equality
-
-Expected: "0d15ba00-0001-4000-8000-0d15ba0000d1"
-Received: "0d15ba00-0001-4000-8000-0d15ba00ffff"
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:78:84
-     76|     const after = await call(API, 'GET', '/v1/identity/me', { token });
-     77|     // Expected (secure): still TENANT_A, because the presented token …
-     78|     expect.soft(after.body['tenant_id'], 'context taken from a differe…
-       |                                                                                    ^
-     79|     const queue = await call(API, 'GET', '/v1/applications', { token }…
-     80|     expect.soft(queue.status, 'tenant-A token denied on tenant-A host'…
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: token for a tenant-A session resolves to the later tenant-B session context
-AssertionError: tenant-A token denied on tenant-A host: expected 401 to be 200 // Object.is equality
-
-- Expected
-+ Received
-
-- 200
-+ 401
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:80:73
-     78|     expect.soft(after.body['tenant_id'], 'context taken from a differe…
-     79|     const queue = await call(API, 'GET', '/v1/applications', { token }…
-     80|     expect.soft(queue.status, 'tenant-A token denied on tenant-A host'…
-       |                                                                         ^
-     81|     await revokeSeeded();
-     82|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: a credential issued for a tenant-B session reads tenant-A cases on the tenant-A host
-AssertionError: tenant-B credential accepted for tenant-A list: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:91:81
-     89|     await revokeSeeded();
-     90|     // Expected (secure): 401, the tenant-B session must never yield a…
-     91|     expect.soft(after.status, 'tenant-B credential accepted for tenant…
-       |                                                                                 ^
-     92|     expect.soft(n, 'tenant-A cases returned to a tenant-B credential')…
-     93|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: a credential issued for a tenant-B session reads tenant-A cases on the tenant-A host
-AssertionError: tenant-A cases returned to a tenant-B credential: expected 30 to be +0 // Object.is equality
-
-- Expected
-+ Received
-
-- 0
-+ 30
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:92:72
-     90|     // Expected (secure): 401, the tenant-B session must never yield a…
-     91|     expect.soft(after.status, 'tenant-B credential accepted for tenant…
-     92|     expect.soft(n, 'tenant-A cases returned to a tenant-B credential')…
-       |                                                                        ^
-     93|   });
-     94|
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: signing out with the tenant-A token does not revoke the tenant-A session while a later session exists
-AssertionError: revoke response: expected 403 to be 200 // Object.is equality
+ FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > N-1: a role-less officer session can still sign itself out
+AssertionError: role-less revoke status: expected 403 to be 200 // Object.is equality
 
 - Expected
 + Received
@@ -291,118 +161,33 @@ AssertionError: revoke response: expected 403 to be 200 // Object.is equality
 - 200
 + 403
 
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:110:51
-    108|     const reuse = await call(API, 'GET', '/v1/applications', { token }…
-    109|     // Expected (secure): revoke succeeds and the presented session is…
-    110|     expect.soft(revoke.status, 'revoke response').toBe(200);
-       |                                                   ^
-    111|     expect.soft(row.rows[0]?.status, 'presented session status after r…
-    112|     expect.soft(reuse.status, 'token reusable after sign-out').toBe(40…
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:251:54
+    249|     );
+    250|     await revokeSeeded();
+    251|     expect.soft(r.status, 'role-less revoke status').toBe(200);
+       |                                                      ^
+    252|     expect.soft(row.rows[0]?.status, 'role-less session after revoke')…
+    253|   });
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
 
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: signing out with the tenant-A token does not revoke the tenant-A session while a later session exists
-AssertionError: presented session status after revoke: expected 'ACTIVE' to be 'REVOKED' // Object.is equality
+ FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > N-1: a role-less officer session can still sign itself out
+AssertionError: role-less session after revoke: expected 'ACTIVE' to be 'REVOKED' // Object.is equality
 
 Expected: "REVOKED"
 Received: "ACTIVE"
 
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:111:79
-    109|     // Expected (secure): revoke succeeds and the presented session is…
-    110|     expect.soft(revoke.status, 'revoke response').toBe(200);
-    111|     expect.soft(row.rows[0]?.status, 'presented session status after r…
-       |                                                                               ^
-    112|     expect.soft(reuse.status, 'token reusable after sign-out').toBe(40…
-    113|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: signing out with the tenant-A token does not revoke the tenant-A session while a later session exists
-AssertionError: token reusable after sign-out: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:112:64
-    110|     expect.soft(revoke.status, 'revoke response').toBe(200);
-    111|     expect.soft(row.rows[0]?.status, 'presented session status after r…
-    112|     expect.soft(reuse.status, 'token reusable after sign-out').toBe(40…
-       |                                                                ^
-    113|   });
-    114|
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: roles come from the latest same-tenant session, not the presented one
-AssertionError: presented session roles replaced by another session: expected 403 to be 200 // Object.is equality
-
-- Expected
-+ Received
-
-- 200
-+ 403
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:122:86
-    120|     await revokeSeeded();
-    121|     // Expected (secure): the presented session still has SAMPLE_LAB_C…
-    122|     expect.soft(queue.status, 'presented session roles replaced by ano…
-       |                                                                                      ^
-    123|   });
-    124|
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: a DISABLED officer principal is re-activated by the next IdP sign-in
-AssertionError: existing session of a disabled officer: expected 200 to be 401 // Object.is equality
-
-- Expected
-+ Received
-
-- 401
-+ 200
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:142:72
-    140|       [TENANT_A, LAB_OFFICER.officer_id],
-    141|     );
-    142|     expect.soft(live.status, 'existing session of a disabled officer')…
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:252:72
+    250|     await revokeSeeded();
+    251|     expect.soft(r.status, 'role-less revoke status').toBe(200);
+    252|     expect.soft(row.rows[0]?.status, 'role-less session after revoke')…
        |                                                                        ^
-    143|     expect.soft(again.res.status, 'new session for a disabled officer'…
-    144|     expect.soft(st.rows[0]?.status, 'principal status after sign-in').…
+    253|   });
+    254| });
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
 
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: a DISABLED officer principal is re-activated by the next IdP sign-in
-AssertionError: new session for a disabled officer: expected 200 not to be 200 // Object.is equality
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:143:77
-    141|     );
-    142|     expect.soft(live.status, 'existing session of a disabled officer')…
-    143|     expect.soft(again.res.status, 'new session for a disabled officer'…
-       |                                                                             ^
-    144|     expect.soft(st.rows[0]?.status, 'principal status after sign-in').…
-    145|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/30]⎯
-
- FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > FINDING: a DISABLED officer principal is re-activated by the next IdP sign-in
-AssertionError: principal status after sign-in: expected 'ACTIVE' to be 'DISABLED' // Object.is equality
-
-Expected: "DISABLED"
-Received: "ACTIVE"
-
- ❯ tests/security/m10/officer-session-binding.sec.test.ts:144:71
-    142|     expect.soft(live.status, 'existing session of a disabled officer')…
-    143|     expect.soft(again.res.status, 'new session for a disabled officer'…
-    144|     expect.soft(st.rows[0]?.status, 'principal status after sign-in').…
-       |                                                                       ^
-    145|   });
-    146| });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/30]⎯
-
- FAIL  tests/security/m10/opa.sec.test.ts > SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) > FINDING (pre-existing CMP-048): OPA bearer tokens are literal identity names
+ FAIL  tests/security/m10/opa.sec.test.ts > SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) > F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names
 AssertionError: grant-publisher literal token accepted: expected 200 to be 401 // Object.is equality
 
 - Expected
@@ -419,96 +204,9 @@ AssertionError: grant-publisher literal token accepted: expected 200 to be 401 /
     119|   });
     120| });
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
 
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/.//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/..//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/%2e//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/a/..//evil.example" must not yield a protocol-relative target
-AssertionError: citizen -> //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:49:10
-     47|       expect
-     48|         .soft(isProtocolRelative(citizenSafeNext(raw)), `citizen -> ${…
-     49|         .toBe(false);
-       |          ^
-     50|       expect.soft(isProtocolRelative(officer(raw)), `officer -> ${offi…
-     51|     });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/30]⎯
-
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/.//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/..//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/%2e//evil.example" must not yield a protocol-relative target
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT next parameter sanitisers (unit) > FINDING: dot-segment "/a/..//evil.example" must not yield a protocol-relative target
-AssertionError: officer -> //evil.example: expected true to be false // Object.is equality
-
-- Expected
-+ Received
-
-- false
-+ true
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:50:83
-     48|         .soft(isProtocolRelative(citizenSafeNext(raw)), `citizen -> ${…
-     49|         .toBe(false);
-     50|       expect.soft(isProtocolRelative(officer(raw)), `officer -> ${offi…
-       |                                                                                   ^
-     51|     });
-     52|   }
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/30]⎯
-
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT runtime (headless Chromium against the built BFFs) > FINDING: officer sign-in with next=/.//evil.example navigates off-site
-AssertionError: officer landed on: expected 'evil.example' not to be 'evil.example' // Object.is equality
- ❯ tests/security/m10/open-redirect.sec.test.ts:72:48
-     70|     const host = new URL(page.url()).hostname;
-     71|     await page.close();
-     72|     expect.soft(host, 'officer landed on').not.toBe('evil.example');
-       |                                                ^
-     73|   });
-     74|
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/30]⎯
-
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT runtime (headless Chromium against the built BFFs) > FINDING: citizen signed-in "Continue" link honours next=/.//evil.example
-AssertionError: Continue href: expected '//evil.example' not to match /^\/\//\
-
-- Expected:
-/^\/\//
-
-+ Received:
-"//evil.example"
-
- ❯ tests/security/m10/open-redirect.sec.test.ts:99:44
-     97|     const host = new URL(page.url()).hostname;
-     98|     await ctx.close();
-     99|     expect.soft(href, 'Continue href').not.toMatch(/^\/\//);
-       |                                            ^
-    100|     expect.soft(host, 'citizen landed on').not.toBe('evil.example');
-    101|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/30]⎯
-
- FAIL  tests/security/m10/open-redirect.sec.test.ts > SEC-REDIRECT runtime (headless Chromium against the built BFFs) > FINDING: citizen signed-in "Continue" link honours next=/.//evil.example
-AssertionError: citizen landed on: expected 'evil.example' not to be 'evil.example' // Object.is equality
- ❯ tests/security/m10/open-redirect.sec.test.ts:100:48
-     98|     await ctx.close();
-     99|     expect.soft(href, 'Continue href').not.toMatch(/^\/\//);
-    100|     expect.soft(host, 'citizen landed on').not.toBe('evil.example');
-       |                                                ^
-    101|   });
-    102| });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/30]⎯
-
- FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > FINDING: a non-ACTIVE citizen principal is distinguishable at challenge time
+ FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time
 AssertionError: locked principal answered 403 SF-AUTH-002: expected 403 to be 200 // Object.is equality
 
 - Expected
@@ -525,25 +223,44 @@ AssertionError: locked principal answered 403 SF-AUTH-002: expected 403 to be 20
     111|     } finally {
     112|       await admin.query(
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
 
- FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > FINDING: challenges per number are not capped and earlier challenges stay PENDING
-AssertionError: concurrently PENDING challenges for one number: expected 12 to be less than or equal to 1
- ❯ tests/security/m10/otp.sec.test.ts:134:8
-    132|     expect
-    133|       .soft(Number(pending.rows[0]?.n), 'concurrently PENDING challeng…
-    134|       .toBeLessThanOrEqual(1);
+ FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > F-06: concurrent challenge requests for one number leave at most one PENDING
+AssertionError: PENDING after 20 concurrent requests: expected 5 to be less than or equal to 1
+ ❯ tests/security/m10/otp.sec.test.ts:187:8
+    185|     expect
+    186|       .soft(Number(pending.rows[0]?.n), 'PENDING after 20 concurrent r…
+    187|       .toBeLessThanOrEqual(1);
        |        ^
-    135|   });
-    136|
+    188|   });
+    189|
 
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/30]⎯
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > F-06: wrong-code budget is per channel, not per challenge (sequential re-challenge)
+AssertionError: 20 wrong codes then challenge 200, verify 200: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/security/m10/otp.sec.test.ts:217:8
+    215|         `20 wrong codes then challenge ${next.res.status}, verify ${ve…
+    216|       )
+    217|       .toBe(false);
+       |        ^
+    218|   });
+    219| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
 
 
- Test Files  6 failed | 2 passed (8)
-      Tests  19 failed | 96 passed (115)
-   Start at  15:43:03
-   Duration  16.12s (tests 92%, import 5%, transform 2%)
+ Test Files  5 failed | 3 passed (8)
+      Tests  7 failed | 130 passed (137)
+   Start at  16:08:18
+   Duration  16.54s (tests 94%, import 3%, transform 2%)
 
 JUNIT report written to /agent/repos/sf-wt-sec/evidence/SF-M10-B-SEC/junit/security.xml
 exit 1

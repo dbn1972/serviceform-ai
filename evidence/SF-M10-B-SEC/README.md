@@ -7,31 +7,34 @@
 | Run | 4 Nov 2026, Cursor cloud VM. Node 22.23.4, PostgreSQL 16.15 (own cluster `secverify`, port 5434), OPA 1.21.1, Chromium headless shell 1243 |
 | Ports | API host 4100, OPA 8281, citizen BFF 3100, officer BFF 3101 (Next.js production builds) |
 | Stamp | SAMPLE_LAB · SIMULATED OTP/IdP · CERTIFIED=false · G4/G6 not claimed · self_certified=false |
-| **Recommendation** | **BLOCK** (Phase B scope). One hard-gate failure: a session token issued for tenant B read tenant A cases (F-01). Everything targeted at Phase A L-1 passes |
+| **Current recommendation** | **PASS-WITH-FINDINGS** after the [re-run at 8cc021c](#re-run-at-8cc021c). F-01 (hard gate) and F-02, F-03, F-04, F-05, F-07 and F-12 are fixed and verified. F-06 and F-08 (Medium) and five Lows remain |
+| Original run (f334df8) | BLOCK. One hard-gate failure: a session token issued for tenant B read tenant A cases (F-01) |
 
-## Commands
+## Original run at f334df8
+
+### Commands
 
 ```bash
 git worktree add /agent/repos/sf-wt-sec cursor/m10-phase-b-sec-verify-0b20   # from origin/...platform-wire-0b20
 pnpm install --frozen-lockfile
 sudo pg_createcluster 16 secverify -p 5434 --start   # role ci, DBs sf_sec and sf_sec_int
-DATABASE_URL=postgres://ci:***@localhost:5434/sf_sec SF_OPA_PORT=8281 SF_PLATFORM_LAB_PORT=4100 \
+DATABASE_URL=postgres://ci@localhost:5434/sf_sec SF_OPA_PORT=8281 SF_PLATFORM_LAB_PORT=4100 \
   SF_ENVIRONMENT=LOCAL bash scripts/dev/platform-lab.sh up                  # logs/platform-lab-up.log
 pnpm --filter @serviceform/web-citizen run build && pnpm --filter @serviceform/web-officer run build
 SF_API_BASE_URL=http://127.0.0.1:4100 SF_ENVIRONMENT=LOCAL SF_PORTAL_PLACEMENT_FILE=$PWD/fixtures/lab/platform/placement.citizen.json \
   pnpm --filter @serviceform/web-{citizen,officer} exec next start -p {3100,3101}
-SF_SEC_ADMIN_DB=postgres://ci:***@localhost:5434/sf_sec \
+SF_SEC_ADMIN_DB=postgres://ci@localhost:5434/sf_sec \
   pnpm exec vitest run --config tests/security/m10/vitest.config.ts      # logs/security-suite.log, junit/security.xml
 opa test policy/opa                                                      # logs/opa-test.log
-DATABASE_URL=postgres://ci:***@localhost:5434/sf_sec_int pnpm --filter @serviceform/cmp-004-identity-access run test:integration
-DATABASE_URL=postgres://ci:***@localhost:5434/sf_sec_int pnpm --filter @serviceform/cmp-015-application-case run test:integration
+DATABASE_URL=postgres://ci@localhost:5434/sf_sec_int pnpm --filter @serviceform/cmp-004-identity-access run test:integration
+DATABASE_URL=postgres://ci@localhost:5434/sf_sec_int pnpm --filter @serviceform/cmp-015-application-case run test:integration
 pnpm exec prettier --check tests/security/m10 && pnpm exec eslint tests/security/m10 --max-warnings=0
 ```
 
 The suite reads the gitignored `.platform-lab/env` (CMP-004 pepper, runtime DB logins) and never prints it.
 Only synthetic data is used (`SAMPLE …` names, `9xxxxxxxxx` mobiles).
 
-## Results
+### Results
 
 | Suite | Result | Evidence |
 |---|---|---|
@@ -41,7 +44,7 @@ Only synthetic data is used (`SAMPLE …` names, `9xxxxxxxxx` mobiles).
 | CMP-015 integration (PostgreSQL) | 31/31 | `logs/cmp015-integration.log` |
 | prettier / eslint on `tests/security/m10` | clean | — |
 
-### Per-area results
+#### Per-area results
 
 | Area | File | Pass | Fail (findings) |
 |---|---|---|---|
@@ -54,7 +57,7 @@ Only synthetic data is used (`SAMPLE …` names, `9xxxxxxxxx` mobiles).
 | Open redirect (unit + headless Chromium) | `open-redirect.sec.test.ts` | 6 | 6 (F-04) |
 | Simulator/placement guards, UAT start refusal, CSRF, L-2, errors, headers | `guards-csrf-headers.sec.test.ts` | 16 | 4 (F-07, F-11, F-12) |
 
-### Controls that held (executed)
+#### Controls that held (executed)
 
 - **L-1 closed.** Legacy `sf_lab_session`, base64/base64url JSON, JWT `alg=none`, token-shaped random values and duplicate cookies are all anonymous (401 on lists). Cookies are `HttpOnly; SameSite=Lax; Path=/` and hold only an opaque token with no decodable claims.
 - Citizen token in the officer cookie, and officer token in the citizen cookie: no session, 401 on queues and lists.
@@ -72,7 +75,7 @@ Only synthetic data is used (`SAMPLE …` names, `9xxxxxxxxx` mobiles).
 - Simulators: `assertSimulatorEnvironment` refuses UAT, PREPROD, PRODUCTION, SIT, DEVELOPMENT, an empty value and lowercase `local`. `registerLabSimulators` and `buildPlatformLab` refuse UAT. The host process exits non-zero with `refused in UAT` and does not listen. The officer BFF disables SIMULATED IdP outside LOCAL/CI. Placement is refused for PRODUCTION/PREPROD, on environment mismatch, and for client-tenant or request-derived variants.
 - Errors from the host and BFF contain no stack traces, SQL or schema names. Portal pages send `frame-ancestors 'none'`, `X-Frame-Options: DENY` and `nosniff`, and no `x-powered-by`.
 
-## Findings
+### Findings (original run)
 
 | ID | Severity | Finding | Evidence | Recommended owner fix |
 |---|---|---|---|---|
@@ -91,7 +94,7 @@ Only synthetic data is used (`SAMPLE …` names, `9xxxxxxxxx` mobiles).
 | F-13 | Low (pre-existing CMP-048, outside Phase B) | OPA token authentication uses literal identity names. `Authorization: Bearer grant-publisher` reads `data.sf_runtime` (200) and, per `system.authz`, may write privileged grants. The lab OPA binds only to 127.0.0.1, and `SF_OPA_TOKEN=pep` is a constant | opa: "OPA bearer tokens are literal identity names" | CMP-048: issue secret tokens per identity (or use mTLS) and map them to identities in `system.authz` |
 | F-14 | Info (builder-stated, accepted for lab) | The SIMULATED OTP inbox returns the code to anyone holding the challenge id. Verified: UUID-gated, `no-store`, and refused outside LOCAL/CI at unit and runtime level | otp + guards | None for LOCAL/CI. Keep the environment guard |
 
-## Recommendation (Phase B scope only)
+### Recommendation at f334df8 (Phase B scope only)
 
 **BLOCK.** Hard gate `cross_tenant_leakage` requires zero leaks. F-01 shows that a session credential scoped to one tenant yields
 another tenant's context and data. The Phase B lab cannot reach it without seeding, because OPA refuses non-onboarded tenants,
@@ -104,3 +107,92 @@ the BFF, with F-11 left as a Low. F-04 and F-07 (Medium) should be fixed before 
 to the CMP-004/platform hardening backlog.
 
 Not CERTIFIED. No G4/G6 claim. Gate status is for human/CI decision.
+
+## Re-run at 8cc021c
+
+| Field | Value |
+|---|---|
+| Under test | `8cc021cf0a773bb9fcc99b2746ebfb17213e57cb` (PR #211 tip with builder fixes for F-01..F-07, F-12), merged into this branch as `327e6a2` |
+| Environment | Fresh cluster `secverify` (5434), fresh bootstrap, OPA 8281, API 4100, citizen/officer BFFs rebuilt and run on 3100/3101. Same tooling as the original run |
+| Commands | As in the original run. The same suite was re-run with probes added to try to break each fix (below) |
+
+### Results at 8cc021c
+
+| Suite | Result | Evidence |
+|---|---|---|
+| `tests/security/m10` (8 files) | 137 tests: **130 pass, 7 fail**. All 7 failures are on findings that are still open or that the builder did not address | `logs/security-suite.log`, `junit/security.xml` |
+| `opa test policy/opa` | 68/68 PASS | `logs/opa-test.log` |
+| CMP-004 integration | 12/12 (adds the builder's session-binding and OTP regressions) | `logs/cmp004-integration.log` |
+| CMP-015 integration | 31/31 | `logs/cmp015-integration.log` |
+| `pnpm format:check`, `pnpm lint` | clean | — |
+
+| File | Pass | Fail |
+|---|---|---|
+| `session.sec.test.ts` | 16 | 0 |
+| `idor-authz.sec.test.ts` | 27 | 1 (F-09) |
+| `otp.sec.test.ts` | 8 | 3 (F-10, F-06 ×2) |
+| `rls-pii.sec.test.ts` | 14 | 0 |
+| `opa.sec.test.ts` | 11 | 1 (F-13) |
+| `officer-session-binding.sec.test.ts` | 9 | 1 (N-1) |
+| `open-redirect.sec.test.ts` | 23 | 0 |
+| `guards-csrf-headers.sec.test.ts` | 22 | 1 (F-11) |
+
+### Probes added to try to break the fixes
+
+- **Session binding (F-01, F-02, F-03):**
+  - Three concurrent sessions for one officer: tenant A with roles, a later tenant-A session with no roles, and a later tenant-B session. Each token resolves exactly its own tenant and roles (200, 403 and 401 respectively on the tenant-A host; `/identity/me` reports tenant A for the first token and tenant B for the tenant-B token).
+  - Sign-out with the first token revokes both tenant-A sessions and leaves the tenant-B session `ACTIVE`.
+  - Officer BFF sign-out revokes the presented session even when a later tenant-B session exists.
+  - An expired lookup row, and an `ACTIVE` lookup whose `officer_session` row is `REVOKED`, never resolve.
+  - By code review, not executed: the resolver returns `null` when the principal object is not the one the verifier produced.
+- **Disabled officer (F-05), across tenants:**
+  - Disabling the tenant-B principal does not affect tenant-A sessions.
+  - Disabling tenant A stops the live tenant-A session at once and refuses a new sign-in, without re-activating the principal.
+  - A tenant-B token never yields a tenant-A context.
+- **Open redirect (F-04):** 13 dot-segment and backslash variants all fall back, both for the citizen helper and for the officer helper (now in `lib/safe-next.ts`; the component imports it). These include `/./\evil`, `/.\/evil`, `/%2e%2e//`, `/%2E/%2E%2E//`, an embedded tab or newline, `/a/b/../..//` and `/.///`. Same-origin targets are preserved. In headless Chromium, both portals now stay on their own origin.
+- **CSRF (F-07):** officer decision, officer sign-in, citizen apply, OTP challenge and session POSTs were each sent 13 variants:
+  - foreign `Origin`, `Origin: null`, malformed `Origin`, host-suffix `Origin` and port-prefix `Origin`;
+  - `Sec-Fetch-Site: same-site` or `cross-site` with no `Origin`, and a foreign `Origin` with a forged `same-origin`;
+  - `text/plain`, form-urlencoded, multipart and `text/plain; application/json` bodies.
+
+  All were refused with 403 or 415, no cookie was set, and the case state was unchanged. A Blob body with no `Content-Type` (the `no-cors` shape) got 415. Cross-site `DELETE` sign-out got 403 and the session survived. Same-origin JSON still works.
+- **OTP supersede (F-06):** a superseded challenge's correct code is refused. I also fired 20 challenge requests for one number concurrently, and ran 4 sequential lockout rounds followed by a fresh challenge.
+
+### Per-finding status
+
+| ID | Severity | Status at 8cc021c | Evidence / note |
+|---|---|---|---|
+| F-01 | High (hard gate) | **FIXED-VERIFIED** | Tenant-B credential gets 401 and 0 cases on the tenant-A host. A tenant-A token keeps tenant A with a later tenant-B session present. The three-session probe passes |
+| F-02 | High | **FIXED-VERIFIED** | Revoke with the presented token gets 200 and the token becomes `REVOKED`/401, including through the officer BFF |
+| F-03 | Medium | **FIXED-VERIFIED** | A later role-less session no longer changes the presented session's roles |
+| F-04 | Medium | **FIXED-VERIFIED** | 23/23 unit and runtime redirect probes pass |
+| F-05 | Medium | **FIXED-VERIFIED** | No re-activation. Live sessions stop. Per-tenant principals stay independent. Re-enabling a principal resumes its unexpired sessions (Info, by design) |
+| F-06 | Medium | **OPEN (partially fixed)** | Sequential supersede works, but it is racy: **7 of 20 concurrent challenges stayed `PENDING`** (UPDATE-then-INSERT under READ COMMITTED). There is also no per-channel failure budget: after 4 lockouts (20 wrong codes in under a second), a fresh challenge was issued and verified with 200. Fix: serialise per channel (advisory lock or a unique partial index on `(channel_hash) WHERE status = 'PENDING'`) and add a per-channel failure budget/backoff |
+| F-07 | Medium | **FIXED-VERIFIED** | Every variant above was refused. Info: the `Origin` check compares host only, ignoring scheme. Not exploitable while a portal is served on one scheme |
+| F-08 | Medium | **NOT-FIXED** (builder: ops / trusted proxy) | Unchanged. Still compounds F-06 |
+| F-09 | Low | NOT-FIXED (not addressed) | Host still answers 403 vs 404. The BFF still masks it as 404 |
+| F-10 | Low | NOT-FIXED (not addressed) | A `LOCKED` principal still gets 403 `SF-AUTH-002` at challenge time |
+| F-11 | Low | NOT-FIXED (not addressed) | CMP-015 still accepts a non-synthetic name directly |
+| F-12 | Low | **FIXED-VERIFIED** | Working-data responses are `Cache-Control: no-store` |
+| F-13 | Low (pre-existing CMP-048) | NOT-FIXED (out of scope) | `Bearer grant-publisher` still reads `data.sf_runtime` |
+| F-14 | Info | Accepted for lab | Still LOCAL/CI only |
+
+### New findings
+
+| ID | Severity | Finding | Evidence | Recommended owner fix |
+|---|---|---|---|---|
+| N-1 | Low | An officer session whose role codes are empty (e.g. after a role removal at the IdP) cannot sign itself out. `OFFICER_SESSION_REVOKE` is role-granted in OPA, so revoke gets 403 and the session stays `ACTIVE`. The session can still call `/identity/me` but nothing role-gated. The BFF clears the cookie anyway | `officer-session-binding.sec.test.ts` "N-1" (403, `ACTIVE`) | CMP-004: let a principal always revoke its own presented session without a role grant (self-service action), or make the grant role-independent |
+| N-2 | Medium (part of F-06) | Race in the F-06 supersede, as above | `otp.sec.test.ts` concurrent probe (7 PENDING) | See F-06 |
+
+### Recommendation at 8cc021c (Phase B scope only)
+
+**PASS-WITH-FINDINGS.** No hard gate fails: the cross-tenant probes, RLS/OPA negative tests, fail-closed probes and IDOR probes all
+pass, and no Critical is open. F-01 (the blocking finding) and F-02 are fixed and verified, including the three-session and
+cross-tenant-disable variants. Open items:
+
+- **F-06/N-2 and F-08 (Medium).** Before any environment with a real OTP connector or external users: serialise challenge
+  creation per channel, add a per-channel failure budget, and forward the client address through a trusted hop.
+- **N-1, F-09, F-10, F-11, F-13 (Low)** go to the CMP-004, CMP-015 and CMP-048 backlogs.
+
+Not CERTIFIED. No G4/G6 claim. Gate status is for human/CI decision.
+
