@@ -1,21 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium, type Browser } from '@playwright/test';
-import ts from 'typescript';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { safeNext as citizenSafeNext } from '../../../apps/web-citizen/lib/auth-client';
+import { safeNext as officerSafeNext } from '../../../apps/web-officer/lib/safe-next';
 import { bffCitizen, CITIZEN_BFF, cookieToken, OFFICER_BFF, ROOT } from './lib/lab';
-
-/** The officer sanitiser is module-private in a client component; evaluate its exact source. */
-function officerSafeNext(): (raw: string | undefined) => string {
-  const src = readFileSync(join(ROOT, 'apps/web-officer/components/OfficerSignIn.tsx'), 'utf8');
-  const start = src.indexOf('function safeNext(');
-  const end = src.indexOf('\n}\n', start) + 2;
-  const js = ts.transpileModule(src.slice(start, end), {
-    compilerOptions: { target: ts.ScriptTarget.ES2022 },
-  }).outputText;
-  return new Function(`${js}; return safeNext;`)() as (raw: string | undefined) => string;
-}
 
 const OFFSITE = [
   'https://evil.example/x',
@@ -30,12 +19,32 @@ const NORMALISED_TO_PROTOCOL_RELATIVE = [
   '/..//evil.example',
   '/%2e//evil.example',
   '/a/..//evil.example',
+  '/./\\evil.example',
+  '/.\\/evil.example',
+  '/%2e%2e//evil.example',
+  '/%2E/%2E%2E//evil.example',
+  '/.//evil.example?next=/x#y',
+  '/.\t//evil.example',
+  '/.\n//evil.example',
+  '/a/b/../..//evil.example',
+  '/.///evil.example',
 ];
 
 const isProtocolRelative = (s: string) => /^[/\\]{2}/.test(s);
 
 describe('SEC-REDIRECT next parameter sanitisers (unit)', () => {
-  const officer = officerSafeNext();
+  const officer = (raw: string | undefined) => officerSafeNext(raw);
+
+  it('the officer sign-in component uses the tested lib helper (no private copy)', () => {
+    const src = readFileSync(join(ROOT, 'apps/web-officer/components/OfficerSignIn.tsx'), 'utf8');
+    expect(src).toMatch(/from '..\/lib\/safe-next'/);
+    expect(src).not.toMatch(/function safeNext\(/);
+  });
+
+  it('same-origin targets are preserved (control)', () => {
+    expect(citizenSafeNext('/applications/x?y=1')).toBe('/applications/x?y=1');
+    expect(officer('/applications/x?y=1')).toBe('/applications/x?y=1');
+  });
   for (const raw of OFFSITE) {
     it(`both sanitisers fall back for ${JSON.stringify(raw)}`, () => {
       expect(citizenSafeNext(raw)).toBe('/services');
@@ -43,7 +52,7 @@ describe('SEC-REDIRECT next parameter sanitisers (unit)', () => {
     });
   }
   for (const raw of NORMALISED_TO_PROTOCOL_RELATIVE) {
-    it(`FINDING: dot-segment ${JSON.stringify(raw)} must not yield a protocol-relative target`, () => {
+    it(`F-04: ${JSON.stringify(raw)} must not yield a protocol-relative target`, () => {
       expect
         .soft(isProtocolRelative(citizenSafeNext(raw)), `citizen -> ${citizenSafeNext(raw)}`)
         .toBe(false);
@@ -61,7 +70,7 @@ describe('SEC-REDIRECT runtime (headless Chromium against the built BFFs)', () =
     await browser.close();
   });
 
-  it('FINDING: officer sign-in with next=/.//evil.example navigates off-site', async () => {
+  it('F-04: officer sign-in with next=/.//evil.example stays on the workbench', async () => {
     const page = await browser.newPage();
     await page.route('**://evil.example/**', (r) => r.fulfill({ status: 200, body: 'OFFSITE' }));
     await page.goto(`${OFFICER_BFF}/login?next=${encodeURIComponent('/.//evil.example')}`);
@@ -72,7 +81,7 @@ describe('SEC-REDIRECT runtime (headless Chromium against the built BFFs)', () =
     expect.soft(host, 'officer landed on').not.toBe('evil.example');
   });
 
-  it('FINDING: citizen signed-in "Continue" link honours next=/.//evil.example', async () => {
+  it('F-04: citizen signed-in "Continue" link ignores next=/.//evil.example', async () => {
     const { cookie } = await bffCitizen();
     const ctx = await browser.newContext();
     const url = new URL(CITIZEN_BFF);

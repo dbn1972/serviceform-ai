@@ -111,7 +111,7 @@ describe('SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data)
     const anon = await fetch(`${OPA}/v1/data/sf/authz/decision`, { method: 'POST', body: '{}' });
     expect(anon.status).toBe(401);
   });
-  it('FINDING (pre-existing CMP-048): OPA bearer tokens are literal identity names', async () => {
+  it('F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names', async () => {
     const res = await fetch(`${OPA}/v1/data/sf_runtime`, {
       headers: { authorization: 'Bearer grant-publisher' },
     });

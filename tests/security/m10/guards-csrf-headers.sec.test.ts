@@ -117,36 +117,158 @@ describe('SEC-SIM simulators refused outside LOCAL/CI', () => {
   });
 });
 
-describe('SEC-CSRF cookie-authenticated state-changing BFF routes', () => {
-  it('FINDING: officer decision POST is accepted cross-origin with a simple (text/plain) request', async () => {
+describe('SEC-CSRF cookie-authenticated state-changing BFF routes (F-07)', () => {
+  const FOREIGN: [string, Record<string, string>][] = [
+    [
+      'foreign Origin + cross-site + text/plain',
+      {
+        origin: 'https://evil.example',
+        'sec-fetch-site': 'cross-site',
+        'content-type': 'text/plain',
+      },
+    ],
+    [
+      'foreign Origin + JSON, no Sec-Fetch-Site',
+      { origin: 'https://evil.example', 'content-type': 'application/json' },
+    ],
+    ['Origin: null + JSON', { origin: 'null', 'content-type': 'application/json' }],
+    [
+      'Sec-Fetch-Site: same-site + JSON, no Origin',
+      { 'sec-fetch-site': 'same-site', 'content-type': 'application/json' },
+    ],
+    [
+      'Sec-Fetch-Site: cross-site + JSON, no Origin',
+      { 'sec-fetch-site': 'cross-site', 'content-type': 'application/json' },
+    ],
+    [
+      'host-suffix Origin',
+      { origin: 'http://127.0.0.1:3101.evil.example', 'content-type': 'application/json' },
+    ],
+    [
+      'port-prefix Origin',
+      { origin: 'http://127.0.0.1:31010', 'content-type': 'application/json' },
+    ],
+    [
+      'foreign Origin with forged same-origin Sec-Fetch-Site',
+      {
+        origin: 'https://evil.example',
+        'sec-fetch-site': 'same-origin',
+        'content-type': 'application/json',
+      },
+    ],
+    ['malformed Origin', { origin: 'http://[::1', 'content-type': 'application/json' }],
+    ['same-origin text/plain', { 'content-type': 'text/plain' }],
+    ['same-origin form-urlencoded', { 'content-type': 'application/x-www-form-urlencoded' }],
+    ['same-origin multipart', { 'content-type': 'multipart/form-data; boundary=x' }],
+    ['same-origin text/plain;application/json', { 'content-type': 'text/plain; application/json' }],
+  ];
+
+  it('officer decision POST refuses every cross-site / non-JSON variant and the case is unchanged', async () => {
     const c = await citizenOnHost();
     const k = await submittedCase(c);
     const { cookie } = await bffOfficer();
-    const r = await call(OFFICER_BFF, 'POST', `/api/portal/applications/${k.application_id}`, {
-      cookie,
-      headers: {
-        'content-type': 'text/plain',
-        origin: 'https://evil.example',
-        'sec-fetch-site': 'cross-site',
-      },
-      body: JSON.stringify({ action: 'REJECT' }),
+    const path = `/api/portal/applications/${k.application_id}`;
+    for (const [name, headers] of FOREIGN) {
+      const r = await call(OFFICER_BFF, 'POST', path, {
+        cookie,
+        headers,
+        body: JSON.stringify({ action: 'REJECT' }),
+      });
+      expect.soft([403, 415], `${name} -> ${r.status}`).toContain(r.status);
+    }
+    const after = await call(API, 'GET', `/v1/applications/${k.application_id}`, {
+      token: c.token,
     });
-    // Expected (defence in depth): refuse foreign Origin / non-JSON content type. SameSite=Lax is the only barrier.
-    expect.soft(r.status, 'cross-origin text/plain decision').toBe(403);
+    expect((after.body['application'] as { state: string }).state).toBe('SUBMITTED');
+    const control = await call(OFFICER_BFF, 'POST', path, {
+      cookie,
+      headers: { origin: OFFICER_BFF, 'sec-fetch-site': 'same-origin' },
+      body: { action: 'REJECT' },
+    });
+    expect(control.status, 'same-origin JSON decision (control)').toBe(200);
   });
 
-  it('FINDING: citizen apply POST is accepted cross-origin with a simple (text/plain) request', async () => {
+  it('citizen apply, OTP challenge and session POSTs refuse every cross-site / non-JSON variant', async () => {
     const { cookie } = await bffCitizen();
-    const r = await call(CITIZEN_BFF, 'POST', '/api/portal/applications', {
-      cookie,
-      headers: {
-        'content-type': 'text/plain',
-        origin: 'https://evil.example',
-        'sec-fetch-site': 'cross-site',
-      },
-      body: JSON.stringify(SAMPLE_FORM),
+    for (const [name, headers] of FOREIGN) {
+      const apply = await call(CITIZEN_BFF, 'POST', '/api/portal/applications', {
+        cookie,
+        headers,
+        body: JSON.stringify(SAMPLE_FORM),
+      });
+      expect.soft([403, 415], `apply ${name} -> ${apply.status}`).toContain(apply.status);
+      const ch = await call(CITIZEN_BFF, 'POST', '/api/portal/otp/challenges', {
+        headers,
+        body: JSON.stringify({ mobile: '9000000001' }),
+      });
+      expect.soft([403, 415], `otp ${name} -> ${ch.status}`).toContain(ch.status);
+      const ses = await call(CITIZEN_BFF, 'POST', '/api/portal/session', {
+        headers,
+        body: JSON.stringify({
+          challenge_id: '0d15ba00-0000-4000-8000-000000000000',
+          code: '123456',
+        }),
+      });
+      expect.soft([403, 415], `session ${name} -> ${ses.status}`).toContain(ses.status);
+    }
+    const list = await call(CITIZEN_BFF, 'GET', '/api/portal/applications', { cookie });
+    expect(list.body['applications']).toEqual([]);
+  });
+
+  it('officer sign-in POST (login CSRF) refuses cross-site variants', async () => {
+    for (const [name, headers] of FOREIGN) {
+      const r = await call(OFFICER_BFF, 'POST', '/api/portal/session', {
+        headers,
+        body: JSON.stringify({ subject: 'sample-lab-case-officer-1' }),
+      });
+      expect.soft([403, 415], `${name} -> ${r.status}`).toContain(r.status);
+      expect.soft(r.headers.get('set-cookie'), `${name} set-cookie`).toBeNull();
+    }
+  });
+
+  it('a body without any Content-Type (no-cors Blob shape) is refused on officer decision and citizen apply', async () => {
+    const c = await citizenOnHost();
+    const k = await submittedCase(c);
+    const o = await bffOfficer();
+    const cz = await bffCitizen();
+    const raw = async (url: string, cookie: string, payload: unknown) =>
+      fetch(url, {
+        method: 'POST',
+        headers: { cookie },
+        body: new Blob([JSON.stringify(payload)]),
+      });
+    const dec = await raw(`${OFFICER_BFF}/api/portal/applications/${k.application_id}`, o.cookie, {
+      action: 'REJECT',
     });
-    expect.soft(r.status, 'cross-origin text/plain apply').toBe(403);
+    const app = await raw(`${CITIZEN_BFF}/api/portal/applications`, cz.cookie, SAMPLE_FORM);
+    expect([403, 415]).toContain(dec.status);
+    expect([403, 415]).toContain(app.status);
+    const after = await call(API, 'GET', `/v1/applications/${k.application_id}`, {
+      token: c.token,
+    });
+    expect((after.body['application'] as { state: string }).state).toBe('SUBMITTED');
+  });
+
+  it('cross-site sign-out (DELETE) is refused and the session survives', async () => {
+    const o = await bffOfficer();
+    const c = await bffCitizen();
+    const headers = { origin: 'https://evil.example', 'sec-fetch-site': 'cross-site' };
+    const od = await call(OFFICER_BFF, 'DELETE', '/api/portal/session', {
+      cookie: o.cookie,
+      headers,
+    });
+    const cd = await call(CITIZEN_BFF, 'DELETE', '/api/portal/session', {
+      cookie: c.cookie,
+      headers,
+    });
+    expect.soft(od.status, 'officer cross-site DELETE').toBe(403);
+    expect.soft(cd.status, 'citizen cross-site DELETE').toBe(403);
+    expect(
+      (await call(OFFICER_BFF, 'GET', '/api/portal/applications', { cookie: o.cookie })).status,
+    ).toBe(200);
+    expect(
+      (await call(CITIZEN_BFF, 'GET', '/api/portal/applications', { cookie: c.cookie })).status,
+    ).toBe(200);
   });
 });
 
@@ -161,7 +283,7 @@ describe('SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF)', () 
     expect(r.body['field']).toBe('applicant_name');
   });
 
-  it('FINDING: the host (CMP-015) accepts a non-synthetic name directly; L-2 is BFF-only', async () => {
+  it('F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB', async () => {
     const c = await citizenOnHost();
     const d = await call(API, 'POST', '/v1/applications', {
       token: c.token,
@@ -231,7 +353,7 @@ describe('SEC-ERR error responses and headers', () => {
     }
   });
 
-  it('FINDING: host CMP-015 working-data (PII) responses carry no Cache-Control', async () => {
+  it('F-12: host CMP-015 working-data (PII) responses are Cache-Control: no-store', async () => {
     const c = await citizenOnHost();
     const k = await submittedCase(c);
     const wd = await call(API, 'GET', `/v1/applications/${k.application_id}/working-data`, {

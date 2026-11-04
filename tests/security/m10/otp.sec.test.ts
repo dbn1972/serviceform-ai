@@ -93,7 +93,7 @@ describe('SEC-OTP CMP-004 citizen OTP', () => {
     expect(shape(bOld.body)).toBe(shape(bNew.body));
   });
 
-  it('FINDING: a non-ACTIVE citizen principal is distinguishable at challenge time', async () => {
+  it('F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time', async () => {
     const c = await citizenOnHost();
     await admin.query(
       "UPDATE sf_identity.citizen_principal SET status = 'LOCKED' WHERE citizen_id = $1",
@@ -116,7 +116,7 @@ describe('SEC-OTP CMP-004 citizen OTP', () => {
     }
   });
 
-  it('FINDING: challenges per number are not capped and earlier challenges stay PENDING', async () => {
+  it('F-06: a new challenge supersedes earlier PENDING challenges for the number', async () => {
     const mobile = syntheticMobile();
     const ids: string[] = [];
     for (let i = 0; i < 12; i += 1) {
@@ -159,5 +159,61 @@ describe('SEC-OTP CMP-004 citizen OTP', () => {
     }
     expect(remaining[1]).toBeLessThan(remaining[0] as number);
     expect(remaining[2]).toBeLessThan(remaining[1] as number);
+  });
+
+  it('F-06: a superseded challenge cannot be verified with its own (correct) code', async () => {
+    const mobile = syntheticMobile();
+    const first = await otpChallenge(mobile);
+    const code = await inboxCode(first.challenge_id);
+    await otpChallenge(mobile);
+    const r = await call(API, 'POST', '/v1/identity/citizen/otp/verify', {
+      body: { challenge_id: first.challenge_id, code },
+    });
+    expect(r.status).toBe(401);
+    expect(r.body['session_token']).toBeUndefined();
+  });
+
+  it('F-06: concurrent challenge requests for one number leave at most one PENDING', async () => {
+    const mobile = syntheticMobile();
+    const results = await Promise.all(Array.from({ length: 20 }, () => otpChallenge(mobile)));
+    const ids = results.filter((x) => x.res.status === 200).map((x) => x.challenge_id);
+    expect(ids.length).toBeGreaterThan(0);
+    const pending = await admin.query<{ n: string }>(
+      "SELECT count(*)::text AS n FROM sf_identity.citizen_otp_challenge WHERE challenge_id = ANY($1::uuid[]) AND status = 'PENDING'",
+      [ids],
+    );
+    expect
+      .soft(Number(pending.rows[0]?.n), 'PENDING after 20 concurrent requests')
+      .toBeLessThanOrEqual(1);
+  });
+
+  it('F-06: wrong-code budget is per channel, not per challenge (sequential re-challenge)', async () => {
+    const mobile = syntheticMobile();
+    let failures = 0;
+    for (let round = 0; round < 4; round += 1) {
+      const { challenge_id } = await otpChallenge(mobile);
+      const code = await inboxCode(challenge_id);
+      for (let i = 0; i < 5; i += 1) {
+        const r = await call(API, 'POST', '/v1/identity/citizen/otp/verify', {
+          body: { challenge_id, code: wrong(code) },
+        });
+        if (r.status === 401) failures += 1;
+      }
+    }
+    expect(failures).toBe(20);
+    const next = await otpChallenge(mobile);
+    const code = await inboxCode(next.challenge_id).catch(() => null);
+    const verify = code
+      ? await call(API, 'POST', '/v1/identity/citizen/otp/verify', {
+          body: { challenge_id: next.challenge_id, code },
+        })
+      : null;
+    // Expected (secure): after 20 wrong codes in seconds the channel is throttled/locked for a period.
+    expect
+      .soft(
+        next.res.status === 200 && verify?.status === 200,
+        `20 wrong codes then challenge ${next.res.status}, verify ${verify?.status}`,
+      )
+      .toBe(false);
   });
 });

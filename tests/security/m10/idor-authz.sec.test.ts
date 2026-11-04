@@ -120,7 +120,7 @@ describe('SEC-IDOR host: citizen B against citizen A (same placement tenant)', (
     expect([400, 403, 404]).toContain(r.status);
   });
 
-  it('FINDING: host get-by-id distinguishes another citizen case (403) from a missing id (404)', async () => {
+  it('F-09: host get-by-id answers another citizen case like a missing id', async () => {
     const other = await call(API, 'GET', `/v1/applications/${caseA.application_id}`, {
       token: b.token,
     });
