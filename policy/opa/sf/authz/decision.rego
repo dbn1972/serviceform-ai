@@ -32,12 +32,15 @@ no_data := false if tenant_data_present
 
 no_role := false if role_permits
 
+no_role := false if citizen_owner_permits
+
 codes := [c |
 	some pair in [
 		{"on": missing_input, "code": "INPUT_MISSING"},
 		{"on": unknown, "code": "UNKNOWN_ACTION"},
 		{"on": tenant_mismatch, "code": "TENANT_MISMATCH"},
 		{"on": no_data, "code": "POLICY_DATA_MISSING"},
+		{"on": citizen_roles_forbidden, "code": "CITIZEN_ROLES_FORBIDDEN"},
 		{"on": no_role, "code": "ROLE_NOT_PERMITTED"},
 		{"on": org_mismatch, "code": "ORG_MISMATCH"},
 		{"on": office_mismatch, "code": "OFFICE_MISMATCH"},

@@ -12,7 +12,7 @@ bundle_src="$(mktemp -d)"
 cp -a policy/opa/. "$bundle_src/"
 rm -rf "$bundle_src/system/authz"
 find "$bundle_src" -name '*_test.rego' -delete
-"$OPA" build -b "$bundle_src" --revision "${1:-w1-cmp048}" -o /tmp/sf-cmp048-opa.tar.gz
+"$OPA" build -b "$bundle_src" --revision "${1:-m10-b1}" -o /tmp/sf-cmp048-opa.tar.gz
 rm -rf "$bundle_src"
 # Mutation: emptying tenant helper must fail at least one test.
 tmp="$(mktemp -d)"

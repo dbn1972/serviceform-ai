@@ -1,0 +1,24 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "freeze_status": "PENDING_MERGE",
+  "in_contracts_lock": true,
+  "module": "M10",
+  "task": "SF-M10-B-1",
+  "note": "Phase B journey contracts. Candidate until origin/main merge. Existing 42 lock rows immutable. ADR-0007 PROPOSED; production placements excluded.",
+  "contracts": [
+    {
+      "id": "SF-CON-PORTAL-PLACEMENT",
+      "path": "contracts/m10/schemas/portal-placement.schema.json",
+      "owner": "HOST",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    },
+    {
+      "id": "SF-CON-PORTAL-SESSION",
+      "path": "contracts/m10/schemas/portal-session.schema.json",
+      "owner": "PORTAL_BFF",
+      "status": "FROZEN",
+      "freeze_status": "FROZEN"
+    }
+  ]
+}

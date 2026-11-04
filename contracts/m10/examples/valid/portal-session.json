@@ -1,0 +1,17 @@
+{
+  "surface": "CITIZEN_PORTAL",
+  "cookie_name": "sf_citizen_session",
+  "cookie_value": "CMP004_OPAQUE_SESSION_TOKEN",
+  "claims_in_cookie": false,
+  "token_issuer": "CMP-004",
+  "identity_derivation": "CMP004_IDENTITY_ME_PER_REQUEST",
+  "platform_credential": "AUTHORIZATION_BEARER",
+  "attributes": {
+    "http_only": true,
+    "same_site": "Lax",
+    "path": "/",
+    "secure": "WHEN_NOT_LOCAL_HTTP"
+  },
+  "max_age_seconds": 1800,
+  "revocation": "CMP004_SESSIONS_REVOKE"
+}
