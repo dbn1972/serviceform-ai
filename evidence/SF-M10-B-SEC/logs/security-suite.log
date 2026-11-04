@@ -1,0 +1,243 @@
+
+ RUN  v5.0.3 /agent/repos/sf-wt-sec
+
+stderr | tests/security/m10/opa.sec.test.ts > SEC-OPA-FAILCLOSED host with OPA stopped > after OPA returns, the host recovers (PEP breaker closes) without a restart
+SEC-OPA-FAILCLOSED: host recovered in 5061 ms
+
+ ❯ tests/security/m10/opa.sec.test.ts (12 tests | 1 failed) 5492ms
+   ❯ SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) (10)
+     ✓ owner read is allowed (control) 25ms
+     ✓ non-owner citizen is denied 4ms
+     ✓ missing, empty or non-string owner_id is denied 13ms
+     ✓ citizen presenting roles is denied CITIZEN_ROLES_FORBIDDEN (even with a valid tenant role) 4ms
+     ✓ owning citizen cannot take officer actions 7ms
+     ✓ citizen with insufficient assurance is denied 4ms
+     ✓ tenant mismatch and unknown tenant are denied for the owner 2ms
+     ✓ actor_type spoofing (OFFICER with no roles, owner match) is denied 1ms
+     ✓ OPA management API is not reachable with the PEP token (no data/policy writes) 3ms
+     × F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names 6ms
+   ✓ SEC-OPA-FAILCLOSED host with OPA stopped (2)
+     ✓ every OPA-guarded read and write is refused while OPA is down (fail closed) 86ms
+     ✓ after OPA returns, the host recovers (PEP breaker closes) without a restart 5332ms
+ ❯ tests/security/m10/guards-csrf-headers.sec.test.ts (23 tests | 1 failed) 1604ms
+   ✓ SEC-SIM simulators refused outside LOCAL/CI (12)
+     ✓ assertSimulatorEnvironment refuses "UAT" 1ms
+     ✓ assertSimulatorEnvironment refuses "PREPROD" 0ms
+     ✓ assertSimulatorEnvironment refuses "PRODUCTION" 0ms
+     ✓ assertSimulatorEnvironment refuses "SIT" 0ms
+     ✓ assertSimulatorEnvironment refuses "DEVELOPMENT" 0ms
+     ✓ assertSimulatorEnvironment refuses "" 0ms
+     ✓ assertSimulatorEnvironment refuses "local" 0ms
+     ✓ registerLabSimulators refuses to mount routes in UAT 1ms
+     ✓ buildPlatformLab refuses UAT before touching the database 1ms
+     ✓ portal placement is refused for PRODUCTION/PREPROD and on environment mismatch 35ms
+     ✓ runtime: the platform host process refuses to start with SF_ENVIRONMENT=UAT 825ms
+     ✓ officer BFF refuses SIMULATED IdP sign-in when SF_ENVIRONMENT is not LOCAL/CI 6ms
+   ✓ SEC-CSRF cookie-authenticated state-changing BFF routes (F-07) (5)
+     ✓ officer decision POST refuses every cross-site / non-JSON variant and the case is unchanged 218ms
+     ✓ citizen apply, OTP challenge and session POSTs refuse every cross-site / non-JSON variant 152ms
+     ✓ officer sign-in POST (login CSRF) refuses cross-site variants 27ms
+     ✓ a body without any Content-Type (no-cors Blob shape) is refused on officer decision and citizen apply 64ms
+     ✓ cross-site sign-out (DELETE) is refused and the session survives 58ms
+   ❯ SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) (2)
+     ✓ BFF refuses a non-synthetic applicant name 17ms
+     × F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB 22ms
+   ✓ SEC-ERR error responses and headers (4)
+     ✓ host: malformed JSON, oversized and unexpected input return generic errors without internals 16ms
+     ✓ BFF: platform outage maps to a generic 5xx and no upstream detail 2ms
+     ✓ portal pages send frame-ancestors none and nosniff, and no x-powered-by 117ms
+     ✓ F-12: host CMP-015 working-data (PII) responses are Cache-Control: no-store 40ms
+ ❯ tests/security/m10/idor-authz.sec.test.ts (28 tests | 1 failed) 453ms
+   ❯ SEC-IDOR host: citizen B against citizen A (same placement tenant) (6)
+     ✓ B cannot read A case, transitions or working data 17ms
+     ✓ B list never contains A applications; state filter does not widen it 10ms
+     ✓ list rejects extra query keys that could carry owner/tenant overrides 4ms
+     ✓ B cannot write A working data or drive A commands 28ms
+     ✓ B cannot register requests on A case 2ms
+     × F-09: host get-by-id answers another citizen case like a missing id 10ms
+   ✓ SEC-TEN tenant-identifying headers refused (SF-TEN-002) (8)
+     ✓ CMP-015 refuses x-tenant-id 1ms
+     ✓ CMP-015 refuses x-sf-tenant 1ms
+     ✓ CMP-015 refuses tenant-id 1ms
+     ✓ CMP-015 refuses x-roles 1ms
+     ✓ CMP-015 refuses x-actor-type 1ms
+     ✓ CMP-015 refuses x-actor-id 1ms
+     ✓ CMP-015 refuses forwarded 1ms
+     ✓ citizen BFF does not forward client tenant/role headers (list unchanged, no officer view) 25ms
+   ✓ SEC-IDOR BFF: citizen B against citizen A (3)
+     ✓ BFF get-by-id for another citizen case is 404 with no PII 31ms
+     ✓ BFF path traversal / non-UUID ids are refused before reaching the host 26ms
+     ✓ BFF responses with PII carry Cache-Control: no-store 47ms
+   ✓ SEC-AUTHZ officer commands and decision boundary (11)
+     ✓ owning citizen cannot execute MARK_RECEIVED on own case 9ms
+     ✓ owning citizen cannot execute ENTER_SCRUTINY on own case 8ms
+     ✓ owning citizen cannot execute ENTER_DECISION_PENDING on own case 7ms
+     ✓ owning citizen cannot execute RAISE_DEFICIENCY on own case 5ms
+     ✓ owning citizen cannot execute RECORD_APPROVED on own case 5ms
+     ✓ owning citizen cannot execute RECORD_REJECTED on own case 11ms
+     ✓ owning citizen cannot execute CLOSE on own case 15ms
+     ✓ officer decision without HUMAN attestation, or attested AI, is refused 67ms
+     ✓ officer can not write citizen working data (no WORKING_DATA_WRITE grant) 10ms
+     ✓ officer cannot create a draft as a citizen (no APPLICATION_CREATE_DRAFT grant) 10ms
+     ✓ citizen BFF exposes no command/decision route; officer BFF decision route refuses citizens 20ms
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts (10 tests | 1 failed) 221ms
+   ❯ SEC-SESSION-BINDING officer context comes from the presented session (10)
+     ✓ F-01: a tenant-A token keeps the tenant-A context when a later tenant-B session exists 54ms
+     ✓ F-01: a credential issued for a tenant-B session gets no tenant-A context or cases 11ms
+     ✓ F-02: signing out with the tenant-A token revokes it while a later tenant-B session exists 15ms
+     ✓ F-03: roles come from the presented session, not a later same-tenant session 11ms
+     ✓ F-05: a DISABLED officer is not re-activated by sign-in and live sessions stop 13ms
+     ✓ F-01/F-02/F-03 with three sessions: each token gets exactly its own tenant and roles; sign-out revokes the presented tenant only 34ms
+     ✓ F-05 across tenants: disabling the tenant-B principal does not affect tenant A; disabling A stops A and never yields B 22ms
+     ✓ inconsistent or stale rows never resolve: expired lookup, revoked officer_session behind an ACTIVE lookup 12ms
+     ✓ officer BFF sign-out revokes the presented session on the platform 20ms
+     × N-1: a role-less officer session can still sign itself out 11ms
+ ✓ tests/security/m10/open-redirect.sec.test.ts (23 tests) 6511ms
+   ✓ SEC-REDIRECT runtime (headless Chromium against the built BFFs) (2)
+     ✓ F-04: officer sign-in with next=/.//evil.example stays on the workbench 3201ms
+     ✓ F-04: citizen signed-in "Continue" link ignores next=/.//evil.example 3224ms
+ ❯ tests/security/m10/otp.sec.test.ts (20 tests | 1 failed) 1083ms
+   ❯ SEC-OTP CMP-004 citizen OTP (20)
+     ✓ locks the challenge after 5 wrong codes; the right code is then refused; LOCKED is persisted 57ms
+     ✓ lockout is also enforced through the BFF (same generic message for wrong/locked) 40ms
+     ✓ a verified challenge cannot be replayed 11ms
+     ✓ challenge response is indistinguishable for new and existing numbers (host and BFF) 26ms
+     × F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time 18ms
+     ✓ F-06: a new challenge supersedes earlier PENDING challenges for the number 40ms
+     ✓ OTP inbox: unknown/non-UUID ids are 404 and responses are no-store 7ms
+     ✓ rate-limit key ignores client-supplied X-Forwarded-For (no bucket rotation) 6ms
+     ✓ F-06: a superseded challenge cannot be verified with its own (correct) code 9ms
+     ✓ F-06: concurrent challenge requests for one number leave at most one PENDING 57ms
+     ✓ F-06: wrong-code budget is per channel, not per challenge (sequential re-challenge) 31ms
+     ✓ F-06: 50 concurrent challenge requests for one number leave at most one PENDING 121ms
+     ✓ F-06: budget counts across abandoned/superseded challenges (5 x 2 wrong, never LOCKED) 39ms
+     ✓ F-06: maximum wrong guesses per number per window is bounded (issuance-only check) 48ms
+     ✓ F-06: parallel wrong verifies on one challenge cannot exceed max_attempts 21ms
+     ✓ F-06: concurrent challenge storm at budget-1 still yields one PENDING and then throttles 329ms
+     ✓ F-06: throttling one number does not affect another 35ms
+     ✓ F-06: the 429 is identical for registered, never-verified and LOCKED-principal numbers 96ms
+     ✓ F-06: idempotent replay cannot bypass the budget or resurrect a guessable challenge 39ms
+     ✓ F-06: the budget window is 15 minutes, keyed on challenge creation 35ms
+ ✓ tests/security/m10/session.sec.test.ts (16 tests) 274ms
+ ✓ tests/security/m10/rls-pii.sec.test.ts (14 tests) 183ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/security/m10/guards-csrf-headers.sec.test.ts > SEC-L2 synthetic-only data in SAMPLE_LAB (closes L-2 at the BFF) > F-11: the host (CMP-015) refuses a non-synthetic name in SAMPLE_LAB
+AssertionError: non-synthetic name via host: expected 200 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 200
+
+ ❯ tests/security/m10/guards-csrf-headers.sec.test.ts:330:58
+    328|       },
+    329|     });
+    330|     expect.soft(r.status, 'non-synthetic name via host').toBe(400);
+       |                                                          ^
+    331|   });
+    332| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/security/m10/idor-authz.sec.test.ts > SEC-IDOR host: citizen B against citizen A (same placement tenant) > F-09: host get-by-id answers another citizen case like a missing id
+AssertionError: existence oracle (other citizen case vs absent id): expected 403 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 403
+
+ ❯ tests/security/m10/idor-authz.sec.test.ts:133:8
+    131|     expect
+    132|       .soft(other.status, 'existence oracle (other citizen case vs abs…
+    133|       .toBe(absent.status);
+       |        ^
+    134|   });
+    135| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > N-1: a role-less officer session can still sign itself out
+AssertionError: role-less revoke status: expected 403 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 403
+
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:251:54
+    249|     );
+    250|     await revokeSeeded();
+    251|     expect.soft(r.status, 'role-less revoke status').toBe(200);
+       |                                                      ^
+    252|     expect.soft(row.rows[0]?.status, 'role-less session after revoke')…
+    253|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/security/m10/officer-session-binding.sec.test.ts > SEC-SESSION-BINDING officer context comes from the presented session > N-1: a role-less officer session can still sign itself out
+AssertionError: role-less session after revoke: expected 'ACTIVE' to be 'REVOKED' // Object.is equality
+
+Expected: "REVOKED"
+Received: "ACTIVE"
+
+ ❯ tests/security/m10/officer-session-binding.sec.test.ts:252:72
+    250|     await revokeSeeded();
+    251|     expect.soft(r.status, 'role-less revoke status').toBe(200);
+    252|     expect.soft(row.rows[0]?.status, 'role-less session after revoke')…
+       |                                                                        ^
+    253|   });
+    254| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/security/m10/opa.sec.test.ts > SEC-OPA citizen owner path (real OPA, m10-b1 bundle + lab tenant data) > F-13 (pre-existing CMP-048): OPA bearer tokens are not literal identity names
+AssertionError: grant-publisher literal token accepted: expected 200 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 200
+
+ ❯ tests/security/m10/opa.sec.test.ts:118:71
+    116|       headers: { authorization: 'Bearer grant-publisher' },
+    117|     });
+    118|     expect.soft(res.status, 'grant-publisher literal token accepted').…
+       |                                                                       ^
+    119|   });
+    120| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/security/m10/otp.sec.test.ts > SEC-OTP CMP-004 citizen OTP > F-10: a non-ACTIVE citizen principal is indistinguishable at challenge time
+AssertionError: locked principal answered 403 SF-AUTH-002: expected 403 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 403
+
+ ❯ tests/security/m10/otp.sec.test.ts:121:10
+    119|           `locked principal answered ${res.status} ${String(res.body['…
+    120|         )
+    121|         .toBe(normal.status);
+       |          ^
+    122|     } finally {
+    123|       await admin.query(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  5 failed | 3 passed (8)
+      Tests  5 failed | 141 passed (146)
+   Start at  16:34:07
+   Duration  17.31s (tests 95%, import 3%, transform 2%)
+
+JUNIT report written to /agent/repos/sf-wt-sec/evidence/SF-M10-B-SEC/junit/security.xml
