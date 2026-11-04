@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export type RadioOption = { value: string; label: string };
+export type RadioOption = { value: string; label: ReactNode };
 
 export type RadioGroupProps = {
   name: string;
@@ -28,7 +28,9 @@ export function RadioGroup({ name, legend, options, value, onChange, error }: Ra
               checked={value === undefined ? undefined : value === opt.value}
               onChange={onChange ? () => onChange(opt.value) : undefined}
             />
-            <span className="ux4g-radio-control" aria-hidden="true" />
+            <span className="ux4g-radio-control" aria-hidden="true">
+              <span className="ux4g-radiomark" />
+            </span>
             <span className="ux4g-label-m-default">{opt.label}</span>
           </label>
         );

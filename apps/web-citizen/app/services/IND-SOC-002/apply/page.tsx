@@ -1,11 +1,17 @@
-'use client';
-
 import { AppShell } from '@serviceform/ui-ux4g';
+import type { Metadata } from 'next';
 import { CitizenNav } from '../../../../components/CitizenNav';
+import { CitizenPageHeader } from '../../../../components/CitizenPageHeader';
 import { RequireCitizenSession } from '../../../../components/RequireCitizenSession';
 import { ResidenceApplyForm } from '../../../../components/ResidenceApplyForm';
+import { residenceServiceFacts } from '../../../../lib/service-facts';
+
+export const metadata: Metadata = {
+  title: 'Apply - Residence Certificate - ServiceForm AI - Citizen Portal',
+};
 
 export default function ResidenceApplyPage() {
+  const service = residenceServiceFacts();
   return (
     <AppShell
       surface="citizen_web"
@@ -14,13 +20,15 @@ export default function ResidenceApplyPage() {
       nav={<CitizenNav />}
     >
       <RequireCitizenSession>
-        <section className="sf-page-hero">
-          <h1 className="ux4g-heading-2xl-strong">Apply — Residence Certificate</h1>
-          <p className="ux4g-body-m-default">
-            Four steps: applicant → residence → evidence → preview &amp; submit. Fee ₹0 · SAMPLE_LAB
-            only.
-          </p>
-        </section>
+        <CitizenPageHeader
+          crumbs={[
+            { href: '/services', label: 'Services' },
+            { href: '/services/IND-SOC-002', label: service.serviceName },
+            { label: 'Apply' },
+          ]}
+          title={`Apply — ${service.serviceName}`}
+          lead={`Four short steps: applicant, residence, evidence and review. Fee ${service.fee} · service time ${service.serviceTime}.`}
+        />
         <ResidenceApplyForm />
       </RequireCitizenSession>
     </AppShell>

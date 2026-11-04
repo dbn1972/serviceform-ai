@@ -1,68 +1,46 @@
 'use client';
 
-import { Alert, Button } from '@serviceform/ui-ux4g';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, type ReactNode } from 'react';
+import { useCitizenSession, type CitizenProfile } from '../lib/use-citizen-session';
 
-type SessionState =
-  | { status: 'loading' }
-  | { status: 'anon' }
-  | { status: 'ok'; display_name: string; mobile: string };
+const CitizenContext = createContext<CitizenProfile | null>(null);
 
-/**
- * Soft gate for SAMPLE_LAB citizen routes. Redirects to /login when no session cookie.
- */
+/** Verified citizen for pages rendered inside `RequireCitizenSession`. */
+export function useCitizen(): CitizenProfile {
+  const citizen = useContext(CitizenContext);
+  if (!citizen) throw new Error('useCitizen must be used inside RequireCitizenSession');
+  return citizen;
+}
+
+/** Gate for SAMPLE_LAB citizen routes: redirects to sign-in (keeping `next`) without a session. */
 export function RequireCitizenSession({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [state, setState] = useState<SessionState>({ status: 'loading' });
+  const session = useCitizenSession();
+  const signInHref = `/login?next=${encodeURIComponent(pathname || '/services')}`;
 
   useEffect(() => {
-    let cancelled = false;
-    void fetch('/api/lab/session')
-      .then((r) => r.json())
-      .then((body: { authenticated?: boolean; display_name?: string; mobile?: string }) => {
-        if (cancelled) return;
-        if (body.authenticated && body.display_name && body.mobile) {
-          setState({
-            status: 'ok',
-            display_name: body.display_name,
-            mobile: body.mobile,
-          });
-          return;
-        }
-        setState({ status: 'anon' });
-        const next = encodeURIComponent(pathname || '/services');
-        router.replace(`/login?next=${next}`);
-      })
-      .catch(() => {
-        if (!cancelled) setState({ status: 'anon' });
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [pathname, router]);
+    if (session.status === 'anon') router.replace(signInHref);
+  }, [session.status, router, signInHref]);
 
-  if (state.status === 'loading') {
-    return <p className="ux4g-body-m-default">Checking SAMPLE_LAB session…</p>;
+  if (session.status === 'signed-in') {
+    return <CitizenContext.Provider value={session.profile}>{children}</CitizenContext.Provider>;
   }
-  if (state.status === 'anon') {
-    return (
-      <Alert variant="info" title="Sign-in required">
-        Redirecting to SAMPLE_LAB citizen login…
-        <div className="sf-actions">
-          <Button onClick={() => router.push('/login')}>Open login</Button>
-        </div>
-      </Alert>
-    );
-  }
-
   return (
-    <>
-      <p className="ux4g-body-s-default sf-session-chip" data-testid="citizen-session-chip">
-        Signed in as <strong>{state.display_name}</strong> · {state.mobile} · SAMPLE_LAB
-      </p>
-      {children}
-    </>
+    <div className="sf-gate" role="status">
+      <span className="sf-spinner" aria-hidden="true" />
+      {session.status === 'loading' ? (
+        <p className="ux4g-body-m-default">Checking your sign-in…</p>
+      ) : (
+        <p className="ux4g-body-m-default">
+          Taking you to sign in…{' '}
+          <Link className="sf-auth-inline-link" href={signInHref}>
+            Sign in
+          </Link>
+        </p>
+      )}
+    </div>
   );
 }

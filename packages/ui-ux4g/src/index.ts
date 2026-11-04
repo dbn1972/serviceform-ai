@@ -30,6 +30,8 @@ export {
   type InputSize,
 } from './components/TextInput';
 export { Checkbox, type CheckboxProps } from './components/Checkbox';
+export { OtpInput, type OtpInputProps, type OtpState } from './components/OtpInput';
+export { Icon, type IconName, type IconProps } from './components/Icon';
 export {
   RadioGroup,
   Switch,

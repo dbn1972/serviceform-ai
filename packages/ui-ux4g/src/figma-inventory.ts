@@ -2,6 +2,7 @@
 export const UX4G_FIGMA_INVENTORY = [
   { figma: 'Button', code: 'Button', classes: ['ux4g-btn-primary', 'ux4g-btn-m'] },
   { figma: 'Input', code: 'TextInput', classes: ['ux4g-input-container', 'ux4g-input-m'] },
+  { figma: 'OTP Input', code: 'OtpInput', classes: ['ux4g-otp', 'ux4g-otp-slot'] },
   { figma: 'Checkbox', code: 'Checkbox', classes: ['ux4g-checkbox'] },
   { figma: 'Radio', code: 'RadioGroup', classes: ['ux4g-radio'] },
   { figma: 'Switch', code: 'Switch', classes: ['ux4g-switch'] },

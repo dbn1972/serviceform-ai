@@ -41,7 +41,13 @@ NEEDLES = (
     ":where(a)",
     ":where(ul)",
     ":where(img)",
+    ":where(button, input",
+    ":where(button,input",
     "ux4g-display-",
+    "ux4g-otp",
+    "ux4g-divider",
+    "ux4g-checkmark",
+    "ux4g-radiomark",
 )
 
 

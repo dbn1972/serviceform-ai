@@ -1,9 +1,20 @@
-import { AppShell, Alert } from '@serviceform/ui-ux4g';
-import { Suspense } from 'react';
-import { CitizenLoginForm } from '../../components/CitizenLoginForm';
+import { AppShell } from '@serviceform/ui-ux4g';
+import type { Metadata } from 'next';
+import { AuthContextPanel } from '../../components/auth/AuthContextPanel';
+import { AuthLayout } from '../../components/auth/AuthLayout';
+import { SignInFlow } from '../../components/auth/SignInFlow';
 import { CitizenNav } from '../../components/CitizenNav';
+import {
+  SAMPLE_CITIZEN_HINT,
+  readAuthParams,
+  residenceServiceFacts,
+  type AuthSearchParams,
+} from '../../lib/service-facts';
 
-export default function LoginPage() {
+export const metadata: Metadata = { title: 'Sign in - ServiceForm AI - Citizen Portal' };
+
+export default async function LoginPage({ searchParams }: { searchParams: AuthSearchParams }) {
+  const { nextParam, initialMobile, signedOut } = await readAuthParams(searchParams);
   return (
     <AppShell
       surface="citizen_web"
@@ -11,25 +22,17 @@ export default function LoginPage() {
       environmentLabel="SAMPLE_LAB"
       nav={<CitizenNav />}
     >
-      <section className="sf-page-hero">
-        <h1 className="ux4g-heading-2xl-strong">Citizen sign-in</h1>
-        <p className="ux4g-body-m-default">
-          Start the Residence Certificate journey with a SIMULATED SAMPLE_LAB identity.
-        </p>
-        <div className="sf-meta-row">
-          <span className="ux4g-tag-tonal-warning">SIMULATED OTP</span>
-          <span className="ux4g-tag-outline-warning">G6 not issued</span>
-        </div>
-      </section>
-
-      <Alert variant="info" title="What happens next">
-        After sign-in you will see available services, open Residence Certificate, apply, track
-        status, and publish to DigiLocker (SIMULATED) once an officer issues the credential.
-      </Alert>
-
-      <Suspense fallback={<p className="ux4g-body-m-default">Loading sign-in…</p>}>
-        <CitizenLoginForm />
-      </Suspense>
+      <AuthLayout
+        context={<AuthContextPanel variant="sign-in" service={residenceServiceFacts()} />}
+        sampleHint={
+          <>
+            Sample citizen <strong>{SAMPLE_CITIZEN_HINT.mobile}</strong> · OTP{' '}
+            <strong>{SAMPLE_CITIZEN_HINT.otp}</strong>
+          </>
+        }
+      >
+        <SignInFlow nextParam={nextParam} initialMobile={initialMobile} signedOut={signedOut} />
+      </AuthLayout>
     </AppShell>
   );
 }
