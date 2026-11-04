@@ -1,8 +1,12 @@
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Smoke + accessibility checks for the Next.js shells (TESTING.md "Accessibility checks",
- * DESIGN-SYSTEM.md rule 6). Apps must be built first: pnpm -r --filter "./apps/web-*" run build.
+ * DESIGN-SYSTEM.md rule 6) and the SAMPLE_LAB platform journey. Apps must be built first:
+ * pnpm -r --filter "./apps/web-*" run build. The portals call the platform host started by
+ * `scripts/dev/platform-lab.sh up` (CMP-004/CMP-015 on PostgreSQL + OPA).
  * PW_CHROMIUM_PATH lets sandboxed environments reuse a preinstalled Chromium.
  */
 export const SURFACES = [
@@ -13,6 +17,15 @@ export const SURFACES = [
 ] as const;
 
 const executablePath = process.env['PW_CHROMIUM_PATH'];
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
+export const API_BASE_URL = process.env['SF_API_BASE_URL'] ?? 'http://127.0.0.1:4000';
+const PORTAL_ENV = {
+  SF_API_BASE_URL: API_BASE_URL,
+  SF_ENVIRONMENT: process.env['SF_ENVIRONMENT'] ?? 'LOCAL',
+  SF_PORTAL_PLACEMENT_FILE:
+    process.env['SF_PORTAL_PLACEMENT_FILE'] ??
+    join(ROOT, 'fixtures/lab/platform/placement.citizen.json'),
+};
 
 export default defineConfig({
   testDir: '.',
@@ -35,6 +48,6 @@ export default defineConfig({
     url: `http://127.0.0.1:${s.port}/api/health`,
     reuseExistingServer: false,
     timeout: 60_000,
-    env: { NEXT_TELEMETRY_DISABLED: '1', HOSTNAME: '127.0.0.1' },
+    env: { NEXT_TELEMETRY_DISABLED: '1', HOSTNAME: '127.0.0.1', ...PORTAL_ENV },
   })),
 });
