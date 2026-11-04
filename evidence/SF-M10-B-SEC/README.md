@@ -7,7 +7,7 @@
 | Run | 4 Nov 2026, Cursor cloud VM. Node 22.23.4, PostgreSQL 16.15 (own cluster `secverify`, port 5434), OPA 1.21.1, Chromium headless shell 1243 |
 | Ports | API host 4100, OPA 8281, citizen BFF 3100, officer BFF 3101 (Next.js production builds) |
 | Stamp | SAMPLE_LAB · SIMULATED OTP/IdP · CERTIFIED=false · G4/G6 not claimed · self_certified=false |
-| **Current recommendation** | **PASS-WITH-FINDINGS** after the [re-run at 8cc021c](#re-run-at-8cc021c). F-01 (hard gate) and F-02, F-03, F-04, F-05, F-07 and F-12 are fixed and verified. F-06 and F-08 (Medium) and five Lows remain |
+| **Current recommendation** | **PASS-WITH-FINDINGS** after the [re-run of F-06 at 60f0790](#re-run-f-06-at-60f0790). F-01 (hard gate) and F-02, F-03, F-04, F-05, F-06, F-07 and F-12 are fixed and verified. F-08 (Medium), five Lows and the new availability note N-3 (Low) remain |
 | Original run (f334df8) | BLOCK. One hard-gate failure: a session token issued for tenant B read tenant A cases (F-01) |
 
 ## Original run at f334df8
@@ -196,3 +196,54 @@ cross-tenant-disable variants. Open items:
 
 Not CERTIFIED. No G4/G6 claim. Gate status is for human/CI decision.
 
+
+## Re-run F-06 at 60f0790
+
+| Field | Value |
+|---|---|
+| Under test | `60f0790eedb14400a0798d5bcd9ee38809d965e0` (draft PR #216, branch `cursor/m10-cmp004-otp-throttle-0b20`, tip `4a29c27`), merged into a local scratch branch on top of this branch (`691a00b`). The scratch merge was not pushed; this commit contains only tests and evidence |
+| Claimed fix | Challenge issuance takes `pg_advisory_xact_lock(hashtextextended(channel_hash, 0))` before superseding. A new challenge is refused with 429 `SF-RATE-001` once the number has 10 or more failed attempts across its non-`VERIFIED` challenges created in the last 15 minutes |
+| Environment | Fresh cluster `secverify` (5434), fresh bootstrap, OPA 8281, API 4100, citizen/officer BFFs rebuilt and run on 3100/3101 |
+| Commands | As in the original run (`SF_SEC_ADMIN_DB=postgres://ci@localhost:5434/sf_sec pnpm exec vitest run --config tests/security/m10/vitest.config.ts`; CMP-004 integration against `sf_sec_int`). `opa test` and CMP-015 integration were not re-run: 60f0790 touches only CMP-004 |
+
+### Results at 60f0790
+
+| Suite | Result | Evidence |
+|---|---|---|
+| `tests/security/m10` (8 files) | 146 tests: **141 pass, 5 fail**. All 5 failures are earlier open findings (F-09, F-10, F-11, F-13, N-1). Every F-06 probe passes | `logs/security-suite.log`, `junit/security.xml` |
+| `otp.sec.test.ts` | 20 tests: 19 pass, 1 fail (F-10, unchanged). 13 F-06 probes pass | same |
+| CMP-004 integration | 14/14 (adds the builder's two PG regressions for F-06) | `logs/cmp004-integration.log` |
+| `prettier --check` / `eslint --max-warnings=0` on `tests/security/m10`, `pnpm format:check`, `pnpm lint` | clean | — |
+
+### Probes added to try to break the F-06 fix
+
+| Probe | Result |
+|---|---|
+| 20 and 50 concurrent challenge requests for one number | All return 200. At most 1 challenge for the number stays `PENDING` (was 7 of 20 at 8cc021c) |
+| Budget across abandoned challenges: 5 challenges with 2 wrong codes each, none ever `LOCKED` | The 6th challenge gets 429 with no `challenge_id` |
+| Sequential lockout rounds (5 wrong codes per round) | The 3rd challenge is refused with 429 `SF-RATE-001`. The old "fresh challenge then verify 200" bypass is gone |
+| Worst-case guesses per window: 5 wrong, then 4 wrong, then a fresh challenge issued at 9 failures and burned | Exactly **14** guesses are recorded in the DB (`sum(attempts)`), then every further challenge gets 429. The budget is checked only at issuance, so the overshoot is bounded at budget − 1 + 5 |
+| 30-request challenge storm at 9 failures, then burn every returned id | At most 1 `PENDING`. Recorded attempts stay at most 14. The next challenge gets 429. Wrong codes against superseded ids return 401 without being counted, which is correct because those ids can no longer verify |
+| 25 parallel wrong verifies on one challenge | `attempts` = 5, status `LOCKED`. Verify takes `SELECT … FOR UPDATE`, so there are no lost updates |
+| Isolation: number A throttled | A fresh number B signs in normally (200) |
+| Enumeration: throttle a registered number, a never-verified number and a `LOCKED`-principal number | All three give an identical 429: same status, `error_code`, `message`, body keys and `Retry-After`. The budget check runs before the principal lookup, so F-10's 403 is not reached once a number is throttled |
+| Idempotent replay | Replaying a pre-throttle key returns at most its stored response (same `challenge_id`), creates no new `PENDING` challenge, and that challenge's correct code is refused (401). A key first refused with 429 is not persisted, so replaying it is refused again. Reusing a key with another number is not 200 |
+| Window | Shifting the number's challenges 14 minutes into the past keeps the 429. 16 minutes lifts it, and the next challenge verifies with 200 |
+
+### F-06 status
+
+**FIXED-VERIFIED** at 60f0790. The supersede race (N-2) is closed by the per-number advisory lock. The per-number failure budget holds across supersede, abandon, concurrency and idempotent replay, is isolated per number, and is not an enumeration oracle.
+The effective ceiling is 14 guesses per number per 15 minutes, not 10, because the budget is checked only when a challenge is issued. That is about 1.3k guesses per number per day, roughly a 0.13 % chance of guessing a 6-digit code. This is acceptable for SAMPLE_LAB and recorded for the CMP-004 backlog.
+
+### New findings
+
+| ID | Severity | Finding | Recommended owner fix |
+|---|---|---|---|
+| N-3 | Low (availability; product decision) | The budget is keyed only on the number, so anyone who knows a citizen's mobile number can keep that citizen from getting an OTP. About 10 wrong verifies per 15 minutes suffice, well under the per-IP limit. This is the expected trade-off of a per-number throttle, and nothing leaks | CMP-004/product: decide by ADR. Options: an escalating or per-(number, client) budget once F-08 forwards a trusted client address, an operator unlock, and alerting on sustained per-number throttling |
+| N-4 | Info | Enforcement happens at issuance only, giving the ceiling of 14 described above | Optionally also check the budget in verify before comparing the code |
+
+### Recommendation at 60f0790 (Phase B scope, F-06 targeted)
+
+**PASS-WITH-FINDINGS.** F-06/N-2 move to FIXED-VERIFIED. No hard gate fails, and no Critical or High is open. Open items: F-08 (Medium, trusted proxy) and the Lows N-1, N-3, F-09, F-10, F-11 and F-13. N-4 is Info.
+
+Not CERTIFIED. No G4/G6 claim. Gate status is for human/CI decision.
