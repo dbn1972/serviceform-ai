@@ -268,7 +268,7 @@ jobs:
   # SF-M10-B-2: component integration suites on the wired journey path (real PostgreSQL logins,
   # FORCE RLS). Not covered by pnpm test (which excludes *.int.test.ts).
   platform-path-int:
-    name: M10 platform path integration (CMP-004, CMP-015)
+    name: M10 platform path integration (CMP-004, CMP-015, CMP-012)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     services:
@@ -292,6 +292,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @serviceform/cmp-004-identity-access run test:integration
       - run: pnpm --filter @serviceform/cmp-015-application-case run test:integration
+      - run: pnpm --filter @serviceform/cmp-012-digilocker run test:integration
 
   mobile:
     name: flutter analyze and test
