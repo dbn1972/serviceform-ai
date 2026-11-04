@@ -67,10 +67,11 @@ export function useCitizenSession(): CitizenSessionState & { signOut: () => Prom
     };
   }, [pathname, revision]);
 
+  // No announceSessionChange(): a gate on the current page would re-read the session and race this
+  // navigation with its own `/login?next=…` redirect. Leaving the page refreshes every consumer.
   const signOut = useCallback(async () => {
     await fetch('/api/lab/session', { method: 'DELETE' });
     setState({ status: 'anon' });
-    announceSessionChange();
     router.replace('/login?signed_out=1');
     router.refresh();
   }, [router]);

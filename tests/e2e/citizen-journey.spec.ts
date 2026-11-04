@@ -73,6 +73,16 @@ test.describe('citizen journey stitched to OTP sign-in', () => {
     await expect(page.getByRole('navigation', { name: 'Citizen' })).toContainText('Sign in');
   });
 
+  test('sign-out from a gated page lands on the signed-out confirmation', async ({ page }) => {
+    await register(page, 'SAMPLE Gated Signout', uniqueMobile());
+    await open(page, '/certificates');
+    await page.getByTestId('citizen-account').getByRole('button', { name: 'Sign out' }).click();
+    await expect(page).toHaveURL(/\/login\?signed_out=1$/);
+    await expect(page.getByTestId('signed-out-notice')).toContainText('You have signed out');
+    const session = await page.evaluate(() => fetch('/api/lab/session').then((r) => r.json()));
+    expect(session).toMatchObject({ authenticated: false });
+  });
+
   test('the application is pre-filled from the account and filed under that citizen only', async ({
     page,
   }) => {

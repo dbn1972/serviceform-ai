@@ -15,6 +15,17 @@ describe('safeNext (post sign-in destination)', () => {
     expect(safeNext('/\\evil.example')).toBe('/services');
     expect(safeNext(undefined, '/x')).toBe('/x');
   });
+
+  it('rejects targets that only leave the portal after browser URL parsing', () => {
+    expect(safeNext('/\t/evil.example/phish')).toBe('/services');
+    expect(safeNext('/\n/evil.example/phish')).toBe('/services');
+    expect(safeNext('/\r/evil.example/phish')).toBe('/services');
+    expect(safeNext('/\t\\evil.example')).toBe('/services');
+  });
+
+  it('keeps query and fragment on same-origin targets', () => {
+    expect(safeNext('/certificates?mine=1#latest')).toBe('/certificates?mine=1#latest');
+  });
 });
 
 describe('OTP countdown helpers', () => {
