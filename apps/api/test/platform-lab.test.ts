@@ -229,6 +229,12 @@ describe('buildPlatformLab composition', () => {
     await expect(buildPlatformLab({ ...env, SF_CMP004_PEPPER: 'short' })).rejects.toThrow(
       /SF_CMP004_PEPPER/,
     );
+    await expect(buildPlatformLab({ ...env, SF_IDENTITY_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
+      /SF_IDENTITY_RATE_LIMIT_MAX/,
+    );
+    const limited = await buildPlatformLab({ ...env, SF_IDENTITY_RATE_LIMIT_MAX: '500' });
+    expect(limited.m02.identityAccess?.rateLimitMax).toBe(500);
+    await limited.close();
     const { SF_OPA_URL: _omit, ...noOpa } = env;
     await expect(buildPlatformLab(noOpa)).rejects.toThrow(/SF_OPA_URL/);
   });

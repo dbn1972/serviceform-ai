@@ -63,7 +63,7 @@ export async function postJson<T>(url: string, body: unknown): Promise<ApiResult
 }
 
 export function requestOtp(mobile: string, purpose: LabOtpPurpose) {
-  return postJson<OtpChallenge>('/api/lab/otp/challenges', { mobile, purpose });
+  return postJson<OtpChallenge>('/api/portal/otp/challenges', { mobile, purpose });
 }
 
 const NEXT_BASE = 'http://citizen-portal.invalid';

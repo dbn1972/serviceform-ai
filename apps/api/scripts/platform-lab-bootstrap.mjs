@@ -65,6 +65,9 @@ const out = {
   SF_PLATFORM_LAB_DIR: join(ROOT, 'fixtures/lab/platform'),
   SF_OPA_URL: opaUrl,
   SF_OPA_TOKEN: 'pep',
+  // Lab-sized limits: all portal traffic reaches the host from the BFF address (one key per IP).
+  SF_IDENTITY_RATE_LIMIT_MAX: '3000',
+  SF_GATEWAY_RATE_LIMIT_MAX: '20000',
   // A stable pepper keeps the same synthetic mobile mapped to the same citizen across restarts.
   SF_CMP004_PEPPER: prior.SF_CMP004_PEPPER ?? randomBytes(32).toString('hex'),
 };

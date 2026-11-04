@@ -43,6 +43,11 @@ export interface PlatformLabEnv {
   SF_CMP004_PEPPER?: string;
   SF_OPA_URL?: string;
   SF_OPA_TOKEN?: string;
+  /**
+   * CMP-004 per-IP limit. Every portal request reaches the host from the BFF's address, so the
+   * limit is per portal instance until the BFF forwards the client address through a trusted hop.
+   */
+  SF_IDENTITY_RATE_LIMIT_MAX?: string;
 }
 
 export interface PlatformLab {
@@ -98,6 +103,13 @@ function required(env: PlatformLabEnv, name: keyof PlatformLabEnv): string {
   const value = env[name];
   if (!value) throw new Error(`Invalid configuration for: ${name}`);
   return value;
+}
+
+function positiveInt(value: string, name: string): number {
+  const n = Number(value);
+  if (!Number.isInteger(n) || n < 1 || n > 1_000_000)
+    throw new Error(`Invalid configuration for: ${name}`);
+  return n;
 }
 
 function readJson<T>(path: string): T {
@@ -199,6 +211,14 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
           M02PluginMounts['identityAccess']
         >['resolveContext'],
         cellId: placement.cell_id,
+        ...(env.SF_IDENTITY_RATE_LIMIT_MAX
+          ? {
+              rateLimitMax: positiveInt(
+                env.SF_IDENTITY_RATE_LIMIT_MAX,
+                'SF_IDENTITY_RATE_LIMIT_MAX',
+              ),
+            }
+          : {}),
       },
     },
     m05: {

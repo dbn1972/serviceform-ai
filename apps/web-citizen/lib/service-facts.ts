@@ -1,8 +1,4 @@
-import {
-  LAB_SEED_ACCOUNT,
-  LAB_SIMULATED_OTP_CODE,
-  PUBLIC_SAMPLE_LAB_POLICY,
-} from '@serviceform/m10-sample-lab';
+import { PUBLIC_SAMPLE_LAB_POLICY } from '@serviceform/m10-sample-lab';
 import type { ServiceFacts } from '../components/auth/AuthContextPanel';
 
 /** IND-SOC-002 facts for the auth context pane, read from the SAMPLE_LAB policy (server only). */
@@ -18,9 +14,10 @@ export function residenceServiceFacts(): ServiceFacts {
   };
 }
 
+/** Any synthetic mobile starting with 9 works; CMP-004 creates the citizen on first verify. */
 export const SAMPLE_CITIZEN_HINT = {
-  mobile: `${LAB_SEED_ACCOUNT.mobile.slice(0, 5)} ${LAB_SEED_ACCOUNT.mobile.slice(5)}`,
-  otp: LAB_SIMULATED_OTP_CODE,
+  mobile: '98765 43210',
+  otp: 'shown in the Simulated SMS',
 };
 
 export type AuthSearchParams = Promise<Record<string, string | string[] | undefined>>;

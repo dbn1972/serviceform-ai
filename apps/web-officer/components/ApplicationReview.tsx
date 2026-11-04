@@ -6,12 +6,12 @@ import { useCallback, useEffect, useState } from 'react';
 type App = {
   id: string;
   status: string;
-  applicant_name: string;
+  platform_state: string;
+  applicant_name?: string;
   applicant_mobile?: string;
-  residence_duration_months: number;
-  eligibility_pass: boolean;
-  purpose_of_certificate: string;
-  evidence_type: string;
+  residence_duration_months?: number;
+  purpose_of_certificate?: string;
+  evidence_type?: string;
   evidence_file_name?: string;
   residence_address?: {
     house_no_or_name: string;
@@ -43,10 +43,10 @@ export function ApplicationReview({ id }: { id: string }) {
   const [info, setInfo] = useState('');
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/lab/applications/${id}`);
-    const body = (await res.json()) as { application?: App; error_code?: string };
+    const res = await fetch(`/api/portal/applications/${id}`);
+    const body = (await res.json().catch(() => ({}))) as { application?: App; message?: string };
     if (!res.ok || !body.application) {
-      setError(body.error_code ?? 'SF-LAB-404');
+      setError(body.message ?? 'Application not found');
       return;
     }
     setApp(body.application);
@@ -59,13 +59,10 @@ export function ApplicationReview({ id }: { id: string }) {
   async function act(action: 'APPROVE' | 'REJECT') {
     setError('');
     setInfo('');
-    const res = await fetch(`/api/lab/applications/${id}`, {
-      method: 'PATCH',
+    const res = await fetch(`/api/portal/applications/${id}`, {
+      method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        action,
-        rejection_reason: action === 'REJECT' ? 'SAMPLE_LAB officer rejection' : undefined,
-      }),
+      body: JSON.stringify({ action }),
     });
     const body = (await res.json()) as {
       error_code?: string;
@@ -73,10 +70,14 @@ export function ApplicationReview({ id }: { id: string }) {
       application?: App;
     };
     if (!res.ok) {
-      setError(body.message ?? body.error_code ?? 'SF-LAB-ACTION');
+      setError(body.message ?? body.error_code ?? 'The decision could not be recorded');
       return;
     }
-    setInfo(action === 'APPROVE' ? 'Approved and issued (SAMPLE_LAB)' : 'Rejected (SAMPLE_LAB)');
+    setInfo(
+      action === 'APPROVE'
+        ? 'Approved. Your decision is recorded on the case as a human decision.'
+        : 'Rejected. Your decision is recorded on the case as a human decision.',
+    );
     if (body.application) setApp(body.application);
   }
 
@@ -93,11 +94,11 @@ export function ApplicationReview({ id }: { id: string }) {
   return (
     <Card
       title="Review application"
-      subtitle="SAMPLE_LAB decision — issues a lab credential, not a production seal"
+      subtitle="Human decision recorded on the Application/Case service (CMP-015)"
       footer={
         app.status === 'SUBMITTED' ? (
           <div className="sf-actions">
-            <Button onClick={() => void act('APPROVE')}>Approve &amp; issue</Button>
+            <Button onClick={() => void act('APPROVE')}>Approve</Button>
             <Button variant="outline-danger" onClick={() => void act('REJECT')}>
               Reject
             </Button>
@@ -106,14 +107,13 @@ export function ApplicationReview({ id }: { id: string }) {
       }
     >
       <Alert variant="warning" title="Sample lab — G6 not issued">
-        Approve issues a SAMPLE_LAB credential. DigiLocker publish is citizen-side SIMULATED mock.
+        Certificate issuance and DigiLocker publishing are not yet connected on this platform path.
+        Eligibility rules are not evaluated here yet; review the details yourself.
       </Alert>
 
       <div className="sf-meta-row">
         <span className={statusTag(app.status)}>{app.status}</span>
-        <span className={app.eligibility_pass ? 'ux4g-tag-tonal-success' : 'ux4g-tag-tonal-error'}>
-          Eligibility {app.eligibility_pass ? 'PASS' : 'FAIL'}
-        </span>
+        <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
       </div>
 
       <dl className="sf-dl">
@@ -129,14 +129,14 @@ export function ApplicationReview({ id }: { id: string }) {
             : '—'}
         </dd>
         <dt>Residence</dt>
-        <dd>{app.residence_duration_months} months</dd>
+        <dd>{app.residence_duration_months ?? '—'} months</dd>
         <dt>Evidence</dt>
         <dd>
           {app.evidence_type}
           {app.evidence_file_name ? ` · ${app.evidence_file_name}` : ''}
         </dd>
         <dt>Purpose</dt>
-        <dd>{app.purpose_of_certificate}</dd>
+        <dd>{app.purpose_of_certificate ?? '—'}</dd>
         {app.credential_id ? (
           <>
             <dt>Credential</dt>
