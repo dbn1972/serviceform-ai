@@ -8889,6 +8889,58 @@
   margin-top: 0.25rem;
 }
 
+.sf-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-5);
+}
+
+.sf-form-check {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-2);
+}
+
+.sf-form-check .ux4g-checkbox-input {
+  /* The native input stays the hit target (pointer, assistive tech, automation). */
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.sf-form-error {
+  margin: 0;
+  color: var(--ux4g-text-error-default);
+}
+
+.ux4g-radio-error .ux4g-input-helper {
+  margin: 0;
+  color: var(--ux4g-text-error-default);
+}
+
+.sf-preview-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ux4g-gap-3);
+  margin-bottom: var(--ux4g-gap-3);
+}
+
+.sf-preview-head h3 {
+  margin: 0;
+}
+
+.sf-dl-row {
+  display: contents;
+}
+
+.sf-form-provenance {
+  margin: 0;
+  color: var(--ux4g-text-neutral-secondary);
+  overflow-wrap: anywhere;
+}
+
 .sf-wizard-actions {
   display: flex;
   flex-wrap: wrap;

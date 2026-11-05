@@ -34,6 +34,8 @@ no_role := false if role_permits
 
 no_role := false if citizen_owner_permits
 
+no_role := false if citizen_published_permits
+
 codes := [c |
 	some pair in [
 		{"on": missing_input, "code": "INPUT_MISSING"},

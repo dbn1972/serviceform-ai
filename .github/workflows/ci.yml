@@ -252,7 +252,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm -r --filter "./apps/web-*" run build
-      - name: start SAMPLE_LAB platform host (CMP-004 + CMP-015, PostgreSQL, OPA)
+      - name: start SAMPLE_LAB platform host (CMP-004 + CMP-009 + CMP-015, PostgreSQL, OPA)
         run: bash scripts/dev/platform-lab.sh up
       - run: pnpm e2e
       - name: platform host logs

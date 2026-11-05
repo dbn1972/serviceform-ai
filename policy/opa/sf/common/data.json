@@ -122,6 +122,15 @@
     },
     "OFFICER_SESSION_REVOKE": {
       "action_class": "PROTECTED"
+    },
+    "FORM_INTERPRET": {
+      "action_class": "READ_ONLY"
+    },
+    "FORM_EXECUTION_EXECUTE": {
+      "action_class": "PROTECTED"
+    },
+    "FORM_EXECUTION_READ": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -130,7 +139,9 @@
     "SecurityPolicy",
     "SecurityIncident",
     "ApplicationCase",
-    "OfficerSession"
+    "OfficerSession",
+    "FormDefinition",
+    "FormExecution"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -149,6 +160,16 @@
         "APPLICATION_RECORD_CITIZEN_RESPONSE",
         "APPLICATION_REQUEST_WITHDRAWAL"
       ],
+      "assurance": ["OTP", "MFA"]
+    },
+    "FormExecution": {
+      "actions": ["FORM_EXECUTION_EXECUTE"],
+      "assurance": ["OTP", "MFA"]
+    }
+  },
+  "citizen_published_grants": {
+    "FormDefinition": {
+      "actions": ["FORM_INTERPRET"],
       "assurance": ["OTP", "MFA"]
     }
   }

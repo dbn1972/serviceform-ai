@@ -54,5 +54,40 @@ export {
   type Ux4gRendererId,
 } from './json-forms/registry';
 export { Ux4gControl, type Ux4gControlProps, type JsonFormsValue } from './json-forms/Ux4gControl';
+export {
+  Ux4gFormLayout,
+  Ux4gFormReview,
+  fieldId,
+  type FieldNote,
+  type Ux4gFormLayoutProps,
+  type Ux4gFormReviewProps,
+} from './json-forms/Ux4gForm';
+export {
+  controlScopes,
+  displayValue,
+  getAt,
+  isRequired,
+  issueMessage,
+  issuesToErrors,
+  labelOf,
+  matchesPattern,
+  ruleConditionScopes,
+  schemaAt,
+  scopeToPointer,
+  setAt,
+  stepErrors,
+  stepOfPointer,
+  visibleScopes,
+  wizardSteps,
+  withoutHidden,
+  type FieldErrors,
+  type FormData,
+  type FormHints,
+  type FormPackageView,
+  type FormSchemaView,
+  type FormUiView,
+  type InterpretedControl,
+  type WizardStep,
+} from './json-forms/form-model';
 export { SF_UX4G_EXTENSIONS, type Ux4gExtension } from './extensions';
 export { UX4G_FIGMA_INVENTORY } from './figma-inventory';

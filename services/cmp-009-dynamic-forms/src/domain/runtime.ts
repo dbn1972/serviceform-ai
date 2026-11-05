@@ -36,20 +36,36 @@ export interface RuntimeResult {
   valid: boolean;
 }
 
-function schemaRequired(root: JsonSchemaNode, data: unknown): Set<string> {
-  const names = new Set<string>(root.required ?? []);
-  if (root.if) {
-    const rec = data as Record<string, unknown>;
-    const props = root.if.properties ?? {};
+function requiredNames(node: JsonSchemaNode, data: unknown): Set<string> {
+  const names = new Set<string>(node.required ?? []);
+  if (node.if) {
+    const rec = (typeof data === 'object' && data !== null ? data : {}) as Record<string, unknown>;
+    const props = node.if.properties ?? {};
     const matched = Object.entries(props).every(([k, child]) => {
       if (child.const !== undefined) return rec[k] === child.const;
       if (child.enum) return child.enum.includes(rec[k]);
       return rec[k] !== undefined;
     });
-    const branch = matched ? root.then : root.else;
+    const branch = matched ? node.then : node.else;
     for (const n of branch?.required ?? []) names.add(n);
   }
   return names;
+}
+
+/** A nested control is required only when every object on its path requires the next name. */
+function requiredAt(root: JsonSchemaNode, pointer: string, data: unknown): boolean {
+  const parts = pointer.split('/').filter(Boolean);
+  let node: JsonSchemaNode | undefined = root;
+  let value: unknown = data;
+  for (const name of parts) {
+    if (!node || !requiredNames(node, value).has(name)) return false;
+    node = node.properties?.[name];
+    value =
+      typeof value === 'object' && value !== null && Object.hasOwn(value, name)
+        ? (value as Record<string, unknown>)[name]
+        : undefined;
+  }
+  return parts.length > 0;
 }
 
 export function runFormRuntime(
@@ -59,7 +75,6 @@ export function runFormRuntime(
   labels: Record<string, string>,
 ): RuntimeResult {
   const { visible, enabled } = evaluateVisibility(uiSchema, data);
-  const requiredNames = schemaRequired(jsonSchema, data);
   const hiddenPointers = new Set<string>();
   walkControls(uiSchema, (node) => {
     if (node.scope && !visible.has(node.scope)) hiddenPointers.add(scopeToPointer(node.scope));
@@ -72,7 +87,7 @@ export function runFormRuntime(
     const schema = schemaNodeAt(jsonSchema, node.scope) ?? {};
     const field = scopeToField(node.scope);
     const isVisible = visible.has(node.scope);
-    const isRequired = isVisible && requiredNames.has(field);
+    const isRequired = isVisible && requiredAt(jsonSchema, scopeToPointer(node.scope), data);
     const hint: { control?: string; options?: { format?: string; multi?: boolean } } = {};
     if (node.options?.format) hint.control = node.options.format;
     if (node.options) hint.options = node.options;

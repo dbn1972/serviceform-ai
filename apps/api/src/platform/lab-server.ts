@@ -20,6 +20,7 @@ const app = await buildApp(config, {
   logger,
   readinessChecks: lab.readinessChecks,
   m02: lab.m02,
+  m04: lab.m04,
   m05: lab.m05,
 });
 await lab.registerSimulators(app);
@@ -36,7 +37,7 @@ logger.info(
   {
     environment: config.SF_ENVIRONMENT,
     portal: lab.placement.portal_id,
-    mounted: [...app.m02Mounted, ...(app.m05Mounted ?? [])],
+    mounted: [...app.m02Mounted, ...(app.m04Mounted ?? []), ...(app.m05Mounted ?? [])],
     simulation: true,
     g6_issued: false,
   },

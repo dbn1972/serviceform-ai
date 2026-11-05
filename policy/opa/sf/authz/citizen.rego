@@ -11,6 +11,8 @@ default citizen_owner_permits := false
 
 default citizen_roles_forbidden := false
 
+default citizen_published_permits := false
+
 is_citizen if input.subject.actor_type == "CITIZEN"
 
 citizen_grant := object.get(
@@ -33,4 +35,20 @@ citizen_owner_permits if {
 	is_string(owner)
 	owner != ""
 	owner == input.subject.user_id
+}
+
+# Published, tenant-scoped metadata a citizen may read through a pinned interpretation (CMP-009
+# FORM_INTERPRET on a FormDefinition). There is no owner: the resource is the tenant's published
+# form, not citizen data. Tenant match, onboarded-tenant data and assurance still apply.
+citizen_published_grant := object.get(
+	object.get(data.sf.common, "citizen_published_grants", {}),
+	object.get(input.resource, "resource_type", ""),
+	{},
+)
+
+citizen_published_permits if {
+	is_citizen
+	not citizen_roles_forbidden
+	input.action in object.get(citizen_published_grant, "actions", [])
+	object.get(input.subject, "assurance", "") in object.get(citizen_published_grant, "assurance", [])
 }

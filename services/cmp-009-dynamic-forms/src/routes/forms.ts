@@ -37,7 +37,11 @@ export async function registerFormRoutes(app: FastifyInstance, deps: RouteDeps):
     const ctx = request.sfContext;
     if (!ctx) throw new Cmp009Error('SF-AUTH-001');
     const idemKey = requireIdempotencyKey(request.headers['idempotency-key']);
-    await authorize(deps.authorizer, authzInput(ctx, 'FORM_EXECUTION_EXECUTE', 'FormExecution'));
+    // A new execution belongs to its requester, so a citizen passes the citizen-owner path.
+    await authorize(
+      deps.authorizer,
+      authzInput(ctx, 'FORM_EXECUTION_EXECUTE', 'FormExecution', ctx.actor.id),
+    );
     const parsed = parseExecutionRequest(request.body);
     const prepared = await prepareExecution(
       { ctx, config: deps.config, forms: deps.forms, localization: deps.localization },

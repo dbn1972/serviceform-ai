@@ -75,6 +75,7 @@ describe('OPA common policy covers every CMP-015 action (ADR-0007 D-2)', () => {
     actions: Record<string, { action_class: string }>;
     resource_types: string[];
     citizen_owner_grants: Record<string, { actions: string[]; assurance: string[] }>;
+    citizen_published_grants: Record<string, { actions: string[]; assurance: string[] }>;
   };
 
   it('every CMP-015 command maps to a known APPLICATION_* action', () => {
@@ -100,6 +101,21 @@ describe('OPA common policy covers every CMP-015 action (ADR-0007 D-2)', () => {
       expect(grant?.actions).not.toContain(forbidden);
     }
     expect(grant?.assurance).not.toContain('NONE');
+  });
+
+  it('CMP-009 citizen grants are limited to interpreting and validating (CCR-M10-002)', () => {
+    expect(common.resource_types).toEqual(
+      expect.arrayContaining(['FormDefinition', 'FormExecution']),
+    );
+    expect(common.citizen_owner_grants['FormExecution']?.actions).toEqual([
+      'FORM_EXECUTION_EXECUTE',
+    ]);
+    expect(common.citizen_published_grants).toEqual({
+      FormDefinition: { actions: ['FORM_INTERPRET'], assurance: ['OTP', 'MFA'] },
+    });
+    for (const action of ['FORM_INTERPRET', 'FORM_EXECUTION_EXECUTE', 'FORM_EXECUTION_READ']) {
+      expect(common.actions[action], action).toBeDefined();
+    }
   });
 
   it('bundle manifest revision matches the policy revision returned in decisions', () => {

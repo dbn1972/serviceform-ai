@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SAMPLE_LAB platform host (SF-M10-B-2): PostgreSQL (FORCE RLS) + OPA + CMP-004/CMP-015 API host.
+# SAMPLE_LAB platform host (SF-M10-B-2): PostgreSQL (FORCE RLS) + OPA + CMP-004/009/015 API host.
 # LOCAL/CI only. SIMULATED OTP/IdP/DigiLocker. Not CERTIFIED. G6=false.
 #
 #   DATABASE_URL=postgres://admin@... scripts/dev/platform-lab.sh up     # bootstrap + start
