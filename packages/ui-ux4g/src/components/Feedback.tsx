@@ -9,11 +9,28 @@ export type RadioGroupProps = {
   value?: string;
   onChange?: (value: string) => void;
   error?: boolean;
+  /** Helper or error text announced with the group. */
+  message?: ReactNode;
+  disabled?: boolean;
 };
 
-export function RadioGroup({ name, legend, options, value, onChange, error }: RadioGroupProps) {
+export function RadioGroup({
+  name,
+  legend,
+  options,
+  value,
+  onChange,
+  error,
+  message,
+  disabled,
+}: RadioGroupProps) {
+  const messageId = message ? `${name}-message` : undefined;
   return (
-    <fieldset className={error ? 'ux4g-radio ux4g-radio-error' : 'ux4g-radio'}>
+    <fieldset
+      className={error ? 'ux4g-radio ux4g-radio-error' : 'ux4g-radio'}
+      aria-describedby={messageId}
+      disabled={disabled}
+    >
       <legend className="ux4g-label-m-strong">{legend}</legend>
       {options.map((opt) => {
         const id = `${name}-${opt.value}`;
@@ -35,6 +52,11 @@ export function RadioGroup({ name, legend, options, value, onChange, error }: Ra
           </label>
         );
       })}
+      {message ? (
+        <p id={messageId} className="ux4g-input-helper ux4g-input-helper-text">
+          {message}
+        </p>
+      ) : null}
     </fieldset>
   );
 }

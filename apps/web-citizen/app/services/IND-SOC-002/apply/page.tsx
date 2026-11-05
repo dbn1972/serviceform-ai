@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { CitizenNav } from '../../../../components/CitizenNav';
 import { CitizenPageHeader } from '../../../../components/CitizenPageHeader';
 import { RequireCitizenSession } from '../../../../components/RequireCitizenSession';
-import { ResidenceApplyForm } from '../../../../components/ResidenceApplyForm';
+import { MetadataApplyForm } from '../../../../components/MetadataApplyForm';
 import { residenceServiceFacts } from '../../../../lib/service-facts';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function ResidenceApplyPage() {
           title={`Apply — ${service.serviceName}`}
           lead={`Four short steps: applicant, residence, evidence and review. Fee ${service.fee} · service time ${service.serviceTime}.`}
         />
-        <ResidenceApplyForm />
+        <MetadataApplyForm catalogueId="IND-SOC-002" />
       </RequireCitizenSession>
     </AppShell>
   );

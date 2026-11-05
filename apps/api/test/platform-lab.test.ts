@@ -5,7 +5,7 @@ import Fastify from 'fastify';
 import { describe, expect, it } from 'vitest';
 import { placementContextResolver } from '../src/platform/context.js';
 import { parsePlacement, type PortalPlacement } from '../src/platform/placement.js';
-import { buildPlatformLab } from '../src/platform/runtime.js';
+import { buildPlatformLab, publishedFormFor } from '../src/platform/runtime.js';
 import {
   assertSimulatorEnvironment,
   registerLabSimulators,
@@ -204,17 +204,23 @@ describe('buildPlatformLab composition', () => {
     SF_PLATFORM_LAB_DIR: LAB,
     DATABASE_URL_CMP004: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP015: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP009: 'postgres://u:p@127.0.0.1:1/none',
     SF_CMP004_PEPPER: 'x'.repeat(64),
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004 and CMP-015 mounts from the SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004, CMP-009 and CMP-015 mounts from the SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
       expect(lab.m02.identityAccess?.cellId).toBe(placementFile.cell_id);
       expect(lab.m05.applicationCase?.service).toBeDefined();
-      expect(lab.readinessChecks.map((c) => c.name)).toEqual(['cmp004-db', 'cmp015-db']);
+      expect(lab.m04.forms?.forms).toBeDefined();
+      expect(lab.readinessChecks.map((c) => c.name)).toEqual([
+        'cmp004-db',
+        'cmp009-db',
+        'cmp015-db',
+      ]);
       const app = Fastify();
       await lab.registerSimulators(app);
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
@@ -237,5 +243,40 @@ describe('buildPlatformLab composition', () => {
     await limited.close();
     const { SF_OPA_URL: _omit, ...noOpa } = env;
     await expect(buildPlatformLab(noOpa)).rejects.toThrow(/SF_OPA_URL/);
+    const { DATABASE_URL_CMP009: _db, ...noForms } = env;
+    await expect(buildPlatformLab(noForms)).rejects.toThrow(/DATABASE_URL_CMP009/);
+    await expect(buildPlatformLab({ ...env, SF_FORMS_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
+      /SF_FORMS_RATE_LIMIT_MAX/,
+    );
+  });
+});
+
+describe('SIMULATED form publication from the template catalogue', () => {
+  const RESIDENCE_FORM = ['ind-soc-002', 'application'].join('.');
+  const bindings = JSON.parse(readFileSync(join(LAB, 'published-bindings.json'), 'utf8')) as {
+    bindings: { catalogue_id: string; pins: { form_version_id: string } }[];
+  };
+
+  it('publishes the PUBLISHED catalogue version the binding pins', () => {
+    const b = bindings.bindings[0];
+    expect(b).toBeDefined();
+    const form = publishedFormFor(b?.catalogue_id ?? '', b?.pins.form_version_id ?? '', TENANT);
+    expect(form).toMatchObject({
+      tenant_id: TENANT,
+      form_key: RESIDENCE_FORM,
+      version_id: b?.pins.form_version_id,
+      status: 'PUBLISHED',
+    });
+    expect(form.content_hash).toMatch(/^sha256:[0-9a-f]{64}$/);
+  });
+
+  it('refuses a pin that is not the PUBLISHED version, or an unknown or stub service', () => {
+    expect(() =>
+      publishedFormFor('IND-SOC-002', '0d15ba00-0019-4000-8000-0d15ba000019', TENANT),
+    ).toThrow(/no PUBLISHED form version/);
+    expect(() =>
+      publishedFormFor('IND-SOC-031', '7e3a0031-0001-4000-8000-00000000031a', TENANT),
+    ).toThrow(/no PUBLISHED form version/);
+    expect(() => publishedFormFor('IND-XXX-000', OTHER_TENANT, TENANT)).toThrow();
   });
 });

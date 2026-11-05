@@ -58,6 +58,7 @@ export function authzInput(
   },
   action: string,
   resourceType: string,
+  ownerId?: string,
 ): AuthzDecisionInput {
   const subject: AuthzDecisionInput['subject'] = {
     user_id: ctx.actor.id,
@@ -75,6 +76,7 @@ export function authzInput(
       resource_type: resourceType,
       tenant_id: ctx.tenant_id,
       classification: 'TENANT_SCOPED',
+      ...(ownerId ? { owner_id: ownerId } : {}),
     },
     action,
     environment: {

@@ -143,6 +143,9 @@ importers:
       '@serviceform/security':
         specifier: workspace:*
         version: link:../../packages/security
+      '@serviceform/service-templates':
+        specifier: workspace:*
+        version: link:../../packages/service-templates
       ajv:
         specifier: 8.20.0
         version: 8.20.0
@@ -208,6 +211,9 @@ importers:
       '@serviceform/m10-sample-lab':
         specifier: workspace:*
         version: link:../../packages/m10-sample-lab
+      '@serviceform/service-templates':
+        specifier: workspace:*
+        version: link:../../packages/service-templates
       '@serviceform/ui-ux4g':
         specifier: workspace:*
         version: link:../../packages/ui-ux4g
@@ -395,6 +401,8 @@ importers:
         specifier: 5.12.5
         version: 5.12.5
 
+  packages/service-templates: {}
+
   packages/storage:
     dependencies:
       '@serviceform/contracts':
@@ -581,6 +589,9 @@ importers:
         specifier: 8.23.1
         version: 8.23.1
     devDependencies:
+      '@serviceform/service-templates':
+        specifier: workspace:*
+        version: link:../../packages/service-templates
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1

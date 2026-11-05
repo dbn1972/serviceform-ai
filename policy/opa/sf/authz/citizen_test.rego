@@ -51,7 +51,7 @@ test_citizen_owner_read_allowed if {
 	d := eval(citizen_input, {})
 	d.allow == true
 	d.reason_code == "ALLOW"
-	d.policy_revision == "m10-b1"
+	d.policy_revision == "m10-b2"
 }
 
 test_citizen_owner_journey_actions_allowed if {

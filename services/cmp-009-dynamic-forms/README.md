@@ -17,6 +17,21 @@ Callers consume `contracts/openapi.json`. Published forms are obtained through `
 (deny-by-default; `SimulatedFormDefinitionPort` for LOCAL/CI/SIT only). Localization uses
 `LocalizationPort` matching the CMP-053 resolve contract. No SQL into CMP-008/011/050/053/054.
 
+## Validation keywords
+
+`type`, `enum`, `const`, `minLength`/`maxLength`, `minimum`/`maximum`, `minItems`/`maxItems`,
+`format` (`date`, `date-time`, `email`, `uuid`), `required` (including root `if`/`then`/`else`),
+`additionalProperties: false`, and a bounded `pattern` subset: anchored (`^…$`) sequences of
+character classes, `\d` and literals with `{n}`, `{n,m}` (≤ 64) or `?`. Patterns outside the subset
+are refused when the form is parsed (`SCHEMA_PATTERN_UNSUPPORTED`). Matching uses no RegExp
+engine and is linear in input length. Unknown keywords (`x-ux4g`, `semanticElementId`) are ignored.
+
+## Authorization
+
+OPA actions `FORM_INTERPRET` (`FormDefinition`), `FORM_EXECUTION_EXECUTE` and `FORM_EXECUTION_READ`
+(`FormExecution`). Execute sends `owner_id = actor.id`, so a citizen passes the citizen-owner path
+(CCR-M10-002); interpret uses the citizen published-metadata grant.
+
 ## Pinning
 
 The caller pins `{form_key, version_id, content_hash}`. Unpublished or mismatched pins fail closed

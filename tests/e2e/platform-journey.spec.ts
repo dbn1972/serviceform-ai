@@ -52,6 +52,29 @@ async function submitApplication(page: Page, name = 'SAMPLE Platform Citizen'): 
   return page.url().split('/').pop() ?? '';
 }
 
+const RESIDENCE_FORM = ['ind-soc-002', 'application'].join('.');
+
+/** Valid IND-SOC-002 v1.0.0 data (synthetic). */
+function syntheticData(name: string): Record<string, unknown> {
+  return {
+    applicant_name: name,
+    applicant_dob: '1990-01-01',
+    applicant_gender: 'FEMALE',
+    residence_address: {
+      house_no_or_name: 'SAMPLE 1',
+      locality: 'SAMPLE',
+      district: 'SAMPLE',
+      state_code: 'OD',
+      pincode: '751001',
+    },
+    residence_duration_months: 24,
+    purpose_of_certificate: 'SAMPLE',
+    evidence_type: 'ELECTRICITY_BILL',
+    evidence_file_name: 'sample.pdf',
+    declaration_accepted: true,
+  };
+}
+
 async function officerSignIn(page: Page, path = '/applications'): Promise<void> {
   await open(page, `${OFFICER}/login?next=${encodeURIComponent(path)}`);
   await page.getByRole('button', { name: 'Sign in' }).click();
@@ -222,21 +245,7 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
     await signIn(page, uniqueMobile());
     const res = await page.request.post(`${CITIZEN}/api/portal/applications`, {
       headers: { cookie: await cookieFor(page, 'sf_citizen_session') },
-      data: {
-        applicant_name: 'Real Person',
-        applicant_dob: '1990-01-01',
-        applicant_gender: 'FEMALE',
-        residence_address: {
-          house_no_or_name: 'SAMPLE 1',
-          locality: 'SAMPLE',
-          district: 'SAMPLE',
-          state_code: 'OD',
-          pincode: '751001',
-        },
-        residence_duration_months: 24,
-        purpose_of_certificate: 'SAMPLE',
-        evidence_type: 'ELECTRICITY_BILL',
-      },
+      data: { catalogue_id: 'IND-SOC-002', data: syntheticData('Real Person') },
     });
     expect(res.status()).toBe(400);
     expect(await res.json()).toMatchObject({ field: 'applicant_name' });
@@ -247,21 +256,7 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
   }) => {
     await signIn(page, uniqueMobile());
     const cookie = await cookieFor(page, 'sf_citizen_session');
-    const form = {
-      applicant_name: 'SAMPLE Retry Citizen',
-      applicant_dob: '1990-01-01',
-      applicant_gender: 'FEMALE',
-      residence_address: {
-        house_no_or_name: 'SAMPLE 1',
-        locality: 'SAMPLE',
-        district: 'SAMPLE',
-        state_code: 'OD',
-        pincode: '751001',
-      },
-      residence_duration_months: 24,
-      purpose_of_certificate: 'SAMPLE',
-      evidence_type: 'ELECTRICITY_BILL',
-    };
+    const form = { catalogue_id: 'IND-SOC-002', data: syntheticData('SAMPLE Retry Citizen') };
     const key = `retry${randomInt(1_000_000_000, 9_999_999_999)}abcdef`;
     const submit = () =>
       page.request.post(`${CITIZEN}/api/portal/applications`, {
@@ -313,6 +308,130 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
     expect((await request.post(`${CITIZEN}/api/portal/applications`, { data: {} })).status()).toBe(
       401,
     );
+  });
+});
+
+test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
+  test.describe.configure({ timeout: 90_000 });
+
+  test('the wizard is rendered from the pinned published form and its rules', async ({ page }) => {
+    await signIn(page, uniqueMobile());
+    await open(page, `${CITIZEN}/services/IND-SOC-002/apply`);
+    const steps = page.getByRole('navigation', { name: 'Application steps' }).getByRole('button');
+    await expect(steps).toHaveText([/Applicant/, /Residence/, /Evidence/, /Preview/]);
+    await expect(
+      page.getByText(/Form ind-soc-002\.application · v1\.0\.0 · pinned sha256:/),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: '1. Applicant details' })).toBeVisible();
+    await expect(page.getByLabel('Full name (as per official record)')).toHaveValue(
+      'SAMPLE Lab Citizen',
+    );
+    await expectNoAxeViolations(page);
+
+    const email = page.getByLabel('Email address');
+    await expect(email).toHaveCount(0);
+    await page.getByLabel('Also send status updates by email').check();
+    await expect(email).toBeVisible();
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+    await expect(page.getByTestId('error-summary')).toBeFocused();
+    await expect(page.getByText('Enter an email address').first()).toBeVisible();
+    await expect(email).toHaveAttribute('aria-invalid', 'true');
+    await page.getByLabel('Also send status updates by email').uncheck();
+    await expect(email).toHaveCount(0);
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+
+    await page.getByLabel('PIN code').fill('7510');
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+    await expect(page.getByText('PIN code must be 6 digits').first()).toBeVisible();
+    await page.getByLabel('PIN code').fill('751001');
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+
+    await expect(page.getByText('Indicative check: met')).toBeVisible();
+    await expect(page.getByRole('definition').filter({ hasText: '751001' })).toBeVisible();
+    await page.getByRole('button', { name: /Submit application/i }).click();
+    await expect(page.getByText('Confirm the declaration before submit').first()).toBeVisible();
+    await expectNoAxeViolations(page);
+    await page.setViewportSize({ width: 320, height: 800 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      ),
+    ).toBe(false);
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.getByRole('checkbox').check();
+    await page.getByRole('button', { name: /Submit application/i }).click();
+    await expect(page).toHaveURL(/\/certificates\/[0-9a-f-]{36}$/);
+  });
+
+  test('CMP-009 is authoritative: invalid answers are refused per field and nothing is filed', async ({
+    page,
+  }) => {
+    await signIn(page, uniqueMobile());
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    const data = syntheticData('SAMPLE Invalid Citizen');
+    const res = await page.request.post(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie },
+      data: {
+        catalogue_id: 'IND-SOC-002',
+        data: {
+          ...data,
+          residence_address: { ...(data['residence_address'] as object), pincode: '75' },
+          declaration_accepted: false,
+          unexpected_field: 'x',
+        },
+      },
+    });
+    expect(res.status()).toBe(422);
+    const body = (await res.json()) as { field_errors: { pointer: string; code: string }[] };
+    expect(body.field_errors).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ pointer: '/residence_address/pincode', code: 'PATTERN' }),
+        expect.objectContaining({ pointer: '/declaration_accepted', code: 'CONST_MISMATCH' }),
+        expect.objectContaining({ pointer: '/unexpected_field', code: 'ADDITIONAL_PROPERTY' }),
+      ]),
+    );
+    const list = await page.request.get(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie },
+    });
+    expect(((await list.json()) as { applications: unknown[] }).applications).toEqual([]);
+  });
+
+  test('only offered services expose a form; catalogue stubs are not offered', async ({
+    page,
+    request,
+  }) => {
+    expect((await request.get(`${CITIZEN}/api/portal/forms/IND-SOC-002`)).status()).toBe(401);
+    await signIn(page, uniqueMobile());
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    const form = await page.request.get(`${CITIZEN}/api/portal/forms/IND-SOC-002`, {
+      headers: { cookie },
+    });
+    expect(form.status()).toBe(200);
+    expect(await form.json()).toMatchObject({
+      engine: 'CMP-009',
+      publication: 'SIMULATED',
+      g6_issued: false,
+      form: {
+        pin: {
+          form_key: RESIDENCE_FORM,
+          version_id: '0d15ba00-0010-4000-8000-0d15ba000010',
+          content_hash: expect.stringMatching(/^sha256:[0-9a-f]{64}$/),
+        },
+        version: '1.0.0',
+      },
+    });
+    for (const id of ['IND-SOC-031', 'IND-CIV-001', 'NOT-A-SERVICE']) {
+      const stub = await page.request.get(`${CITIZEN}/api/portal/forms/${id}`, {
+        headers: { cookie },
+      });
+      expect(stub.status(), id).toBe(404);
+    }
+    const apply = await page.request.post(`${CITIZEN}/api/portal/applications`, {
+      headers: { cookie },
+      data: { catalogue_id: 'IND-SOC-031', data: syntheticData('SAMPLE Stub Citizen') },
+    });
+    expect(apply.status()).toBe(404);
   });
 });
 

@@ -1,4 +1,5 @@
 import { Cmp009Error } from '../errors.js';
+import { isSupportedPattern, matchesPattern } from './pattern.js';
 
 const FORBIDDEN_SCHEMA_KEYS = new Set([
   '$ref',
@@ -31,6 +32,7 @@ export interface JsonSchemaNode {
   description?: string;
   minLength?: number;
   maxLength?: number;
+  pattern?: string;
   minimum?: number;
   maximum?: number;
   minItems?: number;
@@ -67,6 +69,11 @@ export function parseJsonSchema(raw: unknown, depth = 0): JsonSchemaNode {
     }
   }
   if (node['enum'] !== undefined && !Array.isArray(node['enum'])) schemaFail('SCHEMA_ENUM_INVALID');
+  if (node['pattern'] !== undefined) {
+    if (typeof node['pattern'] !== 'string' || !isSupportedPattern(node['pattern'])) {
+      schemaFail('SCHEMA_PATTERN_UNSUPPORTED');
+    }
+  }
   if (node['required'] !== undefined) {
     if (!Array.isArray(node['required']) || node['required'].some((k) => typeof k !== 'string')) {
       schemaFail('SCHEMA_REQUIRED_INVALID');
@@ -98,6 +105,7 @@ export function parseJsonSchema(raw: unknown, depth = 0): JsonSchemaNode {
   if (typeof node['description'] === 'string') out.description = node['description'];
   if (typeof node['minLength'] === 'number') out.minLength = node['minLength'];
   if (typeof node['maxLength'] === 'number') out.maxLength = node['maxLength'];
+  if (typeof node['pattern'] === 'string') out.pattern = node['pattern'];
   if (typeof node['minimum'] === 'number') out.minimum = node['minimum'];
   if (typeof node['maximum'] === 'number') out.maximum = node['maximum'];
   if (typeof node['minItems'] === 'number') out.minItems = node['minItems'];
@@ -189,6 +197,9 @@ export function validateAgainstSchema(
     }
     if (schema.maxLength !== undefined && data.length > schema.maxLength) {
       issues.push({ code: 'MAX_LENGTH', pointer: pointer || '/' });
+    }
+    if (schema.pattern !== undefined && !matchesPattern(schema.pattern, data)) {
+      issues.push({ code: 'PATTERN', pointer: pointer || '/' });
     }
     if (schema.format === 'date' && !DATE_RE.test(data)) {
       issues.push({ code: 'FORMAT_DATE', pointer: pointer || '/' });

@@ -12,6 +12,7 @@ import { OpaPdpClient } from '@serviceform/security';
 import type { FastifyInstance } from 'fastify';
 import pg from 'pg';
 import type { M02PluginMounts } from '../composition/m02.js';
+import type { M04PluginMounts } from '../composition/m04.js';
 import type { M05PluginMounts } from '../composition/m05.js';
 import type { ReadinessCheck } from '../plugins/health.js';
 import {
@@ -30,16 +31,18 @@ import {
 } from './simulators.js';
 
 /**
- * SF-M10-B-2 SAMPLE_LAB platform host: CMP-004 identity + CMP-015 application/case on
- * PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006) with real OPA as the PDP.
- * Connectors are SIMULATED (OTP, IdP, DigiLocker identity, published-binding port) and the whole
- * runtime refuses to start outside LOCAL/CI. Host composition only: no domain logic.
+ * SF-M10-B-2 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms and CMP-015
+ * application/case on PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006) with
+ * real OPA as the PDP. Connectors are SIMULATED (OTP, IdP, DigiLocker identity, published-binding
+ * and published-form ports) and the whole runtime refuses to start outside LOCAL/CI. Host
+ * composition only: no domain logic.
  */
 export interface PlatformLabEnv {
   SF_ENVIRONMENT?: string;
   SF_PLATFORM_LAB_DIR?: string;
   DATABASE_URL_CMP004?: string;
   DATABASE_URL_CMP015?: string;
+  DATABASE_URL_CMP009?: string;
   SF_CMP004_PEPPER?: string;
   SF_OPA_URL?: string;
   SF_OPA_TOKEN?: string;
@@ -48,11 +51,14 @@ export interface PlatformLabEnv {
    * limit is per portal instance until the BFF forwards the client address through a trusted hop.
    */
   SF_IDENTITY_RATE_LIMIT_MAX?: string;
+  /** CMP-009 per-IP limit; same single-BFF-address caveat as the identity limit. */
+  SF_FORMS_RATE_LIMIT_MAX?: string;
 }
 
 export interface PlatformLab {
   placement: PortalPlacement;
   m02: M02PluginMounts;
+  m04: M04PluginMounts;
   m05: M05PluginMounts;
   readinessChecks: ReadinessCheck[];
   registerSimulators(app: FastifyInstance): Promise<void>;
@@ -77,21 +83,63 @@ interface Cmp004Module {
   outboxAuditRecorder: unknown;
 }
 
+interface Cmp009Module {
+  loadConfig: (env: NodeJS.ProcessEnv) => unknown;
+  SimulatedFormDefinitionPort: new (config: unknown) => {
+    publish(form: {
+      tenant_id: string;
+      form_key: string;
+      version_id: string;
+      content_hash: string;
+      status: 'PUBLISHED';
+      payload: unknown;
+    }): void;
+  };
+  IdentityLocalizationPort: new () => unknown;
+}
+
 const BINDING_IDS = {
   otp: '0d15ba00-0c01-4000-8000-0d15ba000c01',
   idp: '0d15ba00-0c02-4000-8000-0d15ba000c02',
   digilocker: '0d15ba00-0c03-4000-8000-0d15ba000c03',
+  forms: '0d15ba00-0c09-4000-8000-0d15ba000c09',
 } as const;
 
-async function loadCmp004(): Promise<Cmp004Module> {
+/** Structural subset of `@serviceform/service-templates` used by the host. */
+interface TemplateVersionLike {
+  version_id: string;
+  status: string;
+  content_hash: string;
+  form: { form_id: string };
+}
+
+interface TemplatesModule {
+  listTemplates(): readonly { catalogue_id: string; versions: readonly TemplateVersionLike[] }[];
+  publishedVersion(template: {
+    versions: readonly TemplateVersionLike[];
+  }): TemplateVersionLike | null;
+}
+
+interface TemplateIntegrityModule {
+  assertVersionIntegrity(version: TemplateVersionLike): void;
+}
+
+// Non-literal specifiers keep the bundler-resolved catalogue sources out of this NodeNext program.
+const TEMPLATES_SPECIFIER = '@serviceform/service-templates';
+const templates = {
+  catalogue: (await import(TEMPLATES_SPECIFIER)) as TemplatesModule,
+  integrity: (await import(`${TEMPLATES_SPECIFIER}/integrity`)) as TemplateIntegrityModule,
+};
+
+async function loadComponent<T>(pkg: string, dir: string): Promise<T> {
   const specifiers = [
-    '@serviceform/cmp-004-identity-access',
-    new URL('../../../../services/cmp-004-identity-access/src/index.ts', import.meta.url).href,
+    pkg,
+    new URL(`../../../../services/${dir}/src/index.ts`, import.meta.url).href,
   ];
   let last: unknown;
   for (const specifier of specifiers) {
     try {
-      return (await import(specifier)) as Cmp004Module;
+      return (await import(specifier)) as T;
     } catch (err) {
       last = err;
     }
@@ -130,6 +178,28 @@ function poolReadiness(name: string, pool: pg.Pool): ReadinessCheck {
   };
 }
 
+/**
+ * SIMULATED publication of the Studio template catalogue (replaced by CMP-052 in slice B-4). The
+ * binding's pinned form version must be a PUBLISHED catalogue version whose recorded content hash
+ * still matches its form, or the host refuses to start.
+ */
+export function publishedFormFor(catalogueId: string, formVersionId: string, tenantId: string) {
+  const template = templates.catalogue.listTemplates().find((t) => t.catalogue_id === catalogueId);
+  const version = template ? templates.catalogue.publishedVersion(template) : null;
+  if (!version || version.version_id !== formVersionId) {
+    throw new Error(`SF-M10: no PUBLISHED form version ${formVersionId} for ${catalogueId}`);
+  }
+  templates.integrity.assertVersionIntegrity(version);
+  return {
+    tenant_id: tenantId,
+    form_key: version.form.form_id,
+    version_id: version.version_id,
+    content_hash: version.content_hash,
+    status: 'PUBLISHED' as const,
+    payload: version.form,
+  };
+}
+
 export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab> {
   const environment = env.SF_ENVIRONMENT ?? 'LOCAL';
   assertSimulatorEnvironment(environment);
@@ -140,6 +210,7 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
 
   const pools = {
     cmp004: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP004'), max: 8 }),
+    cmp009: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP009'), max: 8 }),
     cmp015: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP015'), max: 8 }),
   };
   const opa = new OpaPdpClient({
@@ -148,7 +219,10 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
     ...(env.SF_OPA_TOKEN ? { token: env.SF_OPA_TOKEN } : {}),
   });
 
-  const cmp004 = await loadCmp004();
+  const cmp004 = await loadComponent<Cmp004Module>(
+    '@serviceform/cmp-004-identity-access',
+    'cmp-004-identity-access',
+  );
   const binding = (id: string, connector_type: string, simulator_version: string) =>
     cmp004.simulatedBinding({ id, connector_type, environment, simulator_version });
   const inbox = new SimulatedOtpInbox();
@@ -176,12 +250,14 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
   });
 
   const bindings = new SimulatedPublishedBindingPort();
-  const published = readJson<{ bindings: (PublishedBinding & { tenant_id: string })[] }>(
-    join(dir, 'published-bindings.json'),
-  );
+  const published = readJson<{
+    bindings: (PublishedBinding & { tenant_id: string; catalogue_id: string })[];
+  }>(join(dir, 'published-bindings.json'));
   const offered = new Set(placement.offerings.map((o) => o.tenant_service_binding_id));
-  for (const b of published.bindings) {
-    if (b.tenant_id !== placement.tenant_id || !offered.has(b.tenant_service_binding_id)) continue;
+  const offeredBindings = published.bindings.filter(
+    (b) => b.tenant_id === placement.tenant_id && offered.has(b.tenant_service_binding_id),
+  );
+  for (const b of offeredBindings) {
     bindings.put(b.tenant_id, {
       tenant_service_binding_id: b.tenant_service_binding_id,
       service_id: b.service_id,
@@ -196,6 +272,27 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
     servicePolicy: new DenyServicePolicyPort(),
     config: { environment: environment as DeploymentEnvironment },
   });
+
+  const cmp009 = await loadComponent<Cmp009Module>(
+    '@serviceform/cmp-009-dynamic-forms',
+    'cmp-009-dynamic-forms',
+  );
+  const formsConfig = cmp009.loadConfig({
+    SF_ENVIRONMENT: environment,
+    SF_CMP009_FORM_SOURCE_MODE: 'SIMULATED',
+    SF_CMP009_LOCALIZATION_MODE: 'OFF',
+    SF_CMP009_FORM_SOURCE_BINDING_ID: BINDING_IDS.forms,
+    SF_CMP009_TEST_RUN_ID: `platform-lab-${placement.portal_id}`,
+    SF_CMP009_SCENARIO: 'sample_lab_published_form',
+    SF_CMP009_RATE_LIMIT_MAX: positiveInt(
+      env.SF_FORMS_RATE_LIMIT_MAX ?? '120',
+      'SF_FORMS_RATE_LIMIT_MAX',
+    ).toString(),
+  });
+  const forms = new cmp009.SimulatedFormDefinitionPort(formsConfig);
+  for (const b of offeredBindings) {
+    forms.publish(publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id));
+  }
 
   const officers = readJson<{ officers: LabOfficer[] }>(join(dir, 'officers.json')).officers.filter(
     (o) => o.tenant_id === placement.tenant_id,
@@ -221,6 +318,16 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
           : {}),
       },
     },
+    m04: {
+      forms: {
+        pool: pools.cmp009,
+        resolveContext: placementContextResolver({ verifier, sessions, placement }),
+        authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+        forms,
+        localization: new cmp009.IdentityLocalizationPort(),
+        config: formsConfig,
+      },
+    },
     m05: {
       applicationCase: {
         service: applicationCase,
@@ -229,6 +336,7 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
     },
     readinessChecks: [
       poolReadiness('cmp004-db', pools.cmp004),
+      poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
     ],
     registerSimulators: (app) =>
@@ -239,7 +347,7 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
         mint: (claims) => cmp004.mintSimulatedIdpAssertion(pepper, claims),
       }),
     async close() {
-      await Promise.all([pools.cmp004.end(), pools.cmp015.end()]);
+      await Promise.all([pools.cmp004.end(), pools.cmp009.end(), pools.cmp015.end()]);
     },
   };
 }
