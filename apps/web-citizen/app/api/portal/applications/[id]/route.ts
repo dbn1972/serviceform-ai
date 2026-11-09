@@ -2,7 +2,7 @@ import {
   toPortalApplication,
   type PlatformApplication,
 } from '../../../../../lib/portal/applications';
-import { readWorkingData } from '../../../../../lib/portal/cases';
+import { readIssuance, readWorkingData } from '../../../../../lib/portal/cases';
 import { currentCitizen, isUuid, json, platform, relay } from '../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -25,7 +25,11 @@ export async function GET(request: Request, ctx: Ctx) {
   }
   if (res.status !== 200 || !app) return relay(res);
   return json(200, {
-    application: toPortalApplication(app, await readWorkingData(citizen, id)),
+    application: toPortalApplication(
+      app,
+      await readWorkingData(citizen, id),
+      await readIssuance(citizen, app),
+    ),
     source: 'PLATFORM',
     g6_issued: false,
   });

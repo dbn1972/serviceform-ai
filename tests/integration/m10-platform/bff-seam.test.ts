@@ -326,7 +326,7 @@ describe('officer BFF decide() drives only legal transitions', () => {
     officerCookie = `sf_officer_session=${officerToken}`;
   });
 
-  it('APPROVE from SUBMITTED walks received → scrutiny → decision_pending → approved', async () => {
+  it('APPROVE from SUBMITTED walks received → scrutiny → decision_pending → approved, then SYSTEM issues', async () => {
     const app = await submitted();
     const queue = await (
       await officerRoutes.apps()
@@ -348,9 +348,20 @@ describe('officer BFF decide() drives only legal transitions', () => {
       params(app.application_id),
     );
     expect(r.status).toBe(200);
-    expect(
-      ((await r.json()) as { application: { platform_state: string } }).application.platform_state,
-    ).toBe('APPROVED');
+    const view = (
+      (await r.json()) as {
+        application: {
+          platform_state: string;
+          credential_id?: string;
+          digilocker: { mode: string; status: string };
+          issuance_error?: unknown;
+        };
+      }
+    ).application;
+    expect(view.issuance_error).toBeUndefined();
+    expect(view.platform_state).toBe('ISSUED');
+    expect(view.credential_id).toMatch(/^[0-9a-f-]{36}$/);
+    expect(view.digilocker).toMatchObject({ mode: 'SIMULATED', status: 'PUBLISHED' });
     expect(await transitionKeys(app.application_id)).toEqual([
       null,
       'DRAFT>READY_TO_SUBMIT',
@@ -359,12 +370,51 @@ describe('officer BFF decide() drives only legal transitions', () => {
       'RECEIVED>UNDER_SCRUTINY',
       'UNDER_SCRUTINY>DECISION_PENDING',
       'DECISION_PENDING>APPROVED',
+      'APPROVED>SIGNING_PENDING',
+      'SIGNING_PENDING>ISSUED',
     ]);
     const tr = await call(HOST_A(), 'GET', `/v1/applications/${app.application_id}/transitions`, {
       token: officerToken,
     });
-    const last = must((tr.body['transitions'] as Record<string, unknown>[]).at(-1));
-    expect(last['actor_type']).toBe('OFFICER');
+    const rows = tr.body['transitions'] as Record<string, unknown>[];
+    const actor = (key: string) => rows.find((t) => t['transition_key'] === key)?.['actor_type'];
+    expect(actor('DECISION_PENDING>APPROVED')).toBe('OFFICER');
+    expect(actor('APPROVED>SIGNING_PENDING')).toBe('SYSTEM');
+    expect(actor('SIGNING_PENDING>ISSUED')).toBe('SYSTEM');
+
+    const citizenView = await (
+      await citizenRoutes.app()
+    ).GET(
+      req(`/api/portal/applications/${app.application_id}`, {
+        cookie: `sf_citizen_session=${citizenToken}`,
+      }),
+      params(app.application_id),
+    );
+    expect(citizenView.status).toBe(200);
+    expect(
+      ((await citizenView.json()) as { application: Record<string, unknown> }).application,
+    ).toMatchObject({
+      status: 'ISSUED',
+      credential_id: view.credential_id,
+      digilocker: { mode: 'SIMULATED', status: 'PUBLISHED' },
+    });
+
+    const retry = await (
+      await officerRoutes.app()
+    ).POST(
+      req(`/api/portal/applications/${app.application_id}`, {
+        method: 'POST',
+        cookie: officerCookie,
+        body: { action: 'ISSUE' },
+      }),
+      params(app.application_id),
+    );
+    expect(retry.status).toBe(200);
+    expect(
+      ((await retry.json()) as { application: { credential_id?: string } }).application
+        .credential_id,
+    ).toBe(view.credential_id);
+    expect((await transitionKeys(app.application_id)).length).toBe(9);
   });
 
   it('REJECT records a HUMAN rejection with a reason code', async () => {
@@ -447,11 +497,24 @@ describe('officer BFF decide() drives only legal transitions', () => {
       req(`/api/portal/applications/${app.application_id}`, {
         method: 'POST',
         cookie: officerCookie,
-        body: { action: 'ISSUE' },
+        body: { action: 'ESCALATE' },
       }),
       params(app.application_id),
     );
     expect(bad.status).toBe(400);
+    const before = await transitionKeys(app.application_id);
+    const early = await (
+      await officerRoutes.app()
+    ).POST(
+      req(`/api/portal/applications/${app.application_id}`, {
+        method: 'POST',
+        cookie: officerCookie,
+        body: { action: 'ISSUE' },
+      }),
+      params(app.application_id),
+    );
+    expect(early.status).toBe(409);
+    expect(await transitionKeys(app.application_id)).toEqual(before);
     const asCitizen = await (
       await officerRoutes.app()
     ).POST(

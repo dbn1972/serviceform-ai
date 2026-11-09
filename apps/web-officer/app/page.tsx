@@ -30,7 +30,8 @@ export default function HomePage() {
         }
       >
         <p className="ux4g-body-m-default">
-          DigiLocker publish stays on the citizen side as a SIMULATED mock after issue.
+          Approving a case issues the credential and publishes it to DigiLocker through SIMULATED
+          connectors; citizens see the status on their application.
         </p>
       </Card>
     </AppShell>

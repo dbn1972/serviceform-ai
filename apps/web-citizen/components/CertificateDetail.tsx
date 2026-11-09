@@ -156,9 +156,22 @@ export function CertificateDetail({ id }: { id: string }) {
           </FormAlert>
         ) : null}
         {app.status === 'APPROVED' ? (
-          <FormAlert tone="info" title="Approved — certificate not yet issued">
-            The officer approved your application. Certificate issuance and DigiLocker publishing
-            are not yet connected on this platform path (Phase B, next slice).
+          <FormAlert tone="info" title="Approved — certificate being issued">
+            The officer approved your application. The certificate is issued and saved to your
+            DigiLocker automatically; refresh this page shortly to see it.
+          </FormAlert>
+        ) : null}
+        {app.status === 'ISSUED' && app.digilocker.status === 'PUBLISHED' ? (
+          <FormAlert tone="success" title="Saved to DigiLocker (SIMULATED)">
+            Your certificate was issued and published through a SIMULATED DigiLocker connector in
+            this sample lab. It is not a real DigiLocker document.
+          </FormAlert>
+        ) : null}
+        {app.status === 'ISSUED' &&
+        (app.digilocker.status === 'FAILED' || app.digilocker.status === 'RETRY_SCHEDULED') ? (
+          <FormAlert tone="warning" title="Certificate issued — DigiLocker not updated yet">
+            Your certificate is valid. Saving it to DigiLocker did not complete; the office can
+            retry it, and you do not need to apply again.
           </FormAlert>
         ) : null}
       </section>

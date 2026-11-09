@@ -1,6 +1,6 @@
 import { issueMessage, schemaAt, type FormSchemaView } from '@serviceform/ui-ux4g';
 import { toPortalApplication, type PlatformApplication } from '../../../../lib/portal/applications';
-import { command, readWorkingData } from '../../../../lib/portal/cases';
+import { command, readIssuance, readWorkingData } from '../../../../lib/portal/cases';
 import {
   applyBody,
   offeredForm,
@@ -29,7 +29,13 @@ export async function GET(request: Request) {
   if (res.status !== 200) return relay(res);
   const apps = (res.body['applications'] ?? []) as PlatformApplication[];
   const applications = await Promise.all(
-    apps.map(async (a) => toPortalApplication(a, await readWorkingData(citizen, a.application_id))),
+    apps.map(async (a) =>
+      toPortalApplication(
+        a,
+        await readWorkingData(citizen, a.application_id),
+        await readIssuance(citizen, a),
+      ),
+    ),
   );
   return json(200, { source: 'PLATFORM', g6_issued: false, applications });
 }
