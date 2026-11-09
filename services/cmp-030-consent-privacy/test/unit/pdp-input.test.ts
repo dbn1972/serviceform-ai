@@ -38,7 +38,12 @@ describe('CMP-030 PDP input', () => {
       authorizer: {
         decide: async (input) => {
           seen.push(input);
-          return { allow: false, reason_code: 'ROLE_NOT_PERMITTED', policy_revision: 'test' };
+          return {
+            allow: false,
+            decision_id: '00000000-0000-4000-8000-0000000000d1',
+            reason_code: 'ROLE_NOT_PERMITTED',
+            policy_revision: 'test',
+          };
         },
       },
     });
