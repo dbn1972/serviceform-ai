@@ -206,24 +206,34 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP015: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP009: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP016: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP022: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP024: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP012: 'postgres://u:p@127.0.0.1:1/none',
     SF_TEMPORAL_ADDRESS: '127.0.0.1:1',
     SF_TEMPORAL_TASK_QUEUE: 'sf-sample-lab-workflow',
     SF_CMP004_PEPPER: 'x'.repeat(64),
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004, CMP-009, CMP-015 and CMP-016 sequencing from the SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004/009/015, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
       expect(lab.m02.identityAccess?.cellId).toBe(placementFile.cell_id);
       expect(lab.m05.applicationCase?.service).toBeDefined();
       expect(lab.m04.forms?.forms).toBeDefined();
+      expect(lab.m07.credential).toBeDefined();
+      expect(lab.m07.registry).toBeDefined();
+      expect(lab.m07.digilocker).toBeDefined();
+      expect(lab.m07.qr).toBeUndefined();
       expect(lab.readinessChecks.map((c) => c.name)).toEqual([
         'cmp004-db',
         'cmp009-db',
         'cmp015-db',
         'cmp016-db',
+        'cmp022-db',
+        'cmp024-db',
+        'cmp012-db',
         'cmp016-temporal-worker',
       ]);
       // Nothing connects to Temporal at build time; the worker is not ready until start().
@@ -262,6 +272,13 @@ describe('buildPlatformLab composition', () => {
     ).rejects.toThrow(/SF_TEMPORAL_ADDRESS/);
     const { SF_TEMPORAL_TASK_QUEUE: _q, ...noQueue } = env;
     await expect(buildPlatformLab(noQueue)).rejects.toThrow(/SF_TEMPORAL_TASK_QUEUE/);
+    for (const name of ['DATABASE_URL_CMP022', 'DATABASE_URL_CMP024', 'DATABASE_URL_CMP012']) {
+      const { [name]: _missing, ...without } = env as Record<string, string>;
+      await expect(buildPlatformLab(without)).rejects.toThrow(name);
+    }
+    await expect(buildPlatformLab({ ...env, SF_ENVIRONMENT: 'PRODUCTION' })).rejects.toThrow(
+      /refused/,
+    );
     await expect(buildPlatformLab({ ...env, SF_FORMS_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
       /SF_FORMS_RATE_LIMIT_MAX/,
     );

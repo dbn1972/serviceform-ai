@@ -9,18 +9,34 @@ import {
   type DeploymentEnvironment,
   type PublishedBinding,
 } from '@serviceform/cmp-015-application-case';
+import type { RequestContext } from '@serviceform/contracts';
 import { OpaPdpClient } from '@serviceform/security';
 import type { FastifyInstance } from 'fastify';
 import pg from 'pg';
 import type { M02PluginMounts } from '../composition/m02.js';
 import type { M04PluginMounts } from '../composition/m04.js';
 import type { M05PluginMounts } from '../composition/m05.js';
+import type { M07PluginMounts } from '../composition/m07.js';
 import type { ReadinessCheck } from '../plugins/health.js';
 import {
   placementContextResolver,
   type PrincipalPort,
   type SessionContextPort,
 } from './context.js';
+import {
+  CaseIssuancePinsBridge,
+  CredentialVerificationBridge,
+  LabDigiLockerBinding,
+  LabIssuanceCoordinator,
+  parseIssuanceFixture,
+  RegistryBridge,
+  registerLabIssuanceRoutes,
+  SimulatedEsignBridge,
+  SimulatedRenderBridge,
+  workloadContext,
+  type CaseServiceLike,
+  type NeutralFactory,
+} from './issuance.js';
 import { loadPlacement, type PortalPlacement } from './placement.js';
 import {
   assertSimulatorEnvironment,
@@ -42,11 +58,13 @@ import {
 } from './workflow.js';
 
 /**
- * SF-M10-B-2 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms and CMP-015
- * application/case on PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006) with
- * real OPA as the PDP, and CMP-016 sequencing on Temporal after each CMP-015 commit (B-2c). Connectors are SIMULATED (OTP, IdP, DigiLocker identity, published-binding
- * and published-form ports) and the whole runtime refuses to start outside LOCAL/CI. Host
- * composition only: no domain logic.
+ * SF-M10-B-2/B-2c/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
+ * CMP-015 application/case on PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006)
+ * with real OPA as the PDP, CMP-016 sequencing on Temporal after each CMP-015 commit (B-2c), and
+ * the M07 issuance chain (CMP-022 credential engine, CMP-024 registry, CMP-012 DigiLocker publish)
+ * on approve/issue (B-3). Connectors are SIMULATED (OTP, IdP, DigiLocker identity and publish,
+ * eSign, render, published-binding and published-form ports) and the whole runtime refuses to start
+ * outside LOCAL/CI. Host composition only: no domain logic.
  */
 export interface PlatformLabEnv {
   SF_ENVIRONMENT?: string;
@@ -55,6 +73,9 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP015?: string;
   DATABASE_URL_CMP009?: string;
   DATABASE_URL_CMP016?: string;
+  DATABASE_URL_CMP022?: string;
+  DATABASE_URL_CMP024?: string;
+  DATABASE_URL_CMP012?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -75,8 +96,11 @@ export interface PlatformLab {
   m02: M02PluginMounts;
   m04: M04PluginMounts;
   m05: M05PluginMounts;
+  m07: M07PluginMounts;
   readinessChecks: ReadinessCheck[];
   registerSimulators(app: FastifyInstance): Promise<void>;
+  /** CCR-M10-003 `/v1/applications/:id/issuance` (post-approval issuance + status projection). */
+  registerIssuance(app: FastifyInstance): Promise<void>;
   /** Connects Temporal, seeds the pinned workflow versions and starts the CMP-016 worker. */
   start(): Promise<void>;
   close(): Promise<void>;
@@ -142,6 +166,33 @@ interface Cmp009Module {
     }): void;
   };
   IdentityLocalizationPort: new () => unknown;
+}
+
+interface Cmp022Module {
+  buildCredentialService(opts: Record<string, unknown>): {
+    get(ctx: unknown, credentialId: string): Promise<{ status: number; body: unknown }>;
+  };
+  createCredentialApi: NeutralFactory;
+  PgCredentialRepository: new (pool: pg.Pool) => unknown;
+}
+
+interface Cmp024Module {
+  buildCredentialRegistryService(opts: Record<string, unknown>): unknown;
+  createRegistryApi: NeutralFactory;
+  PgRegistryRepository: new (pool: pg.Pool) => unknown;
+}
+
+interface Cmp012Module {
+  buildDigiLockerService(opts: Record<string, unknown>): unknown;
+  createDigilockerApi: NeutralFactory;
+  PgDigilockerRepository: new (pool: pg.Pool) => unknown;
+  SimulatedDigiLockerConnector: new (marker: {
+    simulation: true;
+    scenario: string;
+    test_run_id: string;
+    connector_binding_id: string;
+    environment: string;
+  }) => unknown;
 }
 
 const BINDING_IDS = {
@@ -267,6 +318,9 @@ export async function buildPlatformLab(
     cmp009: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP009'), max: 8 }),
     cmp015: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP015'), max: 8 }),
     cmp016: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP016'), max: 8 }),
+    cmp022: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP022'), max: 4 }),
+    cmp024: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP024'), max: 4 }),
+    cmp012: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP012'), max: 4 }),
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -381,6 +435,63 @@ export async function buildPlatformLab(
     (o) => o.tenant_id === placement.tenant_id,
   );
 
+  const issuance = parseIssuanceFixture(
+    readJson<unknown>(join(dir, 'issuance.json')),
+    placement.tenant_id,
+    environment,
+    `platform-lab-${placement.portal_id}`,
+  );
+  const workload = () => workloadContext(issuance, placement.cell_id);
+  const [cmp022, cmp024, cmp012] = await Promise.all([
+    loadComponent<Cmp022Module>(
+      '@serviceform/cmp-022-credential-engine',
+      'cmp-022-credential-engine',
+    ),
+    loadComponent<Cmp024Module>(
+      '@serviceform/cmp-024-credential-registry',
+      'cmp-024-credential-registry',
+    ),
+    loadComponent<Cmp012Module>('@serviceform/cmp-012-digilocker', 'cmp-012-digilocker'),
+  ]);
+  const cases = applicationCase as unknown as CaseServiceLike;
+  const registry = cmp024.buildCredentialRegistryService({
+    repository: new cmp024.PgRegistryRepository(pools.cmp024),
+    authorizer: opa,
+  });
+  const bound = (factory: NeutralFactory, service: unknown) => (ctx: RequestContext) =>
+    factory({ service, resolveContext: async () => ctx });
+  const credential = cmp022.buildCredentialService({
+    repository: new cmp022.PgCredentialRepository(pools.cmp022),
+    authorizer: opa,
+    casePins: new CaseIssuancePinsBridge(cases, issuance.templates),
+    renderer: new SimulatedRenderBridge(),
+    signing: new SimulatedEsignBridge(issuance),
+    registry: new RegistryBridge(bound(cmp024.createRegistryApi, registry), issuance),
+    environment,
+  });
+  const digilocker = cmp012.buildDigiLockerService({
+    repository: new cmp012.PgDigilockerRepository(pools.cmp012),
+    authorizer: opa,
+    connectorBinding: new LabDigiLockerBinding(issuance),
+    credentialVerification: new CredentialVerificationBridge(credential, workload),
+    digilockerApi: new cmp012.SimulatedDigiLockerConnector({
+      simulation: true,
+      scenario: 'digilocker_publish',
+      test_run_id: issuance.test_run_id,
+      connector_binding_id: issuance.digilocker_binding_id,
+      environment,
+    }),
+    runtimeEnvironment: environment,
+  });
+  const coordinator = new LabIssuanceCoordinator({
+    config: issuance,
+    cases,
+    credentialApi: bound(cmp022.createCredentialApi, credential),
+    digilockerApi: bound(cmp012.createDigilockerApi, digilocker),
+    workload,
+  });
+  const resolveContext = placementContextResolver({ verifier, sessions, placement });
+
   return {
     placement,
     m02: {
@@ -404,7 +515,7 @@ export async function buildPlatformLab(
     m04: {
       forms: {
         pool: pools.cmp009,
-        resolveContext: placementContextResolver({ verifier, sessions, placement }),
+        resolveContext,
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
         forms,
         localization: new cmp009.IdentityLocalizationPort(),
@@ -414,14 +525,22 @@ export async function buildPlatformLab(
     m05: {
       applicationCase: {
         service: applicationCase,
-        resolveContext: placementContextResolver({ verifier, sessions, placement }),
+        resolveContext,
       },
+    },
+    m07: {
+      credential: { service: credential, resolveContext },
+      registry: { service: registry, resolveContext },
+      digilocker: { service: digilocker, resolveContext },
     },
     readinessChecks: [
       poolReadiness('cmp004-db', pools.cmp004),
       poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
       poolReadiness('cmp016-db', pools.cmp016),
+      poolReadiness('cmp022-db', pools.cmp022),
+      poolReadiness('cmp024-db', pools.cmp024),
+      poolReadiness('cmp012-db', pools.cmp012),
       ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
@@ -431,6 +550,8 @@ export async function buildPlatformLab(
         officers,
         mint: (claims) => cmp004.mintSimulatedIdpAssertion(pepper, claims),
       }),
+    registerIssuance: (app) =>
+      registerLabIssuanceRoutes(app, { environment, coordinator, resolveContext }),
     start: () => workflow.start(),
     async close() {
       await workflow.close();

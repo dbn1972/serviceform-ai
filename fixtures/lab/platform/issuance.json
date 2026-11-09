@@ -1,0 +1,32 @@
+{
+  "_note": "SAMPLE_LAB issuance + DigiLocker publish fixture for the platform lab host (SF-M10-B-3, CCR-M10-003). LOCAL/CI only; the host refuses it elsewhere. Synthetic identifiers only: the consent_ref is a stand-in for a CMP-030 consent record until the B-2d profile/consent path exists, and purpose_code / document_type_ref are lab labels, not statutory DigiLocker codes. Connectors are SIMULATED (INT-013). Not CERTIFIED. G6=false.",
+  "simulation": "SIMULATED",
+  "workload": {
+    "actor_id": "0d15ba00-5a00-4000-8000-0d15ba005a00",
+    "roles": ["SAMPLE_LAB_ISSUANCE_WORKLOAD"]
+  },
+  "tenants": [
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "issuer_ref": "sample-lab.issuer.0d15ba0000d1",
+      "connector_bindings": {
+        "esign": "0d15ba00-0c13-4000-8000-0d15ba000c13",
+        "digilocker": "0d15ba00-0c12-4000-8000-0d15ba000c12"
+      },
+      "digilocker_publish": {
+        "consent_ref": "0d15ba00-0c30-4000-8000-0d15ba000c30",
+        "purpose_code": "SAMPLE_LAB_CREDENTIAL_PUBLISH",
+        "document_type_ref": "sample-lab.credential"
+      },
+      "credential_templates": [
+        {
+          "tenant_service_binding_id": "0d15ba00-0002-4000-8000-0d15ba0000d2",
+          "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+          "credential_template_id": "0d15ba00-0022-4000-8000-0d15ba000022",
+          "credential_template_version": 1,
+          "service_version_id": "0d15ba00-0020-4000-8000-0d15ba000020"
+        }
+      ]
+    }
+  ]
+}

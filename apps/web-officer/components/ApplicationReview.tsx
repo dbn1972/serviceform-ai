@@ -22,7 +22,11 @@ type App = {
   };
   credential_id?: string;
   rejection_reason?: string;
+  digilocker?: { mode: string; status: string; provider_transaction_ref?: string };
+  issuance_error?: { error_code: string; step: string };
 };
+
+const AWAITING_ISSUE = ['APPROVED', 'SIGNING_PENDING'];
 
 function statusTag(status: string): string {
   switch (status) {
@@ -56,7 +60,7 @@ export function ApplicationReview({ id }: { id: string }) {
     void load();
   }, [load]);
 
-  async function act(action: 'APPROVE' | 'REJECT') {
+  async function act(action: 'APPROVE' | 'REJECT' | 'ISSUE') {
     setError('');
     setInfo('');
     const res = await fetch(`/api/portal/applications/${id}`, {
@@ -73,12 +77,23 @@ export function ApplicationReview({ id }: { id: string }) {
       setError(body.message ?? body.error_code ?? 'The decision could not be recorded');
       return;
     }
-    setInfo(
+    const next = body.application;
+    if (next) setApp(next);
+    if (action === 'REJECT') {
+      setInfo('Rejected. Your decision is recorded on the case as a human decision.');
+      return;
+    }
+    const decision =
       action === 'APPROVE'
-        ? 'Approved. Your decision is recorded on the case as a human decision.'
-        : 'Rejected. Your decision is recorded on the case as a human decision.',
+        ? 'Approved. Your decision is recorded on the case as a human decision. '
+        : '';
+    setInfo(
+      next?.issuance_error
+        ? `${decision}Issuance did not complete (${next.issuance_error.step}: ${next.issuance_error.error_code}); you can retry it.`
+        : next?.digilocker?.status === 'PUBLISHED'
+          ? `${decision}Certificate issued and published to DigiLocker (SIMULATED).`
+          : `${decision}Certificate issued; DigiLocker publish is ${next?.digilocker?.status ?? 'pending'}.`,
     );
-    if (body.application) setApp(body.application);
   }
 
   if (!app && !error) return <p className="ux4g-body-m-default">Loading…</p>;
@@ -103,17 +118,30 @@ export function ApplicationReview({ id }: { id: string }) {
               Reject
             </Button>
           </div>
+        ) : AWAITING_ISSUE.includes(app.platform_state) ? (
+          <div className="sf-actions">
+            <Button variant="outline-primary" onClick={() => void act('ISSUE')}>
+              Retry issuance
+            </Button>
+          </div>
         ) : null
       }
     >
-      <Alert variant="warning" title="Sample lab — G6 not issued">
-        Certificate issuance and DigiLocker publishing are not yet connected on this platform path.
-        Eligibility rules are not evaluated here yet; review the details yourself.
+      <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
+        After you approve, the platform signs and issues the certificate and publishes it to
+        DigiLocker using SIMULATED connectors. Eligibility rules are not evaluated here yet; review
+        the details yourself.
       </Alert>
 
       <div className="sf-meta-row">
         <span className={statusTag(app.status)}>{app.status}</span>
         <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
+        {app.digilocker ? (
+          <>
+            <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>
+            <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
+          </>
+        ) : null}
       </div>
 
       <dl className="sf-dl">
@@ -141,6 +169,12 @@ export function ApplicationReview({ id }: { id: string }) {
           <>
             <dt>Credential</dt>
             <dd>{app.credential_id}</dd>
+          </>
+        ) : null}
+        {app.digilocker?.provider_transaction_ref ? (
+          <>
+            <dt>DigiLocker ref</dt>
+            <dd>{app.digilocker.provider_transaction_ref}</dd>
           </>
         ) : null}
       </dl>

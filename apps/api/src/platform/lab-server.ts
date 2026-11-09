@@ -22,8 +22,10 @@ const app = await buildApp(config, {
   m02: lab.m02,
   m04: lab.m04,
   m05: lab.m05,
+  m07: lab.m07,
 });
 await lab.registerSimulators(app);
+await lab.registerIssuance(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {
@@ -38,7 +40,12 @@ logger.info(
   {
     environment: config.SF_ENVIRONMENT,
     portal: lab.placement.portal_id,
-    mounted: [...app.m02Mounted, ...(app.m04Mounted ?? []), ...(app.m05Mounted ?? [])],
+    mounted: [
+      ...app.m02Mounted,
+      ...(app.m04Mounted ?? []),
+      ...(app.m05Mounted ?? []),
+      ...(app.m07Mounted ?? []),
+    ],
     simulation: true,
     g6_issued: false,
   },

@@ -401,6 +401,37 @@ describe('CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 role
       expect(still?.attempt_number).toBe(1);
     });
 
+    it('lists a credential’s records newest first, only inside the owning tenant', async () => {
+      const credentialId = randomUUID();
+      const first = row(TENANT_A, { credential_id: credentialId });
+      const later = row(TENANT_A, {
+        credential_id: credentialId,
+        created_at: new Date(NOW.getTime() + 60_000).toISOString(),
+      });
+      await repo.withTx(ctxFor(TENANT_A), async (tx) => {
+        await tx.insertPublishRecord(first);
+        await tx.insertPublishRecord(later);
+        await tx.insertPublishRecord(row(TENANT_A));
+      });
+      const own = await repo.withTx(ctxFor(TENANT_A), (tx) =>
+        tx.listPublishRecordsForCredential(TENANT_A, credentialId),
+      );
+      expect(own.map((r) => r.publish_request_id)).toEqual([
+        later.publish_request_id,
+        first.publish_request_id,
+      ]);
+      expect(
+        await repo.withTx(ctxFor(TENANT_B), (tx) =>
+          tx.listPublishRecordsForCredential(TENANT_B, credentialId),
+        ),
+      ).toEqual([]);
+      await expect(
+        repo.withTx(ctxFor(TENANT_B), (tx) =>
+          tx.listPublishRecordsForCredential(TENANT_A, credentialId),
+        ),
+      ).rejects.toThrow();
+    });
+
     it('sees nothing without a tenant context', async () => {
       const n = await asTenant(h.rt, null, ACTOR_SYSTEM, async (c) => {
         const r = await c.query('SELECT 1 FROM sf_digilocker.publish_record');

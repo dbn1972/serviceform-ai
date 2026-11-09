@@ -1,0 +1,40 @@
+data.sf.authz_test.test_citizen_owner_read_allowed: PASS (5.652285ms)
+policy/opa/sf/authz/citizen_test.rego:71:
+data.sf.authz_test.test_citizen_non_owner_denied: PASS (5.164271ms)
+policy/opa/sf/authz/citizen_test.rego:78:
+data.sf.authz_test.test_citizen_missing_owner_denied: PASS (7.037665ms)
+policy/opa/sf/authz/citizen_test.rego:92:
+data.sf.authz_test.test_citizen_presenting_roles_denied: PASS (15.971039ms)
+policy/opa/sf/authz/citizen_test.rego:99:
+data.sf.authz_test.test_citizen_without_assurance_denied: PASS (25.978553ms)
+policy/opa/sf/authz/citizen_test.rego:85:
+data.sf.authz_test.test_citizen_empty_or_non_string_owner_denied: PASS (33.616615ms)
+policy/opa/sf/authz/citizen_test.rego:167:
+data.sf.authz_test.test_officer_cannot_use_owner_path: PASS (5.368216ms)
+policy/opa/sf/authz/citizen_test.rego:57:
+data.sf.authz_test.test_citizen_owner_journey_actions_allowed: PASS (42.635046ms)
+policy/opa/sf/authz/citizen_test.rego:130:
+data.sf.authz_test.test_citizen_cross_tenant_resource_denied: PASS (6.073515ms)
+policy/opa/sf/authz/citizen_test.rego:137:
+data.sf.authz_test.test_citizen_without_tenant_context_denied: PASS (11.058909ms)
+policy/opa/sf/authz/citizen_test.rego:150:
+data.sf.authz_test.test_citizen_unknown_action_denied: PASS (10.402979ms)
+policy/opa/sf/authz/citizen_test.rego:156:
+data.sf.authz_test.test_officer_role_grant_allows_decision: PASS (6.031299ms)
+policy/opa/sf/authz/citizen_test.rego:144:
+data.sf.authz_test.test_citizen_on_tenant_not_onboarded_denied: PASS (17.457351ms)
+policy/opa/sf/authz/citizen_test.rego:161:
+data.sf.authz_test.test_officer_without_role_denied: PASS (6.483378ms)
+policy/opa/sf/authz/citizen_test.rego:178:
+data.sf.authz_test.test_officer_cross_tenant_denied: PASS (4.623497ms)
+policy/opa/sf/authz/citizen_test.rego:208:
+data.sf.authz_test.test_cmp004_officer_session_needs_role: PASS (4.328576ms)
+policy/opa/sf/authz/citizen_test.rego:204:
+data.sf.authz_test.test_cmp004_officer_session_issue_by_role: PASS (7.66354ms)
+policy/opa/sf/authz/citizen_test.rego:106:
+data.sf.authz_test.test_citizen_cannot_take_officer_decisions: PASS (48.207808ms)
+
+policy/opa/sf/authz/decision_test.rego:40:
+data.sf.authz_test.test_r3_role_wrong_resource: PASS (6.443779ms)
+--------------------------------------------------------------------------------
+PASS: 87/87

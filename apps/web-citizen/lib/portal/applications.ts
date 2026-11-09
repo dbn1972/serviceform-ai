@@ -71,7 +71,30 @@ export interface PortalApplication extends Partial<ResidenceForm> {
   submitted_at: string | null;
   source: 'PLATFORM';
   eligibility: 'NOT_EVALUATED';
-  digilocker: { mode: 'SIMULATED'; status: 'NOT_REQUESTED' };
+  digilocker: PortalDigiLocker;
+  credential_id?: string;
+}
+
+export type DigiLockerStatus =
+  'NOT_REQUESTED' | 'PENDING' | 'PUBLISHED' | 'FAILED' | 'RETRY_SCHEDULED';
+
+export interface PortalDigiLocker {
+  mode: 'SIMULATED' | 'SANDBOX' | 'REAL';
+  status: DigiLockerStatus;
+  provider_transaction_ref?: string;
+}
+
+/** Host projection `GET /v1/applications/{id}/issuance` (CMP-022 credential + CMP-012 publish). */
+export interface IssuanceProjection {
+  credential: { credential_id: string; lifecycle_status: string } | null;
+  digilocker: PortalDigiLocker & { publish_request_id?: string; failure_code?: string };
+}
+
+const NOT_REQUESTED: PortalDigiLocker = { mode: 'SIMULATED', status: 'NOT_REQUESTED' };
+
+/** Cases past a recorded approval are the only ones with an issuance projection. */
+export function issuanceApplies(state: CaseState): boolean {
+  return ['APPROVED', 'SIGNING_PENDING', 'ISSUED', 'CLOSED'].includes(state);
 }
 
 export function portalStatus(state: CaseState): PortalStatus {
@@ -101,7 +124,9 @@ export function portalStatus(state: CaseState): PortalStatus {
 export function toPortalApplication(
   app: PlatformApplication,
   data: Partial<ResidenceForm> | Record<string, unknown> | null,
+  issuance: IssuanceProjection | null = null,
 ): PortalApplication {
+  const dl = issuance?.digilocker;
   return {
     ...((data ?? {}) as Partial<ResidenceForm>),
     id: app.application_id,
@@ -114,6 +139,15 @@ export function toPortalApplication(
     submitted_at: app.submitted_at,
     source: 'PLATFORM',
     eligibility: 'NOT_EVALUATED',
-    digilocker: { mode: 'SIMULATED', status: 'NOT_REQUESTED' },
+    digilocker: dl
+      ? {
+          mode: dl.mode,
+          status: dl.status,
+          ...(dl.provider_transaction_ref
+            ? { provider_transaction_ref: dl.provider_transaction_ref }
+            : {}),
+        }
+      : NOT_REQUESTED,
+    ...(issuance?.credential ? { credential_id: issuance.credential.credential_id } : {}),
   };
 }

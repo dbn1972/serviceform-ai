@@ -1,4 +1,4 @@
-import type { PlatformApplication } from './applications';
+import { issuanceApplies, type IssuanceProjection, type PlatformApplication } from './applications';
 import { platform, type Citizen, type PlatformResponse } from './platform';
 
 export async function readWorkingData(
@@ -25,4 +25,19 @@ export async function command(
   });
   const next = res.body['application'] as PlatformApplication | undefined;
   return res.status === 200 && next ? { ok: true, app: next } : { ok: false, res };
+}
+
+/**
+ * Credential and DigiLocker status for a case past approval. The host authorizes the citizen on
+ * CMP-015 first; any refusal or outage reads as "not requested" rather than failing the page.
+ */
+export async function readIssuance(
+  citizen: Citizen,
+  app: PlatformApplication,
+): Promise<IssuanceProjection | null> {
+  if (!issuanceApplies(app.state)) return null;
+  const res = await platform('GET', `/v1/applications/${app.application_id}/issuance`, {
+    token: citizen.token,
+  });
+  return res.status === 200 ? (res.body as unknown as IssuanceProjection) : null;
 }

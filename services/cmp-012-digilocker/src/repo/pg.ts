@@ -165,6 +165,20 @@ class PgTx implements DigilockerTx {
     return r.rows[0] ? toPublishRow(r.rows[0]) : null;
   }
 
+  async listPublishRecordsForCredential(
+    tenantId: string,
+    credentialId: string,
+  ): Promise<PublishRow[]> {
+    this.assertTenant(tenantId);
+    const r = await this.c.query(
+      SELECT_PUBLISH +
+        ' WHERE tenant_id = $1 AND credential_id = $2' +
+        ' ORDER BY created_at DESC, publish_request_id DESC LIMIT 50',
+      [tenantId, credentialId],
+    );
+    return r.rows.map((row) => toPublishRow(row));
+  }
+
   async insertOutbox(envelope: unknown, topic: string): Promise<void> {
     const env = envelope as EventEnvelope<object>;
     const partitionKey = outboxPartitionKey(env, topic);

@@ -27,6 +27,30 @@
         "resource_types": ["Application"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
+      },
+      "SAMPLE_LAB_ISSUANCE_WORKLOAD": {
+        "_note": "SF-M10-B-3 host SYSTEM workload for post-approval issuance and SIMULATED DigiLocker publish. It cannot record a decision.",
+        "actions": [
+          "APPLICATION_READ",
+          "APPLICATION_TRANSITIONS_READ",
+          "APPLICATION_ENTER_SIGNING_PENDING",
+          "APPLICATION_RECORD_ISSUED",
+          "CREDENTIAL_ISSUE",
+          "CREDENTIAL_READ",
+          "CREDENTIAL_DOWNSTREAM_OUTCOME_RECORD",
+          "CREDENTIAL_REGISTRY_REGISTER",
+          "CREDENTIAL_REGISTRY_STATUS_READ",
+          "digilocker:publish",
+          "digilocker:read"
+        ],
+        "resource_types": [
+          "ApplicationCase",
+          "Credential",
+          "CredentialRegistryEntry",
+          "DigiLockerPublish"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
       }
     }
   }

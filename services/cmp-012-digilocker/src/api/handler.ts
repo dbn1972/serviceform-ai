@@ -39,6 +39,7 @@ interface Route extends RouteDescriptor {
     ctx: TenantContext,
     p: {
       params: Record<string, string>;
+      query: Readonly<Record<string, string | string[] | undefined>>;
       body: unknown;
       rawHeaders: Record<string, string | string[] | undefined>;
       idem: Idempotency | undefined;
@@ -79,10 +80,21 @@ const ROUTES: Route[] = [
   route('POST', '/v1/digilocker-publish', 'publishCredential', (s, ctx, p) =>
     s.publishCredential(ctx, validatePublishInput(p.body), requireIdem(p.idem)),
   ),
+  route('GET', '/v1/digilocker-publish', 'listPublishRecordsForCredential', (s, ctx, p) =>
+    s.listPublishRecordsForCredential(ctx, queryUuid(p.query, 'credential_id')),
+  ),
   route('GET', '/v1/digilocker-publish/:publish_request_id', 'getPublishRecord', (s, ctx, p) =>
     s.getPublishRecord(ctx, pathUuid(p.params, 'publish_request_id')),
   ),
 ];
+
+function queryUuid(query: Readonly<Record<string, string | string[] | undefined>>, name: string) {
+  const v = Object.prototype.hasOwnProperty.call(query, name) ? query[name] : undefined;
+  if (typeof v !== 'string' || !isUuid(v)) {
+    throw new Cmp012Error('SF-SYS-003', detail('UUID_REQUIRED', `/${name}`));
+  }
+  return v;
+}
 
 export const ROUTE_DESCRIPTORS: readonly RouteDescriptor[] = ROUTES.map(
   ({ method, path, operationId }) => ({ method, path, operationId }),
@@ -171,6 +183,7 @@ export function createDigilockerApi(opts: DigilockerApiOptions): {
         }
         const result = await found.route.run(opts.service, ctx, {
           params: found.params,
+          query: req.query ?? {},
           body: req.body,
           rawHeaders: req.headers as Record<string, string | string[] | undefined>,
           idem,

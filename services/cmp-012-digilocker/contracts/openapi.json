@@ -25,6 +25,24 @@
           "400": { "description": "Validation error (missing consent_ref / purpose_code)" },
           "409": { "description": "Duplicate / idempotency conflict" }
         }
+      },
+      "get": {
+        "operationId": "listPublishRecordsForCredential",
+        "summary": "List publish records for a credential, newest first (at most 50)",
+        "description": "Additive read (CCR-M10-003). Tenant-scoped (RLS) and authorized as digilocker:read. A publish record never changes issuance or registry status.",
+        "parameters": [
+          {
+            "name": "credential_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "{ credential_id, publish_records: [publish record] }" },
+          "400": { "description": "credential_id missing or not a UUID" },
+          "403": { "description": "Not authorized" }
+        }
       }
     },
     "/v1/digilocker-publish/{publish_request_id}": {

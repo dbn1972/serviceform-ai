@@ -1,0 +1,183 @@
+platform-lab-bootstrap: migrations applied; 6 runtime logins; env written
+platform-lab: API http://127.0.0.1:4310 (SAMPLE_LAB, SIMULATED connectors, G6=false)
+tenant-b: fixtures written (tenant 0d15ba00-0001-4000-8000-0d15ba0000b1)
+m10-platform: host A :4310 (OPA :8491), host B :4311 (OPA :8492)
+
+ RUN  v5.0.3 /agent/repos/sf-b3
+
+ ❯ tests/integration/m10-platform/bff-seam.test.ts (13 tests | 5 failed) 1292ms
+   ❯ citizen BFF on the platform path (6)
+     ✓ OTP sign-in sets a cookie holding only the CMP-004 opaque token (SF-CON-PORTAL-SESSION) 169ms
+     ✓ a forged or unknown cookie is never decoded for identity 161ms
+     × apply drives CMP-015 draft → working data → ready → submitted and the view mirrors CMP-015 50ms
+     ✓ another citizen's application is a uniform 404 through the BFF (no existence disclosure) 26ms
+     × observed: the BFF apply is not idempotent — a repeated submit creates a second SUBMITTED case (INT-F5) 24ms
+     ✓ sign-out revokes the CMP-004 session 5ms
+   ❯ citizen view maps every CMP-015 state (2)
+     × every CaseState maps to a defined portal status and platform_state is passed through unchanged 2ms
+     × withdrawn/cancelled cases are not shown as REJECTED, and DEFICIENCY_RAISED is not shown as plain SUBMITTED 1ms
+   ❯ officer BFF decide() drives only legal transitions (5)
+     ✓ APPROVE from SUBMITTED walks received → scrutiny → decision_pending → approved, then SYSTEM issues 464ms
+     ✓ REJECT records a HUMAN rejection with a reason code 64ms
+     ✓ decide() issues no command on decided, draft, deficiency or citizen-response cases 257ms
+     ✓ bad actions and citizen cookies are refused by the officer BFF 39ms
+     × every CaseState maps to a workbench status without inventing states 1ms
+ ❯ tests/integration/m10-platform/journey-state-machine.test.ts (8 tests | 1 failed) 459ms
+   ❯ journey state machine on the platform path (8)
+     × draft → ready → submitted → received → scrutiny → decision_pending → approved 61ms
+     ✓ … → decision_pending → rejected → closed 57ms
+     ✓ deficiency loop: officer raises, citizen edits working data and responds, scrutiny resumes 65ms
+     ✓ illegal transitions and wrong actors are refused 79ms
+     ✓ stale expected_version / expected_state / expected_revision are refused 51ms
+     ✓ idempotent replays return Idempotent-Replayed with the original body; key reuse with a different body is refused 37ms
+     ✓ another citizen reusing an idempotency key never receives the first citizen's replay 17ms
+     ✓ concurrent commands on the same expected_version: exactly one wins 45ms
+ ❯ tests/integration/m10-platform/int-005-posture.test.ts (5 tests | 3 failed) 109ms
+   ❯ INT-005 posture: no Temporal sequencing on the Phase B path (5)
+     × observed: the no-op OutboxOnlyWorkflowAdvance reports SIGNALLED / temporal_advanced=true 5ms
+     × CMP-015 reports DEFERRED_TO_OUTBOX and temporal_advanced=false when nothing was signalled 1ms
+     ✓ no CMP-016 workflow instance, request or outbox row exists for the case (sf_workflow empty) 13ms
+     ✓ the host is configured without a Temporal endpoint 0ms
+     × the officer action is OPA-authorized and records the decision id and policy revision 6ms
+ ✓ tests/integration/m10-platform/int-013-simulation.test.ts (12 tests) 4858ms
+   ✓ INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments (7)
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=DEVELOPMENT 784ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=SIT 770ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=UAT 783ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PREPROD 774ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PRODUCTION 777ms
+     ✓ a CI runtime refuses a LOCAL placement (placement environment must match) 833ms
+ ✓ tests/integration/m10-platform/issuance-digilocker.test.ts (6 tests) 784ms
+ ✓ tests/integration/m10-platform/int-004-outbox.test.ts (4 tests) 278ms
+ ✓ tests/integration/m10-platform/contract-conformance.test.ts (13 tests) 239ms
+ ✓ tests/integration/m10-platform/int-011-two-tenants.test.ts (7 tests) 230ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen BFF on the platform path > apply drives CMP-015 draft → working data → ready → submitted and the view mirrors CMP-015
+AssertionError: expected 422 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 422
+
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:171:22
+    169|       await citizenRoutes.apps()
+    170|     ).POST(req('/api/portal/applications', { method: 'POST', cookie, b…
+    171|     expect(r.status).toBe(201);
+       |                      ^
+    172|     const body = (await r.json()) as { application: Record<string, unk…
+    173|     expect(body.application).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen BFF on the platform path > observed: the BFF apply is not idempotent — a repeated submit creates a second SUBMITTED case (INT-F5)
+TypeError: Cannot read properties of undefined (reading 'status')
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:232:14
+    230|       ).application;
+    231|     const [a, b] = [await make(), await make()];
+    232|     expect(a.status).toBe('SUBMITTED');
+       |              ^
+    233|     expect(b.status).toBe('SUBMITTED');
+    234|     expect(a.id).not.toBe(b.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen view maps every CMP-015 state > every CaseState maps to a defined portal status and platform_state is passed through unchanged
+AssertionError: DEFICIENCY_RAISED: expected [ 'DRAFT', 'SUBMITTED', …(4) ] to include 'ACTION_REQUIRED'
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:254:30
+    252|       await import('../../../apps/web-citizen/lib/portal/applications'…
+    253|     for (const state of CASE_STATES) {
+    254|       expect(ALLOWED, state).toContain(portalStatus(state as never));
+       |                              ^
+    255|       const view = toPortalApplication(
+    256|         {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen view maps every CMP-015 state > withdrawn/cancelled cases are not shown as REJECTED, and DEFICIENCY_RAISED is not shown as plain SUBMITTED
+ FAIL  tests/integration/m10-platform/int-005-posture.test.ts > INT-005 posture: no Temporal sequencing on the Phase B path > CMP-015 reports DEFERRED_TO_OUTBOX and temporal_advanced=false when nothing was signalled
+Error: Expect test to fail
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > officer BFF decide() drives only legal transitions > every CaseState maps to a workbench status without inventing states
+AssertionError: expected [ 'DRAFT', 'SUBMITTED', …(4) ] to include 'DEFICIENCY_RAISED'
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:534:82
+    532|     const { workbenchStatus } = await import('../../../apps/web-office…
+    533|     for (const s of CASE_STATES) {
+    534|       expect(['DRAFT', 'SUBMITTED', 'APPROVED', 'REJECTED', 'ISSUED', …
+       |                                                                                  ^
+    535|         workbenchStatus(s),
+    536|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/integration/m10-platform/int-005-posture.test.ts > INT-005 posture: no Temporal sequencing on the Phase B path > observed: the no-op OutboxOnlyWorkflowAdvance reports SIGNALLED / temporal_advanced=true
+AssertionError: expected [ 'DEFERRED_TO_OUTBOX', …(2) ] to deeply equal [ 'SIGNALLED', 'SIGNALLED', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "SIGNALLED",
+-   "SIGNALLED",
+-   "SIGNALLED",
++   "DEFERRED_TO_OUTBOX",
++   "DEFERRED_TO_OUTBOX",
++   "DEFERRED_TO_OUTBOX",
+  ]
+
+ ❯ tests/integration/m10-platform/int-005-posture.test.ts:60:22
+     58|
+     59|   it('observed: the no-op OutboxOnlyWorkflowAdvance reports SIGNALLED …
+     60|     expect(advances).toEqual(['SIGNALLED', 'SIGNALLED', 'SIGNALLED']);
+       |                      ^
+     61|     expect(temporalAdvanced).toEqual([true, true, true]);
+     62|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  tests/integration/m10-platform/int-005-posture.test.ts > INT-005 posture: no Temporal sequencing on the Phase B path > the officer action is OPA-authorized and records the decision id and policy revision
+AssertionError: expected 'm10-b3' to be 'm10-b1' // Object.is equality
+
+Expected: "m10-b1"
+Received: "m10-b3"
+
+ ❯ tests/integration/m10-platform/int-005-posture.test.ts:100:43
+     98|     expect(last['actor_type']).toBe('OFFICER');
+     99|     expect(String(last['authz_decision_id'])).toMatch(/^[0-9a-f-]{36}$…
+    100|     expect(last['authz_policy_revision']).toBe('m10-b1');
+       |                                           ^
+    101|   });
+    102| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  tests/integration/m10-platform/journey-state-machine.test.ts > journey state machine on the platform path > draft → ready → submitted → received → scrutiny → decision_pending → approved
+AssertionError: expected 'm10-b3' to be 'm10-b1' // Object.is equality
+
+Expected: "m10-b1"
+Received: "m10-b3"
+
+ ❯ tests/integration/m10-platform/journey-state-machine.test.ts:88:39
+     86|     ]);
+     87|     for (const t of tr.body['transitions'] as { authz_policy_revision:…
+     88|       expect(t.authz_policy_revision).toBe('m10-b1');
+       |                                       ^
+     89|     }
+     90|     const late = await command(HOST_A(), officer.token, app, 'RECORD_R…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+
+ Test Files  3 failed | 5 passed (8)
+      Tests  9 failed | 57 passed | 2 expected fail (68)
+   Start at  03:45:28
+   Duration  9.29s (tests 95%, import 4%, transform 1%)
+
+    Isolate  8 workers spawned · ~67ms startup each (spawn + environment, per file)
+             at least ~467ms faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /agent/repos/sf-b3/evidence/SF-M10-B-INT/junit/m10-platform-int.xml

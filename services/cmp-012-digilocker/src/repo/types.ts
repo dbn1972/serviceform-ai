@@ -51,6 +51,8 @@ export interface DigilockerTx {
     >,
   ): Promise<boolean>;
   getPublishRecord(tenantId: string, publishRequestId: string): Promise<PublishRow | null>;
+  /** Newest first. */
+  listPublishRecordsForCredential(tenantId: string, credentialId: string): Promise<PublishRow[]>;
   insertOutbox(envelope: unknown, topic: string): Promise<void>;
   claimIdempotency(opts: {
     principalId: string;

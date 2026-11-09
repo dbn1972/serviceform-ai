@@ -11,6 +11,16 @@ export interface PlatformApplication {
 
 export type DecisionAction = 'APPROVE' | 'REJECT';
 
+/** Host projection of CMP-022 issuance and CMP-012 publish (CCR-M10-003). */
+export interface IssuanceProjection {
+  case_state: string;
+  credential: { credential_id: string; lifecycle_status: string } | null;
+  digilocker: { mode: string; status: string; provider_transaction_ref?: string };
+  issuance_error?: { error_code: string; step: string };
+}
+
+const POST_APPROVAL_STATES = ['APPROVED', 'SIGNING_PENDING', 'ISSUED', 'CLOSED'];
+
 /** Officer-visible status derived from the CMP-015 state (no state is invented here). */
 export function workbenchStatus(state: string): string {
   if (['DRAFT', 'READY_TO_SUBMIT'].includes(state)) return 'DRAFT';
@@ -25,6 +35,7 @@ export function workbenchStatus(state: string): string {
 export function toWorkbenchApplication(
   app: PlatformApplication,
   data: Record<string, unknown> | null,
+  issuance: IssuanceProjection | null = null,
 ) {
   return {
     ...(data ?? {}),
@@ -36,7 +47,44 @@ export function toWorkbenchApplication(
     submitted_at: app.submitted_at,
     source: 'PLATFORM',
     eligibility: 'NOT_EVALUATED',
+    digilocker: issuance?.digilocker ?? { mode: 'SIMULATED', status: 'NOT_REQUESTED' },
+    ...(issuance?.credential ? { credential_id: issuance.credential.credential_id } : {}),
+    ...(issuance?.issuance_error ? { issuance_error: issuance.issuance_error } : {}),
   };
+}
+
+export function issuanceApplies(state: string): boolean {
+  return POST_APPROVAL_STATES.includes(state);
+}
+
+/** `GET /v1/applications/{id}/issuance`; null when the case is not past approval or on error. */
+export async function readIssuance(
+  officer: Officer,
+  app: PlatformApplication,
+): Promise<IssuanceProjection | null> {
+  if (!issuanceApplies(app.state)) return null;
+  const res = await platform('GET', `/v1/applications/${app.application_id}/issuance`, {
+    token: officer.token,
+  });
+  return res.status === 200 ? (res.body as unknown as IssuanceProjection) : null;
+}
+
+/**
+ * Asks the platform to run (or resume) post-approval issuance: SYSTEM signing, credential issue
+ * and SIMULATED DigiLocker publish. The officer's HUMAN approval is already recorded and is never
+ * undone by an issuance or publish failure.
+ */
+export async function requestIssuance(
+  officer: Officer,
+  app: PlatformApplication,
+): Promise<{ ok: true; issuance: IssuanceProjection } | { ok: false; res: PlatformResponse }> {
+  const res = await platform('POST', `/v1/applications/${app.application_id}/issuance`, {
+    token: officer.token,
+    body: {},
+  });
+  return res.status === 200
+    ? { ok: true, issuance: res.body as unknown as IssuanceProjection }
+    : { ok: false, res };
 }
 
 export async function readWorkingData(officer: Officer, id: string) {

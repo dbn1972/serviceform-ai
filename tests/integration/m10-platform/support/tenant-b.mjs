@@ -69,7 +69,35 @@ const officers = {
 const opaTenants = read('opa/sf/tenants/data.json');
 opaTenants[TENANT_B.tenant_id] = structuredClone(opaTenants[tenantA]);
 
+// Tenant B issues under its own issuer, bindings and synthetic consent (…b-suffixed ids).
+const restamp = (v) => `${v.slice(0, -4)}b${v.slice(-3)}`;
+const issuance = read('issuance.json');
+const issuanceA = issuance.tenants.find((t) => t.tenant_id === tenantA);
+const issuanceB = {
+  ...issuanceA,
+  tenant_id: TENANT_B.tenant_id,
+  issuer_ref: `${issuanceA.issuer_ref}-b`,
+  connector_bindings: Object.fromEntries(
+    Object.entries(issuanceA.connector_bindings).map(([k, v]) => [k, restamp(v)]),
+  ),
+  digilocker_publish: {
+    ...issuanceA.digilocker_publish,
+    consent_ref: restamp(issuanceA.digilocker_publish.consent_ref),
+  },
+  credential_templates: issuanceA.credential_templates.map((t) => ({
+    ...t,
+    tenant_service_binding_id: TENANT_B.tsb_id,
+    credential_template_version_id: pins.credential_template_version_id,
+    credential_template_id: restamp(t.credential_template_id),
+    service_version_id: restamp(t.service_version_id),
+  })),
+};
+
 mkdirSync(join(out, 'opa/sf/tenants'), { recursive: true });
+writeFileSync(
+  join(out, 'issuance.json'),
+  `${JSON.stringify({ ...issuance, tenants: [issuanceB] }, null, 2)}\n`,
+);
 writeFileSync(join(out, 'placement.citizen.json'), `${JSON.stringify(placement, null, 2)}\n`);
 writeFileSync(
   join(out, 'published-bindings.json'),
