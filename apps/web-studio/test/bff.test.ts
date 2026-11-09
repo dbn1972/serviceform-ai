@@ -4,7 +4,12 @@
  * Without SF_API_BASE_URL set, all calls fail closed with SF-SYS-004 (no host).
  */
 import { describe, expect, it } from 'vitest';
-import { handleCreateSession, handlePlatformProxy, handleReadSession, SESSION_COOKIE } from '../lib/handlers';
+import {
+  handleCreateSession,
+  handlePlatformProxy,
+  handleReadSession,
+  SESSION_COOKIE,
+} from '../lib/handlers';
 
 const tenantB = '22222222-2222-4222-8222-222222222222';
 

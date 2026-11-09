@@ -37,7 +37,11 @@ export function handleCreateSession(request: Request, _surface: PortalSurface): 
         return errorJson('SF-SYS-003', 400, '00000000-0000-4000-8000-000000000050');
       }
       const body = (await request.json()) as Record<string, unknown>;
-      if (typeof body['subject'] !== 'string' || body['subject'].length < 1 || body['subject'].length > 80) {
+      if (
+        typeof body['subject'] !== 'string' ||
+        body['subject'].length < 1 ||
+        body['subject'].length > 80
+      ) {
         return errorJson('SF-SYS-003', 400, '00000000-0000-4000-8000-000000000050');
       }
       if (!apiBaseUrl()) {
@@ -47,16 +51,30 @@ export function handleCreateSession(request: Request, _surface: PortalSurface): 
         body: { subject: body['subject'] },
       });
       if (assertion.status !== 200 || typeof assertion.body['assertion'] !== 'string') {
-        const code = typeof assertion.body['error_code'] === 'string' ? assertion.body['error_code'] : 'SF-AUTH-001';
-        return errorJson(code, assertion.status >= 400 && assertion.status < 600 ? assertion.status : 502, '00000000-0000-4000-8000-000000000050');
+        const code =
+          typeof assertion.body['error_code'] === 'string'
+            ? assertion.body['error_code']
+            : 'SF-AUTH-001';
+        return errorJson(
+          code,
+          assertion.status >= 400 && assertion.status < 600 ? assertion.status : 502,
+          '00000000-0000-4000-8000-000000000050',
+        );
       }
       const session = await platform('POST', '/v1/identity/officer/sessions', {
         body: { assertion: assertion.body['assertion'] },
       });
       const token = session.body['session_token'];
       if (session.status !== 200 || typeof token !== 'string') {
-        const code = typeof session.body['error_code'] === 'string' ? session.body['error_code'] : 'SF-AUTH-001';
-        return errorJson(code, session.status >= 400 && session.status < 600 ? session.status : 502, '00000000-0000-4000-8000-000000000050');
+        const code =
+          typeof session.body['error_code'] === 'string'
+            ? session.body['error_code']
+            : 'SF-AUTH-001';
+        return errorJson(
+          code,
+          session.status >= 400 && session.status < 600 ? session.status : 502,
+          '00000000-0000-4000-8000-000000000050',
+        );
       }
       return new Response(
         JSON.stringify({

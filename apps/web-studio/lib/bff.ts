@@ -238,7 +238,8 @@ export async function platform(
   opts: { token?: string | null; body?: unknown } = {},
 ): Promise<PlatformResponse> {
   const base = apiBaseUrl();
-  if (!base) return { status: 503, body: { error_code: 'SF-SYS-004', message: 'Service unavailable' } };
+  if (!base)
+    return { status: 503, body: { error_code: 'SF-SYS-004', message: 'Service unavailable' } };
   const headers: Record<string, string> = { accept: 'application/json' };
   if (opts.body !== undefined) headers['content-type'] = 'application/json';
   if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;

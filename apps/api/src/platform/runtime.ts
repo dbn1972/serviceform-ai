@@ -233,7 +233,13 @@ interface Cmp051Module {
 interface Cmp052Module {
   registerVersioning: (app: import('fastify').FastifyInstance, opts: unknown) => Promise<void>;
   SimulatedApprovalPort: new (
-    config: { environment: string; approvalMode: string; scenario: string; testRunId: string; approvalBindingId: string },
+    config: {
+      environment: string;
+      approvalMode: string;
+      scenario: string;
+      testRunId: string;
+      approvalBindingId: string;
+    },
     allow: boolean,
   ) => unknown;
 }
@@ -287,9 +293,15 @@ class Cmp052PublishedBindingPort implements PublishedBindingPort {
           evidence_policy_version_id: map['evidence']?.version_ref ?? '',
           sla_policy_version_id: map['sla']?.version_ref ?? '',
           ...(map['fee'] ? { fee_policy_version_id: map['fee'].version_ref } : {}),
-          ...(map['credential'] ? { credential_template_version_id: map['credential'].version_ref } : {}),
-          ...(map['notification'] ? { notification_version_id: map['notification'].version_ref } : {}),
-          ...(map['authorization_policy'] ? { authorization_policy_version_id: map['authorization_policy'].version_ref } : {}),
+          ...(map['credential']
+            ? { credential_template_version_id: map['credential'].version_ref }
+            : {}),
+          ...(map['notification']
+            ? { notification_version_id: map['notification'].version_ref }
+            : {}),
+          ...(map['authorization_policy']
+            ? { authorization_policy_version_id: map['authorization_policy'].version_ref }
+            : {}),
         } as PublishedBinding['pins'],
       };
     } catch {
@@ -445,9 +457,18 @@ export async function buildPlatformLab(
       ? { cmp052: new pg.Pool({ connectionString: env.DATABASE_URL_CMP052, max: 4 }) }
       : {}),
   } as {
-    cmp004: pg.Pool; cmp009: pg.Pool; cmp015: pg.Pool; cmp016: pg.Pool;
-    cmp022: pg.Pool; cmp024: pg.Pool; cmp012: pg.Pool; cmp005: pg.Pool; cmp030: pg.Pool;
-    cmp033?: pg.Pool; cmp051?: pg.Pool; cmp052?: pg.Pool;
+    cmp004: pg.Pool;
+    cmp009: pg.Pool;
+    cmp015: pg.Pool;
+    cmp016: pg.Pool;
+    cmp022: pg.Pool;
+    cmp024: pg.Pool;
+    cmp012: pg.Pool;
+    cmp005: pg.Pool;
+    cmp030: pg.Pool;
+    cmp033?: pg.Pool;
+    cmp051?: pg.Pool;
+    cmp052?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -743,7 +764,7 @@ export async function buildPlatformLab(
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
       },
     },
-    m03,
+    ...(m03 ? { m03 } : {}),
     m07: {
       credential: { service: credential, resolveContext },
       registry: { service: registry, resolveContext },
