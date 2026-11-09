@@ -38,8 +38,11 @@ export interface ConsentAccessPortLike {
 
 export interface LabPrivacy {
   consentAccess: ConsentAccessPortLike;
-  /** Ensures every fixture purpose exists with a PUBLISHED notice. Idempotent across restarts. */
-  publish(): Promise<{ code: string; purpose_id: string; notice_id: string }[]>;
+  /**
+   * Ensures every fixture purpose exists with a PUBLISHED notice. Idempotent across restarts;
+   * `notice_id` is null when the notice version was recorded by an earlier start.
+   */
+  publish(): Promise<{ code: string; purpose_id: string; notice_id: string | null }[]>;
   close(): Promise<void>;
 }
 
@@ -187,7 +190,7 @@ export function composeLabPrivacy(params: {
           p.purpose_id,
         ]),
       );
-      const out: { code: string; purpose_id: string; notice_id: string }[] = [];
+      const out: { code: string; purpose_id: string; notice_id: string | null }[] = [];
       for (const p of fixture.purposes) {
         let purposeId = existing.get(p.code);
         if (!purposeId) {
@@ -199,16 +202,25 @@ export function composeLabPrivacy(params: {
           );
           purposeId = String(created['purpose_id']);
         }
-        const notice = expect2xx(
-          await call(publisherToken, 'POST', '/v1/privacy/notices', {
-            body: {
-              purpose_id: purposeId,
-              content_ref: p.notice.content_ref,
-              version_no: p.notice.version_no,
-            },
-            key: `sample-lab:notice:${p.code}:v${p.notice.version_no}`,
-          }),
-        );
+        const created = await call(publisherToken, 'POST', '/v1/privacy/notices', {
+          body: {
+            purpose_id: purposeId,
+            content_ref: p.notice.content_ref,
+            version_no: p.notice.version_no,
+          },
+          key: `sample-lab:notice:${p.code}:v${p.notice.version_no}`,
+        });
+        // CMP-030 declares a 24h idempotency TTL and has no notice read route: once the record is
+        // gone, the version already recorded for an existing purpose answers with a conflict.
+        if (
+          existing.has(p.code) &&
+          created.status === 409 &&
+          created.body['error_code'] === 'SF-APP-002'
+        ) {
+          out.push({ code: p.code, purpose_id: purposeId, notice_id: null });
+          continue;
+        }
+        const notice = expect2xx(created);
         const noticeId = String(notice['notice_id']);
         if (notice['status'] !== 'PUBLISHED') {
           expect2xx(

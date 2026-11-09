@@ -78,6 +78,9 @@ export function registerConsentRoutes(app: FastifyInstance, deps: RouteDeps): vo
       if (!basis) {
         basis = ctx.actor.id === request.body.subject_id ? 'SELF' : 'ASSISTED';
       }
+      if (ctx.actor.type === 'CITIZEN' && basis !== 'SELF') {
+        throw new Cmp030Error('SF-AUTH-002', { details: [{ code: 'CITIZEN_SELF_ONLY' }] });
+      }
       if (basis === 'SELF' && ctx.actor.id !== request.body.subject_id) {
         throw new Cmp030Error('SF-AUTH-002', {
           details: [{ code: 'SELF_REQUIRES_SUBJECT_ACTOR' }],

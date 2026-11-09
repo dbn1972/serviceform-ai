@@ -253,6 +253,34 @@ describe('SIMULATED privacy publication (CMP-030 purpose + notice)', () => {
     await privacy.close();
   });
 
+  it('restarts after the idempotency window when the notice version is already recorded', async () => {
+    const fake = fakeCmp030((s) => {
+      if (s.method === 'GET')
+        return {
+          status: 200,
+          body: { items: [{ code: 'SAMPLE_LAB_PROFILE_PREFILL', purpose_id: PURPOSE_ID }] },
+        };
+      return { status: 409, body: { error_code: 'SF-APP-002' } };
+    });
+    const privacy = compose(fake.module);
+    await expect(privacy.publish()).resolves.toEqual([
+      { code: 'SAMPLE_LAB_PROFILE_PREFILL', purpose_id: PURPOSE_ID, notice_id: null },
+    ]);
+    expect(fake.seen.map((s) => s.url)).toEqual(['/v1/purposes', '/v1/privacy/notices']);
+    await privacy.close();
+  });
+
+  it('still fails on a notice conflict for a purpose it has just created', async () => {
+    const fake = fakeCmp030((s) => {
+      if (s.method === 'GET') return { status: 200, body: { items: [] } };
+      if (s.url === '/v1/purposes') return { status: 201, body: { purpose_id: PURPOSE_ID } };
+      return { status: 409, body: { error_code: 'SF-APP-002' } };
+    });
+    const privacy = compose(fake.module);
+    await expect(privacy.publish()).rejects.toThrow(/409 SF-APP-002/);
+    await privacy.close();
+  });
+
   it('fails loudly when CMP-030 or OPA refuses the publication', async () => {
     const fake = fakeCmp030(() => ({ status: 403, body: { error_code: 'SF-AUTH-002' } }));
     const privacy = compose(fake.module);

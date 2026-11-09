@@ -40,6 +40,9 @@ profile or consent actions, so every call would have failed closed with `UNKNOWN
   context, so the OTP/MFA requirement on citizen grants can be evaluated.
 - CMP-030 now sends `resource.owner_id = subject_id` for `CONSENT_GRANT`, `CONSENT_READ` and
   `PRIVACY_ACCESS_CHECK`, so the citizen-owner layer can match the actor to the data subject.
+- CMP-030 refuses a citizen consent grant whose `representation_basis` is not `SELF`
+  (`403 SF-AUTH-002`, detail `CITIZEN_SELF_ONLY`); assisted and legal-representative consent
+  stays with officers.
 
 ### 3. CMP-004 subject directory
 
@@ -58,6 +61,9 @@ profile or consent actions, so every call would have failed closed with `UNKNOWN
   refused before any call.
 - SIMULATED privacy publication: on `start()` the host creates the purposes in
   `fixtures/lab/platform/consent.json` and publishes their notices, with stable idempotency keys.
+  Without a notice read route, a `409 SF-APP-002` on the notice version of an already existing
+  purpose is taken as already recorded, so the host still starts once CMP-030's idempotency
+  records are gone.
 - The CMP-005 DigiLocker binding is SIMULATED. Verified import is not used in this slice.
 
 ### 5. Citizen BFF
