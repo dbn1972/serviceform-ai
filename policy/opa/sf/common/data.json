@@ -174,12 +174,7 @@
     "CredentialRegistryEntry",
     "DigiLockerPublish"
   ],
-  "jurisdiction_scope_modes": [
-    "ASSIGNED_ONLY",
-    "DESCENDANTS",
-    "TENANT_WIDE",
-    "EXPLICIT_LIST"
-  ],
+  "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
   "citizen_owner_grants": {
     "ApplicationCase": {
@@ -196,30 +191,17 @@
         "APPLICATION_RECORD_CITIZEN_RESPONSE",
         "APPLICATION_REQUEST_WITHDRAWAL"
       ],
-      "assurance": [
-        "OTP",
-        "MFA"
-      ]
+      "assurance": ["OTP", "MFA"]
     },
     "FormExecution": {
-      "actions": [
-        "FORM_EXECUTION_EXECUTE"
-      ],
-      "assurance": [
-        "OTP",
-        "MFA"
-      ]
+      "actions": ["FORM_EXECUTION_EXECUTE"],
+      "assurance": ["OTP", "MFA"]
     }
   },
   "citizen_published_grants": {
     "FormDefinition": {
-      "actions": [
-        "FORM_INTERPRET"
-      ],
-      "assurance": [
-        "OTP",
-        "MFA"
-      ]
+      "actions": ["FORM_INTERPRET"],
+      "assurance": ["OTP", "MFA"]
     }
   }
 }
