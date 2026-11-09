@@ -58,7 +58,7 @@ services:
 
   kafka:
     # Kafka-compatible event backbone (MSK in AWS).
-    image: redpandadata/redpanda:v26.2.3
+    image: redpandadata/redpanda:v26.2.6
     command:
       - redpanda
       - start
@@ -84,14 +84,14 @@ services:
     ports: ['127.0.0.1:7233:7233']
 
   temporal-ui:
-    image: temporalio/ui:2.55.0
+    image: temporalio/ui:2.57.0
     depends_on: [temporal]
     environment:
       TEMPORAL_ADDRESS: temporal:7233
     ports: ['127.0.0.1:8233:8080']
 
   opa:
-    image: openpolicyagent/opa:1.21.1-static
+    image: openpolicyagent/opa:1.21.4-static
     command: ['run', '--server', '--addr=0.0.0.0:8181', '--log-level=info', '/policy']
     volumes: ['../../policy/opa:/policy:ro']
     ports: ['127.0.0.1:8181:8181']
@@ -104,7 +104,7 @@ services:
     depends_on: [jaeger]
 
   jaeger:
-    image: jaegertracing/jaeger:2.21.0
+    image: jaegertracing/jaeger:2.22.0
     ports: ['127.0.0.1:16686:16686']
 
 volumes:
