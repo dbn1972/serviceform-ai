@@ -1,9 +1,10 @@
 /**
  * SF-M10-B-2 platform-path journey (SAMPLE_LAB): Citizen Portal and Officer Workbench BFFs on
  * CMP-004 identity (opaque sessions) and CMP-015 application/case (PostgreSQL FORCE RLS + OPA).
- * Requires `scripts/dev/platform-lab.sh up`. OTP/IdP SIMULATED; certificate issuance and
- * DigiLocker are not wired on this slice. Not CERTIFIED. G6 not issued.
- * REQ: INT-001, INT-004, INT-011; ADR-0007; Phase A L-1/L-2; DESIGN-SYSTEM.md rule 6.
+ * Requires `scripts/dev/platform-lab.sh up`. OTP/IdP SIMULATED; after the HUMAN approval the host
+ * issues (CMP-022/024, SIMULATED eSign) and publishes via SIMULATED DigiLocker (CMP-012, SF-M10-B-3).
+ * Not CERTIFIED. G6 not issued. No REAL DigiLocker.
+ * REQ: INT-001, INT-004, INT-011; ADR-0007; Phase A L-1/L-2; DESIGN-SYSTEM.md rule 6; CCR-M10-003.
  */
 import AxeBuilder from '@axe-core/playwright';
 import { randomInt } from 'node:crypto';
@@ -443,7 +444,9 @@ test.describe('officer decision on CMP-015 (CMP-004 officer session, HUMAN decis
     expect((await request.get(`${OFFICER}/api/portal/applications`)).status()).toBe(401);
   });
 
-  test('citizen applies → officer approves → citizen sees Approved', async ({ browser }) => {
+  test('citizen applies → officer approves → credential issued and in DigiLocker (SIMULATED)', async ({
+    browser,
+  }) => {
     const citizen = await (await browser.newContext()).newPage();
     await signIn(citizen, uniqueMobile());
     const id = await submitApplication(citizen, 'SAMPLE Decision Citizen');
@@ -455,10 +458,16 @@ test.describe('officer decision on CMP-015 (CMP-004 officer session, HUMAN decis
     await expect(officer.getByText('SAMPLE Decision Citizen')).toBeVisible();
     await officer.getByRole('button', { name: 'Approve' }).click();
     await expect(officer.getByText(/recorded on the case as a human decision/i)).toBeVisible();
-    await expect(officer.getByText('APPROVED', { exact: true }).first()).toBeVisible();
+    await expect(officer.getByText(/published to DigiLocker \(SIMULATED\)/i)).toBeVisible();
+    await expect(officer.getByText('ISSUED', { exact: true }).first()).toBeVisible();
+    await expect(officer.getByText('DigiLocker · PUBLISHED')).toBeVisible();
+    await expectNoAxeViolations(officer);
 
     await open(citizen, `${CITIZEN}/certificates/${id}`);
-    await expect(citizen.getByText(/Approved — certificate not yet issued/i)).toBeVisible();
+    await expect(citizen.getByText('Saved to DigiLocker (SIMULATED)')).toBeVisible();
+    await expect(citizen.getByText('DigiLocker · PUBLISHED')).toBeVisible();
+    await expect(citizen.getByText(/^[0-9a-f]{8}-[0-9a-f-]{27}$/)).toBeVisible();
+    await expectNoAxeViolations(citizen);
     await citizen.close();
     await officer.close();
   });
