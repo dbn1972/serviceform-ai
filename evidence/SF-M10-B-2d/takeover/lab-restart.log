@@ -1,0 +1,23 @@
+SF-M10-B-2d takeover: SAMPLE_LAB host restart after CMP-030 idempotency records are removed
+Run 2026-11-09 ~04:30-04:35 UTC, Cursor cloud VM, own PostgreSQL 16 cluster on port 5434 (admin URL
+not recorded), OPA 1.21.1, Temporal dev server. Ports: API 4420, OPA 8521, Temporal 7243.
+CERTIFIED=false G6=false self_certified=false
+
+1) scripts/dev/platform-lab.sh up  (fresh database, code @ 9e9fe5f + comment edit)
+   platform-lab-bootstrap: migrations applied; 9 runtime logins; env written
+   GET /health/ready -> {"status":"ok","checks":{"cmp016-temporal-worker":"ok","cmp009-db":"ok",
+     "cmp024-db":"ok","cmp004-db":"ok","cmp005-db":"ok","cmp016-db":"ok","cmp022-db":"ok",
+     "cmp015-db":"ok","cmp030-db":"ok","cmp012-db":"ok"}}
+   purpose SAMPLE_LAB_PROFILE_PREFILL | published notices = 1
+
+2) down; DELETE FROM sf_consent_privacy.idempotency_record
+          WHERE endpoint LIKE 'POST /v1/privacy/notices%' OR endpoint = 'POST /v1/purposes'
+   -> DELETE 3   (stands in for a retention sweep of the declared 24h TTL; none exists yet)
+   up (fixed code) -> GET /health/ready 200; privacy_notice rows = 1 (no duplicate)
+
+3) down; same DELETE (-> DELETE 0, the fixed restart wrote no new records);
+   apps/api/src/platform/profile.ts temporarily replaced with the inherited version @ c02bccc
+   up -> exit 1; api.log: "ConsentPortError: CMP-030 409 SF-APP-002" (host refused to start)
+   fixed file restored
+
+4) down; up (fixed code) -> GET /health/ready 200; down

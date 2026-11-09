@@ -48,6 +48,34 @@ mappings. They are not touched by this slice and are left to their owners, as in
   pre-filled (BFF unit tests).
 - No claim in the cookie; the session response does not echo the full mobile (e2e).
 
+## Takeover follow-up (builder, not verification)
+
+Subagent `bc-994cdf9e-09dc-596e-b11e-76f1ea49ab6b` (claude-opus-5-5, route `opus`) took over the
+branch at `c02bccc`, reviewed it against the brief and added three commits. Code under test:
+`00c63f44091100effef827a4ee0bc7490061eb5a`. Logs in `takeover/`.
+
+- `378ea8b` + `00c63f4`: the lab privacy publication found its notice only through CMP-030
+  idempotency replay. Once those records are removed (declared 24h TTL; no sweep exists yet), the
+  existing purpose's notice version answers `409 SF-APP-002` and the host refused to start. That
+  conflict now counts as already recorded (`notice_id: null`); every other refusal still fails
+  start. Reproduced live on a lab host: the inherited code fails start, the fix starts with one
+  notice (`takeover/lab-restart.log`).
+- `9e9fe5f`: with the new owner grant a citizen could grant their own consent as `ASSISTED` or
+  `LEGAL_REP`. CMP-030 now answers `403 SF-AUTH-002 CITIZEN_SELF_ONLY` before any write.
+
+| Suite | Result | Evidence |
+|---|---|---|
+| Repository unit (`pnpm exec vitest run`) | 330 files, **3168/3168 passed** | `takeover/unit.log` |
+| CMP-030 unit / PG integration (own cluster) | 19/19 · 6/6 | — |
+| CMP-005 unit / PG integration (own cluster) | 20/20 · 7/7 | — |
+| OPA `opa test policy/opa fixtures/lab/platform/opa`, `check --strict`, `fmt --list` | **108/108**, clean, clean | `takeover/opa-test.log` |
+| Platform INT `run.sh` (two tenants, own cluster) | 64 passed, 2 expected-fail, **same 5 `bff-seam` failures** as above | `takeover/m10-platform-int.log` |
+| Architecture gates | **10/10** | `takeover/gates.log` |
+| Typecheck `apps/api`, CMP-030; eslint + prettier on changed files | clean | — |
+
+Playwright was not re-run after these commits (no portal code changed; the BFF already sends
+`SELF`).
+
 ## Not done / for verifiers
 
 - Consents carry no `notice_id`: CMP-030 has no notice discovery route (proposed in CCR-M10-004).
