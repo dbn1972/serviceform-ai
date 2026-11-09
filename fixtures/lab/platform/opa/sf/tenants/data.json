@@ -51,6 +51,18 @@
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
+      },
+      "SAMPLE_LAB_CONSENT_GATE": {
+        "actions": ["PRIVACY_ACCESS_CHECK"],
+        "resource_types": ["Consent"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_PRIVACY_PUBLISHER": {
+        "actions": ["PURPOSE_CREATE", "PURPOSE_READ", "NOTICE_CREATE", "NOTICE_PUBLISH"],
+        "resource_types": ["Purpose", "PrivacyNotice"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
       }
     }
   }

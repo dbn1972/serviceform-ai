@@ -158,6 +158,39 @@
     },
     "digilocker:read": {
       "action_class": "READ_ONLY"
+    },
+    "PROFILE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PROFILE_WRITE": {
+      "action_class": "PROTECTED"
+    },
+    "PROFILE_IMPORT_VERIFIED": {
+      "action_class": "PROTECTED"
+    },
+    "PURPOSE_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "PURPOSE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "NOTICE_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "NOTICE_PUBLISH": {
+      "action_class": "PROTECTED"
+    },
+    "CONSENT_GRANT": {
+      "action_class": "PROTECTED"
+    },
+    "CONSENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "CONSENT_WITHDRAW": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_ACCESS_CHECK": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -172,7 +205,11 @@
     "Application",
     "Credential",
     "CredentialRegistryEntry",
-    "DigiLockerPublish"
+    "DigiLockerPublish",
+    "CitizenProfile",
+    "Purpose",
+    "PrivacyNotice",
+    "Consent"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -196,11 +233,23 @@
     "FormExecution": {
       "actions": ["FORM_EXECUTION_EXECUTE"],
       "assurance": ["OTP", "MFA"]
+    },
+    "CitizenProfile": {
+      "actions": ["PROFILE_READ", "PROFILE_WRITE"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "Consent": {
+      "actions": ["CONSENT_GRANT", "CONSENT_READ"],
+      "assurance": ["OTP", "MFA"]
     }
   },
   "citizen_published_grants": {
     "FormDefinition": {
       "actions": ["FORM_INTERPRET"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "Purpose": {
+      "actions": ["PURPOSE_READ"],
       "assurance": ["OTP", "MFA"]
     }
   }

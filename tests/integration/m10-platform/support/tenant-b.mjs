@@ -107,4 +107,6 @@ writeFileSync(join(out, 'officers.json'), `${JSON.stringify(officers, null, 2)}\
 writeFileSync(join(out, 'opa/sf/tenants/data.json'), `${JSON.stringify(opaTenants, null, 2)}\n`);
 // Same SAMPLE_LAB canonical graph; tenant B pins its own published version id (…b012).
 writeFileSync(join(out, 'workflow.json'), `${JSON.stringify(read('workflow.json'), null, 2)}\n`);
+// Same SAMPLE_LAB privacy purposes, published by host B into tenant B's own CMP-030 rows.
+writeFileSync(join(out, 'consent.json'), `${JSON.stringify(read('consent.json'), null, 2)}\n`);
 process.stdout.write(`tenant-b: fixtures written (tenant ${TENANT_B.tenant_id})\n`);

@@ -57,6 +57,7 @@ export function registerConsentRoutes(app: FastifyInstance, deps: RouteDeps): vo
             resource_type: 'Consent',
             tenant_id: ctx.tenant_id,
             classification: 'TENANT_SCOPED',
+            owner_id: request.body.subject_id,
           },
           action: 'CONSENT_GRANT',
         });
@@ -168,6 +169,7 @@ export function registerConsentRoutes(app: FastifyInstance, deps: RouteDeps): vo
           resource_type: 'Consent',
           tenant_id: ctx.tenant_id,
           classification: 'TENANT_SCOPED',
+          owner_id: request.query.subject_id,
         },
         action: 'CONSENT_READ',
       });

@@ -54,6 +54,7 @@ async function authorizeProfile(
         tenant_id: ctx.tenant_id,
         roles: ctx.roles,
         jurisdiction_ids: ctx.jurisdiction_ids,
+        assurance: ctx.auth_assurance,
       },
       resource: {
         resource_type: 'CitizenProfile',

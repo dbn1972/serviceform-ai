@@ -36,9 +36,16 @@ export interface M02PluginMounts {
     resolveContext: (request: FastifyRequest) => Promise<RequestContext | null>;
     authorizer: { decide: (input: unknown) => Promise<unknown> };
     consentAccess: {
-      check: (input: unknown) => Promise<{ allowed: boolean; reason_code: string }>;
+      check: (input: {
+        tenant_id: string;
+        subject_id: string;
+        purpose_code: string;
+        correlation_id: string;
+      }) => Promise<{ allowed: boolean; reason_code: string }>;
     };
-    subjectDirectory: { exists: (input: unknown) => Promise<boolean> };
+    subjectDirectory: {
+      exists: (input: { tenant_id: string; subject_id: string }) => Promise<boolean>;
+    };
     audit?: unknown;
     clock?: () => Date;
     deploymentEnvironment: DeploymentEnvironment;

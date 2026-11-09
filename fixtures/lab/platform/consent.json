@@ -1,0 +1,23 @@
+{
+  "_note": "SAMPLE_LAB SIMULATED privacy publication for CMP-030 (SF-M10-B-2d). Synthetic purpose and notice only; Studio/CMP-052 replaces this publication. The notice text lives behind content_ref and is not legal copy.",
+  "simulation": "SIMULATED",
+  "publisher": {
+    "actor_id": "0d15ba00-0c30-4000-8000-0d15ba000c31",
+    "roles": ["SAMPLE_LAB_PRIVACY_PUBLISHER"]
+  },
+  "gate": {
+    "actor_id": "0d15ba00-0c30-4000-8000-0d15ba000c32",
+    "roles": ["SAMPLE_LAB_CONSENT_GATE"]
+  },
+  "purposes": [
+    {
+      "code": "SAMPLE_LAB_PROFILE_PREFILL",
+      "label": "SAMPLE_LAB: keep your name and mobile in your citizen profile and pre-fill your applications",
+      "requires_consent": true,
+      "notice": {
+        "content_ref": "sample-lab://privacy-notices/profile-prefill/v1",
+        "version_no": 1
+      }
+    }
+  ]
+}

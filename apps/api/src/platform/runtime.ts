@@ -17,6 +17,7 @@ import type { M02PluginMounts } from '../composition/m02.js';
 import type { M04PluginMounts } from '../composition/m04.js';
 import type { M05PluginMounts } from '../composition/m05.js';
 import type { M07PluginMounts } from '../composition/m07.js';
+import type { Wave2PluginMounts } from '../composition/wave2.js';
 import type { ReadinessCheck } from '../plugins/health.js';
 import {
   placementContextResolver,
@@ -38,6 +39,7 @@ import {
   type NeutralFactory,
 } from './issuance.js';
 import { loadPlacement, type PortalPlacement } from './placement.js';
+import { composeLabPrivacy, parseConsentFixture, type Cmp030Module } from './profile.js';
 import {
   assertSimulatorEnvironment,
   registerLabSimulators,
@@ -58,9 +60,10 @@ import {
 } from './workflow.js';
 
 /**
- * SF-M10-B-2/B-2c/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
+ * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
  * CMP-015 application/case on PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006)
- * with real OPA as the PDP, CMP-016 sequencing on Temporal after each CMP-015 commit (B-2c), and
+ * with real OPA as the PDP, CMP-016 sequencing on Temporal after each CMP-015 commit (B-2c),
+ * CMP-005 citizen profile and CMP-030 consent with a SIMULATED privacy publication (B-2d), and
  * the M07 issuance chain (CMP-022 credential engine, CMP-024 registry, CMP-012 DigiLocker publish)
  * on approve/issue (B-3). Connectors are SIMULATED (OTP, IdP, DigiLocker identity and publish,
  * eSign, render, published-binding and published-form ports) and the whole runtime refuses to start
@@ -76,6 +79,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP022?: string;
   DATABASE_URL_CMP024?: string;
   DATABASE_URL_CMP012?: string;
+  DATABASE_URL_CMP005?: string;
+  DATABASE_URL_CMP030?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -89,6 +94,8 @@ export interface PlatformLabEnv {
   SF_IDENTITY_RATE_LIMIT_MAX?: string;
   /** CMP-009 per-IP limit; same single-BFF-address caveat as the identity limit. */
   SF_FORMS_RATE_LIMIT_MAX?: string;
+  /** CMP-005 per-IP limit; same single-BFF-address caveat as the identity limit. */
+  SF_PROFILE_RATE_LIMIT_MAX?: string;
 }
 
 export interface PlatformLab {
@@ -97,11 +104,15 @@ export interface PlatformLab {
   m04: M04PluginMounts;
   m05: M05PluginMounts;
   m07: M07PluginMounts;
+  wave2: Wave2PluginMounts;
   readinessChecks: ReadinessCheck[];
   registerSimulators(app: FastifyInstance): Promise<void>;
   /** CCR-M10-003 `/v1/applications/:id/issuance` (post-approval issuance + status projection). */
   registerIssuance(app: FastifyInstance): Promise<void>;
-  /** Connects Temporal, seeds the pinned workflow versions and starts the CMP-016 worker. */
+  /**
+   * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
+   * workflow versions and starts the CMP-016 worker.
+   */
   start(): Promise<void>;
   close(): Promise<void>;
 }
@@ -143,6 +154,9 @@ interface Cmp004Module {
   SimulatedOtpAdapter: new (binding: unknown, pepper: string) => OtpAdapterLike;
   SimulatedIdpAdapter: new (binding: unknown, pepper: string) => unknown;
   SimulatedDigiLockerIdentityAdapter: new (binding: unknown, pepper: string) => unknown;
+  PgCitizenSubjectDirectory: new (pool: pg.Pool) => {
+    exists: (input: { tenant_id: string; subject_id: string }) => Promise<boolean>;
+  };
   simulatedBinding: (params: {
     id: string;
     connector_type: string;
@@ -200,6 +214,7 @@ const BINDING_IDS = {
   idp: '0d15ba00-0c02-4000-8000-0d15ba000c02',
   digilocker: '0d15ba00-0c03-4000-8000-0d15ba000c03',
   forms: '0d15ba00-0c09-4000-8000-0d15ba000c09',
+  profileDigilocker: '0d15ba00-0c05-4000-8000-0d15ba000c05',
 } as const;
 
 /** Structural subset of `@serviceform/service-templates` used by the host. */
@@ -321,6 +336,8 @@ export async function buildPlatformLab(
     cmp022: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP022'), max: 4 }),
     cmp024: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP024'), max: 4 }),
     cmp012: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP012'), max: 4 }),
+    cmp005: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP005'), max: 8 }),
+    cmp030: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP030'), max: 8 }),
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -491,6 +508,18 @@ export async function buildPlatformLab(
     workload,
   });
   const resolveContext = placementContextResolver({ verifier, sessions, placement });
+  const cmp030 = await loadComponent<Cmp030Module>(
+    '@serviceform/cmp-030-consent-privacy',
+    'cmp-030-consent-privacy',
+  );
+  const privacy = composeLabPrivacy({
+    environment,
+    cmp030,
+    pool: pools.cmp030,
+    pdp: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+    fixture: parseConsentFixture(readJson<unknown>(join(dir, 'consent.json'))),
+    placement,
+  });
 
   return {
     placement,
@@ -511,6 +540,23 @@ export async function buildPlatformLab(
             }
           : {}),
       },
+      citizenProfile: {
+        pool: pools.cmp005,
+        resolveContext,
+        authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+        consentAccess: privacy.consentAccess,
+        subjectDirectory: new cmp004.PgCitizenSubjectDirectory(pools.cmp004),
+        deploymentEnvironment: environment as DeploymentEnvironment,
+        digiLockerBinding: {
+          ...(binding(BINDING_IDS.profileDigilocker, 'DIGILOCKER', 'dl-profile-sim-1') as object),
+          tenant_id: placement.tenant_id,
+        } as NonNullable<M02PluginMounts['citizenProfile']>['digiLockerBinding'],
+        ...(env.SF_PROFILE_RATE_LIMIT_MAX
+          ? {
+              rateLimitMax: positiveInt(env.SF_PROFILE_RATE_LIMIT_MAX, 'SF_PROFILE_RATE_LIMIT_MAX'),
+            }
+          : {}),
+      },
     },
     m04: {
       forms: {
@@ -528,6 +574,13 @@ export async function buildPlatformLab(
         resolveContext,
       },
     },
+    wave2: {
+      consentPrivacy: {
+        pool: pools.cmp030,
+        resolveContext,
+        authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      },
+    },
     m07: {
       credential: { service: credential, resolveContext },
       registry: { service: registry, resolveContext },
@@ -541,6 +594,8 @@ export async function buildPlatformLab(
       poolReadiness('cmp022-db', pools.cmp022),
       poolReadiness('cmp024-db', pools.cmp024),
       poolReadiness('cmp012-db', pools.cmp012),
+      poolReadiness('cmp005-db', pools.cmp005),
+      poolReadiness('cmp030-db', pools.cmp030),
       ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
@@ -552,9 +607,13 @@ export async function buildPlatformLab(
       }),
     registerIssuance: (app) =>
       registerLabIssuanceRoutes(app, { environment, coordinator, resolveContext }),
-    start: () => workflow.start(),
+    async start() {
+      await privacy.publish();
+      await workflow.start();
+    },
     async close() {
       await workflow.close();
+      await privacy.close();
       await Promise.all(Object.values(pools).map((p) => p.end()));
     },
   };

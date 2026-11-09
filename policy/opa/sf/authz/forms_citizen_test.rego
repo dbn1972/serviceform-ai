@@ -29,7 +29,7 @@ form_execute_input := json.patch(form_interpret_input, [
 test_citizen_may_interpret_published_form if {
 	d := eval(form_interpret_input, {})
 	d.allow == true
-	d.policy_revision == "m10-b3"
+	d.policy_revision == "m10-b2d"
 }
 
 test_citizen_may_validate_own_execution if {
