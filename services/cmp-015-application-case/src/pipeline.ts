@@ -170,10 +170,13 @@ export class WorkflowAdvanceGate {
   async advance(
     pipeline: CommandPipeline,
     receipt: CommitReceipt,
-    signal: Omit<WorkflowAdvanceSignal, 'tenant_id' | 'application_id' | 'aggregate_version'>,
+    signal: Omit<
+      WorkflowAdvanceSignal,
+      'tenant_id' | 'application_id' | 'aggregate_version' | 'command_transition'
+    >,
   ): Promise<'SIGNALLED' | 'DEFERRED_TO_OUTBOX'> {
     assertNoOpenDomainTransaction('workflow-advance');
-    if (!isCommitReceipt(receipt)) {
+    if (!isCommitReceipt(receipt) || pipeline.phase !== 'DOMAIN_COMMITTED') {
       throw new Cmp015Error('SF-WF-001', { details: detail('TEMPORAL_ADVANCE_BEFORE_COMMIT') });
     }
     try {
@@ -182,6 +185,7 @@ export class WorkflowAdvanceGate {
         tenant_id: receipt.tenantId,
         application_id: receipt.applicationId,
         aggregate_version: receipt.aggregateVersion,
+        command_transition: pipeline.record(),
       });
       if (outcome === 'DEFERRED_TO_OUTBOX') return 'DEFERRED_TO_OUTBOX';
     } catch {

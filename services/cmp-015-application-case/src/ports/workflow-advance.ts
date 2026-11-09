@@ -1,3 +1,5 @@
+import type { CommandTransitionRecord } from '../pipeline.js';
+
 /**
  * Temporal sequencing port (CMP-016 owns the runtime). CMP-015 only signals after its own domain
  * commit; the committed outbox event is the durable trigger, so a failed or skipped signal never
@@ -12,6 +14,10 @@ export interface WorkflowAdvanceSignal {
   workflow_version_id: string;
   idempotency_key: string;
   correlation_id: string;
+  /** event_id of the state-changed outbox row committed in the same domain transaction. */
+  outbox_event_id: string;
+  /** SF-CON-COMMAND-TRANSITION record as of DOMAIN_COMMITTED (temporal_advanced: false). */
+  command_transition: CommandTransitionRecord;
 }
 
 export interface WorkflowAdvancePort {
