@@ -1,5 +1,5 @@
 {
-  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench. Synthetic officers only; role codes are lab labels, not statutory designations (assignment roles remain POLICY_INPUT_REQUIRED in templates/residence-certificate/workflow.yaml).",
+  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench and Studio/Admin desks. Synthetic officers only; role codes are lab labels, not statutory designations (assignment roles remain POLICY_INPUT_REQUIRED in templates/residence-certificate/workflow.yaml).",
   "simulation": "SIMULATED",
   "officers": [
     {
@@ -8,6 +8,30 @@
       "display_name": "SAMPLE LAB Case Officer",
       "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
       "roles": ["SAMPLE_LAB_CASE_OFFICER"]
+    },
+    {
+      "_note": "SF-M10-B-4: Studio Designer (maker role for metadata/publication-request authoring).",
+      "officer_id": "0d15ba00-0f02-4000-8000-0d15ba000f02",
+      "subject": "sample-lab-studio-designer-1",
+      "display_name": "SAMPLE LAB Studio Designer",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["STUDIO_DESIGNER"]
+    },
+    {
+      "_note": "SF-M10-B-4: Studio Checker (checker role for publication-request approve/reject).",
+      "officer_id": "0d15ba00-0f03-4000-8000-0d15ba000f03",
+      "subject": "sample-lab-studio-checker-1",
+      "display_name": "SAMPLE LAB Studio Checker",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["STUDIO_CHECKER"]
+    },
+    {
+      "_note": "SF-M10-B-4: Tenant Admin (TSB creation and publication).",
+      "officer_id": "0d15ba00-0f04-4000-8000-0d15ba000f04",
+      "subject": "sample-lab-tenant-admin-1",
+      "display_name": "SAMPLE LAB Tenant Admin",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["TENANT_ADMIN"]
     }
   ]
 }

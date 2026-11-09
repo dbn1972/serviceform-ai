@@ -211,6 +211,10 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP012: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP005: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP030: 'postgres://u:p@127.0.0.1:1/none',
+    // SF-M10-B-4: M03 Studio/Admin control-plane pools
+    DATABASE_URL_CMP033: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP051: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP052: 'postgres://u:p@127.0.0.1:1/none',
     SF_TEMPORAL_ADDRESS: '127.0.0.1:1',
     SF_TEMPORAL_TASK_QUEUE: 'sf-sample-lab-workflow',
     SF_CMP004_PEPPER: 'x'.repeat(64),
@@ -236,6 +240,10 @@ describe('buildPlatformLab composition', () => {
       expect(lab.m07.registry).toBeDefined();
       expect(lab.m07.digilocker).toBeDefined();
       expect(lab.m07.qr).toBeUndefined();
+      // SF-M10-B-4: M03 mounts are present
+      expect(lab.m03.metadata?.pool).toBeDefined();
+      expect(lab.m03.makerChecker?.pool).toBeDefined();
+      expect(lab.m03.versioning?.pool).toBeDefined();
       expect(lab.readinessChecks.map((c) => c.name)).toEqual([
         'cmp004-db',
         'cmp009-db',
@@ -246,6 +254,10 @@ describe('buildPlatformLab composition', () => {
         'cmp012-db',
         'cmp005-db',
         'cmp030-db',
+        // SF-M10-B-4: M03 Studio/Admin control-plane
+        'cmp033-db',
+        'cmp051-db',
+        'cmp052-db',
         'cmp016-temporal-worker',
       ]);
       // Nothing connects to Temporal at build time; the worker is not ready until start().
@@ -254,7 +266,8 @@ describe('buildPlatformLab composition', () => {
       const app = Fastify();
       await lab.registerSimulators(app);
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
-      expect((officers.json() as { officers: unknown[] }).officers).toHaveLength(1);
+      // SF-M10-B-4: 4 officers (case officer + studio designer + checker + tenant admin)
+      expect((officers.json() as { officers: unknown[] }).officers).toHaveLength(4);
     } finally {
       await lab.close();
     }
@@ -292,6 +305,11 @@ describe('buildPlatformLab composition', () => {
     const { SF_TEMPORAL_TASK_QUEUE: _q, ...noQueue } = env;
     await expect(buildPlatformLab(noQueue)).rejects.toThrow(/SF_TEMPORAL_TASK_QUEUE/);
     for (const name of ['DATABASE_URL_CMP022', 'DATABASE_URL_CMP024', 'DATABASE_URL_CMP012']) {
+      const { [name]: _missing, ...without } = env as Record<string, string>;
+      await expect(buildPlatformLab(without)).rejects.toThrow(name);
+    }
+    // SF-M10-B-4: M03 DB URLs are required
+    for (const name of ['DATABASE_URL_CMP033', 'DATABASE_URL_CMP051', 'DATABASE_URL_CMP052']) {
       const { [name]: _missing, ...without } = env as Record<string, string>;
       await expect(buildPlatformLab(without)).rejects.toThrow(name);
     }

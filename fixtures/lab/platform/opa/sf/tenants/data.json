@@ -22,6 +22,50 @@
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
+      "_note_b4": "SF-M10-B-4: Studio/Admin roles — lab labels only, not statutory designations.",
+      "STUDIO_DESIGNER": {
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "METADATA_DOCUMENT_CREATE",
+          "METADATA_DOCUMENT_READ",
+          "METADATA_DOCUMENT_UPDATE",
+          "METADATA_DOCUMENT_VALIDATE",
+          "METADATA_DOCUMENT_PUBLISH",
+          "METADATA_BUNDLE_COMPOSE",
+          "PUBLICATION_REQUEST_CREATE",
+          "PUBLICATION_REQUEST_READ",
+          "PUBLICATION_REQUEST_SUBMIT"
+        ],
+        "resource_types": ["MetadataDocument", "MetadataBundle", "PublicationRequest", "OfficerSession"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "STUDIO_CHECKER": {
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "METADATA_DOCUMENT_READ",
+          "PUBLICATION_REQUEST_READ",
+          "PUBLICATION_REQUEST_APPROVE",
+          "PUBLICATION_REQUEST_REJECT"
+        ],
+        "resource_types": ["MetadataDocument", "PublicationRequest", "OfficerSession"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "TENANT_ADMIN": {
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "METADATA_DOCUMENT_READ",
+          "PUBLICATION_REQUEST_READ",
+          "TENANT_SERVICE_BINDING_CREATE",
+          "TENANT_SERVICE_BINDING_READ",
+          "TENANT_SERVICE_BINDING_UPDATE",
+          "TENANT_SERVICE_BINDING_PUBLISH"
+        ],
+        "resource_types": ["MetadataDocument", "PublicationRequest", "TenantServiceBinding", "ArtifactVersion", "OfficerSession"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
       "SAMPLE_LAB_WORKFLOW_SEQUENCER": {
         "actions": ["WORKFLOW_INSTANCE_START", "WORKFLOW_SIGNAL_ADVANCE"],
         "resource_types": ["Application"],

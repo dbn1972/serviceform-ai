@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 const SURFACES = ['tenant_admin', 'platform_ops'] as const;
 
-export function GET(request: Request): Response {
+export function GET(request: Request): Promise<Response> {
   return handleReadSession(request, [...SURFACES]);
 }
 

@@ -1,4 +1,13 @@
+/**
+ * SF-M10-B-4: Studio BFF helpers — ADR-0007 aligned. The session cookie holds only the CMP-004
+ * opaque officer session token (minted via the SIMULATED studio-auth endpoint). No session claims
+ * are stored in the cookie; identity, tenant and roles are re-derived from CMP-004 per request.
+ * LOCAL/CI only: session creation is refused in production (simulationAllowed guard).
+ */
 const FORBIDDEN = new Set(['x-roles', 'x-org-id', 'x-actor-type', 'x-assurance']);
+
+/** Matches the CMP-004 opaque session token format (base64url, 32–128 chars). */
+const TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
 
 /** Linear UUID shape check — avoids quantifier regexes (njsscan regex_dos). */
 export function isUuid(value: string): boolean {
@@ -53,16 +62,6 @@ export const SESSION_COOKIE = 'sf_portal_session';
 
 export type PortalSurface = 'service_studio' | 'tenant_admin' | 'platform_ops';
 
-export type PortalSession = {
-  tenant_id: string;
-  actor_id: string;
-  actor_type: 'OFFICER';
-  roles: string[];
-  cell_id: string;
-  correlation_id: string;
-  surface: PortalSurface;
-};
-
 export function isForbiddenHeaderName(name: string): boolean {
   const n = name.toLowerCase();
   return n.includes('tenant') || n.startsWith('x-sf-') || FORBIDDEN.has(n);
@@ -98,63 +97,20 @@ export function cookieValue(header: string | undefined, name: string): string | 
   return undefined;
 }
 
-function newId(): string {
-  return crypto.randomUUID();
-}
-
-export function encodeLocalSession(session: PortalSession): string {
-  const body = Buffer.from(JSON.stringify(session), 'utf8').toString('base64url');
-  return `v1.${body}.local`;
-}
-
-export function parseLocalSession(token: string | undefined): PortalSession {
-  if (!token) throw Object.assign(new Error('SF-AUTH-001'), { code: 'SF-AUTH-001', status: 401 });
-  const parts = token.split('.');
-  if (parts.length !== 3 || parts[0] !== 'v1' || !parts[1]) {
-    throw Object.assign(new Error('SF-AUTH-001'), { code: 'SF-AUTH-001', status: 401 });
-  }
-  const parsed = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8')) as PortalSession;
-  if (!isUuid(parsed.tenant_id) || !isUuid(parsed.actor_id) || parsed.actor_type !== 'OFFICER') {
-    throw Object.assign(new Error('SF-AUTH-001'), { code: 'SF-AUTH-001', status: 401 });
-  }
-  return parsed;
-}
-
-export function sessionFromLogin(
-  body: Record<string, unknown>,
-  surface: PortalSurface,
-): PortalSession {
-  if (typeof body['tenant_id'] !== 'string' || !isUuid(body['tenant_id'])) {
-    throw Object.assign(new Error('SF-SYS-003'), { code: 'SF-SYS-003', status: 400 });
-  }
-  if (typeof body['actor_id'] !== 'string' || !isUuid(body['actor_id'])) {
-    throw Object.assign(new Error('SF-SYS-003'), { code: 'SF-SYS-003', status: 400 });
-  }
-  if (!Array.isArray(body['roles']) || body['roles'].length < 1) {
-    throw Object.assign(new Error('SF-SYS-003'), { code: 'SF-SYS-003', status: 400 });
-  }
-  const roles = body['roles'].map((role) => {
-    if (typeof role !== 'string' || !isRoleCode(role)) {
-      throw Object.assign(new Error('SF-SYS-003'), { code: 'SF-SYS-003', status: 400 });
-    }
-    return role;
-  });
-  return {
-    tenant_id: body['tenant_id'],
-    actor_id: body['actor_id'],
-    actor_type: 'OFFICER',
-    roles,
-    cell_id:
-      typeof body['cell_id'] === 'string' && body['cell_id'].length > 0
-        ? body['cell_id']
-        : 'cell-local',
-    correlation_id: newId(),
-    surface,
-  };
+/** Extract and validate a CMP-004 opaque session token from the request cookie. */
+export function bearerToken(request: Request): string | null {
+  const raw = cookieValue(request.headers.get('cookie') ?? undefined, SESSION_COOKIE);
+  if (!raw || !TOKEN_RE.test(raw)) return null;
+  return raw;
 }
 
 export function envIsProduction(): boolean {
   return process.env['SF_ENVIRONMENT'] === 'PRODUCTION';
+}
+
+/** SIMULATED studio-auth is only offered in LOCAL/CI. */
+export function simulationAllowed(): boolean {
+  return ['LOCAL', 'CI'].includes(process.env['SF_ENVIRONMENT'] ?? 'LOCAL');
 }
 
 export function apiBaseUrl(): string {

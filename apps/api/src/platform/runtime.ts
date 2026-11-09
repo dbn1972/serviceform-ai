@@ -14,6 +14,7 @@ import { OpaPdpClient } from '@serviceform/security';
 import type { FastifyInstance } from 'fastify';
 import pg from 'pg';
 import type { M02PluginMounts } from '../composition/m02.js';
+import type { M03PluginMounts } from '../composition/m03.js';
 import type { M04PluginMounts } from '../composition/m04.js';
 import type { M05PluginMounts } from '../composition/m05.js';
 import type { M07PluginMounts } from '../composition/m07.js';
@@ -81,6 +82,10 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP012?: string;
   DATABASE_URL_CMP005?: string;
   DATABASE_URL_CMP030?: string;
+  // SF-M10-B-4: M03 Studio/Admin control-plane components
+  DATABASE_URL_CMP033?: string;
+  DATABASE_URL_CMP051?: string;
+  DATABASE_URL_CMP052?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -101,6 +106,8 @@ export interface PlatformLabEnv {
 export interface PlatformLab {
   placement: PortalPlacement;
   m02: M02PluginMounts;
+  /** CMP-033 Metadata, CMP-051 Maker-Checker, CMP-052 Versioning (SF-M10-B-4). */
+  m03: M03PluginMounts;
   m04: M04PluginMounts;
   m05: M05PluginMounts;
   m07: M07PluginMounts;
@@ -207,6 +214,98 @@ interface Cmp012Module {
     connector_binding_id: string;
     environment: string;
   }) => unknown;
+}
+
+interface Cmp033Module {
+  SimulatedSchemaRegistry: new () => unknown;
+}
+
+interface Cmp051Module {
+  SimulatedMetadataPort: new () => unknown;
+  SimulatedVersioningPort: new () => unknown;
+  OffAiValidationPort: new () => unknown;
+}
+
+interface Cmp052Module {
+  SimulatedApprovalPort: new (config: unknown, allow: boolean) => unknown;
+  loadConfig: (env: NodeJS.ProcessEnv) => unknown;
+}
+
+/**
+ * SF-M10-B-4: in-process adapter that reads PUBLISHED TSBs from CMP-052's DB via the host-owned
+ * pool. The host composition layer owns all pools; this is not cross-component SQL — it is the
+ * composition root using the pool it manages for CMP-052. Falls back to null when no PUBLISHED
+ * row is found (the caller may chain with SimulatedPublishedBindingPort).
+ *
+ * Maps CMP-052's PinMap format (version_ref + content_hash per key) to CMP-015's PinGraph
+ * (UUID version IDs). LOCAL/CI only: refuse in production per assertSimulatorEnvironment.
+ */
+class Cmp052PublishedBindingAdapter {
+  constructor(private readonly pool: pg.Pool) {}
+
+  async resolve(params: {
+    tenant_id: string;
+    tenant_service_binding_id: string;
+  }): Promise<PublishedBinding | null> {
+    const client = await this.pool.connect();
+    try {
+      const res = await client.query<{
+        binding_id: string;
+        offering_ref: string;
+        pins: Record<string, { version_ref: string; content_hash: string }>;
+      }>(
+        `SELECT binding_id, offering_ref, pins
+           FROM sf_versioning.tenant_service_binding
+          WHERE tenant_id = $1 AND binding_id = $2 AND status = 'PUBLISHED'`,
+        [params.tenant_id, params.tenant_service_binding_id],
+      );
+      const row = res.rows[0];
+      if (!row) return null;
+      const p = row.pins;
+      const feeVersion = p['fee']?.version_ref;
+      const credVersion = p['credential']?.version_ref;
+      const notifVersion = p['notification']?.version_ref;
+      const authzVersion = p['authorization_policy']?.version_ref;
+      return {
+        tenant_service_binding_id: row.binding_id,
+        service_id: row.offering_ref,
+        status: 'PUBLISHED',
+        pins: {
+          tenant_service_binding_id: row.binding_id,
+          form_version_id: p['form']?.version_ref ?? '',
+          rule_version_id: p['rules']?.version_ref ?? '',
+          workflow_version_id: p['workflow']?.version_ref ?? '',
+          evidence_policy_version_id: p['evidence']?.version_ref ?? '',
+          sla_policy_version_id: p['sla']?.version_ref ?? '',
+          ...(feeVersion ? { fee_policy_version_id: feeVersion } : {}),
+          ...(credVersion ? { credential_template_version_id: credVersion } : {}),
+          ...(notifVersion ? { notification_version_id: notifVersion } : {}),
+          ...(authzVersion ? { authorization_policy_version_id: authzVersion } : {}),
+        },
+      };
+    } finally {
+      client.release();
+    }
+  }
+}
+
+/**
+ * Wraps a Cmp052PublishedBindingAdapter with a SimulatedPublishedBindingPort fallback.
+ * Prefers CMP-052 published bindings when found; falls back to in-memory fixture seeds.
+ */
+class Cmp052PreferringBindingPort {
+  constructor(
+    private readonly cmp052: Cmp052PublishedBindingAdapter,
+    private readonly fallback: SimulatedPublishedBindingPort,
+  ) {}
+
+  async resolve(params: {
+    tenant_id: string;
+    tenant_service_binding_id: string;
+  }): Promise<PublishedBinding | null> {
+    const result = await this.cmp052.resolve(params);
+    return result ?? this.fallback.resolve(params);
+  }
 }
 
 const BINDING_IDS = {
@@ -338,6 +437,10 @@ export async function buildPlatformLab(
     cmp012: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP012'), max: 4 }),
     cmp005: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP005'), max: 8 }),
     cmp030: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP030'), max: 8 }),
+    // SF-M10-B-4: M03 Studio/Admin control-plane pools
+    cmp033: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP033'), max: 8 }),
+    cmp051: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP051'), max: 8 }),
+    cmp052: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP052'), max: 8 }),
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -375,7 +478,7 @@ export async function buildPlatformLab(
     testRunId: `platform-lab-${placement.portal_id}`,
   });
 
-  const bindings = new SimulatedPublishedBindingPort();
+  const simulatedBindings = new SimulatedPublishedBindingPort();
   const published = readJson<{
     bindings: (PublishedBinding & { tenant_id: string; catalogue_id: string })[];
   }>(join(dir, 'published-bindings.json'));
@@ -384,13 +487,16 @@ export async function buildPlatformLab(
     (b) => b.tenant_id === placement.tenant_id && offered.has(b.tenant_service_binding_id),
   );
   for (const b of offeredBindings) {
-    bindings.put(b.tenant_id, {
+    simulatedBindings.put(b.tenant_id, {
       tenant_service_binding_id: b.tenant_service_binding_id,
       service_id: b.service_id,
       status: 'PUBLISHED',
       pins: b.pins,
     });
   }
+  // SF-M10-B-4: prefer CMP-052 published bindings when found; fall back to simulated fixture.
+  const cmp052BindingAdapter = new Cmp052PublishedBindingAdapter(pools.cmp052);
+  const bindings = new Cmp052PreferringBindingPort(cmp052BindingAdapter, simulatedBindings);
   const [cmp016, cmp016Sdk] = await Promise.all([
     loadComponent<Cmp016Module>('@serviceform/cmp-016-workflow-engine', 'cmp-016-workflow-engine'),
     loadComponent<Cmp016SdkModule>(
@@ -521,6 +627,43 @@ export async function buildPlatformLab(
     placement,
   });
 
+  // SF-M10-B-4: CMP-033 Metadata, CMP-051 Maker-Checker, CMP-052 Versioning
+  const [cmp033, cmp051, cmp052] = await Promise.all([
+    loadComponent<Cmp033Module>('@serviceform/cmp-033-metadata', 'cmp-033-metadata'),
+    loadComponent<Cmp051Module>('@serviceform/cmp-051-maker-checker', 'cmp-051-maker-checker'),
+    loadComponent<Cmp052Module>('@serviceform/cmp-052-versioning', 'cmp-052-versioning'),
+  ]);
+  const versioningConfig = cmp052.loadConfig({
+    SF_ENVIRONMENT: environment,
+    SF_CMP052_APPROVAL_MODE: 'SIMULATED',
+    SF_CMP052_TEST_RUN_ID: `platform-lab-${placement.portal_id}`,
+    SF_CMP052_SCENARIO: 'sample_lab_publish',
+    SF_CMP052_APPROVAL_BINDING_ID: '05205105-2051-4051-8051-052051052051',
+  });
+  const m03: M03PluginMounts = {
+    metadata: {
+      pool: pools.cmp033,
+      resolveContext,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      registry: new cmp033.SimulatedSchemaRegistry(),
+    },
+    makerChecker: {
+      pool: pools.cmp051,
+      resolveContext,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      metadata: new cmp051.SimulatedMetadataPort(),
+      versioning: new cmp051.SimulatedVersioningPort(),
+      ai: new cmp051.OffAiValidationPort(),
+    },
+    versioning: {
+      pool: pools.cmp052,
+      resolveContext,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      approval: new cmp052.SimulatedApprovalPort(versioningConfig, true),
+      config: versioningConfig,
+    },
+  };
+
   return {
     placement,
     m02: {
@@ -586,6 +729,7 @@ export async function buildPlatformLab(
       registry: { service: registry, resolveContext },
       digilocker: { service: digilocker, resolveContext },
     },
+    m03,
     readinessChecks: [
       poolReadiness('cmp004-db', pools.cmp004),
       poolReadiness('cmp009-db', pools.cmp009),
@@ -596,6 +740,10 @@ export async function buildPlatformLab(
       poolReadiness('cmp012-db', pools.cmp012),
       poolReadiness('cmp005-db', pools.cmp005),
       poolReadiness('cmp030-db', pools.cmp030),
+      // SF-M10-B-4: M03 Studio/Admin control-plane readiness
+      poolReadiness('cmp033-db', pools.cmp033),
+      poolReadiness('cmp051-db', pools.cmp051),
+      poolReadiness('cmp052-db', pools.cmp052),
       ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
