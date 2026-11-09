@@ -71,6 +71,20 @@ export class MemoryDigilockerRepository implements DigilockerRepository {
         return store.publishRecords.get(publishRequestId) ?? null;
       },
 
+      async listPublishRecordsForCredential(
+        _tenantId: string,
+        credentialId: string,
+      ): Promise<PublishRow[]> {
+        return [...store.publishRecords.values()]
+          .filter((r) => r.credential_id === credentialId)
+          .sort((a, b) =>
+            a.created_at === b.created_at
+              ? b.publish_request_id.localeCompare(a.publish_request_id)
+              : b.created_at.localeCompare(a.created_at),
+          )
+          .map((r) => ({ ...r }));
+      },
+
       async insertOutbox(envelope: unknown, topic: string): Promise<void> {
         store.outbox.push({ topic, envelope: envelope as Record<string, unknown> });
       },

@@ -279,6 +279,23 @@ export class DigiLockerService {
       return { status: 200, body: publishView(row) };
     });
   }
+
+  async listPublishRecordsForCredential(
+    ctx: TenantContext,
+    credentialId: string,
+  ): Promise<CommandResult> {
+    if (!isUuid(credentialId)) {
+      throw new Cmp012Error('SF-SYS-003', detail('UUID_REQUIRED', '/credential_id'));
+    }
+    await this.guard(ctx, DIGILOCKER_ACTIONS.read, credentialId);
+    return this.deps.repo.withTx(ctx, async (tx) => {
+      const rows = await tx.listPublishRecordsForCredential(ctx.tenant_id, credentialId);
+      return {
+        status: 200,
+        body: { credential_id: credentialId, publish_records: rows.map(publishView) },
+      };
+    });
+  }
 }
 
 function publishView(row: PublishRow): Record<string, unknown> {

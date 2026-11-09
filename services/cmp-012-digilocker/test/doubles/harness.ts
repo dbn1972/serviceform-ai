@@ -22,12 +22,13 @@ export interface HarnessState {
 export interface Harness {
   state: HarnessState;
   repo: MemoryDigilockerRepository;
+  authorizer: AllowAllAuthorizer;
   credentialVerification: FakeCredentialVerificationPort;
   call(
     method: string,
     path: string,
     body?: unknown,
-    opts?: { headers?: Record<string, string> },
+    opts?: { headers?: Record<string, string>; query?: Record<string, string | string[]> },
   ): Promise<{ status: number; body: unknown }>;
 }
 
@@ -78,6 +79,7 @@ export function makeHarness(opts: { scenario?: string; env?: 'LOCAL' | 'CI' } = 
   return {
     state,
     repo,
+    authorizer,
     credentialVerification,
     call: async (method, path, body, callOpts) => {
       const resp = await api.handle({
@@ -87,6 +89,7 @@ export function makeHarness(opts: { scenario?: string; env?: 'LOCAL' | 'CI' } = 
           'idempotency-key': randomUUID(),
           ...callOpts?.headers,
         },
+        ...(callOpts?.query ? { query: callOpts.query } : {}),
         body,
       });
       return { status: resp.status, body: resp.body };
