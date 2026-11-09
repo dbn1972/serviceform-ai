@@ -10,6 +10,7 @@ export {
   PgSessionDirectory,
   type SessionDirectory,
 } from './principal-verifier.js';
+export { PgCitizenSubjectDirectory } from './subject-directory.js';
 export { SimulatedOtpAdapter } from './adapters/otp.js';
 export { SimulatedIdpAdapter, mintSimulatedIdpAssertion } from './adapters/idp.js';
 export { SimulatedDigiLockerIdentityAdapter } from './adapters/digilocker.js';

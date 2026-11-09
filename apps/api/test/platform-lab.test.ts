@@ -209,17 +209,27 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP022: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP024: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP012: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP005: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP030: 'postgres://u:p@127.0.0.1:1/none',
     SF_TEMPORAL_ADDRESS: '127.0.0.1:1',
     SF_TEMPORAL_TASK_QUEUE: 'sf-sample-lab-workflow',
     SF_CMP004_PEPPER: 'x'.repeat(64),
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004/009/015, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004/005/009/015/030, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
       expect(lab.m02.identityAccess?.cellId).toBe(placementFile.cell_id);
+      expect(lab.m02.citizenProfile?.deploymentEnvironment).toBe('LOCAL');
+      expect(lab.m02.citizenProfile?.digiLockerBinding).toMatchObject({
+        tenant_id: TENANT,
+        connector_type: 'DIGILOCKER',
+        mode: 'SIMULATED',
+        environment: 'LOCAL',
+      });
+      expect(lab.wave2.consentPrivacy?.pool).toBeDefined();
       expect(lab.m05.applicationCase?.service).toBeDefined();
       expect(lab.m04.forms?.forms).toBeDefined();
       expect(lab.m07.credential).toBeDefined();
@@ -234,6 +244,8 @@ describe('buildPlatformLab composition', () => {
         'cmp022-db',
         'cmp024-db',
         'cmp012-db',
+        'cmp005-db',
+        'cmp030-db',
         'cmp016-temporal-worker',
       ]);
       // Nothing connects to Temporal at build time; the worker is not ready until start().
@@ -263,6 +275,13 @@ describe('buildPlatformLab composition', () => {
     await expect(buildPlatformLab(noOpa)).rejects.toThrow(/SF_OPA_URL/);
     const { DATABASE_URL_CMP009: _db, ...noForms } = env;
     await expect(buildPlatformLab(noForms)).rejects.toThrow(/DATABASE_URL_CMP009/);
+    const { DATABASE_URL_CMP005: _p, ...noProfileDb } = env;
+    await expect(buildPlatformLab(noProfileDb)).rejects.toThrow(/DATABASE_URL_CMP005/);
+    const { DATABASE_URL_CMP030: _c, ...noConsentDb } = env;
+    await expect(buildPlatformLab(noConsentDb)).rejects.toThrow(/DATABASE_URL_CMP030/);
+    await expect(buildPlatformLab({ ...env, SF_PROFILE_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
+      /SF_PROFILE_RATE_LIMIT_MAX/,
+    );
     const { DATABASE_URL_CMP016: _wf, ...noWorkflowDb } = env;
     await expect(buildPlatformLab(noWorkflowDb)).rejects.toThrow(/DATABASE_URL_CMP016/);
     const { SF_TEMPORAL_ADDRESS: _t, ...noTemporal } = env;

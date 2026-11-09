@@ -110,10 +110,44 @@ describe('OPA common policy covers every CMP-015 action (ADR-0007 D-2)', () => {
     expect(common.citizen_owner_grants['FormExecution']?.actions).toEqual([
       'FORM_EXECUTION_EXECUTE',
     ]);
-    expect(common.citizen_published_grants).toEqual({
-      FormDefinition: { actions: ['FORM_INTERPRET'], assurance: ['OTP', 'MFA'] },
+    expect(common.citizen_published_grants['FormDefinition']).toEqual({
+      actions: ['FORM_INTERPRET'],
+      assurance: ['OTP', 'MFA'],
     });
     for (const action of ['FORM_INTERPRET', 'FORM_EXECUTION_EXECUTE', 'FORM_EXECUTION_READ']) {
+      expect(common.actions[action], action).toBeDefined();
+    }
+  });
+
+  it('CMP-005/CMP-030 citizen grants cover only their own profile and consent (SF-M10-B-2d)', () => {
+    expect(common.resource_types).toEqual(
+      expect.arrayContaining(['CitizenProfile', 'Consent', 'Purpose', 'PrivacyNotice']),
+    );
+    expect(common.citizen_owner_grants['CitizenProfile']).toEqual({
+      actions: ['PROFILE_READ', 'PROFILE_WRITE'],
+      assurance: ['OTP', 'MFA'],
+    });
+    expect(common.citizen_owner_grants['Consent']).toEqual({
+      actions: ['CONSENT_GRANT', 'CONSENT_READ'],
+      assurance: ['OTP', 'MFA'],
+    });
+    expect(common.citizen_published_grants).toEqual({
+      FormDefinition: { actions: ['FORM_INTERPRET'], assurance: ['OTP', 'MFA'] },
+      Purpose: { actions: ['PURPOSE_READ'], assurance: ['OTP', 'MFA'] },
+    });
+    for (const action of [
+      'PROFILE_READ',
+      'PROFILE_WRITE',
+      'PROFILE_IMPORT_VERIFIED',
+      'PURPOSE_CREATE',
+      'PURPOSE_READ',
+      'NOTICE_CREATE',
+      'NOTICE_PUBLISH',
+      'CONSENT_GRANT',
+      'CONSENT_READ',
+      'CONSENT_WITHDRAW',
+      'PRIVACY_ACCESS_CHECK',
+    ]) {
       expect(common.actions[action], action).toBeDefined();
     }
   });

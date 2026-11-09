@@ -26,6 +26,7 @@ export function registerAccessCheckRoutes(app: FastifyInstance, deps: RouteDeps)
             resource_type: 'Consent',
             tenant_id: ctx.tenant_id,
             classification: 'TENANT_SCOPED',
+            owner_id: request.body.subject_id,
           },
           action: 'PRIVACY_ACCESS_CHECK',
         });

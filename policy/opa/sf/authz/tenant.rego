@@ -44,6 +44,23 @@ tenant_mismatch if {
 	input.subject.tenant_id != input.resource.tenant_id
 }
 
+# A citizen's private data held by a tenant (CMP-005 profile) keeps the tenant row boundary: the
+# subject's server-derived tenant must be the resource tenant. Ownership is checked by citizen.rego.
+tenant_mismatch if {
+	classification == "CITIZEN_PRIVATE"
+	input.subject.tenant_id == null
+}
+
+tenant_mismatch if {
+	classification == "CITIZEN_PRIVATE"
+	input.resource.tenant_id == null
+}
+
+tenant_mismatch if {
+	classification == "CITIZEN_PRIVATE"
+	input.subject.tenant_id != input.resource.tenant_id
+}
+
 tenant_mismatch if {
 	classification == "GLOBAL"
 	write_action
@@ -67,6 +84,12 @@ tenant_data_present if {
 
 tenant_data_present if {
 	classification == "TENANT_SCOPED"
+	tenant_key
+	data.sf.tenants[tenant_key]
+}
+
+tenant_data_present if {
+	classification == "CITIZEN_PRIVATE"
 	tenant_key
 	data.sf.tenants[tenant_key]
 }

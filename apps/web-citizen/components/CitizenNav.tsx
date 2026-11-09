@@ -58,8 +58,8 @@ export function CitizenNav() {
             <span className="sf-account-name">{session.profile.display_name}</span>
             <span className="sf-account-meta">
               {session.profile.masked_mobile
-                ? `${session.profile.masked_mobile} · verified`
-                : 'Mobile verified with OTP'}
+                ? `${session.profile.masked_mobile} · signed in with OTP`
+                : 'Signed in with OTP'}
             </span>
           </span>
           <button

@@ -34,6 +34,8 @@ const ROLES = [
   { login: 'sf_lab_cmp022', member: 'sf_cmp022_rw', env: 'DATABASE_URL_CMP022' },
   { login: 'sf_lab_cmp024', member: 'sf_cmp024_rw', env: 'DATABASE_URL_CMP024' },
   { login: 'sf_lab_cmp012', member: 'sf_cmp012_rw', env: 'DATABASE_URL_CMP012' },
+  { login: 'sf_lab_cmp005', member: 'sf_cmp005_rw', env: 'DATABASE_URL_CMP005' },
+  { login: 'sf_lab_cmp030', member: 'sf_cmp030_rw', env: 'DATABASE_URL_CMP030' },
 ];
 
 function previous() {
@@ -79,6 +81,7 @@ const out = {
   // Lab-sized limits: all portal traffic reaches the host from the BFF address (one key per IP).
   SF_IDENTITY_RATE_LIMIT_MAX: '3000',
   SF_FORMS_RATE_LIMIT_MAX: '3000',
+  SF_PROFILE_RATE_LIMIT_MAX: '3000',
   SF_GATEWAY_RATE_LIMIT_MAX: '20000',
   // A stable pepper keeps the same synthetic mobile mapped to the same citizen across restarts.
   SF_CMP004_PEPPER: prior.SF_CMP004_PEPPER ?? randomBytes(32).toString('hex'),

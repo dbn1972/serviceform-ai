@@ -107,7 +107,10 @@ export interface Citizen {
 /** CMP-004 `GET /v1/identity/me`; only an active CITIZEN session counts. */
 export async function currentCitizen(request: Request): Promise<Citizen | null> {
   const token = sessionToken(request);
-  if (!token) return null;
+  return token ? citizenForToken(token) : null;
+}
+
+export async function citizenForToken(token: string): Promise<Citizen | null> {
   const me = await platform('GET', '/v1/identity/me', { token });
   if (me.status !== 200 || me.body['actor_type'] !== 'CITIZEN' || !isUuid(me.body['subject_id'])) {
     return null;

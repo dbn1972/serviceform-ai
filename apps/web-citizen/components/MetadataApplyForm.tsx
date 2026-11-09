@@ -40,6 +40,7 @@ interface FormResponse {
     package: FormPackageView;
   };
   prefill: FormData;
+  prefill_source?: 'CMP-005' | 'SAMPLE_LAB' | null;
   interpretation: { controls: InterpretedControl[] };
 }
 
@@ -309,8 +310,11 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
               : 'Signed in with a verified mobile (OTP)'
           }
         >
-          Sample answers are pre-filled until profile prefill (CMP-005) is wired. Every field
-          follows the published form; use synthetic values only — SAMPLE_LAB, G6 not issued.
+          {loaded?.prefill_source === 'CMP-005'
+            ? 'Your name and mobile are pre-filled from your citizen profile, with sample answers for the rest.'
+            : 'Sample answers are pre-filled. Create an account with your name to pre-fill it from your citizen profile.'}{' '}
+          Every field follows the published form; use synthetic values only — SAMPLE_LAB, G6 not
+          issued.
         </FormAlert>
 
         <div className="sf-meta-row" aria-label="Service policy summary">

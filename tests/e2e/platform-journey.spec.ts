@@ -173,14 +173,80 @@ test.describe('citizen identity on CMP-004 (opaque session, ADR-0007 D-3)', () =
     });
   }
 
-  test('register uses the same OTP flow and signs the new citizen in', async ({ page }) => {
+  test('register records CMP-030 consent and a CMP-005 profile used for the name and prefill', async ({
+    page,
+  }) => {
+    const mobile = uniqueMobile();
     await open(page, `${CITIZEN}/register?next=%2Fcertificates`);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Create your account');
-    const code = await requestOtp(page, uniqueMobile());
+    await page.getByLabel('Full name').fill('SAMPLE Registered Citizen');
+    await page.getByLabel(/I agree to keep my name and mobile number/).check();
+    const code = await requestOtp(page, mobile);
     await page.getByLabel('Digit 1 of 6').fill(code);
     await page.getByRole('button', { name: 'Verify and create account' }).click();
     await expect(page).toHaveURL(`${CITIZEN}/certificates`);
     await expect(page.getByTestId('applications-empty')).toBeVisible();
+    const account = page.getByTestId('citizen-account');
+    await expect(account).toContainText('SAMPLE Registered Citizen');
+    await expect(account).toContainText(`+91 ${mobile.slice(0, 5)}`);
+    const cookie = await cookieFor(page, 'sf_citizen_session');
+    expect(cookie).not.toContain('SAMPLE');
+    const session = await (await api(page.request, `${CITIZEN}/api/portal/session`, cookie)).json();
+    expect(session).toMatchObject({
+      authenticated: true,
+      display_name: 'SAMPLE Registered Citizen',
+      profile_source: 'CMP-005',
+      g6_issued: false,
+    });
+    expect(JSON.stringify(session)).not.toContain(mobile);
+
+    await open(page, `${CITIZEN}/services/IND-SOC-002/apply`);
+    await expect(page.getByLabel('Full name (as per official record)')).toHaveValue(
+      'SAMPLE Registered Citizen',
+    );
+    for (let i = 0; i < 3; i += 1) {
+      await page.getByRole('button', { name: /Save & continue/i }).click();
+    }
+    await page.getByRole('checkbox').check();
+    await page.getByRole('button', { name: /Submit application/i }).click();
+    await expect(page).toHaveURL(/\/certificates\/[0-9a-f-]{36}$/);
+    const mobileValue = page
+      .locator('dt', { hasText: /^Mobile$/ })
+      .locator('xpath=following-sibling::dd[1]');
+    await expect(mobileValue).toContainText(`+91 ${mobile.slice(0, 5)}`);
+    await expect(mobileValue).not.toHaveText('—');
+  });
+
+  test('NEGATIVE: register refuses a non-synthetic name or missing consent before any OTP', async ({
+    page,
+  }) => {
+    await open(page, `${CITIZEN}/register`);
+    await page.getByLabel('Full name').fill('Not A Sample');
+    await page.getByLabel('Mobile number', { exact: true }).fill(uniqueMobile());
+    await page.getByRole('button', { name: 'Get OTP' }).click();
+    await expect(page.getByTestId('simulated-sms')).toHaveCount(0);
+    await expect(page.getByLabel('Full name')).toBeFocused();
+    await expect(page.locator('#register-consent-error')).toBeVisible();
+  });
+
+  test('NEGATIVE: the session API refuses an invalid registration payload', async ({ page }) => {
+    await open(page, `${CITIZEN}/register`);
+    await page.getByLabel('Full name').fill('SAMPLE Valid Citizen');
+    await page.getByLabel(/I agree to keep my name and mobile number/).check();
+    const code = await requestOtp(page, uniqueMobile());
+    const res = await page.request.post(`${CITIZEN}/api/portal/session`, {
+      headers: { origin: CITIZEN },
+      data: {
+        challenge_id: '00000000-0000-4000-8000-000000000000',
+        code,
+        registration: { display_name: 'Not A Sample', mobile: '9000000000', consent: false },
+      },
+    });
+    expect(res.status()).toBe(400);
+    expect((await res.json()).field_errors).toMatchObject({
+      display_name: expect.any(String),
+      consent: expect.any(String),
+    });
   });
 
   test('sign-out revokes the CMP-004 session, not just the cookie', async ({ page, request }) => {

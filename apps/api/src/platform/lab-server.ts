@@ -23,6 +23,7 @@ const app = await buildApp(config, {
   m04: lab.m04,
   m05: lab.m05,
   m07: lab.m07,
+  wave2: lab.wave2,
 });
 await lab.registerSimulators(app);
 await lab.registerIssuance(app);
@@ -45,6 +46,7 @@ logger.info(
       ...(app.m04Mounted ?? []),
       ...(app.m05Mounted ?? []),
       ...(app.m07Mounted ?? []),
+      ...app.wave2Mounted,
     ],
     simulation: true,
     g6_issued: false,

@@ -10,8 +10,9 @@ export function VerifiedAsNote() {
     <p className="sf-auth-privacy" data-testid="verified-as">
       <Icon name="shield" size={16} />
       <span>
-        Applying as <strong>{citizen.display_name}</strong> ({citizen.masked_mobile}, verified by
-        OTP). Your name and mobile are pre-filled.
+        Applying as <strong>{citizen.display_name}</strong>
+        {citizen.masked_mobile ? ` (${citizen.masked_mobile})` : ''}, signed in with OTP. Details
+        from your profile are pre-filled; check them before you continue.
       </span>
     </p>
   );

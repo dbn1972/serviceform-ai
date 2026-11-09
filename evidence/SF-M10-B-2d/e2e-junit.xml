@@ -1,0 +1,152 @@
+<testsuites id="" name="" tests="71" failures="0" skipped="0" errors="0" time="42.99775700000001">
+<testsuite name="golden/ind-soc-002-golden.spec.ts" timestamp="2026-11-09T04:21:35.537Z" hostname="" tests="16" failures="0" skipped="0" time="9.424" errors="0">
+<testcase name="M10 Golden E2E — owner-input gate › fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set" classname="golden/ind-soc-002-golden.spec.ts" time="0.004">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.026">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.027">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio health endpoint responds 200" classname="golden/ind-soc-002-golden.spec.ts" time="0.014">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › citizen portal is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.422">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › officer workbench is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.358">
+</testcase>
+<testcase name="M10 Golden E2E — harness health (IND-SOC-002 scaffold) › studio is reachable and has correct page title" classname="golden/ind-soc-002-golden.spec.ts" time="0.323">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › citizen portal does not serve cross-tenant data in page source" classname="golden/ind-soc-002-golden.spec.ts" time="0.307">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › API health endpoint does not include tenant identifiers in response body" classname="golden/ind-soc-002-golden.spec.ts" time="0.018">
+</testcase>
+<testcase name="M10 Golden E2E — tenant isolation probes › forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002)" classname="golden/ind-soc-002-golden.spec.ts" time="0.021">
+</testcase>
+<testcase name="M10 Golden E2E — UX4G accessibility scaffolding › citizen portal has required ARIA landmarks" classname="golden/ind-soc-002-golden.spec.ts" time="0.383">
+</testcase>
+<testcase name="M10 Golden E2E — UX4G accessibility scaffolding › officer workbench has required ARIA landmarks" classname="golden/ind-soc-002-golden.spec.ts" time="0.367">
+</testcase>
+<testcase name="M10 Golden E2E — SAMPLE_LAB journey routes › Studio: author IND-SOC-002 service metadata without bespoke backend code" classname="golden/ind-soc-002-golden.spec.ts" time="0.339">
+</testcase>
+<testcase name="M10 Golden E2E — SAMPLE_LAB journey routes › Citizen: residence certificate apply page loads after SAMPLE_LAB login" classname="golden/ind-soc-002-golden.spec.ts" time="1.84">
+</testcase>
+<testcase name="M10 Golden E2E — SAMPLE_LAB journey routes › Officer: applications queue loads after SIMULATED IdP sign-in" classname="golden/ind-soc-002-golden.spec.ts" time="0.976">
+</testcase>
+<testcase name="M10 Golden E2E — SAMPLE_LAB journey routes › SAMPLE_LAB platform end-to-end: apply → officer approves → DigiLocker SIMULATED publish" classname="golden/ind-soc-002-golden.spec.ts" time="3.999">
+</testcase>
+</testsuite>
+<testsuite name="platform-journey.spec.ts" timestamp="2026-11-09T04:21:35.537Z" hostname="" tests="31" failures="0" skipped="0" time="51.775" errors="0">
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › anonymous gated page → OTP from SIMULATED SMS → back to the page" classname="platform-journey.spec.ts" time="1.115">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › the session cookie is opaque, HttpOnly and carries no identity claims" classname="platform-journey.spec.ts" time="1.179">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: a forged or legacy lab cookie is anonymous (Phase A L-1 closed)" classname="platform-journey.spec.ts" time="0.031">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: five wrong codes lock the challenge; the correct code is then refused" classname="platform-journey.spec.ts" time="1.537">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /%09/evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="1.049">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /%0A/evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.998">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target //evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="1.015">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /.//evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.981">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /..//evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="1.021">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › register records CMP-030 consent and a CMP-005 profile used for the name and prefill" classname="platform-journey.spec.ts" time="2.091">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: register refuses a non-synthetic name or missing consent before any OTP" classname="platform-journey.spec.ts" time="0.851">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: the session API refuses an invalid registration payload" classname="platform-journey.spec.ts" time="0.889">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › sign-out revokes the CMP-004 session, not just the cookie" classname="platform-journey.spec.ts" time="1.03">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › a submitted application is stored on the platform and listed for its owner" classname="platform-journey.spec.ts" time="2.657">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: another citizen cannot list or open the application (IDOR)" classname="platform-journey.spec.ts" time="3.883">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: non-synthetic applicant names are refused server-side (Phase A L-2)" classname="platform-journey.spec.ts" time="1.181">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › a retried submit with the same form-session key files one application (INT-F5)" classname="platform-journey.spec.ts" time="1.111">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: cross-site writes are refused on both portals (SEC F-07)" classname="platform-journey.spec.ts" time="0.964">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › anonymous submit and anonymous listing are refused" classname="platform-journey.spec.ts" time="0.01">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › the wizard is rendered from the pinned published form and its rules" classname="platform-journey.spec.ts" time="3.3">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › CMP-009 is authoritative: invalid answers are refused per field and nothing is filed" classname="platform-journey.spec.ts" time="0.931">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › only offered services expose a form; catalogue stubs are not offered" classname="platform-journey.spec.ts" time="1.053">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › the workbench requires sign-in" classname="platform-journey.spec.ts" time="0.879">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › citizen applies → officer approves → credential issued and in DigiLocker (SIMULATED)" classname="platform-journey.spec.ts" time="5.838">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › NEGATIVE: a citizen session cannot act on the workbench API" classname="platform-journey.spec.ts" time="2.153">
+</testcase>
+<testcase name="platform journey accessibility (WCAG 2.1 AA, UX4G rule 6) › citizen and officer journey pages have no axe violations and reflow at 320 px" classname="platform-journey.spec.ts" time="8.382">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › validates the mobile number before sending an OTP" classname="platform-journey.spec.ts" time="0.795">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › OTP entry supports keyboard auto-advance and backspace" classname="platform-journey.spec.ts" time="0.929">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › a wrong code marks the OTP invalid and returns focus to it" classname="platform-journey.spec.ts" time="1.46">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › sign in: unique title, single h1, landmarks, no axe violations, 320 px reflow" classname="platform-journey.spec.ts" time="1.16">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › create account: unique title, single h1, landmarks, no axe violations, 320 px reflow" classname="platform-journey.spec.ts" time="1.302">
+</testcase>
+</testsuite>
+<testsuite name="shells.spec.ts" timestamp="2026-11-09T04:21:35.537Z" hostname="" tests="20" failures="0" skipped="0" time="6.423" errors="0">
+<testcase name="web-citizen shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.218">
+</testcase>
+<testcase name="web-citizen shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.606">
+</testcase>
+<testcase name="web-citizen shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.361">
+</testcase>
+<testcase name="web-citizen shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.331">
+</testcase>
+<testcase name="web-citizen shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.014">
+</testcase>
+<testcase name="web-officer shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.324">
+</testcase>
+<testcase name="web-officer shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.748">
+</testcase>
+<testcase name="web-officer shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.271">
+</testcase>
+<testcase name="web-officer shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.204">
+</testcase>
+<testcase name="web-officer shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.021">
+</testcase>
+<testcase name="web-studio shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.338">
+</testcase>
+<testcase name="web-studio shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.762">
+</testcase>
+<testcase name="web-studio shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.291">
+</testcase>
+<testcase name="web-studio shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.24">
+</testcase>
+<testcase name="web-studio shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.03">
+</testcase>
+<testcase name="web-admin shell › serves the page with landmarks and a level-one heading" classname="shells.spec.ts" time="0.382">
+</testcase>
+<testcase name="web-admin shell › has no automatically detectable WCAG 2.1 A/AA violations" classname="shells.spec.ts" time="0.705">
+</testcase>
+<testcase name="web-admin shell › skip link is the first tab stop and moves focus to main" classname="shells.spec.ts" time="0.297">
+</testcase>
+<testcase name="web-admin shell › reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)" classname="shells.spec.ts" time="0.243">
+</testcase>
+<testcase name="web-admin shell › sends security headers and a health endpoint" classname="shells.spec.ts" time="0.037">
+</testcase>
+</testsuite>
+<testsuite name="template-catalogue.spec.ts" timestamp="2026-11-09T04:21:35.537Z" hostname="" tests="4" failures="0" skipped="0" time="7.517" errors="0">
+<testcase name="Studio template catalogue › browse and filter versioned templates" classname="template-catalogue.spec.ts" time="1.569">
+</testcase>
+<testcase name="Studio template catalogue › select a template: version history, diff, fields and live preview" classname="template-catalogue.spec.ts" time="2.105">
+</testcase>
+<testcase name="Studio template catalogue › a stub shows pending policy and no invented values" classname="template-catalogue.spec.ts" time="1.738">
+</testcase>
+<testcase name="citizen service catalogue › offered services can be applied for; stubs are listed but not offered" classname="template-catalogue.spec.ts" time="2.105">
+</testcase>
+</testsuite>
+</testsuites>

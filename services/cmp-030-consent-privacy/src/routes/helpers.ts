@@ -15,12 +15,16 @@ export interface RouteDeps {
   clock: () => Date;
 }
 
+/** The PDP sees the server-derived assurance of the requesting principal. */
 export async function decide(
   deps: RouteDeps,
-  _ctx: RequestContext,
+  ctx: RequestContext,
   input: AuthzDecisionInput,
 ): Promise<void> {
-  await authorize(deps.authorizer, input);
+  await authorize(deps.authorizer, {
+    ...input,
+    subject: { ...input.subject, assurance: ctx.auth_assurance },
+  });
 }
 
 export async function writeDenied(
