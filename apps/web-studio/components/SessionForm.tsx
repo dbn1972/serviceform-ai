@@ -3,31 +3,30 @@
 import { Alert, Button, TextInput } from '@serviceform/ui-ux4g';
 import { useState } from 'react';
 
-const SAMPLE_TENANT = '11111111-1111-4111-8111-111111111111';
-const SAMPLE_MAKER = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
-const SAMPLE_CHECKER = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+const DESIGNER_SUBJECT = 'sample-lab-studio-designer-1';
+const CHECKER_SUBJECT = 'sample-lab-studio-checker-1';
 
 export function SessionForm({ defaultRole }: { defaultRole: string }) {
-  const [tenantId, setTenantId] = useState(SAMPLE_TENANT);
-  const [actorId, setActorId] = useState(SAMPLE_MAKER);
-  const [role, setRole] = useState(defaultRole);
+  const [subject, setSubject] = useState(
+    defaultRole === 'STUDIO_CHECKER' ? CHECKER_SUBJECT : DESIGNER_SUBJECT,
+  );
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  async function submit(nextActor = actorId) {
+  async function submit(nextSubject = subject) {
     setError('');
     setMessage('');
     const res = await fetch('/api/session', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ tenant_id: tenantId, actor_id: nextActor, roles: [role] }),
+      body: JSON.stringify({ subject: nextSubject }),
     });
-    const body = (await res.json()) as { error_code?: string; tenant_id?: string };
+    const body = (await res.json()) as { error_code?: string; display_name?: string };
     if (!res.ok) {
       setError(body.error_code ?? 'SF-SYS-001');
       return;
     }
-    setMessage(`Session bound to tenant ${body.tenant_id}`);
+    setMessage(`Signed in as ${body.display_name ?? nextSubject}`);
   }
 
   return (
@@ -38,27 +37,11 @@ export function SessionForm({ defaultRole }: { defaultRole: string }) {
       }}
     >
       <TextInput
-        id="tenant_id"
-        name="tenant_id"
-        label="Tenant id"
-        value={tenantId}
-        onChange={(e) => setTenantId(e.target.value)}
-        required
-      />
-      <TextInput
-        id="actor_id"
-        name="actor_id"
-        label="Principal id"
-        value={actorId}
-        onChange={(e) => setActorId(e.target.value)}
-        required
-      />
-      <TextInput
-        id="role"
-        name="role"
-        label="Role code"
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
+        id="subject"
+        name="subject"
+        label="Officer subject (from officers.json)"
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
         required
       />
       {error ? (
@@ -75,9 +58,8 @@ export function SessionForm({ defaultRole }: { defaultRole: string }) {
       <Button
         variant="outline-primary"
         onClick={() => {
-          setActorId(SAMPLE_CHECKER);
-          setRole('STUDIO_CHECKER');
-          void submit(SAMPLE_CHECKER);
+          setSubject(CHECKER_SUBJECT);
+          void submit(CHECKER_SUBJECT);
         }}
       >
         Sign in as checker

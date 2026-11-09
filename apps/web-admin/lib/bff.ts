@@ -206,3 +206,53 @@ export function setCookie(token: string, maxAge: number): string {
   if (secure) parts.push('Secure');
   return parts.join('; ');
 }
+
+// ---- CMP-004 officer session helpers (SF-M10-B-4) ----
+
+const CMP004_TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
+
+/**
+ * Returns the CMP-004 opaque bearer token stored in the admin session cookie,
+ * or null when absent or malformed.
+ */
+export function cmp004Token(request: Request): string | null {
+  const raw = cookieValue(request.headers.get('cookie') ?? undefined, SESSION_COOKIE);
+  if (!raw) return null;
+  return CMP004_TOKEN_RE.test(raw) ? raw : null;
+}
+
+/** SIMULATED IdP login is only offered in LOCAL/CI. */
+export function simulationAllowed(): boolean {
+  return ['LOCAL', 'CI'].includes(process.env['SF_ENVIRONMENT'] ?? 'LOCAL');
+}
+
+export interface PlatformResponse {
+  status: number;
+  body: Record<string, unknown>;
+}
+
+export async function platform(
+  method: 'GET' | 'POST',
+  path: string,
+  opts: { token?: string | null; body?: unknown } = {},
+): Promise<PlatformResponse> {
+  const base = apiBaseUrl();
+  if (!base)
+    return { status: 503, body: { error_code: 'SF-SYS-004', message: 'Service unavailable' } };
+  const headers: Record<string, string> = { accept: 'application/json' };
+  if (opts.body !== undefined) headers['content-type'] = 'application/json';
+  if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;
+  try {
+    const res = await fetch(`${base}${path}`, {
+      method,
+      headers,
+      redirect: 'error',
+      cache: 'no-store',
+      ...(opts.body !== undefined ? { body: JSON.stringify(opts.body) } : {}),
+    });
+    const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+    return { status: res.status, body: body && typeof body === 'object' ? body : {} };
+  } catch {
+    return { status: 503, body: { error_code: 'SF-SYS-004', message: 'Service unavailable' } };
+  }
+}

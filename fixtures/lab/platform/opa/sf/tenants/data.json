@@ -63,6 +63,79 @@
         "resource_types": ["Purpose", "PrivacyNotice"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
+      },
+      "STUDIO_DESIGNER": {
+        "_note": "SF-M10-B-4: CMP-033/051/052 maker role for Studio desks (SIMULATED, LOCAL/CI only).",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "METADATA_DOCUMENT_CREATE",
+          "METADATA_DOCUMENT_READ",
+          "METADATA_DOCUMENT_UPDATE",
+          "METADATA_DOCUMENT_VALIDATE",
+          "METADATA_DOCUMENT_PUBLISH",
+          "METADATA_BUNDLE_COMPOSE",
+          "PUBLICATION_REQUEST_CREATE",
+          "PUBLICATION_REQUEST_READ",
+          "PUBLICATION_REQUEST_SUBMIT",
+          "TENANT_SERVICE_BINDING_CREATE",
+          "TENANT_SERVICE_BINDING_READ",
+          "TENANT_SERVICE_BINDING_UPDATE"
+        ],
+        "resource_types": [
+          "OfficerSession",
+          "MetadataDocument",
+          "MetadataBundle",
+          "PublicationRequest",
+          "TenantServiceBinding",
+          "ArtifactVersion"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "STUDIO_CHECKER": {
+        "_note": "SF-M10-B-4: CMP-051/052 checker role for PublicationDesk and BindingDesk (SIMULATED, LOCAL/CI only).",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "METADATA_DOCUMENT_READ",
+          "PUBLICATION_REQUEST_READ",
+          "PUBLICATION_REQUEST_APPROVE",
+          "PUBLICATION_REQUEST_REJECT",
+          "TENANT_SERVICE_BINDING_READ",
+          "TENANT_SERVICE_BINDING_PUBLISH"
+        ],
+        "resource_types": [
+          "OfficerSession",
+          "MetadataDocument",
+          "PublicationRequest",
+          "TenantServiceBinding",
+          "ArtifactVersion"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "TENANT_ADMIN_STUDIO": {
+        "_note": "SF-M10-B-4: TSB admin role for Admin BindingDesk (SIMULATED, LOCAL/CI only).",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "TENANT_SERVICE_BINDING_CREATE",
+          "TENANT_SERVICE_BINDING_READ",
+          "TENANT_SERVICE_BINDING_UPDATE",
+          "TENANT_SERVICE_BINDING_PUBLISH",
+          "PUBLICATION_REQUEST_READ",
+          "PUBLICATION_REQUEST_APPROVE",
+          "PUBLICATION_REQUEST_REJECT"
+        ],
+        "resource_types": [
+          "OfficerSession",
+          "TenantServiceBinding",
+          "ArtifactVersion",
+          "PublicationRequest"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
       }
     }
   }

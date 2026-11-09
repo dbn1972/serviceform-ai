@@ -20,6 +20,7 @@ const app = await buildApp(config, {
   logger,
   readinessChecks: lab.readinessChecks,
   m02: lab.m02,
+  ...(lab.m03 ? { m03: lab.m03 } : {}),
   m04: lab.m04,
   m05: lab.m05,
   m07: lab.m07,
@@ -43,6 +44,7 @@ logger.info(
     portal: lab.placement.portal_id,
     mounted: [
       ...app.m02Mounted,
+      ...(app.m03Mounted ?? []),
       ...(app.m04Mounted ?? []),
       ...(app.m05Mounted ?? []),
       ...(app.m07Mounted ?? []),

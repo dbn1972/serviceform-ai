@@ -211,13 +211,16 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP012: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP005: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP030: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP033: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP051: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP052: 'postgres://u:p@127.0.0.1:1/none',
     SF_TEMPORAL_ADDRESS: '127.0.0.1:1',
     SF_TEMPORAL_TASK_QUEUE: 'sf-sample-lab-workflow',
     SF_CMP004_PEPPER: 'x'.repeat(64),
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004/005/009/015/030, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004/005/009/015/030/033/051/052, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
@@ -232,6 +235,9 @@ describe('buildPlatformLab composition', () => {
       expect(lab.wave2.consentPrivacy?.pool).toBeDefined();
       expect(lab.m05.applicationCase?.service).toBeDefined();
       expect(lab.m04.forms?.forms).toBeDefined();
+      expect(lab.m03?.metadata?.pool).toBeDefined();
+      expect(lab.m03?.makerChecker?.pool).toBeDefined();
+      expect(lab.m03?.versioning?.pool).toBeDefined();
       expect(lab.m07.credential).toBeDefined();
       expect(lab.m07.registry).toBeDefined();
       expect(lab.m07.digilocker).toBeDefined();
@@ -246,6 +252,9 @@ describe('buildPlatformLab composition', () => {
         'cmp012-db',
         'cmp005-db',
         'cmp030-db',
+        'cmp033-db',
+        'cmp051-db',
+        'cmp052-db',
         'cmp016-temporal-worker',
       ]);
       // Nothing connects to Temporal at build time; the worker is not ready until start().
@@ -254,7 +263,16 @@ describe('buildPlatformLab composition', () => {
       const app = Fastify();
       await lab.registerSimulators(app);
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
-      expect((officers.json() as { officers: unknown[] }).officers).toHaveLength(1);
+      const directory = (officers.json() as { officers: { subject: string; roles: string[] }[] })
+        .officers;
+      // Case officer + Studio designer/checker + tenant admin (B-4).
+      expect(directory).toHaveLength(4);
+      expect(directory.map((o) => o.subject).sort()).toEqual([
+        'sample-lab-case-officer-1',
+        'sample-lab-studio-checker-1',
+        'sample-lab-studio-designer-1',
+        'sample-lab-tenant-admin-1',
+      ]);
     } finally {
       await lab.close();
     }
