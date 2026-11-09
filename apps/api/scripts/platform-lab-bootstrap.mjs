@@ -31,6 +31,9 @@ const ROLES = [
   { login: 'sf_lab_cmp009', member: 'sf_cmp009_rw', env: 'DATABASE_URL_CMP009' },
   { login: 'sf_lab_cmp015', member: 'sf_cmp015_rw', env: 'DATABASE_URL_CMP015' },
   { login: 'sf_lab_cmp016', member: 'sf_cmp016_rw', env: 'DATABASE_URL_CMP016' },
+  { login: 'sf_lab_cmp022', member: 'sf_cmp022_rw', env: 'DATABASE_URL_CMP022' },
+  { login: 'sf_lab_cmp024', member: 'sf_cmp024_rw', env: 'DATABASE_URL_CMP024' },
+  { login: 'sf_lab_cmp012', member: 'sf_cmp012_rw', env: 'DATABASE_URL_CMP012' },
 ];
 
 function previous() {
@@ -84,15 +87,18 @@ try {
   const base = new URL(adminUrl);
   for (const role of ROLES) {
     const password = randomBytes(18).toString('hex');
-    const exists = await admin.query('SELECT 1 FROM pg_roles WHERE rolname = $1', [role.login]);
-    const ddl = exists.rowCount
-      ? 'ALTER ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE INHERIT'
-      : 'CREATE ROLE %I LOGIN PASSWORD %L NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE INHERIT';
-    const built = await admin.query('SELECT format($1::text, $2::text, $3::text) AS s', [
-      ddl,
-      role.login,
-      password,
-    ]);
+    // One guarded DO block (no CREATE ROLE IF NOT EXISTS in PostgreSQL): create or re-key the login.
+    const built = await admin.query(
+      `SELECT format(
+         $f$DO $do$ BEGIN
+           IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = %1$L) THEN
+             ALTER ROLE %1$I LOGIN PASSWORD %2$L NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE INHERIT;
+           ELSE
+             CREATE ROLE %1$I LOGIN PASSWORD %2$L NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE INHERIT;
+           END IF;
+         END $do$$f$, $1::text, $2::text) AS s`,
+      [role.login, password],
+    );
     await admin.query(String(built.rows[0].s));
     const grant = await admin.query('SELECT format($1::text, $2::text, $3::text) AS s', [
       'GRANT sf_app, %I TO %I',
