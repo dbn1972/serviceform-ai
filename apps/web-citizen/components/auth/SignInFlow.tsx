@@ -1,10 +1,12 @@
 'use client';
 
-import { Button, Icon, TextInput } from '@serviceform/ui-ux4g';
+import { Button, Checkbox, Icon, TextInput } from '@serviceform/ui-ux4g';
 import {
   LAB_OTP_LENGTH,
   normaliseMobile,
+  validateLabRegistration,
   validateMobile,
+  type LabRegistrationField,
 } from '@serviceform/m10-sample-lab/identity-rules';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,6 +25,13 @@ import { SignedInPanel } from './SignedInPanel';
 import { useCitizenSession } from '../../lib/use-citizen-session';
 
 const MOBILE_ID = 'signin-mobile';
+const NAME_ID = 'register-name';
+const CONSENT_ID = 'register-consent';
+const FIELD_IDS: Partial<Record<LabRegistrationField, string>> = {
+  display_name: NAME_ID,
+  mobile: MOBILE_ID,
+  consent: CONSENT_ID,
+};
 
 export type AuthFlowProps = {
   /** Raw `next` query value; validated with `safeNext`. */
@@ -32,7 +41,10 @@ export type AuthFlowProps = {
 
 export type SignInFlowProps = AuthFlowProps & {
   signedOut?: boolean;
-  /** Register uses the same CMP-004 OTP flow; the citizen principal is created on first verify. */
+  /**
+   * Register uses the same CMP-004 OTP flow; the citizen principal is created on first verify,
+   * then the BFF records CMP-030 consent and the CMP-005 profile (name and mobile).
+   */
   mode?: 'sign-in' | 'register';
 };
 
@@ -49,6 +61,11 @@ export function SignInFlow({
   const session = useCitizenSession();
   const [mobile, setMobile] = useState(() => normaliseMobile(initialMobile).slice(0, 10));
   const [mobileError, setMobileError] = useState<string>();
+  const [displayName, setDisplayName] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<'display_name' | 'consent', string | undefined>>
+  >({});
   const [notice, setNotice] = useState<ApiError | null>(null);
   const [busy, setBusy] = useState(false);
   const [challenge, setChallenge] = useState<OtpChallenge | null>(null);
@@ -56,6 +73,21 @@ export function SignInFlow({
 
   async function sendOtp(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (registering) {
+      const errors = validateLabRegistration({
+        display_name: displayName,
+        mobile,
+        preferred_language: 'en',
+        consent,
+      });
+      setMobileError(errors.mobile);
+      setFieldErrors({ display_name: errors.display_name, consent: errors.consent });
+      const first = (['display_name', 'mobile', 'consent'] as const).find((f) => errors[f]);
+      if (first) {
+        document.getElementById(FIELD_IDS[first] ?? MOBILE_ID)?.focus();
+        return;
+      }
+    }
     const invalid = validateMobile(mobile);
     if (invalid) {
       setMobileError(invalid);
@@ -84,6 +116,9 @@ export function SignInFlow({
     const res = await postJson<SessionSummary>('/api/portal/session', {
       challenge_id: challenge.challenge_id,
       code,
+      ...(registering
+        ? { registration: { display_name: displayName.trim(), mobile, consent } }
+        : {}),
     });
     if (res.ok) {
       router.push(next);
@@ -166,6 +201,23 @@ export function SignInFlow({
       ) : null}
       {notice ? <FormAlert tone="error">{notice.message}</FormAlert> : null}
       <form className="sf-auth-form" noValidate onSubmit={(e) => void sendOtp(e)}>
+        {registering ? (
+          <TextInput
+            id={NAME_ID}
+            name="display_name"
+            label="Full name"
+            size="l"
+            autoComplete="name"
+            value={displayName}
+            onChange={(e) => {
+              setDisplayName(e.target.value);
+              if (fieldErrors.display_name)
+                setFieldErrors({ ...fieldErrors, display_name: undefined });
+            }}
+            hint="Shown on your account and pre-filled in your applications. Use a synthetic name that starts with “SAMPLE” or “Lab” in this sample environment."
+            error={fieldErrors.display_name}
+          />
+        ) : null}
         <TextInput
           id={MOBILE_ID}
           name="mobile"
@@ -184,6 +236,31 @@ export function SignInFlow({
           hint="We will send the OTP to this number by SMS."
           error={mobileError}
         />
+        {registering ? (
+          <div className="sf-form-check">
+            <Checkbox
+              id={CONSENT_ID}
+              name="consent"
+              label="I agree to keep my name and mobile number in my citizen profile and to use them to pre-fill my applications"
+              description="Recorded as your consent for this purpose (SAMPLE_LAB privacy notice v1). You can apply without an account profile by signing in instead."
+              checked={consent}
+              error={Boolean(fieldErrors.consent)}
+              aria-describedby={fieldErrors.consent ? `${CONSENT_ID}-error` : undefined}
+              onChange={(e) => {
+                setConsent(e.target.checked);
+                if (fieldErrors.consent) setFieldErrors({ ...fieldErrors, consent: undefined });
+              }}
+            />
+            {fieldErrors.consent ? (
+              <p
+                id={`${CONSENT_ID}-error`}
+                className="ux4g-input-helper ux4g-input-helper-text sf-form-error"
+              >
+                {fieldErrors.consent}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
         <div className="sf-auth-actions">
           <Button type="submit" size="l" disabled={busy}>
             {busy ? 'Sending OTP…' : 'Get OTP'}

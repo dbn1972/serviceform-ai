@@ -1,5 +1,10 @@
-import { validateOtpCode } from '@serviceform/m10-sample-lab/identity-rules';
 import {
+  maskMobile,
+  validateLabRegistration,
+  validateOtpCode,
+} from '@serviceform/m10-sample-lab/identity-rules';
+import {
+  citizenForToken,
   clearSessionCookie,
   currentCitizen,
   isUuid,
@@ -11,34 +16,68 @@ import {
   sessionToken,
   crossSiteRefusal,
 } from '../../../../lib/portal/platform';
+import {
+  readProfile,
+  registerProfile,
+  type ProfileClaims,
+  type RegistrationResult,
+} from '../../../../lib/portal/profile';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const OTP_FAILED =
   'The OTP is incorrect, has expired, or too many attempts were made. Check the code or request a new OTP.';
+/** Shown until the citizen has a consented CMP-005 profile; never a person's name. */
+const NO_PROFILE_NAME = 'Citizen';
 
-function summary(assurance: string) {
+function summary(assurance: string, profile: ProfileClaims | null) {
   return {
     authenticated: true,
-    display_name: 'Verified citizen',
-    masked_mobile: null,
+    display_name: profile?.display_name ?? NO_PROFILE_NAME,
+    masked_mobile: profile?.mobile ? maskMobile(profile.mobile) : null,
     email: null,
     preferred_language: 'en',
     assurance,
     identity_source: 'CMP-004',
+    profile_source: profile?.display_name ? 'CMP-005' : null,
     simulation: true,
     g6_issued: false,
   };
 }
 
+/** CMP-004 identity per request; display name and mobile from the consented CMP-005 profile. */
 export async function GET(request: Request) {
   const citizen = await currentCitizen(request);
   if (!citizen) return json(200, { authenticated: false, simulation: true, g6_issued: false });
-  return json(200, summary(citizen.assurance));
+  return json(200, summary(citizen.assurance, await readProfile(citizen)));
 }
 
-/** CMP-004 `verifyCitizenOtp`; the cookie receives only the opaque session token. */
+type Registration = { display_name: string; mobile: string; consent: boolean };
+
+function registrationOf(raw: unknown): Registration | null | 'invalid' {
+  if (raw === undefined) return null;
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return 'invalid';
+  const r = raw as Record<string, unknown>;
+  return {
+    display_name: typeof r['display_name'] === 'string' ? r['display_name'].trim() : '',
+    mobile: typeof r['mobile'] === 'string' ? r['mobile'] : '',
+    consent: r['consent'] === true,
+  };
+}
+
+const REGISTRATION_FAILED: Record<Exclude<RegistrationResult, { ok: true }>['step'], string> = {
+  PROFILE: 'We could not create your citizen profile.',
+  PURPOSE: 'Profile consent is not available in this portal.',
+  CONSENT: 'We could not record your consent.',
+  CLAIMS: 'We could not save your profile details.',
+};
+
+/**
+ * CMP-004 `verifyCitizenOtp`; the cookie receives only the opaque session token. With a
+ * `registration` the verified citizen's CMP-005 profile and CMP-030 consent are created before the
+ * cookie is set, so a failed registration leaves no half-registered session in the browser.
+ */
 export async function POST(request: Request) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
@@ -53,6 +92,20 @@ export async function POST(request: Request) {
       field: 'code',
     });
   }
+  const registration = registrationOf(body?.['registration']);
+  if (registration === 'invalid') {
+    return json(400, { error_code: 'SF-SYS-003', message: 'Send the registration as an object' });
+  }
+  if (registration) {
+    const errors = validateLabRegistration({ ...registration, preferred_language: 'en' });
+    if (Object.keys(errors).length > 0) {
+      return json(400, {
+        error_code: 'SF-SYS-003',
+        message: 'Check your details',
+        field_errors: errors,
+      });
+    }
+  }
   const res = await platform('POST', '/v1/identity/citizen/otp/verify', {
     body: { challenge_id: challengeId, code },
   });
@@ -61,7 +114,20 @@ export async function POST(request: Request) {
     return json(401, { error_code: 'SF-AUTH-001', message: OTP_FAILED, field: 'code' });
   }
   if (res.status !== 200 || typeof token !== 'string') return relay(res);
-  return json(201, summary('OTP'), {
+
+  const citizen = await citizenForToken(token);
+  if (!citizen) return json(503, { error_code: 'SF-SYS-004', message: 'Sign in again shortly' });
+  if (registration) {
+    const saved = await registerProfile(citizen, registration);
+    if (!saved.ok) {
+      await platform('POST', '/v1/identity/citizen/sessions/revoke', { token, body: {} });
+      return json(saved.status === 503 ? 503 : 502, {
+        error_code: 'SF-SYS-004',
+        message: `${REGISTRATION_FAILED[saved.step]} Request a new OTP and try again.`,
+      });
+    }
+  }
+  return json(201, summary('OTP', await readProfile(citizen)), {
     'set-cookie': sessionCookie(token, SESSION_MAX_AGE_SECONDS),
   });
 }

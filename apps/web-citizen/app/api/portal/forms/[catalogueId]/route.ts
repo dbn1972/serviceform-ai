@@ -1,6 +1,7 @@
 import { formPin } from '@serviceform/service-templates';
 import { interpret, offeredForm, sampleLab } from '../../../../../lib/portal/forms';
 import { crossSiteRefusal, currentCitizen, json, relay } from '../../../../../lib/portal/platform';
+import { profilePrefill, readProfile } from '../../../../../lib/portal/profile';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -22,7 +23,8 @@ function interpretation(body: Record<string, unknown>) {
 
 /**
  * The pinned published form of an offered service plus its CMP-009 interpretation (visibility,
- * required fields, UX4G renderer ids, labels) for the initial data.
+ * required fields, UX4G renderer ids, labels) for the initial data. Initial data is the SAMPLE_LAB
+ * sample answers overlaid with the citizen's consented CMP-005 profile claims.
  */
 export async function GET(request: Request, ctx: Ctx) {
   const { catalogueId } = await ctx.params;
@@ -31,7 +33,9 @@ export async function GET(request: Request, ctx: Ctx) {
   const offered = offeredForm(catalogueId);
   if (!offered) return json(404, NOT_OFFERED);
   const { template, version } = offered;
-  const prefill = sampleLab() ? (version.sample_data ?? {}) : {};
+  const sample = sampleLab() ? (version.sample_data ?? {}) : {};
+  const profile = await readProfile(citizen);
+  const prefill = profilePrefill(version.form.json_schema, sample, profile);
   const res = await interpret(citizen, version, prefill);
   if (res.status !== 200) return relay(res, 'The form engine is unavailable');
   return json(200, {
@@ -47,6 +51,7 @@ export async function GET(request: Request, ctx: Ctx) {
       package: version.form,
     },
     prefill,
+    prefill_source: profile ? 'CMP-005' : sampleLab() ? 'SAMPLE_LAB' : null,
     interpretation: interpretation(res.body),
     engine: 'CMP-009',
     publication: 'SIMULATED',
