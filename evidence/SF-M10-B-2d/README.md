@@ -51,16 +51,17 @@ mappings. They are not touched by this slice and are left to their owners, as in
 ## Takeover follow-up (builder, not verification)
 
 Subagent `bc-994cdf9e-09dc-596e-b11e-76f1ea49ab6b` (claude-opus-5-5, route `opus`) took over the
-branch at `c02bccc`, reviewed it against the brief and added three commits. Code under test:
-`00c63f44091100effef827a4ee0bc7490061eb5a`. Logs in `takeover/`.
+branch at `c02bccc` (merged to `main` as `58a372a`, PR #227), reviewed it and added three commits,
+replayed onto `main` as branch `cursor/m10-phase-b-2d-followup-ab6b`. Code under test (same tree as
+`bf798ff`): `00c63f44091100effef827a4ee0bc7490061eb5a`. Logs in `takeover/`.
 
-- `378ea8b` + `00c63f4`: the lab privacy publication found its notice only through CMP-030
+- `fb0c7ac` + `bf798ff`: the lab privacy publication found its notice only through CMP-030
   idempotency replay. Once those records are removed (declared 24h TTL; no sweep exists yet), the
   existing purpose's notice version answers `409 SF-APP-002` and the host refused to start. That
   conflict now counts as already recorded (`notice_id: null`); every other refusal still fails
   start. Reproduced live on a lab host: the inherited code fails start, the fix starts with one
   notice (`takeover/lab-restart.log`).
-- `9e9fe5f`: with the new owner grant a citizen could grant their own consent as `ASSISTED` or
+- `de8a6c5`: with the new owner grant a citizen could grant their own consent as `ASSISTED` or
   `LEGAL_REP`. CMP-030 now answers `403 SF-AUTH-002 CITIZEN_SELF_ONLY` before any write.
 
 | Suite | Result | Evidence |
