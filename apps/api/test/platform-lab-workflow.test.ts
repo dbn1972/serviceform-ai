@@ -22,14 +22,21 @@ import {
   type WorkflowServiceLike,
 } from '../src/platform/workflow.js';
 
+function must<T>(value: T | undefined): T {
+  if (value === undefined) throw new Error('missing fixture value');
+  return value;
+}
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const LAB = join(ROOT, 'fixtures/lab/platform');
 const fixture = JSON.parse(readFileSync(join(LAB, 'workflow.json'), 'utf8')) as LabWorkflowFixture;
-const binding = (
-  JSON.parse(readFileSync(join(LAB, 'published-bindings.json'), 'utf8')) as {
-    bindings: { tenant_id: string; catalogue_id: string; pins: Record<string, string> }[];
-  }
-).bindings[0]!;
+const binding = must(
+  (
+    JSON.parse(readFileSync(join(LAB, 'published-bindings.json'), 'utf8')) as {
+      bindings: { tenant_id: string; catalogue_id: string; pins: Record<string, string> }[];
+    }
+  ).bindings[0],
+);
 const TENANT = binding.tenant_id;
 const APP = 'a1a1a1a1-a1a1-4a1a-8a1a-a1a1a1a1a1a1';
 const CORR = 'c0c0c0c0-c0c0-40c0-80c0-c0c0c0c0c0c0';
@@ -37,7 +44,7 @@ const OUTBOX = '0e0e0e0e-0e0e-40e0-80e0-0e0e0e0e0e0e';
 const PIN = {
   tenant_id: TENANT,
   catalogue_id: binding.catalogue_id,
-  workflow_version_id: binding.pins['workflow_version_id']!,
+  workflow_version_id: must(binding.pins['workflow_version_id']),
 };
 
 // Non-literal specifier: CMP-016 is loaded the same way the host loads it (runtime.ts).
@@ -116,7 +123,7 @@ function bridgeOver(service: WorkflowServiceLike) {
 }
 
 describe('SAMPLE_LAB workflow fixture (CMP-016 canonical graph)', () => {
-  const wf = fixture.workflows[0]!;
+  const wf = must(fixture.workflows[0]);
 
   it('is SIMULATED, maker != checker, and its recorded graph_hash is the CMP-016 hash of the graph', () => {
     expect(fixture.simulation).toBe('SIMULATED');
@@ -249,7 +256,7 @@ describe('SIMULATED workflow publication (LOCAL/CI only)', () => {
   });
 
   it('approves only the pinned version, the recorded approval_ref and the exact graph_hash', async () => {
-    const wf = fixture.workflows[0]!;
+    const wf = must(fixture.workflows[0]);
     const approvals = publication.approvals([PIN]);
     const ok = {
       subject_type: 'WorkflowVersion' as const,
@@ -320,14 +327,14 @@ describe('ensurePublishedWorkflow (idempotent seed through the CMP-016 service)'
       'createDraft',
       'publish',
     ]);
-    const definitionId = nameUuid(TENANT, fixture.workflows[0]!.definition_key);
+    const definitionId = nameUuid(TENANT, must(fixture.workflows[0]).definition_key);
     expect(calls[1]).toMatchObject({
       id: definitionId,
       ctx: { actor: { id: fixture.publication.author_id } },
     });
     expect(calls[2]).toMatchObject({
       id: PIN.workflow_version_id,
-      input: { definition_id: definitionId, graph: fixture.workflows[0]!.graph },
+      input: { definition_id: definitionId, graph: must(fixture.workflows[0]).graph },
     });
     expect(calls[3]?.ctx.actor.id).toBe(fixture.publication.approver_id);
   });
@@ -472,14 +479,15 @@ describe('composeLabWorkflow', () => {
     expect(await new WorkflowAdvanceGate(wf.bridge).advance(p, receipt, signal)).toBe(
       'DEFERRED_TO_OUTBOX',
     );
-    await expect(wf.readinessChecks[0]!.check()).rejects.toThrow(/worker not running/);
+    await expect(must(wf.readinessChecks[0]).check()).rejects.toThrow(/worker not running/);
     await wf.close();
   });
 
   it('refuses a fixture whose graph no longer matches its recorded hash, and non-lab environments', () => {
     const tampered = structuredClone(fixture);
-    (tampered.workflows[0]!.graph as { edges: { outcome?: string }[] }).edges[1]!.outcome =
-      'RETURN_TO_DRAFT';
+    must(
+      (must(tampered.workflows[0]).graph as { edges: { outcome?: string }[] }).edges[1],
+    ).outcome = 'RETURN_TO_DRAFT';
     expect(() => composeLabWorkflow({ ...base, fixture: tampered })).toThrow(/graph_hash mismatch/);
     expect(() => composeLabWorkflow({ ...base, environment: 'PRODUCTION' })).toThrow(/refused/);
   });
