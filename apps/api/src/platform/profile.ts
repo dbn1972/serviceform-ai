@@ -210,8 +210,8 @@ export function composeLabPrivacy(params: {
           },
           key: `sample-lab:notice:${p.code}:v${p.notice.version_no}`,
         });
-        // CMP-030 keeps idempotency records for 24h and has no notice read route: on a later
-        // restart the version already recorded for an existing purpose answers with a conflict.
+        // CMP-030 declares a 24h idempotency TTL and has no notice read route: once the record is
+        // gone, the version already recorded for an existing purpose answers with a conflict.
         if (
           existing.has(p.code) &&
           created.status === 409 &&
