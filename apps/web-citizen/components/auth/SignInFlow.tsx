@@ -237,7 +237,7 @@ export function SignInFlow({
           error={mobileError}
         />
         {registering ? (
-          <div className="sf-form-check">
+          <div className={`sf-form-check ${fieldErrors.consent ? 'ux4g-input-error' : ''}`}>
             <Checkbox
               id={CONSENT_ID}
               name="consent"

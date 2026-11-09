@@ -13,7 +13,7 @@ export type OtpChallenge = {
 export type SessionSummary = {
   authenticated: true;
   display_name: string;
-  masked_mobile: string;
+  masked_mobile: string | null;
   email: string | null;
   preferred_language: 'en' | 'hi';
 };
