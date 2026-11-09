@@ -1,0 +1,110 @@
+platform-lab-bootstrap: migrations applied; 9 runtime logins; env written
+platform-lab: API http://127.0.0.1:4200 (SAMPLE_LAB, SIMULATED connectors, G6=false)
+platform-lab: Temporal 127.0.0.1:7233 (CMP-016 sequencing only; CMP-015 is authoritative)
+tenant-b: fixtures written (tenant 0d15ba00-0001-4000-8000-0d15ba0000b1)
+m10-platform: host A :4200 (OPA :8381), host B :4201 (OPA :8382)
+
+ RUN  v5.0.3 /agent/repos/serviceform-ai
+
+ ❯ tests/integration/m10-platform/bff-seam.test.ts (13 tests | 5 failed) 1529ms
+   ❯ citizen BFF on the platform path (6)
+     ✓ OTP sign-in sets a cookie holding only the CMP-004 opaque token (SF-CON-PORTAL-SESSION) 171ms
+     ✓ a forged or unknown cookie is never decoded for identity 120ms
+     × apply drives CMP-015 draft → working data → ready → submitted and the view mirrors CMP-015 26ms
+     ✓ another citizen's application is a uniform 404 through the BFF (no existence disclosure) 23ms
+     × observed: the BFF apply is not idempotent — a repeated submit creates a second SUBMITTED case (INT-F5) 22ms
+     ✓ sign-out revokes the CMP-004 session 6ms
+   ❯ citizen view maps every CMP-015 state (2)
+     × every CaseState maps to a defined portal status and platform_state is passed through unchanged 2ms
+     × withdrawn/cancelled cases are not shown as REJECTED, and DEFICIENCY_RAISED is not shown as plain SUBMITTED 0ms
+   ❯ officer BFF decide() drives only legal transitions (5)
+     ✓ APPROVE from SUBMITTED walks received → scrutiny → decision_pending → approved, then SYSTEM issues 522ms
+     ✓ REJECT records a HUMAN rejection with a reason code 107ms
+     ✓ decide() issues no command on decided, draft, deficiency or citizen-response cases 441ms
+     ✓ bad actions and citizen cookies are refused by the officer BFF 58ms
+     × every CaseState maps to a workbench status without inventing states 1ms
+ ✓ tests/integration/m10-platform/int-013-simulation.test.ts (12 tests) 4821ms
+   ✓ INT-013 / ADR-0007 D-4: the SAMPLE_LAB host refuses non-LOCAL/CI environments (7)
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=DEVELOPMENT 767ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=SIT 764ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=UAT 781ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PREPROD 795ms
+     ✓ lab-server exits without listening when SF_ENVIRONMENT=PRODUCTION 771ms
+     ✓ a CI runtime refuses a LOCAL placement (placement environment must match) 797ms
+ ✓ tests/integration/m10-platform/journey-state-machine.test.ts (8 tests) 759ms
+ ✓ tests/integration/m10-platform/int-005-posture.test.ts (8 tests) 715ms
+   ✓ INT-005: CMP-016 Temporal sequencing follows committed CMP-015 transitions (8)
+     ✓ the instance follows the case: active node WAIT_RECEIVED, last signal = MARK_RECEIVED command 503ms
+ ✓ tests/integration/m10-platform/int-004-outbox.test.ts (4 tests) 389ms
+ ✓ tests/integration/m10-platform/issuance-digilocker.test.ts (6 tests) 1079ms
+ ✓ tests/integration/m10-platform/int-011-two-tenants.test.ts (7 tests) 319ms
+ ✓ tests/integration/m10-platform/contract-conformance.test.ts (13 tests) 259ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen BFF on the platform path > apply drives CMP-015 draft → working data → ready → submitted and the view mirrors CMP-015
+AssertionError: expected 422 to be 201 // Object.is equality
+
+- Expected
++ Received
+
+- 201
++ 422
+
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:171:22
+    169|       await citizenRoutes.apps()
+    170|     ).POST(req('/api/portal/applications', { method: 'POST', cookie, b…
+    171|     expect(r.status).toBe(201);
+       |                      ^
+    172|     const body = (await r.json()) as { application: Record<string, unk…
+    173|     expect(body.application).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen BFF on the platform path > observed: the BFF apply is not idempotent — a repeated submit creates a second SUBMITTED case (INT-F5)
+TypeError: Cannot read properties of undefined (reading 'status')
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:232:14
+    230|       ).application;
+    231|     const [a, b] = [await make(), await make()];
+    232|     expect(a.status).toBe('SUBMITTED');
+       |              ^
+    233|     expect(b.status).toBe('SUBMITTED');
+    234|     expect(a.id).not.toBe(b.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen view maps every CMP-015 state > every CaseState maps to a defined portal status and platform_state is passed through unchanged
+AssertionError: DEFICIENCY_RAISED: expected [ 'DRAFT', 'SUBMITTED', …(4) ] to include 'ACTION_REQUIRED'
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:254:30
+    252|       await import('../../../apps/web-citizen/lib/portal/applications'…
+    253|     for (const state of CASE_STATES) {
+    254|       expect(ALLOWED, state).toContain(portalStatus(state as never));
+       |                              ^
+    255|       const view = toPortalApplication(
+    256|         {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > citizen view maps every CMP-015 state > withdrawn/cancelled cases are not shown as REJECTED, and DEFICIENCY_RAISED is not shown as plain SUBMITTED
+Error: Expect test to fail
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/integration/m10-platform/bff-seam.test.ts > officer BFF decide() drives only legal transitions > every CaseState maps to a workbench status without inventing states
+AssertionError: expected [ 'DRAFT', 'SUBMITTED', …(4) ] to include 'DEFICIENCY_RAISED'
+ ❯ tests/integration/m10-platform/bff-seam.test.ts:534:82
+    532|     const { workbenchStatus } = await import('../../../apps/web-office…
+    533|     for (const s of CASE_STATES) {
+    534|       expect(['DRAFT', 'SUBMITTED', 'APPROVED', 'REJECTED', 'ISSUED', …
+       |                                                                                  ^
+    535|         workbenchStatus(s),
+    536|       );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  5 failed | 64 passed | 2 expected fail (71)
+   Start at  04:22:29
+   Duration  11.04s (tests 94%, import 4%, transform 1%)
+
+JUNIT report written to /agent/repos/serviceform-ai/evidence/SF-M10-B-INT/junit/m10-platform-int.xml
