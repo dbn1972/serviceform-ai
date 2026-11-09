@@ -1,0 +1,16 @@
+ status  |    active_nodes    |         workflow_version_id          | cmp015_state | count 
+---------+--------------------+--------------------------------------+--------------+-------
+ RUNNING | ["WAIT_SUBMITTED"] | 0d15ba00-0012-4000-8000-0d15ba000012 | SUBMITTED    |     6
+ RUNNING | ["WAIT_APPROVED"]  | 0d15ba00-0012-4000-8000-0d15ba000012 | APPROVED     |     2
+(2 rows)
+
+ cases | with_instance 
+-------+---------------
+     8 |             8
+(1 row)
+
+              version_id              |  status   | origin | maker_ne_checker 
+--------------------------------------+-----------+--------+------------------
+ 0d15ba00-0012-4000-8000-0d15ba000012 | PUBLISHED | STUDIO | t
+(1 row)
+
