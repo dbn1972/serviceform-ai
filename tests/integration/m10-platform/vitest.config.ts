@@ -6,12 +6,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
 /**
  * SF-M10-B-INT: independent integration checks against live SAMPLE_LAB platform hosts
- * (two tenants, one PostgreSQL, real OPA). Run through `run.sh`; never part of `pnpm test`.
+ * (two tenants, one PostgreSQL, real OPA, one Temporal dev server). Run through `run.sh`; never part of `pnpm test`.
  */
 export default defineConfig({
   resolve: {
     alias: {
       pg: join(root, 'db/node_modules/pg'),
+      '@temporalio/client': join(
+        root,
+        'services/cmp-016-workflow-engine/node_modules/@temporalio/client',
+      ),
     },
   },
   test: {

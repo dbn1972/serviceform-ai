@@ -144,7 +144,7 @@ export interface WorkflowLogger {
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const ADDRESS = /^[A-Za-z0-9.-]{1,253}:[0-9]{2,5}$/;
+const ADDRESS = /^[A-Za-z0-9.-]{1,253}:[0-9]{1,5}$/;
 const NAMESPACE = /^[a-z0-9][a-z0-9._-]{0,62}$/;
 
 export function assertTemporalAddress(value: string | undefined): string {

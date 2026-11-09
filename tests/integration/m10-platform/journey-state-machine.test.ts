@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import {
   call,
@@ -10,6 +11,8 @@ import {
   key,
   officerLogin,
   putWorkingData,
+  readJson,
+  ROOT,
   syntheticForm,
   syntheticMobile,
   type App,
@@ -85,7 +88,10 @@ describe('journey state machine on the platform path', () => {
       'DECISION_PENDING>APPROVED',
     ]);
     for (const t of tr.body['transitions'] as { authz_policy_revision: string }[]) {
-      expect(t.authz_policy_revision).toBe('m10-b1');
+      expect(t.authz_policy_revision).toBe(
+        readJson<{ policy_revision: string }>(join(ROOT, 'policy/opa/sf/meta/data.json'))
+          .policy_revision,
+      );
     }
     const late = await command(HOST_A(), officer.token, app, 'RECORD_REJECTED', {
       decision: { decision_maker: 'HUMAN' },
