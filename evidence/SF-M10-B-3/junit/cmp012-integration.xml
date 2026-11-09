@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="0" errors="0" time="0.621657819">
+    <testsuite name="test/integration/digilocker-pg.int.test.ts" timestamp="2026-11-09T03:45:17.173Z" hostname="cursor" tests="20" failures="0" errors="0" skipped="0" time="0.621657819">
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; publish record round-trip &gt; inserts, reads and updates a record with the outbox rows committed in the same tx" time="0.024352148">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; publish record round-trip &gt; rolls back the record and its outbox rows together when the tx fails" time="0.003129194">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; publish record round-trip &gt; routes tenant-null (audit) envelopes to outbox_event_platform keyed by audit_id" time="0.002319872">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; publish record round-trip &gt; enforces the publish-failure invariants as CHECK constraints (issuance never reversed)" time="0.002455452">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; publish record round-trip &gt; cannot mutate immutable provenance columns or delete publish records" time="0.003508559">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; idempotency claim / peek / complete &gt; claims once, replays the stored record, then round-trips the completed response" time="0.012986029">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; idempotency claim / peek / complete &gt; does not let tenant B see or replay tenant A idempotency records" time="0.00293759">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; tenant-negative (FORCE RLS) &gt; a T1 record is invisible and unupdatable under T2" time="0.003549236">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; tenant-negative (FORCE RLS) &gt; lists a credential’s records newest first, only inside the owning tenant" time="0.005829226">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; tenant-negative (FORCE RLS) &gt; sees nothing without a tenant context" time="0.000817576">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; tenant-negative (FORCE RLS) &gt; refuses writes whose tenant does not match the transaction tenant" time="0.005184941">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; tenant-negative (FORCE RLS) &gt; rejects a transaction without tenant context before touching the database" time="0.000229791">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; privilege boundary (ADR-0006) &gt; peer login cannot read or write CMP-012 tables" time="0.009145334">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; privilege boundary (ADR-0006) &gt; appOnly login cannot read or write CMP-012 tables" time="0.009193652">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; privilege boundary (ADR-0006) &gt; runtime login is not the table owner and cannot bypass RLS" time="0.001903012">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; inTransaction() &gt; is true only inside withTx" time="0.001452517">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; inTransaction() &gt; refuses a nested withTx" time="0.000749387">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; DigiLockerService publish flow on PostgreSQL (SIMULATED connector) &gt; publishes, persists the record + domain/audit outbox, and replays idempotently" time="0.010415496">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; DigiLockerService publish flow on PostgreSQL (SIMULATED connector) &gt; records a FAILED publish without reversing issuance" time="0.004131129">
+        </testcase>
+        <testcase classname="test/integration/digilocker-pg.int.test.ts" name="CMP-012 PgDigilockerRepository on PostgreSQL (FORCE RLS, ADR-0006 roles) &gt; DigiLockerService publish flow on PostgreSQL (SIMULATED connector) &gt; persists nothing when the credential is not ISSUED (fail-closed)" time="0.001983775">
+        </testcase>
+    </testsuite>
+</testsuites>

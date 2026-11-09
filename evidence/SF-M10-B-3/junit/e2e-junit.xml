@@ -1,0 +1,62 @@
+<testsuites id="" name="" tests="29" failures="0" skipped="0" errors="0" time="27.05893">
+<testsuite name="platform-journey.spec.ts" timestamp="2026-11-09T03:43:39.345Z" hostname="" tests="29" failures="0" skipped="0" time="45.124" errors="0">
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › anonymous gated page → OTP from SIMULATED SMS → back to the page" classname="platform-journey.spec.ts" time="1.21">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › the session cookie is opaque, HttpOnly and carries no identity claims" classname="platform-journey.spec.ts" time="1.185">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: a forged or legacy lab cookie is anonymous (Phase A L-1 closed)" classname="platform-journey.spec.ts" time="0.065">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › NEGATIVE: five wrong codes lock the challenge; the correct code is then refused" classname="platform-journey.spec.ts" time="1.278">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /%09/evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.937">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /%0A/evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.946">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target //evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.935">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /.//evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.861">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › ignores off-site next target /..//evil.example (open-redirect guard)" classname="platform-journey.spec.ts" time="0.935">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › register uses the same OTP flow and signs the new citizen in" classname="platform-journey.spec.ts" time="0.899">
+</testcase>
+<testcase name="citizen identity on CMP-004 (opaque session, ADR-0007 D-3) › sign-out revokes the CMP-004 session, not just the cookie" classname="platform-journey.spec.ts" time="0.959">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › a submitted application is stored on the platform and listed for its owner" classname="platform-journey.spec.ts" time="2.493">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: another citizen cannot list or open the application (IDOR)" classname="platform-journey.spec.ts" time="3.279">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: non-synthetic applicant names are refused server-side (Phase A L-2)" classname="platform-journey.spec.ts" time="0.845">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › a retried submit with the same form-session key files one application (INT-F5)" classname="platform-journey.spec.ts" time="0.9">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › NEGATIVE: cross-site writes are refused on both portals (SEC F-07)" classname="platform-journey.spec.ts" time="0.883">
+</testcase>
+<testcase name="application journey on CMP-015 (RLS + OPA citizen-owner) › anonymous submit and anonymous listing are refused" classname="platform-journey.spec.ts" time="0.008">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › the wizard is rendered from the pinned published form and its rules" classname="platform-journey.spec.ts" time="3.071">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › CMP-009 is authoritative: invalid answers are refused per field and nothing is filed" classname="platform-journey.spec.ts" time="0.862">
+</testcase>
+<testcase name="metadata-driven apply on CMP-009 (CCR-M10-002) › only offered services expose a form; catalogue stubs are not offered" classname="platform-journey.spec.ts" time="0.922">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › the workbench requires sign-in" classname="platform-journey.spec.ts" time="0.775">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › citizen applies → officer approves → credential issued and in DigiLocker (SIMULATED)" classname="platform-journey.spec.ts" time="5.397">
+</testcase>
+<testcase name="officer decision on CMP-015 (CMP-004 officer session, HUMAN decision) › NEGATIVE: a citizen session cannot act on the workbench API" classname="platform-journey.spec.ts" time="1.895">
+</testcase>
+<testcase name="platform journey accessibility (WCAG 2.1 AA, UX4G rule 6) › citizen and officer journey pages have no axe violations and reflow at 320 px" classname="platform-journey.spec.ts" time="8.376">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › validates the mobile number before sending an OTP" classname="platform-journey.spec.ts" time="0.731">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › OTP entry supports keyboard auto-advance and backspace" classname="platform-journey.spec.ts" time="0.807">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › a wrong code marks the OTP invalid and returns focus to it" classname="platform-journey.spec.ts" time="1.384">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › sign in: unique title, single h1, landmarks, no axe violations, 320 px reflow" classname="platform-journey.spec.ts" time="1.127">
+</testcase>
+<testcase name="citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6) › create account: unique title, single h1, landmarks, no axe violations, 320 px reflow" classname="platform-journey.spec.ts" time="1.159">
+</testcase>
+</testsuite>
+</testsuites>

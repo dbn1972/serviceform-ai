@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="3.353787067">
+    <testsuite name="test/integration/credential-pg.int.test.ts" timestamp="2026-11-09T03:45:11.213Z" hostname="cursor" tests="10" failures="0" errors="0" skipped="0" time="3.353787067">
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; roles are NOLOGIN/NOBYPASSRLS and every tenant table is FORCE RLS, owned by sf_migrator" time="0.015184682">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; issues end-to-end through the runtime login and writes outbox rows in the same commits" time="0.032370356">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; tenant B sees none of tenant A rows and cannot write rows for tenant A" time="0.010402444">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; a peer component login cannot read sf_credential" time="0.005713255">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; the database refuses lifecycle reversal, provenance edits, deletes and late attachments" time="0.006412595">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; a credential cannot be created non-GENERATED or SIGNED without a matching signed attempt" time="0.00517976">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; a FAILED publish outcome is stored and the credential remains ISSUED" time="0.004769605">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; concurrent issuance of one issuance_key converges on one credential and one signed attempt" time="0.021304478">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; a FAILED signing attempt persists through PostgreSQL and the retry issues" time="0.015802143">
+        </testcase>
+        <testcase classname="test/integration/credential-pg.int.test.ts" name="CMP-022 on PostgreSQL: privilege boundary, FORCE RLS, forward-only lifecycle &gt; migrations go down and up again (rollback path)" time="0.900420106">
+        </testcase>
+    </testsuite>
+</testsuites>
