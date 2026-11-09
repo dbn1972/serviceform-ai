@@ -219,19 +219,19 @@ interface Cmp012Module {
 }
 
 interface Cmp033Module {
-  registerMetadata: (app: import('fastify').FastifyInstance, opts: unknown) => Promise<void>;
+  registerMetadata: (app: FastifyInstance, opts: unknown) => Promise<void>;
   SimulatedSchemaRegistry: new () => unknown;
 }
 
 interface Cmp051Module {
-  registerMakerChecker: (app: import('fastify').FastifyInstance, opts: unknown) => Promise<void>;
+  registerMakerChecker: (app: FastifyInstance, opts: unknown) => Promise<void>;
   SimulatedMetadataPort: new () => unknown;
   SimulatedVersioningPort: new () => unknown;
   OffAiValidationPort: new () => unknown;
 }
 
 interface Cmp052Module {
-  registerVersioning: (app: import('fastify').FastifyInstance, opts: unknown) => Promise<void>;
+  registerVersioning: (app: FastifyInstance, opts: unknown) => Promise<void>;
   SimulatedApprovalPort: new (
     config: {
       environment: string;
