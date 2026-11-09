@@ -547,11 +547,12 @@ export class LabIssuanceCoordinator {
       throw new IssuanceError(409, 'SF-APP-001', 'This case has no recorded approval');
     }
     let step = 'ENTER_SIGNING_PENDING';
+    let credential: CredentialView | null = null;
     try {
       if (app.state === 'APPROVED') app = await this.caseCommand(app, 'ENTER_SIGNING_PENDING');
 
       step = 'CREDENTIAL_ISSUE';
-      let credential = await this.credentialFor(app.application_id);
+      credential = await this.credentialFor(app.application_id);
       if (credential?.lifecycle_status !== 'ISSUED') {
         const issued = await this.deps.credentialApi(this.deps.workload()).handle({
           method: 'POST',
@@ -607,7 +608,7 @@ export class LabIssuanceCoordinator {
       const mapped = err instanceof IssuanceError ? err : componentError(err);
       const current = await this.caseFor(caller, applicationId).catch(() => app);
       return {
-        ...this.project(current, null, undefined),
+        ...this.project(current, credential, undefined),
         issuance_error: { error_code: mapped.code, step },
       };
     }
