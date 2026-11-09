@@ -21,6 +21,12 @@
         "resource_types": ["ApplicationCase", "OfficerSession"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
+      },
+      "SAMPLE_LAB_WORKFLOW_SEQUENCER": {
+        "actions": ["WORKFLOW_INSTANCE_START", "WORKFLOW_SIGNAL_ADVANCE"],
+        "resource_types": ["Application"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
       }
     }
   }

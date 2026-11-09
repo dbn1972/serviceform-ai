@@ -4,8 +4,8 @@
 #   DATABASE_URL=postgres://<admin>@localhost:<port>/<db> tests/integration/m10-platform/run.sh
 #
 # Brings up host A with scripts/dev/platform-lab.sh (fixtures/lab/platform), derives a second
-# synthetic tenant B, starts OPA B + host B against the same database, runs the suite, and stops
-# both hosts. Ports default to the SF-M10-B-INT allocation and can be overridden.
+# synthetic tenant B, starts OPA B + host B against the same database and Temporal server (own
+# task queue), runs the suite, and stops both hosts. Ports default to the SF-M10-B-INT allocation and can be overridden.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
@@ -59,7 +59,8 @@ wait_http "http://127.0.0.1:${B_OPA}/health" "Authorization: Bearer pep"
   source "${ROOT}/.platform-lab/env"
   set +a
   export SF_ENVIRONMENT=LOCAL SF_PLATFORM_LAB_DIR="${WORK}/platform-b" \
-    SF_OPA_URL="http://127.0.0.1:${B_OPA}"
+    SF_OPA_URL="http://127.0.0.1:${B_OPA}" \
+    SF_TEMPORAL_TASK_QUEUE="sf-sample-lab-workflow-b"
   cd "${ROOT}/apps/api"
   HOST=127.0.0.1 PORT="${B_API}" LOG_LEVEL=warn exec pnpm exec tsx src/platform/lab-server.ts
 ) >"${WORK}/api-b.log" 2>&1 &

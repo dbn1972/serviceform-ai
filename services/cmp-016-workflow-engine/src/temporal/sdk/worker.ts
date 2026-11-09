@@ -1,9 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import {
+  NativeConnection,
   Worker,
   bundleWorkflowCode,
   type BundleOptions,
-  type NativeConnection,
+  type NativeConnectionOptions,
   type WorkflowBundle,
 } from '@temporalio/worker';
 import type { CanonicalActivities } from './activity-types.js';
@@ -46,4 +47,24 @@ export async function createCanonicalWorker(options: CanonicalWorkerOptions): Pr
       ? { workflowBundle: options.workflowBundle }
       : { workflowsPath: WORKFLOWS_PATH, bundlerOptions: { webpackConfigHook } }),
   });
+}
+
+/** Opens the worker's own native connection; the caller owns `connection.close()`. */
+export async function connectCanonicalWorker(
+  options: Omit<CanonicalWorkerOptions, 'connection'> & {
+    address: string;
+    tls?: NativeConnectionOptions['tls'];
+  },
+): Promise<{ worker: Worker; connection: NativeConnection }> {
+  const { address, tls, ...rest } = options;
+  const connection = await NativeConnection.connect({
+    address,
+    ...(tls === undefined ? {} : { tls }),
+  });
+  try {
+    return { worker: await createCanonicalWorker({ ...rest, connection }), connection };
+  } catch (err) {
+    await connection.close();
+    throw err;
+  }
 }

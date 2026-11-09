@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import {
   ApplicationCaseService,
   DenyServicePolicyPort,
+  type CaseView,
   PgCaseStore,
   SimulatedPublishedBindingPort,
   type DeploymentEnvironment,
@@ -29,11 +30,21 @@ import {
   type MintAssertion,
   type OtpAdapterLike,
 } from './simulators.js';
+import {
+  assertTemporalAddress,
+  assertTemporalNamespace,
+  composeLabWorkflow,
+  type Cmp016Module,
+  type Cmp016SdkModule,
+  type LabWorkflowBridge,
+  type LabWorkflowFixture,
+  type WorkflowLogger,
+} from './workflow.js';
 
 /**
  * SF-M10-B-2 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms and CMP-015
  * application/case on PostgreSQL (FORCE RLS, one runtime login per component per ADR-0006) with
- * real OPA as the PDP. Connectors are SIMULATED (OTP, IdP, DigiLocker identity, published-binding
+ * real OPA as the PDP, and CMP-016 sequencing on Temporal after each CMP-015 commit (B-2c). Connectors are SIMULATED (OTP, IdP, DigiLocker identity, published-binding
  * and published-form ports) and the whole runtime refuses to start outside LOCAL/CI. Host
  * composition only: no domain logic.
  */
@@ -43,6 +54,10 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP004?: string;
   DATABASE_URL_CMP015?: string;
   DATABASE_URL_CMP009?: string;
+  DATABASE_URL_CMP016?: string;
+  SF_TEMPORAL_ADDRESS?: string;
+  SF_TEMPORAL_NAMESPACE?: string;
+  SF_TEMPORAL_TASK_QUEUE?: string;
   SF_CMP004_PEPPER?: string;
   SF_OPA_URL?: string;
   SF_OPA_TOKEN?: string;
@@ -62,7 +77,38 @@ export interface PlatformLab {
   m05: M05PluginMounts;
   readinessChecks: ReadinessCheck[];
   registerSimulators(app: FastifyInstance): Promise<void>;
+  /** Connects Temporal, seeds the pinned workflow versions and starts the CMP-016 worker. */
+  start(): Promise<void>;
   close(): Promise<void>;
+}
+
+/**
+ * Starts the CMP-016 instance once the CMP-015 draft has committed. CMP-015 never waits on it:
+ * the draft response is unchanged when the start is deferred, and the first committed transition
+ * retries the start.
+ */
+class SequencedApplicationCaseService extends ApplicationCaseService {
+  constructor(
+    deps: ConstructorParameters<typeof ApplicationCaseService>[0],
+    private readonly sequencing: LabWorkflowBridge,
+  ) {
+    super(deps);
+  }
+
+  override async createDraft(rawCtx: unknown, rawBody: unknown, rawKey: unknown) {
+    const result = await super.createDraft(rawCtx, rawBody, rawKey);
+    const application = (result.body as { application?: CaseView } | undefined)?.application;
+    if (result.status === 201 && !result.replayed && application) {
+      const ctx = rawCtx as { tenant_id: string; correlation_id: string };
+      await this.sequencing.onDraftCreated({
+        tenant_id: ctx.tenant_id,
+        application_id: application.application_id,
+        workflow_version_id: application.pins.workflow_version_id,
+        correlation_id: ctx.correlation_id,
+      });
+    }
+    return result;
+  }
 }
 
 interface Cmp004Module {
@@ -131,10 +177,10 @@ const templates = {
   integrity: (await import(`${TEMPLATES_SPECIFIER}/integrity`)) as TemplateIntegrityModule,
 };
 
-async function loadComponent<T>(pkg: string, dir: string): Promise<T> {
+async function loadComponent<T>(pkg: string, dir: string, entry = 'index.ts'): Promise<T> {
   const specifiers = [
     pkg,
-    new URL(`../../../../services/${dir}/src/index.ts`, import.meta.url).href,
+    new URL(`../../../../services/${dir}/src/${entry}`, import.meta.url).href,
   ];
   let last: unknown;
   for (const specifier of specifiers) {
@@ -200,18 +246,27 @@ export function publishedFormFor(catalogueId: string, formVersionId: string, ten
   };
 }
 
-export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab> {
+export async function buildPlatformLab(
+  env: PlatformLabEnv,
+  opts: { logger?: WorkflowLogger } = {},
+): Promise<PlatformLab> {
   const environment = env.SF_ENVIRONMENT ?? 'LOCAL';
   assertSimulatorEnvironment(environment);
   const dir = required(env, 'SF_PLATFORM_LAB_DIR');
   const pepper = required(env, 'SF_CMP004_PEPPER');
   if (pepper.length < 32) throw new Error('Invalid configuration for: SF_CMP004_PEPPER');
   const placement = loadPlacement(join(dir, 'placement.citizen.json'), environment);
+  const temporal = {
+    address: assertTemporalAddress(env.SF_TEMPORAL_ADDRESS),
+    namespace: assertTemporalNamespace(env.SF_TEMPORAL_NAMESPACE),
+    taskQueue: required(env, 'SF_TEMPORAL_TASK_QUEUE'),
+  };
 
   const pools = {
     cmp004: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP004'), max: 8 }),
     cmp009: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP009'), max: 8 }),
     cmp015: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP015'), max: 8 }),
+    cmp016: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP016'), max: 8 }),
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -265,13 +320,41 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
       pins: b.pins,
     });
   }
-  const applicationCase = new ApplicationCaseService({
-    store: new PgCaseStore(pools.cmp015),
-    authorizer: opa,
-    bindings,
-    servicePolicy: new DenyServicePolicyPort(),
-    config: { environment: environment as DeploymentEnvironment },
+  const [cmp016, cmp016Sdk] = await Promise.all([
+    loadComponent<Cmp016Module>('@serviceform/cmp-016-workflow-engine', 'cmp-016-workflow-engine'),
+    loadComponent<Cmp016SdkModule>(
+      '@serviceform/cmp-016-workflow-engine/temporal-sdk',
+      'cmp-016-workflow-engine',
+      'temporal/sdk/index.ts',
+    ),
+  ]);
+  const workflow = composeLabWorkflow({
+    environment,
+    cmp016,
+    sdk: cmp016Sdk,
+    pool: pools.cmp016,
+    pdp: opa,
+    fixture: readJson<LabWorkflowFixture>(join(dir, 'workflow.json')),
+    pins: offeredBindings.map((b) => ({
+      tenant_id: b.tenant_id,
+      catalogue_id: b.catalogue_id,
+      workflow_version_id: b.pins.workflow_version_id,
+    })),
+    cellId: placement.cell_id,
+    temporal,
+    ...(opts.logger ? { logger: opts.logger } : {}),
   });
+  const applicationCase = new SequencedApplicationCaseService(
+    {
+      store: new PgCaseStore(pools.cmp015),
+      authorizer: opa,
+      bindings,
+      servicePolicy: new DenyServicePolicyPort(),
+      workflow: workflow.bridge,
+      config: { environment: environment as DeploymentEnvironment },
+    },
+    workflow.bridge,
+  );
 
   const cmp009 = await loadComponent<Cmp009Module>(
     '@serviceform/cmp-009-dynamic-forms',
@@ -338,6 +421,8 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
       poolReadiness('cmp004-db', pools.cmp004),
       poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
+      poolReadiness('cmp016-db', pools.cmp016),
+      ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
       registerLabSimulators(app, {
@@ -346,8 +431,10 @@ export async function buildPlatformLab(env: PlatformLabEnv): Promise<PlatformLab
         officers,
         mint: (claims) => cmp004.mintSimulatedIdpAssertion(pepper, claims),
       }),
+    start: () => workflow.start(),
     async close() {
-      await Promise.all([pools.cmp004.end(), pools.cmp009.end(), pools.cmp015.end()]);
+      await workflow.close();
+      await Promise.all(Object.values(pools).map((p) => p.end()));
     },
   };
 }

@@ -71,4 +71,6 @@ writeFileSync(
 );
 writeFileSync(join(out, 'officers.json'), `${JSON.stringify(officers, null, 2)}\n`);
 writeFileSync(join(out, 'opa/sf/tenants/data.json'), `${JSON.stringify(opaTenants, null, 2)}\n`);
+// Same SAMPLE_LAB canonical graph; tenant B pins its own published version id (…b012).
+writeFileSync(join(out, 'workflow.json'), `${JSON.stringify(read('workflow.json'), null, 2)}\n`);
 process.stdout.write(`tenant-b: fixtures written (tenant ${TENANT_B.tenant_id})\n`);

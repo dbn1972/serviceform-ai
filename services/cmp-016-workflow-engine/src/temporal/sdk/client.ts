@@ -83,6 +83,10 @@ export class TemporalSdkClient implements TemporalClientPort {
       throw mapTemporalError(err);
     }
   }
+
+  async close(): Promise<void> {
+    await this.client.connection.close();
+  }
 }
 
 export async function connectTemporalClient(options: {

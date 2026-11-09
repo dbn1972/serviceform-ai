@@ -14,6 +14,8 @@ const adminUrl = process.env.DATABASE_URL;
 const environment = process.env.SF_ENVIRONMENT ?? 'LOCAL';
 const outFile = resolve(process.env.SF_PLATFORM_LAB_ENV_FILE ?? join(ROOT, '.platform-lab/env'));
 const opaUrl = process.env.SF_OPA_URL ?? 'http://127.0.0.1:8181';
+const temporalAddress =
+  process.env.SF_TEMPORAL_ADDRESS ?? `127.0.0.1:${process.env.SF_TEMPORAL_PORT ?? '7233'}`;
 
 if (!adminUrl) {
   console.error('platform-lab-bootstrap: DATABASE_URL (admin) is required');
@@ -28,6 +30,7 @@ const ROLES = [
   { login: 'sf_lab_cmp004', member: 'sf_cmp004_rw', env: 'DATABASE_URL_CMP004' },
   { login: 'sf_lab_cmp009', member: 'sf_cmp009_rw', env: 'DATABASE_URL_CMP009' },
   { login: 'sf_lab_cmp015', member: 'sf_cmp015_rw', env: 'DATABASE_URL_CMP015' },
+  { login: 'sf_lab_cmp016', member: 'sf_cmp016_rw', env: 'DATABASE_URL_CMP016' },
 ];
 
 function previous() {
@@ -66,6 +69,10 @@ const out = {
   SF_PLATFORM_LAB_DIR: join(ROOT, 'fixtures/lab/platform'),
   SF_OPA_URL: opaUrl,
   SF_OPA_TOKEN: 'pep',
+  // CMP-016 sequencing (B-2c): Temporal dev server started by scripts/dev/platform-lab.sh.
+  SF_TEMPORAL_ADDRESS: temporalAddress,
+  SF_TEMPORAL_NAMESPACE: 'default',
+  SF_TEMPORAL_TASK_QUEUE: process.env.SF_TEMPORAL_TASK_QUEUE ?? 'sf-sample-lab-workflow',
   // Lab-sized limits: all portal traffic reaches the host from the BFF address (one key per IP).
   SF_IDENTITY_RATE_LIMIT_MAX: '3000',
   SF_FORMS_RATE_LIMIT_MAX: '3000',

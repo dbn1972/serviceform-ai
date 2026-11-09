@@ -1,0 +1,199 @@
+{
+  "_note": "SAMPLE_LAB CMP-016 sequencing for the platform lab host (LOCAL/CI only). Minimal executable canonical graph (SF-CON-WORKFLOW-MODEL) whose commit-wait outcomes are the FROZEN SF-CON-APPLICATION-CASE-SM commands: Temporal only follows committed CMP-015 transitions and never decides them. WAIT nodes only, because CMP-017 human tasks and the rule/payment/sign/issue ports are not wired on this path; templates/residence-certificate/workflow.yaml stays POLICY_INPUT_REQUIRED. Publication is SIMULATED (Studio -> CMP-052/CMP-051 replaces it in slice B-4): the recorded approval binds the exact graph_hash below. The workflow_version_id is the published binding pin. Not CERTIFIED. G6=false.",
+  "simulation": "SIMULATED",
+  "workload": {
+    "actor_id": "0d15ba00-0016-4000-8000-0d15ba0016a0",
+    "roles": ["SAMPLE_LAB_WORKFLOW_SEQUENCER"]
+  },
+  "publication": {
+    "author_id": "0d15ba00-0016-4000-8000-0d15ba0016a1",
+    "approver_id": "0d15ba00-0016-4000-8000-0d15ba0016a2"
+  },
+  "workflows": [
+    {
+      "catalogue_id": "IND-SOC-002",
+      "definition_key": "sample-lab.ind-soc-002.case-sequencing",
+      "approval_ref": "sample-lab:simulated:ind-soc-002-case-sequencing-v1",
+      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "graph": {
+        "nodes": [
+          {
+            "node_id": "START",
+            "kind": "START"
+          },
+          {
+            "node_id": "WAIT_DRAFT",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_READY_TO_SUBMIT",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_SUBMITTED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_PAYMENT_PENDING",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_RECEIVED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_UNDER_SCRUTINY",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_DEFICIENCY_RAISED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_CITIZEN_RESPONSE",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_VERIFICATION",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_DECISION_PENDING",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_APPROVED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_REJECTED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_SIGNING_PENDING",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "WAIT_ISSUED",
+            "kind": "WAIT"
+          },
+          {
+            "node_id": "END_CLOSED",
+            "kind": "END"
+          }
+        ],
+        "edges": [
+          {
+            "from_node": "START",
+            "to_node": "WAIT_DRAFT"
+          },
+          {
+            "from_node": "WAIT_DRAFT",
+            "to_node": "WAIT_READY_TO_SUBMIT",
+            "outcome": "MARK_READY_TO_SUBMIT"
+          },
+          {
+            "from_node": "WAIT_READY_TO_SUBMIT",
+            "to_node": "WAIT_SUBMITTED",
+            "outcome": "SUBMIT"
+          },
+          {
+            "from_node": "WAIT_READY_TO_SUBMIT",
+            "to_node": "WAIT_DRAFT",
+            "outcome": "RETURN_TO_DRAFT"
+          },
+          {
+            "from_node": "WAIT_SUBMITTED",
+            "to_node": "WAIT_PAYMENT_PENDING",
+            "outcome": "ENTER_PAYMENT_PENDING"
+          },
+          {
+            "from_node": "WAIT_SUBMITTED",
+            "to_node": "WAIT_RECEIVED",
+            "outcome": "MARK_RECEIVED"
+          },
+          {
+            "from_node": "WAIT_PAYMENT_PENDING",
+            "to_node": "WAIT_RECEIVED",
+            "outcome": "MARK_RECEIVED"
+          },
+          {
+            "from_node": "WAIT_RECEIVED",
+            "to_node": "WAIT_UNDER_SCRUTINY",
+            "outcome": "ENTER_SCRUTINY"
+          },
+          {
+            "from_node": "WAIT_UNDER_SCRUTINY",
+            "to_node": "WAIT_DEFICIENCY_RAISED",
+            "outcome": "RAISE_DEFICIENCY"
+          },
+          {
+            "from_node": "WAIT_UNDER_SCRUTINY",
+            "to_node": "WAIT_VERIFICATION",
+            "outcome": "ENTER_VERIFICATION"
+          },
+          {
+            "from_node": "WAIT_UNDER_SCRUTINY",
+            "to_node": "WAIT_DECISION_PENDING",
+            "outcome": "ENTER_DECISION_PENDING"
+          },
+          {
+            "from_node": "WAIT_DEFICIENCY_RAISED",
+            "to_node": "WAIT_CITIZEN_RESPONSE",
+            "outcome": "RECORD_CITIZEN_RESPONSE"
+          },
+          {
+            "from_node": "WAIT_CITIZEN_RESPONSE",
+            "to_node": "WAIT_UNDER_SCRUTINY",
+            "outcome": "ENTER_SCRUTINY"
+          },
+          {
+            "from_node": "WAIT_VERIFICATION",
+            "to_node": "WAIT_UNDER_SCRUTINY",
+            "outcome": "ENTER_SCRUTINY"
+          },
+          {
+            "from_node": "WAIT_VERIFICATION",
+            "to_node": "WAIT_DECISION_PENDING",
+            "outcome": "ENTER_DECISION_PENDING"
+          },
+          {
+            "from_node": "WAIT_DECISION_PENDING",
+            "to_node": "WAIT_APPROVED",
+            "outcome": "RECORD_APPROVED"
+          },
+          {
+            "from_node": "WAIT_DECISION_PENDING",
+            "to_node": "WAIT_REJECTED",
+            "outcome": "RECORD_REJECTED"
+          },
+          {
+            "from_node": "WAIT_APPROVED",
+            "to_node": "WAIT_SIGNING_PENDING",
+            "outcome": "ENTER_SIGNING_PENDING"
+          },
+          {
+            "from_node": "WAIT_APPROVED",
+            "to_node": "WAIT_ISSUED",
+            "outcome": "RECORD_ISSUED"
+          },
+          {
+            "from_node": "WAIT_REJECTED",
+            "to_node": "END_CLOSED",
+            "outcome": "CLOSE"
+          },
+          {
+            "from_node": "WAIT_SIGNING_PENDING",
+            "to_node": "WAIT_ISSUED",
+            "outcome": "RECORD_ISSUED"
+          },
+          {
+            "from_node": "WAIT_ISSUED",
+            "to_node": "END_CLOSED",
+            "outcome": "CLOSE"
+          }
+        ]
+      }
+    }
+  ]
+}

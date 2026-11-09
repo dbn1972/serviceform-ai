@@ -2,6 +2,7 @@ export { TemporalSdkClient, connectTemporalClient } from './client.js';
 export {
   WORKFLOWS_PATH,
   bundleCanonicalWorkflows,
+  connectCanonicalWorker,
   createCanonicalWorker,
   type CanonicalWorkerOptions,
 } from './worker.js';
