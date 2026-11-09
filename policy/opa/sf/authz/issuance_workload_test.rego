@@ -5,7 +5,7 @@ import rego.v1
 # CCR-M10-003: M07 issuance and DigiLocker publish actions. They are role-granted only (a tenant
 # workload or officer role); no citizen-owner or published grant exists for any of them.
 
-WORKLOAD := "0d15ba00-5a00-4000-8000-0d15ba005a00"
+ISSUANCE_ACTOR := "0d15ba00-5a00-4000-8000-0d15ba005a00"
 
 CREDENTIAL := "c4c4c4c4-c4c4-4c4c-8c4c-c4c4c4c4c4c4"
 
@@ -24,7 +24,7 @@ issuance_role := {T1: {"roles": {"ISSUANCE_WORKLOAD": {
 
 workload_input(resource_type, action) := {
 	"subject": {
-		"user_id": WORKLOAD,
+		"user_id": ISSUANCE_ACTOR,
 		"actor_type": "SYSTEM",
 		"tenant_id": T1,
 		"roles": ["ISSUANCE_WORKLOAD"],

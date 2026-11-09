@@ -177,7 +177,7 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Applications/i);
   });
 
-  test('SAMPLE_LAB platform end-to-end: apply → officer approves (HUMAN) on CMP-015', async ({
+  test('SAMPLE_LAB platform end-to-end: apply → officer approves → DigiLocker SIMULATED publish', async ({
     page,
     browser,
   }) => {
@@ -194,9 +194,11 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
     await officer.goto(`${OFFICER_WORKBENCH}/applications/${id}`);
     await officer.getByRole('button', { name: 'Approve' }).click();
     await expect(officer.getByText(/recorded on the case as a human decision/i)).toBeVisible();
+    await expect(officer.getByText(/published to DigiLocker \(SIMULATED\)/i)).toBeVisible();
     await officer.close();
 
     await page.goto(`${CITIZEN_PORTAL}/certificates/${id}`);
-    await expect(page.getByText(/Approved — certificate not yet issued/i)).toBeVisible();
+    await expect(page.getByText('Saved to DigiLocker (SIMULATED)')).toBeVisible();
+    await expect(page.getByText('DigiLocker · PUBLISHED')).toBeVisible();
   });
 });

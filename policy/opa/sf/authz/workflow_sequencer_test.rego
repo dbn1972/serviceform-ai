@@ -3,7 +3,7 @@ package sf.authz_test
 import data.sf.authz
 import rego.v1
 
-WORKLOAD := "5e5e5e5e-5e5e-45e5-85e5-5e5e5e5e5e5e"
+SEQUENCER_ACTOR := "5e5e5e5e-5e5e-45e5-85e5-5e5e5e5e5e5e"
 
 sequencer_role := {T1: {"roles": {"WORKFLOW_SEQUENCER": {
 	"actions": ["WORKFLOW_INSTANCE_START", "WORKFLOW_SIGNAL_ADVANCE"],
@@ -14,7 +14,7 @@ sequencer_role := {T1: {"roles": {"WORKFLOW_SEQUENCER": {
 
 sequencer_input := {
 	"subject": {
-		"user_id": WORKLOAD,
+		"user_id": SEQUENCER_ACTOR,
 		"actor_type": "SYSTEM",
 		"tenant_id": T1,
 		"roles": ["WORKFLOW_SEQUENCER"],

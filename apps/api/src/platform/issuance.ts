@@ -16,12 +16,58 @@ import type { FastifyInstance, FastifyRequest } from 'fastify';
 
 export const ISSUANCE_ENVIRONMENTS: readonly string[] = ['LOCAL', 'CI'];
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const OPAQUE_REF = /^[A-Za-z0-9_.:-]{1,128}$/;
-const PURPOSE_CODE = /^[A-Z][A-Z0-9_]{1,63}$/;
-const ROLE = /^[A-Z][A-Z0-9_]{1,63}$/;
-
 const POST_APPROVAL_STATES = new Set(['APPROVED', 'SIGNING_PENDING', 'ISSUED', 'CLOSED']);
+
+/** Linear-time hex digit check (avoids ReDoS-prone regex on fixture / path input). */
+function isHexChar(c: number): boolean {
+  return (c >= 48 && c <= 57) || (c >= 97 && c <= 102) || (c >= 65 && c <= 70);
+}
+
+/** RFC 4122-shaped UUID (versions 1–8, RFC 4122 variant) without regex backtracking. */
+function isUuidString(value: string): boolean {
+  if (value.length !== 36) return false;
+  for (let i = 0; i < 36; i++) {
+    const c = value.charCodeAt(i);
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      if (c !== 45) return false;
+      continue;
+    }
+    if (!isHexChar(c)) return false;
+  }
+  const version = value.charCodeAt(14);
+  if (version < 49 || version > 56) return false; // '1'..'8'
+  const variant = value.charAt(19).toLowerCase();
+  return variant === '8' || variant === '9' || variant === 'a' || variant === 'b';
+}
+
+function isOpaqueRef(value: string): boolean {
+  if (value.length < 1 || value.length > 128) return false;
+  for (let i = 0; i < value.length; i++) {
+    const c = value.charCodeAt(i);
+    const ok =
+      (c >= 48 && c <= 57) ||
+      (c >= 65 && c <= 90) ||
+      (c >= 97 && c <= 122) ||
+      c === 95 ||
+      c === 46 ||
+      c === 58 ||
+      c === 45;
+    if (!ok) return false;
+  }
+  return true;
+}
+
+function isPurposeOrRole(value: string): boolean {
+  if (value.length < 2 || value.length > 64) return false;
+  const first = value.charCodeAt(0);
+  if (first < 65 || first > 90) return false;
+  for (let i = 1; i < value.length; i++) {
+    const c = value.charCodeAt(i);
+    const ok = (c >= 65 && c <= 90) || (c >= 48 && c <= 57) || c === 95;
+    if (!ok) return false;
+  }
+  return true;
+}
 
 export interface CredentialTemplatePin {
   tenant_service_binding_id: string;
@@ -48,12 +94,12 @@ function fail(field: string): never {
 }
 
 function uuid(value: unknown, field: string): string {
-  if (typeof value !== 'string' || !UUID.test(value)) fail(field);
+  if (typeof value !== 'string' || !isUuidString(value)) fail(field);
   return value.toLowerCase();
 }
 
-function ref(value: unknown, field: string, re = OPAQUE_REF): string {
-  if (typeof value !== 'string' || !re.test(value)) fail(field);
+function ref(value: unknown, field: string, ok: (s: string) => boolean = isOpaqueRef): string {
+  if (typeof value !== 'string' || !ok(value)) fail(field);
   return value;
 }
 
@@ -74,7 +120,11 @@ export function parseIssuanceFixture(
   if (!doc || doc['simulation'] !== 'SIMULATED') fail('simulation');
   const workload = doc['workload'] as Record<string, unknown> | undefined;
   const roles = workload?.['roles'];
-  if (!Array.isArray(roles) || roles.length === 0 || !roles.every((r) => ROLE.test(String(r)))) {
+  if (
+    !Array.isArray(roles) ||
+    roles.length === 0 ||
+    !roles.every((r) => typeof r === 'string' && isPurposeOrRole(r))
+  ) {
     fail('workload.roles');
   }
   const tenants = Array.isArray(doc['tenants']) ? (doc['tenants'] as unknown[]) : [];
@@ -98,7 +148,11 @@ export function parseIssuanceFixture(
     digilocker_binding_id: uuid(bindings?.['digilocker'], 'connector_bindings.digilocker'),
     publish: {
       consent_ref: uuid(publish?.['consent_ref'], 'digilocker_publish.consent_ref'),
-      purpose_code: ref(publish?.['purpose_code'], 'digilocker_publish.purpose_code', PURPOSE_CODE),
+      purpose_code: ref(
+        publish?.['purpose_code'],
+        'digilocker_publish.purpose_code',
+        isPurposeOrRole,
+      ),
       document_type_ref: ref(
         publish?.['document_type_ref'],
         'digilocker_publish.document_type_ref',
@@ -667,7 +721,7 @@ export async function registerLabIssuanceRoutes(
       return { status: 401, body: errorBody('SF-AUTH-001', 'Authentication required', request.id) };
     }
     const { applicationId } = request.params;
-    if (!UUID.test(applicationId)) {
+    if (!isUuidString(applicationId)) {
       return {
         status: 400,
         body: errorBody('SF-SYS-003', 'Request validation failed', request.id),
