@@ -220,7 +220,17 @@ describe('CMP-015 lifecycle (SF-CON-APPLICATION-CASE-SM; SF-CON-COMMAND-TRANSITI
       application_id: id,
       aggregate_version: 2,
       idempotency_key: `${id}:2`,
+      command_transition: {
+        command_id: body.command_transition['command_id'],
+        command_type: 'MARK_READY_TO_SUBMIT',
+        phase: 'DOMAIN_COMMITTED',
+        temporal_advanced: false,
+      },
     });
+    const committed = store
+      .outboxFor(T1, TOPIC_DOMAIN)
+      .find((o) => o.envelope.aggregate_id === id && o.envelope.aggregate_version === 2);
+    expect(h.workflow.signals[0]?.outbox_event_id).toBe(committed?.envelope.event_id);
   });
 
   it('a failed workflow signal never undoes the committed transition (outbox remains the trigger)', async () => {

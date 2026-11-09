@@ -205,11 +205,14 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP004: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP015: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP009: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP016: 'postgres://u:p@127.0.0.1:1/none',
+    SF_TEMPORAL_ADDRESS: '127.0.0.1:1',
+    SF_TEMPORAL_TASK_QUEUE: 'sf-sample-lab-workflow',
     SF_CMP004_PEPPER: 'x'.repeat(64),
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004, CMP-009 and CMP-015 mounts from the SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004, CMP-009, CMP-015 and CMP-016 sequencing from the SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
@@ -220,7 +223,12 @@ describe('buildPlatformLab composition', () => {
         'cmp004-db',
         'cmp009-db',
         'cmp015-db',
+        'cmp016-db',
+        'cmp016-temporal-worker',
       ]);
+      // Nothing connects to Temporal at build time; the worker is not ready until start().
+      const worker = lab.readinessChecks.find((c) => c.name === 'cmp016-temporal-worker');
+      await expect(worker?.check()).rejects.toThrow(/worker not running/);
       const app = Fastify();
       await lab.registerSimulators(app);
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
@@ -245,6 +253,15 @@ describe('buildPlatformLab composition', () => {
     await expect(buildPlatformLab(noOpa)).rejects.toThrow(/SF_OPA_URL/);
     const { DATABASE_URL_CMP009: _db, ...noForms } = env;
     await expect(buildPlatformLab(noForms)).rejects.toThrow(/DATABASE_URL_CMP009/);
+    const { DATABASE_URL_CMP016: _wf, ...noWorkflowDb } = env;
+    await expect(buildPlatformLab(noWorkflowDb)).rejects.toThrow(/DATABASE_URL_CMP016/);
+    const { SF_TEMPORAL_ADDRESS: _t, ...noTemporal } = env;
+    await expect(buildPlatformLab(noTemporal)).rejects.toThrow(/SF_TEMPORAL_ADDRESS/);
+    await expect(
+      buildPlatformLab({ ...env, SF_TEMPORAL_ADDRESS: 'http://127.0.0.1:7233' }),
+    ).rejects.toThrow(/SF_TEMPORAL_ADDRESS/);
+    const { SF_TEMPORAL_TASK_QUEUE: _q, ...noQueue } = env;
+    await expect(buildPlatformLab(noQueue)).rejects.toThrow(/SF_TEMPORAL_TASK_QUEUE/);
     await expect(buildPlatformLab({ ...env, SF_FORMS_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
       /SF_FORMS_RATE_LIMIT_MAX/,
     );

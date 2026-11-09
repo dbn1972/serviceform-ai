@@ -2,8 +2,11 @@ import { randomUUID } from 'node:crypto';
 import type { CaseState } from './domain/model.js';
 import type { PinGraph } from './domain/pins.js';
 import { Cmp015Error, detail } from './errors.js';
+import { PHASES, type CommandTransitionRecord, type Phase } from './command-transition.js';
 import type { WorkflowAdvancePort, WorkflowAdvanceSignal } from './ports/workflow-advance.js';
 import { assertNoOpenDomainTransaction } from './tx-scope.js';
+
+export { PHASES, type CommandTransitionRecord, type Phase } from './command-transition.js';
 
 /**
  * SF-CON-COMMAND-TRANSITION: authorize -> validate pins/state -> short PostgreSQL transaction ->
@@ -11,16 +14,6 @@ import { assertNoOpenDomainTransaction } from './tx-scope.js';
  * advance one step at a time, and a Temporal advance needs a CommitReceipt that exists only after
  * the domain transaction resolved.
  */
-export const PHASES = [
-  'AUTHORIZE',
-  'VALIDATE_PINS_STATE',
-  'DOMAIN_TXN',
-  'CASE_MUTATED',
-  'OUTBOX_WRITTEN',
-  'DOMAIN_COMMITTED',
-  'TEMPORAL_ADVANCE',
-] as const;
-export type Phase = (typeof PHASES)[number];
 
 export interface CommitReceipt {
   readonly tenantId: string;
@@ -29,26 +22,6 @@ export interface CommitReceipt {
 }
 
 const issuedReceipts = new WeakSet<object>();
-
-export interface CommandTransitionRecord {
-  contract_id: 'SF-CON-COMMAND-TRANSITION';
-  contract_status: 'FROZEN';
-  freeze_status: 'FROZEN';
-  tenant_id: string;
-  application_id: string;
-  command_id: string;
-  command_type: string;
-  phase: Phase;
-  expected_state: CaseState;
-  pin_set: PinGraph;
-  authz_decision_id: string;
-  authz_policy_revision: string;
-  idempotency_key: string;
-  correlation_id: string;
-  domain_committed: boolean;
-  temporal_advanced: boolean;
-  open_domain_txn_has_temporal_network: false;
-}
 
 export class CommandPipeline {
   readonly commandId = randomUUID();
@@ -170,10 +143,13 @@ export class WorkflowAdvanceGate {
   async advance(
     pipeline: CommandPipeline,
     receipt: CommitReceipt,
-    signal: Omit<WorkflowAdvanceSignal, 'tenant_id' | 'application_id' | 'aggregate_version'>,
+    signal: Omit<
+      WorkflowAdvanceSignal,
+      'tenant_id' | 'application_id' | 'aggregate_version' | 'command_transition'
+    >,
   ): Promise<'SIGNALLED' | 'DEFERRED_TO_OUTBOX'> {
     assertNoOpenDomainTransaction('workflow-advance');
-    if (!isCommitReceipt(receipt)) {
+    if (!isCommitReceipt(receipt) || pipeline.phase !== 'DOMAIN_COMMITTED') {
       throw new Cmp015Error('SF-WF-001', { details: detail('TEMPORAL_ADVANCE_BEFORE_COMMIT') });
     }
     try {
@@ -182,6 +158,7 @@ export class WorkflowAdvanceGate {
         tenant_id: receipt.tenantId,
         application_id: receipt.applicationId,
         aggregate_version: receipt.aggregateVersion,
+        command_transition: pipeline.record(),
       });
       if (outcome === 'DEFERRED_TO_OUTBOX') return 'DEFERRED_TO_OUTBOX';
     } catch {

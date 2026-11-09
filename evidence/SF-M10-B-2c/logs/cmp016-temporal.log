@@ -1,0 +1,206 @@
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:temporal /agent/repos/serviceform-ai/services/cmp-016-workflow-engine
+> vitest run --config vitest.temporal.config.ts
+
+
+ RUN  v5.0.3 /agent/repos/serviceform-ai/services/cmp-016-workflow-engine
+
+2026-11-09T03:05:30.037Z [INFO] asset workflow-bundle-6b54bb5671ee5678eda8.js 1.77 MiB [emitted] [immutable] (name: main)
+runtime modules 883 bytes 4 modules
+modules by path ../../node_modules/.pnpm/ 464 KiB
+  modules by path ../../node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporal...(truncated) 165 KiB 36 modules
+  modules by path ../../node_modules/.pnpm/@temporalio+workflow@1.24.0/node_modules/@tempor...(truncated) 223 KiB 29 modules
+  modules by path ../../node_modules/.pnpm/nexus-rpc@0.0.3/node_modules/nexus-rpc/lib/ 22.3 KiB 13 modules
+  + 2 modules
+modules by path ./src/ 52.8 KiB
+  modules by path ./src/domain/*.ts 40.6 KiB 6 modules
+  modules by path ./src/temporal/ 8.78 KiB
+    modules by path ./src/temporal/sdk/*.ts 4.63 KiB 2 modules
+    + 2 modules
+  ./src/errors.ts 3.43 KiB [built] [code generated]
+optional modules 30 bytes [optional]
+  __temporal_custom_payload_converter (ignored) 15 bytes [optional] [built] [code generated]
+  __temporal_custom_failure_converter (ignored) 15 bytes [optional] [built] [code generated]
+webpack 5.111.1 compiled successfully in 486 ms
+2026-11-09T03:05:30.043Z [INFO] Workflow bundle created { size: '1.77MB' }
+2026-11-09T03:05:30.216803Z  WARN temporalio_sdk_core::worker: Temporal Server 1.16.0 or newer is required to guarantee that the latest heartbeat details are preserved when an activity fails; the server did not advertise the activity_failure_include_heartbeat capability, so heartbeat details may be lost on failure
+2026-11-09T03:05:30.217Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'RUNNING'
+}
+2026-11-09T03:05:30.218Z [INFO] No Nexus services registered, not polling for Nexus tasks { sdkComponent: 'worker', taskQueue: 'sf-workflow-sdk-test' }
+2026-11-09T03:05:30.667Z [WARN] workflow event rejected {
+  sdkComponent: 'workflow',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:5c8357ee-bf1e-47f0-9752-f1e4171150ed',
+  runId: 'ae63efb1-8ed9-49be-8ab2-4c0641302a27',
+  workflowType: 'serviceformCanonicalWorkflow',
+  event: 'COMMITTED',
+  code: 'SF-WF-001',
+  detail: 'ADVANCE_BEFORE_DOMAIN_COMMIT'
+}
+2026-11-09T03:05:30.848Z [WARN] workflow event rejected {
+  sdkComponent: 'workflow',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:acc8fc9f-c38b-4d09-99fe-16369b0e383c',
+  runId: '461d537e-d6df-4006-b8dc-5077bd67a1c8',
+  workflowType: 'serviceformCanonicalWorkflow',
+  event: 'COMMITTED',
+  code: 'SF-TEN-002',
+  detail: 'SIGNAL_SCOPE_MISMATCH'
+}
+2026-11-09T03:05:31.418Z [WARN] Activity failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  isLocal: false,
+  attempt: 1,
+  namespace: 'default',
+  taskToken: 'AAdkZWZhdWx0AE9zZi13ZjoxMTExMTExMS0xMTExLTQxMTEtODExMS0xMTExMTExMTExMTE6MDAwNTlkYzQtYzQzMi00ZDQyLTg1OWUtMDRhNzMyYzc5YjFjACRjZWYyNTQzNy1jMzg2LTQ3NmYtYWRkMy04MTRjYmM2MjJlYmUAAAAAAAAAEQAAAAE=',
+  activityId: '3',
+  activityType: 'createHumanTask',
+  workflowId: 'sf-wf:11111111-1111-4111-8111-111111111111:00059dc4-c432-4d42-859e-04a732c79b1c',
+  workflowRunId: 'cef25437-c386-476f-add3-814cbc622ebe',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: Error: CMP-017 temporarily unavailable
+      at Object.create (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/test/temporal/sdk-worker.int.test.ts:77:13)
+      at performEffect (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/activities.ts:49:30)
+      at createHumanTask (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/activities.ts:47:13)
+      at executeNextHandler (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/activity.js:102:54)
+      at Activity.execute (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/activity.js:104:26)
+      at /agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/activity.js:152:29
+      at AsyncLocalStorage.run (node:internal/async_local_storage/async_hooks:91:14)
+      at NativeConnection.withAbortSignal (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/connection.js:172:46)
+      at Client.withAbortSignal (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+client@1.24.0/node_modules/@temporalio/client/lib/base-client.js:65:38)
+      at Activity.executeWithClient (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/activity.js:151:33),
+  durationMs: 0
+}
+2026-11-09T03:05:32.468Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-bpmn-60de6752-7696-4b0a-813d-c80d7d0d0352',
+  runId: '07acf4f3-3f4b-4fc6-badf-a899e245a4a1',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: MODEL_INVALID
+      at Function.nonRetryable (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-11-09T03:05:32.476Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-engine-60de6752-7696-4b0a-813d-c80d7d0d0352',
+  runId: '9f9f67e9-c379-4e23-9c74-18622f996c4b',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: BPMN_RUNTIME_FORBIDDEN
+      at Function.nonRetryable (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-11-09T03:05:32.502Z [WARN] Workflow failed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  namespace: 'default',
+  workflowId: 'raw-officer-240677d7-af23-4f44-b5b2-9c9b20ff40d6',
+  runId: '38f94282-f00e-4e81-bedb-b43d9ae5e549',
+  workflowType: 'serviceformCanonicalWorkflow',
+  error: ApplicationFailure: NAMED_OFFICER_FORBIDDEN
+      at Function.nonRetryable (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+common@1.24.0/node_modules/@temporalio/common/src/failure.ts:254:11)
+      at nonRetryable (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:43:28)
+      at failure (/agent/repos/serviceform-ai/services/cmp-016-workflow-engine/src/temporal/sdk/workflows.ts:127:42)
+      at Script.runInContext (node:vm:149:12)
+      at Proxy.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/reusable-vm.js:216:45)
+      at ReusableVMWorkflow.activate (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/vm-shared.js:403:37)
+      at handleRequest (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:73:47)
+      at MessagePort.<anonymous> (/agent/repos/serviceform-ai/node_modules/.pnpm/@temporalio+worker@1.24.0_@swc+helpers@0.5.23_esbuild@0.28.2/node_modules/@temporalio/worker/lib/workflow/workflow-worker-thread.js:145:28)
+      at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+      at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28) {
+    [cause]: undefined
+  }
+}
+2026-11-09T03:05:32.504Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'STOPPING'
+}
+2026-11-09T03:05:32.504Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'DRAINING'
+}
+2026-11-09T03:05:32.509Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'DRAINED'
+}
+2026-11-09T03:05:32.509Z [INFO] Worker state changed {
+  sdkComponent: 'worker',
+  taskQueue: 'sf-workflow-sdk-test',
+  state: 'STOPPED'
+}
+ ❯ test/temporal/sdk-worker.int.test.ts (12 tests | 1 failed) 4180ms
+   ❯ Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) (12)
+     ✓ start uses the canonical workflow type, task queue and a tenant+application workflow id 165ms
+     ✓ committed CMP-015 transition reaches the running workflow; duplicate delivery has no duplicate effects 186ms
+     ✓ NEGATIVE: a failed CMP-015 commit cannot advance Temporal (service path and raw signal) 123ms
+     ✓ NEGATIVE: no Temporal call inside an open domain transaction 61ms
+     ✓ NEGATIVE: a signal scoped to another tenant or application is rejected inside the workflow 120ms
+     ✓ durable wait and durable Temporal timers (no setTimeout): survives skipped days, fires, then completes 170ms
+     ✓ withdrawal: CMP-016 request record -> review -> CMP-015 commit terminates and cancels the durable timer 142ms
+     ✓ sf.migrate reaches the running workflow only through an approved, committed plan 184ms
+     ✓ activities are retry-safe: a failed CMP-017 call is retried with the same idempotency key 1047ms
+     × NEGATIVE: Temporal cannot update CMP-015 state - activities are ports + own projection only 6ms
+     ✓ NEGATIVE: BPMN import is not a second engine 41ms
+     ✓ NEGATIVE: named officer assignment is still rejected (service and inside the worker) 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/temporal/sdk-worker.int.test.ts > Temporal SDK binding: worker, client, signals, timers, activities (time-skipping server) > NEGATIVE: Temporal cannot update CMP-015 state - activities are ports + own projection only
+AssertionError: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/temporal/sdk-worker.int.test.ts:460:31
+    458|           AND (has_table_privilege('sf_t016_rt', c.oid, 'UPDATE') OR h…
+    459|     );
+    460|     expect(others.rows[0]?.n).toBe(0);
+       |                               ^
+    461|   });
+    462|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  03:05:27
+   Duration  4.64s (tests 92%, import 5%, transform 3%)
+
+JUNIT report written to /agent/repos/serviceform-ai/services/cmp-016-workflow-engine/evidence/junit/temporal.xml
+ ELIFECYCLE  Command failed with exit code 1.

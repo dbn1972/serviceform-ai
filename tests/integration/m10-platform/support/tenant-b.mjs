@@ -31,10 +31,16 @@ placement.offerings = [{ catalogue_id: 'IND-SOC-002', tenant_service_binding_id:
 
 const published = read('published-bindings.json');
 const a = published.bindings.find((b) => b.tenant_id === tenantA);
+// The form pin stays on the PUBLISHED catalogue version (the host refuses any other); every other
+// pin, including the workflow version (…b012), is tenant B's own.
 const pins = Object.fromEntries(
   Object.entries(a.pins).map(([k, v]) => [
     k,
-    k === 'tenant_service_binding_id' ? TENANT_B.tsb_id : `${v.slice(0, -4)}b${v.slice(-3)}`,
+    k === 'tenant_service_binding_id'
+      ? TENANT_B.tsb_id
+      : k === 'form_version_id'
+        ? v
+        : `${v.slice(0, -4)}b${v.slice(-3)}`,
   ]),
 );
 const bindingB = {
@@ -71,4 +77,6 @@ writeFileSync(
 );
 writeFileSync(join(out, 'officers.json'), `${JSON.stringify(officers, null, 2)}\n`);
 writeFileSync(join(out, 'opa/sf/tenants/data.json'), `${JSON.stringify(opaTenants, null, 2)}\n`);
+// Same SAMPLE_LAB canonical graph; tenant B pins its own published version id (…b012).
+writeFileSync(join(out, 'workflow.json'), `${JSON.stringify(read('workflow.json'), null, 2)}\n`);
 process.stdout.write(`tenant-b: fixtures written (tenant ${TENANT_B.tenant_id})\n`);

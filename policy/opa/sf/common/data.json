@@ -131,6 +131,12 @@
     },
     "FORM_EXECUTION_READ": {
       "action_class": "READ_ONLY"
+    },
+    "WORKFLOW_INSTANCE_START": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFLOW_SIGNAL_ADVANCE": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -141,7 +147,8 @@
     "ApplicationCase",
     "OfficerSession",
     "FormDefinition",
-    "FormExecution"
+    "FormExecution",
+    "Application"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

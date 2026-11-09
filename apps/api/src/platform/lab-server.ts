@@ -15,7 +15,7 @@ const logger = createLogger({
   level: config.LOG_LEVEL,
 });
 
-const lab = await buildPlatformLab(process.env);
+const lab = await buildPlatformLab(process.env, { logger });
 const app = await buildApp(config, {
   logger,
   readinessChecks: lab.readinessChecks,
@@ -24,6 +24,7 @@ const app = await buildApp(config, {
   m05: lab.m05,
 });
 await lab.registerSimulators(app);
+await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {
   if (err) logger.error({ err }, 'platform lab shutting down after error');

@@ -48,6 +48,7 @@ const signal = {
   workflow_version_id: pinsFor(TSB_T1).workflow_version_id,
   idempotency_key: `${CITIZEN}:3`,
   correlation_id: CITIZEN,
+  outbox_event_id: '0e0e0e0e-0e0e-40e0-80e0-0e0e0e0e0e0e',
 };
 
 describe('command pipeline ordering (SF-CON-COMMAND-TRANSITION)', () => {
@@ -129,6 +130,28 @@ describe('command pipeline ordering (SF-CON-COMMAND-TRANSITION)', () => {
       temporal_advanced: true,
       domain_committed: true,
     });
+  });
+
+  it('hands the workflow port the DOMAIN_COMMITTED record and refuses a second advance', async () => {
+    const wf = new RecordingWorkflow();
+    const gate = new WorkflowAdvanceGate(wf);
+    const p = pipeline();
+    const receipt = toCommitted(p);
+    expect(await gate.advance(p, receipt, signal)).toBe('SIGNALLED');
+    expect(wf.signals[0]).toMatchObject({
+      outbox_event_id: signal.outbox_event_id,
+      command_transition: {
+        contract_id: 'SF-CON-COMMAND-TRANSITION',
+        command_id: p.commandId,
+        command_type: 'SUBMIT',
+        phase: 'DOMAIN_COMMITTED',
+        domain_committed: true,
+        temporal_advanced: false,
+        open_domain_txn_has_temporal_network: false,
+      },
+    });
+    await expect(gate.advance(p, receipt, signal)).rejects.toMatchObject({ code: 'SF-WF-001' });
+    expect(wf.signals).toHaveLength(1);
   });
 });
 

@@ -1,0 +1,62 @@
+
+> @serviceform/cmp-016-workflow-engine@0.0.0 test:integration /agent/repos/serviceform-ai/services/cmp-016-workflow-engine
+> vitest run --config vitest.integration.config.ts
+
+
+ RUN  v5.0.3 /agent/repos/serviceform-ai/services/cmp-016-workflow-engine
+
+ ❯ test/integration/db-isolation.int.test.ts (18 tests | 1 failed) 2424ms
+   ✓ FORCE RLS tenant isolation on real PostgreSQL (CROSS_TENANT_LEAKAGE=0) (6)
+     ✓ every sf_workflow tenant table has RLS enabled and forced 3ms
+     ✓ each tenant sees only its own rows in every table; leakage count is zero 5ms
+     ✓ without tenant context every table returns nothing (fail closed) 3ms
+     ✓ IDOR: tenant A cannot read, update or bind to tenant B records by id 2ms
+     ✓ refuses writing a row for another tenant (WITH CHECK) 1ms
+     ✓ service layer: tenant B cannot export, start, signal or request on tenant A data 3ms
+   ❯ ADR-0006 privilege boundary for the CMP-016 runtime login (7)
+     ✓ runtime login is not superuser, cannot bypass RLS and inherits only sf_app + sf_cmp016_rw 1ms
+     ✓ runtime login owns no sf_workflow table, schema or function 2ms
+     ✓ own authorized DML succeeds through the real login 1ms
+     × NEGATIVE: cross-component authoritative SQL is denied (CMP-016 -> other schemas) 77ms
+     ✓ NEGATIVE: runtime login cannot SET ROLE into another component role 1ms
+     ✓ NEGATIVE: another component login cannot read or write sf_workflow authoritative tables 7ms
+     ✓ NEGATIVE: CMP-016 cannot run DDL in its schema 1ms
+   ✓ DB trigger negatives: immutability and no silent version retarget (5)
+     ✓ NEGATIVE: a published version model/hash cannot be mutated even by direct SQL 3ms
+     ✓ NEGATIVE: an instance cannot start on a draft or with a mismatched graph hash 3ms
+     ✓ NEGATIVE: the pinned version cannot be silently retargeted without an approved plan 5ms
+     ✓ a migration plan cannot target an unpublished or foreign-definition version 3ms
+     ✓ a resolved workflow request and a terminal instance cannot be reopened 2ms
+ ✓ test/integration/migration.int.test.ts (3 tests) 2514ms
+   ✓ CMP-016 migrations are reversible and ordered (3)
+     ✓ isolated chain: down 2 removes sf_workflow, up re-applies cleanly, combined catalogue unchanged 2040ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/integration/db-isolation.int.test.ts > ADR-0006 privilege boundary for the CMP-016 runtime login > NEGATIVE: cross-component authoritative SQL is denied (CMP-016 -> other schemas)
+AssertionError: expected 11 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 11
+
+ ❯ test/integration/db-isolation.int.test.ts:254:22
+    252|       }
+    253|     }
+    254|     expect(readable).toBe(0);
+       |                      ^
+    255|     const e = await errorOf(
+    256|       asTenant(h.rt, T1, (q) => q('SELECT 1 FROM sf_rules.evaluation_r…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 20 passed (21)
+   Start at  03:04:56
+   Duration  5.31s (tests 96%, transform 3%, import 1%)
+
+JUNIT report written to /agent/repos/serviceform-ai/services/cmp-016-workflow-engine/evidence/junit/integration.xml
+ ELIFECYCLE  Command failed with exit code 1.

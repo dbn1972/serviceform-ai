@@ -704,17 +704,15 @@ export class ApplicationCaseService {
         data['decision_maker'] = input.decision.decision_maker;
         data['ai_assisted'] = input.decision.ai_assisted === true;
       }
-      await tx.insertOutbox(
-        envelopeOf({
-          eventType: EVENT_TYPES.stateChanged,
-          ctx,
-          aggregateId: applicationId,
-          aggregateVersion: plan.toVersion,
-          occurredAt: nowIso,
-          data,
-        }),
-        TOPIC_DOMAIN,
-      );
+      const stateChanged = envelopeOf({
+        eventType: EVENT_TYPES.stateChanged,
+        ctx,
+        aggregateId: applicationId,
+        aggregateVersion: plan.toVersion,
+        occurredAt: nowIso,
+        data,
+      });
+      await tx.insertOutbox(stateChanged, TOPIC_DOMAIN);
       const isDecision = DECISION_COMMANDS.has(plan.def.command) || kind !== null;
       await tx.insertOutbox(
         auditEnvelope(ctx, {
@@ -734,7 +732,7 @@ export class ApplicationCaseService {
         body: { application: caseView(after), transition: transitionView(transition) },
       };
       await tx.completeIdempotency({ ...ref, response });
-      return { response, plan, transition };
+      return { response, plan, transition, outboxEventId: stateChanged.event_id };
     });
     if ('replay' in outcome) return { ...outcome.replay, replayed: true };
 
@@ -745,6 +743,7 @@ export class ApplicationCaseService {
       workflow_version_id: before.pins.workflow_version_id,
       idempotency_key: `${applicationId}:${outcome.plan.toVersion}`,
       correlation_id: ctx.correlation_id,
+      outbox_event_id: outcome.outboxEventId,
     });
     return {
       status: outcome.response.status,
