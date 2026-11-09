@@ -1,4 +1,4 @@
-import type { CommandTransitionRecord } from '../pipeline.js';
+import type { CommandTransitionRecord } from '../command-transition.js';
 
 /**
  * Temporal sequencing port (CMP-016 owns the runtime). CMP-015 only signals after its own domain

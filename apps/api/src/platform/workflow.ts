@@ -159,13 +159,17 @@ export function assertTemporalNamespace(value: string | undefined): string {
   return ns;
 }
 
-/** RFC 9562 name-based (v5) UUID; stable lab identifiers derived from tenant + key. */
+/**
+ * RFC 9562 v8 name-based id (SHA-256 over namespace + name; appendix B.2). Used for stable
+ * SAMPLE_LAB workflow definition ids — not UUID v5 (which mandates SHA-1).
+ */
 export function nameUuid(namespace: string, name: string): string {
   const ns = Buffer.from(namespace.replace(/-/g, ''), 'hex');
-  const h = createHash('sha1').update(ns).update(name, 'utf8').digest();
-  h[6] = ((h[6] as number) & 0x0f) | 0x50;
-  h[8] = ((h[8] as number) & 0x3f) | 0x80;
-  const x = h.subarray(0, 16).toString('hex');
+  const h = createHash('sha256').update(ns).update(name, 'utf8').digest();
+  const b = Buffer.from(h.subarray(0, 16));
+  b[6] = ((b[6] as number) & 0x0f) | 0x80;
+  b[8] = ((b[8] as number) & 0x3f) | 0x80;
+  const x = b.toString('hex');
   return `${x.slice(0, 8)}-${x.slice(8, 12)}-${x.slice(12, 16)}-${x.slice(16, 20)}-${x.slice(20)}`;
 }
 
