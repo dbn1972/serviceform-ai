@@ -114,6 +114,34 @@ function validateFormPackage(payload: Record<string, unknown>): void {
   }
 }
 
+/**
+ * Optional canonical CMP-016 graph on a WORKFLOW document (Studio workflow designer). When present,
+ * `graph_hash` must be the canonical digest of `{nodes, edges}` (CMP-016 `graphHash`), so the frozen
+ * version is pinned by exactly what validated. CMP-016 owns the graph semantics; `layout` is
+ * authoring data and never part of the hash.
+ */
+function validateWorkflowGraph(payload: Record<string, unknown>): void {
+  const graph = payload['workflow_graph'];
+  if (graph === undefined) {
+    if (payload['graph_hash'] !== undefined)
+      fail('/payload/workflow_graph', 'workflow_graph required');
+    return;
+  }
+  if (!isRecord(graph)) fail('/payload/workflow_graph', 'workflow_graph must be an object');
+  const extra = Object.keys(graph).filter((k) => k !== 'nodes' && k !== 'edges');
+  if (extra.length > 0) fail('/payload/workflow_graph', 'unknown workflow_graph keys');
+  requireArray(graph, 'nodes', '/payload/workflow_graph/nodes');
+  requireArray(graph, 'edges', '/payload/workflow_graph/edges');
+  const declared = requireString(payload, 'graph_hash', '/payload/graph_hash');
+  if (!CONTENT_HASH_RE.test(declared)) fail('/payload/graph_hash', 'invalid graph hash');
+  if (canonicalContentHash({ nodes: graph['nodes'], edges: graph['edges'] }) !== declared) {
+    fail('/payload/graph_hash', 'graph hash does not match workflow_graph');
+  }
+  const layout = payload['layout'];
+  if (layout !== undefined && !isRecord(layout))
+    fail('/payload/layout', 'layout must be an object');
+}
+
 /** Structural kind schemas only. No named-service or statutory content. */
 export function validateKindPayload(kind: MetadataKind, payload: unknown): void {
   if (!isRecord(payload)) fail('/payload', 'payload must be an object');
@@ -193,6 +221,7 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
         }
         requireString(step, 'type', `/payload/steps/${i}/type`);
       }
+      validateWorkflowGraph(payload);
       return;
     }
     case 'SLA': {

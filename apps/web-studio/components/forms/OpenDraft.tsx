@@ -7,21 +7,27 @@ import { readRecent, type RecentDraft } from '../../lib/recent-drafts';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-/** Reopen a saved CMP-033 FORM draft by id; recent ids are remembered in this browser only. */
-export function OpenDraft() {
+/** Reopen a saved CMP-033 designer draft by id; recent ids are remembered in this browser only. */
+export function OpenDraft({
+  action = '/forms/designer',
+  kind = 'FORM',
+}: {
+  action?: string;
+  kind?: NonNullable<RecentDraft['kind']>;
+}) {
   const [id, setId] = useState('');
   const [error, setError] = useState('');
   const [recent, setRecent] = useState<RecentDraft[]>([]);
 
   useEffect(() => {
-    setRecent(readRecent());
+    setRecent(readRecent().filter((d) => (d.kind ?? 'FORM') === kind));
   }, []);
 
   return (
     <div className="sf-designer-stack">
       <form
         className="sf-designer-row sf-designer-row-end"
-        action="/forms/designer"
+        action={action}
         method="get"
         onSubmit={(e) => {
           if (!UUID_RE.test(id.trim())) {
@@ -51,7 +57,7 @@ export function OpenDraft() {
           <ul className="sf-designer-recent">
             {recent.map((d) => (
               <li key={d.id}>
-                <Link href={`/forms/designer?document=${d.id}`}>{d.title || d.key}</Link>
+                <Link href={`${action}?document=${d.id}`}>{d.title || d.key}</Link>
                 <code className="sf-hash">{d.key}</code>
                 <span className="ux4g-tag-tonal-neutral">{d.status}</span>
               </li>

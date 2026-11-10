@@ -1,0 +1,191 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CMP-016 Workflow Engine — Studio authoring API",
+    "version": "0.1.0",
+    "description": "SF-M10-C-2. Studio-facing checks, BPMN interoperability (import/export profile only; BPMN is never executed) and DRAFT emission over the FROZEN SF-CON-WORKFLOW-MODEL. Temporal remains the only runtime (Constitution #33). Publication stays maker-checker approved. Component-local contract; not shared-frozen."
+  },
+  "paths": {
+    "/v1/workflow-graphs/check": {
+      "post": {
+        "operationId": "checkWorkflowGraph",
+        "summary": "Validate a canonical graph exactly as CMP-016 will; return graph_hash and a non-executable BPMN view",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["graph"],
+                "additionalProperties": false,
+                "properties": {
+                  "graph": { "$ref": "#/components/schemas/WorkflowGraph" },
+                  "version_ref": { "type": "string", "format": "uuid" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Valid canonical graph",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/GraphCheck" } }
+            }
+          },
+          "400": { "description": "SF-SYS-003 with CMP-016 rule detail codes" },
+          "401": { "description": "SF-AUTH-001" },
+          "403": { "description": "SF-AUTH-002 / SF-TEN-002" }
+        }
+      }
+    },
+    "/v1/workflow-graphs/import-bpmn": {
+      "post": {
+        "operationId": "importWorkflowBpmn",
+        "summary": "Screen a BPMN 2.0 document against the ServiceForm profile and return the canonical draft graph (not persisted, never executed)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["xml"],
+                "additionalProperties": false,
+                "properties": { "xml": { "type": "string", "maxLength": 1048576 } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Canonical graph from the BPMN profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["graph", "graph_hash"],
+                  "properties": {
+                    "graph": { "$ref": "#/components/schemas/WorkflowGraph" },
+                    "graph_hash": { "$ref": "#/components/schemas/Hash" },
+                    "source_graph_hash": { "$ref": "#/components/schemas/Hash" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003 (BPMN_RUNTIME_CONSTRUCT_FORBIDDEN, NAMED_OFFICER_FORBIDDEN, ...)"
+          },
+          "401": { "description": "SF-AUTH-001" },
+          "403": { "description": "SF-AUTH-002" }
+        }
+      }
+    },
+    "/v1/workflow-drafts": {
+      "post": {
+        "operationId": "emitWorkflowDraft",
+        "summary": "Emit a Studio graph as a CMP-016 DRAFT version under a stable definition per tenant and key",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["definition_key", "graph", "graph_hash"],
+                "additionalProperties": false,
+                "properties": {
+                  "definition_key": { "type": "string", "pattern": "^[a-z][a-z0-9._-]{1,127}$" },
+                  "graph": { "$ref": "#/components/schemas/WorkflowGraph" },
+                  "graph_hash": { "$ref": "#/components/schemas/Hash" },
+                  "source_ref": { "type": "string", "pattern": "^[A-Za-z0-9_.:@-]{1,200}$" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "DRAFT version stored by CMP-016",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/DraftVersion" } }
+            }
+          },
+          "400": { "description": "SF-SYS-003 (GRAPH_HASH_MISMATCH and CMP-016 rule codes)" },
+          "401": { "description": "SF-AUTH-001" },
+          "403": { "description": "SF-AUTH-002 / SF-TEN-002" },
+          "409": { "description": "SF-APP-002 (DEFINITION_KEY_TAKEN)" }
+        }
+      }
+    },
+    "/v1/workflow-versions/{id}/bpmn": {
+      "get": {
+        "operationId": "exportWorkflowVersionBpmn",
+        "summary": "Non-executable BPMN view of a stored version",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "BPMN 2.0 XML", "content": { "application/xml": {} } },
+          "401": { "description": "SF-AUTH-001" },
+          "403": { "description": "SF-AUTH-002" },
+          "404": { "description": "SF-SYS-002" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+      "WorkflowGraph": {
+        "type": "object",
+        "description": "nodes + edges of SF-CON-WORKFLOW-MODEL (contracts/m05/schemas/workflow-model.schema.json)",
+        "required": ["nodes", "edges"],
+        "properties": {
+          "nodes": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 500,
+            "items": { "type": "object" }
+          },
+          "edges": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2000,
+            "items": { "type": "object" }
+          }
+        }
+      },
+      "GraphCheck": {
+        "type": "object",
+        "required": ["valid", "graph_hash", "bpmn_xml", "runtime", "bpmn_role"],
+        "properties": {
+          "valid": { "const": true },
+          "graph_hash": { "$ref": "#/components/schemas/Hash" },
+          "node_count": { "type": "integer" },
+          "edge_count": { "type": "integer" },
+          "bpmn_xml": { "type": "string" },
+          "runtime": { "const": "TEMPORAL" },
+          "bpmn_role": { "const": "IMPORT_EXPORT_PROFILE_ONLY" }
+        }
+      },
+      "DraftVersion": {
+        "type": "object",
+        "required": ["definition_id", "version_id", "version_no", "status", "origin", "graph_hash"],
+        "properties": {
+          "definition_id": { "type": "string", "format": "uuid" },
+          "version_id": { "type": "string", "format": "uuid" },
+          "version_no": { "type": "integer", "minimum": 1 },
+          "status": { "const": "DRAFT" },
+          "origin": { "enum": ["STUDIO", "BPMN_IMPORT"] },
+          "graph_hash": { "$ref": "#/components/schemas/Hash" },
+          "source_ref": { "type": "string" }
+        }
+      }
+    }
+  }
+}

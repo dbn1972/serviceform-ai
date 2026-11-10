@@ -28,9 +28,9 @@ export interface DocState {
   savedHash: string;
 }
 
-type StepState = 'done' | 'current' | 'todo';
+export type StepState = 'done' | 'current' | 'todo';
 
-function PublishStep({
+export function PublishStep({
   index,
   title,
   state,
@@ -110,7 +110,7 @@ export function DesignerPublish({
   function track(d: MetadataDocument, hash: string) {
     const next = { id: d.document_id, key: d.document_key, status: d.status, savedHash: hash };
     onDoc(next);
-    rememberDraft({ id: next.id, key: next.key, title, status: next.status });
+    rememberDraft({ id: next.id, kind: 'FORM', key: next.key, title, status: next.status });
   }
 
   async function save() {

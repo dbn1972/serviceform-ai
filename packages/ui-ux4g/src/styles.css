@@ -11244,3 +11244,220 @@ fieldset.ux4g-radio > legend {
     0 0 0 0.125rem var(--ux4g-bg-neutral),
     0 0 0 0.25rem var(--ux4g-bg-primary-strong);
 }
+
+/* Studio workflow designer canvas (SVG): shapes, paths and handles drawn with UX4G tokens. */
+@media (min-width: 64rem) {
+  .sf-wf-grid-layout {
+    grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr) minmax(18rem, 22rem);
+  }
+}
+
+.sf-wf-canvas-pane {
+  gap: var(--ux4g-gap-3);
+  background: var(--ux4g-color-neutral-50);
+}
+
+.sf-wf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux4g-gap-4);
+  align-items: center;
+}
+
+.sf-wf-zoom {
+  min-width: 3rem;
+  text-align: center;
+  align-self: center;
+}
+
+.sf-wf-scroll {
+  max-width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+  border-radius: var(--ux4g-radius-md);
+  border: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-default);
+  background: var(--ux4g-bg-neutral-elevated);
+}
+
+.sf-wf-svg {
+  display: block;
+  touch-action: none;
+  user-select: none;
+}
+
+.sf-wf-grid {
+  fill: url(#sf-wf-grid);
+}
+
+.sf-wf-grid-line {
+  stroke: var(--ux4g-color-neutral-100);
+  stroke-width: 1;
+}
+
+.sf-wf-arrow {
+  fill: var(--ux4g-color-neutral-600);
+}
+
+.sf-wf-edge {
+  cursor: pointer;
+}
+
+.sf-wf-edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+}
+
+.sf-wf-edge-line {
+  fill: none;
+  stroke: var(--ux4g-color-neutral-600);
+  stroke-width: 1.75;
+}
+
+.sf-wf-edge.sf-wf-selected .sf-wf-edge-line {
+  stroke: var(--ux4g-color-primary-600);
+  stroke-width: 3;
+}
+
+.sf-wf-edge.sf-wf-error .sf-wf-edge-line {
+  stroke: var(--ux4g-border-color-error-strong);
+  stroke-dasharray: 6 4;
+}
+
+.sf-wf-linking {
+  stroke: var(--ux4g-color-primary-600);
+  stroke-dasharray: 6 4;
+}
+
+.sf-wf-edge-label-bg {
+  fill: var(--ux4g-bg-neutral-elevated);
+  stroke: var(--ux4g-color-neutral-300);
+}
+
+.sf-wf-edge-label {
+  fill: var(--ux4g-text-neutral-primary);
+  font-size: var(--ux4g-fs-11);
+  font-family: ui-monospace, monospace;
+}
+
+.sf-wf-node {
+  cursor: grab;
+  outline: none;
+}
+
+.sf-wf-node:active {
+  cursor: grabbing;
+}
+
+.sf-wf-shape {
+  fill: var(--ux4g-bg-neutral-elevated);
+  stroke: var(--ux4g-color-neutral-500);
+  stroke-width: 1.5;
+}
+
+.sf-wf-start .sf-wf-shape {
+  fill: var(--ux4g-color-primary-50);
+  stroke: var(--ux4g-color-primary-600);
+  stroke-width: 2;
+}
+
+.sf-wf-end .sf-wf-shape {
+  fill: var(--ux4g-color-neutral-100);
+  stroke: var(--ux4g-color-neutral-800);
+  stroke-width: 4;
+}
+
+.sf-wf-wait .sf-wf-shape,
+.sf-wf-timer .sf-wf-shape {
+  fill: var(--ux4g-color-blue-50);
+  stroke: var(--ux4g-color-blue-600);
+  stroke-dasharray: 4 3;
+}
+
+.sf-wf-human_task .sf-wf-shape,
+.sf-wf-withdrawal_review .sf-wf-shape,
+.sf-wf-cancellation_review .sf-wf-shape {
+  fill: var(--ux4g-color-primary-50);
+  stroke: var(--ux4g-color-primary-600);
+}
+
+.sf-wf-rule_gate .sf-wf-shape,
+.sf-wf-shape-diamond .sf-wf-shape {
+  fill: var(--ux4g-bg-warning-subtle);
+  stroke: var(--ux4g-border-color-warning-strong);
+}
+
+.sf-wf-shape-hexagon .sf-wf-shape {
+  fill: var(--ux4g-bg-success-subtle);
+  stroke: var(--ux4g-border-color-success-strong);
+}
+
+.sf-wf-node.sf-wf-selected .sf-wf-shape,
+.sf-wf-node:focus-visible .sf-wf-shape {
+  stroke: var(--ux4g-color-primary-700);
+  stroke-width: 3;
+}
+
+.sf-wf-node:focus-visible .sf-wf-shape {
+  stroke: var(--ux4g-border-color-neutral-focus);
+  stroke-width: 4;
+}
+
+.sf-wf-node.sf-wf-error .sf-wf-shape {
+  stroke: var(--ux4g-border-color-error-strong);
+  stroke-width: 3;
+}
+
+.sf-wf-kind {
+  fill: var(--ux4g-text-neutral-secondary);
+  font-size: var(--ux4g-fs-8);
+  font-weight: var(--ux4g-font-weight-semibold);
+  letter-spacing: 0.04em;
+}
+
+.sf-wf-label {
+  fill: var(--ux4g-text-neutral-primary);
+  font-size: var(--ux4g-fs-12);
+  font-weight: var(--ux4g-font-weight-medium);
+}
+
+.sf-wf-handle {
+  fill: var(--ux4g-bg-neutral-elevated);
+  stroke: var(--ux4g-color-primary-600);
+  stroke-width: 2;
+  cursor: crosshair;
+  opacity: 0;
+}
+
+.sf-wf-node:hover .sf-wf-handle,
+.sf-wf-node.sf-wf-selected .sf-wf-handle,
+.sf-wf-node:focus-visible .sf-wf-handle {
+  opacity: 1;
+}
+
+.sf-wf-swatch-circle {
+  border-radius: var(--ux4g-radius-full);
+}
+
+.sf-wf-swatch-hexagon {
+  background: var(--ux4g-bg-success-subtle);
+  color: var(--ux4g-text-neutral-primary);
+}
+
+.sf-wf-swatch-diamond {
+  background: var(--ux4g-bg-warning-subtle);
+  color: var(--ux4g-text-neutral-primary);
+}
+
+.sf-wf-xml {
+  margin: 0;
+  max-height: 24rem;
+  overflow: auto;
+  padding: var(--ux4g-padding-m);
+  border-radius: var(--ux4g-radius-md);
+  background: var(--ux4g-color-neutral-950);
+  color: var(--ux4g-color-neutral-50);
+  font-family: ui-monospace, monospace;
+  font-size: var(--ux4g-fs-12);
+  white-space: pre;
+}

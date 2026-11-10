@@ -4,6 +4,12 @@ import type {
   WorkflowAdvanceSignal,
 } from '@serviceform/cmp-015-application-case';
 import { assertSimulatorEnvironment } from './simulators.js';
+import {
+  studioWorkflowAuthorizer,
+  type PdpLike as StudioPdpLike,
+  type StudioCallerLike,
+  type StudioWorkflowApiLike,
+} from './workflow-studio.js';
 
 /**
  * SF-M10-B-2c: CMP-016 sequencing on the SAMPLE_LAB platform host. CMP-015 stays the
@@ -82,6 +88,14 @@ export interface Cmp016Module {
   Cmp016Error: new (code: string, details?: { code: string }[]) => Error;
   graphHash(graph: unknown): string;
   parseGraph(raw: unknown): unknown;
+  createStudioWorkflowApi(deps: {
+    authorize(
+      caller: StudioCallerLike,
+      action: string,
+      resource: { type: string; id?: string },
+    ): Promise<boolean>;
+    service(authz: WorkflowServiceDepsLike['authz'], newId?: () => string): unknown;
+  }): StudioWorkflowApiLike;
 }
 
 export interface TemporalClientLike {
@@ -470,6 +484,8 @@ export function unwiredActivityPorts(cmp016: Pick<Cmp016Module, 'Cmp016Error'>) 
 
 export interface LabWorkflow {
   bridge: LabWorkflowBridge;
+  /** SF-M10-C-2 CMP-016 Studio authoring API (checks, BPMN profile, DRAFT emission). */
+  studio: StudioWorkflowApiLike;
   readinessChecks: { name: string; check(): Promise<void> }[];
   /** Connects Temporal, seeds the pinned published versions and starts the worker. */
   start(): Promise<void>;
@@ -538,8 +554,33 @@ export function composeLabWorkflow(params: {
     ...(params.logger ? { logger: params.logger } : {}),
   });
 
+  // Drafts never touch Temporal: the Studio API's service refuses any Temporal call.
+  const noTemporal = new cmp016.TemporalSequencingAdapter(
+    {
+      start: async () => {
+        throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'STUDIO_NO_TEMPORAL' }]);
+      },
+      signal: async () => {
+        throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'STUDIO_NO_TEMPORAL' }]);
+      },
+    },
+    temporal.taskQueue,
+  );
+  const studio = cmp016.createStudioWorkflowApi({
+    authorize: studioWorkflowAuthorizer(params.pdp as StudioPdpLike),
+    service: (studioAuthz, newId) =>
+      new cmp016.WorkflowService({
+        pool: params.pool,
+        authz: studioAuthz,
+        approvals: NO_RUNTIME_PUBLICATION,
+        temporal: noTemporal,
+        ...(newId ? { newId } : {}),
+      }),
+  });
+
   return {
     bridge,
+    studio,
     readinessChecks: [
       {
         name: 'cmp016-temporal-worker',

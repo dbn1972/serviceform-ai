@@ -239,6 +239,18 @@
     },
     "ARTIFACT_VERSION_READ": {
       "action_class": "READ_ONLY"
+    },
+    "WORKFLOW_DEFINITION_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFLOW_VERSION_DRAFT": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFLOW_VERSION_IMPORT_BPMN": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFLOW_VERSION_EXPORT_BPMN": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -262,7 +274,9 @@
     "MetadataBundle",
     "PublicationRequest",
     "TenantServiceBinding",
-    "ArtifactVersion"
+    "ArtifactVersion",
+    "WorkflowDefinition",
+    "WorkflowVersion"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

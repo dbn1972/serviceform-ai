@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import {
   METADATA_KINDS,
@@ -127,6 +128,43 @@ describe('CMP-033 kind payload schemas', () => {
       json_schema: { ...form_package.json_schema, required: [] },
     };
     expectFail('FORM', { pages, form_package: tampered, content_hash });
+  });
+
+  // REQ: Phase C-2 — a WORKFLOW version is pinned by the CMP-016 graph_hash of what validated.
+  it('verifies an embedded Studio workflow_graph against its declared graph hash', () => {
+    const steps = [
+      { id: 'start', type: 'START' },
+      { id: 'end', type: 'END' },
+    ];
+    const workflow_graph = {
+      nodes: [
+        { node_id: 'START', kind: 'START' },
+        { node_id: 'END', kind: 'END' },
+      ],
+      edges: [{ from_node: 'START', to_node: 'END' }],
+    };
+    const graph_hash = canonicalContentHash(workflow_graph);
+    expect(graph_hash).toBe(
+      'sha256:' +
+        createHash('sha256')
+          .update(
+            '{"edges":[{"from_node":"START","to_node":"END"}],"nodes":[{"kind":"START","node_id":"START"},{"kind":"END","node_id":"END"}]}',
+          )
+          .digest('hex'),
+    );
+    const layout = { nodes: { START: { x: 0, y: 0, label: 'Start' } } };
+    validateKindPayload('WORKFLOW', { steps, workflow_graph, graph_hash, layout });
+    expectFail('WORKFLOW', { steps, workflow_graph, graph_hash: `sha256:${'0'.repeat(64)}` });
+    expectFail('WORKFLOW', { steps, workflow_graph });
+    expectFail('WORKFLOW', { steps, graph_hash });
+    expectFail('WORKFLOW', { steps, workflow_graph: [], graph_hash });
+    expectFail('WORKFLOW', {
+      steps,
+      workflow_graph: { ...workflow_graph, script: 'x' },
+      graph_hash,
+    });
+    expectFail('WORKFLOW', { steps, workflow_graph: { nodes: [], edges: [] }, graph_hash });
+    expectFail('WORKFLOW', { steps, workflow_graph, graph_hash, layout: [] });
   });
 
   it('validates FEE / WORKFLOW / SLA / ACCESS / NOTIFICATION', () => {

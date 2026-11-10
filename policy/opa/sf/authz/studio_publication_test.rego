@@ -111,7 +111,7 @@ test_reads_are_read_only_and_writes_protected if {
 test_maker_may_author_freeze_and_request if {
 	d := eval(studio_input("STUDIO_DESIGNER", "MetadataDocument", "METADATA_DOCUMENT_PUBLISH"), studio_roles)
 	d.allow == true
-	d.policy_revision == "m10-c1"
+	d.policy_revision == "m10-c2"
 	eval(studio_input("STUDIO_DESIGNER", "PublicationRequest", "PUBLICATION_REQUEST_SUBMIT"), studio_roles).allow == true
 	eval(studio_input("STUDIO_DESIGNER", "FormDefinition", "FORM_INTERPRET"), studio_roles).allow == true
 }
@@ -144,4 +144,34 @@ test_studio_actions_deny_without_role_or_in_other_tenant if {
 	d := eval(other, studio_roles)
 	d.allow == false
 	d.reason_code == "TENANT_MISMATCH"
+}
+
+# SF-M10-C-2: CMP-016 Studio authoring actions (checks, BPMN profile, DRAFT emission).
+workflow_studio_actions := [
+	"WORKFLOW_DEFINITION_CREATE",
+	"WORKFLOW_VERSION_DRAFT",
+	"WORKFLOW_VERSION_IMPORT_BPMN",
+	"WORKFLOW_VERSION_EXPORT_BPMN",
+]
+
+workflow_role := {T1: {"roles": {"STUDIO_DESIGNER": {
+	"actions": workflow_studio_actions,
+	"resource_types": ["WorkflowDefinition", "WorkflowVersion"],
+	"jurisdiction_scope": "TENANT_WIDE",
+	"all_services": true,
+}}}}
+
+test_workflow_studio_actions_known_and_role_granted if {
+	every a in workflow_studio_actions {
+		data.sf.common.actions[a]
+		eval(studio_input("STUDIO_DESIGNER", "WorkflowDefinition", a), workflow_role).allow == true
+		eval(studio_input("STUDIO_DESIGNER", "WorkflowDefinition", a), {}).allow == false
+	}
+	"WorkflowDefinition" in data.sf.common.resource_types
+	"WorkflowVersion" in data.sf.common.resource_types
+}
+
+test_workflow_publish_not_granted_to_designer if {
+	d := eval(studio_input("STUDIO_DESIGNER", "WorkflowVersion", "WORKFLOW_VERSION_PUBLISH"), workflow_role)
+	d.allow == false
 }
