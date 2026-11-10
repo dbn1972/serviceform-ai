@@ -125,7 +125,7 @@ describe('rules designer: checks and assistance', () => {
     const row = addRow(d);
     d = row.design;
     d = setCondition(d, row.id, 'in_value', { op: 'between', value: 9, to: 1 });
-    d = setCondition(d, row.id, d.inputs[1]?.id ?? '', { op: 'eq', value: '<script>' });
+    d = setCondition(d, row.id, d.inputs[1]?.id ?? '', { op: 'eq', value: 'x" or true' });
     d = { ...d, tests: [{ id: 't', name: '', inputs: {} }] };
     expect(codes(d)).toEqual(
       expect.arrayContaining([
