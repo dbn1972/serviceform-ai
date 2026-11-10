@@ -133,6 +133,118 @@
           }
         }
       }
+    },
+    "/v1/rule-packs/test": {
+      "post": {
+        "operationId": "testRulePack",
+        "summary": "SF-M10-C-3 Studio test bench: parse a draft RULES pack exactly as a published one and run test cases on the ZEN engine. Nothing is persisted; results are advisory rule outputs, never a statutory decision.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["pack", "cases"],
+                "additionalProperties": false,
+                "properties": {
+                  "pack": {
+                    "type": "object",
+                    "description": "CMP-033 RULES payload: rule_pack_id, engine GORULES, jdm, outcome_field, reason_codes_field"
+                  },
+                  "cases": {
+                    "type": "array",
+                    "maxItems": 50,
+                    "items": {
+                      "type": "object",
+                      "required": ["inputs"],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 64
+                        },
+                        "inputs": {
+                          "type": "object"
+                        },
+                        "expect_outcome": {
+                          "type": "string",
+                          "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                        },
+                        "expect_reasons": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Z][A-Z0-9_]{1,63}$"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Per-case results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "pack_key",
+                    "content_hash",
+                    "engine",
+                    "advisory",
+                    "passed",
+                    "failed",
+                    "results"
+                  ],
+                  "properties": {
+                    "pack_key": {
+                      "type": "string"
+                    },
+                    "content_hash": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "engine": {
+                      "type": "object"
+                    },
+                    "advisory": {
+                      "const": true
+                    },
+                    "passed": {
+                      "type": "integer"
+                    },
+                    "failed": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "SF-SYS-003"
+          },
+          "401": {
+            "description": "SF-AUTH-001"
+          },
+          "403": {
+            "description": "SF-AUTH-002"
+          },
+          "422": {
+            "description": "SF-RULE-001 (pack refused by the CMP-008 parser)"
+          }
+        }
+      }
     }
   },
   "components": {

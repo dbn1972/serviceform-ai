@@ -251,6 +251,9 @@
     },
     "WORKFLOW_VERSION_EXPORT_BPMN": {
       "action_class": "READ_ONLY"
+    },
+    "RULE_PACK_TEST": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -276,7 +279,8 @@
     "TenantServiceBinding",
     "ArtifactVersion",
     "WorkflowDefinition",
-    "WorkflowVersion"
+    "WorkflowVersion",
+    "RulePack"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

@@ -57,3 +57,6 @@ export function workflowSource(
     return { kind: 'template', id: template };
   return { kind: 'blank' };
 }
+
+/** What the rules designer opens: a saved CMP-033 RULES draft, a template or a blank table. */
+export const rulesSource = workflowSource;

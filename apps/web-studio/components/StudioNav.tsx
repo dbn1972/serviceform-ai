@@ -4,6 +4,7 @@ const links = [
   { href: '/', label: 'Home' },
   { href: '/forms', label: 'Forms' },
   { href: '/workflows', label: 'Workflows' },
+  { href: '/rules', label: 'Rules' },
   { href: '/templates', label: 'Templates' },
   { href: '/session', label: 'Session' },
   { href: '/metadata', label: 'Metadata' },

@@ -23,3 +23,12 @@ export { ALLOWED_NODE_TYPES, validateJdm, type Jdm } from './domain/jdm.js';
 export { parseRulePack } from './domain/pack.js';
 export { canonicalJson, sha256Of } from './domain/canonical.js';
 export { TOPIC_DOMAIN, envelopeOf, insertOutbox } from './db/outbox.js';
+export {
+  createStudioRulesApi,
+  rulePackContentHash,
+  MAX_TEST_CASES,
+  type StudioRulesApi,
+  type StudioRulesApiDeps,
+  type StudioRulesCaller,
+  type StudioRulesResponse,
+} from './http/studio-api.js';

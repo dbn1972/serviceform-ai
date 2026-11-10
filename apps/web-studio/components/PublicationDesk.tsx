@@ -20,8 +20,9 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-
 
 /**
  * Checker desk for CMP-051 publication requests. The checker opens a submitted request, inspects
- * the TenantServiceBinding pins (including the frozen form, read-only in the designer), records a
- * reasoned decision and, once approved, publishes the immutable binding version through CMP-052.
+ * the TenantServiceBinding pins (frozen forms and rule packs open read-only in their designers),
+ * records a reasoned decision and, once approved, publishes the immutable binding version through
+ * CMP-052.
  * CMP-051 refuses a decision by the maker; OPA decides who may act.
  */
 export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: string }) {
@@ -82,6 +83,7 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
   const canDecide = request?.status === 'SUBMITTED' && !isMaker && reason.trim().length > 0;
   const formPin = binding?.pins['form'];
   const workflowPin = binding?.pins['workflow'];
+  const rulesPin = binding?.pins['rules'];
 
   return (
     <div className="sf-designer-stack">
@@ -186,6 +188,13 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
             <p className="ux4g-body-m-default">
               <Link href={`/forms/designer?document=${formPin.version_ref}`}>
                 Inspect the pinned form (read-only)
+              </Link>
+            </p>
+          ) : null}
+          {rulesPin && UUID_RE.test(rulesPin.version_ref) ? (
+            <p className="ux4g-body-m-default">
+              <Link href={`/rules/designer?document=${rulesPin.version_ref}`}>
+                Inspect the pinned rule pack and its tests (read-only)
               </Link>
             </p>
           ) : null}

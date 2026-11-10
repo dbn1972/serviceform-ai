@@ -2,13 +2,14 @@
   "name": "@serviceform/studio-designers",
   "version": "0.0.0",
   "private": true,
-  "description": "Pure, browser-safe ServiceForm Studio designer models. Forms compile to CMP-009 FORM packages; workflows compile to the canonical CMP-016 Workflow Model (BPMN only through CMP-016). Content-addressed; published versions are immutable. Not CERTIFIED.",
+  "description": "Pure, browser-safe ServiceForm Studio designer models. Forms compile to CMP-009 FORM packages; workflows to the canonical CMP-016 Workflow Model (BPMN only through CMP-016); rules to GoRules JDM decision tables run by CMP-008. Content-addressed; published versions are immutable. Not CERTIFIED.",
   "type": "module",
   "main": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./forms": "./src/forms/index.ts",
-    "./workflow": "./src/workflow/index.ts"
+    "./workflow": "./src/workflow/index.ts",
+    "./rules": "./src/rules/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"

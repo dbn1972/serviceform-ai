@@ -11461,3 +11461,160 @@ fieldset.ux4g-radio > legend {
   font-size: var(--ux4g-fs-12);
   white-space: pre;
 }
+
+/* Studio rules designer: decision table and test bench, UX4G tokens only. */
+.sf-rules-grid {
+  display: grid;
+  gap: var(--ux4g-gap-5);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .sf-rules-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+  }
+}
+
+.sf-rules-table-pane {
+  gap: var(--ux4g-gap-3);
+}
+
+.sf-rules-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux4g-gap-3);
+  align-items: center;
+}
+
+.sf-rules-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux4g-gap-2);
+  margin-left: auto;
+}
+
+.sf-rules-table tbody tr {
+  cursor: pointer;
+}
+
+.sf-rules-table tbody tr:hover :is(th, td) {
+  background: var(--ux4g-color-neutral-50);
+}
+
+.sf-rules-table tbody tr[aria-current='true'] :is(th, td) {
+  background: var(--ux4g-color-primary-50);
+}
+
+.sf-rules-table thead th.sf-rules-col-when {
+  border-bottom: var(--ux4g-border-width-lg) solid var(--ux4g-color-primary-600);
+}
+
+.sf-rules-table thead th.sf-rules-col-then {
+  border-bottom: var(--ux4g-border-width-lg) solid var(--ux4g-color-neutral-600);
+}
+
+.sf-rules-table thead th.sf-rules-col-error {
+  border-bottom-color: var(--ux4g-border-color-error-strong);
+}
+
+.sf-rules-table tbody tr.sf-rules-row-error > th {
+  box-shadow: inset var(--ux4g-border-width-lg) 0 0 var(--ux4g-border-color-error-strong);
+}
+
+.sf-rules-table tbody tr.sf-rules-row-warn > th {
+  box-shadow: inset var(--ux4g-border-width-lg) 0 0 var(--ux4g-border-color-warning-strong);
+}
+
+.sf-rules-colhead,
+.sf-rules-rowhead {
+  margin: 0;
+  padding: var(--ux4g-gap-1) var(--ux4g-gap-2);
+  border: var(--ux4g-border-width-sm) solid transparent;
+  border-radius: var(--ux4g-radius-sm);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sf-rules-colhead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-1);
+  white-space: normal;
+}
+
+.sf-rules-colhead .sf-hash {
+  font-weight: var(--ux4g-font-weight-regular);
+}
+
+.sf-rules-rowhead {
+  min-width: 2rem;
+  font-weight: var(--ux4g-font-weight-semibold);
+  color: var(--ux4g-color-primary-700);
+}
+
+.sf-rules-rowhead-text {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.sf-rules-colhead:hover,
+.sf-rules-rowhead:hover,
+.sf-rules-colhead[aria-pressed='true'],
+.sf-rules-rowhead[aria-pressed='true'] {
+  border-color: var(--ux4g-color-primary-600);
+  background: var(--ux4g-bg-neutral-elevated);
+}
+
+.sf-rules-colhead:focus-visible,
+.sf-rules-rowhead:focus-visible {
+  outline: var(--ux4g-border-width-lg) solid var(--ux4g-border-color-neutral-focus);
+  outline-offset: var(--ux4g-border-width-md);
+  box-shadow: var(--ux4g-shadow-focus-ring);
+}
+
+.sf-rules-colkind {
+  font-size: var(--ux4g-fs-12);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ux4g-text-neutral-secondary);
+}
+
+.sf-rules-muted {
+  color: var(--ux4g-text-neutral-secondary);
+  font-style: italic;
+}
+
+.sf-rules-codes,
+.sf-rules-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux4g-gap-1);
+  align-items: center;
+}
+
+.sf-rules-hit {
+  display: block;
+  margin-top: var(--ux4g-gap-1);
+  font-size: var(--ux4g-fs-12);
+  color: var(--ux4g-text-neutral-secondary);
+}
+
+.sf-rules-code-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sf-rules-code-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux4g-gap-2);
+  align-items: center;
+}

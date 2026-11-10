@@ -167,6 +167,29 @@ describe('CMP-033 kind payload schemas', () => {
     expectFail('WORKFLOW', { steps, workflow_graph, graph_hash, layout: [] });
   });
 
+  // REQ: Phase C-3 — a RULES version is pinned by the hash of its executable pack only.
+  it('verifies an embedded Studio rule pack against its declared content hash', () => {
+    const executable = {
+      rule_pack_id: 'lab.rules.check',
+      engine: 'GORULES',
+      jdm: { nodes: [{ id: 'in', type: 'inputNode' }], edges: [] },
+      outcome_field: 'outcome',
+    };
+    const content_hash = canonicalContentHash(executable);
+    const test_cases = [{ name: 'a', inputs: { n: 1 }, expect_outcome: 'MEETS_CRITERIA' }];
+    validateKindPayload('RULES', { ...executable, content_hash, test_cases, authoring: { x: 1 } });
+    validateKindPayload('RULES', { rule_pack_id: 'pack.alpha', engine: 'GORULES' });
+    expectFail('RULES', { ...executable, content_hash: `sha256:${'0'.repeat(64)}` });
+    expectFail('RULES', { ...executable, outcome_field: 'other', content_hash });
+    expectFail('RULES', { rule_pack_id: 'pack.alpha', engine: 'GORULES', content_hash });
+    expectFail('RULES', { ...executable, jdm: [], content_hash });
+    expectFail('RULES', {
+      ...executable,
+      content_hash,
+      test_cases: Array.from({ length: 51 }, () => ({})),
+    });
+  });
+
   it('validates FEE / WORKFLOW / SLA / ACCESS / NOTIFICATION', () => {
     validateKindPayload('FEE', { items: [{ id: 'fee.one', amount_minor: 100 }] });
     expectFail('FEE', { items: ['x'] });
