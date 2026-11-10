@@ -11,12 +11,13 @@
     "typecheck": "next typegen && tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@serviceform/m10-sample-lab": "workspace:*",
+    "@serviceform/service-templates": "workspace:*",
+    "@serviceform/studio-designers": "workspace:*",
     "@serviceform/ui-ux4g": "workspace:*",
     "next": "16.4.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "@serviceform/m10-sample-lab": "workspace:*",
-    "@serviceform/service-templates": "workspace:*"
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@types/react": "19.3.0",

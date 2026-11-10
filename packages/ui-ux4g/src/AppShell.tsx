@@ -16,6 +16,8 @@ export type AppShellProps = {
   tenantId?: string;
   theme?: 'light' | 'dark';
   overlay?: TenantOverlay;
+  /** Full-width work surface (Studio designers); default pages keep the UX4G container width. */
+  layout?: 'default' | 'wide';
 };
 
 export const MAIN_CONTENT_ID = 'main-content';
@@ -33,6 +35,7 @@ export function AppShell({
   tenantId,
   theme = 'light',
   overlay,
+  layout = 'default',
 }: AppShellProps) {
   const scope = overlay?.tenantId ?? tenantId;
   return (
@@ -62,7 +65,15 @@ export function AppShell({
         </div>
       </header>
       <main id={MAIN_CONTENT_ID} className="sf-main" tabIndex={-1}>
-        <div className="ux4g-container sf-page">{children}</div>
+        <div
+          className={
+            layout === 'wide'
+              ? 'ux4g-container-fluid sf-page sf-page-wide'
+              : 'ux4g-container sf-page'
+          }
+        >
+          {children}
+        </div>
       </main>
       <footer className="ux4g-footer-wrapper sf-footer">
         <div className="ux4g-container sf-footer-inner">

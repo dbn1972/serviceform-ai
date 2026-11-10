@@ -84,6 +84,11 @@ export function Switch({ id, name, label, checked, onChange, disabled }: SwitchP
         disabled={disabled}
         onChange={onChange ? (e) => onChange(e.target.checked) : undefined}
       />
+      <span className="ux4g-switch-control" aria-hidden="true">
+        <span className="ux4g-switch-track">
+          <span className="ux4g-switch-thumb" />
+        </span>
+      </span>
       <span className="ux4g-label-m-default">{label}</span>
     </label>
   );

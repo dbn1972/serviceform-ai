@@ -163,6 +163,7 @@ export function apiBaseUrl(): string {
 
 const ALLOWED_PREFIXES = [
   'metadata/',
+  'interpretations',
   'publication-requests',
   'tenant-service-bindings',
   'artifact-versions/',

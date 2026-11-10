@@ -30,6 +30,7 @@ export {
   type InputSize,
 } from './components/TextInput';
 export { Checkbox, type CheckboxProps } from './components/Checkbox';
+export { Select, type SelectOption, type SelectProps } from './components/Select';
 export { OtpInput, type OtpInputProps, type OtpState } from './components/OtpInput';
 export { Icon, type IconName, type IconProps } from './components/Icon';
 export {

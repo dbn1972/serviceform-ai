@@ -74,4 +74,10 @@ export const SF_UX4G_EXTENSIONS: readonly Ux4gExtension[] = [
     ux4gBase: 'ux4g-alert',
     status: 'registered',
   },
+  {
+    id: 'studio-designer-canvas',
+    title: 'Studio designer workspace (palette, canvas, inspector)',
+    ux4gBase: 'ux4g-card',
+    status: 'registered',
+  },
 ] as const;

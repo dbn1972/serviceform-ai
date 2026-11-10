@@ -57,7 +57,7 @@ test_workload_role_may_issue_and_publish if {
 		every a in actions {
 			d := eval(workload_input(rt, a), issuance_role)
 			d.allow == true
-			d.policy_revision == "m10-b2d"
+			d.policy_revision == "m10-c1"
 		}
 	}
 }

@@ -191,6 +191,54 @@
     },
     "PRIVACY_ACCESS_CHECK": {
       "action_class": "READ_ONLY"
+    },
+    "METADATA_DOCUMENT_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "METADATA_DOCUMENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "METADATA_DOCUMENT_UPDATE": {
+      "action_class": "PROTECTED"
+    },
+    "METADATA_DOCUMENT_VALIDATE": {
+      "action_class": "PROTECTED"
+    },
+    "METADATA_DOCUMENT_PUBLISH": {
+      "action_class": "PROTECTED"
+    },
+    "METADATA_BUNDLE_COMPOSE": {
+      "action_class": "PROTECTED"
+    },
+    "PUBLICATION_REQUEST_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "PUBLICATION_REQUEST_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PUBLICATION_REQUEST_SUBMIT": {
+      "action_class": "PROTECTED"
+    },
+    "PUBLICATION_REQUEST_APPROVE": {
+      "action_class": "PROTECTED"
+    },
+    "PUBLICATION_REQUEST_REJECT": {
+      "action_class": "PROTECTED"
+    },
+    "TENANT_SERVICE_BINDING_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "TENANT_SERVICE_BINDING_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "TENANT_SERVICE_BINDING_UPDATE": {
+      "action_class": "PROTECTED"
+    },
+    "TENANT_SERVICE_BINDING_PUBLISH": {
+      "action_class": "PROTECTED"
+    },
+    "ARTIFACT_VERSION_READ": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -209,7 +257,12 @@
     "CitizenProfile",
     "Purpose",
     "PrivacyNotice",
-    "Consent"
+    "Consent",
+    "MetadataDocument",
+    "MetadataBundle",
+    "PublicationRequest",
+    "TenantServiceBinding",
+    "ArtifactVersion"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

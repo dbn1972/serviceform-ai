@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   METADATA_KINDS,
+  canonicalContentHash,
   composeFingerprint,
   createFingerprint,
   isDocumentKey,
@@ -65,6 +66,67 @@ describe('CMP-033 kind payload schemas', () => {
     });
     expectFail('EVIDENCE', { requirements: ['x'] });
     expectFail('EVIDENCE', { requirements: [{ id: 'Bad', artifact_type: 'pdf' }] });
+  });
+
+  // REQ: Phase C-1 — a FORM version is pinned by the canonical hash of exactly what validated.
+  it('verifies an embedded Studio form_package against its declared content hash', () => {
+    const pages = [{ id: 'applicant', fields: [{ id: 'applicant_name', control: 'text' }] }];
+    const form_package = {
+      form_id: 'lab.generic.application',
+      json_schema: {
+        type: 'object',
+        title: 'Generic',
+        properties: { applicant_name: { type: 'string', title: 'Name' } },
+        required: ['applicant_name'],
+      },
+      ui_schema: {
+        type: 'Categorization',
+        elements: [
+          {
+            type: 'Category',
+            label: 'Applicant',
+            elements: [{ type: 'Control', scope: '#/properties/applicant_name' }],
+          },
+        ],
+      },
+    };
+    const content_hash = canonicalContentHash(form_package);
+    const reordered = {
+      ui_schema: form_package.ui_schema,
+      json_schema: form_package.json_schema,
+      form_id: form_package.form_id,
+    };
+    expect(canonicalContentHash(reordered)).toBe(content_hash);
+    validateKindPayload('FORM', { pages, form_package, content_hash, authoring: { tool: 'x' } });
+    expectFail('FORM', { pages, form_package, content_hash: `sha256:${'0'.repeat(64)}` });
+    expectFail('FORM', { pages, form_package, content_hash: 'md5:abc' });
+    expectFail('FORM', { pages, form_package });
+    expectFail('FORM', { pages, content_hash });
+    expectFail('FORM', { pages, form_package: [], content_hash });
+    expectFail('FORM', {
+      pages,
+      form_package: { ...form_package, form_id: 'Bad Key' },
+      content_hash: canonicalContentHash({ ...form_package, form_id: 'Bad Key' }),
+    });
+    const noObject = { ...form_package, json_schema: { type: 'string' } };
+    expectFail('FORM', {
+      pages,
+      form_package: noObject,
+      content_hash: canonicalContentHash(noObject),
+    });
+    const noLayout = { ...form_package, ui_schema: [] };
+    expectFail('FORM', {
+      pages,
+      form_package: noLayout,
+      content_hash: canonicalContentHash(noLayout),
+    });
+    const extra = { ...form_package, script: 'x' };
+    expectFail('FORM', { pages, form_package: extra, content_hash: canonicalContentHash(extra) });
+    const tampered = {
+      ...form_package,
+      json_schema: { ...form_package.json_schema, required: [] },
+    };
+    expectFail('FORM', { pages, form_package: tampered, content_hash });
   });
 
   it('validates FEE / WORKFLOW / SLA / ACCESS / NOTIFICATION', () => {

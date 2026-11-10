@@ -109,6 +109,92 @@ const GLYPHS = {
       <path d="M3 13l9 5 9-5" />
     </>
   ),
+  'arrow-up': (
+    <>
+      <path d="M12 19V5" />
+      <path d="M6 11l6-6 6 6" />
+    </>
+  ),
+  'arrow-down': (
+    <>
+      <path d="M12 5v14" />
+      <path d="M18 13l-6 6-6-6" />
+    </>
+  ),
+  plus: (
+    <>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="8" y="8" width="12" height="12" rx="2" />
+      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+    </>
+  ),
+  trash: (
+    <>
+      <path d="M4 7h16" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12" />
+      <path d="M9 7V4h6v3" />
+    </>
+  ),
+  undo: (
+    <>
+      <path d="M9 14L4 9l5-5" />
+      <path d="M4 9h11a5 5 0 0 1 0 10h-3" />
+    </>
+  ),
+  redo: (
+    <>
+      <path d="M15 14l5-5-5-5" />
+      <path d="M20 9H9a5 5 0 0 0 0 10h3" />
+    </>
+  ),
+  grip: (
+    <>
+      <path d="M9 6h.01" />
+      <path d="M15 6h.01" />
+      <path d="M9 12h.01" />
+      <path d="M15 12h.01" />
+      <path d="M9 18h.01" />
+      <path d="M15 18h.01" />
+    </>
+  ),
+  eye: (
+    <>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  code: (
+    <>
+      <path d="M8 7l-5 5 5 5" />
+      <path d="M16 7l5 5-5 5" />
+    </>
+  ),
+  sliders: (
+    <>
+      <path d="M4 6h10" />
+      <path d="M18 6h2" />
+      <circle cx="16" cy="6" r="2" />
+      <path d="M4 12h2" />
+      <path d="M10 12h10" />
+      <circle cx="8" cy="12" r="2" />
+      <path d="M4 18h12" />
+      <path d="M20 18h0" />
+      <circle cx="18" cy="18" r="2" />
+    </>
+  ),
+  link: (
+    <>
+      <path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1" />
+      <path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1" />
+    </>
+  ),
 } satisfies Record<string, ReactNode>;
 
 export type IconName = keyof typeof GLYPHS;
