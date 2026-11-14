@@ -19,6 +19,8 @@ import type { CertificateTemplate, FormPackage, PolicyFacts } from '../types';
  * Form fields follow each entry's "Recommended Core Fields" only. Fee, service time, eligibility
  * and evidence are POLICY_INPUT_REQUIRED from the statutory owner: nothing is invented here.
  * Stubs are DRAFT, not offered by any lab tenant, and cannot be applied for.
+ * Income (IND-SOC-031) has a Studio authoring shell under templates/income-certificate/
+ * with POLICY_INPUT_REQUIRED policy artefacts (M11 config-only path; still gated).
  */
 
 const POLICY_INPUT_REQUIRED: PolicyFacts = {
@@ -333,7 +335,8 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
   digilocker_suitability: 'High',
   core_fields: [...COMMON_CORE, 'Family/Household ID', 'Annual Income', 'Assessment Period'],
   maturity: 'SAMPLE_LAB_STUB',
-  authoring_path: null,
+  /** Studio/config shell only — citizen offer stays gated until owner policy (M11). */
+  authoring_path: 'templates/income-certificate/',
   policy: POLICY_INPUT_REQUIRED,
   indicative_checks: [],
   credential_fields: [

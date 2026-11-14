@@ -1,5 +1,6 @@
 import { issueMessage, schemaAt, type FormSchemaView } from '@serviceform/ui-ux4g';
 import { toPortalApplication, type PlatformApplication } from '../../../../lib/portal/applications';
+import { catalogueIdForCase } from '../../../../lib/portal/catalogue-resolve';
 import { command, readIssuance, readWorkingData } from '../../../../lib/portal/cases';
 import {
   applyBody,
@@ -36,6 +37,7 @@ export async function GET(request: Request) {
         a,
         await readWorkingData(citizen, a.application_id),
         await readIssuance(citizen, a),
+        catalogueIdForCase(a),
       ),
     ),
   );
@@ -133,7 +135,7 @@ export async function POST(request: Request) {
     app = next.app;
   }
   return json(201, {
-    application: toPortalApplication(app, data),
+    application: toPortalApplication(app, data, null, catalogueId),
     form_execution: validated.execution,
     source: 'PLATFORM',
     g6_issued: false,

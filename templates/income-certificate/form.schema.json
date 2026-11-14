@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "serviceform://templates/income-certificate/form.schema.json",
+  "title": "Income Certificate (individual) application",
+  "description": "Aligned to packages/service-templates IND-SOC-031 stub (registry Recommended Core Fields). Not a statutory eligibility rule set. POLICY_INPUT_REQUIRED for fee/eligibility/evidence/SLA.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "applicant_name",
+    "applicant_dob",
+    "applicant_gender",
+    "residential_address",
+    "annual_income_rupees",
+    "assessment_period",
+    "purpose_of_certificate",
+    "declaration_accepted"
+  ],
+  "properties": {
+    "applicant_name": {
+      "type": "string",
+      "title": "Full name (as per official record)",
+      "minLength": 1,
+      "maxLength": 120,
+      "semanticElementId": "SF-SEM-PERSON-FULL-NAME"
+    },
+    "applicant_dob": {
+      "type": "string",
+      "format": "date",
+      "title": "Date of birth",
+      "semanticElementId": "SF-SEM-PERSON-DOB"
+    },
+    "applicant_gender": {
+      "type": "string",
+      "title": "Gender",
+      "enum": ["MALE", "FEMALE", "TRANSGENDER", "OTHER", "PREFER_NOT_TO_SAY"],
+      "semanticElementId": "SF-SEM-PERSON-GENDER"
+    },
+    "applicant_mobile": {
+      "type": "string",
+      "title": "Mobile number",
+      "pattern": "^[6-9][0-9]{9}$",
+      "semanticElementId": "SF-SEM-PERSON-MOBILE"
+    },
+    "residential_address": {
+      "type": "object",
+      "title": "Residential address",
+      "additionalProperties": false,
+      "required": ["house_no_or_name", "locality", "district", "state_code", "pincode"],
+      "properties": {
+        "house_no_or_name": { "type": "string", "title": "House no. / name", "minLength": 1, "maxLength": 80 },
+        "locality": { "type": "string", "title": "Locality / village / ward", "minLength": 1, "maxLength": 80 },
+        "post_office": { "type": "string", "title": "Post office", "maxLength": 80 },
+        "district": { "type": "string", "title": "District", "minLength": 1, "maxLength": 80 },
+        "state_code": { "type": "string", "title": "State / UT code", "minLength": 2, "maxLength": 2 },
+        "pincode": { "type": "string", "title": "PIN code", "pattern": "^[1-9][0-9]{5}$" }
+      }
+    },
+    "family_household_id": {
+      "type": "string",
+      "title": "Family / household ID",
+      "maxLength": 40,
+      "semanticElementId": "SF-SEM-FAMILY-HOUSEHOLD-ID"
+    },
+    "annual_income_rupees": {
+      "type": "integer",
+      "title": "Annual income (₹)",
+      "minimum": 0,
+      "semanticElementId": "SF-SEM-ANNUAL-INCOME"
+    },
+    "assessment_period": {
+      "type": "string",
+      "title": "Assessment period (financial year, e.g. 2025-26)",
+      "pattern": "^[0-9]{4}-[0-9]{2}$",
+      "semanticElementId": "SF-SEM-ASSESSMENT-PERIOD"
+    },
+    "purpose_of_certificate": {
+      "type": "string",
+      "title": "Purpose of certificate",
+      "minLength": 1,
+      "maxLength": 500,
+      "semanticElementId": "SF-SEM-PURPOSE"
+    },
+    "declaration_accepted": {
+      "type": "boolean",
+      "const": true,
+      "title": "Declaration"
+    }
+  }
+}

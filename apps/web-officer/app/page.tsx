@@ -15,14 +15,14 @@ export default function HomePage() {
           Review submitted applications, record decisions, and issue SAMPLE_LAB credentials.
         </p>
         <div className="sf-meta-row">
-          <span className="ux4g-tag-tonal-primary">IND-SOC-002 queue</span>
+          <span className="ux4g-tag-tonal-primary">Submitted applications</span>
           <span className="ux4g-tag-outline-warning">G6 not issued</span>
         </div>
       </section>
 
       <Card
-        title="Residence Certificate queue"
-        subtitle="Shared SAMPLE_LAB store with Citizen Portal"
+        title="Application queue"
+        subtitle="Shared SAMPLE_LAB store with Citizen Portal · catalogue-generic"
         footer={
           <div className="sf-actions">
             <TextLink href="/applications">Open applications</TextLink>
@@ -31,7 +31,9 @@ export default function HomePage() {
       >
         <p className="ux4g-body-m-default">
           Approving a case issues the credential and publishes it to DigiLocker through SIMULATED
-          connectors; citizens see the status on their application.
+          connectors; citizens see the status on their application. Residence is the offered
+          SAMPLE_LAB service today; further certificates reuse this queue when published through
+          Studio metadata.
         </p>
       </Card>
     </AppShell>

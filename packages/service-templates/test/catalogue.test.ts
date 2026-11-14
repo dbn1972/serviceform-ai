@@ -3,10 +3,12 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
+  catalogueIdForFormVersion,
   diffVersions,
   formFields,
   formPin,
   listTemplates,
+  policyInputsPending,
   publishedVersion,
   stepLabels,
   templateByCatalogueId,
@@ -77,8 +79,13 @@ describe('template catalogue (SAMPLE_LAB)', () => {
         t.policy.evidence,
       ]).toEqual(Array(4).fill('POLICY_INPUT_REQUIRED'));
       expect(t.indicative_checks).toEqual([]);
-      expect(t.authoring_path).toBeNull();
     }
+    // M11: Income has a Studio authoring shell; other stubs stay path-null until configured.
+    expect(templateByCatalogueId('IND-SOC-031')?.authoring_path).toBe(
+      'templates/income-certificate/',
+    );
+    expect(templateByCatalogueId('IND-SOC-001')?.authoring_path).toBeNull();
+    expect(templateByCatalogueId('IND-CIV-001')?.authoring_path).toBeNull();
   });
 
   it('every version has a unique UUID, ascending semver and a matching content hash', () => {
@@ -135,6 +142,14 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       expect(String(v.sample_data['applicant_name'])).toMatch(/^SAMPLE /);
       expect(JSON.stringify(v.sample_data)).not.toMatch(/[0-9]{12}/);
     }
+  });
+
+  it('maps form version ids to catalogue ids and detects pending policy (M11)', () => {
+    expect(catalogueIdForFormVersion('0d15ba00-0010-4000-8000-0d15ba000010')).toBe('IND-SOC-002');
+    expect(catalogueIdForFormVersion('7e3a0031-0001-4000-8000-00000000031a')).toBe('IND-SOC-031');
+    expect(catalogueIdForFormVersion('00000000-0000-4000-8000-000000000000')).toBeNull();
+    expect(policyInputsPending(templateByCatalogueId('IND-SOC-031')!)).toBe(true);
+    expect(policyInputsPending(templateByCatalogueId('IND-SOC-002')!)).toBe(false);
   });
 
   it('diffs versions at field level', () => {

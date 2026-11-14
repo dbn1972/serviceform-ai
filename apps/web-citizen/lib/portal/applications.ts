@@ -62,7 +62,8 @@ export interface PlatformApplication {
 /** Browser view. Field values come from CMP-015 working data; state from the CMP-015 case. */
 export interface PortalApplication extends Partial<ResidenceForm> {
   id: string;
-  catalogue_id: 'IND-SOC-002';
+  /** Catalogue id resolved from the case pin / placement (CCR-M11-001); not hard-coded. */
+  catalogue_id: string;
   status: PortalStatus;
   platform_state: CaseState;
   aggregate_version: number;
@@ -125,12 +126,13 @@ export function toPortalApplication(
   app: PlatformApplication,
   data: Partial<ResidenceForm> | Record<string, unknown> | null,
   issuance: IssuanceProjection | null = null,
+  catalogueId = 'IND-SOC-002',
 ): PortalApplication {
   const dl = issuance?.digilocker;
   return {
     ...((data ?? {}) as Partial<ResidenceForm>),
     id: app.application_id,
-    catalogue_id: 'IND-SOC-002',
+    catalogue_id: catalogueId,
     status: portalStatus(app.state),
     platform_state: app.state,
     aggregate_version: app.aggregate_version,
