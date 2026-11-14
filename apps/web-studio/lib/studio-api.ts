@@ -190,6 +190,12 @@ export const workflowApi = {
     graph_hash: string;
     source_ref?: string;
   }) => call<WorkflowDraft>('POST', 'workflow-drafts', input),
+  /** Publish a DRAFT after CMP-051 approval (`approval_ref` = publication request id). */
+  publish: (versionId: string, approvalRef: string) =>
+    call<WorkflowDraft & { status: 'PUBLISHED' }>('POST', 'workflow-versions/publish', {
+      version_id: versionId,
+      approval_ref: approvalRef,
+    }),
 };
 
 export interface RuleTestCaseInput {

@@ -40,8 +40,15 @@ import {
   type CaseServiceLike,
   type NeutralFactory,
 } from './issuance.js';
+import { Cmp051ApprovalPort, Cmp051WorkflowApprovalPort } from './approvals.js';
 import { StudioPublishedFormPort, type FormSourceLike } from './forms.js';
+import { registerFormPinRoutes } from './form-pins.js';
 import { registerStudioWorkflowRoutes } from './workflow-studio.js';
+import {
+  StudioPublishedRulePackPort,
+  StudioRuleEvaluationPort,
+  type RulePackSourceLike,
+} from './rules.js';
 import {
   composeStudioRules,
   registerStudioRulesRoutes,
@@ -61,6 +68,7 @@ import {
   assertTemporalAddress,
   assertTemporalNamespace,
   composeLabWorkflow,
+  unwiredActivityPorts,
   type Cmp016Module,
   type Cmp016SdkModule,
   type LabWorkflowBridge,
@@ -129,6 +137,8 @@ export interface PlatformLab {
   registerStudioWorkflow(app: FastifyInstance): Promise<void>;
   /** SF-M10-C-3 CMP-008 Studio test bench (`/v1/rule-packs/test`, ZEN engine, nothing stored). */
   registerStudioRules(app: FastifyInstance): Promise<void>;
+  /** Phase C live-pins: resolve Studio form pin (form_key + hash) by CMP-033 version id. */
+  registerFormPins(app: FastifyInstance): Promise<void>;
   /**
    * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
    * workflow versions and starts the CMP-016 worker.
@@ -235,7 +245,7 @@ interface Cmp033Module {
   loadConfig: (env: NodeJS.ProcessEnv) => unknown;
   readPublishedDocument: (
     pool: pg.Pool,
-    input: { tenantId: string; documentId: string; kind: 'FORM' },
+    input: { tenantId: string; documentId: string; kind: 'FORM' | 'RULES' | 'WORKFLOW' },
   ) => Promise<{ document_id: string; payload: unknown } | null>;
 }
 
@@ -248,6 +258,10 @@ interface Cmp051Module {
 interface Cmp052Module {
   registerVersioning: (app: FastifyInstance, opts: unknown) => Promise<void>;
   loadConfig: (env: NodeJS.ProcessEnv) => unknown;
+  Cmp052Error: new (
+    code: string,
+    options?: { statusCode?: number; details?: { code: string }[] },
+  ) => Error;
   SimulatedApprovalPort: new (
     config: {
       environment: string;
@@ -261,8 +275,10 @@ interface Cmp052Module {
 }
 
 /**
- * SF-M10-B-4 host adapter: resolves CMP-015 PublishedBinding pins from CMP-052's pool.
- * Falls back to the fixture-seeded SimulatedPublishedBindingPort when CMP-052 has no PUBLISHED row.
+ * SF-M10-B-4 / Phase C live-pins host adapter: resolves CMP-015 PublishedBinding pins from
+ * CMP-052's pool. Prefers an exact PUBLISHED binding_id; when Studio has published a newer
+ * binding for the same offering_ref (catalogue id), that row wins so cases pick up Studio form /
+ * workflow / rules pins. Falls back to the fixture-seeded SimulatedPublishedBindingPort.
  * LOCAL/CI only — guarded upstream by assertSimulatorEnvironment.
  */
 class Cmp052PublishedBindingPort implements PublishedBindingPort {
@@ -271,18 +287,52 @@ class Cmp052PublishedBindingPort implements PublishedBindingPort {
     private readonly fallback: SimulatedPublishedBindingPort,
     /** binding_id → service_id, from the fixture (CMP-052 does not store service_id). */
     private readonly serviceIds: Map<string, string>,
+    /** placement binding_id → catalogue_id (used as CMP-052 offering_ref). */
+    private readonly offeringByBinding: Map<string, string>,
   ) {}
+
+  private toPublished(
+    bindingId: string,
+    map: Record<string, { version_ref: string }>,
+    serviceId: string,
+  ): PublishedBinding {
+    return {
+      tenant_service_binding_id: bindingId,
+      service_id: serviceId,
+      status: 'PUBLISHED',
+      pins: {
+        tenant_service_binding_id: bindingId,
+        form_version_id: map['form']?.version_ref ?? '',
+        rule_version_id: map['rules']?.version_ref ?? '',
+        workflow_version_id: map['workflow']?.version_ref ?? '',
+        evidence_policy_version_id: map['evidence']?.version_ref ?? '',
+        sla_policy_version_id: map['sla']?.version_ref ?? '',
+        ...(map['fee'] ? { fee_policy_version_id: map['fee'].version_ref } : {}),
+        ...(map['credential']
+          ? { credential_template_version_id: map['credential'].version_ref }
+          : {}),
+        ...(map['notification']
+          ? { notification_version_id: map['notification'].version_ref }
+          : {}),
+        ...(map['authorization_policy']
+          ? { authorization_policy_version_id: map['authorization_policy'].version_ref }
+          : {}),
+      } as PublishedBinding['pins'],
+    };
+  }
 
   async resolve(params: {
     tenant_id: string;
     tenant_service_binding_id: string;
   }): Promise<PublishedBinding | null> {
     const { tenant_id, tenant_service_binding_id } = params;
+    const offeringRef = this.offeringByBinding.get(tenant_service_binding_id);
+    const fixtureServiceId = this.serviceIds.get(tenant_service_binding_id);
     const client = await this.pool.connect();
     try {
       await client.query('BEGIN');
       await client.query('SELECT set_config($1, $2, true)', ['app.tenant_id', tenant_id]);
-      const res = await client.query<{
+      const exact = await client.query<{
         binding_id: string;
         pins: Record<string, { version_ref: string }>;
       }>(
@@ -291,35 +341,26 @@ class Cmp052PublishedBindingPort implements PublishedBindingPort {
           WHERE tenant_id = $1 AND binding_id = $2 AND status = 'PUBLISHED'`,
         [tenant_id, tenant_service_binding_id],
       );
+      let row = exact.rows[0];
+      // Studio publishes a new binding_id per version; prefer the latest PUBLISHED for the offering.
+      if (!row && offeringRef) {
+        const byOffering = await client.query<{
+          binding_id: string;
+          pins: Record<string, { version_ref: string }>;
+        }>(
+          `SELECT binding_id, pins
+             FROM sf_versioning.tenant_service_binding
+            WHERE tenant_id = $1 AND offering_ref = $2 AND status = 'PUBLISHED'
+            ORDER BY created_at DESC
+            LIMIT 1`,
+          [tenant_id, offeringRef],
+        );
+        row = byOffering.rows[0];
+      }
       await client.query('COMMIT');
-      const row = res.rows[0];
-      if (!row) return this.fallback.resolve(params);
-      const map = row.pins;
-      const serviceId = this.serviceIds.get(tenant_service_binding_id);
-      if (!serviceId) return this.fallback.resolve(params);
-      return {
-        tenant_service_binding_id,
-        service_id: serviceId,
-        status: 'PUBLISHED',
-        pins: {
-          tenant_service_binding_id,
-          form_version_id: map['form']?.version_ref ?? '',
-          rule_version_id: map['rules']?.version_ref ?? '',
-          workflow_version_id: map['workflow']?.version_ref ?? '',
-          evidence_policy_version_id: map['evidence']?.version_ref ?? '',
-          sla_policy_version_id: map['sla']?.version_ref ?? '',
-          ...(map['fee'] ? { fee_policy_version_id: map['fee'].version_ref } : {}),
-          ...(map['credential']
-            ? { credential_template_version_id: map['credential'].version_ref }
-            : {}),
-          ...(map['notification']
-            ? { notification_version_id: map['notification'].version_ref }
-            : {}),
-          ...(map['authorization_policy']
-            ? { authorization_policy_version_id: map['authorization_policy'].version_ref }
-            : {}),
-        } as PublishedBinding['pins'],
-      };
+      if (!row || !fixtureServiceId) return this.fallback.resolve(params);
+      // Applications pin the resolved PUBLISHED binding id (Studio version), not the placement stub.
+      return this.toPublished(row.binding_id, row.pins, fixtureServiceId);
     } catch {
       try {
         await client.query('ROLLBACK');
@@ -538,12 +579,20 @@ export async function buildPlatformLab(
       pins: b.pins,
     });
   }
-  // SF-M10-B-4: prefer CMP-052 DB bindings when available; fall back to fixture.
+  // SF-M10-B-4 / Phase C live-pins: prefer CMP-052 DB bindings when available; fall back to fixture.
   const serviceIdMap = new Map(
     published.bindings.map((b) => [b.tenant_service_binding_id, b.service_id]),
   );
+  const offeringByBinding = new Map(
+    published.bindings.map((b) => [b.tenant_service_binding_id, b.catalogue_id]),
+  );
   const bindings: PublishedBindingPort = pools.cmp052
-    ? new Cmp052PublishedBindingPort(pools.cmp052, simulatedBindings, serviceIdMap)
+    ? new Cmp052PublishedBindingPort(
+        pools.cmp052,
+        simulatedBindings,
+        serviceIdMap,
+        offeringByBinding,
+      )
     : simulatedBindings;
   const [cmp016, cmp016Sdk] = await Promise.all([
     loadComponent<Cmp016Module>('@serviceform/cmp-016-workflow-engine', 'cmp-016-workflow-engine'),
@@ -553,13 +602,92 @@ export async function buildPlatformLab(
       'temporal/sdk/index.ts',
     ),
   ]);
+  const workflowFixture = readJson<LabWorkflowFixture>(join(dir, 'workflow.json'));
+  const cmp008 = await loadComponent<
+    Cmp008StudioModule & {
+      ZenRuleEngine: new () => {
+        evaluate(
+          jdm: unknown,
+          inputs: Record<string, unknown>,
+          timeoutMs: number,
+        ): Promise<{ outputs: Record<string, unknown> }>;
+      };
+      RulePackNotFoundError: new () => Error;
+    }
+  >('@serviceform/cmp-008-rules', 'cmp-008-rules');
+  const cmp033Pool = pools.cmp033;
+  const cmp033 = cmp033Pool
+    ? await loadComponent<Cmp033Module>('@serviceform/cmp-033-metadata', 'cmp-033-metadata')
+    : undefined;
+  const studioRulePacks: RulePackSourceLike | undefined =
+    cmp033 && cmp033Pool
+      ? new StudioPublishedRulePackPort({
+          read: (input) => cmp033.readPublishedDocument(cmp033Pool, input),
+          isNotFound: (err) => err instanceof cmp008.RulePackNotFoundError,
+          notFound: () => new cmp008.RulePackNotFoundError(),
+        })
+      : undefined;
+  const studioApprovals =
+    pools.cmp051 && pools.cmp052
+      ? new Cmp051WorkflowApprovalPort({ cmp051: pools.cmp051, cmp052: pools.cmp052 })
+      : undefined;
+  type CaseReader = {
+    getApplication(ctx: unknown, id: unknown): Promise<{ status: number; body: unknown }>;
+    getWorkingData(ctx: unknown, id: unknown): Promise<{ status: number; body: unknown }>;
+  };
+  const applicationCaseRef: { current?: CaseReader } = {};
+  const activityPorts = (() => {
+    const base = unwiredActivityPorts(cmp016);
+    if (!studioRulePacks) return base;
+    const rules = new StudioRuleEvaluationPort({
+      packs: studioRulePacks,
+      engine: new cmp008.ZenRuleEngine() as {
+        evaluate(
+          jdm: unknown,
+          inputs: Record<string, unknown>,
+          timeoutMs: number,
+        ): Promise<{ outputs: Record<string, unknown> }>;
+      },
+      refuse: (code) => new cmp016.Cmp016Error('SF-SYS-004', [{ code }]),
+      loadCase: async (tenantId, applicationId, correlationId) => {
+        const cases = applicationCaseRef.current;
+        if (!cases) throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'CASE_SERVICE_NOT_READY' }]);
+        const ctx = {
+          tenant_id: tenantId,
+          cell_id: placement.cell_id,
+          actor: { type: 'SYSTEM' as const, id: workflowFixture.workload.actor_id },
+          correlation_id: correlationId,
+          trace_id: correlationId.replace(/-/g, ''),
+          roles: workflowFixture.workload.roles,
+          jurisdiction_ids: [] as string[],
+          auth_assurance: 'AAL1',
+        };
+        const appRes = await cases.getApplication(ctx, applicationId);
+        if (appRes.status !== 200) throw new cmp016.Cmp016Error('SF-SYS-002');
+        const app = (appRes.body as { application?: { pins?: { rule_version_id?: string } } })
+          .application;
+        const ruleVersionId = app?.pins?.rule_version_id;
+        if (!ruleVersionId) {
+          throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'RULE_PIN_MISSING' }]);
+        }
+        const wdRes = await cases.getWorkingData(ctx, applicationId);
+        const data =
+          wdRes.status === 200
+            ? ((wdRes.body as { working_data?: { data?: Record<string, unknown> } }).working_data
+                ?.data ?? {})
+            : {};
+        return { rule_version_id: ruleVersionId, inputs: data };
+      },
+    });
+    return { ...base, rules };
+  })();
   const workflow = composeLabWorkflow({
     environment,
     cmp016,
     sdk: cmp016Sdk,
     pool: pools.cmp016,
     pdp: opa,
-    fixture: readJson<LabWorkflowFixture>(join(dir, 'workflow.json')),
+    fixture: workflowFixture,
     pins: offeredBindings.map((b) => ({
       tenant_id: b.tenant_id,
       catalogue_id: b.catalogue_id,
@@ -568,6 +696,8 @@ export async function buildPlatformLab(
     cellId: placement.cell_id,
     temporal,
     ...(opts.logger ? { logger: opts.logger } : {}),
+    ...(studioApprovals ? { studioApprovals } : {}),
+    activityPorts,
   });
   const applicationCase = new SequencedApplicationCaseService(
     {
@@ -580,6 +710,7 @@ export async function buildPlatformLab(
     },
     workflow.bridge,
   );
+  applicationCaseRef.current = applicationCase as unknown as CaseReader;
 
   const cmp009 = await loadComponent<Cmp009Module>(
     '@serviceform/cmp-009-dynamic-forms',
@@ -603,10 +734,6 @@ export async function buildPlatformLab(
       publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id),
     );
   }
-  const cmp033Pool = pools.cmp033;
-  const cmp033 = cmp033Pool
-    ? await loadComponent<Cmp033Module>('@serviceform/cmp-033-metadata', 'cmp-033-metadata')
-    : undefined;
   // SF-M10-C-1: Studio forms frozen in CMP-033 resolve by hash pin after the catalogue.
   const forms: FormSourceLike =
     cmp033 && cmp033Pool
@@ -691,24 +818,19 @@ export async function buildPlatformLab(
     placement,
   });
 
-  const cmp008 = await loadComponent<Cmp008StudioModule>(
-    '@serviceform/cmp-008-rules',
-    'cmp-008-rules',
-  );
   const studioRules = composeStudioRules(
     cmp008,
     opa as unknown as { decide(input: unknown): Promise<{ allow?: unknown }> },
   );
 
-  // SF-M10-B-4: mount CMP-033/051/052 when pool env vars are present.
+  // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
+  // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
   if (cmp033 && pools.cmp033 && pools.cmp051 && pools.cmp052) {
     const [cmp051, cmp052] = await Promise.all([
       loadComponent<Cmp051Module>('@serviceform/cmp-051-maker-checker', 'cmp-051-maker-checker'),
       loadComponent<Cmp052Module>('@serviceform/cmp-052-versioning', 'cmp-052-versioning'),
     ]);
-    // SF-M10-C-1: SIMULATED ports are built by each plugin from its own config (they read
-    // environment, scenario and binding ids from it); the host only supplies that config.
     const testRunId = `platform-lab-${placement.portal_id}`;
     const studioRate = positiveInt(
       env.SF_STUDIO_RATE_LIMIT_MAX ?? '120',
@@ -750,21 +872,18 @@ export async function buildPlatformLab(
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
         config: cmp052.loadConfig({
           SF_ENVIRONMENT: environment,
+          // REAL would mean an external approval connector; CMP-051 is the in-platform checker.
           SF_CMP052_APPROVAL_MODE: 'SIMULATED',
           SF_CMP052_TEST_RUN_ID: testRunId,
           SF_CMP052_SCENARIO: 'sample_lab_maker_checker',
           SF_CMP052_RATE_LIMIT_MAX: studioRate,
         }),
-        approval: new cmp052.SimulatedApprovalPort(
-          {
-            environment,
-            approvalMode: 'SIMULATED',
-            scenario: 'sample_lab_maker_checker',
-            testRunId,
-            approvalBindingId: '05200000-0000-4000-8000-000000000052',
-          },
-          true,
-        ) as unknown as NonNullable<M03PluginMounts['versioning']>['approval'],
+        approval: new Cmp051ApprovalPort({
+          pool: pools.cmp051,
+          tenantId: placement.tenant_id,
+          refuse: (code) =>
+            new cmp052.Cmp052Error('SF-SYS-003', { details: [{ code }] }),
+        }) as unknown as NonNullable<M03PluginMounts['versioning']>['approval'],
         clock: () => new Date(),
       },
     };
@@ -877,6 +996,15 @@ export async function buildPlatformLab(
           env.SF_STUDIO_RATE_LIMIT_MAX ?? '120',
           'SF_STUDIO_RATE_LIMIT_MAX',
         ),
+      }),
+    registerFormPins: (app) =>
+      registerFormPinRoutes(app, {
+        forms: forms instanceof StudioPublishedFormPort ? forms : null,
+        bindings,
+        offerings: new Map(
+          placement.offerings.map((o) => [o.catalogue_id, o.tenant_service_binding_id]),
+        ),
+        resolveContext,
       }),
     async start() {
       await privacy.publish();

@@ -527,6 +527,13 @@ export function composeLabWorkflow(params: {
   temporal: { address: string; namespace: string; taskQueue: string };
   logger?: WorkflowLogger;
   connectAttempts?: number;
+  /**
+   * SF-M10 live-pins: CMP-051-backed ApprovalPort for Studio → CMP-016 publish. When omitted,
+   * Studio publish refuses (NO_RUNTIME_PUBLICATION); fixture seeding still uses SimulatedWorkflowPublication.
+   */
+  studioApprovals?: WorkflowServiceDepsLike['approvals'];
+  /** Optional Temporal activity ports (rules evaluation). Defaults to fail-closed unwired ports. */
+  activityPorts?: Record<string, unknown>;
 }): LabWorkflow {
   const { cmp016, sdk, fixture, temporal } = params;
   const publication = new SimulatedWorkflowPublication(params.environment, fixture);
@@ -542,6 +549,7 @@ export function composeLabWorkflow(params: {
   let worker: WorkerLike | undefined;
   let workerConnection: { close(): Promise<void> } | undefined;
   let running: Promise<void> | undefined;
+  const studioApprovals = params.studioApprovals ?? NO_RUNTIME_PUBLICATION;
 
   const bridge = new LabWorkflowBridge({
     service: () => {
@@ -572,7 +580,7 @@ export function composeLabWorkflow(params: {
       new cmp016.WorkflowService({
         pool: params.pool,
         authz: studioAuthz,
-        approvals: NO_RUNTIME_PUBLICATION,
+        approvals: studioApprovals,
         temporal: noTemporal,
         ...(newId ? { newId } : {}),
       }),
@@ -614,7 +622,7 @@ export function composeLabWorkflow(params: {
         temporal: adapter,
       });
       const activities = sdk.createCanonicalActivities({
-        ports: unwiredActivityPorts(cmp016),
+        ports: params.activityPorts ?? unwiredActivityPorts(cmp016),
         systemActorId: fixture.workload.actor_id,
         recordProgress: (ctx, input) => runtime.recordProgress(ctx, input),
       });

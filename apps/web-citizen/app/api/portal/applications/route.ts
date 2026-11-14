@@ -4,7 +4,9 @@ import { command, readIssuance, readWorkingData } from '../../../../lib/portal/c
 import {
   applyBody,
   offeredForm,
+  pinFor,
   sampleLab,
+  studioFormPin,
   syntheticNameRefusal,
   validateWithEngine,
 } from '../../../../lib/portal/forms';
@@ -71,9 +73,30 @@ export async function POST(request: Request) {
     if (refusal) return json(400, { error_code: 'SF-SYS-003', ...refusal });
   }
 
+  // Draft first so the live TenantServiceBinding pin (Studio when published) is known.
+  const draft = await platform('POST', '/v1/applications', {
+    token: citizen.token,
+    ...keys.key('draft'),
+    body: { tenant_service_binding_id: offering.tenant_service_binding_id },
+  });
+  let app = draft.body['application'] as PlatformApplication | undefined;
+  if (draft.status !== 201 || !app) return relay(draft);
+  const cataloguePin = pinFor(version);
+  let formPin =
+    app.pins.form_version_id === cataloguePin.version_id ? cataloguePin : null;
+  if (!formPin) {
+    formPin = await studioFormPin(citizen, app.pins.form_version_id);
+  }
+  if (!formPin || formPin.version_id !== app.pins.form_version_id) {
+    return json(409, {
+      error_code: 'SF-FORM-001',
+      message: 'This service form changed. Reload the page and try again.',
+    });
+  }
+
   const validated = await validateWithEngine(
     citizen,
-    version,
+    formPin,
     data,
     keys.base ? { idempotencyKey: `${keys.base}-form` } : { idempotent: true },
   );
@@ -87,20 +110,6 @@ export async function POST(request: Request) {
         ...i,
         message: issueMessage(schemaAt(schema, i.pointer), i.code, i.pointer),
       })),
-    });
-  }
-
-  const draft = await platform('POST', '/v1/applications', {
-    token: citizen.token,
-    ...keys.key('draft'),
-    body: { tenant_service_binding_id: offering.tenant_service_binding_id },
-  });
-  let app = draft.body['application'] as PlatformApplication | undefined;
-  if (draft.status !== 201 || !app) return relay(draft);
-  if (app.pins.form_version_id !== version.version_id) {
-    return json(409, {
-      error_code: 'SF-FORM-001',
-      message: 'This service form changed. Reload the page and try again.',
     });
   }
 

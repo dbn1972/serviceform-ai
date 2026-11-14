@@ -111,7 +111,7 @@ test_reads_are_read_only_and_writes_protected if {
 test_maker_may_author_freeze_and_request if {
 	d := eval(studio_input("STUDIO_DESIGNER", "MetadataDocument", "METADATA_DOCUMENT_PUBLISH"), studio_roles)
 	d.allow == true
-	d.policy_revision == "m10-c3"
+	d.policy_revision == "m10-c-pins"
 	eval(studio_input("STUDIO_DESIGNER", "PublicationRequest", "PUBLICATION_REQUEST_SUBMIT"), studio_roles).allow == true
 	eval(studio_input("STUDIO_DESIGNER", "FormDefinition", "FORM_INTERPRET"), studio_roles).allow == true
 }
@@ -174,6 +174,19 @@ test_workflow_studio_actions_known_and_role_granted if {
 test_workflow_publish_not_granted_to_designer if {
 	d := eval(studio_input("STUDIO_DESIGNER", "WorkflowVersion", "WORKFLOW_VERSION_PUBLISH"), workflow_role)
 	d.allow == false
+}
+
+# Phase C live-pins: checker may publish a CMP-016 version after CMP-051 approval.
+checker_workflow_publish_role := {T1: {"roles": {"STUDIO_CHECKER": {
+	"actions": ["WORKFLOW_VERSION_PUBLISH"],
+	"resource_types": ["WorkflowVersion"],
+	"jurisdiction_scope": "TENANT_WIDE",
+	"all_services": true,
+}}}}
+
+test_workflow_publish_granted_to_checker if {
+	eval(studio_input("STUDIO_CHECKER", "WorkflowVersion", "WORKFLOW_VERSION_PUBLISH"), checker_workflow_publish_role).allow == true
+	eval(studio_input("STUDIO_CHECKER", "WorkflowVersion", "WORKFLOW_VERSION_PUBLISH"), {}).allow == false
 }
 
 # SF-M10-C-3: Studio rule-pack test bench (CMP-008 ZEN engine, nothing persisted).
