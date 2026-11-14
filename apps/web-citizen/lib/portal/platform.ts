@@ -144,6 +144,15 @@ export function offeringFor(catalogueId: string): PortalOffering | null {
   return portalPlacement().offerings.find((o) => o.catalogue_id === catalogueId) ?? null;
 }
 
+/** Placement offering that pins this TenantServiceBinding id, if any. */
+export function offeringForBinding(tenantServiceBindingId: string): PortalOffering | null {
+  return (
+    portalPlacement().offerings.find(
+      (o) => o.tenant_service_binding_id === tenantServiceBindingId,
+    ) ?? null
+  );
+}
+
 /** SIMULATED connectors (OTP inbox) are only consulted in LOCAL/CI placements. */
 export function simulationAllowed(): boolean {
   return ['LOCAL', 'CI'].includes(portalPlacement().environment);

@@ -1,0 +1,16 @@
+# IND-SOC-031 workflow shell — SAMPLE_LAB
+# Reuses the platform Application/Case state machine via CMP-016 WAIT-only sequencing
+# (same class as fixtures/lab/platform/workflow.json). No Camunda. No named officers.
+# Human task role codes remain POLICY_INPUT_REQUIRED. Constitution §19 §33.
+workflow_id: ind-soc-031-workflow-policy-pending
+status: POLICY_INPUT_REQUIRED
+runtime: temporal
+bpmn_profile: import_export_only
+assignment:
+  target: role_org_jurisdiction_service_scope
+  named_officers_forbidden: true
+  role_codes: POLICY_INPUT_REQUIRED
+notes: >
+  When owner policy unlocks citizen placement, pin a published CMP-016 version whose graph
+  commit-waits only on SF-CON-APPLICATION-CASE-SM commands. Do not add Income-specific
+  backend branching.

@@ -34,6 +34,25 @@ export function publishedVersion(template: CertificateTemplate): TemplateVersion
   return [...template.versions].reverse().find((v) => v.status === 'PUBLISHED') ?? null;
 }
 
+const PENDING = 'POLICY_INPUT_REQUIRED';
+
+/**
+ * True when fee/service_time/eligibility/evidence still require statutory owner input.
+ * M11: stubs with pending policy must not be offered even if a form version were published.
+ */
+export function policyInputsPending(template: CertificateTemplate): boolean {
+  const p = template.policy;
+  return [p.fee, p.service_time, p.eligibility, p.evidence].includes(PENDING);
+}
+
+/** Catalogue id whose form version UUID matches, or null. */
+export function catalogueIdForFormVersion(formVersionId: string): string | null {
+  for (const t of TEMPLATES) {
+    if (t.versions.some((v) => v.version_id === formVersionId)) return t.catalogue_id;
+  }
+  return null;
+}
+
 export function latestVersion(template: CertificateTemplate): TemplateVersion {
   const last = template.versions[template.versions.length - 1];
   if (!last) throw new Error(`Template ${template.template_id} has no versions`);

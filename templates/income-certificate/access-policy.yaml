@@ -1,0 +1,10 @@
+# IND-SOC-031 access / channels — FAIL-CLOSED for statutory roles
+access_policy_id: ind-soc-031-access-policy-pending
+status: POLICY_INPUT_REQUIRED
+channels:
+  - CITIZEN_PORTAL
+  - OFFICER_WORKBENCH
+  - SERVICE_STUDIO
+maker_checker: required_before_publish
+assignment_roles: POLICY_INPUT_REQUIRED
+notes: Channels may be listed; statutory officer designations remain owner input.

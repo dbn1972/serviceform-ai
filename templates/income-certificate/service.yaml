@@ -1,0 +1,41 @@
+# IND-SOC-031 — Income Certificate (individual) service metadata shell
+# SAMPLE_LAB authoring only. POLICY_INPUT_REQUIRED — do not invent statute.
+# Not CERTIFIED. G6 not self-issued. Constitution §1 §3 §31 §34.
+
+catalogue_id: IND-SOC-031
+record_type: service_template
+version: "0.1.0-policy-pending"
+status: SAMPLE_LAB_STUB
+policy_source_url: "POLICY_INPUT_REQUIRED"
+
+metadata:
+  title: "Income Certificate (individual)"
+  description: >
+    Certifies the assessed income of an individual for a stated period and purpose.
+    Definition and core fields come from the national normalised service registry.
+    Fee, eligibility, evidence and SLA remain POLICY_INPUT_REQUIRED from the statutory owner.
+  category: social_welfare
+  tags: [income, certificate, sample_lab, policy_input_required]
+
+policy_fields:
+  legal_basis: "POLICY_INPUT_REQUIRED"
+  issuing_authority_class: "Revenue Department / District Administration / Competent Caste Authority"
+  eligibility_summary: "POLICY_INPUT_REQUIRED"
+  applicant_scope: "POLICY_INPUT_REQUIRED"
+  validity_period_days: "POLICY_INPUT_REQUIRED"
+  income_proof_requirements: "POLICY_INPUT_REQUIRED"
+  pilot_state_or_jurisdiction: "POLICY_INPUT_REQUIRED"
+
+offering:
+  offering_id: "IND-SOC-031-OFFERING-DRAFT"
+  form_schema_ref: "ind-soc-031-form-draft"
+  rule_set_ref: "ind-soc-031-rules-policy-pending"
+  workflow_ref: "ind-soc-031-workflow-policy-pending"
+  evidence_policy_ref: "ind-soc-031-evidence-policy-pending"
+  fee_policy_ref: "ind-soc-031-fee-policy-pending"
+  sla_policy_ref: "ind-soc-031-sla-policy-pending"
+  credential_template_ref: "ind-soc-031-credential-policy-pending"
+  notification_template_ref: "ind-soc-031-notifications-policy-pending"
+
+invented_statutory_policy_forbidden: true
+citizen_placement_forbidden_until_policy_resolved: true

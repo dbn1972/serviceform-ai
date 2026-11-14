@@ -2,6 +2,7 @@ import {
   toPortalApplication,
   type PlatformApplication,
 } from '../../../../../lib/portal/applications';
+import { catalogueIdForCase } from '../../../../../lib/portal/catalogue-resolve';
 import { readIssuance, readWorkingData } from '../../../../../lib/portal/cases';
 import { currentCitizen, isUuid, json, platform, relay } from '../../../../../lib/portal/platform';
 
@@ -29,6 +30,7 @@ export async function GET(request: Request, ctx: Ctx) {
       app,
       await readWorkingData(citizen, id),
       await readIssuance(citizen, app),
+      catalogueIdForCase(app),
     ),
     source: 'PLATFORM',
     g6_issued: false,

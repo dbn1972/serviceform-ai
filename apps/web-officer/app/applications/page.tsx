@@ -10,6 +10,8 @@ type App = {
   status: string;
   platform_state: string;
   applicant_name?: string;
+  catalogue_id?: string;
+  purpose_of_certificate?: string;
   residence_duration_months?: number;
 };
 
@@ -41,7 +43,13 @@ function QueueList() {
                 <span className="ux4g-tag-tonal-neutral">{a.platform_state}</span>
               </div>
               <p className="ux4g-body-s-default">
-                {a.residence_duration_months ?? '—'} months residence · Ref {a.id.slice(0, 8)}…
+                {a.catalogue_id ? `${a.catalogue_id} · ` : ''}
+                {typeof a.residence_duration_months === 'number'
+                  ? `${a.residence_duration_months} months residence · `
+                  : a.purpose_of_certificate
+                    ? `${a.purpose_of_certificate.slice(0, 40)} · `
+                    : ''}
+                Ref {a.id.slice(0, 8)}…
               </p>
             </div>
             <TextLink href={`/applications/${a.id}`}>Review</TextLink>
@@ -76,7 +84,7 @@ export default function ApplicationsPage() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Applications</h1>
         <p className="ux4g-body-m-default">
-          Review and decide IND-SOC-002 Residence Certificate cases.
+          Review and decide submitted certificate applications for your office.
         </p>
       </section>
 

@@ -2,6 +2,7 @@ import {
   formFields,
   latestVersion,
   listTemplates,
+  policyInputsPending,
   publishedVersion,
   stepLabels,
   type CertificateTemplate,
@@ -28,10 +29,13 @@ export function policyText(value: string): string {
   return value === PENDING ? 'To be published by the department' : value;
 }
 
-/** A service is offered when this portal's placement binds it and a version is PUBLISHED. */
+/**
+ * A service is offered when this portal's placement binds it, a version is PUBLISHED, and
+ * statutory policy facts are no longer POLICY_INPUT_REQUIRED (M11: keep Income gated).
+ */
 export function isOffered(template: CertificateTemplate): boolean {
   const offered = portalPlacement().offerings.some((o) => o.catalogue_id === template.catalogue_id);
-  return offered && publishedVersion(template) !== null;
+  return offered && publishedVersion(template) !== null && !policyInputsPending(template);
 }
 
 export function catalogueEntries(): CatalogueEntry[] {

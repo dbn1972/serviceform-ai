@@ -7,7 +7,19 @@ export interface PlatformApplication {
   created_at: string;
   updated_at: string;
   submitted_at: string | null;
+  pins?: { form_version_id: string; tenant_service_binding_id: string };
 }
+
+/**
+ * SAMPLE_LAB form-version → catalogue map for queue labels (CCR-M11-001).
+ * Kept local so the officer shell does not take a Studio templates dependency;
+ * citizen portal resolves via @serviceform/service-templates.
+ */
+const LAB_FORM_CATALOGUE: Record<string, string> = {
+  '0d15ba00-0010-4000-8000-0d15ba000010': 'IND-SOC-002',
+  '0d15ba00-0019-4000-8000-0d15ba000019': 'IND-SOC-002',
+  '7e3a0031-0001-4000-8000-00000000031a': 'IND-SOC-031',
+};
 
 export type DecisionAction = 'APPROVE' | 'REJECT';
 
@@ -32,14 +44,22 @@ export function workbenchStatus(state: string): string {
   return 'SUBMITTED';
 }
 
+/** Catalogue id from the case form pin when known (CCR-M11-001); no IND-SOC-002 hard-code. */
+export function catalogueIdForOfficerCase(app: PlatformApplication): string | undefined {
+  const formVersionId = app.pins?.form_version_id;
+  return formVersionId ? LAB_FORM_CATALOGUE[formVersionId] : undefined;
+}
+
 export function toWorkbenchApplication(
   app: PlatformApplication,
   data: Record<string, unknown> | null,
   issuance: IssuanceProjection | null = null,
 ) {
+  const catalogueId = catalogueIdForOfficerCase(app);
   return {
     ...(data ?? {}),
     id: app.application_id,
+    ...(catalogueId ? { catalogue_id: catalogueId } : {}),
     status: workbenchStatus(app.state),
     platform_state: app.state,
     aggregate_version: app.aggregate_version,

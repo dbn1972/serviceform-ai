@@ -49,8 +49,8 @@ export function MyApplications() {
         <p className="ux4g-body-m-default">
           Applications you submit with this account appear here with their status.
         </p>
-        <Link className="ux4g-btn-primary ux4g-btn-m" href="/services/IND-SOC-002/apply">
-          Apply for a Residence Certificate
+        <Link className="ux4g-btn-primary ux4g-btn-m" href="/services">
+          Browse services
           <Icon name="arrow-right" size={18} />
         </Link>
       </section>
