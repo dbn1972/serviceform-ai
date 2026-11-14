@@ -40,6 +40,7 @@ import {
   type CaseServiceLike,
   type NeutralFactory,
 } from './issuance.js';
+import { StudioPublishedFormPort, type FormSourceLike } from './forms.js';
 import { loadPlacement, type PortalPlacement } from './placement.js';
 import { composeLabPrivacy, parseConsentFixture, type Cmp030Module } from './profile.js';
 import {
@@ -178,7 +179,7 @@ interface Cmp004Module {
 
 interface Cmp009Module {
   loadConfig: (env: NodeJS.ProcessEnv) => unknown;
-  SimulatedFormDefinitionPort: new (config: unknown) => {
+  SimulatedFormDefinitionPort: new (config: unknown) => FormSourceLike & {
     publish(form: {
       tenant_id: string;
       form_key: string;
@@ -188,6 +189,7 @@ interface Cmp009Module {
       payload: unknown;
     }): void;
   };
+  FormDefinitionNotFoundError: new () => Error;
   IdentityLocalizationPort: new () => unknown;
 }
 
@@ -220,18 +222,22 @@ interface Cmp012Module {
 
 interface Cmp033Module {
   registerMetadata: (app: FastifyInstance, opts: unknown) => Promise<void>;
-  SimulatedSchemaRegistry: new () => unknown;
+  loadConfig: (env: NodeJS.ProcessEnv) => unknown;
+  readPublishedDocument: (
+    pool: pg.Pool,
+    input: { tenantId: string; documentId: string; kind: 'FORM' },
+  ) => Promise<{ document_id: string; payload: unknown } | null>;
 }
 
 interface Cmp051Module {
   registerMakerChecker: (app: FastifyInstance, opts: unknown) => Promise<void>;
-  SimulatedMetadataPort: new () => unknown;
-  SimulatedVersioningPort: new () => unknown;
+  loadConfig: (env: NodeJS.ProcessEnv) => unknown;
   OffAiValidationPort: new () => unknown;
 }
 
 interface Cmp052Module {
   registerVersioning: (app: FastifyInstance, opts: unknown) => Promise<void>;
+  loadConfig: (env: NodeJS.ProcessEnv) => unknown;
   SimulatedApprovalPort: new (
     config: {
       environment: string;
@@ -581,10 +587,26 @@ export async function buildPlatformLab(
       'SF_FORMS_RATE_LIMIT_MAX',
     ).toString(),
   });
-  const forms = new cmp009.SimulatedFormDefinitionPort(formsConfig);
+  const catalogueForms = new cmp009.SimulatedFormDefinitionPort(formsConfig);
   for (const b of offeredBindings) {
-    forms.publish(publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id));
+    catalogueForms.publish(
+      publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id),
+    );
   }
+  const cmp033Pool = pools.cmp033;
+  const cmp033 = cmp033Pool
+    ? await loadComponent<Cmp033Module>('@serviceform/cmp-033-metadata', 'cmp-033-metadata')
+    : undefined;
+  // SF-M10-C-1: Studio forms frozen in CMP-033 resolve by hash pin after the catalogue.
+  const forms: FormSourceLike =
+    cmp033 && cmp033Pool
+      ? new StudioPublishedFormPort({
+          catalogue: catalogueForms,
+          read: (input) => cmp033.readPublishedDocument(cmp033Pool, input),
+          isNotFound: (err) => err instanceof cmp009.FormDefinitionNotFoundError,
+          notFound: () => new cmp009.FormDefinitionNotFoundError(),
+        })
+      : catalogueForms;
 
   const officers = readJson<{ officers: LabOfficer[] }>(join(dir, 'officers.json')).officers.filter(
     (o) => o.tenant_id === placement.tenant_id,
@@ -661,27 +683,45 @@ export async function buildPlatformLab(
 
   // SF-M10-B-4: mount CMP-033/051/052 when pool env vars are present.
   let m03: M03PluginMounts | undefined;
-  if (pools.cmp033 && pools.cmp051 && pools.cmp052) {
-    // studioRateMax: consumed via each component's loadConfig() defaulting to env vars.
-    const [cmp033, cmp051, cmp052] = await Promise.all([
-      loadComponent<Cmp033Module>('@serviceform/cmp-033-metadata', 'cmp-033-metadata'),
+  if (cmp033 && pools.cmp033 && pools.cmp051 && pools.cmp052) {
+    const [cmp051, cmp052] = await Promise.all([
       loadComponent<Cmp051Module>('@serviceform/cmp-051-maker-checker', 'cmp-051-maker-checker'),
       loadComponent<Cmp052Module>('@serviceform/cmp-052-versioning', 'cmp-052-versioning'),
     ]);
+    // SF-M10-C-1: SIMULATED ports are built by each plugin from its own config (they read
+    // environment, scenario and binding ids from it); the host only supplies that config.
+    const testRunId = `platform-lab-${placement.portal_id}`;
+    const studioRate = positiveInt(
+      env.SF_STUDIO_RATE_LIMIT_MAX ?? '120',
+      'SF_STUDIO_RATE_LIMIT_MAX',
+    ).toString();
     m03 = {
       metadata: {
         pool: pools.cmp033,
         resolveContext,
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
-        registry: new cmp033.SimulatedSchemaRegistry(),
+        config: cmp033.loadConfig({
+          SF_ENVIRONMENT: environment,
+          SF_METADATA_SCHEMA_MODE: 'SIMULATED',
+          SF_METADATA_TEST_RUN_ID: testRunId,
+          SF_METADATA_SCENARIO: 'sample_lab_studio',
+          SF_METADATA_RATE_LIMIT_MAX: studioRate,
+        }),
         clock: () => new Date(),
       },
       makerChecker: {
         pool: pools.cmp051,
         resolveContext,
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
-        metadata: new cmp051.SimulatedMetadataPort(),
-        versioning: new cmp051.SimulatedVersioningPort(),
+        config: cmp051.loadConfig({
+          SF_ENVIRONMENT: environment,
+          SF_CMP051_METADATA_MODE: 'SIMULATED',
+          SF_CMP051_VERSIONING_MODE: 'SIMULATED',
+          SF_CMP051_AI_MODE: 'OFF',
+          SF_CMP051_TEST_RUN_ID: testRunId,
+          SF_CMP051_SCENARIO: 'sample_lab_maker_checker',
+          SF_CMP051_RATE_LIMIT_MAX: studioRate,
+        }),
         ai: new cmp051.OffAiValidationPort(),
         clock: () => new Date(),
       },
@@ -689,12 +729,19 @@ export async function buildPlatformLab(
         pool: pools.cmp052,
         resolveContext,
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+        config: cmp052.loadConfig({
+          SF_ENVIRONMENT: environment,
+          SF_CMP052_APPROVAL_MODE: 'SIMULATED',
+          SF_CMP052_TEST_RUN_ID: testRunId,
+          SF_CMP052_SCENARIO: 'sample_lab_maker_checker',
+          SF_CMP052_RATE_LIMIT_MAX: studioRate,
+        }),
         approval: new cmp052.SimulatedApprovalPort(
           {
             environment,
             approvalMode: 'SIMULATED',
             scenario: 'sample_lab_maker_checker',
-            testRunId: `platform-lab-${placement.portal_id}`,
+            testRunId,
             approvalBindingId: '05200000-0000-4000-8000-000000000052',
           },
           true,

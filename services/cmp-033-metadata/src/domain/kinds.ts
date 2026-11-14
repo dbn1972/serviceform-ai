@@ -32,6 +32,25 @@ export function payloadHash(payload: unknown): string {
   return sha256Fingerprint([JSON.stringify(payload)]);
 }
 
+function sortKeys(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortKeys);
+  if (value !== null && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const key of Object.keys(value as Record<string, unknown>).sort()) {
+      out[key] = sortKeys((value as Record<string, unknown>)[key]);
+    }
+    return out;
+  }
+  return value;
+}
+
+/** Canonical content hash (keys sorted recursively), the same digest CMP-009 pins forms by. */
+export function canonicalContentHash(value: unknown): string {
+  return `sha256:${createHash('sha256')
+    .update(JSON.stringify(sortKeys(value)), 'utf8')
+    .digest('hex')}`;
+}
+
 const KEY_RE = /^[a-z][a-z0-9._-]{1,127}$/;
 const CODE_RE = /^[a-z][a-z0-9_]{1,63}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -56,6 +75,43 @@ function requireArray(obj: Record<string, unknown>, key: string, pointer: string
   const v = obj[key];
   if (!Array.isArray(v) || v.length < 1) fail(pointer, `${key} required`);
   return v;
+}
+
+const CONTENT_HASH_RE = /^sha256:[0-9a-f]{64}$/;
+
+/**
+ * Optional executable package on a FORM document (Studio forms designer). When present it must be
+ * structurally a FORM package and `content_hash` must be its canonical digest, so a frozen version
+ * can only be pinned by the hash of exactly what was validated. CMP-009 parses the grammar.
+ */
+function validateFormPackage(payload: Record<string, unknown>): void {
+  const pkg = payload['form_package'];
+  if (pkg === undefined) {
+    if (payload['content_hash'] !== undefined)
+      fail('/payload/form_package', 'form_package required');
+    return;
+  }
+  if (!isRecord(pkg)) fail('/payload/form_package', 'form_package must be an object');
+  if (!KEY_RE.test(requireString(pkg, 'form_id', '/payload/form_package/form_id'))) {
+    fail('/payload/form_package/form_id', 'invalid form id');
+  }
+  const schema = pkg['json_schema'];
+  if (!isRecord(schema) || schema['type'] !== 'object' || !isRecord(schema['properties'])) {
+    fail('/payload/form_package/json_schema', 'json_schema must be an object schema');
+  }
+  const ui = pkg['ui_schema'];
+  if (!isRecord(ui) || typeof ui['type'] !== 'string') {
+    fail('/payload/form_package/ui_schema', 'ui_schema must be a layout');
+  }
+  const extra = Object.keys(pkg).filter(
+    (k) => !['form_id', 'json_schema', 'ui_schema', 'message_keys'].includes(k),
+  );
+  if (extra.length > 0) fail('/payload/form_package', 'unknown form_package keys');
+  const declared = requireString(payload, 'content_hash', '/payload/content_hash');
+  if (!CONTENT_HASH_RE.test(declared)) fail('/payload/content_hash', 'invalid content hash');
+  if (canonicalContentHash(pkg) !== declared) {
+    fail('/payload/content_hash', 'content hash does not match form_package');
+  }
 }
 
 /** Structural kind schemas only. No named-service or statutory content. */
@@ -92,6 +148,7 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
           requireString(field, 'control', `/payload/pages/${i}/fields/${j}/control`);
         }
       }
+      validateFormPackage(payload);
       return;
     }
     case 'RULES': {

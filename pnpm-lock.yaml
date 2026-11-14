@@ -267,6 +267,9 @@ importers:
       '@serviceform/service-templates':
         specifier: workspace:*
         version: link:../../packages/service-templates
+      '@serviceform/studio-designers':
+        specifier: workspace:*
+        version: link:../../packages/studio-designers
       '@serviceform/ui-ux4g':
         specifier: workspace:*
         version: link:../../packages/ui-ux4g
@@ -411,6 +414,12 @@ importers:
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../contracts
+
+  packages/studio-designers:
+    dependencies:
+      '@serviceform/service-templates':
+        specifier: workspace:*
+        version: link:../service-templates
 
   packages/ui-ux4g:
     devDependencies:
@@ -595,6 +604,9 @@ importers:
       '@serviceform/service-templates':
         specifier: workspace:*
         version: link:../../packages/service-templates
+      '@serviceform/studio-designers':
+        specifier: workspace:*
+        version: link:../../packages/studio-designers
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1

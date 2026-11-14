@@ -108,7 +108,13 @@ export function handleReadSession(request: Request, _surfaces: PortalSurface[]):
       if (me.status !== 200 || me.body['actor_type'] !== 'OFFICER') {
         return errorJson('SF-AUTH-001', 401, '00000000-0000-4000-8000-000000000050');
       }
-      return Response.json({ authenticated: true, simulation: true, g6_issued: false });
+      const subject = me.body['subject_id'];
+      return Response.json({
+        authenticated: true,
+        actor_id: typeof subject === 'string' ? subject : null,
+        simulation: true,
+        g6_issued: false,
+      });
     } catch (err) {
       return caught(err);
     }

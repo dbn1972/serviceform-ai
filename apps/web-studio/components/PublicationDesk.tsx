@@ -1,108 +1,249 @@
 'use client';
 
 import { Alert, Button, TextInput } from '@serviceform/ui-ux4g';
-import { useState } from 'react';
-import { makerCheckerUx } from '../lib/designer';
+import { shortHash } from '@serviceform/studio-designers';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  bindingsApi,
+  explain,
+  orderedPins,
+  publicationApi,
+  readSession,
+  type ApiResult,
+  type Binding,
+  type PublicationRequest,
+  type SessionState,
+} from '../lib/studio-api';
 
-type RequestView = {
-  request_id?: string;
-  status?: string;
-  maker_principal_id?: string;
-  error_code?: string;
-};
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-export function PublicationDesk() {
-  const [subjectId, setSubjectId] = useState('');
-  const [hash, setHash] = useState('');
-  const [request, setRequest] = useState<RequestView>({});
-  const [actorId, setActorId] = useState('');
-  const [roles, setRoles] = useState<string[]>([]);
+/**
+ * Checker desk for CMP-051 publication requests. The checker opens a submitted request, inspects
+ * the TenantServiceBinding pins (including the frozen form, read-only in the designer), records a
+ * reasoned decision and, once approved, publishes the immutable binding version through CMP-052.
+ * CMP-051 refuses a decision by the maker; OPA decides who may act.
+ */
+export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: string }) {
+  const [requestId, setRequestId] = useState(initialRequestId);
+  const [request, setRequest] = useState<PublicationRequest | null>(null);
+  const [binding, setBinding] = useState<Binding | null>(null);
+  const [session, setSession] = useState<SessionState | null>(null);
+  const [reason, setReason] = useState('');
+  const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState('');
 
-  async function refreshSession() {
-    const res = await fetch('/api/session');
-    if (!res.ok) return;
-    const body = (await res.json()) as { actor_id: string; roles: string[] };
-    setActorId(body.actor_id);
-    setRoles(body.roles);
-  }
-
-  async function create() {
+  async function run<T>(label: string, fn: () => Promise<ApiResult<T>>): Promise<T | null> {
+    setBusy(label);
     setError('');
-    await refreshSession();
-    const res = await fetch('/api/platform/publication-requests', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
-      body: JSON.stringify({ subject_id: subjectId, proposed_hash: hash }),
-    });
-    const body = (await res.json()) as RequestView;
+    const res = await fn();
+    setBusy(null);
     if (!res.ok) {
-      setError(body.error_code ?? 'SF-SYS-004');
-      return;
+      setError(explain(res.error));
+      return null;
     }
-    setRequest(body);
+    return res.body;
   }
 
-  async function act(path: string) {
-    if (!request.request_id) return;
-    const res = await fetch(`/api/platform/publication-requests/${request.request_id}/${path}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
-      body: '{}',
-    });
-    const body = (await res.json()) as RequestView;
-    if (!res.ok) {
-      setError(body.error_code ?? 'SF-SYS-004');
+  const load = useCallback(async (id: string) => {
+    if (!UUID_RE.test(id.trim())) {
+      setError('Enter a publication request id (UUID).');
       return;
     }
-    setRequest(body);
+    setSession(await readSession());
+    const found = await run('load', () => publicationApi.read(id.trim()));
+    if (!found) return;
+    setRequest(found);
+    const b = await run('load', () => bindingsApi.read(found.subject_id));
+    if (b) setBinding(b);
+  }, []);
+
+  useEffect(() => {
+    if (initialRequestId) void load(initialRequestId);
+  }, [initialRequestId, load]);
+
+  async function decide(decision: 'approve' | 'reject') {
+    if (!request) return;
+    const body = await run(decision, () =>
+      publicationApi.decide(request.request_id, decision, reason.trim()),
+    );
+    if (body) setRequest(body);
   }
 
-  const ux = makerCheckerUx(actorId, request.maker_principal_id ?? '', request.status ?? '', roles);
+  async function publish() {
+    if (!binding) return;
+    const body = await run('publish', () => bindingsApi.publish(binding.binding_id));
+    if (body) setBinding(body);
+  }
+
+  const isMaker = Boolean(
+    session?.actor_id && request && session.actor_id === request.maker_principal_id,
+  );
+  const canDecide = request?.status === 'SUBMITTED' && !isMaker && reason.trim().length > 0;
+  const formPin = binding?.pins['form'];
 
   return (
-    <div>
-      <TextInput
-        id="subject_id"
-        name="subject_id"
-        label="TenantServiceBinding id"
-        value={subjectId}
-        onChange={(e) => setSubjectId(e.target.value)}
-      />
-      <TextInput
-        id="proposed_hash"
-        name="proposed_hash"
-        label="Proposed artifact hash"
-        value={hash}
-        onChange={(e) => setHash(e.target.value)}
-      />
+    <div className="sf-designer-stack">
+      <form
+        className="sf-designer-row sf-designer-row-end"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void load(requestId);
+        }}
+      >
+        <TextInput
+          id="request_id"
+          name="request_id"
+          label="Publication request id"
+          value={requestId}
+          onChange={(e) => setRequestId(e.target.value)}
+        />
+        <Button type="submit" variant="outline-primary" disabled={busy !== null}>
+          Open request
+        </Button>
+      </form>
+
       {error ? (
-        <Alert variant="error" title="Publication request failed">
+        <Alert variant="error" title="Publication desk">
           {error}
         </Alert>
       ) : null}
-      {request.status ? (
-        <Alert variant="info" title="Request status">
-          {request.status}
-        </Alert>
+
+      {request ? (
+        <section className="sf-designer-stack" aria-labelledby="request-title">
+          <h2 id="request-title" className="ux4g-heading-s-strong">
+            Request <code className="sf-hash">{request.request_id}</code>
+          </h2>
+          <dl className="sf-dl">
+            <dt>Status</dt>
+            <dd>
+              <span
+                data-testid="publication-status"
+                className={
+                  request.status === 'APPROVED'
+                    ? 'ux4g-tag-tonal-success'
+                    : request.status === 'REJECTED'
+                      ? 'ux4g-tag-tonal-error'
+                      : 'ux4g-tag-tonal-warning'
+                }
+              >
+                {request.status}
+              </span>
+            </dd>
+            <dt>Binding draft</dt>
+            <dd>
+              <code className="sf-hash">{request.subject_id}</code>
+            </dd>
+            <dt>Proposed hash</dt>
+            <dd>
+              <code className="sf-hash">{request.proposed_hash}</code>
+            </dd>
+            <dt>Maker</dt>
+            <dd>
+              <code className="sf-hash">{request.maker_principal_id}</code>
+              {isMaker ? <span className="ux4g-tag-tonal-warning"> You</span> : null}
+            </dd>
+            <dt>AI review</dt>
+            <dd>
+              Advisory only, never blocking
+              {request.ai_advisory?.codes?.length
+                ? ` (${request.ai_advisory.codes.join(', ')})`
+                : ''}
+            </dd>
+          </dl>
+
+          {binding ? (
+            <div className="sf-table-wrap">
+              <table className="sf-table">
+                <caption>
+                  Pins in binding {binding.binding_key} · {binding.status}
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Kind</th>
+                    <th scope="col">Version ref</th>
+                    <th scope="col">Content hash</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderedPins(binding.pins).map(([kind, pin]) => (
+                    <tr key={kind}>
+                      <th scope="row">{kind}</th>
+                      <td>
+                        <code className="sf-hash">{pin.version_ref}</code>
+                      </td>
+                      <td>
+                        <code className="sf-hash">{shortHash(pin.content_hash)}</code>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+          {formPin && UUID_RE.test(formPin.version_ref) ? (
+            <p className="ux4g-body-m-default">
+              <Link href={`/forms/designer?document=${formPin.version_ref}`}>
+                Inspect the pinned form (read-only)
+              </Link>
+            </p>
+          ) : null}
+
+          {request.status === 'SUBMITTED' ? (
+            isMaker ? (
+              <Alert variant="warning" title="Maker cannot decide">
+                You created this request. Sign in as a different Studio officer (the checker).
+              </Alert>
+            ) : (
+              <div className="sf-designer-stack">
+                <TextInput
+                  id="decision_reason"
+                  name="decision_reason"
+                  label="Decision reason (recorded in the audit trail)"
+                  value={reason}
+                  maxLength={1000}
+                  onChange={(e) => setReason(e.target.value)}
+                />
+                <div className="sf-actions">
+                  <Button
+                    disabled={!canDecide || busy !== null}
+                    onClick={() => void decide('approve')}
+                  >
+                    Approve
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    disabled={!canDecide || busy !== null}
+                    onClick={() => void decide('reject')}
+                  >
+                    Reject
+                  </Button>
+                </div>
+              </div>
+            )
+          ) : null}
+
+          {request.status === 'APPROVED' && binding ? (
+            binding.status === 'PUBLISHED' ? (
+              <Alert variant="success" title="Binding version published">
+                <span data-testid="binding-published">
+                  Immutable artifact version{' '}
+                  <code className="sf-hash">{binding.published_version_id}</code>. New applications
+                  pin it; applications already started keep their pins.
+                </span>
+              </Alert>
+            ) : (
+              <Button disabled={busy !== null} onClick={() => void publish()}>
+                Publish binding version
+              </Button>
+            )
+          ) : null}
+        </section>
       ) : null}
-      <Button onClick={() => void create()}>Create request as maker</Button>
-      <Button variant="outline-primary" disabled={!ux.canSubmit} onClick={() => void act('submit')}>
-        Submit for checker
-      </Button>
-      <Button
-        variant="outline-primary"
-        disabled={!ux.canApprove}
-        onClick={() => void act('approve')}
-      >
-        Approve as checker
-      </Button>
-      <Button variant="outline-danger" disabled={!ux.canReject} onClick={() => void act('reject')}>
-        Reject as checker
-      </Button>
-      <p className="ux4g-body-m-default">
-        Maker-checker decisions are enforced by CMP-051. This portal only enables the matching
-        actions.
+
+      <p className="ux4g-body-s-default sf-designer-muted">
+        CMP-051 records maker and checker separately and refuses a decision by the maker. CMP-052
+        publishes immutable versions. SAMPLE_LAB: the CMP-052 approval port is SIMULATED.
       </p>
     </div>
   );
