@@ -13,7 +13,7 @@ import {
 } from '../../src/index.js';
 import { FakeDb } from '../doubles/fake-db.js';
 import { Approvals, RecordingTemporal, ctx } from '../doubles/ports.js';
-import { linearGraph, richGraph, T1, T2, V1 } from '../fixtures/models.js';
+import { CHECKER, linearGraph, richGraph, T1, T2, V1 } from '../fixtures/models.js';
 
 function caller(over: Partial<StudioCaller> = {}): StudioCaller {
   return { ...ctx(), roles: ['STUDIO_DESIGNER'], ...over };
@@ -23,16 +23,19 @@ function rig(denied: WorkflowAction[] = []) {
   const db = new FakeDb([]);
   const seen: string[] = [];
   let next = 0;
+  const approvals = new Approvals();
   const api = createStudioWorkflowApi({
     async authorize(c, action) {
       seen.push(`${c.roles.join(',')}:${action}`);
-      return c.roles.includes('STUDIO_DESIGNER') && !denied.includes(action);
+      if (denied.includes(action)) return false;
+      if (c.roles.includes('STUDIO_DESIGNER')) return true;
+      return c.roles.includes('STUDIO_CHECKER') && action === 'WORKFLOW_VERSION_PUBLISH';
     },
     service: (authz, newId) =>
       new WorkflowService({
         pool: db,
         authz,
-        approvals: new Approvals(),
+        approvals,
         temporal: new TemporalSequencingAdapter(new RecordingTemporal(), 'sf-workflow'),
         newId:
           newId ??
@@ -42,7 +45,7 @@ function rig(denied: WorkflowAction[] = []) {
           }),
       }),
   });
-  return { api, seen, db };
+  return { api, seen, db, approvals };
 }
 
 // REQ: Phase C-2 — Studio checks, BPMN interoperability and DRAFT emission go through CMP-016.
@@ -137,5 +140,43 @@ describe('CMP-016 Studio API', () => {
     expect(res.contentType).toBe('application/xml');
     expect(String(res.body)).toContain('isExecutable="false"');
     expect((await api.exportVersionBpmn(caller(), 'nope')).status).toBe(400);
+  });
+
+  it('publishes a DRAFT after CMP-051-style approval_ref (checker ≠ maker)', async () => {
+    const { api, approvals } = rig();
+    const graph = linearGraph();
+    const created = await api.createDraft(caller(), {
+      definition_key: 'lab.publish.flow',
+      graph,
+      graph_hash: graphHash(graph),
+    });
+    const versionId = (created.body as { version_id: string }).version_id;
+    const approvalRef = '05100000-0000-4000-8000-000000000051';
+    const checker = caller({ actor: { type: 'OFFICER', id: CHECKER }, roles: ['STUDIO_CHECKER'] });
+    approvals.approved = false;
+    const refused = await api.publishVersion(checker, {
+      version_id: versionId,
+      approval_ref: approvalRef,
+    });
+    expect(refused.status).toBe(403);
+    expect(JSON.stringify(refused.body)).toContain('APPROVAL_MISSING');
+    approvals.approved = true;
+    const published = await api.publishVersion(checker, {
+      version_id: versionId,
+      approval_ref: approvalRef,
+    });
+    expect(published.status).toBe(200);
+    expect(published.body).toMatchObject({
+      version_id: versionId,
+      status: 'PUBLISHED',
+      graph_hash: graphHash(graph),
+    });
+    expect(approvals.requests.at(-1)).toEqual(
+      expect.objectContaining({
+        subject_type: 'WorkflowVersion',
+        subject_id: versionId,
+        approval_ref: approvalRef,
+      }),
+    );
   });
 });

@@ -136,6 +136,44 @@
           "404": { "description": "SF-SYS-002" }
         }
       }
+    },
+    "/v1/workflow-versions/publish": {
+      "post": {
+        "operationId": "publishWorkflowVersion",
+        "summary": "Publish a DRAFT workflow version after CMP-051 maker-checker approval (approval_ref = publication request id)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["version_id", "approval_ref"],
+                "additionalProperties": false,
+                "properties": {
+                  "version_id": { "type": "string", "format": "uuid" },
+                  "approval_ref": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "CMP-051 publication request id"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PUBLISHED workflow version",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/PublishedVersion" } }
+            }
+          },
+          "400": { "description": "SF-SYS-003" },
+          "401": { "description": "SF-AUTH-001" },
+          "403": { "description": "SF-AUTH-002 (APPROVAL_MISSING)" },
+          "404": { "description": "SF-SYS-002" }
+        }
+      }
     }
   },
   "components": {
@@ -184,6 +222,18 @@
           "origin": { "enum": ["STUDIO", "BPMN_IMPORT"] },
           "graph_hash": { "$ref": "#/components/schemas/Hash" },
           "source_ref": { "type": "string" }
+        }
+      },
+      "PublishedVersion": {
+        "type": "object",
+        "required": ["definition_id", "version_id", "version_no", "status", "origin", "graph_hash"],
+        "properties": {
+          "definition_id": { "type": "string", "format": "uuid" },
+          "version_id": { "type": "string", "format": "uuid" },
+          "version_no": { "type": "integer", "minimum": 1 },
+          "status": { "const": "PUBLISHED" },
+          "origin": { "enum": ["STUDIO", "BPMN_IMPORT", "SYSTEM"] },
+          "graph_hash": { "$ref": "#/components/schemas/Hash" }
         }
       }
     }

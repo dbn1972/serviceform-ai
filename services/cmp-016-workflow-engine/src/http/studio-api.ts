@@ -29,6 +29,10 @@ export interface StudioDraftService {
     ctx: WorkflowContext,
     input: { definition_id: string; graph: unknown },
   ): Promise<WorkflowVersionRecord>;
+  publish(
+    ctx: WorkflowContext,
+    input: { version_id: string; approval_ref: string },
+  ): Promise<WorkflowVersionRecord>;
   exportBpmn(ctx: WorkflowContext, versionId: string): Promise<string>;
 }
 
@@ -191,6 +195,41 @@ export function createStudioWorkflowApi(deps: StudioWorkflowApiDeps) {
       try {
         const xml = await deps.service(authzFor(caller)).exportBpmn(caller, versionId);
         return { status: 200, body: xml, contentType: 'application/xml' };
+      } catch (err) {
+        return failure(err);
+      }
+    },
+
+    /**
+     * Publishes a DRAFT workflow version after CMP-051 approval. `approval_ref` is the CMP-051
+     * publication request id; the host's ApprovalPort checks it against the binding's workflow pin.
+     */
+    async publishVersion(caller: StudioCaller, body: unknown): Promise<StudioResponse> {
+      try {
+        if (!isRecord(body)) throw invalid('BODY_NOT_OBJECT');
+        const versionId = body['version_id'];
+        const approvalRef = body['approval_ref'];
+        if (typeof versionId !== 'string' || !isUuid(versionId)) {
+          throw invalid('VERSION_ID_INVALID', '/version_id');
+        }
+        if (typeof approvalRef !== 'string' || !isUuid(approvalRef)) {
+          throw invalid('APPROVAL_REF_INVALID', '/approval_ref');
+        }
+        const published = await deps.service(authzFor(caller)).publish(caller, {
+          version_id: versionId,
+          approval_ref: approvalRef,
+        });
+        return {
+          status: 200,
+          body: {
+            definition_id: published.definition_id,
+            version_id: published.version_id,
+            version_no: published.version_no,
+            status: published.status,
+            origin: published.origin,
+            graph_hash: published.model.graph_hash,
+          },
+        };
       } catch (err) {
         return failure(err);
       }

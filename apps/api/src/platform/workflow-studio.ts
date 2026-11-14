@@ -26,6 +26,7 @@ export interface StudioWorkflowApiLike {
   importBpmn(caller: StudioCallerLike, body: unknown): Promise<StudioResponseLike>;
   createDraft(caller: StudioCallerLike, body: unknown): Promise<StudioResponseLike>;
   exportVersionBpmn(caller: StudioCallerLike, versionId: string): Promise<StudioResponseLike>;
+  publishVersion(caller: StudioCallerLike, body: unknown): Promise<StudioResponseLike>;
 }
 
 export interface PdpLike {
@@ -125,6 +126,9 @@ export async function registerStudioWorkflowRoutes(
     );
     scope.get<{ Params: { id: string } }>('/v1/workflow-versions/:id/bpmn', (request, reply) =>
       run(request, reply, (caller) => opts.api.exportVersionBpmn(caller, request.params.id)),
+    );
+    scope.post('/v1/workflow-versions/publish', (request, reply) =>
+      run(request, reply, (caller) => opts.api.publishVersion(caller, request.body)),
     );
   });
 }

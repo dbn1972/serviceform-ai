@@ -10,6 +10,7 @@ import {
   orderedPins,
   publicationApi,
   readSession,
+  workflowApi,
   type ApiResult,
   type Binding,
   type PublicationRequest,
@@ -72,7 +73,27 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
   }
 
   async function publish() {
-    if (!binding) return;
+    if (!binding || !request) return;
+    // Studio workflow pins are CMP-016 DRAFT versions until the checker publishes them with the
+    // CMP-051 request id as approval_ref; Temporal only starts PUBLISHED versions. A carried-forward
+    // fixture pin that is already PUBLISHED is left alone (PUBLISHED_VERSION_IMMUTABLE).
+    const wf = binding.pins['workflow'];
+    if (wf && UUID_RE.test(wf.version_ref)) {
+      setBusy('publish-workflow');
+      setError('');
+      const wfRes = await workflowApi.publish(wf.version_ref, request.request_id);
+      setBusy(null);
+      if (!wfRes.ok) {
+        const skip = wfRes.error.details.some(
+          (d) => d.code === 'PUBLISHED_VERSION_IMMUTABLE' || d.code === 'APPROVAL_MISSING',
+        );
+        // Already published fixture pin, or this binding change did not pin a Studio draft.
+        if (!skip) {
+          setError(explain(wfRes.error));
+          return;
+        }
+      }
+    }
     const body = await run('publish', () => bindingsApi.publish(binding.binding_id));
     if (body) setBinding(body);
   }
@@ -260,7 +281,7 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
 
       <p className="ux4g-body-s-default sf-designer-muted">
         CMP-051 records maker and checker separately and refuses a decision by the maker. CMP-052
-        publishes immutable versions. SAMPLE_LAB: the CMP-052 approval port is SIMULATED.
+        and CMP-016 publish only after an APPROVED CMP-051 request (no allow-all short-circuit).
       </p>
     </div>
   );

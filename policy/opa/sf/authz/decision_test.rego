@@ -15,7 +15,7 @@ test_positive_view_allow if {
 	d := eval(base_input, {})
 	d.allow == true
 	d.reason_code == "ALLOW"
-	d.policy_revision == "m10-c3"
+	d.policy_revision == "m10-c-pins"
 }
 
 test_r1_empty_input if {
@@ -332,5 +332,5 @@ test_system_authz_pep_cannot_write_policy if {
 }
 
 test_manifest_revision_matches_meta if {
-	data.sf.meta.policy_revision == "m10-c3"
+	data.sf.meta.policy_revision == "m10-c-pins"
 }

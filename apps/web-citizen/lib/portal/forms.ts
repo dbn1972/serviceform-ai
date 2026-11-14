@@ -90,14 +90,60 @@ export function applyBody(raw: unknown): { catalogueId: string; data: Record<str
   return { catalogueId: 'IND-SOC-002', data: isRecord(raw) ? raw : {} };
 }
 
+export type FormPin = { form_key: string; version_id: string; content_hash: string };
+
+/** Live TSB / Studio form pin (CMP-033) when the published binding no longer matches the catalogue. */
+export async function studioFormPin(citizen: Citizen, versionId: string): Promise<FormPin | null> {
+  const res = await platform('GET', `/v1/lab/form-pins/${versionId}`, { token: citizen.token });
+  if (res.status !== 200) return null;
+  const key = res.body['form_key'];
+  const id = res.body['version_id'];
+  const hash = res.body['content_hash'];
+  if (typeof key !== 'string' || typeof id !== 'string' || typeof hash !== 'string') return null;
+  return { form_key: key, version_id: id, content_hash: hash };
+}
+
+export function pinFor(version: TemplateVersion): FormPin {
+  return formPin(version);
+}
+
+/**
+ * Resolve the form pin the placement binding will pin cases to — without creating a draft.
+ * Prefers Studio (CMP-033) when the live TSB form version differs from the catalogue pin.
+ */
+export async function liveOfferingFormPin(
+  citizen: Citizen,
+  catalogueId: string,
+  catalogue: FormPin,
+): Promise<FormPin> {
+  const res = await platform('GET', `/v1/lab/offerings/${catalogueId}/form-pin`, {
+    token: citizen.token,
+  });
+  if (res.status !== 200 || typeof res.body['version_id'] !== 'string') return catalogue;
+  const versionId = res.body['version_id'] as string;
+  if (versionId === catalogue.version_id) return catalogue;
+  if (
+    res.body['source'] === 'CMP-033' &&
+    typeof res.body['form_key'] === 'string' &&
+    typeof res.body['content_hash'] === 'string'
+  ) {
+    return {
+      form_key: res.body['form_key'] as string,
+      version_id: versionId,
+      content_hash: res.body['content_hash'] as string,
+    };
+  }
+  return (await studioFormPin(citizen, versionId)) ?? catalogue;
+}
+
 export async function interpret(
   citizen: Citizen,
-  version: TemplateVersion,
+  pin: FormPin,
   data: Record<string, unknown>,
 ): Promise<PlatformResponse> {
   return platform('POST', '/v1/interpretations', {
     token: citizen.token,
-    body: { form: formPin(version), data, locale: FORM_LOCALE },
+    body: { form: pin, data, locale: FORM_LOCALE },
   });
 }
 
@@ -114,14 +160,14 @@ export type ValidationOutcome =
 /** Authoritative CMP-009 execution. Any status other than 201/422 fails closed. */
 export async function validateWithEngine(
   citizen: Citizen,
-  version: TemplateVersion,
+  pin: FormPin,
   data: Record<string, unknown>,
   idempotency: { idempotencyKey: string } | { idempotent: true },
 ): Promise<ValidationOutcome> {
   const res = await platform('POST', '/v1/executions', {
     token: citizen.token,
     ...idempotency,
-    body: { form: formPin(version), data, purpose_code: 'APPLICATION_SUBMIT', locale: FORM_LOCALE },
+    body: { form: pin, data, purpose_code: 'APPLICATION_SUBMIT', locale: FORM_LOCALE },
   });
   if (res.status === 201 && res.body['result_code'] === 'VALID') {
     return {

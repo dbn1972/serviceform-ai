@@ -3,7 +3,9 @@ import { toPortalApplication, type PlatformApplication } from '../../../../lib/p
 import { command, readIssuance, readWorkingData } from '../../../../lib/portal/cases';
 import {
   applyBody,
+  liveOfferingFormPin,
   offeredForm,
+  pinFor,
   sampleLab,
   syntheticNameRefusal,
   validateWithEngine,
@@ -41,10 +43,9 @@ export async function GET(request: Request) {
 }
 
 /**
- * Apply: authoritative CMP-009 validation of the data against the pinned published form, then a
- * CMP-015 draft pinned to the placement's published binding, working data, MARK_READY_TO_SUBMIT
- * and SUBMIT. Each step is OPA-authorized as the owning citizen. The draft must pin the form
- * version CMP-009 validated, and CMP-015 must store data with the hash CMP-009 validated.
+ * Apply: authoritative CMP-009 validation of the data against the live offering / Studio pin,
+ * then a CMP-015 draft pinned to the placement's published binding, working data,
+ * MARK_READY_TO_SUBMIT and SUBMIT. Validate before draft so refused answers leave nothing filed.
  */
 const SUBMISSION_KEY = /^[A-Za-z0-9_-]{16,64}$/;
 
@@ -71,9 +72,12 @@ export async function POST(request: Request) {
     if (refusal) return json(400, { error_code: 'SF-SYS-003', ...refusal });
   }
 
+  const cataloguePin = pinFor(version);
+  const formPin = await liveOfferingFormPin(citizen, catalogueId, cataloguePin);
+
   const validated = await validateWithEngine(
     citizen,
-    version,
+    formPin,
     data,
     keys.base ? { idempotencyKey: `${keys.base}-form` } : { idempotent: true },
   );
@@ -97,7 +101,7 @@ export async function POST(request: Request) {
   });
   let app = draft.body['application'] as PlatformApplication | undefined;
   if (draft.status !== 201 || !app) return relay(draft);
-  if (app.pins.form_version_id !== version.version_id) {
+  if (app.pins.form_version_id !== formPin.version_id) {
     return json(409, {
       error_code: 'SF-FORM-001',
       message: 'This service form changed. Reload the page and try again.',

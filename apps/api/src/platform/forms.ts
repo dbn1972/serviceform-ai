@@ -64,29 +64,39 @@ export class StudioPublishedFormPort implements FormSourceLike {
     },
   ) {}
 
-  async resolve(request: FormRequestLike): Promise<PublishedFormLike> {
-    try {
-      return await this.deps.catalogue.resolve(request);
-    } catch (err) {
-      if (!this.deps.isNotFound(err)) throw err;
-    }
+  /** Resolve a Studio FORM by CMP-033 document id (version pin), ignoring catalogue keys. */
+  async resolveStudioVersion(
+    tenantId: string,
+    versionId: string,
+  ): Promise<PublishedFormLike | null> {
     const doc = await this.deps.read({
-      tenantId: request.tenantId,
-      documentId: request.versionId,
+      tenantId,
+      documentId: versionId,
       kind: 'FORM',
     });
     const payload = doc?.payload as { form_package?: unknown } | undefined;
     const pkg = payload?.form_package as { form_id?: unknown } | undefined;
     if (!doc || !pkg || typeof pkg !== 'object' || typeof pkg.form_id !== 'string') {
-      throw this.deps.notFound();
+      return null;
     }
     return {
-      tenant_id: request.tenantId,
+      tenant_id: tenantId,
       form_key: pkg.form_id,
       version_id: doc.document_id,
       content_hash: canonicalSha256(pkg),
       status: 'PUBLISHED',
       payload: pkg,
     };
+  }
+
+  async resolve(request: FormRequestLike): Promise<PublishedFormLike> {
+    try {
+      return await this.deps.catalogue.resolve(request);
+    } catch (err) {
+      if (!this.deps.isNotFound(err)) throw err;
+    }
+    const studio = await this.resolveStudioVersion(request.tenantId, request.versionId);
+    if (!studio) throw this.deps.notFound();
+    return studio;
   }
 }

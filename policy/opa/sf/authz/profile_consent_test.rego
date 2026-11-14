@@ -63,7 +63,7 @@ test_citizen_reads_and_writes_own_profile if {
 	every action in ["PROFILE_READ", "PROFILE_WRITE"] {
 		d := eval(with_action(profile_input, action), {})
 		d.allow == true
-		d.policy_revision == "m10-c3"
+		d.policy_revision == "m10-c-pins"
 	}
 }
 

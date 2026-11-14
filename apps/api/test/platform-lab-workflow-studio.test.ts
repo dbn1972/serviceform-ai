@@ -38,6 +38,7 @@ async function app(ctx: RequestContext | null) {
       importBpmn: respond('import'),
       createDraft: respond('draft'),
       exportVersionBpmn: respond('bpmn'),
+      publishVersion: respond('publish'),
     },
     resolveContext: async () => ctx,
   });
@@ -65,7 +66,11 @@ describe('SAMPLE_LAB CMP-016 Studio routes', () => {
       actor: { type: 'OFFICER', id: OFFICER },
       assurance: 'MFA',
     });
-    for (const url of ['/v1/workflow-graphs/import-bpmn', '/v1/workflow-drafts']) {
+    for (const url of [
+      '/v1/workflow-graphs/import-bpmn',
+      '/v1/workflow-drafts',
+      '/v1/workflow-versions/publish',
+    ]) {
       expect((await server.inject({ method: 'POST', url, payload: {} })).statusCode).toBe(400);
     }
     const xml = await server.inject({
@@ -75,7 +80,7 @@ describe('SAMPLE_LAB CMP-016 Studio routes', () => {
     expect(xml.statusCode).toBe(200);
     expect(xml.headers['content-type']).toContain('application/xml');
     expect(xml.headers['cache-control']).toBe('no-store');
-    expect(seen.map((s) => s.op)).toEqual(['check', 'import', 'draft', 'bpmn']);
+    expect(seen.map((s) => s.op)).toEqual(['check', 'import', 'draft', 'publish', 'bpmn']);
   });
 
   it('refuses unauthenticated callers before reaching CMP-016', async () => {
