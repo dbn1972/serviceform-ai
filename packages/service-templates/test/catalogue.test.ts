@@ -148,8 +148,10 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     expect(catalogueIdForFormVersion('0d15ba00-0010-4000-8000-0d15ba000010')).toBe('IND-SOC-002');
     expect(catalogueIdForFormVersion('7e3a0031-0001-4000-8000-00000000031a')).toBe('IND-SOC-031');
     expect(catalogueIdForFormVersion('00000000-0000-4000-8000-000000000000')).toBeNull();
-    expect(policyInputsPending(templateByCatalogueId('IND-SOC-031')!)).toBe(true);
-    expect(policyInputsPending(templateByCatalogueId('IND-SOC-002')!)).toBe(false);
+    const income = templateByCatalogueId('IND-SOC-031');
+    const residence = templateByCatalogueId('IND-SOC-002');
+    expect(income && policyInputsPending(income)).toBe(true);
+    expect(residence && policyInputsPending(residence)).toBe(false);
   });
 
   it('diffs versions at field level', () => {

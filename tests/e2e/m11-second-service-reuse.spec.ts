@@ -51,9 +51,10 @@ test.describe('M11 second-service reuse — Income gated + Studio config path', 
       page.getByText(/POLICY_INPUT_REQUIRED|policy input pending|stub/i).first(),
     ).toBeVisible();
     await page.goto(`${STUDIO}/forms`);
-    await expect(page.getByText('Income Certificate (individual)')).toBeVisible();
+    const incomeRow = page.getByRole('row', { name: /IND-SOC-031/ });
+    await expect(incomeRow).toBeVisible();
     await expect(
-      page.getByRole('link', { name: /Open Income Certificate \(individual\) in designer/i }),
+      incomeRow.getByRole('link', { name: /Open Income Certificate \(individual\) in designer/i }),
     ).toBeVisible();
   });
 });
