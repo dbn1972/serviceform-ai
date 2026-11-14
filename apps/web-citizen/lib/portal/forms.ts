@@ -93,10 +93,7 @@ export function applyBody(raw: unknown): { catalogueId: string; data: Record<str
 export type FormPin = { form_key: string; version_id: string; content_hash: string };
 
 /** Live TSB / Studio form pin (CMP-033) when the published binding no longer matches the catalogue. */
-export async function studioFormPin(
-  citizen: Citizen,
-  versionId: string,
-): Promise<FormPin | null> {
+export async function studioFormPin(citizen: Citizen, versionId: string): Promise<FormPin | null> {
   const res = await platform('GET', `/v1/lab/form-pins/${versionId}`, { token: citizen.token });
   if (res.status !== 200) return null;
   const key = res.body['form_key'];
@@ -108,6 +105,35 @@ export async function studioFormPin(
 
 export function pinFor(version: TemplateVersion): FormPin {
   return formPin(version);
+}
+
+/**
+ * Resolve the form pin the placement binding will pin cases to — without creating a draft.
+ * Prefers Studio (CMP-033) when the live TSB form version differs from the catalogue pin.
+ */
+export async function liveOfferingFormPin(
+  citizen: Citizen,
+  catalogueId: string,
+  catalogue: FormPin,
+): Promise<FormPin> {
+  const res = await platform('GET', `/v1/lab/offerings/${catalogueId}/form-pin`, {
+    token: citizen.token,
+  });
+  if (res.status !== 200 || typeof res.body['version_id'] !== 'string') return catalogue;
+  const versionId = res.body['version_id'] as string;
+  if (versionId === catalogue.version_id) return catalogue;
+  if (
+    res.body['source'] === 'CMP-033' &&
+    typeof res.body['form_key'] === 'string' &&
+    typeof res.body['content_hash'] === 'string'
+  ) {
+    return {
+      form_key: res.body['form_key'] as string,
+      version_id: versionId,
+      content_hash: res.body['content_hash'] as string,
+    };
+  }
+  return (await studioFormPin(citizen, versionId)) ?? catalogue;
 }
 
 export async function interpret(

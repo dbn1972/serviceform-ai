@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  Cmp051ApprovalPort,
-  Cmp051WorkflowApprovalPort,
-} from '../src/platform/approvals.js';
+import { Cmp051ApprovalPort, Cmp051WorkflowApprovalPort } from '../src/platform/approvals.js';
 
 const TENANT = '0d15ba00-0001-4000-8000-0d15ba0000d1';
 const BINDING = '0d15ba00-0002-4000-8000-0d15ba0000d2';
@@ -13,10 +10,7 @@ const HASH = `sha256:${'a'.repeat(64)}`;
 
 type QueryResult<T> = { rows: T[] };
 
-function pool(handlers: {
-  approved?: QueryResult<unknown>;
-  pins?: QueryResult<unknown>;
-}) {
+function pool(handlers: { approved?: QueryResult<unknown>; pins?: QueryResult<unknown> }) {
   const queries: string[] = [];
   return {
     queries,
@@ -68,9 +62,9 @@ describe('Cmp051ApprovalPort', () => {
       tenantId: TENANT,
       refuse: (code) => new Error(code),
     });
-    await expect(
-      port.requireApproved({ bindingId: BINDING, proposedHash: HASH }),
-    ).rejects.toThrow('CHECKER_APPROVAL_REQUIRED');
+    await expect(port.requireApproved({ bindingId: BINDING, proposedHash: HASH })).rejects.toThrow(
+      'CHECKER_APPROVAL_REQUIRED',
+    );
   });
 });
 
@@ -128,7 +122,11 @@ describe('Cmp051WorkflowApprovalPort', () => {
     });
     const { pool: cmp052 } = pool({
       pins: {
-        rows: [{ pins: { workflow: { version_ref: VERSION, content_hash: `sha256:${'b'.repeat(64)}` } } }],
+        rows: [
+          {
+            pins: { workflow: { version_ref: VERSION, content_hash: `sha256:${'b'.repeat(64)}` } },
+          },
+        ],
       },
     });
     const port = new Cmp051WorkflowApprovalPort({ cmp051, cmp052 });

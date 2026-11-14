@@ -6,8 +6,7 @@ import type pg from 'pg';
  * SQL from inside CMP-052/CMP-016). LOCAL/CI only; callers refuse elsewhere.
  */
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const HASH_RE = /^sha256:[0-9a-f]{64}$/;
 
 export interface Cmp052ApprovalOk {

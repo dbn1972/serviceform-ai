@@ -651,7 +651,8 @@ export async function buildPlatformLab(
       refuse: (code) => new cmp016.Cmp016Error('SF-SYS-004', [{ code }]),
       loadCase: async (tenantId, applicationId, correlationId) => {
         const cases = applicationCaseRef.current;
-        if (!cases) throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'CASE_SERVICE_NOT_READY' }]);
+        if (!cases)
+          throw new cmp016.Cmp016Error('SF-SYS-004', [{ code: 'CASE_SERVICE_NOT_READY' }]);
         const ctx = {
           tenant_id: tenantId,
           cell_id: placement.cell_id,
@@ -881,8 +882,7 @@ export async function buildPlatformLab(
         approval: new Cmp051ApprovalPort({
           pool: pools.cmp051,
           tenantId: placement.tenant_id,
-          refuse: (code) =>
-            new cmp052.Cmp052Error('SF-SYS-003', { details: [{ code }] }),
+          refuse: (code) => new cmp052.Cmp052Error('SF-SYS-003', { details: [{ code }] }),
         }) as unknown as NonNullable<M03PluginMounts['versioning']>['approval'],
         clock: () => new Date(),
       },

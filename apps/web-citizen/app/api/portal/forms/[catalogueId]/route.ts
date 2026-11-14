@@ -1,12 +1,12 @@
 import {
   interpret,
+  liveOfferingFormPin,
   offeredForm,
   pinFor,
   sampleLab,
-  studioFormPin,
   type FormPin,
 } from '../../../../../lib/portal/forms';
-import { crossSiteRefusal, currentCitizen, json, platform, relay } from '../../../../../lib/portal/platform';
+import { crossSiteRefusal, currentCitizen, json, relay } from '../../../../../lib/portal/platform';
 import { profilePrefill, readProfile } from '../../../../../lib/portal/profile';
 
 export const runtime = 'nodejs';
@@ -34,26 +34,11 @@ async function livePin(
   const offered = offeredForm(catalogueId);
   if (!offered) return null;
   const catalogue = pinFor(offered.version);
-  const res = await platform('GET', `/v1/lab/offerings/${catalogueId}/form-pin`, {
-    token: citizen.token,
-  });
-  if (res.status === 200 && typeof res.body['version_id'] === 'string') {
-    const versionId = res.body['version_id'] as string;
-    if (versionId !== catalogue.version_id) {
-      const studio =
-        res.body['source'] === 'CMP-033' &&
-        typeof res.body['form_key'] === 'string' &&
-        typeof res.body['content_hash'] === 'string'
-          ? {
-              form_key: res.body['form_key'] as string,
-              version_id: versionId,
-              content_hash: res.body['content_hash'] as string,
-            }
-          : await studioFormPin(citizen, versionId);
-      if (studio) return { pin: studio, source: 'CMP-033' };
-    }
-  }
-  return { pin: catalogue, source: 'CATALOGUE' };
+  const pin = await liveOfferingFormPin(citizen, catalogueId, catalogue);
+  return {
+    pin,
+    source: pin.version_id === catalogue.version_id ? 'CATALOGUE' : 'CMP-033',
+  };
 }
 
 /**
