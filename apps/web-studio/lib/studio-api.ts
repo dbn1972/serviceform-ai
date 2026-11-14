@@ -1,7 +1,8 @@
 /**
  * Browser calls to the Studio BFF (`/api/platform/*`), which forwards the CMP-004 bearer to
- * CMP-033 metadata, CMP-009 forms, CMP-051 maker-checker and CMP-052 versioning. The BFF decides
- * nothing: OPA authorises, PostgreSQL RLS isolates and each component owns its state.
+ * CMP-033 metadata, CMP-009 forms, CMP-008 rules (test bench), CMP-016 workflow authoring,
+ * CMP-051 maker-checker and CMP-052 versioning. The BFF decides nothing: OPA authorises,
+ * PostgreSQL RLS isolates and each component owns its state.
  */
 
 export interface ApiError {
@@ -191,6 +192,39 @@ export const workflowApi = {
   }) => call<WorkflowDraft>('POST', 'workflow-drafts', input),
 };
 
+export interface RuleTestCaseInput {
+  id: string;
+  inputs: Record<string, unknown>;
+  expect_outcome?: string;
+  expect_reasons?: string[];
+}
+
+export interface RuleTestResult {
+  id: string;
+  pass: boolean;
+  outcome?: string | null;
+  reason_codes?: string[];
+  matched_rules?: string[];
+  result_code?: 'RULE_OUTPUT_PRODUCED' | 'NO_RULE_OUTPUT';
+  error?: string;
+}
+
+/** CMP-008 test bench response: advisory rule outputs, nothing stored. */
+export interface RuleTestRun {
+  pack_key: string;
+  content_hash: string;
+  engine: { name: string; version: string };
+  advisory: true;
+  passed: number;
+  failed: number;
+  results: RuleTestResult[];
+}
+
+export const rulesApi = {
+  test: (pack: unknown, cases: RuleTestCaseInput[]) =>
+    call<RuleTestRun>('POST', 'rule-packs/test', { pack, cases }),
+};
+
 export const bindingsApi = {
   read: (id: string) => call<Binding>('GET', `tenant-service-bindings/${id}`),
   create: (input: {
@@ -227,6 +261,7 @@ const MESSAGES: Record<string, string> = {
   'SF-FORM-001': 'The pin does not match a published form (key, version or content hash).',
   'SF-FORM-002': 'CMP-009 could not parse the form package.',
   'SF-WF-001': 'CMP-016 refused the workflow transition or change.',
+  'SF-RULE-001': 'CMP-008 could not evaluate the rule pack.',
 };
 
 /** Plain-language explanation of a platform error, with the stable code and detail codes. */

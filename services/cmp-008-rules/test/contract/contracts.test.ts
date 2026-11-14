@@ -16,7 +16,11 @@ describe('CMP-008 component contracts', () => {
     const asyncapi = JSON.parse(read('contracts/asyncapi.json')) as {
       channels: Record<string, unknown>;
     };
-    expect(Object.keys(openapi.paths).sort()).toEqual(['/v1/evaluations', '/v1/evaluations/{id}']);
+    expect(Object.keys(openapi.paths).sort()).toEqual([
+      '/v1/evaluations',
+      '/v1/evaluations/{id}',
+      '/v1/rule-packs/test',
+    ]);
     expect(asyncapi.channels['sf.rules.events.v1']).toBeTruthy();
     const topics = JSON.parse(read('contracts/topics.json')) as {
       topics: { name: string; event_types: string[] }[];

@@ -29,6 +29,7 @@ const app = await buildApp(config, {
 await lab.registerSimulators(app);
 await lab.registerIssuance(app);
 await lab.registerStudioWorkflow(app);
+await lab.registerStudioRules(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {

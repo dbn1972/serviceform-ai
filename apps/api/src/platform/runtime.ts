@@ -42,6 +42,11 @@ import {
 } from './issuance.js';
 import { StudioPublishedFormPort, type FormSourceLike } from './forms.js';
 import { registerStudioWorkflowRoutes } from './workflow-studio.js';
+import {
+  composeStudioRules,
+  registerStudioRulesRoutes,
+  type Cmp008StudioModule,
+} from './rules-studio.js';
 import { loadPlacement, type PortalPlacement } from './placement.js';
 import { composeLabPrivacy, parseConsentFixture, type Cmp030Module } from './profile.js';
 import {
@@ -122,6 +127,8 @@ export interface PlatformLab {
   registerIssuance(app: FastifyInstance): Promise<void>;
   /** SF-M10-C-2 CMP-016 Studio authoring routes (`/v1/workflow-graphs/*`, `/v1/workflow-drafts`). */
   registerStudioWorkflow(app: FastifyInstance): Promise<void>;
+  /** SF-M10-C-3 CMP-008 Studio test bench (`/v1/rule-packs/test`, ZEN engine, nothing stored). */
+  registerStudioRules(app: FastifyInstance): Promise<void>;
   /**
    * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
    * workflow versions and starts the CMP-016 worker.
@@ -684,6 +691,15 @@ export async function buildPlatformLab(
     placement,
   });
 
+  const cmp008 = await loadComponent<Cmp008StudioModule>(
+    '@serviceform/cmp-008-rules',
+    'cmp-008-rules',
+  );
+  const studioRules = composeStudioRules(
+    cmp008,
+    opa as unknown as { decide(input: unknown): Promise<{ allow?: unknown }> },
+  );
+
   // SF-M10-B-4: mount CMP-033/051/052 when pool env vars are present.
   let m03: M03PluginMounts | undefined;
   if (cmp033 && pools.cmp033 && pools.cmp051 && pools.cmp052) {
@@ -844,6 +860,15 @@ export async function buildPlatformLab(
       }),
     registerIssuance: (app) =>
       registerLabIssuanceRoutes(app, { environment, coordinator, resolveContext }),
+    registerStudioRules: (app) =>
+      registerStudioRulesRoutes(app, {
+        api: studioRules,
+        resolveContext,
+        rateLimitMax: positiveInt(
+          env.SF_STUDIO_RATE_LIMIT_MAX ?? '120',
+          'SF_STUDIO_RATE_LIMIT_MAX',
+        ),
+      }),
     registerStudioWorkflow: (app) =>
       registerStudioWorkflowRoutes(app, {
         api: workflow.studio,

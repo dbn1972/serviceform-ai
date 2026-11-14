@@ -111,7 +111,7 @@ test_reads_are_read_only_and_writes_protected if {
 test_maker_may_author_freeze_and_request if {
 	d := eval(studio_input("STUDIO_DESIGNER", "MetadataDocument", "METADATA_DOCUMENT_PUBLISH"), studio_roles)
 	d.allow == true
-	d.policy_revision == "m10-c2"
+	d.policy_revision == "m10-c3"
 	eval(studio_input("STUDIO_DESIGNER", "PublicationRequest", "PUBLICATION_REQUEST_SUBMIT"), studio_roles).allow == true
 	eval(studio_input("STUDIO_DESIGNER", "FormDefinition", "FORM_INTERPRET"), studio_roles).allow == true
 }
@@ -174,4 +174,19 @@ test_workflow_studio_actions_known_and_role_granted if {
 test_workflow_publish_not_granted_to_designer if {
 	d := eval(studio_input("STUDIO_DESIGNER", "WorkflowVersion", "WORKFLOW_VERSION_PUBLISH"), workflow_role)
 	d.allow == false
+}
+
+# SF-M10-C-3: Studio rule-pack test bench (CMP-008 ZEN engine, nothing persisted).
+test_rule_pack_test_is_read_only_and_role_granted if {
+	data.sf.common.actions.RULE_PACK_TEST.action_class == "READ_ONLY"
+	"RulePack" in data.sf.common.resource_types
+	grant := {T1: {"roles": {"STUDIO_DESIGNER": {
+		"actions": ["RULE_PACK_TEST"],
+		"resource_types": ["RulePack"],
+		"jurisdiction_scope": "TENANT_WIDE",
+		"all_services": true,
+	}}}}
+	eval(studio_input("STUDIO_DESIGNER", "RulePack", "RULE_PACK_TEST"), grant).allow == true
+	eval(studio_input("STUDIO_DESIGNER", "RulePack", "RULE_PACK_TEST"), {}).allow == false
+	eval(studio_input("STUDIO_DESIGNER", "RulePack", "RULE_EVALUATION_EXECUTE"), grant).allow == false
 }

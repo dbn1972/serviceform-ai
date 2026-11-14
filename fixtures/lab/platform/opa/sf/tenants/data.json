@@ -65,7 +65,7 @@
         "all_services": true
       },
       "STUDIO_DESIGNER": {
-        "_note": "SF-M10-B-4: CMP-033/051/052 maker role for Studio desks (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to verify a frozen Studio form through CMP-009 by hash pin. SF-M10-C-2: CMP-016 Studio checks, BPMN profile and DRAFT emission (never publish).",
+        "_note": "SF-M10-B-4: CMP-033/051/052 maker role for Studio desks (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to verify a frozen Studio form through CMP-009 by hash pin. SF-M10-C-2: CMP-016 Studio checks, BPMN profile and DRAFT emission (never publish). SF-M10-C-3: RULE_PACK_TEST runs Studio test cases on the CMP-008 ZEN engine (nothing stored).",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -85,7 +85,8 @@
           "WORKFLOW_DEFINITION_CREATE",
           "WORKFLOW_VERSION_DRAFT",
           "WORKFLOW_VERSION_IMPORT_BPMN",
-          "WORKFLOW_VERSION_EXPORT_BPMN"
+          "WORKFLOW_VERSION_EXPORT_BPMN",
+          "RULE_PACK_TEST"
         ],
         "resource_types": [
           "OfficerSession",
@@ -96,13 +97,14 @@
           "ArtifactVersion",
           "FormDefinition",
           "WorkflowDefinition",
-          "WorkflowVersion"
+          "WorkflowVersion",
+          "RulePack"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "STUDIO_CHECKER": {
-        "_note": "SF-M10-B-4: CMP-051/052 checker role for PublicationDesk and BindingDesk (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to inspect the pinned form under review. SF-M10-C-2: BPMN view of the pinned workflow version.",
+        "_note": "SF-M10-B-4: CMP-051/052 checker role for PublicationDesk and BindingDesk (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to inspect the pinned form under review. SF-M10-C-2: BPMN view of the pinned workflow version. SF-M10-C-3: RULE_PACK_TEST runs Studio test cases on the CMP-008 ZEN engine (nothing stored).",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -113,7 +115,8 @@
           "TENANT_SERVICE_BINDING_READ",
           "TENANT_SERVICE_BINDING_PUBLISH",
           "FORM_INTERPRET",
-          "WORKFLOW_VERSION_EXPORT_BPMN"
+          "WORKFLOW_VERSION_EXPORT_BPMN",
+          "RULE_PACK_TEST"
         ],
         "resource_types": [
           "OfficerSession",
@@ -123,7 +126,8 @@
           "ArtifactVersion",
           "FormDefinition",
           "WorkflowDefinition",
-          "WorkflowVersion"
+          "WorkflowVersion",
+          "RulePack"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true

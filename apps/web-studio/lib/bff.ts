@@ -167,6 +167,7 @@ const ALLOWED_PREFIXES = [
   'workflow-graphs/',
   'workflow-drafts',
   'workflow-versions/',
+  'rule-packs/test',
   'publication-requests',
   'tenant-service-bindings',
   'artifact-versions/',

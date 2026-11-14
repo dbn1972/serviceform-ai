@@ -142,6 +142,37 @@ function validateWorkflowGraph(payload: Record<string, unknown>): void {
     fail('/payload/layout', 'layout must be an object');
 }
 
+const RULE_PACK_KEYS = ['rule_pack_id', 'engine', 'jdm', 'outcome_field', 'reason_codes_field'];
+
+/**
+ * Optional executable JDM on a RULES document (Studio rules designer). When present,
+ * `content_hash` must be the canonical digest of the executable part (rule_pack_id, engine, jdm,
+ * outcome/reason fields), the pin CMP-008 evaluates by. Authored `test_cases` are frozen with the
+ * document but are not part of the hash. CMP-008 owns the JDM grammar and the engine.
+ */
+function validateRulePackContent(payload: Record<string, unknown>): void {
+  const jdm = payload['jdm'];
+  if (jdm === undefined) {
+    if (payload['content_hash'] !== undefined) fail('/payload/jdm', 'jdm required');
+    return;
+  }
+  if (!isRecord(jdm)) fail('/payload/jdm', 'jdm must be an object');
+  requireArray(jdm, 'nodes', '/payload/jdm/nodes');
+  if (!Array.isArray(jdm['edges'])) fail('/payload/jdm/edges', 'edges required');
+  const tests = payload['test_cases'];
+  if (tests !== undefined && (!Array.isArray(tests) || tests.length > 50)) {
+    fail('/payload/test_cases', 'at most 50 test cases');
+  }
+  const declared = requireString(payload, 'content_hash', '/payload/content_hash');
+  if (!CONTENT_HASH_RE.test(declared)) fail('/payload/content_hash', 'invalid content hash');
+  const executable = Object.fromEntries(
+    RULE_PACK_KEYS.filter((k) => payload[k] !== undefined).map((k) => [k, payload[k]]),
+  );
+  if (canonicalContentHash(executable) !== declared) {
+    fail('/payload/content_hash', 'content hash does not match the rule pack');
+  }
+}
+
 /** Structural kind schemas only. No named-service or statutory content. */
 export function validateKindPayload(kind: MetadataKind, payload: unknown): void {
   if (!isRecord(payload)) fail('/payload', 'payload must be an object');
@@ -185,6 +216,7 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
       }
       const engine = requireString(payload, 'engine', '/payload/engine');
       if (engine !== 'GORULES') fail('/payload/engine', 'unsupported engine');
+      validateRulePackContent(payload);
       return;
     }
     case 'EVIDENCE': {
