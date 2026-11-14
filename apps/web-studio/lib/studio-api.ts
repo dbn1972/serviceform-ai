@@ -151,6 +151,46 @@ export const formsApi = {
     call<Interpretation>('POST', 'interpretations', { form: pin, data: {}, locale: 'en-IN' }),
 };
 
+export interface GraphCheck {
+  valid: true;
+  graph_hash: string;
+  node_count: number;
+  edge_count: number;
+  bpmn_xml: string;
+  runtime: 'TEMPORAL';
+  bpmn_role: 'IMPORT_EXPORT_PROFILE_ONLY';
+}
+
+export interface WorkflowDraft {
+  definition_id: string;
+  version_id: string;
+  version_no: number;
+  status: 'DRAFT';
+  origin: 'STUDIO' | 'BPMN_IMPORT';
+  graph_hash: string;
+  source_ref?: string;
+}
+
+export const workflowApi = {
+  check: (graph: unknown, versionRef?: string) =>
+    call<GraphCheck>('POST', 'workflow-graphs/check', {
+      graph,
+      ...(versionRef ? { version_ref: versionRef } : {}),
+    }),
+  importBpmn: (xml: string) =>
+    call<{
+      graph: { nodes: unknown[]; edges: unknown[] };
+      graph_hash: string;
+      source_graph_hash?: string;
+    }>('POST', 'workflow-graphs/import-bpmn', { xml }),
+  emitDraft: (input: {
+    definition_key: string;
+    graph: unknown;
+    graph_hash: string;
+    source_ref?: string;
+  }) => call<WorkflowDraft>('POST', 'workflow-drafts', input),
+};
+
 export const bindingsApi = {
   read: (id: string) => call<Binding>('GET', `tenant-service-bindings/${id}`),
   create: (input: {
@@ -186,6 +226,7 @@ const MESSAGES: Record<string, string> = {
   'SF-APP-002': 'A document with this key and version already exists. Change the version.',
   'SF-FORM-001': 'The pin does not match a published form (key, version or content hash).',
   'SF-FORM-002': 'CMP-009 could not parse the form package.',
+  'SF-WF-001': 'CMP-016 refused the workflow transition or change.',
 };
 
 /** Plain-language explanation of a platform error, with the stable code and detail codes. */

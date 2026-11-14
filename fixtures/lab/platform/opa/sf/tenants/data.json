@@ -65,7 +65,7 @@
         "all_services": true
       },
       "STUDIO_DESIGNER": {
-        "_note": "SF-M10-B-4: CMP-033/051/052 maker role for Studio desks (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to verify a frozen Studio form through CMP-009 by hash pin.",
+        "_note": "SF-M10-B-4: CMP-033/051/052 maker role for Studio desks (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to verify a frozen Studio form through CMP-009 by hash pin. SF-M10-C-2: CMP-016 Studio checks, BPMN profile and DRAFT emission (never publish).",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -81,7 +81,11 @@
           "TENANT_SERVICE_BINDING_CREATE",
           "TENANT_SERVICE_BINDING_READ",
           "TENANT_SERVICE_BINDING_UPDATE",
-          "FORM_INTERPRET"
+          "FORM_INTERPRET",
+          "WORKFLOW_DEFINITION_CREATE",
+          "WORKFLOW_VERSION_DRAFT",
+          "WORKFLOW_VERSION_IMPORT_BPMN",
+          "WORKFLOW_VERSION_EXPORT_BPMN"
         ],
         "resource_types": [
           "OfficerSession",
@@ -90,13 +94,15 @@
           "PublicationRequest",
           "TenantServiceBinding",
           "ArtifactVersion",
-          "FormDefinition"
+          "FormDefinition",
+          "WorkflowDefinition",
+          "WorkflowVersion"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "STUDIO_CHECKER": {
-        "_note": "SF-M10-B-4: CMP-051/052 checker role for PublicationDesk and BindingDesk (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to inspect the pinned form under review.",
+        "_note": "SF-M10-B-4: CMP-051/052 checker role for PublicationDesk and BindingDesk (SIMULATED, LOCAL/CI only). SF-M10-C-1: FORM_INTERPRET to inspect the pinned form under review. SF-M10-C-2: BPMN view of the pinned workflow version.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -106,7 +112,8 @@
           "PUBLICATION_REQUEST_REJECT",
           "TENANT_SERVICE_BINDING_READ",
           "TENANT_SERVICE_BINDING_PUBLISH",
-          "FORM_INTERPRET"
+          "FORM_INTERPRET",
+          "WORKFLOW_VERSION_EXPORT_BPMN"
         ],
         "resource_types": [
           "OfficerSession",
@@ -114,7 +121,9 @@
           "PublicationRequest",
           "TenantServiceBinding",
           "ArtifactVersion",
-          "FormDefinition"
+          "FormDefinition",
+          "WorkflowDefinition",
+          "WorkflowVersion"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true

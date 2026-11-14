@@ -39,6 +39,15 @@ export {
   type EffectOutcome,
 } from './temporal/activities.js';
 export {
+  createStudioWorkflowApi,
+  studioDefinitionId,
+  type StudioCaller,
+  type StudioDraftService,
+  type StudioResponse,
+  type StudioWorkflowApi,
+  type StudioWorkflowApiDeps,
+} from './http/studio-api.js';
+export {
   WorkflowService,
   CASE_TRANSITION_CONSUMER,
   type WorkflowServiceDeps,

@@ -41,6 +41,7 @@ import {
   type NeutralFactory,
 } from './issuance.js';
 import { StudioPublishedFormPort, type FormSourceLike } from './forms.js';
+import { registerStudioWorkflowRoutes } from './workflow-studio.js';
 import { loadPlacement, type PortalPlacement } from './placement.js';
 import { composeLabPrivacy, parseConsentFixture, type Cmp030Module } from './profile.js';
 import {
@@ -119,6 +120,8 @@ export interface PlatformLab {
   registerSimulators(app: FastifyInstance): Promise<void>;
   /** CCR-M10-003 `/v1/applications/:id/issuance` (post-approval issuance + status projection). */
   registerIssuance(app: FastifyInstance): Promise<void>;
+  /** SF-M10-C-2 CMP-016 Studio authoring routes (`/v1/workflow-graphs/*`, `/v1/workflow-drafts`). */
+  registerStudioWorkflow(app: FastifyInstance): Promise<void>;
   /**
    * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
    * workflow versions and starts the CMP-016 worker.
@@ -841,6 +844,15 @@ export async function buildPlatformLab(
       }),
     registerIssuance: (app) =>
       registerLabIssuanceRoutes(app, { environment, coordinator, resolveContext }),
+    registerStudioWorkflow: (app) =>
+      registerStudioWorkflowRoutes(app, {
+        api: workflow.studio,
+        resolveContext,
+        rateLimitMax: positiveInt(
+          env.SF_STUDIO_RATE_LIMIT_MAX ?? '120',
+          'SF_STUDIO_RATE_LIMIT_MAX',
+        ),
+      }),
     async start() {
       await privacy.publish();
       await workflow.start();

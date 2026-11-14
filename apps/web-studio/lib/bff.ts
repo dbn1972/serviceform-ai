@@ -164,6 +164,9 @@ export function apiBaseUrl(): string {
 const ALLOWED_PREFIXES = [
   'metadata/',
   'interpretations',
+  'workflow-graphs/',
+  'workflow-drafts',
+  'workflow-versions/',
   'publication-requests',
   'tenant-service-bindings',
   'artifact-versions/',

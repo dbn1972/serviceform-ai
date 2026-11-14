@@ -81,6 +81,7 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
   );
   const canDecide = request?.status === 'SUBMITTED' && !isMaker && reason.trim().length > 0;
   const formPin = binding?.pins['form'];
+  const workflowPin = binding?.pins['workflow'];
 
   return (
     <div className="sf-designer-stack">
@@ -186,6 +187,13 @@ export function PublicationDesk({ initialRequestId = '' }: { initialRequestId?: 
               <Link href={`/forms/designer?document=${formPin.version_ref}`}>
                 Inspect the pinned form (read-only)
               </Link>
+            </p>
+          ) : null}
+          {workflowPin && UUID_RE.test(workflowPin.version_ref) ? (
+            <p className="ux4g-body-m-default">
+              <a href={`/api/platform/workflow-versions/${workflowPin.version_ref}/bpmn`}>
+                Open the pinned workflow version as BPMN (CMP-016 view, not executable)
+              </a>
             </p>
           ) : null}
 

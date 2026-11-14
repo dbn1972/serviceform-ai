@@ -42,3 +42,18 @@ export function designerSource(
   }
   return { kind: 'blank' };
 }
+
+export type WorkflowSourceRef =
+  { kind: 'blank' } | { kind: 'template'; id: string } | { kind: 'document'; id: string };
+
+/** What the workflow designer opens: a saved CMP-033 draft, a template or a blank graph. */
+export function workflowSource(
+  params: Record<string, string | string[] | undefined>,
+): WorkflowSourceRef {
+  const document = one(params['document']);
+  if (document && UUID_RE.test(document)) return { kind: 'document', id: document };
+  const template = one(params['template']);
+  if (template && /^[a-z][a-z0-9-]{1,63}$/.test(template))
+    return { kind: 'template', id: template };
+  return { kind: 'blank' };
+}
