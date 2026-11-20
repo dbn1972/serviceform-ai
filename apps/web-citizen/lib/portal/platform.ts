@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { isIP } from 'node:net';
 
 /**
  * Citizen portal BFF → platform (SF-CON-PORTAL-SESSION, ADR-0007 D-3). Server-only.
@@ -11,9 +12,6 @@ import { readFileSync } from 'node:fs';
 export const SESSION_COOKIE = 'sf_citizen_session';
 export const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
 
-const IPV4_RE = /^(?:\d{1,3}\.){3}\d{1,3}$/;
-const IPV6_RE = /^[0-9a-f:]+$/i;
-
 /**
  * Address the BFF observed for the browser hop (ADR-0008).
  * When `SF_BFF_TRUST_INGRESS=1`, take the leftmost X-Forwarded-For entry (ingress already
@@ -22,13 +20,13 @@ const IPV6_RE = /^[0-9a-f:]+$/i;
  */
 export function observedClientAddress(request: Request): string | undefined {
   const real = request.headers.get('x-real-ip')?.trim();
-  if (real && (IPV4_RE.test(real) || IPV6_RE.test(real))) return real;
+  if (real && isIP(real)) return real;
   const forwarded = request.headers.get('x-forwarded-for');
   if (!forwarded) return undefined;
   const parts = forwarded
     .split(',')
     .map((part) => part.trim())
-    .filter((part) => IPV4_RE.test(part) || IPV6_RE.test(part));
+    .filter((part) => isIP(part) !== 0);
   if (parts.length === 0) return undefined;
   if (process.env['SF_BFF_TRUST_INGRESS'] === '1') return parts[0];
   return parts[parts.length - 1];

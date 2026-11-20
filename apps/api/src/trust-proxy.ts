@@ -45,5 +45,7 @@ export function resolveTrustProxy(hops: string[], environment: string): TrustPro
       'Invalid configuration for: SF_TRUSTED_PROXY_HOPS (PRODUCTION must not be loopback-only)',
     );
   }
-  return hops.length === 1 ? hops[0]! : hops;
+  const [first, ...rest] = hops;
+  if (first !== undefined && rest.length === 0) return first;
+  return hops;
 }
