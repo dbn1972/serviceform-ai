@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "serviceform://templates/certificate-packs/owner-config.schema.json",
+  "title": "Certificate pack owner configuration (SAMPLE_LAB)",
+  "description": "Statutory owner inputs required before a Certificate stub may be published or offered. Do not invent values. CERTIFIED=false · G6=false.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "catalogue_id",
+    "jurisdiction",
+    "legal_basis",
+    "eligibility",
+    "evidence",
+    "fee",
+    "service_time",
+    "credential",
+    "notifications",
+    "access"
+  ],
+  "properties": {
+    "catalogue_id": {
+      "type": "string",
+      "pattern": "^IND-[A-Z]{3}-[0-9]{3}$",
+      "description": "Canonical Service ID from the national registry."
+    },
+    "jurisdiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pilot_state_or_jurisdiction"],
+      "properties": {
+        "pilot_state_or_jurisdiction": {
+          "type": "string",
+          "minLength": 2,
+          "description": "State/UT code or owner-defined jurisdiction cell (e.g. IN-OD). POLICY_INPUT_REQUIRED until filled."
+        },
+        "issuing_authority_designation": {
+          "type": "string",
+          "description": "Owner-confirmed designation within the registry issuing-authority class."
+        }
+      }
+    },
+    "legal_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["act_or_rules_citation"],
+      "properties": {
+        "act_or_rules_citation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Act / Rules / notification citation. Do not invent."
+        },
+        "policy_source_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Public portal or gazette URL grounding the SAMPLE_LAB package."
+        }
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "rule_pack_ref"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable eligibility summary from owner policy."
+        },
+        "applicant_scope": {
+          "type": "string",
+          "description": "Who may apply (owner-defined)."
+        },
+        "rule_pack_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Published CMP-008 / GoRules pack id after Studio freeze."
+        },
+        "category_lists": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional owner-supplied category/caste/community list refs — never invent enums."
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mandatory_documents"],
+      "properties": {
+        "mandatory_documents_min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mandatory_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_code", "label"],
+            "properties": {
+              "document_code": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "optional_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_code", "label"],
+            "properties": {
+              "document_code": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currency", "amount_minor_units"],
+      "properties": {
+        "currency": { "type": "string", "const": "INR" },
+        "amount_minor_units": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Fee in paise. Do not assume 0 from Residence."
+        },
+        "fee_schedule_ref": { "type": "string" }
+      }
+    },
+    "service_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["processing_days_working", "clock_start_event"],
+      "properties": {
+        "processing_days_working": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Owner SLA working days — do not copy another service."
+        },
+        "clock_start_event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validity_period_days": {
+          "type": ["integer", "string"],
+          "description": "Credential validity if owner-specified; otherwise leave unset."
+        }
+      }
+    },
+    "credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credential_template_id"],
+      "properties": {
+        "credential_template_id": { "type": "string", "minLength": 1 },
+        "digilocker_doc_type": {
+          "type": "string",
+          "description": "SAMPLE_LAB DigiLocker label only after owner lab registration."
+        },
+        "digilocker_mode": {
+          "type": "string",
+          "enum": ["SIMULATED", "SANDBOX", "REAL"],
+          "description": "REAL held until G6 / connector certification."
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["notification_pack_id"],
+      "properties": {
+        "notification_pack_id": { "type": "string", "minLength": 1 },
+        "sms_dlt_pe_id": {
+          "type": "string",
+          "description": "DLT PE-ID — not inventable."
+        }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assignment_roles"],
+      "properties": {
+        "assignment_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Role codes for officer assignment — no named officers."
+        },
+        "maker_checker": {
+          "type": "string",
+          "const": "required_before_publish"
+        }
+      }
+    }
+  }
+}

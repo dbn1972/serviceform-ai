@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
@@ -26,6 +26,13 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const registry = JSON.parse(readFileSync(join(ROOT, TEMPLATE_REGISTRY_SOURCE.path), 'utf8')) as {
   catalogue_version: string;
   canonical_services: Record<string, string>[];
+};
+const packManifest = JSON.parse(
+  readFileSync(join(ROOT, 'templates/certificate-packs/manifest.json'), 'utf8'),
+) as {
+  generated_pack_count: number;
+  total_manifest_entries: number;
+  packs: { catalogue_id: string; authoring_path: string; generator: string }[];
 };
 const bindings = JSON.parse(
   readFileSync(join(ROOT, 'fixtures/lab/platform/published-bindings.json'), 'utf8'),
@@ -96,12 +103,59 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       ]).toEqual(Array(4).fill('POLICY_INPUT_REQUIRED'));
       expect(t.indicative_checks).toEqual([]);
     }
-    // M11: Income has a Studio authoring shell; other stubs stay path-null until configured.
+    // Configurable packs: every stub points at an authoring shell; citizen apply stays gated.
     expect(templateByCatalogueId('IND-SOC-031')?.authoring_path).toBe(
       'templates/income-certificate/',
     );
-    expect(templateByCatalogueId('IND-SOC-001')?.authoring_path).toBeNull();
-    expect(templateByCatalogueId('IND-CIV-001')?.authoring_path).toBeNull();
+    expect(templateByCatalogueId('IND-SOC-002')?.authoring_path).toBe(
+      'templates/residence-certificate/',
+    );
+    expect(templateByCatalogueId('IND-SOC-001')?.authoring_path).toBe(
+      'templates/certificate-packs/ind-soc-001/',
+    );
+    expect(templateByCatalogueId('IND-CIV-001')?.authoring_path).toBe(
+      'templates/certificate-packs/ind-civ-001/',
+    );
+    expect(templateByCatalogueId('IND-AGR-002')?.authoring_path).toBe(
+      'templates/certificate-packs/ind-agr-002/',
+    );
+    for (const t of templates.filter((x) => x.maturity === 'SAMPLE_LAB_STUB')) {
+      expect(t.authoring_path, t.catalogue_id).toMatch(/^templates\//);
+      expect(policyInputsPending(t), t.catalogue_id).toBe(true);
+    }
+  });
+
+  it('configurable pack factory covers stubs with on-disk POLICY_INPUT_REQUIRED artefacts', () => {
+    expect(packManifest.generated_pack_count).toBe(157);
+    expect(packManifest.total_manifest_entries).toBe(159);
+    expect(existsSync(join(ROOT, 'templates/certificate-packs/owner-config.schema.json'))).toBe(
+      true,
+    );
+    expect(existsSync(join(ROOT, 'templates/certificate-pack-skeleton/service.yaml.tmpl'))).toBe(
+      true,
+    );
+    for (const t of templates) {
+      const path = t.authoring_path;
+      expect(path, t.catalogue_id).toBeTruthy();
+      if (!path) continue;
+      const serviceYaml = join(ROOT, path, 'service.yaml');
+      expect(existsSync(serviceYaml), serviceYaml).toBe(true);
+      if (t.maturity === 'SAMPLE_LAB_STUB') {
+        const fee = readFileSync(join(ROOT, path, 'fee-policy.yaml'), 'utf8');
+        const sla = readFileSync(join(ROOT, path, 'sla-policy.yaml'), 'utf8');
+        const evidence = readFileSync(join(ROOT, path, 'evidence-policy.yaml'), 'utf8');
+        expect(fee).toMatch(/POLICY_INPUT_REQUIRED/);
+        expect(sla).toMatch(/POLICY_INPUT_REQUIRED/);
+        expect(evidence).toMatch(/POLICY_INPUT_REQUIRED/);
+        expect(existsSync(join(ROOT, path, 'form.schema.json'))).toBe(true);
+      }
+    }
+    const byId = new Map(packManifest.packs.map((p) => [p.catalogue_id, p]));
+    expect(byId.get('IND-SOC-002')?.generator).toBe('handcrafted');
+    expect(byId.get('IND-SOC-031')?.generator).toBe('handcrafted');
+    expect(byId.get('IND-AGR-002')?.authoring_path).toBe(
+      'templates/certificate-packs/ind-agr-002/',
+    );
   });
 
   it('every version has a unique UUID, ascending semver and a matching content hash', () => {

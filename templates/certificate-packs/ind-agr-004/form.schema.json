@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "serviceform://templates/certificate-packs/ind-agr-004/form.schema.json",
+  "title": "Agricultural Family Member Certificate application",
+  "description": "Aligned to registry Recommended Core Fields. Not a statutory eligibility rule set. POLICY_INPUT_REQUIRED for fee/eligibility/evidence/SLA/jurisdiction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "applicant_name",
+    "applicant_dob",
+    "applicant_gender",
+    "applicant_address",
+    "purpose_of_certificate",
+    "declaration_accepted"
+  ],
+  "properties": {
+    "applicant_name": {
+      "type": "string",
+      "title": "Full name (as per official record)",
+      "minLength": 1,
+      "maxLength": 120,
+      "semanticElementId": "SF-SEM-PERSON-FULL-NAME"
+    },
+    "applicant_dob": {
+      "type": "string",
+      "format": "date",
+      "title": "Date of birth",
+      "semanticElementId": "SF-SEM-PERSON-DOB"
+    },
+    "applicant_gender": {
+      "type": "string",
+      "title": "Gender",
+      "enum": [
+        "MALE",
+        "FEMALE",
+        "TRANSGENDER",
+        "OTHER",
+        "PREFER_NOT_TO_SAY"
+      ],
+      "semanticElementId": "SF-SEM-PERSON-GENDER"
+    },
+    "applicant_mobile": {
+      "type": "string",
+      "title": "Mobile number",
+      "pattern": "^[6-9][0-9]{9}$",
+      "semanticElementId": "SF-SEM-PERSON-MOBILE"
+    },
+    "applicant_address": {
+      "type": "object",
+      "title": "Address",
+      "additionalProperties": false,
+      "required": [
+        "house_no_or_name",
+        "locality",
+        "district",
+        "state_code",
+        "pincode"
+      ],
+      "properties": {
+        "house_no_or_name": {
+          "type": "string",
+          "title": "House no. / name",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "locality": {
+          "type": "string",
+          "title": "Locality / village / ward",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "post_office": {
+          "type": "string",
+          "title": "Post office",
+          "maxLength": 80
+        },
+        "district": {
+          "type": "string",
+          "title": "District",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "state_code": {
+          "type": "string",
+          "title": "State / UT code",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "pincode": {
+          "type": "string",
+          "title": "PIN code",
+          "pattern": "^[1-9][0-9]{5}$"
+        }
+      }
+    },
+    "purpose_of_certificate": {
+      "type": "string",
+      "title": "Purpose of certificate",
+      "minLength": 1,
+      "maxLength": 500,
+      "semanticElementId": "SF-SEM-PURPOSE"
+    },
+    "declaration_accepted": {
+      "type": "boolean",
+      "title": "I declare that the particulars above are true for this SAMPLE_LAB preview and that no real personal data has been entered.",
+      "const": true
+    }
+  }
+}
