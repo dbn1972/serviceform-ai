@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "serviceform://templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json",
-  "title": "SAMPLE_LAB DUMMY tenant / TSB owner-config overlay",
-  "description": "Per-tenant (CMP-052 TenantServiceBinding) overrides of SAMPLE_LAB DUMMY defaults. Merge order: shared defaults → per-catalogue-id owner-config → this overlay. Fail-closed outside environment_label=SAMPLE_LAB. Not statutory. Not for production. CERTIFIED=false · G6=false.",
+  "title": "SAMPLE_LAB sample parameters — tenant / TSB owner-config overlay",
+  "description": "Per-tenant (CMP-052 TenantServiceBinding) edits of SAMPLE_LAB sample parameters. Defaults are starting values only (not locked statute). Merge order: shared defaults → per-catalogue-id owner-config → this overlay. Fail-closed outside environment_label=SAMPLE_LAB. Not for production. CERTIFIED=false · G6=false.",
   "type": "object",
   "additionalProperties": false,
   "required": ["tenant_id", "catalogue_id"],

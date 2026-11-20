@@ -105,10 +105,10 @@ test.describe('Studio template catalogue', () => {
     );
   });
 
-  test('a stub shows SAMPLE_LAB DUMMY policy labels (not statute)', async ({ page }) => {
+  test('a stub shows SAMPLE_LAB sample parameter labels (configurable)', async ({ page }) => {
     await open(page, `${STUDIO}/templates/ind-soc-031.income-certificate`);
     await expect(page.getByText('SAMPLE_LAB stub — not offered to citizens')).toBeVisible();
-    await expect(page.getByText(/SAMPLE_LAB DUMMY/).first()).toBeVisible();
+    await expect(page.getByText(/SAMPLE_LAB (DUMMY|sample)/).first()).toBeVisible();
     await expect(page.getByText('Policy input required')).toHaveCount(0);
     await expect(page.getByLabel('Annual income (₹)')).toHaveCount(0);
     await page.getByRole('button', { name: /^2\. Income$/ }).click();
@@ -147,7 +147,7 @@ test.describe('citizen service catalogue', () => {
     await expect(
       page.getByText('You cannot apply for this service in this portal yet'),
     ).toBeVisible();
-    await expect(page.getByText(/SAMPLE_LAB DUMMY/).first()).toBeVisible();
+    await expect(page.getByText(/SAMPLE_LAB (DUMMY|sample)/).first()).toBeVisible();
     await expect(page.getByRole('link', { name: /Start application/ })).toHaveCount(0);
     await expect(page.getByText('Annual income (₹)')).toBeVisible();
     await expectAccessible(page);

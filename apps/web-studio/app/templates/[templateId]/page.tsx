@@ -34,7 +34,7 @@ function PolicyValue({ value }: { value: string }) {
   if (value === POLICY_PENDING) {
     return <span className="ux4g-tag-outline-warning">Policy input required</span>;
   }
-  if (value.includes('SAMPLE_LAB DUMMY')) {
+  if (value.includes('SAMPLE_LAB DUMMY') || value.includes('SAMPLE_LAB sample')) {
     return <span className="ux4g-tag-outline-warning">{value}</span>;
   }
   return <>{value}</>;
@@ -102,9 +102,9 @@ export default async function TemplateDetailPage({ params, searchParams }: Props
       {template.maturity === 'SAMPLE_LAB_STUB' ? (
         <Alert variant="warning" title="SAMPLE_LAB stub — not offered to citizens">
           Form fields follow the registry core fields. Fee, service time, eligibility and evidence
-          use SAMPLE_LAB DUMMY defaults (synthetic, tenant-overridable via CMP-052) — not statute.
-          Owner must replace before any non-lab use. Apply still requires a PUBLISHED TSB
-          placement. CERTIFIED=false · G6=false.
+          use SAMPLE_LAB sample parameters (configurable per tenant via CMP-052) — starting lab
+          values, not locked statute. Edit per tenant; replace before any non-lab use. Apply still
+          requires a PUBLISHED TSB placement. CERTIFIED=false · G6=false.
         </Alert>
       ) : (
         <Alert variant="info" title="Published to the SAMPLE_LAB citizen portal">

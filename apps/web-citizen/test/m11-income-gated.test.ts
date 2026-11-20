@@ -35,9 +35,9 @@ describe('M11 Income Certificate (IND-SOC-031) stays apply-gated', () => {
     expect(offeredForm('IND-SOC-031')).toBeNull();
     const entry = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
     expect(entry?.offered).toBe(false);
-    expect(entry?.fee).toMatch(/SAMPLE_LAB DUMMY/);
-    expect(entry?.service_time).toMatch(/SAMPLE_LAB DUMMY/);
-    expect(entry?.eligibility).toMatch(/SAMPLE_LAB DUMMY/);
+    expect(entry?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(entry?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(entry?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
   });
 
   it('does not place IND-SOC-031 in citizen offerings', () => {

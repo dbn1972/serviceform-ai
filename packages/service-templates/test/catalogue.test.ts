@@ -101,7 +101,7 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       expect(t.versions.every((v) => v.status === 'DRAFT')).toBe(true);
       expect(usesSampleLabDummyPolicy(t), t.catalogue_id).toBe(true);
       expect(policyInputsPending(t), t.catalogue_id).toBe(false);
-      expect(t.policy.fee).toMatch(/SAMPLE_LAB DUMMY/);
+      expect(t.policy.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
       expect(t.indicative_checks).toEqual([]);
     }
     // Configurable packs: every stub points at an authoring shell; apply stays placement-gated.

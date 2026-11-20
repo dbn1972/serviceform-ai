@@ -9,11 +9,12 @@ Factory-generated Studio authoring packs for Certificate-type catalogue stubs.
 | Hand-crafted Income shell | 1 — `templates/income-certificate/` (SAMPLE_LAB DUMMY) |
 | Generated configurable packs | 156 — this directory (`<catalogue-id-lower>/`) + Birth |
 
-Every generated pack (and Income) uses **SAMPLE_LAB DUMMY** defaults from
-`sample-lab-dummy/defaults.json`, plus a per-id `owner-config.json`. Tenants override via
-CMP-052 / `sample-lab-dummy/tenant-overlay.schema.json`. Fail-closed outside SAMPLE_LAB.
+Every generated pack (and Income) uses **SAMPLE_LAB sample parameters (configurable)** from
+`sample-lab-dummy/defaults.json`, plus a per-id `owner-config.json`. Tenants edit/override via
+CMP-052 / `sample-lab-dummy/tenant-overlay.schema.json`. Not locked statute. Fail-closed outside
+SAMPLE_LAB.
 
-`policyInputsPending` is cleared by SAMPLE_LAB DUMMY stamps. Citizen apply still requires a
+`policyInputsPending` is cleared by these sample-parameter stamps. Citizen apply still requires a
 PUBLISHED version pinned by placement (Residence only today).
 
 - Skeleton: `templates/certificate-pack-skeleton/`

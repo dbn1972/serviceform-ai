@@ -4,8 +4,9 @@ import { fileURLToPath } from 'node:url';
 import type { CertificateTemplate, PolicyFacts } from './types';
 
 /**
- * SAMPLE_LAB DUMMY owner-config defaults + tenant/TSB overlay merge.
- * Synthetic only — not statute, not for production, CERTIFIED=false, G6=false.
+ * SAMPLE_LAB sample parameters (configurable) + tenant/TSB overlay merge.
+ * Defaults are starting lab values only — editable per tenant; not locked statute.
+ * Not for production. CERTIFIED=false, G6=false.
  * Fail-closed outside environment_label === SAMPLE_LAB.
  */
 
@@ -18,14 +19,14 @@ const DEFAULTS_PATH = join(
   'templates/certificate-packs/sample-lab-dummy/defaults.json',
 );
 
-/** Catalogue-facing policy facts stamped SAMPLE_LAB DUMMY (tenant-overridable defaults). */
+/** Catalogue-facing policy facts: SAMPLE_LAB sample parameters (configurable per tenant). */
 export const SAMPLE_LAB_DUMMY_POLICY_FACTS: PolicyFacts = {
-  fee: 'SAMPLE_LAB DUMMY · ₹9.99 (tenant-overridable)',
-  service_time: 'SAMPLE_LAB DUMMY · 15 working days (tenant-overridable)',
-  eligibility: 'SAMPLE_LAB DUMMY · synthetic eligibility (not statutory)',
-  evidence: 'SAMPLE_LAB DUMMY · synthetic evidence list (not statutory)',
+  fee: 'SAMPLE_LAB sample · ₹9.99 (configurable per tenant)',
+  service_time: 'SAMPLE_LAB sample · 15 working days (configurable per tenant)',
+  eligibility: 'SAMPLE_LAB sample parameters (configurable) — eligibility',
+  evidence: 'SAMPLE_LAB sample parameters (configurable) — evidence',
   source:
-    'templates/certificate-packs/sample-lab-dummy/defaults.json (tenant/TSB overlayable via CMP-052)',
+    'templates/certificate-packs/sample-lab-dummy/defaults.json (SAMPLE_LAB sample parameters; CMP-052 tenant-overridable)',
 };
 
 export type SampleLabDummyDefaults = Record<string, unknown> & {
@@ -174,11 +175,14 @@ export function resolveSampleLabOwnerConfig(
   };
 }
 
-/** True when catalogue policy facts are the SAMPLE_LAB DUMMY stamp (not POLICY_INPUT_REQUIRED). */
+/** True when catalogue policy facts are SAMPLE_LAB sample parameters (not POLICY_INPUT_REQUIRED). */
 export function usesSampleLabDummyPolicy(template: CertificateTemplate): boolean {
   const { fee, service_time, eligibility, evidence, source } = template.policy;
-  // Catalogue copy uses spaced "SAMPLE_LAB DUMMY"; JSON policy_kind uses SAMPLE_LAB_DUMMY.
+  // Accept prior "SAMPLE_LAB DUMMY" copy and current "SAMPLE_LAB sample" wording.
   return [fee, service_time, eligibility, evidence, source].some(
-    (v) => v.includes('SAMPLE_LAB DUMMY') || v.includes(SAMPLE_LAB_DUMMY_KIND),
+    (v) =>
+      v.includes('SAMPLE_LAB DUMMY') ||
+      v.includes('SAMPLE_LAB sample') ||
+      v.includes(SAMPLE_LAB_DUMMY_KIND),
   );
 }

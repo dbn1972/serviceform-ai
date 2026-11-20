@@ -50,8 +50,9 @@ export default async function ServiceDetailPage({ params }: Props) {
               {offered ? null : (
                 <span className="ux4g-tag-tonal-warning">Not yet offered here</span>
               )}
-              {template.policy.fee.includes('SAMPLE_LAB DUMMY') ? (
-                <span className="ux4g-tag-tonal-warning">SAMPLE_LAB DUMMY</span>
+              {template.policy.fee.includes('SAMPLE_LAB DUMMY') ||
+              template.policy.fee.includes('SAMPLE_LAB sample') ? (
+                <span className="ux4g-tag-tonal-warning">SAMPLE_LAB sample parameters</span>
               ) : null}
             </>
           }
@@ -60,8 +61,9 @@ export default async function ServiceDetailPage({ params }: Props) {
         {offered ? null : (
           <FormAlert tone="warning" title="You cannot apply for this service in this portal yet">
             The department has not published this certificate here. Where fees, documents or
-            eligibility show SAMPLE_LAB DUMMY, those are synthetic lab defaults (tenant-overridable)
-            — not government policy — and must be replaced before any non-lab use.
+            eligibility show SAMPLE_LAB sample parameters, those are configurable lab starting
+            values (editable per tenant) — not locked statute — and must be replaced before any
+            non-lab use.
           </FormAlert>
         )}
 
