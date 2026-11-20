@@ -1,14 +1,18 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { policyInputsPending, templateByCatalogueId } from '@serviceform/service-templates';
+import {
+  policyInputsPending,
+  templateByCatalogueId,
+  usesSampleLabDummyPolicy,
+} from '@serviceform/service-templates';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { catalogueEntries, isOffered } from '../lib/catalogue';
 import { offeredForm } from '../lib/portal/forms';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
-// REQ M11: Income Certificate stays gated until owner policy; no invented statute.
-describe('M11 Income Certificate (IND-SOC-031) stays gated', () => {
+// REQ M11: Income stays apply-gated (DRAFT / not placed) even with SAMPLE_LAB DUMMY defaults.
+describe('M11 Income Certificate (IND-SOC-031) stays apply-gated', () => {
   beforeAll(() => {
     process.env['SF_PORTAL_PLACEMENT_FILE'] = join(
       ROOT,
@@ -16,10 +20,11 @@ describe('M11 Income Certificate (IND-SOC-031) stays gated', () => {
     );
   });
 
-  it('keeps POLICY_INPUT_REQUIRED and SAMPLE_LAB_STUB with Studio authoring shell', () => {
+  it('uses SAMPLE_LAB DUMMY policy with Studio authoring shell; policyInputsPending cleared', () => {
     const t = templateByCatalogueId('IND-SOC-031');
     expect(t?.maturity).toBe('SAMPLE_LAB_STUB');
-    expect(t && policyInputsPending(t)).toBe(true);
+    expect(t && usesSampleLabDummyPolicy(t)).toBe(true);
+    expect(t && policyInputsPending(t)).toBe(false);
     expect(t?.authoring_path).toBe('templates/income-certificate/');
     expect(t?.indicative_checks).toEqual([]);
   });
@@ -30,9 +35,9 @@ describe('M11 Income Certificate (IND-SOC-031) stays gated', () => {
     expect(offeredForm('IND-SOC-031')).toBeNull();
     const entry = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
     expect(entry?.offered).toBe(false);
-    expect([entry?.fee, entry?.service_time, entry?.eligibility]).toEqual(
-      Array(3).fill('To be published by the department'),
-    );
+    expect(entry?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(entry?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(entry?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
   });
 
   it('does not place IND-SOC-031 in citizen offerings', () => {

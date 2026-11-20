@@ -6,15 +6,22 @@ Factory-generated Studio authoring packs for Certificate-type catalogue stubs.
 | --- | ---: |
 | Certificate universe | 158 |
 | PUBLISHED (Residence) | 1 — `templates/residence-certificate/` |
-| Hand-crafted Income shell | 1 — `templates/income-certificate/` |
-| Generated configurable packs | 156 — this directory (`<catalogue-id-lower>/`) |
+| Hand-crafted Income shell | 1 — `templates/income-certificate/` (SAMPLE_LAB DUMMY) |
+| Generated configurable packs | 156 — this directory (`<catalogue-id-lower>/`) + Birth |
 
-Every generated pack keeps fee / eligibility / evidence / service_time / jurisdiction as
-`POLICY_INPUT_REQUIRED`. Citizen apply stays gated via `policyInputsPending`.
+Every generated pack (and Income) uses **SAMPLE_LAB sample parameters (configurable)** from
+`sample-lab-dummy/defaults.json`, plus a per-id `owner-config.json`. Tenants edit/override via
+CMP-052 / `sample-lab-dummy/tenant-overlay.schema.json`. Not locked statute. Fail-closed outside
+SAMPLE_LAB.
+
+`policyInputsPending` is cleared by these sample-parameter stamps. Citizen apply still requires a
+PUBLISHED version pinned by placement (Residence only today).
 
 - Skeleton: `templates/certificate-pack-skeleton/`
+- Shared defaults: `sample-lab-dummy/defaults.json`
+- Tenant overlay schema: `sample-lab-dummy/tenant-overlay.schema.json`
 - Owner JSON Schema: `owner-config.schema.json`
 - Generator: `pnpm exec node scripts/catalogue/generate-certificate-packs.mjs`
 - Manifest: `manifest.json` (ids → authoring_path)
 
-**CERTIFIED=false · G6=false · self_certified=false**
+**CERTIFIED=false · G6=false · self_certified=false · not_for_production · not_statutory**

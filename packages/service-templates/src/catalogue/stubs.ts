@@ -12,28 +12,20 @@ import {
   postalAddress,
   purpose,
 } from '../fields';
-import type { CertificateTemplate, FormPackage, PolicyFacts } from '../types';
+import { SAMPLE_LAB_DUMMY_POLICY_FACTS } from '../sample-lab-dummy';
+import type { CertificateTemplate, FormPackage } from '../types';
 
 /**
  * Hand-crafted SAMPLE_LAB stubs grounded in docs/catalogue (registry v1.0).
  * Form fields follow each entry's "Recommended Core Fields" only. Fee, service time, eligibility
- * and evidence are POLICY_INPUT_REQUIRED from the statutory owner: nothing is invented here.
- * Stubs are DRAFT, not offered by any lab tenant, and cannot be applied for.
- * Income (IND-SOC-031) has a Studio authoring shell under templates/income-certificate/
- * with POLICY_INPUT_REQUIRED policy artefacts (M11 config-only path; still gated).
+ * and evidence use SAMPLE_LAB DUMMY defaults (synthetic, tenant-overridable) — not statute.
+ * Stubs stay DRAFT until a PUBLISHED TSB placement; apply remains placement-gated.
+ * Income (IND-SOC-031) Studio shell: templates/income-certificate/ with SAMPLE_LAB DUMMY.
  * Remaining Certificate-type registry entries are generated in generated-stubs.ts
  * (filter: Service / Output Type == Certificate) and get factory packs under
  * templates/certificate-packs/<id>/. Birth (IND-CIV-001) is Registration and stays here
  * as a pre-existing exception; it also receives a configurable pack.
  */
-
-const POLICY_INPUT_REQUIRED: PolicyFacts = {
-  fee: 'POLICY_INPUT_REQUIRED',
-  service_time: 'POLICY_INPUT_REQUIRED',
-  eligibility: 'POLICY_INPUT_REQUIRED',
-  evidence: 'POLICY_INPUT_REQUIRED',
-  source: 'docs/catalogue (normalized registry v1.0) — statutory owner input pending',
-};
 
 const STUB_DECLARATION =
   'I declare that the particulars above are true for this SAMPLE_LAB preview and that no real personal data has been entered.';
@@ -339,9 +331,9 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
   digilocker_suitability: 'High',
   core_fields: [...COMMON_CORE, 'Family/Household ID', 'Annual Income', 'Assessment Period'],
   maturity: 'SAMPLE_LAB_STUB',
-  /** Studio/config shell only — citizen offer stays gated until owner policy (M11). */
+  /** Studio/config shell — SAMPLE_LAB DUMMY defaults; apply still needs PUBLISHED TSB placement. */
   authoring_path: 'templates/income-certificate/',
-  policy: POLICY_INPUT_REQUIRED,
+  policy: SAMPLE_LAB_DUMMY_POLICY_FACTS,
   indicative_checks: [],
   credential_fields: [
     {
@@ -364,7 +356,8 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
       status: 'DRAFT',
       published_at: null,
       content_hash: 'sha256:39a81f7763e09f3a006112656bfc84d846372e8500f3510e7b3d3da8b53b52d3',
-      change_summary: 'SAMPLE_LAB stub from registry core fields; policy inputs pending.',
+      change_summary:
+        'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: incomeForm(),
     },
   ],
@@ -387,7 +380,7 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
   core_fields: COMMON_CORE,
   maturity: 'SAMPLE_LAB_STUB',
   authoring_path: 'templates/certificate-packs/ind-soc-001/',
-  policy: POLICY_INPUT_REQUIRED,
+  policy: SAMPLE_LAB_DUMMY_POLICY_FACTS,
   indicative_checks: [],
   credential_fields: [
     {
@@ -410,7 +403,8 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
       status: 'DRAFT',
       published_at: null,
       content_hash: 'sha256:b12d8e1e085ff314d22f0228d5f5850307ecb4ad06ff58dcb441f06d006caa01',
-      change_summary: 'SAMPLE_LAB stub from registry core fields; policy inputs pending.',
+      change_summary:
+        'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: domicileForm(),
     },
   ],
@@ -432,7 +426,7 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
   core_fields: [...COMMON_CORE, 'Event Date', 'Event Place', 'Registration Number'],
   maturity: 'SAMPLE_LAB_STUB',
   authoring_path: 'templates/certificate-packs/ind-civ-001/',
-  policy: POLICY_INPUT_REQUIRED,
+  policy: SAMPLE_LAB_DUMMY_POLICY_FACTS,
   indicative_checks: [],
   credential_fields: [
     { field_id: 'CERT_CHILD_NAME', label: 'Name of the child', source: '/child_name' },
@@ -451,7 +445,8 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
       status: 'DRAFT',
       published_at: null,
       content_hash: 'sha256:6da761ffc76ffa2e50c1f36ebac67a55f56c6564c43e8bcf5f3ad6a5e95567b6',
-      change_summary: 'SAMPLE_LAB stub from registry core fields; policy inputs pending.',
+      change_summary:
+        'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: birthForm(),
     },
   ],

@@ -26,12 +26,12 @@ describe('citizen service catalogue', () => {
     expect(stub && isOffered(stub)).toBe(false);
   });
 
-  it('never shows invented policy for stubs', () => {
+  it('shows SAMPLE_LAB sample parameter labels for stubs (configurable, not locked statute)', () => {
     expect(policyText('POLICY_INPUT_REQUIRED')).toBe('To be published by the department');
     const income = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
-    expect([income?.fee, income?.service_time, income?.eligibility]).toEqual(
-      Array(3).fill('To be published by the department'),
-    );
+    expect(income?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(income?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(income?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
   });
 
   it('outlines the steps and fields a citizen will be asked for', () => {

@@ -1,45 +1,52 @@
 # IND-DRM-004 — Livestock Loss Certificate service metadata shell
-# SAMPLE_LAB authoring only. POLICY_INPUT_REQUIRED — do not invent statute.
+# SAMPLE_LAB DUMMY defaults (tenant-overridable) — synthetic only, not statute.
 # Not CERTIFIED. G6 not self-issued. Constitution §1 §3 §31 §34.
-# Generated from templates/certificate-pack-skeleton — do not hand-edit policy values.
+# Generated from templates/certificate-pack-skeleton — regenerate via scripts/catalogue.
 
 catalogue_id: IND-DRM-004
 record_type: service_template
-version: "0.1.0-policy-pending"
+version: "0.2.0-sample-lab-dummy"
 status: SAMPLE_LAB_STUB
-policy_source_url: "POLICY_INPUT_REQUIRED"
+policy_kind: SAMPLE_LAB_DUMMY
+policy_source_url: "https://example.invalid/sample-lab-dummy-not-a-portal"
+not_for_production: true
+not_statutory: true
 
 metadata:
   title: "Livestock Loss Certificate"
   description: >
     Normalized credential asserting the fact, status or qualification represented by “Livestock Loss Certificate”. Eligibility, evidence, validity and legal effect remain jurisdiction-specific.
-    Fee, eligibility, evidence, SLA and jurisdiction-specific Act/Rules remain
-    POLICY_INPUT_REQUIRED from the statutory owner.
+    Fee, eligibility, evidence, SLA and jurisdiction use SAMPLE_LAB DUMMY defaults
+    (templates/certificate-packs/sample-lab-dummy/defaults.json) until the owner
+    replaces them via per-id owner-config and/or CMP-052 tenant overlay.
   category: disaster_relief_compensation
-  tags: [certificate, sample_lab, policy_input_required, configurable_pack]
+  tags: [certificate, sample_lab, sample_lab_dummy, configurable_pack, tenant_overridable]
 
 policy_fields:
-  legal_basis: "POLICY_INPUT_REQUIRED"
+  legal_basis: "SAMPLE_LAB DUMMY — not a statutory Act/Rules citation; owner must replace before any non-lab use"
   issuing_authority_class: "District Administration / Disaster Management / Revenue Department"
-  eligibility_summary: "POLICY_INPUT_REQUIRED"
-  applicant_scope: "POLICY_INPUT_REQUIRED"
-  validity_period_days: "POLICY_INPUT_REQUIRED"
-  evidence_requirements: "POLICY_INPUT_REQUIRED"
-  fee_schedule: "POLICY_INPUT_REQUIRED"
-  service_time: "POLICY_INPUT_REQUIRED"
-  pilot_state_or_jurisdiction: "POLICY_INPUT_REQUIRED"
+  eligibility_summary: "SAMPLE_LAB DUMMY — synthetic eligibility claim only; not government policy"
+  applicant_scope: "SAMPLE_LAB_DUMMY_APPLICANT_SCOPE"
+  validity_period_days: "SAMPLE_LAB_DUMMY_UNSPECIFIED"
+  evidence_requirements: "SAMPLE_LAB DUMMY · synthetic evidence list (not statutory)"
+  fee_schedule: "SAMPLE_LAB DUMMY · ₹9.99 (999 paise; tenant-overridable)"
+  service_time: "SAMPLE_LAB DUMMY · 15 working days (tenant-overridable)"
+  pilot_state_or_jurisdiction: "SAMPLE_LAB_PILOT_CELL"
 
 offering:
-  offering_id: "IND-DRM-004-OFFERING-DRAFT"
+  offering_id: "IND-DRM-004-OFFERING-SAMPLE-LAB-DUMMY"
   form_schema_ref: "ind-drm-004-form-draft"
-  rule_set_ref: "ind-drm-004-rules-policy-pending"
-  workflow_ref: "ind-drm-004-workflow-policy-pending"
-  evidence_policy_ref: "ind-drm-004-evidence-policy-pending"
-  fee_policy_ref: "ind-drm-004-fee-policy-pending"
-  sla_policy_ref: "ind-drm-004-sla-policy-pending"
-  credential_template_ref: "ind-drm-004-credential-policy-pending"
-  notification_template_ref: "ind-drm-004-notifications-policy-pending"
-  access_policy_ref: "ind-drm-004-access-policy-pending"
+  rule_set_ref: "ind-drm-004-rules-sample-lab-dummy"
+  workflow_ref: "ind-drm-004-workflow-sample-lab-dummy"
+  evidence_policy_ref: "ind-drm-004-evidence-policy-sample-lab-dummy"
+  fee_policy_ref: "ind-drm-004-fee-policy-sample-lab-dummy"
+  sla_policy_ref: "ind-drm-004-sla-policy-sample-lab-dummy"
+  credential_template_ref: "SAMPLE_LAB_DUMMY_IND_DRM_004_V1"
+  notification_template_ref: "ind-drm-004-notifications-sample-lab-dummy"
+  access_policy_ref: "ind-drm-004-access-policy-sample-lab-dummy"
 
-invented_statutory_policy_forbidden: true
-citizen_placement_forbidden_until_policy_resolved: true
+owner_config_ref: "owner-config.json"
+defaults_ref: "../sample-lab-dummy/defaults.json"
+tenant_overlay_schema_ref: "../sample-lab-dummy/tenant-overlay.schema.json"
+citizen_placement_requires_published_tsb: true
+fail_closed_outside_sample_lab: true

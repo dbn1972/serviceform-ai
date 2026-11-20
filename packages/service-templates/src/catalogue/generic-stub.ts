@@ -11,19 +11,19 @@ import {
   purpose,
 } from '../fields';
 import { formContentHash } from '../integrity';
+import { SAMPLE_LAB_DUMMY_POLICY_FACTS } from '../sample-lab-dummy';
 import type {
   CertificateTemplate,
   CredentialField,
   FormPackage,
   FormSchemaNode,
-  PolicyFacts,
   UiElement,
 } from '../types';
 
 /**
  * Generic SAMPLE_LAB stubs for registry Certificate entries.
- * Form fields follow Recommended Core Fields only; fee/time/eligibility/evidence stay
- * POLICY_INPUT_REQUIRED. No statutory lists, thresholds, or caste/community enums.
+ * Form fields follow Recommended Core Fields only. Fee/time/eligibility/evidence use
+ * SAMPLE_LAB DUMMY defaults (synthetic, tenant-overridable via CMP-052) — not statute.
  */
 
 export const CERTIFICATE_OUTPUT_TYPE = 'Certificate' as const;
@@ -34,14 +34,6 @@ export const HANDCRAFTED_CERTIFICATE_IDS = new Set([
   'IND-SOC-031', // Income — richer stub + authoring_path
   'IND-SOC-001', // Domicile — richer stub
 ]);
-
-const POLICY_INPUT_REQUIRED: PolicyFacts = {
-  fee: 'POLICY_INPUT_REQUIRED',
-  service_time: 'POLICY_INPUT_REQUIRED',
-  eligibility: 'POLICY_INPUT_REQUIRED',
-  evidence: 'POLICY_INPUT_REQUIRED',
-  source: 'docs/catalogue (normalized registry v1.0) — statutory owner input pending',
-};
 
 const STUB_DECLARATION =
   'I declare that the particulars above are true for this SAMPLE_LAB preview and that no real personal data has been entered.';
@@ -415,9 +407,9 @@ export function buildGenericCertificateStub(entry: RegistryCertificateEntry): Ce
     digilocker_suitability: entry['DigiLocker / Wallet Suitability'],
     core_fields: coreFields,
     maturity: 'SAMPLE_LAB_STUB',
-    /** Factory pack: POLICY_INPUT_REQUIRED slots only (see templates/certificate-packs/). */
+    /** Factory pack: SAMPLE_LAB DUMMY defaults + per-id/tenant overlays. */
     authoring_path: `templates/certificate-packs/${catalogueId.toLowerCase()}/`,
-    policy: POLICY_INPUT_REQUIRED,
+    policy: SAMPLE_LAB_DUMMY_POLICY_FACTS,
     indicative_checks: [],
     credential_fields: credentialFields(coreFields),
     versions: [
@@ -427,7 +419,8 @@ export function buildGenericCertificateStub(entry: RegistryCertificateEntry): Ce
         status: 'DRAFT',
         published_at: null,
         content_hash: formContentHash(form),
-        change_summary: 'SAMPLE_LAB stub from registry core fields; policy inputs pending.',
+        change_summary:
+          'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
         form,
       },
     ],

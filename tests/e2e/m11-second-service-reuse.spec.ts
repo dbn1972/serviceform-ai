@@ -48,7 +48,7 @@ test.describe('M11 second-service reuse — Income gated + Studio config path', 
     await page.goto(`${STUDIO}/templates/ind-soc-031.income-certificate`);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Income Certificate');
     await expect(
-      page.getByText(/POLICY_INPUT_REQUIRED|policy input pending|stub/i).first(),
+      page.getByText(/SAMPLE_LAB sample|SAMPLE_LAB DUMMY|SAMPLE_LAB stub|stub/i).first(),
     ).toBeVisible();
     await page.goto(`${STUDIO}/forms`);
     const incomeRow = page.getByRole('row', { name: /IND-SOC-031/ });

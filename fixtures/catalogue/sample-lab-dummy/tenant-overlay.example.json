@@ -1,0 +1,21 @@
+{
+  "_comment": "Example CMP-052 / TSB tenant overlay on SAMPLE_LAB DUMMY defaults. Synthetic only. Fail-closed outside SAMPLE_LAB. Not statute.",
+  "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+  "catalogue_id": "IND-SOC-003",
+  "tenant_service_binding_id": "0d15ba00-00a3-4000-8000-0d15ba0000a3",
+  "jurisdiction_code": "SAMPLE_LAB_PILOT_CELL",
+  "environment_label": "SAMPLE_LAB",
+  "fee": {
+    "currency": "INR",
+    "amount_minor_units": 500,
+    "fee_schedule_ref": "SAMPLE_LAB_DUMMY_TENANT_FEE_OVERRIDE"
+  },
+  "service_time": {
+    "processing_days_working": 7,
+    "clock_start_event": "APPLICATION_SUBMITTED"
+  },
+  "jurisdiction": {
+    "pilot_state_or_jurisdiction": "SAMPLE_LAB_PILOT_CELL",
+    "issuing_authority_designation": "SAMPLE_LAB_DUMMY_TENANT_ISSUER"
+  }
+}

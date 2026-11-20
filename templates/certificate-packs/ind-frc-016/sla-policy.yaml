@@ -1,6 +1,9 @@
-# IND-FRC-016 SLA / service_time policy — FAIL-CLOSED
-sla_policy_id: ind-frc-016-sla-policy-pending
-status: POLICY_INPUT_REQUIRED
-processing_days_working: POLICY_INPUT_REQUIRED
-clock_start_event: POLICY_INPUT_REQUIRED
-notes: Do not copy Residence or any other service SLA. Owner service_time anchors required.
+# IND-FRC-016 SLA / service_time — SAMPLE_LAB DUMMY (tenant-overridable)
+# Synthetic only · not statutory · not for production · CERTIFIED=false · G6=false
+sla_policy_id: ind-frc-016-sla-policy-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
+processing_days_working: 15
+clock_start_event: APPLICATION_SUBMITTED
+notes: >
+  SAMPLE_LAB DUMMY default (15 working days). Tenant/TSB overlay may override.
+  Fail-closed outside SAMPLE_LAB. Owner must replace before any non-lab use.
