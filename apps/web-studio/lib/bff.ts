@@ -237,10 +237,33 @@ export interface PlatformResponse {
   body: Record<string, unknown>;
 }
 
+const IPV4_RE = /^(?:\d{1,3}\.){3}\d{1,3}$/;
+const IPV6_RE = /^[0-9a-f:]+$/i;
+
+/** Address the BFF observed for the browser hop (ADR-0008 / SEC F-08). */
+export function observedClientAddress(request: Request): string | undefined {
+  const real = request.headers.get('x-real-ip')?.trim();
+  if (real && (IPV4_RE.test(real) || IPV6_RE.test(real))) return real;
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (!forwarded) return undefined;
+  const parts = forwarded
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => IPV4_RE.test(part) || IPV6_RE.test(part));
+  if (parts.length === 0) return undefined;
+  if (process.env['SF_BFF_TRUST_INGRESS'] === '1') return parts[0];
+  return parts[parts.length - 1];
+}
+
 export async function platform(
   method: 'GET' | 'POST',
   path: string,
-  opts: { token?: string | null; body?: unknown } = {},
+  opts: {
+    token?: string | null;
+    body?: unknown;
+    from?: Request;
+    clientAddress?: string | null;
+  } = {},
 ): Promise<PlatformResponse> {
   const base = apiBaseUrl();
   if (!base)
@@ -248,6 +271,9 @@ export async function platform(
   const headers: Record<string, string> = { accept: 'application/json' };
   if (opts.body !== undefined) headers['content-type'] = 'application/json';
   if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;
+  const client =
+    opts.clientAddress?.trim() || (opts.from ? observedClientAddress(opts.from) : undefined);
+  if (client) headers['x-forwarded-for'] = client;
   try {
     const res = await fetch(`${base}${path}`, {
       method,

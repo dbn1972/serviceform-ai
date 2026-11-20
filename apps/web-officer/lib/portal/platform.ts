@@ -3,10 +3,29 @@ import { randomUUID } from 'node:crypto';
 /**
  * Officer workbench BFF → platform (SF-CON-PORTAL-SESSION, ADR-0007 D-3). Server-only.
  * The cookie holds only the CMP-004 opaque officer session token; identity, tenant and roles are
- * re-derived from CMP-004 per request. Client headers are never forwarded.
+ * re-derived from CMP-004 per request. Tenant/identity client headers are never forwarded.
+ * For ADR-0008 / SEC F-08 the BFF may set X-Forwarded-For to the observed browser address.
  */
 export const SESSION_COOKIE = 'sf_officer_session';
 export const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
+
+const IPV4_RE = /^(?:\d{1,3}\.){3}\d{1,3}$/;
+const IPV6_RE = /^[0-9a-f:]+$/i;
+
+/** Address the BFF observed for the browser hop (ADR-0008). See citizen portal helper. */
+export function observedClientAddress(request: Request): string | undefined {
+  const real = request.headers.get('x-real-ip')?.trim();
+  if (real && (IPV4_RE.test(real) || IPV6_RE.test(real))) return real;
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (!forwarded) return undefined;
+  const parts = forwarded
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => IPV4_RE.test(part) || IPV6_RE.test(part));
+  if (parts.length === 0) return undefined;
+  if (process.env['SF_BFF_TRUST_INGRESS'] === '1') return parts[0];
+  return parts[parts.length - 1];
+}
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -62,7 +81,13 @@ export interface PlatformResponse {
 export async function platform(
   method: 'GET' | 'POST',
   path: string,
-  opts: { token?: string | null; body?: unknown; idempotent?: boolean } = {},
+  opts: {
+    token?: string | null;
+    body?: unknown;
+    idempotent?: boolean;
+    from?: Request;
+    clientAddress?: string | null;
+  } = {},
 ): Promise<PlatformResponse> {
   const headers: Record<string, string> = {
     accept: 'application/json',
@@ -71,6 +96,9 @@ export async function platform(
   if (opts.body !== undefined) headers['content-type'] = 'application/json';
   if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;
   if (opts.idempotent) headers['idempotency-key'] = `workbench-${randomUUID()}`;
+  const client =
+    opts.clientAddress?.trim() || (opts.from ? observedClientAddress(opts.from) : undefined);
+  if (client) headers['x-forwarded-for'] = client;
   try {
     const res = await fetch(`${apiBase()}${path}`, {
       method,

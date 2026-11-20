@@ -37,6 +37,7 @@ export async function POST(request: Request) {
   }
   const assertion = await platform('POST', '/v1/simulated/idp/assertions', {
     body: { subject: body.subject },
+    from: request,
   });
   if (assertion.status !== 200 || typeof assertion.body['assertion'] !== 'string') {
     return relay(assertion);
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
   const session = await platform('POST', '/v1/identity/officer/sessions', {
     body: { assertion: assertion.body['assertion'] },
     idempotent: true,
+    from: request,
   });
   const token = session.body['session_token'];
   if (session.status !== 200 || typeof token !== 'string') return relay(session);
@@ -62,6 +64,12 @@ export async function DELETE(request: Request) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const token = sessionToken(request);
-  if (token) await platform('POST', '/v1/identity/officer/sessions/revoke', { token, body: {} });
+  if (token) {
+    await platform('POST', '/v1/identity/officer/sessions/revoke', {
+      token,
+      body: {},
+      from: request,
+    });
+  }
   return new Response(null, { status: 204, headers: { 'set-cookie': sessionCookie('', 0) } });
 }

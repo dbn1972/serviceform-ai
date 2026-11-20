@@ -108,16 +108,22 @@ export interface PlatformLabEnv {
   SF_OPA_URL?: string;
   SF_OPA_TOKEN?: string;
   /**
-   * CMP-004 per-IP limit. Every portal request reaches the host from the BFF's address, so the
-   * limit is per portal instance until the BFF forwards the client address through a trusted hop.
+   * CMP-004 per-IP limit. When SF_TRUSTED_PROXY_HOPS is unset, every portal request shares the
+   * BFF address (SEC F-08). With hops configured (ADR-0008) and the BFF forwarding
+   * X-Forwarded-For, the key is the trusted client address.
    */
   SF_IDENTITY_RATE_LIMIT_MAX?: string;
-  /** CMP-009 per-IP limit; same single-BFF-address caveat as the identity limit. */
+  /** CMP-009 per-IP limit; same trusted-hop caveat as the identity limit (ADR-0008). */
   SF_FORMS_RATE_LIMIT_MAX?: string;
-  /** CMP-005 per-IP limit; same single-BFF-address caveat as the identity limit. */
+  /** CMP-005 per-IP limit; same trusted-hop caveat as the identity limit (ADR-0008). */
   SF_PROFILE_RATE_LIMIT_MAX?: string;
-  /** CMP-033/051/052 studio/admin per-IP limit; same single-BFF-address caveat. */
+  /** CMP-033/051/052 studio/admin per-IP limit; same trusted-hop caveat (ADR-0008). */
   SF_STUDIO_RATE_LIMIT_MAX?: string;
+  /**
+   * Comma-separated BFF hop IPs/CIDRs for Fastify trustProxy (ADR-0008). Empty = no trust.
+   * SAMPLE_LAB example: `127.0.0.1,::1`. Never `*` / `0.0.0.0/0`.
+   */
+  SF_TRUSTED_PROXY_HOPS?: string;
 }
 
 export interface PlatformLab {
