@@ -66,7 +66,7 @@ export function deepMerge<T extends Record<string, unknown>>(
   base: T,
   ...patches: Array<Record<string, unknown> | undefined | null>
 ): T {
-  let out: Record<string, unknown> = { ...base };
+  const out: Record<string, unknown> = { ...base };
   for (const patch of patches) {
     if (!patch) continue;
     for (const [key, value] of Object.entries(patch)) {
