@@ -341,7 +341,8 @@ function main() {
         authoring_path: path,
         generator: 'handcrafted',
         status: catalogueId === 'IND-SOC-002' ? 'PUBLISHED' : 'SAMPLE_LAB_STUB',
-        policy_kind: catalogueId === 'IND-SOC-002' ? 'SAMPLE_LAB_ODISHA_PUBLIC_PORTAL' : 'SAMPLE_LAB_DUMMY',
+        policy_kind:
+          catalogueId === 'IND-SOC-002' ? 'SAMPLE_LAB_ODISHA_PUBLIC_PORTAL' : 'SAMPLE_LAB_DUMMY',
       });
       continue;
     }

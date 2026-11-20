@@ -14,7 +14,6 @@ import {
   listTemplates,
   policyInputsPending,
   publishedVersion,
-  resolveSampleLabOwnerConfig,
   sampleLabDummyAllowed,
   assertSampleLabDummyAllowed,
   stepLabels,
@@ -25,6 +24,7 @@ import {
   type UiElement,
 } from '../src/index';
 import { assertVersionIntegrity, formContentHash } from '../src/integrity';
+import { resolveSampleLabOwnerConfig } from '../src/sample-lab-dummy-resolve';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const registry = JSON.parse(readFileSync(join(ROOT, TEMPLATE_REGISTRY_SOURCE.path), 'utf8')) as {
@@ -174,9 +174,9 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     const base = resolveSampleLabOwnerConfig('IND-SOC-003');
     expect(base['policy_kind']).toBe('SAMPLE_LAB_DUMMY');
     expect((base['fee'] as { amount_minor_units: number }).amount_minor_units).toBe(999);
-    expect(
-      (base['credential'] as { credential_template_id: string }).credential_template_id,
-    ).toBe('SAMPLE_LAB_DUMMY_IND_SOC_003_V1');
+    expect((base['credential'] as { credential_template_id: string }).credential_template_id).toBe(
+      'SAMPLE_LAB_DUMMY_IND_SOC_003_V1',
+    );
     const overlay = resolveSampleLabOwnerConfig('IND-SOC-003', {
       tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
       catalogue_id: 'IND-SOC-003',

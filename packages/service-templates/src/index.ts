@@ -25,15 +25,13 @@ export {
   SAMPLE_LAB_ENVIRONMENT,
   assertSampleLabDummyAllowed,
   deepMerge,
-  loadPerIdOwnerConfig,
-  loadSampleLabDummyDefaults,
-  resolveSampleLabOwnerConfig,
   sampleLabDummyAllowed,
   usesSampleLabDummyPolicy,
   type PerIdOwnerConfigOverlay,
   type SampleLabDummyDefaults,
   type SampleLabTenantOverlay,
 } from './sample-lab-dummy';
+/** Node-only file-backed resolve — import from `@serviceform/service-templates/sample-lab-dummy-resolve`. */
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,
   INCOME_CERTIFICATE,
