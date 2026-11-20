@@ -19,11 +19,9 @@ describe('citizen service catalogue', () => {
     const entries = catalogueEntries();
     expect(entries[0]).toMatchObject({ catalogue_id: 'IND-SOC-002', offered: true, fee: '₹0' });
     expect(entries.filter((e) => e.offered)).toHaveLength(1);
-    expect(entries.filter((e) => !e.offered).map((e) => e.catalogue_id)).toEqual([
-      'IND-CIV-001',
-      'IND-SOC-001',
-      'IND-SOC-031',
-    ]);
+    expect(entries.filter((e) => !e.offered).length).toBe(entries.length - 1);
+    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-031' && !e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-CIV-001' && !e.offered)).toBe(true);
     const stub = templateByCatalogueId('IND-SOC-031');
     expect(stub && isOffered(stub)).toBe(false);
   });

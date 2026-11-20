@@ -15,12 +15,15 @@ import {
 import type { CertificateTemplate, FormPackage, PolicyFacts } from '../types';
 
 /**
- * SAMPLE_LAB stubs grounded in docs/catalogue/India_Gov_Normalized_Service_Registry.json (v1.0).
+ * Hand-crafted SAMPLE_LAB stubs grounded in docs/catalogue (registry v1.0).
  * Form fields follow each entry's "Recommended Core Fields" only. Fee, service time, eligibility
  * and evidence are POLICY_INPUT_REQUIRED from the statutory owner: nothing is invented here.
  * Stubs are DRAFT, not offered by any lab tenant, and cannot be applied for.
  * Income (IND-SOC-031) has a Studio authoring shell under templates/income-certificate/
  * with POLICY_INPUT_REQUIRED policy artefacts (M11 config-only path; still gated).
+ * Remaining Certificate-type registry entries are generated in generated-stubs.ts
+ * (filter: Service / Output Type == Certificate). Birth (IND-CIV-001) is Registration and
+ * stays here as a pre-existing exception outside that bulk filter.
  */
 
 const POLICY_INPUT_REQUIRED: PolicyFacts = {

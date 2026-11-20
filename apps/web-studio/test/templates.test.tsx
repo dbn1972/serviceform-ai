@@ -9,12 +9,14 @@ import { templateById } from '@serviceform/service-templates';
 describe('Studio template catalogue', () => {
   it('summarises every template with its latest and published versions', () => {
     const summaries = templateSummaries();
-    expect(summaries.map((s) => s.catalogue_id)).toEqual([
+    expect(summaries[0]?.catalogue_id).toBe('IND-SOC-002');
+    expect(summaries.map((s) => s.catalogue_id).slice(0, 4)).toEqual([
       'IND-SOC-002',
       'IND-SOC-031',
       'IND-SOC-001',
       'IND-CIV-001',
     ]);
+    expect(summaries.length).toBeGreaterThanOrEqual(158);
     const residence = summaries[0];
     expect(residence).toMatchObject({
       maturity: 'SAMPLE_LAB_PUBLISHED',
@@ -28,11 +30,12 @@ describe('Studio template catalogue', () => {
   });
 
   it('renders cards with an open link per template and a live result count', () => {
-    const html = renderToStaticMarkup(<TemplateCatalogue templates={templateSummaries()} />);
-    expect(html.match(/<article class="sf-template-card"/g)).toHaveLength(4);
+    const summaries = templateSummaries();
+    const html = renderToStaticMarkup(<TemplateCatalogue templates={summaries} />);
+    expect(html.match(/<article class="sf-template-card"/g)).toHaveLength(summaries.length);
     expect(html).toContain('href="/templates/ind-soc-031.income-certificate"');
     expect(html).toContain('aria-live="polite"');
-    expect(html).toContain('4 of 4 templates');
+    expect(html).toContain(`${summaries.length} of ${summaries.length} templates`);
   });
 
   it('previews a version through the UX4G renderer with its sample data', () => {
