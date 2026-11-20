@@ -1,16 +1,15 @@
-# IND-AGR-002 workflow shell — SAMPLE_LAB
+# IND-AGR-002 workflow shell — SAMPLE_LAB DUMMY
 # Reuses the platform Application/Case state machine via CMP-016 WAIT-only sequencing
 # (same class as fixtures/lab/platform/workflow.json). No Camunda. No named officers.
-# Human task role codes remain POLICY_INPUT_REQUIRED. Constitution §19 §33.
-workflow_id: ind-agr-002-workflow-policy-pending
-status: POLICY_INPUT_REQUIRED
+workflow_id: ind-agr-002-workflow-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
 runtime: temporal
 bpmn_profile: import_export_only
 assignment:
   target: role_org_jurisdiction_service_scope
   named_officers_forbidden: true
-  role_codes: POLICY_INPUT_REQUIRED
+  role_codes:
+    - SAMPLE_LAB_CASE_OFFICER
 notes: >
-  When owner policy unlocks citizen placement, pin a published CMP-016 version whose graph
-  commit-waits only on SF-CON-APPLICATION-CASE-SM commands. Do not add service-specific
-  backend branching for IND-AGR-002.
+  SAMPLE_LAB DUMMY role codes only. Tenant overlay may replace assignment roles.
+  Fail-closed outside SAMPLE_LAB. Do not add service-specific backend branching for IND-AGR-002.

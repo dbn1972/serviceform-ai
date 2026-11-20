@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
  * Generate SAMPLE_LAB configurable authoring packs for Certificate catalogue stubs.
- * POLICY_INPUT_REQUIRED only — does not invent fee/eligibility/evidence/service_time/statute.
- * Skips Residence (PUBLISHED) and Income (hand-crafted M11 shell).
+ * Fills SAMPLE_LAB DUMMY owner-config defaults (synthetic, not statute) + per-id overlays.
+ * Tenants override via CMP-052 / tenant-overlay.schema.json. Fail-closed outside SAMPLE_LAB.
+ * Skips Residence (PUBLISHED Odisha sample) and Income (hand-crafted M11 shell — updated separately).
  *
  * Usage: node scripts/catalogue/generate-certificate-packs.mjs
  */
@@ -16,6 +17,7 @@ const UNIVERSE = join(ROOT, 'packages/service-templates/src/catalogue/certificat
 const SKELETON = join(ROOT, 'templates/certificate-pack-skeleton');
 const OUT = join(ROOT, 'templates/certificate-packs');
 const FIXTURES = join(ROOT, 'fixtures/catalogue/certificate-packs');
+const DEFAULTS = join(OUT, 'sample-lab-dummy/defaults.json');
 
 /** Hand-crafted packs that must not be overwritten by the factory. */
 const SKIP_IDS = new Set([
@@ -28,6 +30,8 @@ const HANDCRAFTED_PATHS = {
   'IND-SOC-031': 'templates/income-certificate/',
 };
 
+const KEEP_DIRS = new Set(['sample-lab-dummy']);
+
 const TMPL_FILES = [
   'service.yaml.tmpl',
   'fee-policy.yaml.tmpl',
@@ -38,7 +42,7 @@ const TMPL_FILES = [
   'access-policy.yaml.tmpl',
   'credential-template.yaml.tmpl',
   'notifications.yaml.tmpl',
-  'POLICY_INPUT_REQUIRED.md.tmpl',
+  'SAMPLE_LAB_DUMMY.md.tmpl',
 ];
 
 function slugifyCategory(category) {
@@ -63,6 +67,32 @@ function packDirName(catalogueId) {
 function authoringPath(catalogueId) {
   if (HANDCRAFTED_PATHS[catalogueId]) return HANDCRAFTED_PATHS[catalogueId];
   return `templates/certificate-packs/${packDirName(catalogueId)}/`;
+}
+
+function ownerConfig(catalogueId, idUnderscore) {
+  return {
+    catalogue_id: catalogueId,
+    defaults_ref: '../sample-lab-dummy/defaults.json',
+    policy_kind: 'SAMPLE_LAB_DUMMY',
+    not_for_production: true,
+    not_statutory: true,
+    certified: false,
+    g6: false,
+    self_certified: false,
+    replace_before_non_lab_use: true,
+    tenant_overlay_schema_ref: '../sample-lab-dummy/tenant-overlay.schema.json',
+    credential: {
+      credential_template_id: `SAMPLE_LAB_DUMMY_${idUnderscore}_V1`,
+      digilocker_doc_type: `SAMPLE_LAB_DUMMY_${idUnderscore}`,
+      digilocker_mode: 'SIMULATED',
+    },
+    notifications: {
+      notification_pack_id: `${catalogueId.toLowerCase()}-notifications-sample-lab-dummy`,
+      sms_dlt_pe_id: 'SAMPLE_LAB_DLT_PE_ID',
+    },
+    _comment:
+      'Per-id SAMPLE_LAB DUMMY overlay on shared defaults. Tenants override via CMP-052 tenant-overlay. Not statute.',
+  };
 }
 
 /** Minimal form shell: registry core fields as free-text/claims; no invented enums. */
@@ -166,7 +196,7 @@ function formSchema(entry, idLower) {
         .toUpperCase()
         .replace(/[^A-Z0-9]+/g, '-')
         .replace(/^-|-$/g, '')}`,
-      'x-ux4g': { hint: 'Registry core field · free text until owner policy' },
+      'x-ux4g': { hint: 'Registry core field · free text · SAMPLE_LAB DUMMY until owner policy' },
     };
   }
 
@@ -175,7 +205,7 @@ function formSchema(entry, idLower) {
     $id: `serviceform://templates/certificate-packs/${idLower}/form.schema.json`,
     title: `${name} application`,
     description:
-      'Aligned to registry Recommended Core Fields. Not a statutory eligibility rule set. POLICY_INPUT_REQUIRED for fee/eligibility/evidence/SLA/jurisdiction.',
+      'Aligned to registry Recommended Core Fields. SAMPLE_LAB DUMMY owner-config defaults fill fee/eligibility/evidence/SLA/jurisdiction slots (synthetic; tenant-overridable). Not statutory. CERTIFIED=false · G6=false.',
     type: 'object',
     additionalProperties: false,
     required,
@@ -186,16 +216,81 @@ function formSchema(entry, idLower) {
 function packReadme(entry, path) {
   return `# ${entry['Canonical Service ID']} — ${entry['Normalized National Definition']}
 
-SAMPLE_LAB configurable authoring pack. **POLICY_INPUT_REQUIRED** — do not invent statute.
+SAMPLE_LAB configurable authoring pack with **SAMPLE_LAB DUMMY** defaults (synthetic · not statute).
 
 - Authoring path: \`${path}\`
-- Owner blockers: \`POLICY_INPUT_REQUIRED.md\`
+- Dummy inventory: \`SAMPLE_LAB_DUMMY.md\`
+- Shared defaults: \`../sample-lab-dummy/defaults.json\`
+- Per-id overlay: \`owner-config.json\`
+- Tenant / TSB overlay schema: \`../sample-lab-dummy/tenant-overlay.schema.json\`
 - Owner JSON Schema: \`../owner-config.schema.json\`
-- Catalogue form preview: \`@serviceform/service-templates\` stub for this id
 
-Citizen apply gated until owner config is resolved and a PUBLISHED TSB is placed.
+Merge order: shared defaults → per-id owner-config → CMP-052 tenant overlay.
+Fail-closed outside SAMPLE_LAB. Owner must replace before any non-lab use.
+Citizen apply still requires a PUBLISHED TSB placement (Residence only today).
 CERTIFIED=false · G6=false · self_certified=false.
 `;
+}
+
+function writePack(entry, path, skeletons, defaults, manifest) {
+  const catalogueId = entry['Canonical Service ID'];
+  const idLower = packDirName(catalogueId);
+  const idUnderscore = catalogueId.replaceAll('-', '_');
+  const dir = join(OUT, idLower);
+  mkdirSync(dir, { recursive: true });
+
+  const vars = {
+    CATALOGUE_ID: catalogueId,
+    CATALOGUE_ID_UNDERSCORE: idUnderscore,
+    ID_LOWER: idLower,
+    NAME: entry['Normalized National Definition'],
+    DEFINITION: entry.Definition,
+    CATEGORY: entry.Category,
+    CATEGORY_SLUG: slugifyCategory(entry.Category),
+    OUTPUT_TYPE: entry['Service / Output Type'],
+    ISSUING_AUTHORITY: entry['Typical Issuing Authority'],
+    LIFECYCLE: entry['Lifecycle / Validity Class'],
+    DIGILOCKER: entry['DigiLocker / Wallet Suitability'],
+    AUTHORING_PATH: path,
+  };
+
+  for (const tmplName of TMPL_FILES) {
+    const outName = tmplName.replace(/\.tmpl$/, '');
+    writeFileSync(join(dir, outName), render(skeletons[tmplName], vars));
+  }
+  writeFileSync(
+    join(dir, 'form.schema.json'),
+    `${JSON.stringify(formSchema(entry, idLower), null, 2)}\n`,
+  );
+  writeFileSync(join(dir, 'README.md'), packReadme(entry, path));
+  writeFileSync(
+    join(dir, 'owner-config.json'),
+    `${JSON.stringify(ownerConfig(catalogueId, idUnderscore), null, 2)}\n`,
+  );
+
+  writeFileSync(
+    join(FIXTURES, `${idLower}.SAMPLE_LAB_DUMMY.md`),
+    render(skeletons['SAMPLE_LAB_DUMMY.md.tmpl'], vars),
+  );
+  // Remove obsolete POLICY_INPUT_REQUIRED fixture if present.
+  const obsolete = join(FIXTURES, `${idLower}.POLICY_INPUT_REQUIRED.md`);
+  if (existsSync(obsolete)) rmSync(obsolete);
+
+  const hash = createHash('sha256')
+    .update(catalogueId)
+    .update(entry['Normalized National Definition'])
+    .update(JSON.stringify(defaults.fee))
+    .digest('hex')
+    .slice(0, 16);
+
+  manifest.packs.push({
+    catalogue_id: catalogueId,
+    authoring_path: path,
+    generator: 'certificate-pack-factory',
+    status: 'SAMPLE_LAB_STUB',
+    policy_kind: 'SAMPLE_LAB_DUMMY',
+    content_fingerprint: hash,
+  });
 }
 
 function main() {
@@ -203,25 +298,35 @@ function main() {
   if (universe.filter.equals !== 'Certificate') {
     throw new Error('universe filter must be Certificate');
   }
+  const defaults = JSON.parse(readFileSync(DEFAULTS, 'utf8'));
+  if (defaults.policy_kind !== 'SAMPLE_LAB_DUMMY') {
+    throw new Error('sample-lab-dummy/defaults.json must declare SAMPLE_LAB_DUMMY');
+  }
 
   const skeletons = Object.fromEntries(
     TMPL_FILES.map((f) => [f, readFileSync(join(SKELETON, f), 'utf8')]),
   );
 
-  // Remove previously generated pack dirs (keep README + schema + manifest).
+  // Remove previously generated pack dirs (keep README + schema + sample-lab-dummy + manifest).
   for (const name of readdirSync(OUT, { withFileTypes: true })) {
     if (!name.isDirectory()) continue;
     if (name.name.startsWith('_')) continue;
+    if (KEEP_DIRS.has(name.name)) continue;
     rmSync(join(OUT, name.name), { recursive: true, force: true });
   }
 
   mkdirSync(FIXTURES, { recursive: true });
 
   const manifest = {
-    generated_at_note: 'SAMPLE_LAB factory output — POLICY_INPUT_REQUIRED; not CERTIFIED; G6=false',
+    generated_at_note:
+      'SAMPLE_LAB DUMMY factory output — synthetic defaults; tenant-overridable; not CERTIFIED; G6=false',
     catalogue_version: universe.catalogue_version,
     source: universe.source,
     filter: universe.filter,
+    policy_kind: 'SAMPLE_LAB_DUMMY',
+    defaults_ref: 'templates/certificate-packs/sample-lab-dummy/defaults.json',
+    tenant_overlay_schema_ref:
+      'templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json',
     skipped_handcrafted: [...SKIP_IDS],
     packs: [],
   };
@@ -236,57 +341,12 @@ function main() {
         authoring_path: path,
         generator: 'handcrafted',
         status: catalogueId === 'IND-SOC-002' ? 'PUBLISHED' : 'SAMPLE_LAB_STUB',
+        policy_kind: catalogueId === 'IND-SOC-002' ? 'SAMPLE_LAB_ODISHA_PUBLIC_PORTAL' : 'SAMPLE_LAB_DUMMY',
       });
       continue;
     }
 
-    const idLower = packDirName(catalogueId);
-    const dir = join(OUT, idLower);
-    mkdirSync(dir, { recursive: true });
-
-    const vars = {
-      CATALOGUE_ID: catalogueId,
-      ID_LOWER: idLower,
-      NAME: entry['Normalized National Definition'],
-      DEFINITION: entry.Definition,
-      CATEGORY: entry.Category,
-      CATEGORY_SLUG: slugifyCategory(entry.Category),
-      OUTPUT_TYPE: entry['Service / Output Type'],
-      ISSUING_AUTHORITY: entry['Typical Issuing Authority'],
-      LIFECYCLE: entry['Lifecycle / Validity Class'],
-      DIGILOCKER: entry['DigiLocker / Wallet Suitability'],
-      AUTHORING_PATH: path,
-    };
-
-    for (const tmplName of TMPL_FILES) {
-      const outName = tmplName.replace(/\.tmpl$/, '');
-      writeFileSync(join(dir, outName), render(skeletons[tmplName], vars));
-    }
-    writeFileSync(
-      join(dir, 'form.schema.json'),
-      `${JSON.stringify(formSchema(entry, idLower), null, 2)}\n`,
-    );
-    writeFileSync(join(dir, 'README.md'), packReadme(entry, path));
-
-    // Thin fixture pointer for evidence / owner workflows.
-    writeFileSync(
-      join(FIXTURES, `${idLower}.POLICY_INPUT_REQUIRED.md`),
-      render(skeletons['POLICY_INPUT_REQUIRED.md.tmpl'], vars),
-    );
-
-    const hash = createHash('sha256')
-      .update(catalogueId)
-      .update(entry['Normalized National Definition'])
-      .digest('hex')
-      .slice(0, 16);
-
-    manifest.packs.push({
-      catalogue_id: catalogueId,
-      authoring_path: path,
-      generator: 'certificate-pack-factory',
-      status: 'SAMPLE_LAB_STUB',
-      content_fingerprint: hash,
-    });
+    writePack(entry, path, skeletons, defaults, manifest);
     generated += 1;
   }
 
@@ -308,41 +368,9 @@ function main() {
         'Applicant Name; DOB/Entity Date; Address; Jurisdiction; Application ID; Issue Date; Issuing Authority; Digital Signature; QR/Verification URI; Status; Event Date; Event Place; Registration Number',
       'DigiLocker / Wallet Suitability': 'Medium',
     };
-    mkdirSync(birthDir, { recursive: true });
-    const vars = {
-      CATALOGUE_ID: 'IND-CIV-001',
-      ID_LOWER: 'ind-civ-001',
-      NAME: birthEntry['Normalized National Definition'],
-      DEFINITION: birthEntry.Definition,
-      CATEGORY: birthEntry.Category,
-      CATEGORY_SLUG: slugifyCategory(birthEntry.Category),
-      OUTPUT_TYPE: birthEntry['Service / Output Type'],
-      ISSUING_AUTHORITY: birthEntry['Typical Issuing Authority'],
-      LIFECYCLE: birthEntry['Lifecycle / Validity Class'],
-      DIGILOCKER: birthEntry['DigiLocker / Wallet Suitability'],
-      AUTHORING_PATH: birthPath,
-    };
-    for (const tmplName of TMPL_FILES) {
-      const outName = tmplName.replace(/\.tmpl$/, '');
-      writeFileSync(join(birthDir, outName), render(skeletons[tmplName], vars));
-    }
-    writeFileSync(
-      join(birthDir, 'form.schema.json'),
-      `${JSON.stringify(formSchema(birthEntry, 'ind-civ-001'), null, 2)}\n`,
-    );
-    writeFileSync(join(birthDir, 'README.md'), packReadme(birthEntry, birthPath));
-    writeFileSync(
-      join(FIXTURES, 'ind-civ-001.POLICY_INPUT_REQUIRED.md'),
-      render(skeletons['POLICY_INPUT_REQUIRED.md.tmpl'], vars),
-    );
-    manifest.packs.push({
-      catalogue_id: 'IND-CIV-001',
-      authoring_path: birthPath,
-      generator: 'certificate-pack-factory',
-      status: 'SAMPLE_LAB_STUB',
-      note: 'Registration exception outside Certificate filter',
-      content_fingerprint: createHash('sha256').update('IND-CIV-001').digest('hex').slice(0, 16),
-    });
+    writePack(birthEntry, birthPath, skeletons, defaults, manifest);
+    const last = manifest.packs[manifest.packs.length - 1];
+    last.note = 'Registration exception outside Certificate filter';
     generated += 1;
   }
 
@@ -355,6 +383,7 @@ function main() {
       {
         ok: true,
         generated,
+        policy_kind: 'SAMPLE_LAB_DUMMY',
         skipped_handcrafted: [...SKIP_IDS],
         manifest_entries: manifest.packs.length,
         out: 'templates/certificate-packs/',

@@ -14,10 +14,14 @@ import {
   listTemplates,
   policyInputsPending,
   publishedVersion,
+  resolveSampleLabOwnerConfig,
+  sampleLabDummyAllowed,
+  assertSampleLabDummyAllowed,
   stepLabels,
   templateByCatalogueId,
   templateById,
   TEMPLATE_REGISTRY_SOURCE,
+  usesSampleLabDummyPolicy,
   type UiElement,
 } from '../src/index';
 import { assertVersionIntegrity, formContentHash } from '../src/integrity';
@@ -91,19 +95,16 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     },
   );
 
-  it('stubs invent no policy and have no PUBLISHED version', () => {
+  it('stubs use SAMPLE_LAB DUMMY policy and have no PUBLISHED version', () => {
     for (const t of templates.filter((x) => x.maturity === 'SAMPLE_LAB_STUB')) {
       expect(publishedVersion(t)).toBeNull();
       expect(t.versions.every((v) => v.status === 'DRAFT')).toBe(true);
-      expect([
-        t.policy.fee,
-        t.policy.service_time,
-        t.policy.eligibility,
-        t.policy.evidence,
-      ]).toEqual(Array(4).fill('POLICY_INPUT_REQUIRED'));
+      expect(usesSampleLabDummyPolicy(t), t.catalogue_id).toBe(true);
+      expect(policyInputsPending(t), t.catalogue_id).toBe(false);
+      expect(t.policy.fee).toMatch(/SAMPLE_LAB DUMMY/);
       expect(t.indicative_checks).toEqual([]);
     }
-    // Configurable packs: every stub points at an authoring shell; citizen apply stays gated.
+    // Configurable packs: every stub points at an authoring shell; apply stays placement-gated.
     expect(templateByCatalogueId('IND-SOC-031')?.authoring_path).toBe(
       'templates/income-certificate/',
     );
@@ -121,16 +122,23 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     );
     for (const t of templates.filter((x) => x.maturity === 'SAMPLE_LAB_STUB')) {
       expect(t.authoring_path, t.catalogue_id).toMatch(/^templates\//);
-      expect(policyInputsPending(t), t.catalogue_id).toBe(true);
     }
   });
 
-  it('configurable pack factory covers stubs with on-disk POLICY_INPUT_REQUIRED artefacts', () => {
+  it('configurable pack factory covers stubs with on-disk SAMPLE_LAB DUMMY artefacts', () => {
     expect(packManifest.generated_pack_count).toBe(157);
     expect(packManifest.total_manifest_entries).toBe(159);
     expect(existsSync(join(ROOT, 'templates/certificate-packs/owner-config.schema.json'))).toBe(
       true,
     );
+    expect(
+      existsSync(join(ROOT, 'templates/certificate-packs/sample-lab-dummy/defaults.json')),
+    ).toBe(true);
+    expect(
+      existsSync(
+        join(ROOT, 'templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json'),
+      ),
+    ).toBe(true);
     expect(existsSync(join(ROOT, 'templates/certificate-pack-skeleton/service.yaml.tmpl'))).toBe(
       true,
     );
@@ -144,10 +152,11 @@ describe('template catalogue (SAMPLE_LAB)', () => {
         const fee = readFileSync(join(ROOT, path, 'fee-policy.yaml'), 'utf8');
         const sla = readFileSync(join(ROOT, path, 'sla-policy.yaml'), 'utf8');
         const evidence = readFileSync(join(ROOT, path, 'evidence-policy.yaml'), 'utf8');
-        expect(fee).toMatch(/POLICY_INPUT_REQUIRED/);
-        expect(sla).toMatch(/POLICY_INPUT_REQUIRED/);
-        expect(evidence).toMatch(/POLICY_INPUT_REQUIRED/);
+        expect(fee).toMatch(/SAMPLE_LAB_DUMMY/);
+        expect(sla).toMatch(/SAMPLE_LAB_DUMMY/);
+        expect(evidence).toMatch(/SAMPLE_LAB_DUMMY/);
         expect(existsSync(join(ROOT, path, 'form.schema.json'))).toBe(true);
+        expect(existsSync(join(ROOT, path, 'owner-config.json'))).toBe(true);
       }
     }
     const byId = new Map(packManifest.packs.map((p) => [p.catalogue_id, p]));
@@ -156,6 +165,30 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     expect(byId.get('IND-AGR-002')?.authoring_path).toBe(
       'templates/certificate-packs/ind-agr-002/',
     );
+  });
+
+  it('resolves SAMPLE_LAB DUMMY owner-config with tenant overlay; refuses outside lab', () => {
+    expect(sampleLabDummyAllowed('SAMPLE_LAB')).toBe(true);
+    expect(sampleLabDummyAllowed('PRODUCTION')).toBe(false);
+    expect(() => assertSampleLabDummyAllowed('PRODUCTION')).toThrow(/fail-closed/);
+    const base = resolveSampleLabOwnerConfig('IND-SOC-003');
+    expect(base['policy_kind']).toBe('SAMPLE_LAB_DUMMY');
+    expect((base['fee'] as { amount_minor_units: number }).amount_minor_units).toBe(999);
+    expect(
+      (base['credential'] as { credential_template_id: string }).credential_template_id,
+    ).toBe('SAMPLE_LAB_DUMMY_IND_SOC_003_V1');
+    const overlay = resolveSampleLabOwnerConfig('IND-SOC-003', {
+      tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
+      catalogue_id: 'IND-SOC-003',
+      environment_label: 'SAMPLE_LAB',
+      fee: { currency: 'INR', amount_minor_units: 500 },
+    });
+    expect((overlay['fee'] as { amount_minor_units: number }).amount_minor_units).toBe(500);
+    expect(overlay['tenant_id']).toBe('0d15ba00-0001-4000-8000-0d15ba0000d1');
+    const income = resolveSampleLabOwnerConfig('IND-SOC-031');
+    expect(
+      (income['credential'] as { credential_template_id: string }).credential_template_id,
+    ).toBe('SAMPLE_LAB_DUMMY_IND_SOC_031_V1');
   });
 
   it('every version has a unique UUID, ascending semver and a matching content hash', () => {
@@ -214,14 +247,16 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     }
   });
 
-  it('maps form version ids to catalogue ids and detects pending policy (M11)', () => {
+  it('maps form version ids to catalogue ids; SAMPLE_LAB DUMMY clears policyInputsPending', () => {
     expect(catalogueIdForFormVersion('0d15ba00-0010-4000-8000-0d15ba000010')).toBe('IND-SOC-002');
     expect(catalogueIdForFormVersion('7e3a0031-0001-4000-8000-00000000031a')).toBe('IND-SOC-031');
     expect(catalogueIdForFormVersion('00000000-0000-4000-8000-000000000000')).toBeNull();
     const income = templateByCatalogueId('IND-SOC-031');
     const residence = templateByCatalogueId('IND-SOC-002');
-    expect(income && policyInputsPending(income)).toBe(true);
+    expect(income && policyInputsPending(income)).toBe(false);
+    expect(income && usesSampleLabDummyPolicy(income)).toBe(true);
     expect(residence && policyInputsPending(residence)).toBe(false);
+    expect(residence && usesSampleLabDummyPolicy(residence)).toBe(false);
   });
 
   it('diffs versions at field level', () => {

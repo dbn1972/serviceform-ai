@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "serviceform://templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json",
+  "title": "SAMPLE_LAB DUMMY tenant / TSB owner-config overlay",
+  "description": "Per-tenant (CMP-052 TenantServiceBinding) overrides of SAMPLE_LAB DUMMY defaults. Merge order: shared defaults → per-catalogue-id owner-config → this overlay. Fail-closed outside environment_label=SAMPLE_LAB. Not statutory. Not for production. CERTIFIED=false · G6=false.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tenant_id", "catalogue_id"],
+  "properties": {
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Tenant UUID that owns this overlay."
+    },
+    "catalogue_id": {
+      "type": "string",
+      "pattern": "^IND-[A-Z]{3}-[0-9]{3}$"
+    },
+    "tenant_service_binding_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Optional TSB id when the overlay is pinned with a binding (CMP-052)."
+    },
+    "jurisdiction_code": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Optional jurisdiction cell for multi-jurisdiction tenants (e.g. IN-OD)."
+    },
+    "environment_label": {
+      "type": "string",
+      "const": "SAMPLE_LAB",
+      "description": "SAMPLE_LAB DUMMY overlays are refused outside SAMPLE_LAB."
+    },
+    "jurisdiction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pilot_state_or_jurisdiction": { "type": "string", "minLength": 2 },
+        "issuing_authority_designation": { "type": "string" }
+      }
+    },
+    "legal_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "act_or_rules_citation": { "type": "string", "minLength": 1 },
+        "policy_source_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "summary": { "type": "string", "minLength": 1 },
+        "applicant_scope": { "type": "string" },
+        "rule_pack_ref": { "type": "string", "minLength": 1 },
+        "category_lists": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mandatory_documents_min": { "type": "integer", "minimum": 0 },
+        "mandatory_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_code", "label"],
+            "properties": {
+              "document_code": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        },
+        "optional_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_code", "label"],
+            "properties": {
+              "document_code": { "type": "string" },
+              "label": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "fee": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "currency": { "type": "string", "const": "INR" },
+        "amount_minor_units": { "type": "integer", "minimum": 0 },
+        "fee_schedule_ref": { "type": "string" }
+      }
+    },
+    "service_time": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "processing_days_working": { "type": "integer", "minimum": 1 },
+        "clock_start_event": { "type": "string", "minLength": 1 },
+        "validity_period_days": { "type": ["integer", "string"] }
+      }
+    },
+    "credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "credential_template_id": { "type": "string", "minLength": 1 },
+        "digilocker_doc_type": { "type": "string" },
+        "digilocker_mode": {
+          "type": "string",
+          "enum": ["SIMULATED", "SANDBOX"],
+          "description": "REAL DigiLocker is out of scope for SAMPLE_LAB DUMMY overlays."
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "notification_pack_id": { "type": "string", "minLength": 1 },
+        "sms_dlt_pe_id": { "type": "string" }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "assignment_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "maker_checker": { "type": "string", "const": "required_before_publish" }
+      }
+    }
+  }
+}

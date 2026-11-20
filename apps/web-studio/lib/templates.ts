@@ -49,7 +49,7 @@ export function templateSummaries(): TemplateSummary[] {
 
 export const MATURITY_LABEL: Record<CertificateTemplate['maturity'], string> = {
   SAMPLE_LAB_PUBLISHED: 'Published · SAMPLE_LAB',
-  SAMPLE_LAB_STUB: 'Stub · policy input pending',
+  SAMPLE_LAB_STUB: 'Stub · SAMPLE_LAB DUMMY',
 };
 
 export const STATUS_TAG: Record<TemplateVersion['status'], string> = {

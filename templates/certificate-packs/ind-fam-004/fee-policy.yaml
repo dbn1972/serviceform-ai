@@ -1,6 +1,12 @@
-# IND-FAM-004 fee policy — FAIL-CLOSED
-fee_policy_id: ind-fam-004-fee-policy-pending
-status: POLICY_INPUT_REQUIRED
+# IND-FAM-004 fee policy — SAMPLE_LAB DUMMY (tenant-overridable)
+# Synthetic only · not statutory · not for production · CERTIFIED=false · G6=false
+fee_policy_id: ind-fam-004-fee-policy-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
 currency: INR
-amount: POLICY_INPUT_REQUIRED
-notes: Do not invent a fee schedule or assume ₹0 from Residence Certificate. Owner fee schedule required.
+amount_minor_units: 999
+amount_display: "SAMPLE_LAB DUMMY · ₹9.99"
+fee_schedule_ref: SAMPLE_LAB_DUMMY_FEE_SCHEDULE
+notes: >
+  SAMPLE_LAB DUMMY default from templates/certificate-packs/sample-lab-dummy/defaults.json.
+  Tenants override via owner-config / CMP-052 TSB overlay. Refuse outside SAMPLE_LAB.
+  Owner must replace before any non-lab use. Do not treat as a real fee schedule.

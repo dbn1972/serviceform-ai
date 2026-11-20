@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "serviceform://templates/certificate-packs/ind-soc-015/form.schema.json",
   "title": "Caste Certificate - Scheduled Tribe application",
-  "description": "Aligned to registry Recommended Core Fields. Not a statutory eligibility rule set. POLICY_INPUT_REQUIRED for fee/eligibility/evidence/SLA/jurisdiction.",
+  "description": "Aligned to registry Recommended Core Fields. SAMPLE_LAB DUMMY owner-config defaults fill fee/eligibility/evidence/SLA/jurisdiction slots (synthetic; tenant-overridable). Not statutory. CERTIFIED=false · G6=false.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -111,7 +111,7 @@
       "maxLength": 200,
       "semanticElementId": "SF-SEM-CORE-COMMUNITY-CATEGORY",
       "x-ux4g": {
-        "hint": "Registry core field · free text until owner policy"
+        "hint": "Registry core field · free text · SAMPLE_LAB DUMMY until owner policy"
       }
     },
     "core_category_list_order_reference": {
@@ -120,7 +120,7 @@
       "maxLength": 200,
       "semanticElementId": "SF-SEM-CORE-CATEGORY-LIST-ORDER-REFERENCE",
       "x-ux4g": {
-        "hint": "Registry core field · free text until owner policy"
+        "hint": "Registry core field · free text · SAMPLE_LAB DUMMY until owner policy"
       }
     }
   }

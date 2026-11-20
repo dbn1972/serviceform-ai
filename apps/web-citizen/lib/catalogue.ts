@@ -31,7 +31,8 @@ export function policyText(value: string): string {
 
 /**
  * A service is offered when this portal's placement binds it, a version is PUBLISHED, and
- * statutory policy facts are no longer POLICY_INPUT_REQUIRED (M11: keep Income gated).
+ * policy facts are no longer POLICY_INPUT_REQUIRED. SAMPLE_LAB DUMMY clears pending flags but
+ * stubs stay unoffered until a PUBLISHED TSB is placed (Residence only today).
  */
 export function isOffered(template: CertificateTemplate): boolean {
   const offered = portalPlacement().offerings.some((o) => o.catalogue_id === template.catalogue_id);

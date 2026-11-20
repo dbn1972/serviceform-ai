@@ -1,11 +1,15 @@
 # IND-HLT-004 — Medical Fitness Certificate
 
-SAMPLE_LAB configurable authoring pack. **POLICY_INPUT_REQUIRED** — do not invent statute.
+SAMPLE_LAB configurable authoring pack with **SAMPLE_LAB DUMMY** defaults (synthetic · not statute).
 
 - Authoring path: `templates/certificate-packs/ind-hlt-004/`
-- Owner blockers: `POLICY_INPUT_REQUIRED.md`
+- Dummy inventory: `SAMPLE_LAB_DUMMY.md`
+- Shared defaults: `../sample-lab-dummy/defaults.json`
+- Per-id overlay: `owner-config.json`
+- Tenant / TSB overlay schema: `../sample-lab-dummy/tenant-overlay.schema.json`
 - Owner JSON Schema: `../owner-config.schema.json`
-- Catalogue form preview: `@serviceform/service-templates` stub for this id
 
-Citizen apply gated until owner config is resolved and a PUBLISHED TSB is placed.
+Merge order: shared defaults → per-id owner-config → CMP-052 tenant overlay.
+Fail-closed outside SAMPLE_LAB. Owner must replace before any non-lab use.
+Citizen apply still requires a PUBLISHED TSB placement (Residence only today).
 CERTIFIED=false · G6=false · self_certified=false.

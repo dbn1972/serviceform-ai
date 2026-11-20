@@ -1,0 +1,22 @@
+{
+  "catalogue_id": "IND-LRP-017",
+  "defaults_ref": "../sample-lab-dummy/defaults.json",
+  "policy_kind": "SAMPLE_LAB_DUMMY",
+  "not_for_production": true,
+  "not_statutory": true,
+  "certified": false,
+  "g6": false,
+  "self_certified": false,
+  "replace_before_non_lab_use": true,
+  "tenant_overlay_schema_ref": "../sample-lab-dummy/tenant-overlay.schema.json",
+  "credential": {
+    "credential_template_id": "SAMPLE_LAB_DUMMY_IND_LRP_017_V1",
+    "digilocker_doc_type": "SAMPLE_LAB_DUMMY_IND_LRP_017",
+    "digilocker_mode": "SIMULATED"
+  },
+  "notifications": {
+    "notification_pack_id": "ind-lrp-017-notifications-sample-lab-dummy",
+    "sms_dlt_pe_id": "SAMPLE_LAB_DLT_PE_ID"
+  },
+  "_comment": "Per-id SAMPLE_LAB DUMMY overlay on shared defaults. Tenants override via CMP-052 tenant-overlay. Not statute."
+}

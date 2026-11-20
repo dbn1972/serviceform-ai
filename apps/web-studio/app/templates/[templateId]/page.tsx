@@ -31,11 +31,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const POLICY_PENDING = 'POLICY_INPUT_REQUIRED';
 
 function PolicyValue({ value }: { value: string }) {
-  return value === POLICY_PENDING ? (
-    <span className="ux4g-tag-outline-warning">Policy input required</span>
-  ) : (
-    <>{value}</>
-  );
+  if (value === POLICY_PENDING) {
+    return <span className="ux4g-tag-outline-warning">Policy input required</span>;
+  }
+  if (value.includes('SAMPLE_LAB DUMMY')) {
+    return <span className="ux4g-tag-outline-warning">{value}</span>;
+  }
+  return <>{value}</>;
 }
 
 function stepOf(version: TemplateVersion, pointer: string): string {
@@ -100,7 +102,9 @@ export default async function TemplateDetailPage({ params, searchParams }: Props
       {template.maturity === 'SAMPLE_LAB_STUB' ? (
         <Alert variant="warning" title="SAMPLE_LAB stub — not offered to citizens">
           Form fields follow the registry core fields. Fee, service time, eligibility and evidence
-          are POLICY_INPUT_REQUIRED from the statutory owner; nothing here is invented policy.
+          use SAMPLE_LAB DUMMY defaults (synthetic, tenant-overridable via CMP-052) — not statute.
+          Owner must replace before any non-lab use. Apply still requires a PUBLISHED TSB
+          placement. CERTIFIED=false · G6=false.
         </Alert>
       ) : (
         <Alert variant="info" title="Published to the SAMPLE_LAB citizen portal">

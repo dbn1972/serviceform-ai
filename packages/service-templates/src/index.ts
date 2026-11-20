@@ -16,8 +16,24 @@ export const TEMPLATE_REGISTRY_SOURCE = {
 /**
  * Catalogue order: published Residence, hand-crafted stubs (Income/Domicile/Birth),
  * then generated Certificate stubs (registry filter: Service / Output Type == Certificate).
- * Stubs carry authoring_path to configurable SAMPLE_LAB packs (POLICY_INPUT_REQUIRED).
+ * Stubs carry authoring_path to configurable SAMPLE_LAB packs (SAMPLE_LAB DUMMY defaults).
  */
+
+export {
+  SAMPLE_LAB_DUMMY_KIND,
+  SAMPLE_LAB_DUMMY_POLICY_FACTS,
+  SAMPLE_LAB_ENVIRONMENT,
+  assertSampleLabDummyAllowed,
+  deepMerge,
+  loadPerIdOwnerConfig,
+  loadSampleLabDummyDefaults,
+  resolveSampleLabOwnerConfig,
+  sampleLabDummyAllowed,
+  usesSampleLabDummyPolicy,
+  type PerIdOwnerConfigOverlay,
+  type SampleLabDummyDefaults,
+  type SampleLabTenantOverlay,
+} from './sample-lab-dummy';
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,
   INCOME_CERTIFICATE,
@@ -47,7 +63,8 @@ const PENDING = 'POLICY_INPUT_REQUIRED';
 
 /**
  * True when fee/service_time/eligibility/evidence still require statutory owner input.
- * M11: stubs with pending policy must not be offered even if a form version were published.
+ * SAMPLE_LAB DUMMY defaults clear this flag (synthetic, tenant-overridable). Apply still
+ * requires a PUBLISHED version pinned by placement; production refuses SAMPLE_LAB DUMMY.
  */
 export function policyInputsPending(template: CertificateTemplate): boolean {
   const p = template.policy;

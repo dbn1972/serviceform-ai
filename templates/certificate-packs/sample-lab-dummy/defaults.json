@@ -1,0 +1,58 @@
+{
+  "_comment": "SAMPLE_LAB DUMMY shared owner-config defaults. Synthetic only — not statute, not for production, not CERTIFIED, G6=false. Tenants override via CMP-052 / TenantServiceBinding overlays (see tenant-overlay.schema.json).",
+  "policy_kind": "SAMPLE_LAB_DUMMY",
+  "not_for_production": true,
+  "not_statutory": true,
+  "certified": false,
+  "g6": false,
+  "self_certified": false,
+  "digilocker_mode": "SIMULATED",
+  "replace_before_non_lab_use": true,
+  "jurisdiction": {
+    "pilot_state_or_jurisdiction": "SAMPLE_LAB_PILOT_CELL",
+    "issuing_authority_designation": "SAMPLE_LAB_DUMMY_ISSUING_AUTHORITY"
+  },
+  "legal_basis": {
+    "act_or_rules_citation": "SAMPLE_LAB DUMMY — not a statutory Act/Rules citation; owner must replace before any non-lab use",
+    "policy_source_url": "https://example.invalid/sample-lab-dummy-not-a-portal"
+  },
+  "eligibility": {
+    "summary": "SAMPLE_LAB DUMMY — synthetic eligibility claim only; not government policy",
+    "applicant_scope": "SAMPLE_LAB_DUMMY_APPLICANT_SCOPE",
+    "rule_pack_ref": "SAMPLE_LAB_DUMMY_RULES",
+    "category_lists": []
+  },
+  "evidence": {
+    "mandatory_documents_min": 1,
+    "mandatory_documents": [
+      {
+        "document_code": "SAMPLE_LAB_DUMMY_EVIDENCE_ANY",
+        "label": "SAMPLE_LAB DUMMY evidence (synthetic placeholder)"
+      }
+    ],
+    "optional_documents": []
+  },
+  "fee": {
+    "currency": "INR",
+    "amount_minor_units": 999,
+    "fee_schedule_ref": "SAMPLE_LAB_DUMMY_FEE_SCHEDULE"
+  },
+  "service_time": {
+    "processing_days_working": 15,
+    "clock_start_event": "APPLICATION_SUBMITTED",
+    "validity_period_days": "SAMPLE_LAB_DUMMY_UNSPECIFIED"
+  },
+  "credential": {
+    "credential_template_id": "SAMPLE_LAB_DUMMY_CREDENTIAL",
+    "digilocker_doc_type": "SAMPLE_LAB_DUMMY_DOC_TYPE",
+    "digilocker_mode": "SIMULATED"
+  },
+  "notifications": {
+    "notification_pack_id": "SAMPLE_LAB_DUMMY_NOTIFICATIONS",
+    "sms_dlt_pe_id": "SAMPLE_LAB_DLT_PE_ID"
+  },
+  "access": {
+    "assignment_roles": ["SAMPLE_LAB_CASE_OFFICER"],
+    "maker_checker": "required_before_publish"
+  }
+}

@@ -1,11 +1,14 @@
 {
-  "generated_at_note": "SAMPLE_LAB factory output — POLICY_INPUT_REQUIRED; not CERTIFIED; G6=false",
+  "generated_at_note": "SAMPLE_LAB DUMMY factory output — synthetic defaults; tenant-overridable; not CERTIFIED; G6=false",
   "catalogue_version": "1.0",
   "source": "docs/catalogue/India_Gov_Normalized_Service_Registry.json",
   "filter": {
     "field": "Service / Output Type",
     "equals": "Certificate"
   },
+  "policy_kind": "SAMPLE_LAB_DUMMY",
+  "defaults_ref": "templates/certificate-packs/sample-lab-dummy/defaults.json",
+  "tenant_overlay_schema_ref": "templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json",
   "skipped_handcrafted": [
     "IND-SOC-002",
     "IND-SOC-031"
@@ -16,1112 +19,1271 @@
       "authoring_path": "templates/certificate-packs/ind-civ-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f4fbc2c87236f045"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "29b27ad59a827352"
     },
     {
       "catalogue_id": "IND-CIV-004",
       "authoring_path": "templates/certificate-packs/ind-civ-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0130f93dd9f35983"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4145c37110c23583"
     },
     {
       "catalogue_id": "IND-CIV-009",
       "authoring_path": "templates/certificate-packs/ind-civ-009/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "563184af7a2e1f65"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "460020a07305639b"
     },
     {
       "catalogue_id": "IND-CIV-021",
       "authoring_path": "templates/certificate-packs/ind-civ-021/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ba182771ccb0714d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1073c6d509b57904"
     },
     {
       "catalogue_id": "IND-CIV-022",
       "authoring_path": "templates/certificate-packs/ind-civ-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "be9fa763028ea6f0"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8f206868e99ec560"
     },
     {
       "catalogue_id": "IND-SOC-001",
       "authoring_path": "templates/certificate-packs/ind-soc-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ae235f07899ac9aa"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5decbacf12e03717"
     },
     {
       "catalogue_id": "IND-SOC-002",
       "authoring_path": "templates/residence-certificate/",
       "generator": "handcrafted",
-      "status": "PUBLISHED"
+      "status": "PUBLISHED",
+      "policy_kind": "SAMPLE_LAB_ODISHA_PUBLIC_PORTAL"
     },
     {
       "catalogue_id": "IND-SOC-003",
       "authoring_path": "templates/certificate-packs/ind-soc-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "449f0a9ff0d27e3e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0bf041634f65f349"
     },
     {
       "catalogue_id": "IND-SOC-004",
       "authoring_path": "templates/certificate-packs/ind-soc-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f8210734101d928e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "581a6f9786b5381a"
     },
     {
       "catalogue_id": "IND-SOC-005",
       "authoring_path": "templates/certificate-packs/ind-soc-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "58d13f2d3a6f8992"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "f5d4c3c4f51f61bb"
     },
     {
       "catalogue_id": "IND-SOC-006",
       "authoring_path": "templates/certificate-packs/ind-soc-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0d0bbe32ddbfe7db"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ef330f64171611af"
     },
     {
       "catalogue_id": "IND-SOC-007",
       "authoring_path": "templates/certificate-packs/ind-soc-007/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "cb3bd110e09ae4f0"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "da465f8134ea6063"
     },
     {
       "catalogue_id": "IND-SOC-008",
       "authoring_path": "templates/certificate-packs/ind-soc-008/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "dbfcf93694381e41"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "74d83e63cdb0aa6b"
     },
     {
       "catalogue_id": "IND-SOC-009",
       "authoring_path": "templates/certificate-packs/ind-soc-009/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "cbd883ce8f5b5997"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "635e1c971cff11b5"
     },
     {
       "catalogue_id": "IND-SOC-010",
       "authoring_path": "templates/certificate-packs/ind-soc-010/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b92bcfb9fade3c22"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d09a3b16cc658e00"
     },
     {
       "catalogue_id": "IND-SOC-011",
       "authoring_path": "templates/certificate-packs/ind-soc-011/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "e03d9b54f19f6a5d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a921d6d086688fb3"
     },
     {
       "catalogue_id": "IND-SOC-012",
       "authoring_path": "templates/certificate-packs/ind-soc-012/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "aecaaa5593a2bf27"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "dcf4dc84b14e6f27"
     },
     {
       "catalogue_id": "IND-SOC-013",
       "authoring_path": "templates/certificate-packs/ind-soc-013/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "a3199f45993cf17e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "6eaaa356db0d53b7"
     },
     {
       "catalogue_id": "IND-SOC-014",
       "authoring_path": "templates/certificate-packs/ind-soc-014/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d73388348a5210e6"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "27cc1af472284d3a"
     },
     {
       "catalogue_id": "IND-SOC-015",
       "authoring_path": "templates/certificate-packs/ind-soc-015/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "36038960357b6ed7"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d0ff5f4ec1b22ebf"
     },
     {
       "catalogue_id": "IND-SOC-016",
       "authoring_path": "templates/certificate-packs/ind-soc-016/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "6955c084486df66c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5a37c4cef6634c80"
     },
     {
       "catalogue_id": "IND-SOC-017",
       "authoring_path": "templates/certificate-packs/ind-soc-017/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "9e915310b4d55584"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "b9ce04b2d7fd4d9e"
     },
     {
       "catalogue_id": "IND-SOC-018",
       "authoring_path": "templates/certificate-packs/ind-soc-018/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1b11bad28380f62c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1dbdd9714a4bfd3f"
     },
     {
       "catalogue_id": "IND-SOC-019",
       "authoring_path": "templates/certificate-packs/ind-soc-019/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "84ee0b490cf7f0c0"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "781ffad9158ea1c8"
     },
     {
       "catalogue_id": "IND-SOC-020",
       "authoring_path": "templates/certificate-packs/ind-soc-020/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "20aa72f66963cb7a"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "7ec1059512c262cb"
     },
     {
       "catalogue_id": "IND-SOC-021",
       "authoring_path": "templates/certificate-packs/ind-soc-021/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ae2f68ced7dcce0c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d18226a19de0862e"
     },
     {
       "catalogue_id": "IND-SOC-022",
       "authoring_path": "templates/certificate-packs/ind-soc-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "a29f0b459aa677a8"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "dd96839aa0a9aed1"
     },
     {
       "catalogue_id": "IND-SOC-023",
       "authoring_path": "templates/certificate-packs/ind-soc-023/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "3a480f75ca6c81c7"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "f5c68fb569dc25ef"
     },
     {
       "catalogue_id": "IND-SOC-024",
       "authoring_path": "templates/certificate-packs/ind-soc-024/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "8e470a4209bf2d1e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a81e203c6ff88f7f"
     },
     {
       "catalogue_id": "IND-SOC-025",
       "authoring_path": "templates/certificate-packs/ind-soc-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "985ec66cac12a5d7"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e62a643f1f673ac3"
     },
     {
       "catalogue_id": "IND-SOC-026",
       "authoring_path": "templates/certificate-packs/ind-soc-026/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c71fed00af0b9235"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "96fbfd82243b0121"
     },
     {
       "catalogue_id": "IND-SOC-027",
       "authoring_path": "templates/certificate-packs/ind-soc-027/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1301894a39ade900"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d5a6ff429e64fc1a"
     },
     {
       "catalogue_id": "IND-SOC-028",
       "authoring_path": "templates/certificate-packs/ind-soc-028/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f5b8e3b74fb09a40"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "be8efb77e7601d53"
     },
     {
       "catalogue_id": "IND-SOC-029",
       "authoring_path": "templates/certificate-packs/ind-soc-029/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "602776d301eeef53"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4bda17964ac8a1d7"
     },
     {
       "catalogue_id": "IND-SOC-030",
       "authoring_path": "templates/certificate-packs/ind-soc-030/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d6c238aa0af1370a"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9822a6898848a028"
     },
     {
       "catalogue_id": "IND-SOC-031",
       "authoring_path": "templates/income-certificate/",
       "generator": "handcrafted",
-      "status": "SAMPLE_LAB_STUB"
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY"
     },
     {
       "catalogue_id": "IND-SOC-032",
       "authoring_path": "templates/certificate-packs/ind-soc-032/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "9aa96da354b839fd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c6fb2048d97b080a"
     },
     {
       "catalogue_id": "IND-SOC-033",
       "authoring_path": "templates/certificate-packs/ind-soc-033/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c4f4fb73049c8139"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "106a93a20391f283"
     },
     {
       "catalogue_id": "IND-SOC-034",
       "authoring_path": "templates/certificate-packs/ind-soc-034/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "7db779e5b7a998aa"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "95fbf6e5666b6435"
     },
     {
       "catalogue_id": "IND-SOC-035",
       "authoring_path": "templates/certificate-packs/ind-soc-035/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "36965a2e5d14ac60"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9fc2d6a9aa36eaf7"
     },
     {
       "catalogue_id": "IND-FAM-001",
       "authoring_path": "templates/certificate-packs/ind-fam-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c54589e5b78ea4d7"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5a461bed3554d88d"
     },
     {
       "catalogue_id": "IND-FAM-002",
       "authoring_path": "templates/certificate-packs/ind-fam-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "18fefc1c80537561"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c5f7f23ac2330b0f"
     },
     {
       "catalogue_id": "IND-FAM-003",
       "authoring_path": "templates/certificate-packs/ind-fam-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ddc83d0bcab98662"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "3bcead950b36a4ad"
     },
     {
       "catalogue_id": "IND-FAM-004",
       "authoring_path": "templates/certificate-packs/ind-fam-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "40c1231082ad427d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ea5f75e33ac43381"
     },
     {
       "catalogue_id": "IND-FAM-005",
       "authoring_path": "templates/certificate-packs/ind-fam-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "66643cca0c2705a4"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "b479854f5d835c1d"
     },
     {
       "catalogue_id": "IND-FAM-006",
       "authoring_path": "templates/certificate-packs/ind-fam-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d11793e08600f379"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ac405b995cbceccd"
     },
     {
       "catalogue_id": "IND-FAM-007",
       "authoring_path": "templates/certificate-packs/ind-fam-007/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "679e55a185a28c03"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9317542fecaed006"
     },
     {
       "catalogue_id": "IND-FAM-008",
       "authoring_path": "templates/certificate-packs/ind-fam-008/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b7706fd85d762fea"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "acd2c604f26325e2"
     },
     {
       "catalogue_id": "IND-FAM-009",
       "authoring_path": "templates/certificate-packs/ind-fam-009/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ca992805c55500fd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2b87bad600241b3a"
     },
     {
       "catalogue_id": "IND-FAM-010",
       "authoring_path": "templates/certificate-packs/ind-fam-010/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b9d5b99566d22a7a"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4dde9da7bd446b11"
     },
     {
       "catalogue_id": "IND-FAM-011",
       "authoring_path": "templates/certificate-packs/ind-fam-011/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f2f047bd1d6ccd9d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "bf20bdd7026faad0"
     },
     {
       "catalogue_id": "IND-FAM-012",
       "authoring_path": "templates/certificate-packs/ind-fam-012/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "04b467b25bafb00e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e0dbf40038eda8f8"
     },
     {
       "catalogue_id": "IND-FAM-013",
       "authoring_path": "templates/certificate-packs/ind-fam-013/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "3d98135d2f35e587"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ce425ba7b1ba5f2a"
     },
     {
       "catalogue_id": "IND-FAM-014",
       "authoring_path": "templates/certificate-packs/ind-fam-014/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "76e54a58b4804b01"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2d3ff22893c2b237"
     },
     {
       "catalogue_id": "IND-FAM-015",
       "authoring_path": "templates/certificate-packs/ind-fam-015/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f749ab5cc311d99e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0dec199f0a85f864"
     },
     {
       "catalogue_id": "IND-FAM-016",
       "authoring_path": "templates/certificate-packs/ind-fam-016/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "03ba3b4c5114da60"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8443702f6cdfdad7"
     },
     {
       "catalogue_id": "IND-FAM-017",
       "authoring_path": "templates/certificate-packs/ind-fam-017/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "70b6bd4426526780"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "81e77e80210e7051"
     },
     {
       "catalogue_id": "IND-FAM-018",
       "authoring_path": "templates/certificate-packs/ind-fam-018/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1e9119b317f8f7df"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "be20e878e5d933bc"
     },
     {
       "catalogue_id": "IND-FAM-019",
       "authoring_path": "templates/certificate-packs/ind-fam-019/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1933800fe77dd4be"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "7fafd9f080fe75f3"
     },
     {
       "catalogue_id": "IND-FAM-020",
       "authoring_path": "templates/certificate-packs/ind-fam-020/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "88ef13bdc4ef4a25"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9d6c091cd3258d0b"
     },
     {
       "catalogue_id": "IND-FAM-024",
       "authoring_path": "templates/certificate-packs/ind-fam-024/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "03b677d09d7db031"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "30982f08963a9de3"
     },
     {
       "catalogue_id": "IND-FAM-025",
       "authoring_path": "templates/certificate-packs/ind-fam-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "8dc57756ba56fdf5"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a5673bfa6949eb39"
     },
     {
       "catalogue_id": "IND-LRP-017",
       "authoring_path": "templates/certificate-packs/ind-lrp-017/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "32385d4b75b148e5"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "93cdb69b59153237"
     },
     {
       "catalogue_id": "IND-LRP-018",
       "authoring_path": "templates/certificate-packs/ind-lrp-018/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ded78d363be95933"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cc721de649c08814"
     },
     {
       "catalogue_id": "IND-LRP-019",
       "authoring_path": "templates/certificate-packs/ind-lrp-019/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "52c4f775ab00eebb"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9ae0d8d16bdba3fc"
     },
     {
       "catalogue_id": "IND-LRP-020",
       "authoring_path": "templates/certificate-packs/ind-lrp-020/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "acc83083bb0ad84a"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "6fdfe37d50628ab1"
     },
     {
       "catalogue_id": "IND-LRP-021",
       "authoring_path": "templates/certificate-packs/ind-lrp-021/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "fa523c231448ade7"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2b977295ac930ebd"
     },
     {
       "catalogue_id": "IND-LRP-022",
       "authoring_path": "templates/certificate-packs/ind-lrp-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "30c8e287b4a3f33c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "35ad9499be5cdd46"
     },
     {
       "catalogue_id": "IND-LRP-023",
       "authoring_path": "templates/certificate-packs/ind-lrp-023/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "30589db02c71f865"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "dfffbd6807c0eab2"
     },
     {
       "catalogue_id": "IND-LRP-024",
       "authoring_path": "templates/certificate-packs/ind-lrp-024/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "25ba27d7d7c99089"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a03d96e6bae0fa9a"
     },
     {
       "catalogue_id": "IND-LRP-025",
       "authoring_path": "templates/certificate-packs/ind-lrp-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0ff1809bf3c098bd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c842e001e884b3d3"
     },
     {
       "catalogue_id": "IND-LRP-026",
       "authoring_path": "templates/certificate-packs/ind-lrp-026/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "19e2aa055c5deef2"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "640b40cfbeeebbdf"
     },
     {
       "catalogue_id": "IND-LRP-032",
       "authoring_path": "templates/certificate-packs/ind-lrp-032/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0112973b9c30b87b"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "56291b8f2167e912"
     },
     {
       "catalogue_id": "IND-LRP-033",
       "authoring_path": "templates/certificate-packs/ind-lrp-033/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "e04c75721351d01e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cb74aacd20058ead"
     },
     {
       "catalogue_id": "IND-LRP-034",
       "authoring_path": "templates/certificate-packs/ind-lrp-034/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "3b420f63ff459978"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c8377787b30641cc"
     },
     {
       "catalogue_id": "IND-LRP-035",
       "authoring_path": "templates/certificate-packs/ind-lrp-035/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "a234e1c7b297f29f"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1d7bda503878f6cf"
     },
     {
       "catalogue_id": "IND-LRP-036",
       "authoring_path": "templates/certificate-packs/ind-lrp-036/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "fa3fe0af7bb09630"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0c86d1c28c1076ee"
     },
     {
       "catalogue_id": "IND-LRP-037",
       "authoring_path": "templates/certificate-packs/ind-lrp-037/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "bcc5a0224a4fefc9"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "450a4bec0df24f82"
     },
     {
       "catalogue_id": "IND-LRP-042",
       "authoring_path": "templates/certificate-packs/ind-lrp-042/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "e05080881f277b64"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "fc69c42f64ec9d60"
     },
     {
       "catalogue_id": "IND-LRP-044",
       "authoring_path": "templates/certificate-packs/ind-lrp-044/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c6f0804fb56b2d1c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5e300019a8c06d77"
     },
     {
       "catalogue_id": "IND-LRP-045",
       "authoring_path": "templates/certificate-packs/ind-lrp-045/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ab01a9d95e6caa92"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c6000b16d304a54a"
     },
     {
       "catalogue_id": "IND-AGR-002",
       "authoring_path": "templates/certificate-packs/ind-agr-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b06a57868514e23b"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "29a13e9284bd6db5"
     },
     {
       "catalogue_id": "IND-AGR-003",
       "authoring_path": "templates/certificate-packs/ind-agr-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0721231ed2004713"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "eb7613d279027f41"
     },
     {
       "catalogue_id": "IND-AGR-004",
       "authoring_path": "templates/certificate-packs/ind-agr-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "69c150f0cf497432"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cbef0236bef95e5b"
     },
     {
       "catalogue_id": "IND-AGR-005",
       "authoring_path": "templates/certificate-packs/ind-agr-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "7992c56da84ed925"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "316ec0eb361a0f2b"
     },
     {
       "catalogue_id": "IND-AGR-006",
       "authoring_path": "templates/certificate-packs/ind-agr-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "93493dd78f9a5f85"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ce4d5dc81bbde8a8"
     },
     {
       "catalogue_id": "IND-AGR-020",
       "authoring_path": "templates/certificate-packs/ind-agr-020/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c360470acddafba9"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a91f3735a96b6229"
     },
     {
       "catalogue_id": "IND-AGR-028",
       "authoring_path": "templates/certificate-packs/ind-agr-028/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "6841da38c9bfbfb2"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "415df4bb823512c7"
     },
     {
       "catalogue_id": "IND-AGR-029",
       "authoring_path": "templates/certificate-packs/ind-agr-029/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "196a789e9222a7cf"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1da6189cdda5af8b"
     },
     {
       "catalogue_id": "IND-AGR-031",
       "authoring_path": "templates/certificate-packs/ind-agr-031/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ba6a3a1198b5b660"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a7f0c34bb94519f7"
     },
     {
       "catalogue_id": "IND-FRC-016",
       "authoring_path": "templates/certificate-packs/ind-frc-016/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "fd6b231ffc980c1a"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "58faf16e5fabc1e8"
     },
     {
       "catalogue_id": "IND-SWB-007",
       "authoring_path": "templates/certificate-packs/ind-swb-007/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "7d3ffc5e20e7a776"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "f6290c849ad3cc8a"
     },
     {
       "catalogue_id": "IND-SWB-026",
       "authoring_path": "templates/certificate-packs/ind-swb-026/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "dd3be820cac977f6"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "fee13b780a3bc602"
     },
     {
       "catalogue_id": "IND-EDU-002",
       "authoring_path": "templates/certificate-packs/ind-edu-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "7de839d79a5f08c1"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "72dcc7bb69d46c2a"
     },
     {
       "catalogue_id": "IND-EDU-003",
       "authoring_path": "templates/certificate-packs/ind-edu-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "65f341129da506b1"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "50f46befb68aaf4a"
     },
     {
       "catalogue_id": "IND-EDU-004",
       "authoring_path": "templates/certificate-packs/ind-edu-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "779e5b07360a5695"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "bf53c59db875c22b"
     },
     {
       "catalogue_id": "IND-EDU-005",
       "authoring_path": "templates/certificate-packs/ind-edu-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "116a8967bd0972bd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4e276c2ec67f3df3"
     },
     {
       "catalogue_id": "IND-EDU-006",
       "authoring_path": "templates/certificate-packs/ind-edu-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "724ac461afb00d9f"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4be8ff662844ada4"
     },
     {
       "catalogue_id": "IND-EDU-007",
       "authoring_path": "templates/certificate-packs/ind-edu-007/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "4a468b6f20a40219"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1e43b7f1caee7e20"
     },
     {
       "catalogue_id": "IND-EDU-010",
       "authoring_path": "templates/certificate-packs/ind-edu-010/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "bc1c2e72e1015619"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "98c506f92ed82fec"
     },
     {
       "catalogue_id": "IND-EDU-011",
       "authoring_path": "templates/certificate-packs/ind-edu-011/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f61191a6146d87fd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "86eca1c40b7fe201"
     },
     {
       "catalogue_id": "IND-EDU-012",
       "authoring_path": "templates/certificate-packs/ind-edu-012/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "2eb50e752ead8c50"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "41b7ac35fba0ced1"
     },
     {
       "catalogue_id": "IND-EDU-013",
       "authoring_path": "templates/certificate-packs/ind-edu-013/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "34c267eeca9c6b37"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "7437641ad73f9d83"
     },
     {
       "catalogue_id": "IND-EDU-015",
       "authoring_path": "templates/certificate-packs/ind-edu-015/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "6c567ae1357b453c"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d5426f6b908ff08c"
     },
     {
       "catalogue_id": "IND-EDU-016",
       "authoring_path": "templates/certificate-packs/ind-edu-016/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "8150e2e0c979ee8d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cc681ff01a31c46f"
     },
     {
       "catalogue_id": "IND-EDU-017",
       "authoring_path": "templates/certificate-packs/ind-edu-017/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "494339f2d22fe920"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "843af67011da2119"
     },
     {
       "catalogue_id": "IND-EDU-018",
       "authoring_path": "templates/certificate-packs/ind-edu-018/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "638a03a0cac86054"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e3d861e61226b036"
     },
     {
       "catalogue_id": "IND-EDU-019",
       "authoring_path": "templates/certificate-packs/ind-edu-019/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "a1583381f4927541"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9e115c7bfccfa0de"
     },
     {
       "catalogue_id": "IND-EDU-020",
       "authoring_path": "templates/certificate-packs/ind-edu-020/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b7f03ff4a5332523"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "3f4898385eaf649d"
     },
     {
       "catalogue_id": "IND-EDU-021",
       "authoring_path": "templates/certificate-packs/ind-edu-021/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "fd71286a48ae717e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "68ae860b7de93474"
     },
     {
       "catalogue_id": "IND-EDU-025",
       "authoring_path": "templates/certificate-packs/ind-edu-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d58665efb7f5bf79"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "aa570bbdc1fc12f6"
     },
     {
       "catalogue_id": "IND-EDU-029",
       "authoring_path": "templates/certificate-packs/ind-edu-029/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1251a8f0222b0948"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1f748e61f55e0cd8"
     },
     {
       "catalogue_id": "IND-LAB-003",
       "authoring_path": "templates/certificate-packs/ind-lab-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "12f5dacc8abca999"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "386ed33004241f23"
     },
     {
       "catalogue_id": "IND-LAB-005",
       "authoring_path": "templates/certificate-packs/ind-lab-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "472c9999cb48b784"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5c85d59893dcc3ee"
     },
     {
       "catalogue_id": "IND-LAB-006",
       "authoring_path": "templates/certificate-packs/ind-lab-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "565797cbf27db4dc"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2dee86a229f54562"
     },
     {
       "catalogue_id": "IND-LAB-021",
       "authoring_path": "templates/certificate-packs/ind-lab-021/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c722bc488de75e31"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d7ca67f961a20570"
     },
     {
       "catalogue_id": "IND-LAB-022",
       "authoring_path": "templates/certificate-packs/ind-lab-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "e5ad8f27db0df927"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "37b1a4505240ce9b"
     },
     {
       "catalogue_id": "IND-HLT-001",
       "authoring_path": "templates/certificate-packs/ind-hlt-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "443b0a6c664d8fb5"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c3cb7183ffdb3a3b"
     },
     {
       "catalogue_id": "IND-HLT-002",
       "authoring_path": "templates/certificate-packs/ind-hlt-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "83d14d01299b994e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1a73fcb21240acf6"
     },
     {
       "catalogue_id": "IND-HLT-004",
       "authoring_path": "templates/certificate-packs/ind-hlt-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "979d6c91d15f3d49"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "28f2f952b2f75a9b"
     },
     {
       "catalogue_id": "IND-HLT-005",
       "authoring_path": "templates/certificate-packs/ind-hlt-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "9ca1685c98f01979"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e3d299a833813efe"
     },
     {
       "catalogue_id": "IND-HLT-006",
       "authoring_path": "templates/certificate-packs/ind-hlt-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "b339b841f80d8596"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "238c36d006aeb838"
     },
     {
       "catalogue_id": "IND-HLT-008",
       "authoring_path": "templates/certificate-packs/ind-hlt-008/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "7fb562f28b0f7263"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "050ada3617107ef0"
     },
     {
       "catalogue_id": "IND-HLT-011",
       "authoring_path": "templates/certificate-packs/ind-hlt-011/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "4fb9cbbd0cf5a9c0"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "720c3dd9c1fbaa3b"
     },
     {
       "catalogue_id": "IND-HLT-012",
       "authoring_path": "templates/certificate-packs/ind-hlt-012/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "418b0e99af22b21b"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1b6984182bfd208d"
     },
     {
       "catalogue_id": "IND-HLT-013",
       "authoring_path": "templates/certificate-packs/ind-hlt-013/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f4f527dda34ff437"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2b963c3f8e18fb26"
     },
     {
       "catalogue_id": "IND-HLT-017",
       "authoring_path": "templates/certificate-packs/ind-hlt-017/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "fc05aadf7c73c405"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2d6acc40f307ab32"
     },
     {
       "catalogue_id": "IND-HLT-024",
       "authoring_path": "templates/certificate-packs/ind-hlt-024/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "135de43922940127"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8858da60790f1d0f"
     },
     {
       "catalogue_id": "IND-HLT-025",
       "authoring_path": "templates/certificate-packs/ind-hlt-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "0883f3cc51b92cf2"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "368e2ae585ce94c7"
     },
     {
       "catalogue_id": "IND-TRN-015",
       "authoring_path": "templates/certificate-packs/ind-trn-015/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "2fcdc49a6453a44d"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "51cbc3605458b2bc"
     },
     {
       "catalogue_id": "IND-TRN-022",
       "authoring_path": "templates/certificate-packs/ind-trn-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "9839db7abeb455f2"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "3522ceb1f8650f93"
     },
     {
       "catalogue_id": "IND-TRN-024",
       "authoring_path": "templates/certificate-packs/ind-trn-024/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "93531b9484a05564"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d5539d9d7c18b829"
     },
     {
       "catalogue_id": "IND-TRN-025",
       "authoring_path": "templates/certificate-packs/ind-trn-025/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "90b07a34ebf52cf9"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d854f6b0f7a6f8c1"
     },
     {
       "catalogue_id": "IND-TRN-026",
       "authoring_path": "templates/certificate-packs/ind-trn-026/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "53c8effdd7deae40"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "f0d46c6b0bc40086"
     },
     {
       "catalogue_id": "IND-TRN-029",
       "authoring_path": "templates/certificate-packs/ind-trn-029/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "56f8f0984d40a6ac"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8732c96e8e45a08e"
     },
     {
       "catalogue_id": "IND-ULB-001",
       "authoring_path": "templates/certificate-packs/ind-ulb-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "2fc93ebf23520b40"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "6f2c3eb6abf9e02e"
     },
     {
       "catalogue_id": "IND-ULB-002",
       "authoring_path": "templates/certificate-packs/ind-ulb-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d785f2920a4510c9"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5183fd1b4d9b5678"
     },
     {
       "catalogue_id": "IND-ULB-008",
       "authoring_path": "templates/certificate-packs/ind-ulb-008/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "26dfbaf8aa155cd5"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "bbef2397b4ee4464"
     },
     {
       "catalogue_id": "IND-ULB-009",
       "authoring_path": "templates/certificate-packs/ind-ulb-009/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "a5d570c54ef932de"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a0c6f6a2c3d80e85"
     },
     {
       "catalogue_id": "IND-ULB-010",
       "authoring_path": "templates/certificate-packs/ind-ulb-010/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "d02caaf8eea5a3d4"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4b41d94f8776fcd7"
     },
     {
       "catalogue_id": "IND-ULB-014",
       "authoring_path": "templates/certificate-packs/ind-ulb-014/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "ce3f3d79f98fe4bd"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ef83692ebe232169"
     },
     {
       "catalogue_id": "IND-ULB-022",
       "authoring_path": "templates/certificate-packs/ind-ulb-022/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "54618b373d463ca6"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "358ebd0a8854c239"
     },
     {
       "catalogue_id": "IND-HOM-001",
       "authoring_path": "templates/certificate-packs/ind-hom-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "e00c76f372f85a9f"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "620eb4918d9f5b3a"
     },
     {
       "catalogue_id": "IND-HOM-003",
       "authoring_path": "templates/certificate-packs/ind-hom-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "31ca3dc0cb9bdd60"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a17420c0b60d9273"
     },
     {
       "catalogue_id": "IND-ENV-005",
       "authoring_path": "templates/certificate-packs/ind-env-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "f874755d8f3934c6"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8f5ad8364e1903c0"
     },
     {
       "catalogue_id": "IND-ENV-006",
       "authoring_path": "templates/certificate-packs/ind-env-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "657321e58eaca7d8"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cc60c354533e224e"
     },
     {
       "catalogue_id": "IND-UTL-006",
       "authoring_path": "templates/certificate-packs/ind-utl-006/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "21ee97e688543f2e"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "62b96c637daf05b7"
     },
     {
       "catalogue_id": "IND-UTL-015",
       "authoring_path": "templates/certificate-packs/ind-utl-015/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "c705cd5e3cfbc3e2"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "66ac1ccf102204eb"
     },
     {
       "catalogue_id": "IND-DRM-001",
       "authoring_path": "templates/certificate-packs/ind-drm-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "3110c0b474a5cd60"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "09f6827d6650e6b7"
     },
     {
       "catalogue_id": "IND-DRM-003",
       "authoring_path": "templates/certificate-packs/ind-drm-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "22f6f73d95db8392"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4d118366582fa2e9"
     },
     {
       "catalogue_id": "IND-DRM-004",
       "authoring_path": "templates/certificate-packs/ind-drm-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "04cf7448f7b02b81"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9a765e20b0d15d82"
     },
     {
       "catalogue_id": "IND-DRM-009",
       "authoring_path": "templates/certificate-packs/ind-drm-009/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "446353128c312995"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0d918db77ebe8747"
     },
     {
       "catalogue_id": "IND-SPC-002",
       "authoring_path": "templates/certificate-packs/ind-spc-002/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "693427f4dd6c0655"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d7bc9c1a148ccc9e"
     },
     {
       "catalogue_id": "IND-SPC-003",
       "authoring_path": "templates/certificate-packs/ind-spc-003/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "649f646d3430dccf"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "56ffcbcc4d9daadd"
     },
     {
       "catalogue_id": "IND-SPC-004",
       "authoring_path": "templates/certificate-packs/ind-spc-004/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "774372e7cc87d235"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "868022672cb97513"
     },
     {
       "catalogue_id": "IND-SPC-005",
       "authoring_path": "templates/certificate-packs/ind-spc-005/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "1971eb0a68bba0e9"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0f00e48b581432ac"
     },
     {
       "catalogue_id": "IND-SPC-007",
       "authoring_path": "templates/certificate-packs/ind-spc-007/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "98974b87ace8b547"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "7486c51c52eaadd2"
     },
     {
       "catalogue_id": "IND-SPC-010",
       "authoring_path": "templates/certificate-packs/ind-spc-010/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "content_fingerprint": "56789eb8331f888f"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "074f560ec91c8423"
     },
     {
       "catalogue_id": "IND-CIV-001",
       "authoring_path": "templates/certificate-packs/ind-civ-001/",
       "generator": "certificate-pack-factory",
       "status": "SAMPLE_LAB_STUB",
-      "note": "Registration exception outside Certificate filter",
-      "content_fingerprint": "72efe795bae05e2f"
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5780ab840f8ddbb6",
+      "note": "Registration exception outside Certificate filter"
     }
   ],
   "generated_pack_count": 157,
