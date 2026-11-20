@@ -62,11 +62,13 @@ test.describe('Studio template catalogue', () => {
     await expect(cards).toHaveCount(1);
     await expect(cards.first()).toContainText('IND-SOC-031');
     await page.getByLabel('Search templates').fill('');
-    await page.getByLabel('Category').selectOption('Civil Registration & Personal Identity');
+    // Use id — getByLabel('Category') also matches cards named “… Category”.
+    const category = page.locator('#template-category');
+    await category.selectOption('Civil Registration & Personal Identity');
     await expect(cards.first()).toContainText('IND-CIV-');
     const civilCount = await cards.count();
     expect(civilCount).toBeGreaterThanOrEqual(1);
-    await page.getByLabel('Category').selectOption('ALL');
+    await category.selectOption('ALL');
     await expectAccessible(page);
   });
 
