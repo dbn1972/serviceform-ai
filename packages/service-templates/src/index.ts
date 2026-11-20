@@ -1,5 +1,4 @@
 import { GENERATED_CERTIFICATE_STUBS } from './catalogue/generated-stubs';
-import { CERTIFICATE_OUTPUT_TYPE, HANDCRAFTED_CERTIFICATE_IDS } from './catalogue/generic-stub';
 import { RESIDENCE_CERTIFICATE } from './catalogue/residence';
 import { BIRTH_CERTIFICATE, DOMICILE_CERTIFICATE, INCOME_CERTIFICATE } from './catalogue/stubs';
 import type { CertificateTemplate, FormSchemaNode, TemplateVersion, UiLayout } from './types';
