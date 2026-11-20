@@ -82,12 +82,18 @@ const out = {
   SF_TEMPORAL_ADDRESS: temporalAddress,
   SF_TEMPORAL_NAMESPACE: 'default',
   SF_TEMPORAL_TASK_QUEUE: process.env.SF_TEMPORAL_TASK_QUEUE ?? 'sf-sample-lab-workflow',
-  // Lab-sized limits: all portal traffic reaches the host from the BFF address (one key per IP).
+  // Lab-sized limits: with SF_TRUSTED_PROXY_HOPS unset, all portal traffic shares the BFF address
+  // (SEC F-08). To key by client address, set SF_TRUSTED_PROXY_HOPS=127.0.0.1,::1 and ensure the
+  // BFF forwards X-Forwarded-For (ADR-0008). Default remains untrusted so forged XFF cannot rotate
+  // buckets on direct host calls.
   SF_IDENTITY_RATE_LIMIT_MAX: '3000',
   SF_FORMS_RATE_LIMIT_MAX: '3000',
   SF_PROFILE_RATE_LIMIT_MAX: '3000',
   SF_STUDIO_RATE_LIMIT_MAX: '3000',
   SF_GATEWAY_RATE_LIMIT_MAX: '20000',
+  ...(process.env.SF_TRUSTED_PROXY_HOPS
+    ? { SF_TRUSTED_PROXY_HOPS: process.env.SF_TRUSTED_PROXY_HOPS }
+    : {}),
   // A stable pepper keeps the same synthetic mobile mapped to the same citizen across restarts.
   SF_CMP004_PEPPER: prior.SF_CMP004_PEPPER ?? randomBytes(32).toString('hex'),
 };

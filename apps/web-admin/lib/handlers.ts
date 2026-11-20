@@ -49,6 +49,7 @@ export function handleCreateSession(request: Request, _surface: PortalSurface): 
       }
       const assertion = await platform('POST', '/v1/simulated/idp/assertions', {
         body: { subject: body['subject'] },
+        from: request,
       });
       if (assertion.status !== 200 || typeof assertion.body['assertion'] !== 'string') {
         const code =
@@ -63,6 +64,7 @@ export function handleCreateSession(request: Request, _surface: PortalSurface): 
       }
       const session = await platform('POST', '/v1/identity/officer/sessions', {
         body: { assertion: assertion.body['assertion'] },
+        from: request,
       });
       const token = session.body['session_token'];
       if (session.status !== 200 || typeof token !== 'string') {
@@ -104,7 +106,7 @@ export function handleReadSession(request: Request, _surfaces: PortalSurface[]):
       assertNoTenantIdentifyingHeaders(headersToRecord(request.headers));
       const token = cmp004Token(request);
       if (!token) return errorJson('SF-AUTH-001', 401, '00000000-0000-4000-8000-000000000050');
-      const me = await platform('GET', '/v1/identity/me', { token });
+      const me = await platform('GET', '/v1/identity/me', { token, from: request });
       if (me.status !== 200 || me.body['actor_type'] !== 'OFFICER') {
         return errorJson('SF-AUTH-001', 401, '00000000-0000-4000-8000-000000000050');
       }

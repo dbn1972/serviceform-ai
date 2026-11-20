@@ -34,6 +34,7 @@ export async function POST(request: Request) {
   const res = await platform('POST', '/v1/identity/citizen/otp/challenges', {
     body: { channel: `+91${mobile}` },
     idempotent: true,
+    from: request,
   });
   const challengeId = res.body['challenge_id'];
   if (res.status !== 200 || !isUuid(challengeId)) return relay(res);
@@ -48,7 +49,9 @@ export async function POST(request: Request) {
     simulation: res.body['simulation'],
   };
   if (simulationAllowed()) {
-    const inbox = await platform('GET', `/v1/simulated/otp-inbox/${challengeId}`);
+    const inbox = await platform('GET', `/v1/simulated/otp-inbox/${challengeId}`, {
+      from: request,
+    });
     const code = inbox.body['code'];
     if (inbox.status === 200 && typeof code === 'string') {
       out['simulated_sms'] = {

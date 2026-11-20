@@ -98,7 +98,8 @@ export async function buildApp(config: AppConfig, deps: AppDependencies): Promis
     genReqId: (req) => correlationIdFrom(req.headers[CORRELATION_HEADER]),
     logController: new LogController({ requestIdLogLabel: 'correlation_id' }),
     bodyLimit: config.BODY_LIMIT_BYTES,
-    trustProxy: false,
+    // ADR-0008 / SEC F-08: only the configured BFF hop(s); default false (no XFF trust).
+    trustProxy: config.trustProxy,
     return503OnClosing: true,
     ajv: { customOptions: { removeAdditional: false, coerceTypes: false, allErrors: false } },
   });

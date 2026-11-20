@@ -108,6 +108,7 @@ export async function POST(request: Request) {
   }
   const res = await platform('POST', '/v1/identity/citizen/otp/verify', {
     body: { challenge_id: challengeId, code },
+    from: request,
   });
   const token = res.body['session_token'];
   if (res.status === 401) {
@@ -120,7 +121,11 @@ export async function POST(request: Request) {
   if (registration) {
     const saved = await registerProfile(citizen, registration);
     if (!saved.ok) {
-      await platform('POST', '/v1/identity/citizen/sessions/revoke', { token, body: {} });
+      await platform('POST', '/v1/identity/citizen/sessions/revoke', {
+        token,
+        body: {},
+        from: request,
+      });
       return json(saved.status === 503 ? 503 : 502, {
         error_code: 'SF-SYS-004',
         message: `${REGISTRATION_FAILED[saved.step]} Request a new OTP and try again.`,
@@ -137,6 +142,12 @@ export async function DELETE(request: Request) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const token = sessionToken(request);
-  if (token) await platform('POST', '/v1/identity/citizen/sessions/revoke', { token, body: {} });
+  if (token) {
+    await platform('POST', '/v1/identity/citizen/sessions/revoke', {
+      token,
+      body: {},
+      from: request,
+    });
+  }
   return new Response(null, { status: 204, headers: { 'set-cookie': clearSessionCookie() } });
 }

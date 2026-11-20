@@ -1,14 +1,36 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { isIP } from 'node:net';
 
 /**
  * Citizen portal BFF → platform (SF-CON-PORTAL-SESSION, ADR-0007 D-3). Server-only.
  * The browser cookie holds only the CMP-004 opaque session token; identity is re-derived from
- * CMP-004 on every request and the token is forwarded as a bearer credential. Client headers are
- * never forwarded, and every platform path is composed here from fixed templates.
+ * CMP-004 on every request and the token is forwarded as a bearer credential. Tenant/identity
+ * client headers are never forwarded. For ADR-0008 / SEC F-08 the BFF may set X-Forwarded-For to
+ * the observed browser address so the platform can key rate limits when it trusts this hop.
  */
 export const SESSION_COOKIE = 'sf_citizen_session';
 export const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60;
+
+/**
+ * Address the BFF observed for the browser hop (ADR-0008).
+ * When `SF_BFF_TRUST_INGRESS=1`, take the leftmost X-Forwarded-For entry (ingress already
+ * sanitised the chain). Otherwise take the rightmost entry (nearest hop) or X-Real-IP.
+ * Returns undefined when nothing usable is present — platform then keys on the BFF peer.
+ */
+export function observedClientAddress(request: Request): string | undefined {
+  const real = request.headers.get('x-real-ip')?.trim();
+  if (real && isIP(real)) return real;
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (!forwarded) return undefined;
+  const parts = forwarded
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => isIP(part) !== 0);
+  if (parts.length === 0) return undefined;
+  if (process.env['SF_BFF_TRUST_INGRESS'] === '1') return parts[0];
+  return parts[parts.length - 1];
+}
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -69,6 +91,10 @@ export async function platform(
     body?: unknown;
     idempotent?: boolean;
     idempotencyKey?: string;
+    /** Browser request; when set, forwards observed client address (ADR-0008). */
+    from?: Request;
+    /** Explicit client address override when `from` is unavailable. */
+    clientAddress?: string | null;
   } = {},
 ): Promise<PlatformResponse> {
   const headers: Record<string, string> = {
@@ -79,6 +105,9 @@ export async function platform(
   if (opts.token) headers['authorization'] = `Bearer ${opts.token}`;
   if (opts.idempotencyKey) headers['idempotency-key'] = opts.idempotencyKey;
   else if (opts.idempotent) headers['idempotency-key'] = `portal-${randomUUID()}`;
+  const client =
+    opts.clientAddress?.trim() || (opts.from ? observedClientAddress(opts.from) : undefined);
+  if (client) headers['x-forwarded-for'] = client;
   let res: Response;
   try {
     res = await fetch(`${apiBase()}${path}`, {

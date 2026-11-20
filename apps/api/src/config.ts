@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parseTrustedProxyHops, resolveTrustProxy, type TrustProxyOption } from './trust-proxy.js';
 
 /**
  * Runtime configuration. Values come from the environment at deploy time; nothing here
@@ -33,9 +34,17 @@ const schema = z.object({
   /** CMP-036 edge rate limit: max requests per window per hashed client key. */
   SF_GATEWAY_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(1_000_000).default(300),
   SF_GATEWAY_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().min(100).max(3_600_000).default(60_000),
+  /**
+   * Comma-separated BFF hop IPs/CIDRs for Fastify trustProxy (ADR-0008 / SEC F-08).
+   * Empty = no trust (default). Never `*` / `0.0.0.0/0`.
+   */
+  SF_TRUSTED_PROXY_HOPS: z.string().optional(),
 });
 
-export type AppConfig = z.infer<typeof schema>;
+export type AppConfig = z.infer<typeof schema> & {
+  /** Resolved Fastify trustProxy option; never `true` / world trust. */
+  trustProxy: TrustProxyOption;
+};
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const parsed = schema.safeParse(env);
@@ -48,5 +57,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   if (!['LOCAL', 'CI'].includes(config.SF_ENVIRONMENT) && !config.DATABASE_URL) {
     throw new Error('Invalid configuration for: DATABASE_URL (required outside LOCAL/CI)');
   }
-  return config;
+  const hops = parseTrustedProxyHops(config.SF_TRUSTED_PROXY_HOPS);
+  const trustProxy = resolveTrustProxy(hops, config.SF_ENVIRONMENT);
+  return { ...config, trustProxy };
 }
