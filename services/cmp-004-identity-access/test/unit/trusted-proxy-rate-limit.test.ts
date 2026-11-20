@@ -78,7 +78,7 @@ async function mount(trustProxy: boolean | string | string[]): Promise<FastifyIn
   return app;
 }
 
-function remaining(headers: Record<string, string | string[] | undefined>): number {
+function remaining(headers: { [key: string]: string | string[] | number | undefined }): number {
   const raw = headers['x-ratelimit-remaining'];
   const value = Array.isArray(raw) ? raw[0] : raw;
   expect(value).toBeDefined();
