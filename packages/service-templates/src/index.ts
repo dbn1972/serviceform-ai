@@ -1,20 +1,28 @@
+import { GENERATED_CERTIFICATE_STUBS } from './catalogue/generated-stubs';
 import { RESIDENCE_CERTIFICATE } from './catalogue/residence';
 import { BIRTH_CERTIFICATE, DOMICILE_CERTIFICATE, INCOME_CERTIFICATE } from './catalogue/stubs';
 import type { CertificateTemplate, FormSchemaNode, TemplateVersion, UiLayout } from './types';
 
 export type * from './types';
+export { CERTIFICATE_UNIVERSE_FILTER, certificateUniverseIds } from './catalogue/generated-stubs';
+export { CERTIFICATE_OUTPUT_TYPE, HANDCRAFTED_CERTIFICATE_IDS } from './catalogue/generic-stub';
 
-export const TEMPLATE_CATALOGUE_VERSION = '2026.11.0';
+export const TEMPLATE_CATALOGUE_VERSION = '2026.11.1';
 export const TEMPLATE_REGISTRY_SOURCE = {
   path: 'docs/catalogue/India_Gov_Normalized_Service_Registry.json',
   catalogue_version: '1.0',
 } as const;
 
+/**
+ * Catalogue order: published Residence, hand-crafted stubs (Income/Domicile/Birth),
+ * then generated Certificate stubs (registry filter: Service / Output Type == Certificate).
+ */
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,
   INCOME_CERTIFICATE,
   DOMICILE_CERTIFICATE,
   BIRTH_CERTIFICATE,
+  ...GENERATED_CERTIFICATE_STUBS,
 ];
 
 export function listTemplates(): readonly CertificateTemplate[] {

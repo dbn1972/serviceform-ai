@@ -3,10 +3,14 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
+  CERTIFICATE_OUTPUT_TYPE,
+  CERTIFICATE_UNIVERSE_FILTER,
   catalogueIdForFormVersion,
+  certificateUniverseIds,
   diffVersions,
   formFields,
   formPin,
+  HANDCRAFTED_CERTIFICATE_IDS,
   listTemplates,
   policyInputsPending,
   publishedVersion,
@@ -29,6 +33,9 @@ const bindings = JSON.parse(
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const templates = listTemplates();
+const registryCertificates = registry.canonical_services.filter(
+  (e) => e['Service / Output Type'] === CERTIFICATE_OUTPUT_TYPE,
+);
 
 function scopes(node: UiElement): string[] {
   if (node.type === 'Control') return [node.scope];
@@ -40,14 +47,23 @@ const scopeToPointer = (scope: string) =>
 
 // REQ: catalogue grounded in docs/catalogue; published metadata immutable (Constitution).
 describe('template catalogue (SAMPLE_LAB)', () => {
-  it('offers the Residence template and at least three stubs', () => {
+  it('covers the Certificate universe plus Birth Registration stub', () => {
+    expect(CERTIFICATE_UNIVERSE_FILTER.equals).toBe('Certificate');
+    expect(certificateUniverseIds()).toHaveLength(registryCertificates.length);
     expect(templates.filter((t) => t.maturity === 'SAMPLE_LAB_PUBLISHED')).toHaveLength(1);
-    expect(templates.filter((t) => t.maturity === 'SAMPLE_LAB_STUB').length).toBeGreaterThanOrEqual(
-      3,
+    // 158 Certificate templates + Birth (IND-CIV-001 Registration) hand-crafted stub
+    expect(templates).toHaveLength(registryCertificates.length + 1);
+    expect(templates.filter((t) => t.maturity === 'SAMPLE_LAB_STUB')).toHaveLength(
+      templates.length - 1,
     );
     expect(new Set(templates.map((t) => t.catalogue_id)).size).toBe(templates.length);
+    for (const id of certificateUniverseIds()) {
+      expect(templateByCatalogueId(id), id).toBeDefined();
+    }
+    expect(templateByCatalogueId('IND-CIV-001')?.output_type).toBe('Registration');
     expect(templateByCatalogueId('IND-SOC-002')?.name).toBe('Residence Certificate');
     expect(templateById('ind-soc-031.income-certificate')?.catalogue_id).toBe('IND-SOC-031');
+    expect(HANDCRAFTED_CERTIFICATE_IDS.has('IND-SOC-002')).toBe(true);
     expect(templateByCatalogueId('IND-NOPE-000')).toBeNull();
   });
 

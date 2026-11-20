@@ -1,7 +1,8 @@
 /**
  * Certificate template catalogue (SAMPLE_LAB): Studio browse/select/version history/preview and
- * the citizen service catalogue. Residence is the published template; Income, Domicile and Birth
- * are stubs from docs/catalogue that citizens cannot apply for. Not CERTIFIED. G6 not issued.
+ * the citizen service catalogue. Residence is the published template; Certificate-type registry
+ * stubs (plus Birth Registration) are browse-only and citizens cannot apply for them.
+ * Not CERTIFIED. G6 not issued.
  * REQ: M10 catalogue; DESIGN-SYSTEM.md rule 6 (axe, reflow); published versions immutable.
  */
 import AxeBuilder from '@axe-core/playwright';
@@ -48,19 +49,26 @@ test.describe('Studio template catalogue', () => {
       'Certificate template catalogue',
     );
     const cards = page.getByRole('list', { name: 'Certificate templates' }).getByRole('article');
-    await expect(cards).toHaveCount(4);
-    await expect(page.locator('.sf-result-count')).toHaveText('4 of 4 templates');
+    const totalText = await page.locator('.sf-result-count').textContent();
+    const totalMatch = totalText?.match(/^(\d+) of (\d+) templates$/);
+    expect(totalMatch?.[1]).toBe(totalMatch?.[2]);
+    const total = Number(totalMatch?.[1]);
+    expect(total).toBeGreaterThanOrEqual(158);
+    await expect(cards).toHaveCount(total);
     await page.getByLabel('Maturity').selectOption('SAMPLE_LAB_STUB');
-    await expect(cards).toHaveCount(3);
+    await expect(cards).toHaveCount(total - 1);
     await page.getByLabel('Maturity').selectOption('ALL');
-    await page.getByLabel('Search templates').fill('income');
+    await page.getByLabel('Search templates').fill('ind-soc-031');
     await expect(cards).toHaveCount(1);
     await expect(cards.first()).toContainText('IND-SOC-031');
     await page.getByLabel('Search templates').fill('');
-    await page.getByLabel('Category').selectOption('Civil Registration & Personal Identity');
-    await expect(cards).toHaveCount(1);
-    await expect(cards.first()).toContainText('Birth Registration');
-    await page.getByLabel('Category').selectOption('ALL');
+    // Use id — getByLabel('Category') also matches cards named “… Category”.
+    const category = page.locator('#template-category');
+    await category.selectOption('Civil Registration & Personal Identity');
+    await expect(cards.first()).toContainText('IND-CIV-');
+    const civilCount = await cards.count();
+    expect(civilCount).toBeGreaterThanOrEqual(1);
+    await category.selectOption('ALL');
     await expectAccessible(page);
   });
 
@@ -121,14 +129,16 @@ test.describe('citizen service catalogue', () => {
       online.getByRole('link', { name: 'Apply now for Residence Certificate' }),
     ).toBeVisible();
     const upcoming = page.getByRole('list', { name: 'Services not yet available' });
-    await expect(upcoming.getByRole('article')).toHaveCount(3);
+    const upcomingCount = await upcoming.getByRole('article').count();
+    expect(upcomingCount).toBeGreaterThanOrEqual(157);
     await expect(upcoming.getByRole('link', { name: /^Apply now/ })).toHaveCount(0);
-    await page.getByLabel('Search services').fill('birth');
+    await page.getByLabel('Search services').fill('birth registration and birth');
     await expect(upcoming.getByRole('article')).toHaveCount(1);
     await expect(page.getByText('No online service matches your search.')).toBeVisible();
     await page.getByLabel('Search services').fill('');
     await expectAccessible(page);
 
+    await page.getByLabel('Search services').fill('income certificate (individual)');
     await upcoming
       .getByRole('link', { name: 'View details of Income Certificate (individual)' })
       .click();
