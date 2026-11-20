@@ -22,8 +22,9 @@ import type { CertificateTemplate, FormPackage, PolicyFacts } from '../types';
  * Income (IND-SOC-031) has a Studio authoring shell under templates/income-certificate/
  * with POLICY_INPUT_REQUIRED policy artefacts (M11 config-only path; still gated).
  * Remaining Certificate-type registry entries are generated in generated-stubs.ts
- * (filter: Service / Output Type == Certificate). Birth (IND-CIV-001) is Registration and
- * stays here as a pre-existing exception outside that bulk filter.
+ * (filter: Service / Output Type == Certificate) and get factory packs under
+ * templates/certificate-packs/<id>/. Birth (IND-CIV-001) is Registration and stays here
+ * as a pre-existing exception; it also receives a configurable pack.
  */
 
 const POLICY_INPUT_REQUIRED: PolicyFacts = {
@@ -385,7 +386,7 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
   digilocker_suitability: 'High',
   core_fields: COMMON_CORE,
   maturity: 'SAMPLE_LAB_STUB',
-  authoring_path: null,
+  authoring_path: 'templates/certificate-packs/ind-soc-001/',
   policy: POLICY_INPUT_REQUIRED,
   indicative_checks: [],
   credential_fields: [
@@ -430,7 +431,7 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
   digilocker_suitability: 'Medium',
   core_fields: [...COMMON_CORE, 'Event Date', 'Event Place', 'Registration Number'],
   maturity: 'SAMPLE_LAB_STUB',
-  authoring_path: null,
+  authoring_path: 'templates/certificate-packs/ind-civ-001/',
   policy: POLICY_INPUT_REQUIRED,
   indicative_checks: [],
   credential_fields: [

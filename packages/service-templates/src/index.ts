@@ -16,6 +16,7 @@ export const TEMPLATE_REGISTRY_SOURCE = {
 /**
  * Catalogue order: published Residence, hand-crafted stubs (Income/Domicile/Birth),
  * then generated Certificate stubs (registry filter: Service / Output Type == Certificate).
+ * Stubs carry authoring_path to configurable SAMPLE_LAB packs (POLICY_INPUT_REQUIRED).
  */
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,

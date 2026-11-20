@@ -1,0 +1,45 @@
+# IND-FAM-019 — Single Parent / Single Woman Certificate service metadata shell
+# SAMPLE_LAB authoring only. POLICY_INPUT_REQUIRED — do not invent statute.
+# Not CERTIFIED. G6 not self-issued. Constitution §1 §3 §31 §34.
+# Generated from templates/certificate-pack-skeleton — do not hand-edit policy values.
+
+catalogue_id: IND-FAM-019
+record_type: service_template
+version: "0.1.0-policy-pending"
+status: SAMPLE_LAB_STUB
+policy_source_url: "POLICY_INPUT_REQUIRED"
+
+metadata:
+  title: "Single Parent / Single Woman Certificate"
+  description: >
+    Normalized credential asserting the fact, status or qualification represented by “Single Parent / Single Woman Certificate”. Eligibility, evidence, validity and legal effect remain jurisdiction-specific.
+    Fee, eligibility, evidence, SLA and jurisdiction-specific Act/Rules remain
+    POLICY_INPUT_REQUIRED from the statutory owner.
+  category: family_relationship_personal_status
+  tags: [certificate, sample_lab, policy_input_required, configurable_pack]
+
+policy_fields:
+  legal_basis: "POLICY_INPUT_REQUIRED"
+  issuing_authority_class: "Revenue Department / District Administration / Local Body / Competent Authority"
+  eligibility_summary: "POLICY_INPUT_REQUIRED"
+  applicant_scope: "POLICY_INPUT_REQUIRED"
+  validity_period_days: "POLICY_INPUT_REQUIRED"
+  evidence_requirements: "POLICY_INPUT_REQUIRED"
+  fee_schedule: "POLICY_INPUT_REQUIRED"
+  service_time: "POLICY_INPUT_REQUIRED"
+  pilot_state_or_jurisdiction: "POLICY_INPUT_REQUIRED"
+
+offering:
+  offering_id: "IND-FAM-019-OFFERING-DRAFT"
+  form_schema_ref: "ind-fam-019-form-draft"
+  rule_set_ref: "ind-fam-019-rules-policy-pending"
+  workflow_ref: "ind-fam-019-workflow-policy-pending"
+  evidence_policy_ref: "ind-fam-019-evidence-policy-pending"
+  fee_policy_ref: "ind-fam-019-fee-policy-pending"
+  sla_policy_ref: "ind-fam-019-sla-policy-pending"
+  credential_template_ref: "ind-fam-019-credential-policy-pending"
+  notification_template_ref: "ind-fam-019-notifications-policy-pending"
+  access_policy_ref: "ind-fam-019-access-policy-pending"
+
+invented_statutory_policy_forbidden: true
+citizen_placement_forbidden_until_policy_resolved: true

@@ -415,7 +415,8 @@ export function buildGenericCertificateStub(entry: RegistryCertificateEntry): Ce
     digilocker_suitability: entry['DigiLocker / Wallet Suitability'],
     core_fields: coreFields,
     maturity: 'SAMPLE_LAB_STUB',
-    authoring_path: null,
+    /** Factory pack: POLICY_INPUT_REQUIRED slots only (see templates/certificate-packs/). */
+    authoring_path: `templates/certificate-packs/${catalogueId.toLowerCase()}/`,
     policy: POLICY_INPUT_REQUIRED,
     indicative_checks: [],
     credential_fields: credentialFields(coreFields),
