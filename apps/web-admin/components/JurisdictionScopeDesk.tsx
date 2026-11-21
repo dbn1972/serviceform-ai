@@ -44,7 +44,9 @@ export function JurisdictionScopeDesk() {
     if (body.overlay?.tenant_service_binding_id) {
       setBindingId(body.overlay.tenant_service_binding_id);
     }
-    setStatus(body.overlay ? 'Loaded tenant overlay' : 'No overlay yet — showing SAMPLE_LAB defaults');
+    setStatus(
+      body.overlay ? 'Loaded tenant overlay' : 'No overlay yet — showing SAMPLE_LAB defaults',
+    );
   }
 
   async function save() {

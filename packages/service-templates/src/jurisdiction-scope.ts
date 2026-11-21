@@ -45,7 +45,8 @@ export interface JurisdictionScope {
 }
 
 export type JurisdictionScopeIssue = {
-  code: 'JURISDICTION_SCOPE_EMPTY' | 'JURISDICTION_SCOPE_INVALID_CODE' | 'JURISDICTION_OUT_OF_SCOPE';
+  code:
+    'JURISDICTION_SCOPE_EMPTY' | 'JURISDICTION_SCOPE_INVALID_CODE' | 'JURISDICTION_OUT_OF_SCOPE';
   pointer: string;
   message: string;
 };

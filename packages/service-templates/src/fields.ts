@@ -114,7 +114,7 @@ const addressPartsBase = () => ({
 });
 
 /**
- * Legacy SAMPLE_LAB postal address (Odisha Residence PUBLISHED 1.0.0 pin).
+ * Legacy SAMPLE_LAB postal address (Residence PUBLISHED 1.0.0 pin — IN-OD package).
  * Frozen content hash — do not change field shape without a new published version.
  */
 export const postalAddress = (title: string): FormSchemaNode => ({

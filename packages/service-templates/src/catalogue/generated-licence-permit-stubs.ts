@@ -1,8 +1,5 @@
 import universe from './licence-permit-universe.json';
-import {
-  buildGenericCertificateStub,
-  type RegistryCertificateEntry,
-} from './generic-stub';
+import { buildGenericCertificateStub, type RegistryCertificateEntry } from './generic-stub';
 import type { CertificateTemplate } from '../types';
 
 /**

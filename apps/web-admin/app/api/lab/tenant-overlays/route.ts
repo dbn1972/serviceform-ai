@@ -86,15 +86,16 @@ export async function PUT(request: Request) {
     });
   }
   try {
+    const binding =
+      typeof raw['tenant_service_binding_id'] === 'string' && raw['tenant_service_binding_id']
+        ? raw['tenant_service_binding_id']
+        : null;
     const overlay = saveTenantOverlay({
       tenant_id: tenantId,
       catalogue_id: catalogueId,
-      tenant_service_binding_id:
-        typeof raw['tenant_service_binding_id'] === 'string' && raw['tenant_service_binding_id']
-          ? raw['tenant_service_binding_id']
-          : undefined,
       environment_label: 'SAMPLE_LAB',
       jurisdiction: { allowed_states, allowed_districts },
+      ...(binding ? { tenant_service_binding_id: binding } : {}),
     });
     return json(200, { overlay, certified: false, g6_issued: false });
   } catch (err) {

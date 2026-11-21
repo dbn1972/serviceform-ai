@@ -78,7 +78,10 @@ export function saveTenantOverlay(overlay: SampleLabTenantOverlay): SampleLabTen
     catalogue_id: overlay.catalogue_id.toUpperCase(),
     environment_label: SAMPLE_LAB_ENVIRONMENT,
   };
-  writeFileSync(overlayPath(overlay.tenant_id, stored.catalogue_id), `${JSON.stringify(stored, null, 2)}\n`);
+  writeFileSync(
+    overlayPath(overlay.tenant_id, stored.catalogue_id),
+    `${JSON.stringify(stored, null, 2)}\n`,
+  );
   return stored;
 }
 

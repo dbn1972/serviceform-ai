@@ -226,7 +226,10 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     expect(scope.allowed_states).toHaveLength(10);
     expect(scope.allowed_districts).toHaveLength(10);
     expect(() =>
-      resolveJurisdictionScope({ jurisdiction: { allowed_states: [], allowed_districts: [] } }, 'PRODUCTION'),
+      resolveJurisdictionScope(
+        { jurisdiction: { allowed_states: [], allowed_districts: [] } },
+        'PRODUCTION',
+      ),
     ).toThrow(/fail-closed/);
 
     const custom = {
