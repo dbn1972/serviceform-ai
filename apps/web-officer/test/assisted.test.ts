@@ -59,9 +59,9 @@ describe('officer assisted apply shell helpers', () => {
   it('requires opaque authority only on representation channels', () => {
     expect(channelRequiresAuthority('CSC')).toBe(false);
     expect(channelRequiresAuthority('GUARDIAN')).toBe(true);
-    expect(
-      representationGate({ channel: 'CSC', representation_authority_ref: null }).ok,
-    ).toBe(true);
+    expect(representationGate({ channel: 'CSC', representation_authority_ref: null }).ok).toBe(
+      true,
+    );
     expect(
       representationGate({ channel: 'GUARDIAN', representation_authority_ref: null }),
     ).toMatchObject({ ok: false, code: 'REPRESENTATION_AUTHORITY_REF_REQUIRED' });

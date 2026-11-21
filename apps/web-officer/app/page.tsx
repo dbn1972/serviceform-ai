@@ -64,8 +64,8 @@ export default function HomePage() {
         }
       >
         <p className="ux4g-body-m-default">
-          Operator <code>applied_by</code> + citizen <code>applied_for</code> + representation
-          basis + fail-closed consent. Never impersonate. CERTIFIED=false · G6=false.
+          Operator <code>applied_by</code> + citizen <code>applied_for</code> + representation basis
+          + fail-closed consent. Never impersonate. CERTIFIED=false · G6=false.
         </p>
       </Card>
     </AppShell>

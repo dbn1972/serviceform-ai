@@ -17,10 +17,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /** VERIFY_REPRESENTATION — consent + representation basis; fail-closed without read-back. */
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const officer = await currentOfficer(request);

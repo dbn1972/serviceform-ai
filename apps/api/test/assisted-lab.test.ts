@@ -34,9 +34,9 @@ describe('SAMPLE_LAB assisted catalogue / consent fail-closed', () => {
 
   it('defaults CSC and keeps representation flags from published catalogue', () => {
     expect(catalogue.default_channel).toBe('CSC');
-    expect(catalogue.channels.find((c) => c.code === 'GUARDIAN')?.requires_representation_authority).toBe(
-      true,
-    );
+    expect(
+      catalogue.channels.find((c) => c.code === 'GUARDIAN')?.requires_representation_authority,
+    ).toBe(true);
     expect(catalogue.consent.read_back_required).toBe(true);
   });
 
@@ -67,11 +67,14 @@ describe('SAMPLE_LAB assisted catalogue / consent fail-closed', () => {
     const ref = 'consent:assisted-readback/ref-1';
 
     expect(
-      await verification.consentCaptured({ tenant_id: tenant }, {
-        citizenId: citizen,
-        consentRef: ref,
-        sessionId: session,
-      }),
+      await verification.consentCaptured(
+        { tenant_id: tenant },
+        {
+          citizenId: citizen,
+          consentRef: ref,
+          sessionId: session,
+        },
+      ),
     ).toBe(false);
 
     const ok = ledger.capture({
@@ -83,11 +86,14 @@ describe('SAMPLE_LAB assisted catalogue / consent fail-closed', () => {
     });
     expect(ok.ok).toBe(true);
     expect(
-      await verification.consentCaptured({ tenant_id: tenant }, {
-        citizenId: citizen,
-        consentRef: ref,
-        sessionId: session,
-      }),
+      await verification.consentCaptured(
+        { tenant_id: tenant },
+        {
+          citizenId: citizen,
+          consentRef: ref,
+          sessionId: session,
+        },
+      ),
     ).toBe(true);
   });
 

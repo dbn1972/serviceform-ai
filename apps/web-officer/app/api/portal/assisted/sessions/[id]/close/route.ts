@@ -11,10 +11,7 @@ import { toAssistedSessionView } from '../../../../../../../lib/portal/assisted'
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const officer = await currentOfficer(request);

@@ -10,10 +10,7 @@ import { toAssistedSessionView } from '../../../../../../lib/portal/assisted';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
   const { id } = await ctx.params;

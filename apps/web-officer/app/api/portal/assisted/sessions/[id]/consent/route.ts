@@ -19,10 +19,7 @@ export const dynamic = 'force-dynamic';
  * Fail-closed lab consent capture. Must succeed before VERIFY_REPRESENTATION.
  * Operator stays applied_by; citizen stays applied_for.
  */
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const officer = await currentOfficer(request);

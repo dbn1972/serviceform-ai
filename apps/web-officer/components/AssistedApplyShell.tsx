@@ -33,8 +33,7 @@ export function AssistedApplyShell() {
       setError(body.message ?? 'Unable to load assisted session');
       return null;
     }
-    const view =
-      (body['portal'] as AssistedSessionView | undefined) ?? toAssistedSessionView(body);
+    const view = (body['portal'] as AssistedSessionView | undefined) ?? toAssistedSessionView(body);
     if (view) setSession(view);
     return view;
   }, []);
@@ -75,7 +74,9 @@ export function AssistedApplyShell() {
         return;
       }
       setSession(view);
-      setConsentRef(`${SAMPLE_LAB_ASSISTED_CONSENT.consent_ref_prefix}/${view.session_id.slice(0, 8)}`);
+      setConsentRef(
+        `${SAMPLE_LAB_ASSISTED_CONSENT.consent_ref_prefix}/${view.session_id.slice(0, 8)}`,
+      );
       setStep('bind');
     } finally {
       setBusy(false);

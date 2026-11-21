@@ -17,9 +17,7 @@ function mayAssistedApply(input: {
   if (input.applied_by_actor_id.toLowerCase() !== input.operator_id.toLowerCase()) {
     return { ok: false, code: 'OPERATOR_NOT_SESSION_OWNER' };
   }
-  if (
-    input.applied_by_actor_id.toLowerCase() === input.applied_for_citizen_id.toLowerCase()
-  ) {
+  if (input.applied_by_actor_id.toLowerCase() === input.applied_for_citizen_id.toLowerCase()) {
     return { ok: false, code: 'APPLIED_BY_EQUALS_APPLIED_FOR' };
   }
   return { ok: true };

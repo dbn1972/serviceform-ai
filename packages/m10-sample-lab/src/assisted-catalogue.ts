@@ -31,7 +31,8 @@ export const SAMPLE_LAB_ASSISTED_CHANNELS = [
   {
     code: 'AUTHORIZED_REPRESENTATIVE',
     label: 'Authorized representative',
-    description: 'Third-party representation; opaque authority ref + independent verifier required.',
+    description:
+      'Third-party representation; opaque authority ref + independent verifier required.',
     requires_representation_authority: true,
   },
   {

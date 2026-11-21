@@ -15,10 +15,7 @@ export const dynamic = 'force-dynamic';
  * Assisted apply: create draft as applied_for (server-mediated) + link via CMP-057 submit.
  * Officer cookie is never swapped to the citizen (Constitution #36).
  */
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const officer = await currentOfficer(request);

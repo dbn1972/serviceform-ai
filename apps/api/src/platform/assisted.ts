@@ -2,8 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  AssistedSessionService,
   buildAssistedSessionService,
+  type AssistedSessionService,
   type AssistedVerificationPort,
 } from '@serviceform/cmp-057-assisted-service';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
@@ -140,9 +140,7 @@ export class LabAssistedConsentLedger {
     if (!input.consent_ref || typeof input.consent_ref !== 'string') {
       return { ok: false, code: 'CONSENT_REF_REQUIRED', message: 'consent_ref is required' };
     }
-    this.keys.add(
-      this.key(input.tenant_id, input.citizen_id, input.consent_ref, input.session_id),
-    );
+    this.keys.add(this.key(input.tenant_id, input.citizen_id, input.consent_ref, input.session_id));
     return { ok: true };
   }
 
@@ -159,10 +157,7 @@ export class LabAssistedVerificationPort implements AssistedVerificationPort {
     private readonly ledger: LabAssistedConsentLedger,
   ) {}
 
-  async applicantInTenant(
-    ctx: { tenant_id: string },
-    citizenId: string,
-  ): Promise<boolean> {
+  async applicantInTenant(ctx: { tenant_id: string }, citizenId: string): Promise<boolean> {
     return this.applicants.exists({ tenant_id: ctx.tenant_id, subject_id: citizenId });
   }
 
@@ -185,10 +180,7 @@ interface CaseDraftService {
 }
 
 interface AssistedSessionLike {
-  readSession(
-    ctx: unknown,
-    sessionId: string,
-  ): Promise<{ status: number; body: unknown }>;
+  readSession(ctx: unknown, sessionId: string): Promise<{ status: number; body: unknown }>;
   submit(
     ctx: unknown,
     sessionId: string,
@@ -314,13 +306,16 @@ export function registerLabAssistedRoutes(
       read_back_acknowledged: body['read_back_acknowledged'],
     });
     if (!captured.ok) {
-      return reply.code(400).header('cache-control', 'no-store').send({
-        error_code: 'SF-SYS-003',
-        message: captured.message,
-        details: [{ code: captured.code }],
-        certified: false,
-        g6_issued: false,
-      });
+      return reply
+        .code(400)
+        .header('cache-control', 'no-store')
+        .send({
+          error_code: 'SF-SYS-003',
+          message: captured.message,
+          details: [{ code: captured.code }],
+          certified: false,
+          g6_issued: false,
+        });
     }
     return reply.header('cache-control', 'no-store').send({
       captured: true,
@@ -350,13 +345,16 @@ export function registerLabAssistedRoutes(
     const session = asRecord(view['assisted_session']);
     const status = String(session['lifecycle_status'] ?? '');
     if (status !== 'REPRESENTATION_VERIFIED') {
-      return reply.code(409).header('cache-control', 'no-store').send({
-        error_code: 'SF-APP-001',
-        message: 'Consent and representation must be verified before assisted apply',
-        details: [{ code: 'CONSENT_OR_REPRESENTATION_REQUIRED' }],
-        certified: false,
-        g6_issued: false,
-      });
+      return reply
+        .code(409)
+        .header('cache-control', 'no-store')
+        .send({
+          error_code: 'SF-APP-001',
+          message: 'Consent and representation must be verified before assisted apply',
+          details: [{ code: 'CONSENT_OR_REPRESENTATION_REQUIRED' }],
+          certified: false,
+          g6_issued: false,
+        });
     }
     const appliedFor = String(session['applied_for_citizen_id'] ?? '');
     const appliedBy = String(session['applied_by_actor_id'] ?? '');
@@ -398,13 +396,16 @@ export function registerLabAssistedRoutes(
     const application = asRecord(draftBody['application']);
     const applicationId = String(application['application_id'] ?? '');
     if (draft.status !== 201 || !applicationId) {
-      return reply.code(draft.status >= 400 ? draft.status : 502).header('cache-control', 'no-store').send({
-        error_code: 'SF-SYS-001',
-        message: 'Assisted draft create refused',
-        upstream: draftBody,
-        certified: false,
-        g6_issued: false,
-      });
+      return reply
+        .code(draft.status >= 400 ? draft.status : 502)
+        .header('cache-control', 'no-store')
+        .send({
+          error_code: 'SF-SYS-001',
+          message: 'Assisted draft create refused',
+          upstream: draftBody,
+          certified: false,
+          g6_issued: false,
+        });
     }
 
     const expectedVersion =
@@ -423,21 +424,24 @@ export function registerLabAssistedRoutes(
       return reply.code(submit.status).header('cache-control', 'no-store').send(submit.body);
     }
 
-    return reply.code(201).header('cache-control', 'no-store').send({
-      application_id: applicationId,
-      catalogue_id: catalogueId,
-      assisted_session: asRecord(submit.body)['assisted_session'],
-      proof: {
-        applied_by_actor_id: appliedBy,
-        applied_for_citizen_id: appliedFor,
-        applied_by_distinct_from_applied_for: true,
-        channel: session['channel'],
-        impersonation: false,
-        constitution: 36,
-      },
-      source: 'SAMPLE_LAB',
-      certified: false,
-      g6_issued: false,
-    });
+    return reply
+      .code(201)
+      .header('cache-control', 'no-store')
+      .send({
+        application_id: applicationId,
+        catalogue_id: catalogueId,
+        assisted_session: asRecord(submit.body)['assisted_session'],
+        proof: {
+          applied_by_actor_id: appliedBy,
+          applied_for_citizen_id: appliedFor,
+          applied_by_distinct_from_applied_for: true,
+          channel: session['channel'],
+          impersonation: false,
+          constitution: 36,
+        },
+        source: 'SAMPLE_LAB',
+        certified: false,
+        g6_issued: false,
+      });
   });
 }

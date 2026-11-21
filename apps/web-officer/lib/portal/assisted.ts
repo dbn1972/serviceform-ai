@@ -49,9 +49,7 @@ export interface AssistedSessionView {
   impersonation: false;
 }
 
-export function toAssistedSessionView(
-  body: Record<string, unknown>,
-): AssistedSessionView | null {
+export function toAssistedSessionView(body: Record<string, unknown>): AssistedSessionView | null {
   const session = body['assisted_session'];
   if (!session || typeof session !== 'object') return null;
   const s = session as Record<string, unknown>;
@@ -90,9 +88,7 @@ export function consentGate(input: {
   applied_by_actor_id: string;
   applied_for_citizen_id: string;
 }): { ok: true; consent_ref: string } | { ok: false; code: string; message: string } {
-  if (
-    input.applied_by_actor_id.toLowerCase() === input.applied_for_citizen_id.toLowerCase()
-  ) {
+  if (input.applied_by_actor_id.toLowerCase() === input.applied_for_citizen_id.toLowerCase()) {
     return {
       ok: false,
       code: 'APPLIED_BY_EQUALS_APPLIED_FOR',
@@ -119,7 +115,9 @@ export function consentGate(input: {
 export function representationGate(input: {
   channel: string;
   representation_authority_ref: unknown;
-}): { ok: true; representation_authority_ref: string | null } | { ok: false; code: string; message: string } {
+}):
+  | { ok: true; representation_authority_ref: string | null }
+  | { ok: false; code: string; message: string } {
   if (channelRequiresAuthority(input.channel)) {
     if (
       typeof input.representation_authority_ref !== 'string' ||
@@ -128,7 +126,8 @@ export function representationGate(input: {
       return {
         ok: false,
         code: 'REPRESENTATION_AUTHORITY_REF_REQUIRED',
-        message: 'This channel requires an opaque representation authority ref (no statute invented)',
+        message:
+          'This channel requires an opaque representation authority ref (no statute invented)',
       };
     }
     return { ok: true, representation_authority_ref: input.representation_authority_ref };
