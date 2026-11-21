@@ -107,25 +107,28 @@ export function CertificateDetail({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const [appRes, defRes] = await Promise.all([
-      fetch(`/api/portal/applications/${id}`),
-      fetch(`/api/portal/applications/${id}/deficiencies`),
-    ]);
+    // Sequential: app first. Parallel deficiencies left an unread 404 body on IDOR
+    // paths and blocked Playwright networkidle (SF-47 e2e).
+    const appRes = await fetch(`/api/portal/applications/${id}`);
     const body = (await appRes.json().catch(() => ({}))) as { application?: App; message?: string };
     if (!appRes.ok || !body.application) {
       setError(body.message ?? 'We could not find this application.');
+      setOpenDeficiency(null);
       return;
     }
     setApp(body.application);
-    if (defRes.ok) {
-      const defBody = (await defRes.json()) as {
-        open_deficiency?: DeficiencyNotice | null;
-      };
-      const open = defBody.open_deficiency ?? null;
-      setOpenDeficiency(open);
-      if (open) {
-        setProvided(open.items.filter((i) => i.required).map((i) => i.item_code));
-      }
+    const defRes = await fetch(`/api/portal/applications/${id}/deficiencies`);
+    if (!defRes.ok) {
+      setOpenDeficiency(null);
+      return;
+    }
+    const defBody = (await defRes.json().catch(() => ({}))) as {
+      open_deficiency?: DeficiencyNotice | null;
+    };
+    const open = defBody.open_deficiency ?? null;
+    setOpenDeficiency(open);
+    if (open) {
+      setProvided(open.items.filter((i) => i.required).map((i) => i.item_code));
     }
   }, [id]);
 
