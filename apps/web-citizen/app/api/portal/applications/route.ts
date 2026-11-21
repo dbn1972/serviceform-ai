@@ -15,6 +15,7 @@ import {
   jurisdictionRefusal,
   offeringJurisdictionScope,
 } from '../../../../lib/portal/jurisdiction';
+import { requireAvailableEvidenceDocument } from '../../../../lib/portal/documents';
 import {
   crossSiteRefusal,
   currentCitizen,
@@ -76,6 +77,26 @@ export async function POST(request: Request) {
   if (sampleLab()) {
     const refusal = syntheticNameRefusal(version.form.json_schema, data);
     if (refusal) return json(400, { error_code: 'SF-SYS-003', ...refusal });
+    // SF-49: when the form collects evidence_file_name, require an AVAILABLE CMP-013 document id.
+    const schemaProps = (version.form.json_schema as { properties?: Record<string, unknown> })
+      .properties;
+    if (schemaProps && Object.hasOwn(schemaProps, 'evidence_file_name')) {
+      const evidenceId =
+        typeof data['evidence_file_name'] === 'string' ? data['evidence_file_name'] : undefined;
+      const gate = await requireAvailableEvidenceDocument(citizen, evidenceId);
+      if (!gate.ok) {
+        return json(422, {
+          error_code: 'SF-EVD-002',
+          message: gate.message,
+          field_errors: [{ pointer: '/evidence_file_name', message: gate.message }],
+          certified: false,
+          g6_issued: false,
+        });
+      }
+      if (gate.document.content_type && typeof data['evidence_mime'] !== 'string') {
+        data['evidence_mime'] = gate.document.content_type;
+      }
+    }
   }
 
   const scope = offeringJurisdictionScope(catalogueId);

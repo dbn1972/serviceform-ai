@@ -338,6 +338,30 @@
     },
     "GRIEVANCE_AI_ASSIST": {
       "action_class": "PROTECTED"
+    },
+    "UPLOAD_POLICY_WRITE": {
+      "action_class": "PROTECTED"
+    },
+    "UPLOAD_POLICY_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "DOCUMENT_UPLOAD_SESSION_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "DOCUMENT_UPLOAD_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
+    "DOCUMENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "DOCUMENT_ACCESS": {
+      "action_class": "READ_ONLY"
+    },
+    "DOCUMENT_UPLOAD_ABANDON": {
+      "action_class": "PROTECTED"
+    },
+    "DOCUMENT_SCAN_RECORD": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -367,7 +391,9 @@
     "WorkflowVersion",
     "RulePack",
     "HumanTask",
-    "GrievanceFeedback"
+    "GrievanceFeedback",
+    "Document",
+    "UploadPolicy"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -415,6 +441,15 @@
         "GRIEVANCE_WITHDRAW"
       ],
       "assurance": ["OTP", "MFA"]
+    },
+    "Document": {
+      "actions": [
+        "DOCUMENT_UPLOAD_SESSION_CREATE",
+        "DOCUMENT_UPLOAD_COMPLETE",
+        "DOCUMENT_READ",
+        "DOCUMENT_ACCESS"
+      ],
+      "assurance": ["OTP", "MFA"]
     }
   },
   "citizen_published_grants": {
@@ -424,6 +459,10 @@
     },
     "Purpose": {
       "actions": ["PURPOSE_READ"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "UploadPolicy": {
+      "actions": ["UPLOAD_POLICY_READ"],
       "assurance": ["OTP", "MFA"]
     }
   }

@@ -5,6 +5,7 @@ import { itemLabel, reasonLabel } from '@serviceform/m10-sample-lab/deficiency-c
 import { maskMobile } from '@serviceform/m10-sample-lab/identity-rules';
 import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
+import { EvidenceUploadField, type EvidenceUploadValue } from './EvidenceUploadField';
 import { FormAlert } from './FormFeedback';
 
 type App = {
@@ -103,7 +104,7 @@ export function CertificateDetail({ id }: { id: string }) {
   const [info, setInfo] = useState('');
   const [narrative, setNarrative] = useState('');
   const [provided, setProvided] = useState<string[]>([]);
-  const [fileName, setFileName] = useState('');
+  const [upload, setUpload] = useState<EvidenceUploadValue | null>(null);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
@@ -152,6 +153,10 @@ export function CertificateDetail({ id }: { id: string }) {
       setError('Select at least one requested document you are providing.');
       return;
     }
+    if (!upload?.technically_accepted || !upload.document_id) {
+      setError('Upload a supporting document and wait until it is technically accepted.');
+      return;
+    }
     setBusy(true);
     try {
       const res = await fetch(`/api/portal/applications/${id}/deficiencies`, {
@@ -161,7 +166,7 @@ export function CertificateDetail({ id }: { id: string }) {
           deficiency_id: openDeficiency.deficiency_id,
           narrative,
           provided_item_codes: provided,
-          file_name: fileName || undefined,
+          document_id: upload.document_id,
         }),
       });
       const body = (await res.json()) as {
@@ -241,7 +246,7 @@ export function CertificateDetail({ id }: { id: string }) {
         {app.status === 'ACTION_REQUIRED' && openDeficiency ? (
           <FormAlert tone="warning" title="Action needed — more information requested">
             {reasonLabel(openDeficiency.reason_code)}. Please provide the documents listed below and
-            submit your response. Upload is SIMULATED in this lab (no real file store).
+            submit your response. Upload uses CMP-013 (SIMULATED storage) — technical accept only.
           </FormAlert>
         ) : null}
         {app.status === 'ACTION_REQUIRED' && !openDeficiency ? (
@@ -314,12 +319,12 @@ export function CertificateDetail({ id }: { id: string }) {
             onChange={(e) => setNarrative(e.target.value)}
             hint="Explain what you are uploading. Do not include Aadhaar numbers or other sensitive data."
           />
-          <TextInput
-            label="Evidence file name (SIMULATED)"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-            optional
-            hint="SAMPLE_LAB stores a SIMULATED evidence reference only — no real upload."
+          <EvidenceUploadField
+            label="Upload replacement evidence"
+            applicationId={app.id}
+            value={upload}
+            onChange={setUpload}
+            disabled={busy}
           />
           <div className="sf-actions">
             <Button disabled={busy} onClick={() => void submitResponse()}>
@@ -384,10 +389,14 @@ export function CertificateDetail({ id }: { id: string }) {
           <dl className="sf-dl">
             <dt>Evidence</dt>
             <dd>{app.evidence_type ? evidenceLabel(app.evidence_type) : '—'}</dd>
-            <dt>File</dt>
+            <dt>File / document</dt>
             <dd>
               {app.evidence_file_name
-                ? `${app.evidence_file_name}${app.evidence_mime ? ` (${app.evidence_mime})` : ''}`
+                ? /^[0-9a-f-]{36}$/i.test(app.evidence_file_name)
+                  ? `CMP-013 document ${app.evidence_file_name}${
+                      app.evidence_mime ? ` · ${app.evidence_mime}` : ''
+                    } (technical accept only)`
+                  : `${app.evidence_file_name}${app.evidence_mime ? ` (${app.evidence_mime})` : ''}`
                 : '—'}
             </dd>
             {app.credential_id ? (

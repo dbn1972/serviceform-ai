@@ -81,6 +81,35 @@ import {
   readLabAssignmentScope,
   type Cmp017Module,
 } from './tasks.js';
+import {
+  composeLabDocumentUpload,
+  loadUploadPolicyFixture,
+  policySeedContext,
+  registerLabDocumentUploadSimulators,
+  seedLabUploadPolicy,
+  type Cmp013Module,
+  type LabStorage,
+  type LabUploadService,
+  type UploadPolicyFixture,
+} from './document-upload.js';
+
+async function seedLabUploadPolicySafe(
+  service: LabUploadService,
+  fixture: UploadPolicyFixture,
+  officer: { tenantId: string; cellId: string; officerId: string; roles: string[] },
+): Promise<void> {
+  try {
+    await seedLabUploadPolicy({
+      service,
+      fixture,
+      ctx: policySeedContext(officer),
+    });
+  } catch (err) {
+    // Idempotent seed: a replayed policy write is fine; other failures must surface.
+    const message = err instanceof Error ? err.message : String(err);
+    if (!/idempotenc|already|conflict|duplicate/i.test(message)) throw err;
+  }
+}
 import { deficiencyOwnerEnrichingAuthorizer, LabCaseCommandPort } from './deficiency.js';
 import {
   composeLabGrievance,
@@ -106,6 +135,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP015?: string;
   /** SF-47 CMP-019 deficiency. Optional — when set, Raise Deficiency / citizen respond mount. */
   DATABASE_URL_CMP019?: string;
+  /** SF-49 CMP-013 document upload. Optional — when set, citizen evidence upload mounts. */
+  DATABASE_URL_CMP013?: string;
   DATABASE_URL_CMP009?: string;
   DATABASE_URL_CMP016?: string;
   /** SF-46: CMP-017 work queue / HUMAN_TASK from graph. */
@@ -166,6 +197,8 @@ export interface PlatformLab {
   registerFormPins(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-027 lab list/catalogue routes (optional when DATABASE_URL_CMP027 is set). */
   registerGrievance?(app: FastifyInstance): Promise<void>;
+  /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
+  registerDocumentUploadSimulators(app: FastifyInstance): Promise<void>;
   /**
    * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
    * workflow versions and starts the CMP-016 worker.
@@ -551,6 +584,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP019
       ? { cmp019: new pg.Pool({ connectionString: env.DATABASE_URL_CMP019, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP013
+      ? { cmp013: new pg.Pool({ connectionString: env.DATABASE_URL_CMP013, max: 4 }) }
+      : {}),
     cmp016: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP016'), max: 8 }),
     cmp017: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP017'), max: 8 }),
     cmp022: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP022'), max: 4 }),
@@ -576,6 +612,7 @@ export async function buildPlatformLab(
     cmp009: pg.Pool;
     cmp015: pg.Pool;
     cmp019?: pg.Pool;
+    cmp013?: pg.Pool;
     cmp016: pg.Pool;
     cmp017: pg.Pool;
     cmp022: pg.Pool;
@@ -887,6 +924,48 @@ export async function buildPlatformLab(
     workload,
   });
   const resolveContext = placementContextResolver({ verifier, sessions, placement });
+
+  // SF-49: optional CMP-013 document upload (SIMULATED storage/scanner).
+  let documentUpload: {
+    mounts: NonNullable<M04PluginMounts['documentUpload']>;
+    storage: LabStorage;
+    service: LabUploadService;
+    seedPolicy: () => Promise<void>;
+  } | null = null;
+  if (pools.cmp013) {
+    const cmp013 = await loadComponent<Cmp013Module>(
+      '@serviceform/cmp-013-document-upload',
+      'cmp-013-document-upload',
+    );
+    const composed = await composeLabDocumentUpload({
+      environment: environment as DeploymentEnvironment,
+      pool: pools.cmp013,
+      resolveContext,
+      authorizer: opa as never,
+      portalId: placement.portal_id,
+      workerActorId: '01301301-0000-4000-8000-013013013013',
+      cmp013,
+    });
+    const uploadFixture = loadUploadPolicyFixture(dir, environment);
+    const seedOfficer =
+      officers.find((o) => o.roles.includes('SAMPLE_LAB_CASE_OFFICER')) ?? officers[0];
+    if (!seedOfficer) {
+      throw new Error('SF-49: SAMPLE_LAB needs an officer to seed the upload policy');
+    }
+    documentUpload = {
+      mounts: composed.mounts,
+      storage: composed.storage,
+      service: composed.service,
+      seedPolicy: () =>
+        seedLabUploadPolicySafe(composed.service, uploadFixture, {
+          tenantId: placement.tenant_id,
+          cellId: placement.cell_id,
+          officerId: seedOfficer.officer_id,
+          roles: seedOfficer.roles,
+        }),
+    };
+  }
+
   const cmp030 = await loadComponent<Cmp030Module>(
     '@serviceform/cmp-030-consent-privacy',
     'cmp-030-consent-privacy',
@@ -1020,6 +1099,7 @@ export async function buildPlatformLab(
       },
     },
     m04: {
+      ...(documentUpload ? { documentUpload: documentUpload.mounts } : {}),
       forms: {
         pool: pools.cmp009,
         resolveContext,
@@ -1081,6 +1161,7 @@ export async function buildPlatformLab(
       poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
       ...(pools.cmp019 ? [poolReadiness('cmp019-db', pools.cmp019)] : []),
+      ...(pools.cmp013 ? [poolReadiness('cmp013-db', pools.cmp013)] : []),
       poolReadiness('cmp016-db', pools.cmp016),
       poolReadiness('cmp017-db', pools.cmp017),
       poolReadiness('cmp022-db', pools.cmp022),
@@ -1101,6 +1182,17 @@ export async function buildPlatformLab(
         officers,
         mint: (claims) => cmp004.mintSimulatedIdpAssertion(pepper, claims),
       }),
+    registerDocumentUploadSimulators: async (app) => {
+      if (!documentUpload) return;
+      await registerLabDocumentUploadSimulators(app, {
+        environment,
+        storage: documentUpload.storage,
+        service: documentUpload.service,
+        resolveContext,
+        placement: { tenant_id: placement.tenant_id, cell_id: placement.cell_id },
+        workerActorId: '01301301-0000-4000-8000-013013013013',
+      });
+    },
     registerIssuance: (app) =>
       registerLabIssuanceRoutes(app, { environment, coordinator, resolveContext }),
     registerStudioRules: (app) =>
@@ -1143,6 +1235,7 @@ export async function buildPlatformLab(
       : {}),
     async start() {
       await privacy.publish();
+      if (documentUpload) await documentUpload.seedPolicy();
       await workflow.start();
     },
     async close() {

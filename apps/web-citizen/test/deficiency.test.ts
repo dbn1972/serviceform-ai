@@ -7,8 +7,10 @@ import {
 import { portalStatus } from '../lib/portal/applications';
 import { applicationStatus } from '../lib/ind-soc-002';
 import { activeOpenNotice, type DeficiencyNotice } from '../lib/portal/deficiency';
+import { toDeficiencyEvidence } from '../lib/portal/documents';
 
 // REQ SF-47: citizen ACTION_REQUIRED maps from DEFICIENCY_RAISED; resubmit uses catalogue labels.
+// REQ SF-49: deficiency evidence_ref is a CMP-013 document id (technical accept).
 describe('citizen deficiency status mapping', () => {
   it('maps DEFICIENCY_RAISED to ACTION_REQUIRED with citizen-facing wording', () => {
     expect(portalStatus('DEFICIENCY_RAISED')).toBe('ACTION_REQUIRED');
@@ -72,5 +74,10 @@ describe('citizen deficiency status mapping', () => {
     expect(SAMPLE_LAB_DEFICIENCY_CATALOGUE.evidence_kind_codes.citizen_upload).toBe(
       'CITIZEN_UPLOAD',
     );
+  });
+
+  it('binds deficiency evidence to a CMP-013 document id (not a random UUID mint)', () => {
+    const documentId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+    expect(toDeficiencyEvidence(documentId).evidence_ref).toBe(documentId);
   });
 });

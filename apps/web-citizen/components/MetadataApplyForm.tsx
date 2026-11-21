@@ -25,6 +25,7 @@ import {
 } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { EvidenceUploadField, type EvidenceUploadValue } from './EvidenceUploadField';
 import { ErrorSummary, FormAlert } from './FormFeedback';
 import { useCitizen } from './RequireCitizenSession';
 
@@ -78,6 +79,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const [summary, setSummary] = useState('');
   const [attempt, setAttempt] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [evidenceUpload, setEvidenceUpload] = useState<EvidenceUploadValue | null>(null);
   // One submission key per form session; rotated only when nothing was created (refused input).
   const submissionKey = useRef(newKey());
   const summaryRef = useRef<HTMLDivElement>(null);
@@ -225,6 +227,43 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     window.requestAnimationFrame(() => headingRef.current?.focus());
   }
 
+  function evidenceStep(): boolean {
+    return (step?.label ?? '').toLowerCase() === 'evidence';
+  }
+
+  function applyEvidenceUpload(nextUpload: EvidenceUploadValue | null) {
+    setEvidenceUpload(nextUpload);
+    if (nextUpload?.technically_accepted) {
+      // Pin the CMP-013 document id into the published evidence_file_name field (immutable schema).
+      change('/evidence_file_name', nextUpload.document_id);
+      change('/evidence_mime', nextUpload.content_type);
+    } else if (!nextUpload) {
+      change('/evidence_file_name', '');
+      change('/evidence_mime', undefined);
+    }
+  }
+
+  function requireEvidenceUpload(): boolean {
+    if (!evidenceStep() && !isLast) return true;
+    if (evidenceUpload?.technically_accepted && evidenceUpload.document_id) return true;
+    const fileName = getAt(data, '/evidence_file_name');
+    if (
+      typeof fileName === 'string' &&
+      /^[0-9a-f-]{36}$/i.test(fileName) &&
+      evidenceUpload?.technically_accepted
+    ) {
+      return true;
+    }
+    showErrors(
+      {
+        '/evidence_file_name':
+          'Upload a supporting document and wait until it is technically accepted',
+      },
+      'Upload required evidence before you continue',
+    );
+    return false;
+  }
+
   function next() {
     if (!schema || !step) return;
     const found = stepErrors(schema, step.node, data, visible);
@@ -232,6 +271,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       showErrors(found, 'Check the highlighted answers before you continue');
       return;
     }
+    if (evidenceStep() && !requireEvidenceUpload()) return;
     goTo(stepIndex + 1);
   }
 
@@ -242,12 +282,18 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       showErrors(found, 'Check the highlighted answers before you submit');
       return;
     }
+    if (!requireEvidenceUpload()) return;
     setBusy(true);
     setSummary('');
+    const payload = withoutHidden(ui, data, visible);
+    if (evidenceUpload?.document_id) {
+      payload['evidence_file_name'] = evidenceUpload.document_id;
+      payload['evidence_mime'] = evidenceUpload.content_type;
+    }
     const res = await fetch('/api/portal/applications', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'idempotency-key': submissionKey.current },
-      body: JSON.stringify({ catalogue_id: catalogueId, data: withoutHidden(ui, data, visible) }),
+      body: JSON.stringify({ catalogue_id: catalogueId, data: payload }),
     });
     const body = (await res.json().catch(() => ({}))) as {
       message?: string;
@@ -385,17 +431,28 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
               />
             </div>
           ) : (
-            <Ux4gFormLayout
-              node={step.node}
-              schema={schema}
-              data={data}
-              visible={visible}
-              isRequired={required}
-              errors={errors}
-              notes={notes}
-              labels={labels}
-              onChange={change}
-            />
+            <>
+              <Ux4gFormLayout
+                node={step.node}
+                schema={schema}
+                data={data}
+                visible={visible}
+                isRequired={required}
+                errors={errors}
+                notes={notes}
+                labels={labels}
+                onChange={change}
+              />
+              {evidenceStep() ? (
+                <EvidenceUploadField
+                  label="Upload supporting evidence"
+                  value={evidenceUpload}
+                  onChange={applyEvidenceUpload}
+                  disabled={busy}
+                  hint="Required. PDF, PNG or JPEG up to 1 MB. CMP-013 technical acceptance only — not officer verification."
+                />
+              ) : null}
+            </>
           )}
           <p className="ux4g-body-s-default sf-form-provenance">
             Form {loaded.form.pin.form_key} · v{loaded.form.version} · pinned{' '}
