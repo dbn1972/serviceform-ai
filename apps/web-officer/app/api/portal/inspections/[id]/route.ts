@@ -117,7 +117,8 @@ export async function POST(request: Request, { params }: Params) {
     if (!code) {
       return json(400, {
         error_code: 'SF-SYS-003',
-        message: 'verification_result must be VERIFIED | NOT_VERIFIED | INCONCLUSIVE | DEFICIENCY_NOTED',
+        message:
+          'verification_result must be VERIFIED | NOT_VERIFIED | INCONCLUSIVE | DEFICIENCY_NOTED',
       });
     }
     const res = await mutate(`/v1/inspections/${id}/result`, { verification_result: code });

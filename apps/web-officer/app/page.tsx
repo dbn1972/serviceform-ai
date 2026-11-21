@@ -16,7 +16,9 @@ export default function HomePage() {
           helpdesk, or inspection — then HUMAN_TASK decisions and SAMPLE_LAB credential issuance.
         </p>
         <div className="sf-meta-row">
-          <span className="ux4g-tag-tonal-primary">Scrutiny · Approving · Helpdesk · Inspection</span>
+          <span className="ux4g-tag-tonal-primary">
+            Scrutiny · Approving · Helpdesk · Inspection
+          </span>
           <span className="ux4g-tag-outline-warning">G6 not issued</span>
           <span className="ux4g-tag-outline-neutral">CERTIFIED=false</span>
         </div>

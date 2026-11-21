@@ -106,8 +106,7 @@ export function parseInspectionCatalogue(raw: unknown): LabInspectionCatalogue {
     if (!entry || typeof entry !== 'object') continue;
     const p = entry as Record<string, unknown>;
     const pin_code = typeof p['pin_code'] === 'string' ? p['pin_code'] : '';
-    const workflow_node_id =
-      typeof p['workflow_node_id'] === 'string' ? p['workflow_node_id'] : '';
+    const workflow_node_id = typeof p['workflow_node_id'] === 'string' ? p['workflow_node_id'] : '';
     if (!pin_code || !NODE_ID.test(workflow_node_id)) continue;
     const checklist_items = Array.isArray(p['checklist_items'])
       ? (p['checklist_items'] as LabInspectionChecklistItem[]).filter(
@@ -184,10 +183,7 @@ export function labInspectionScopePort(catalogue: LabInspectionCatalogue): {
   return {
     async extend(ctx) {
       if (ctx.actor.type !== 'OFFICER') return {};
-      if (
-        !ctx.roles.includes(role) &&
-        !ctx.roles.includes('SAMPLE_LAB_CASE_OFFICER')
-      ) {
+      if (!ctx.roles.includes(role) && !ctx.roles.includes('SAMPLE_LAB_CASE_OFFICER')) {
         return {};
       }
       return { organisation_ids: [org], jurisdiction_ids: [jur] };

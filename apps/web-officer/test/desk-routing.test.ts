@@ -45,7 +45,6 @@ describe('SAMPLE_LAB desk home routing (SF-50)', () => {
     expect(deskHomeForRoles(['SAMPLE_LAB_INSPECTION_OFFICER'])).toBe('/inspection');
   });
 
-
   it('does not invent a case desk for studio-only roles', () => {
     expect(deskHomeForRoles(['STUDIO_DESIGNER'])).toBe('/');
     expect(deskHomeForRoles(['STUDIO_CHECKER', 'TENANT_ADMIN_STUDIO'])).toBe('/');

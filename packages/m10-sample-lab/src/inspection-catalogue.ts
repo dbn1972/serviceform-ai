@@ -29,8 +29,7 @@ export const SAMPLE_LAB_VERIFICATION_RESULTS = [
   },
 ] as const;
 
-export type SampleLabVerificationResult =
-  (typeof SAMPLE_LAB_VERIFICATION_RESULTS)[number]['code'];
+export type SampleLabVerificationResult = (typeof SAMPLE_LAB_VERIFICATION_RESULTS)[number]['code'];
 
 export const SAMPLE_LAB_INSPECTION_ASSIGNMENT = {
   role_code: SAMPLE_LAB_INSPECTION_ROLE,
@@ -97,10 +96,7 @@ export const SAMPLE_LAB_INSPECTION_PINS: readonly SampleLabInspectionPin[] = [
 export function isSampleLabVerificationResult(
   value: unknown,
 ): value is SampleLabVerificationResult {
-  return (
-    typeof value === 'string' &&
-    SAMPLE_LAB_VERIFICATION_RESULTS.some((r) => r.code === value)
-  );
+  return typeof value === 'string' && SAMPLE_LAB_VERIFICATION_RESULTS.some((r) => r.code === value);
 }
 
 export function pinForCode(pinCode: string): SampleLabInspectionPin | null {

@@ -95,7 +95,11 @@ export function labCreateBody(params: {
   application_id: string;
   pin_code: string;
   service_scope_id?: string | null;
-}): { application_id: string; workflow_node_id: string; assignment: Record<string, unknown> } | null {
+}): {
+  application_id: string;
+  workflow_node_id: string;
+  assignment: Record<string, unknown>;
+} | null {
   const pin = pinForCode(params.pin_code);
   if (!pin) return null;
   const assignment: Record<string, unknown> = {

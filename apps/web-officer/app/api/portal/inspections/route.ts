@@ -51,7 +51,8 @@ export async function POST(request: Request) {
   const create = labCreateBody({
     application_id: applicationId,
     pin_code: pinCode,
-    service_scope_id: typeof body?.['service_scope_id'] === 'string' ? body['service_scope_id'] : null,
+    service_scope_id:
+      typeof body?.['service_scope_id'] === 'string' ? body['service_scope_id'] : null,
   });
   if (!create) {
     return json(400, { error_code: 'SF-SYS-003', message: 'Unknown inspection pin_code' });
