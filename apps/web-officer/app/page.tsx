@@ -12,17 +12,19 @@ export default function HomePage() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Officer Workbench</h1>
         <p className="ux4g-body-m-default">
-          Review submitted applications, record decisions, and issue SAMPLE_LAB credentials.
+          Multi-desk HUMAN_TASK queue by role_code, human decisions on cases, and SAMPLE_LAB
+          credential issuance.
         </p>
         <div className="sf-meta-row">
-          <span className="ux4g-tag-tonal-primary">Submitted applications</span>
+          <span className="ux4g-tag-tonal-primary">Scrutiny · Approving desks</span>
           <span className="ux4g-tag-outline-warning">G6 not issued</span>
+          <span className="ux4g-tag-outline-neutral">CERTIFIED=false</span>
         </div>
       </section>
 
       <Card
         title="Application queue"
-        subtitle="Shared SAMPLE_LAB store with Citizen Portal · catalogue-generic"
+        subtitle="CMP-017 desks from Studio workflow role_code · catalogue-generic"
         footer={
           <div className="sf-actions">
             <TextLink href="/applications">Open applications</TextLink>
@@ -30,10 +32,9 @@ export default function HomePage() {
         }
       >
         <p className="ux4g-body-m-default">
-          Approving a case issues the credential and publishes it to DigiLocker through SIMULATED
-          connectors; citizens see the status on their application. Residence is the offered
-          SAMPLE_LAB service today; further certificates reuse this queue when published through
-          Studio metadata.
+          Sign in as a scrutiny or approving desk officer (role codes only — never named people).
+          Forwarding hands the case to the next HUMAN_TASK; final approval issues the credential and
+          publishes it to DigiLocker through SIMULATED connectors.
         </p>
       </Card>
     </AppShell>

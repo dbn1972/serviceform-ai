@@ -2,6 +2,7 @@
 
 import { Alert, Button, Card } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
+import { DESK_LABELS, deskActionsForRole, type DeskAction } from '../lib/portal/tasks';
 
 type App = {
   id: string;
@@ -26,6 +27,14 @@ type App = {
   issuance_error?: { error_code: string; step: string };
 };
 
+type Task = {
+  task_id: string;
+  application_id: string;
+  workflow_node_id?: string;
+  task_state: string;
+  assignment: { role_code: string; claimed_principal_id?: string };
+};
+
 const AWAITING_ISSUE = ['APPROVED', 'SIGNING_PENDING'];
 
 function statusTag(status: string): string {
@@ -43,35 +52,45 @@ function statusTag(status: string): string {
 
 export function ApplicationReview({ id }: { id: string }) {
   const [app, setApp] = useState<App | null>(null);
+  const [task, setTask] = useState<Task | null>(null);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/portal/applications/${id}`);
-    const body = (await res.json().catch(() => ({}))) as { application?: App; message?: string };
+    const body = (await res.json().catch(() => ({}))) as {
+      application?: App;
+      task?: Task | null;
+      message?: string;
+    };
     if (!res.ok || !body.application) {
       setError(body.message ?? 'Application not found');
       return;
     }
     setApp(body.application);
+    setTask(body.task ?? null);
   }, [id]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  async function act(action: 'APPROVE' | 'REJECT' | 'ISSUE') {
+  async function act(action: 'APPROVE' | 'REJECT' | 'ISSUE' | 'FORWARD') {
     setError('');
     setInfo('');
     const res = await fetch(`/api/portal/applications/${id}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ action }),
+      body: JSON.stringify({
+        action,
+        ...(task?.task_id ? { task_id: task.task_id } : {}),
+      }),
     });
     const body = (await res.json()) as {
       error_code?: string;
       message?: string;
       application?: App;
+      task?: Task | null;
     };
     if (!res.ok) {
       setError(body.message ?? body.error_code ?? 'The decision could not be recorded');
@@ -79,6 +98,11 @@ export function ApplicationReview({ id }: { id: string }) {
     }
     const next = body.application;
     if (next) setApp(next);
+    setTask(body.task ?? null);
+    if (action === 'FORWARD') {
+      setInfo('Forwarded to the approving desk. Temporal sequences the next HUMAN_TASK by role.');
+      return;
+    }
     if (action === 'REJECT') {
       setInfo('Rejected. Your decision is recorded on the case as a human decision.');
       return;
@@ -106,17 +130,32 @@ export function ApplicationReview({ id }: { id: string }) {
   }
   if (!app) return null;
 
+  const deskRole = task?.assignment.role_code;
+  const actions: DeskAction[] = deskRole
+    ? deskActionsForRole(deskRole)
+    : ['APPROVE', 'REJECT'];
+  const canDecide =
+    app.status === 'SUBMITTED' ||
+    ['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING'].includes(app.platform_state);
+
   return (
     <Card
       title="Review application"
-      subtitle="Human decision recorded on the Application/Case service (CMP-015)"
+      subtitle="Human decision on Application/Case (CMP-015) · queue from HUMAN_TASK graph (CMP-017)"
       footer={
-        app.status === 'SUBMITTED' ? (
+        canDecide ? (
           <div className="sf-actions">
-            <Button onClick={() => void act('APPROVE')}>Approve</Button>
-            <Button variant="outline-danger" onClick={() => void act('REJECT')}>
-              Reject
-            </Button>
+            {actions.includes('FORWARD') ? (
+              <Button onClick={() => void act('FORWARD')}>Forward for approval</Button>
+            ) : null}
+            {actions.includes('APPROVE') ? (
+              <Button onClick={() => void act('APPROVE')}>Approve</Button>
+            ) : null}
+            {actions.includes('REJECT') ? (
+              <Button variant="outline-danger" onClick={() => void act('REJECT')}>
+                Reject
+              </Button>
+            ) : null}
           </div>
         ) : AWAITING_ISSUE.includes(app.platform_state) ? (
           <div className="sf-actions">
@@ -128,14 +167,27 @@ export function ApplicationReview({ id }: { id: string }) {
       }
     >
       <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
-        After you approve, the platform signs and issues the certificate and publishes it to
-        DigiLocker using SIMULATED connectors. Eligibility rules are not evaluated here yet; review
-        the details yourself.
+        Desks follow Studio workflow HUMAN_TASK role_code assignments (never named officers). After
+        final approval, the platform signs and issues the certificate and publishes it to DigiLocker
+        using SIMULATED connectors. CERTIFIED=false.
       </Alert>
 
       <div className="sf-meta-row">
         <span className={statusTag(app.status)}>{app.status}</span>
         <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
+        {task ? (
+          <>
+            <span className="ux4g-tag-tonal-primary">
+              {DESK_LABELS[task.assignment.role_code] ?? task.assignment.role_code}
+            </span>
+            <span className="ux4g-tag-tonal-neutral">{task.task_state}</span>
+            {task.workflow_node_id ? (
+              <span className="ux4g-tag-outline-neutral">{task.workflow_node_id}</span>
+            ) : null}
+          </>
+        ) : (
+          <span className="ux4g-tag-tonal-neutral">No open HUMAN_TASK</span>
+        )}
         {app.digilocker ? (
           <>
             <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>

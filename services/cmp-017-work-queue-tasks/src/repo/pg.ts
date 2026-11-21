@@ -151,6 +151,20 @@ class PgTx implements TaskWriteTx, TaskReadTx {
     return r.rows[0] ? toTask(r.rows[0]) : null;
   }
 
+  async findActiveByNode(applicationId: string, workflowNodeId: string): Promise<TaskRow | null> {
+    const r = await this.c.query(
+      `SELECT tenant_id, task_id, application_id, workflow_node_id, cell_id, task_state,
+         role_code, organisation_id, office_id, jurisdiction_id, service_scope_id,
+         claimed_principal_id, claimed_at, outcome, created_by, correlation_id,
+         aggregate_version, created_at, updated_at FROM sf_tasks.human_task
+        WHERE tenant_id = $1 AND application_id = $2 AND workflow_node_id = $3
+          AND task_state IN ('OPEN', 'CLAIMED')
+        LIMIT 1`,
+      [this.tenantId, applicationId, workflowNodeId],
+    );
+    return r.rows[0] ? toTask(r.rows[0]) : null;
+  }
+
   async lockTask(taskId: string): Promise<TaskRow | null> {
     const r = await this.c.query(
       `SELECT tenant_id, task_id, application_id, workflow_node_id, cell_id, task_state,

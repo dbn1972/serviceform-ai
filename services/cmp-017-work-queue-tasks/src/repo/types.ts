@@ -71,6 +71,8 @@ export type NewHistory = Omit<HistoryRow, 'occurred_at' | 'seq'> & { now: Date }
 
 export interface TaskReadTx {
   getTask(taskId: string): Promise<TaskRow | null>;
+  /** Active (OPEN|CLAIMED) task for an application workflow node, if any. */
+  findActiveByNode(applicationId: string, workflowNodeId: string): Promise<TaskRow | null>;
   listAvailable(scope: PrincipalScope, limit: number): Promise<TaskRow[]>;
   listHistory(taskId: string): Promise<HistoryRow[]>;
 }
