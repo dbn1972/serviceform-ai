@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.039231982">
+    <testsuite name="apps/api/test/tsb-seal-lab.test.ts" timestamp="2026-11-21T21:16:59.593Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.032780397">
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; fixture and built-in catalogue share Residence artifact_hash" time="0.003451143">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; package source declares lab eng seal without G6 claim" time="0.000473219">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; proveLabTsbEngSeal succeeds for PUBLISHED SAMPLE_LAB target" time="0.000844607">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; proveLabTsbEngSeal refuses PRODUCTION and DRAFT" time="0.001241593">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal HTTP routes &gt; GET catalogue exposes lab eng seal without G6 claim" time="0.010195994">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal HTTP routes &gt; POST prove seals Residence binding and GET returns attestation" time="0.007013372">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" timestamp="2026-11-21T21:16:59.596Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.006451585">
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; Residence target artifact_hash matches CMP-052-shaped recomputation" time="0.002003628">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; proveLabTsbEngSeal seals PUBLISHED SAMPLE_LAB target without claiming G6" time="0.000616148">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; refuses DRAFT and non-lab environments" time="0.001144929">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; detects hash mismatch" time="0.00035568">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; catalogue G6 gate fields stay false" time="0.000203519">
+        </testcase>
+    </testsuite>
+</testsuites>

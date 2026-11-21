@@ -62,3 +62,22 @@ export {
   requiresLabPayment,
 } from './fee-catalogue';
 export type { SampleLabFeeCatalogue, SampleLabFeePolicyRow } from './fee-catalogue';
+export {
+  SAMPLE_LAB_TSB_SEAL_DEFAULTS,
+  SAMPLE_LAB_TSB_SEAL_CATALOGUE,
+  TSB_SEAL_PIN_KEYS,
+  labArtifactHash,
+  proveLabTsbEngSeal,
+  sampleLabResidencePins,
+  targetForBinding,
+  targetForCatalogue,
+  isSampleLabSealEnvironment,
+} from './tsb-seal-catalogue';
+export type {
+  LabTsbSealAttestation,
+  LabTsbSealCatalogue,
+  LabTsbSealTarget,
+  TsbSealPinKey,
+  TsbSealPinMap,
+  TsbSealPinRef,
+} from './tsb-seal-catalogue';

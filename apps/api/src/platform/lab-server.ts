@@ -38,6 +38,7 @@ if (lab.registerGrievance) await lab.registerGrievance(app);
 if (lab.registerInspection) await lab.registerInspection(app);
 if (lab.registerAssisted) await lab.registerAssisted(app);
 if (lab.registerPayment) await lab.registerPayment(app);
+await lab.registerTsbSeal(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {

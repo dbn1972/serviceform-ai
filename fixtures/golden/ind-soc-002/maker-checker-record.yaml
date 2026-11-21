@@ -41,8 +41,12 @@ outcome:
   decision: APPROVED_SAMPLE_LAB
   decided_at: "2026-10-17T00:05:00.000Z"
   tsb_immutability_sealed: false
+  lab_eng_sealed: true
+  lab_eng_seal_mode: SAMPLE_LAB
   version_pinned: false
-  note: Sample path only — production immutability seal deferred until DigiLocker/DLT REAL bindings exist
+  note: >
+    SAMPLE_LAB eng seal proven (SF-60). G6/production tsb_immutability_sealed remains
+    false until REAL DigiLocker/DLT + human G6. Agents do not self-certify.
 
 non_claims:
   certified: false
