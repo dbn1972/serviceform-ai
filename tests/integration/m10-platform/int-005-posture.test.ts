@@ -33,7 +33,7 @@ import {
  * CMP-015 commands and the CMP-016 instance only follows. Remaining INT-005 gap: no CMP-017
  * officer task is created by the workflow (the SAMPLE_LAB graph has WAIT nodes only).
  */
-const PINNED_WORKFLOW_VERSION = '0d15ba00-0012-4000-8000-0d15ba000012';
+const PINNED_WORKFLOW_VERSION = '0d15ba00-001d-4000-8000-0d15ba00001d';
 const CONSUMER = 'cmp-016.case-transitions';
 const COMMANDS = ['MARK_READY_TO_SUBMIT', 'SUBMIT', 'MARK_RECEIVED'] as const;
 

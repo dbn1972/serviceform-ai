@@ -13,8 +13,8 @@
     {
       "catalogue_id": "IND-SOC-002",
       "definition_key": "sample-lab.ind-soc-002.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-soc-002-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-soc-002-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -43,7 +43,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -59,7 +65,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",
@@ -198,8 +210,8 @@
     {
       "catalogue_id": "IND-SOC-031",
       "definition_key": "sample-lab.ind-soc-031.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-soc-031-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-soc-031-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -228,7 +240,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -244,7 +262,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",
@@ -383,8 +407,8 @@
     {
       "catalogue_id": "IND-SOC-001",
       "definition_key": "sample-lab.ind-soc-001.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-soc-001-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-soc-001-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -413,7 +437,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -429,7 +459,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",
@@ -568,8 +604,8 @@
     {
       "catalogue_id": "IND-CIV-001",
       "definition_key": "sample-lab.ind-civ-001.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-civ-001-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-civ-001-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -598,7 +634,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -614,7 +656,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",
@@ -753,8 +801,8 @@
     {
       "catalogue_id": "IND-AGR-002",
       "definition_key": "sample-lab.ind-agr-002.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-agr-002-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-agr-002-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -783,7 +831,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -799,7 +853,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",
@@ -938,8 +998,8 @@
     {
       "catalogue_id": "IND-EDU-004",
       "definition_key": "sample-lab.ind-edu-004.case-sequencing",
-      "approval_ref": "sample-lab:simulated:ind-edu-004-case-sequencing-v1",
-      "graph_hash": "sha256:fc31f32f36e7c4ca296f8a78920fb3cb51101610b2b5b01b776174f1af5227a9",
+      "approval_ref": "sample-lab:simulated:ind-edu-004-case-sequencing-v2",
+      "graph_hash": "sha256:fbf53c9e318159d67c92f4b6496c265a44afa522aa7e8475352fcca117e897e4",
       "graph": {
         "nodes": [
           {
@@ -968,7 +1028,13 @@
           },
           {
             "node_id": "WAIT_UNDER_SCRUTINY",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_SCRUTINY_OFFICER",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_DEFICIENCY_RAISED",
@@ -984,7 +1050,13 @@
           },
           {
             "node_id": "WAIT_DECISION_PENDING",
-            "kind": "WAIT"
+            "kind": "HUMAN_TASK",
+            "assignment": {
+              "role_code": "SAMPLE_LAB_APPROVING_AUTHORITY",
+              "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+              "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+              "claim_mode": "CLAIM"
+            }
           },
           {
             "node_id": "WAIT_APPROVED",

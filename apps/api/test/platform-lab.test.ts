@@ -206,6 +206,7 @@ describe('buildPlatformLab composition', () => {
     DATABASE_URL_CMP015: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP009: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP016: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP017: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP022: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP024: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP012: 'postgres://u:p@127.0.0.1:1/none',
@@ -220,7 +221,7 @@ describe('buildPlatformLab composition', () => {
     SF_OPA_URL: 'http://127.0.0.1:1',
   };
 
-  it('composes CMP-004/005/009/015/030/033/051/052, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
+  it('composes CMP-004/005/009/015/017/030/033/051/052, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures', async () => {
     const lab = await buildPlatformLab(env);
     try {
       expect(lab.placement.portal_id).toBe('sample-lab-citizen');
@@ -234,6 +235,7 @@ describe('buildPlatformLab composition', () => {
       });
       expect(lab.wave2.consentPrivacy?.pool).toBeDefined();
       expect(lab.m05.applicationCase?.service).toBeDefined();
+      expect(lab.m05.tasks?.service).toBeDefined();
       expect(lab.m04.forms?.forms).toBeDefined();
       expect(lab.m03?.metadata?.pool).toBeDefined();
       expect(lab.m03?.makerChecker?.pool).toBeDefined();
@@ -247,6 +249,7 @@ describe('buildPlatformLab composition', () => {
         'cmp009-db',
         'cmp015-db',
         'cmp016-db',
+        'cmp017-db',
         'cmp022-db',
         'cmp024-db',
         'cmp012-db',
@@ -265,14 +268,24 @@ describe('buildPlatformLab composition', () => {
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
       const directory = (officers.json() as { officers: { subject: string; roles: string[] }[] })
         .officers;
-      // Case officer + Studio designer/checker + tenant admin (B-4).
-      expect(directory).toHaveLength(4);
+      // Case + scrutiny + approving desks + Studio designer/checker + tenant admin (SF-46).
+      expect(directory).toHaveLength(6);
       expect(directory.map((o) => o.subject).sort()).toEqual([
+        'sample-lab-approving-officer-1',
         'sample-lab-case-officer-1',
+        'sample-lab-scrutiny-officer-1',
         'sample-lab-studio-checker-1',
         'sample-lab-studio-designer-1',
         'sample-lab-tenant-admin-1',
       ]);
+      const caseOfficer = directory.find((o) => o.subject === 'sample-lab-case-officer-1');
+      expect(caseOfficer?.roles).toEqual(
+        expect.arrayContaining([
+          'SAMPLE_LAB_CASE_OFFICER',
+          'SAMPLE_LAB_SCRUTINY_OFFICER',
+          'SAMPLE_LAB_APPROVING_AUTHORITY',
+        ]),
+      );
     } finally {
       await lab.close();
     }
@@ -302,6 +315,8 @@ describe('buildPlatformLab composition', () => {
     );
     const { DATABASE_URL_CMP016: _wf, ...noWorkflowDb } = env;
     await expect(buildPlatformLab(noWorkflowDb)).rejects.toThrow(/DATABASE_URL_CMP016/);
+    const { DATABASE_URL_CMP017: _tasks, ...noTasksDb } = env;
+    await expect(buildPlatformLab(noTasksDb)).rejects.toThrow(/DATABASE_URL_CMP017/);
     const { SF_TEMPORAL_ADDRESS: _t, ...noTemporal } = env;
     await expect(buildPlatformLab(noTemporal)).rejects.toThrow(/SF_TEMPORAL_ADDRESS/);
     await expect(

@@ -31,6 +31,8 @@ const ROLES = [
   { login: 'sf_lab_cmp009', member: 'sf_cmp009_rw', env: 'DATABASE_URL_CMP009' },
   { login: 'sf_lab_cmp015', member: 'sf_cmp015_rw', env: 'DATABASE_URL_CMP015' },
   { login: 'sf_lab_cmp016', member: 'sf_cmp016_rw', env: 'DATABASE_URL_CMP016' },
+  // SF-46: CMP-017 work queue / HUMAN_TASK from Studio graph
+  { login: 'sf_lab_cmp017', member: 'sf_cmp017_rw', env: 'DATABASE_URL_CMP017' },
   { login: 'sf_lab_cmp022', member: 'sf_cmp022_rw', env: 'DATABASE_URL_CMP022' },
   { login: 'sf_lab_cmp024', member: 'sf_cmp024_rw', env: 'DATABASE_URL_CMP024' },
   { login: 'sf_lab_cmp012', member: 'sf_cmp012_rw', env: 'DATABASE_URL_CMP012' },

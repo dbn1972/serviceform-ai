@@ -3,6 +3,7 @@
     "_note": "SAMPLE_LAB runtime tenant data loaded beside the bundle (never committed under policy/opa).",
     "roles": {
       "SAMPLE_LAB_CASE_OFFICER": {
+        "_note": "Golden-path combined desk (SAMPLE_LAB only). Holds case commands; desk role codes below filter CMP-017 HUMAN_TASK queues.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -16,21 +17,77 @@
           "APPLICATION_RAISE_DEFICIENCY",
           "APPLICATION_RECORD_APPROVED",
           "APPLICATION_RECORD_REJECTED",
-          "APPLICATION_CLOSE"
+          "APPLICATION_CLOSE",
+          "TASK_LIST",
+          "TASK_READ",
+          "TASK_READ_HISTORY",
+          "TASK_CLAIM",
+          "TASK_UNCLAIM",
+          "TASK_COMPLETE"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession"],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_SCRUTINY_OFFICER": {
+        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for scrutiny. Lab label only — not a statutory designation.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "APPLICATION_READ",
+          "APPLICATION_LIST",
+          "APPLICATION_TRANSITIONS_READ",
+          "APPLICATION_WORKING_DATA_READ",
+          "APPLICATION_MARK_RECEIVED",
+          "APPLICATION_ENTER_SCRUTINY",
+          "APPLICATION_ENTER_DECISION_PENDING",
+          "APPLICATION_RAISE_DEFICIENCY",
+          "APPLICATION_RECORD_REJECTED",
+          "TASK_LIST",
+          "TASK_READ",
+          "TASK_READ_HISTORY",
+          "TASK_CLAIM",
+          "TASK_UNCLAIM",
+          "TASK_COMPLETE"
+        ],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_APPROVING_AUTHORITY": {
+        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for final human decision. Lab label only — not a statutory designation.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "APPLICATION_READ",
+          "APPLICATION_LIST",
+          "APPLICATION_TRANSITIONS_READ",
+          "APPLICATION_WORKING_DATA_READ",
+          "APPLICATION_RECORD_APPROVED",
+          "APPLICATION_RECORD_REJECTED",
+          "APPLICATION_CLOSE",
+          "TASK_LIST",
+          "TASK_READ",
+          "TASK_READ_HISTORY",
+          "TASK_CLAIM",
+          "TASK_UNCLAIM",
+          "TASK_COMPLETE"
+        ],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_WORKFLOW_SEQUENCER": {
-        "_note": "Phase C live-pins: APPLICATION_READ / WORKING_DATA_READ so Temporal rule evaluation can load the pinned Studio pack inputs.",
+        "_note": "Phase C live-pins + SF-46: APPLICATION_READ / WORKING_DATA_READ for rules; TASK_CREATE / TASK_CANCEL_CLOSE for HUMAN_TASK from graph (CMP-016 → CMP-017).",
         "actions": [
           "WORKFLOW_INSTANCE_START",
           "WORKFLOW_SIGNAL_ADVANCE",
           "APPLICATION_READ",
-          "APPLICATION_WORKING_DATA_READ"
+          "APPLICATION_WORKING_DATA_READ",
+          "TASK_CREATE",
+          "TASK_CANCEL_CLOSE"
         ],
-        "resource_types": ["Application", "ApplicationCase"],
+        "resource_types": ["Application", "ApplicationCase", "HumanTask"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

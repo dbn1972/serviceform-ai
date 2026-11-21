@@ -99,6 +99,17 @@ class MemoryTx implements TaskWriteTx {
     return this.getTask(taskId);
   }
 
+  async findActiveByNode(applicationId: string, workflowNodeId: string): Promise<TaskRow | null> {
+    const row = [...this.s.tasks.values()].find(
+      (t) =>
+        t.tenant_id === this.tenant &&
+        t.application_id === applicationId &&
+        t.workflow_node_id === workflowNodeId &&
+        (t.task_state === 'OPEN' || t.task_state === 'CLAIMED'),
+    );
+    return row ? structuredClone(row) : null;
+  }
+
   async listAvailable(scope: PrincipalScope, limit: number): Promise<TaskRow[]> {
     return [...this.s.tasks.values()]
       .filter(

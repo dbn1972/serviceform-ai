@@ -75,6 +75,12 @@ import {
   type LabWorkflowFixture,
   type WorkflowLogger,
 } from './workflow.js';
+import {
+  labHumanTaskPort,
+  labPrincipalScopePort,
+  readLabAssignmentScope,
+  type Cmp017Module,
+} from './tasks.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -93,6 +99,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP015?: string;
   DATABASE_URL_CMP009?: string;
   DATABASE_URL_CMP016?: string;
+  /** SF-46: CMP-017 work queue / HUMAN_TASK from graph. */
+  DATABASE_URL_CMP017?: string;
   DATABASE_URL_CMP022?: string;
   DATABASE_URL_CMP024?: string;
   DATABASE_URL_CMP012?: string;
@@ -528,6 +536,7 @@ export async function buildPlatformLab(
     cmp009: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP009'), max: 8 }),
     cmp015: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP015'), max: 8 }),
     cmp016: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP016'), max: 8 }),
+    cmp017: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP017'), max: 8 }),
     cmp022: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP022'), max: 4 }),
     cmp024: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP024'), max: 4 }),
     cmp012: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP012'), max: 4 }),
@@ -548,6 +557,7 @@ export async function buildPlatformLab(
     cmp009: pg.Pool;
     cmp015: pg.Pool;
     cmp016: pg.Pool;
+    cmp017: pg.Pool;
     cmp022: pg.Pool;
     cmp024: pg.Pool;
     cmp012: pg.Pool;
@@ -666,9 +676,28 @@ export async function buildPlatformLab(
     getWorkingData(ctx: unknown, id: unknown): Promise<{ status: number; body: unknown }>;
   };
   const applicationCaseRef: { current?: CaseReader } = {};
+  const officersFixture = readJson<{
+    officers: LabOfficer[];
+    lab_assignment?: unknown;
+  }>(join(dir, 'officers.json'));
+  const labAssignment = readLabAssignmentScope(officersFixture);
+  const cmp017 = await loadComponent<Cmp017Module>(
+    '@serviceform/cmp-017-work-queue-tasks',
+    'cmp-017-work-queue-tasks',
+  );
+  const taskService = new cmp017.TaskService({
+    repo: new cmp017.PgTaskRepository(pools.cmp017),
+    authz: opa as unknown as { decide(input: unknown): Promise<unknown> },
+    scopes: labPrincipalScopePort(labAssignment),
+  });
   const activityPorts = (() => {
     const base = unwiredActivityPorts(cmp016);
-    if (!studioRulePacks) return base;
+    const humanTasks = labHumanTaskPort({
+      service: () => taskService,
+      workloadRoles: workflowFixture.workload.roles,
+      refuse: (code) => new cmp016.Cmp016Error('SF-SYS-004', [{ code }]),
+    });
+    if (!studioRulePacks) return { ...base, humanTasks };
     const rules = new StudioRuleEvaluationPort({
       packs: studioRulePacks,
       engine: new cmp008.ZenRuleEngine() as {
@@ -710,7 +739,7 @@ export async function buildPlatformLab(
         return { rule_version_id: ruleVersionId, inputs: data };
       },
     });
-    return { ...base, rules };
+    return { ...base, humanTasks, rules };
   })();
   const workflow = composeLabWorkflow({
     environment,
@@ -779,9 +808,7 @@ export async function buildPlatformLab(
         })
       : catalogueForms;
 
-  const officers = readJson<{ officers: LabOfficer[] }>(join(dir, 'officers.json')).officers.filter(
-    (o) => o.tenant_id === placement.tenant_id,
-  );
+  const officers = officersFixture.officers.filter((o) => o.tenant_id === placement.tenant_id);
 
   const issuance = parseIssuanceFixture(
     readJson<unknown>(join(dir, 'issuance.json')),
@@ -974,6 +1001,10 @@ export async function buildPlatformLab(
         service: applicationCase,
         resolveContext,
       },
+      tasks: {
+        service: taskService,
+        resolveContext,
+      },
     },
     wave2: {
       consentPrivacy: {
@@ -993,6 +1024,7 @@ export async function buildPlatformLab(
       poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
       poolReadiness('cmp016-db', pools.cmp016),
+      poolReadiness('cmp017-db', pools.cmp017),
       poolReadiness('cmp022-db', pools.cmp022),
       poolReadiness('cmp024-db', pools.cmp024),
       poolReadiness('cmp012-db', pools.cmp012),
