@@ -638,11 +638,7 @@ export class LabIssuanceCoordinator {
       if (app.state === 'SIGNING_PENDING') app = await this.caseCommand(app, 'RECORD_ISSUED');
 
       // SF-55: CMP-025 SIM credential-issued notify (fail-soft; never reverses ISSUED).
-      if (
-        this.deps.journeyNotify &&
-        credential &&
-        credential.lifecycle_status === 'ISSUED'
-      ) {
+      if (this.deps.journeyNotify && credential && credential.lifecycle_status === 'ISSUED') {
         const notified = await this.deps.journeyNotify.notifyCredentialIssued(
           app.application_id,
           credential.credential_id,

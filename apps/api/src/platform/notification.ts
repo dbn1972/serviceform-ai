@@ -103,9 +103,7 @@ export const LAB_NOTIFY_DEFAULTS: LabNotificationCatalogue = {
   ],
 };
 
-const BY_TRIGGER = new Map(
-  LAB_NOTIFY_DEFAULTS.templates.map((t) => [t.trigger, t] as const),
-);
+const BY_TRIGGER = new Map(LAB_NOTIFY_DEFAULTS.templates.map((t) => [t.trigger, t] as const));
 
 export function templateForTrigger(
   trigger: JourneyNotifyTrigger,
@@ -190,10 +188,7 @@ export class LabRecipientDirectory {
     private readonly canaryAddress = '+910000000000',
   ) {}
 
-  resolve(lookup: {
-    tenantId: string;
-    handleRef: string;
-  }): Promise<{ address: string } | null> {
+  resolve(lookup: { tenantId: string; handleRef: string }): Promise<{ address: string } | null> {
     if (lookup.tenantId !== this.tenantId) return Promise.resolve(null);
     if (lookup.handleRef !== this.catalogue.recipient_handle_ref) return Promise.resolve(null);
     return Promise.resolve({ address: this.canaryAddress });
@@ -363,7 +358,10 @@ export class LabJourneyNotifyBridge {
     }
     const tpl = templateForTrigger(input.trigger);
     if (!tpl) {
-      return { dispatch_id: null, notification_ref: `lab-notify:missing-template:${input.trigger}` };
+      return {
+        dispatch_id: null,
+        notification_ref: `lab-notify:missing-template:${input.trigger}`,
+      };
     }
     const ctx = this.publisherCtx();
     const body = {
@@ -505,9 +503,7 @@ export type ComposeLabNotificationResult = {
 type Cmp025Module = {
   buildNotificationService: (opts: Record<string, unknown>) => NotificationServiceLike;
   buildDeliveryWorker: (opts: Record<string, unknown>) => DeliveryWorkerLike;
-  DefaultConnectorRegistry: new (opts: {
-    simulation: { testRunId: string };
-  }) => {
+  DefaultConnectorRegistry: new (opts: { simulation: { testRunId: string } }) => {
     forBinding: (b: ConnectorBindingView) => unknown;
     simulatedConnector?(id: string): { sink: unknown[] } | undefined;
   };

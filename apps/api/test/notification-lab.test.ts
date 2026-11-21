@@ -140,9 +140,9 @@ describe('SAMPLE_LAB journey notification host adapters', () => {
     expect(body['channel']).toBe('SMS');
     expect(body['connector_binding_id']).toBe(LAB_NOTIFY_DEFAULTS.sms_binding_id);
     expect(body['recipient_handle_ref']).toBe(LAB_NOTIFY_DEFAULTS.recipient_handle_ref);
-    expect(String((body['template_params'] as { application_ref: string }).application_ref)).toMatch(
-      /^APP-/,
-    );
+    expect(
+      String((body['template_params'] as { application_ref: string }).application_ref),
+    ).toMatch(/^APP-/);
     // Responded is intentionally skipped in P1 (opened/closed only).
     await port.requestNotification({
       notification_port: 'M06_CMP025',

@@ -1031,9 +1031,7 @@ export async function buildPlatformLab(
       loadComponent<{
         buildNotificationService: (opts: Record<string, unknown>) => unknown;
         buildDeliveryWorker: (opts: Record<string, unknown>) => unknown;
-        DefaultConnectorRegistry: new (opts: {
-          simulation: { testRunId: string };
-        }) => unknown;
+        DefaultConnectorRegistry: new (opts: { simulation: { testRunId: string } }) => unknown;
       }>('@serviceform/cmp-025-notification', 'cmp-025-notification'),
       pools.cmp026
         ? loadComponent<{
