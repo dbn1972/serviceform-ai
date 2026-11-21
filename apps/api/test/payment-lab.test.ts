@@ -1,10 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import type { AuthzDecisionInput } from '@serviceform/contracts';
 import {
   LAB_FEE_DEFAULTS,
   LAB_FEE_IND_EDU_004,
   LabFeePolicyPort,
   LabPaymentConnectorBindingPort,
   parseFeeCatalogue,
+  paymentOwnerEnrichingAuthorizer,
   requiresLabPayment,
 } from '../src/platform/payment.js';
 
@@ -62,5 +64,64 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
     const catalogue = parseFeeCatalogue(null);
     expect(catalogue.policies[0]?.catalogue_id).toBe('IND-EDU-004');
     expect(catalogue.connector.mode).toBe('SIMULATED');
+  });
+
+  it('paymentOwnerEnrichingAuthorizer injects citizen self as FeeQuote/PaymentIntent owner_id', async () => {
+    const decide = vi.fn(async () => ({ allow: true }));
+    const pdp = paymentOwnerEnrichingAuthorizer({ decide });
+    const citizen = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+    const base = {
+      subject: {
+        user_id: citizen,
+        actor_type: 'CITIZEN' as const,
+        tenant_id: LAB_FEE_IND_EDU_004.tenant_id,
+        roles: [] as string[],
+        jurisdiction_ids: [] as string[],
+        assurance: 'OTP',
+      },
+      environment: { trace_id: 't' },
+    };
+
+    await pdp.decide({
+      ...base,
+      action: 'FEE_QUOTE_CREATE',
+      resource: {
+        resource_type: 'FeeQuote',
+        tenant_id: LAB_FEE_IND_EDU_004.tenant_id,
+        classification: 'TENANT_SCOPED',
+      },
+    } as AuthzDecisionInput);
+    expect(decide.mock.calls[0]?.[0].resource.owner_id).toBe(citizen);
+
+    await pdp.decide({
+      ...base,
+      action: 'PAYMENT_INTENT_CREATE',
+      resource: {
+        resource_type: 'PaymentIntent',
+        tenant_id: LAB_FEE_IND_EDU_004.tenant_id,
+        classification: 'TENANT_SCOPED',
+      },
+    } as AuthzDecisionInput);
+    expect(decide.mock.calls[1]?.[0].resource.owner_id).toBe(citizen);
+
+    // Officers / SYSTEM: no injection
+    await pdp.decide({
+      subject: {
+        user_id: LAB_FEE_DEFAULTS.workload.payment_actor_id,
+        actor_type: 'SYSTEM',
+        tenant_id: LAB_FEE_IND_EDU_004.tenant_id,
+        roles: ['SAMPLE_LAB_PAYMENT_WORKLOAD'],
+        jurisdiction_ids: [],
+        assurance: 'WORKLOAD_IDENTITY',
+      },
+      action: 'FEE_QUOTE_READ',
+      resource: {
+        resource_type: 'FeeQuote',
+        tenant_id: LAB_FEE_IND_EDU_004.tenant_id,
+        classification: 'TENANT_SCOPED',
+      },
+      environment: { trace_id: 't' },
+    } as AuthzDecisionInput);
+    expect(decide.mock.calls[2]?.[0].resource.owner_id).toBeUndefined();
   });
 });

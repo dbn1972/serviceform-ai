@@ -1,11 +1,45 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { RequestContext } from '@serviceform/contracts';
+import type {
+  AuthzDecisionInput,
+  AuthzDecisionOutput,
+  RequestContext,
+} from '@serviceform/contracts';
 import type { FastifyInstance } from 'fastify';
 import type pg from 'pg';
 import { assertSimulatorEnvironment } from './simulators.js';
 import type { CaseServiceLike } from './issuance.js';
+
+export interface AuthorizationPort {
+  decide(input: AuthzDecisionInput): Promise<AuthzDecisionOutput>;
+}
+
+/**
+ * CMP-020/021 authzInput omits owner_id. OPA citizen_owner_permits requires
+ * owner_id === subject.user_id. Inject self as owner for FeeQuote / PaymentIntent
+ * (same host pattern as DOCUMENT_UPLOAD_SESSION_CREATE). Officers/SYSTEM/INTEGRATION
+ * keep the role path. Application ownership is still enforced via CMP-015 pins.
+ */
+export function paymentOwnerEnrichingAuthorizer(pdp: AuthorizationPort): AuthorizationPort {
+  return {
+    async decide(input: AuthzDecisionInput): Promise<AuthzDecisionOutput> {
+      const resource = input.resource;
+      const subject = input.subject;
+      if (
+        subject.actor_type === 'CITIZEN' &&
+        (resource.resource_type === 'FeeQuote' || resource.resource_type === 'PaymentIntent') &&
+        !resource.owner_id
+      ) {
+        return pdp.decide({
+          ...input,
+          resource: { ...resource, owner_id: subject.user_id },
+        });
+      }
+      return pdp.decide(input);
+    },
+  };
+}
 
 /**
  * SAMPLE_LAB CMP-020/021 host adapters (SF-56). Composition only:
@@ -534,9 +568,13 @@ export function composeLabPayment(params: {
   const integrationCtx = () =>
     paymentIntegrationContext(params.catalogue, params.cellId, params.tenantId);
 
+  const authorizer = paymentOwnerEnrichingAuthorizer(
+    params.authorizer as unknown as AuthorizationPort,
+  );
+
   const feeService = params.cmp020.buildFeeService({
     pool: params.feePool,
-    authorizer: params.authorizer,
+    authorizer,
     applicationPins: new LabApplicationFeePinsPort(params.cases),
     feePolicy: new LabFeePolicyPort(params.catalogue),
     // FIXED_AMOUNT SAMPLE_LAB DUMMY lines never invoke rules.
@@ -553,7 +591,7 @@ export function composeLabPayment(params: {
 
   const paymentService = params.cmp021.buildPaymentService({
     pool: params.paymentPool,
-    authorizer: params.authorizer,
+    authorizer,
     feeQuote: new LabFeeQuotePort(feeService, systemCtx),
     connectorBinding: new LabPaymentConnectorBindingPort(
       params.catalogue,
