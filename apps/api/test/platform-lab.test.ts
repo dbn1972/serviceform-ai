@@ -341,7 +341,7 @@ describe('SIMULATED form publication from the template catalogue', () => {
     expect(form.content_hash).toMatch(/^sha256:[0-9a-f]{64}$/);
   });
 
-  it('refuses a pin that is not the PUBLISHED version, or an unknown or stub service', () => {
+  it('refuses a pin that is not the PUBLISHED version, or an unknown service', () => {
     expect(() =>
       publishedFormFor('IND-SOC-002', '0d15ba00-0019-4000-8000-0d15ba000019', TENANT),
     ).toThrow(/no PUBLISHED form version/);
@@ -349,5 +349,18 @@ describe('SIMULATED form publication from the template catalogue', () => {
       publishedFormFor('IND-SOC-031', '7e3a0031-0001-4000-8000-00000000031a', TENANT),
     ).toThrow(/no PUBLISHED form version/);
     expect(() => publishedFormFor('IND-XXX-000', OTHER_TENANT, TENANT)).toThrow();
+  });
+
+  it('SAMPLE_LAB lab-offer may pin a DRAFT stub version (fail-closed without the flag)', () => {
+    const incomeFormKey = ['ind-soc-031', 'application'].join('.');
+    const form = publishedFormFor('IND-SOC-031', '7e3a0031-0001-4000-8000-00000000031a', TENANT, {
+      allowSampleLabDraft: true,
+    });
+    expect(form).toMatchObject({
+      tenant_id: TENANT,
+      form_key: incomeFormKey,
+      version_id: '7e3a0031-0001-4000-8000-00000000031a',
+      status: 'PUBLISHED',
+    });
   });
 });

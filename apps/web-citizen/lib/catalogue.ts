@@ -1,5 +1,6 @@
 import {
   formFields,
+  labOfferVersion,
   latestVersion,
   listTemplates,
   policyInputsPending,
@@ -30,13 +31,19 @@ export function policyText(value: string): string {
 }
 
 /**
- * A service is offered when this portal's placement binds it, a version is PUBLISHED, and
- * policy facts are no longer POLICY_INPUT_REQUIRED. SAMPLE_LAB DUMMY clears pending flags but
- * stubs stay unoffered until a PUBLISHED TSB is placed (Residence only today).
+ * A service is offered when this portal's placement binds it and policy facts are resolved.
+ * Outside SAMPLE_LAB a PUBLISHED version is required. In SAMPLE_LAB, DRAFT stubs with
+ * SAMPLE_LAB DUMMY policy may be offered when the placement binds them (fail-closed elsewhere).
  */
 export function isOffered(template: CertificateTemplate): boolean {
-  const offered = portalPlacement().offerings.some((o) => o.catalogue_id === template.catalogue_id);
-  return offered && publishedVersion(template) !== null && !policyInputsPending(template);
+  const placement = portalPlacement();
+  const offered = placement.offerings.some((o) => o.catalogue_id === template.catalogue_id);
+  if (!offered || policyInputsPending(template)) return false;
+  return (
+    labOfferVersion(template, {
+      environmentLabel: placement.environment_label ?? null,
+    }) !== null
+  );
 }
 
 export function catalogueEntries(): CatalogueEntry[] {

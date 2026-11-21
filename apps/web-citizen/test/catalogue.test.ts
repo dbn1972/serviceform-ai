@@ -15,15 +15,18 @@ describe('citizen service catalogue', () => {
     );
   });
 
-  it('offers only services the placement binds with a PUBLISHED version', () => {
+  it('offers SAMPLE_LAB placement bindings (Residence PUBLISHED + lab-offer stubs)', () => {
     const entries = catalogueEntries();
-    expect(entries[0]).toMatchObject({ catalogue_id: 'IND-SOC-002', offered: true, fee: '₹0' });
-    expect(entries.filter((e) => e.offered)).toHaveLength(1);
-    expect(entries.filter((e) => !e.offered).length).toBe(entries.length - 1);
-    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-031' && !e.offered)).toBe(true);
-    expect(entries.some((e) => e.catalogue_id === 'IND-CIV-001' && !e.offered)).toBe(true);
-    const stub = templateByCatalogueId('IND-SOC-031');
-    expect(stub && isOffered(stub)).toBe(false);
+    expect(entries.find((e) => e.catalogue_id === 'IND-SOC-002')).toMatchObject({
+      offered: true,
+      fee: '₹0',
+    });
+    expect(entries.filter((e) => e.offered)).toHaveLength(6);
+    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-031' && e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-CIV-001' && e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-003' && !e.offered)).toBe(true);
+    const income = templateByCatalogueId('IND-SOC-031');
+    expect(income && isOffered(income)).toBe(true);
   });
 
   it('shows SAMPLE_LAB sample parameter labels for stubs (configurable, not locked statute)', () => {

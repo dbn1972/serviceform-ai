@@ -11,8 +11,9 @@ import { offeredForm } from '../lib/portal/forms';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
-// REQ M11: Income stays apply-gated (DRAFT / not placed) even with SAMPLE_LAB DUMMY defaults.
-describe('M11 Income Certificate (IND-SOC-031) stays apply-gated', () => {
+// REQ M11: Income remains SAMPLE_LAB_STUB (no invented statute). SAMPLE_LAB placement may
+// lab-offer the DRAFT form with SAMPLE_LAB DUMMY params (fail-closed outside SAMPLE_LAB).
+describe('M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer', () => {
   beforeAll(() => {
     process.env['SF_PORTAL_PLACEMENT_FILE'] = join(
       ROOT,
@@ -29,22 +30,27 @@ describe('M11 Income Certificate (IND-SOC-031) stays apply-gated', () => {
     expect(t?.indicative_checks).toEqual([]);
   });
 
-  it('is not offered and has no applyable form on the SAMPLE_LAB placement', () => {
+  it('is lab-offered on the SAMPLE_LAB placement (DRAFT pin, not CERTIFIED)', () => {
     const t = templateByCatalogueId('IND-SOC-031');
-    expect(t && isOffered(t)).toBe(false);
-    expect(offeredForm('IND-SOC-031')).toBeNull();
+    expect(t && isOffered(t)).toBe(true);
+    const offered = offeredForm('IND-SOC-031');
+    expect(offered?.version.status).toBe('DRAFT');
+    expect(offered?.version.version_id).toBe('7e3a0031-0001-4000-8000-00000000031a');
     const entry = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
-    expect(entry?.offered).toBe(false);
+    expect(entry?.offered).toBe(true);
     expect(entry?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
     expect(entry?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
     expect(entry?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
   });
 
-  it('does not place IND-SOC-031 in citizen offerings', () => {
-    expect(
-      catalogueEntries()
-        .filter((e) => e.offered)
-        .map((e) => e.catalogue_id),
-    ).toEqual(['IND-SOC-002']);
+  it('keeps non-representative stubs unoffered', () => {
+    const offered = catalogueEntries()
+      .filter((e) => e.offered)
+      .map((e) => e.catalogue_id)
+      .sort();
+    expect(offered).toContain('IND-SOC-002');
+    expect(offered).toContain('IND-SOC-031');
+    expect(offered).not.toContain('IND-SOC-003');
+    expect(offered).toHaveLength(6);
   });
 });

@@ -31,6 +31,13 @@ export {
   type SampleLabDummyDefaults,
   type SampleLabTenantOverlay,
 } from './sample-lab-dummy';
+export {
+  SAMPLE_LAB_REPRESENTATIVE_CATALOGUE_IDS,
+  isSampleLabRepresentative,
+  labOfferVersion,
+  type SampleLabRepresentativeId,
+} from './lab-offer';
+export { buildInvalidLabFormData, buildSampleLabFormData } from './sample-lab-form-data';
 /** Node-only file-backed resolve — import from `@serviceform/service-templates/sample-lab-dummy-resolve`. */
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,
