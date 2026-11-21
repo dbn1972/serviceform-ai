@@ -557,6 +557,57 @@
     },
     "APPOINTMENT_NO_SHOW": {
       "action_class": "PROTECTED"
+    },
+    "SEARCH_DOCUMENT_QUERY": {
+      "action_class": "READ_ONLY"
+    },
+    "SEARCH_DOCUMENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "ANALYTICS_DEFINITION_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "ANALYTICS_DEFINITION_RETIRE": {
+      "action_class": "PROTECTED"
+    },
+    "ANALYTICS_DEFINITION_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "ANALYTICS_METRIC_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "ANALYTICS_EVENT_INGEST": {
+      "action_class": "PROTECTED"
+    },
+    "ANALYTICS_PROJECTION_REBUILD": {
+      "action_class": "PROTECTED"
+    },
+    "OPS_VIEW_SLA": {
+      "action_class": "READ_ONLY"
+    },
+    "OPS_VIEW_QUEUE": {
+      "action_class": "READ_ONLY"
+    },
+    "OPS_VIEW_INTEGRATION": {
+      "action_class": "READ_ONLY"
+    },
+    "OPS_VIEW_EVENTS": {
+      "action_class": "READ_ONLY"
+    },
+    "OPS_VIEW_HEALTH": {
+      "action_class": "READ_ONLY"
+    },
+    "OPS_REFRESH_VIEW": {
+      "action_class": "PROTECTED"
+    },
+    "DISCOVERY_QUERY": {
+      "action_class": "READ_ONLY"
+    },
+    "DISCOVERY_QUERY_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "DISCOVERY_SERVICE_SELECT": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -601,11 +652,25 @@
     "AppointmentSlot",
     "AppointmentType",
     "FeeQuote",
-    "PaymentIntent"
+    "PaymentIntent",
+    "SearchDocument",
+    "MetricDefinition",
+    "AnalyticsMetric",
+    "OpsDashboardView",
+    "DiscoveryQuery",
+    "DiscoverySelection"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
   "citizen_owner_grants": {
+    "DiscoveryQuery": {
+      "actions": ["DISCOVERY_QUERY", "DISCOVERY_QUERY_READ"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "DiscoverySelection": {
+      "actions": ["DISCOVERY_SERVICE_SELECT"],
+      "assurance": ["OTP", "MFA"]
+    },
     "ApplicationCase": {
       "actions": [
         "APPLICATION_CREATE_DRAFT",

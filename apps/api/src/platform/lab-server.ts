@@ -26,6 +26,7 @@ const app = await buildApp(config, {
   ...(lab.m06 ? { m06: lab.m06 } : {}),
   m07: lab.m07,
   wave2: lab.wave2,
+  ...(lab.m08 ? { m08: lab.m08 } : {}),
   ...(lab.m09 ? { m09: lab.m09 } : {}),
 });
 await lab.registerSimulators(app);
@@ -38,6 +39,7 @@ if (lab.registerGrievance) await lab.registerGrievance(app);
 if (lab.registerInspection) await lab.registerInspection(app);
 if (lab.registerAssisted) await lab.registerAssisted(app);
 if (lab.registerScheduler) await lab.registerScheduler(app);
+if (lab.registerM08) await lab.registerM08(app);
 if (lab.registerPayment) await lab.registerPayment(app);
 await lab.registerTsbSeal(app);
 await lab.start();
@@ -61,6 +63,7 @@ logger.info(
       ...(app.m05Mounted ?? []),
       ...(app.m06Mounted ?? []),
       ...(app.m07Mounted ?? []),
+      ...(app.m08Mounted ?? []),
       ...(app.m09Mounted ?? []),
       ...app.wave2Mounted,
     ],

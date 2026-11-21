@@ -57,6 +57,11 @@ const ROLES = [
   { login: 'sf_lab_cmp057', member: 'sf_cmp057_rw', env: 'DATABASE_URL_CMP057' },
   // SF-62: CMP-056 appointment / scheduling shell (Constitution #37)
   { login: 'sf_lab_cmp056', member: 'sf_cmp056_rw', env: 'DATABASE_URL_CMP056' },
+  // SF-63: M08 search / analytics / ops / discovery thin golden UI
+  { login: 'sf_lab_cmp035', member: 'sf_cmp035_rw', env: 'DATABASE_URL_CMP035' },
+  { login: 'sf_lab_cmp045', member: 'sf_cmp045_rw', env: 'DATABASE_URL_CMP045' },
+  { login: 'sf_lab_cmp046', member: 'sf_cmp046_rw', env: 'DATABASE_URL_CMP046' },
+  { login: 'sf_lab_cmp006', member: 'sf_cmp006_rw', env: 'DATABASE_URL_CMP006' },
   // SF-55: CMP-025/026 journey notifications (SIM SMS + messaging)
   { login: 'sf_lab_cmp025', member: 'sf_cmp025_rw', env: 'DATABASE_URL_CMP025' },
   { login: 'sf_lab_cmp026', member: 'sf_cmp026_rw', env: 'DATABASE_URL_CMP026' },

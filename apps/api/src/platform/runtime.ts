@@ -143,6 +143,13 @@ import {
   registerLabSchedulerRoutes,
   type LabAppointmentCatalogue,
 } from './scheduler.js';
+import {
+  composeLabM08,
+  loadM08OpsCatalogue,
+  registerLabM08Routes,
+  type LabM08OpsCatalogue,
+} from './m08-ops.js';
+import type { M08PluginMounts } from '../composition/m08.js';
 import type { M09PluginMounts } from '../composition/m09.js';
 import {
   composeLabNotification,
@@ -204,6 +211,11 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP057?: string;
   /** SF-62: optional CMP-056 appointment / scheduling shell (Constitution #37). */
   DATABASE_URL_CMP056?: string;
+  /** SF-63: optional M08 search / analytics / ops / discovery golden UI. */
+  DATABASE_URL_CMP035?: string;
+  DATABASE_URL_CMP045?: string;
+  DATABASE_URL_CMP046?: string;
+  DATABASE_URL_CMP006?: string;
   /** SF-55: optional CMP-025 notification (journey SIM SMS). */
   DATABASE_URL_CMP025?: string;
   /** SF-55: optional CMP-026 messaging (official notices; fanout still CMP-025). */
@@ -266,10 +278,14 @@ export interface PlatformLab {
   registerAssisted?(app: FastifyInstance): Promise<void>;
   /** SF-62: SAMPLE_LAB CMP-056 lab catalogue/ensure routes (optional when DATABASE_URL_CMP056 is set). */
   registerScheduler?(app: FastifyInstance): Promise<void>;
+  /** SF-63: SAMPLE_LAB M08 lab catalogue/ensure routes (optional when M08 pools are set). */
+  registerM08?(app: FastifyInstance): Promise<void>;
   /** SF-56: lab SIM payment callback (INTEGRATION + HMAC) when CMP-020/021 mounted. */
   registerPayment?(app: FastifyInstance): Promise<void>;
   /** SF-60: SAMPLE_LAB TSB eng seal prove routes (hash + mutation gate; G6 seal still false). */
   registerTsbSeal(app: FastifyInstance): Promise<void>;
+  /** M08 mounts (CMP-035/045/046/006) when corresponding pools are set. */
+  m08?: M08PluginMounts;
   /** M09 mounts (CMP-056 scheduler / CMP-057 assisted) when corresponding pools are set. */
   m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
@@ -758,6 +774,18 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP021
       ? { cmp021: new pg.Pool({ connectionString: env.DATABASE_URL_CMP021, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP035
+      ? { cmp035: new pg.Pool({ connectionString: env.DATABASE_URL_CMP035, max: 4 }) }
+      : {}),
+    ...(env.DATABASE_URL_CMP045
+      ? { cmp045: new pg.Pool({ connectionString: env.DATABASE_URL_CMP045, max: 4 }) }
+      : {}),
+    ...(env.DATABASE_URL_CMP046
+      ? { cmp046: new pg.Pool({ connectionString: env.DATABASE_URL_CMP046, max: 4 }) }
+      : {}),
+    ...(env.DATABASE_URL_CMP006
+      ? { cmp006: new pg.Pool({ connectionString: env.DATABASE_URL_CMP006, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -783,6 +811,10 @@ export async function buildPlatformLab(
     cmp026?: pg.Pool;
     cmp020?: pg.Pool;
     cmp021?: pg.Pool;
+    cmp035?: pg.Pool;
+    cmp045?: pg.Pool;
+    cmp046?: pg.Pool;
+    cmp006?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -1308,6 +1340,22 @@ export async function buildPlatformLab(
     });
   }
 
+  let m08Catalogue: LabM08OpsCatalogue | null = null;
+  let m08Mount: ReturnType<typeof composeLabM08> | null = null;
+  if (pools.cmp035 && pools.cmp045 && pools.cmp046 && pools.cmp006) {
+    m08Catalogue = loadM08OpsCatalogue(dir);
+    m08Mount = composeLabM08({
+      searchPool: pools.cmp035,
+      analyticsPool: pools.cmp045,
+      opsPool: pools.cmp046,
+      discoveryPool: pools.cmp006,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      catalogue: m08Catalogue,
+      cellId: placement.cell_id,
+      tenantId: placement.tenant_id,
+    });
+  }
+
   // SF-60: SAMPLE_LAB TSB eng seal catalogue (always available; CMP-052 pool optional).
   const tsbSealCatalogue: LabTsbSealCatalogue = loadTsbSealCatalogue(dir);
   const tsbSealStore = createLabTsbSealStore();
@@ -1509,9 +1557,23 @@ export async function buildPlatformLab(
       ...(pools.cmp026 ? [poolReadiness('cmp026-db', pools.cmp026)] : []),
       ...(pools.cmp020 ? [poolReadiness('cmp020-db', pools.cmp020)] : []),
       ...(pools.cmp021 ? [poolReadiness('cmp021-db', pools.cmp021)] : []),
+      ...(pools.cmp035 ? [poolReadiness('cmp035-db', pools.cmp035)] : []),
+      ...(pools.cmp045 ? [poolReadiness('cmp045-db', pools.cmp045)] : []),
+      ...(pools.cmp046 ? [poolReadiness('cmp046-db', pools.cmp046)] : []),
+      ...(pools.cmp006 ? [poolReadiness('cmp006-db', pools.cmp006)] : []),
       ...workflow.readinessChecks,
     ],
     ...(m06 ? { m06 } : {}),
+    ...(m08Mount
+      ? {
+          m08: {
+            search: { service: m08Mount.search, resolveContext },
+            analytics: { service: m08Mount.analytics, resolveContext },
+            ops: { service: m08Mount.ops, resolveContext },
+            discovery: { service: m08Mount.discovery, resolveContext },
+          } satisfies M08PluginMounts,
+        }
+      : {}),
     ...(schedulerMount || assistedMount
       ? {
           m09: {
@@ -1623,6 +1685,16 @@ export async function buildPlatformLab(
           },
         }
       : {}),
+    ...(m08Mount && m08Catalogue
+      ? {
+          registerM08: async (app: FastifyInstance) => {
+            registerLabM08Routes(app, {
+              catalogue: m08Catalogue,
+              seeder: m08Mount.seeder,
+            });
+          },
+        }
+      : {}),
     ...(paymentLab
       ? {
           registerPayment: async (app: FastifyInstance) => {
@@ -1668,6 +1740,14 @@ export async function buildPlatformLab(
           await schedulerMount.seeder.ensureCatalogueSeeded();
         } catch {
           // Lab host stays up; desk ensure route can retry.
+        }
+      }
+      // SF-63: seed M08 search projections + analytics definitions fail-soft.
+      if (m08Mount) {
+        try {
+          await m08Mount.seeder.ensureCatalogueSeeded();
+        } catch {
+          // Lab host stays up; /v1/lab/m08/ensure can retry.
         }
       }
     },

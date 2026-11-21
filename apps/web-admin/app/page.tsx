@@ -8,7 +8,8 @@ export default function HomePage() {
       <h1>Administration</h1>
       <p className="ux4g-body-m-default">
         Pin TenantServiceBinding versions after checker approval. Tenant branding is a UX4G token
-        overlay only.
+        overlay only. M08 analytics and discovery desks surface search/ops golden-path capability
+        without inventing statute (CERTIFIED=false · G6=false).
       </p>
     </AppShell>
   );

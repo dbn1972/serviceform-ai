@@ -6,6 +6,8 @@ const links = [
   { href: '/bindings', label: 'Bindings' },
   { href: '/reviews', label: 'Reviews' },
   { href: '/branding', label: 'Branding' },
+  { href: '/analytics', label: 'Analytics' },
+  { href: '/discovery', label: 'Discovery' },
 ] as const;
 
 export function AdminNav() {
