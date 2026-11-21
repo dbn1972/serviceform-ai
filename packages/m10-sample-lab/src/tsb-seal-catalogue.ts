@@ -23,11 +23,11 @@ export const SAMPLE_LAB_TSB_SEAL_DEFAULTS = {
   tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
   /** Placement / fixture binding id used on SAMPLE_LAB Residence. */
   tenant_service_binding_id: '0d15ba00-0002-4000-8000-0d15ba0000d2',
-  binding_key: 'ind-soc-002.odisha.sample',
+  binding_key: 'ind-soc-002.sample-lab',
   offering_ref: 'IND-SOC-002',
-  metadata_bundle_ref: 'bundle.ind-soc-002.odisha.sample.v1',
+  metadata_bundle_ref: 'bundle.ind-soc-002.sample-lab.v1',
   pin_content_hash: 'sha256:abababababababababababababababababababababababababababababababab',
-  artifact_hash: 'sha256:0ea5eaaf48283c56419ec8d1e0a7c33a375c78d7d90d475541a48dc45d72fed0',
+  artifact_hash: 'sha256:62ac3e74e877b0c045cedcf10d34c4b253dcc6f2c98cd187e37cfb72fea3f4af',
 } as const;
 
 export const TSB_SEAL_PIN_KEYS = [
@@ -126,7 +126,7 @@ export function sampleLabResidencePins(): TsbSealPinMap {
   const pins = {} as TsbSealPinMap;
   for (const key of TSB_SEAL_PIN_KEYS) {
     pins[key] = {
-      version_ref: `ind-soc-002-${key}-v1@0.2.0-odisha-sample`,
+      version_ref: `ind-soc-002-${key}-v1@0.2.0-sample-lab`,
       content_hash: hash,
     };
   }

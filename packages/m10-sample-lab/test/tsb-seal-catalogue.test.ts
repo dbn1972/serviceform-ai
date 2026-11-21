@@ -6,7 +6,17 @@ import {
   proveLabTsbEngSeal,
   sampleLabResidencePins,
   targetForBinding,
+  type LabTsbSealTarget,
 } from '../src/tsb-seal-catalogue.js';
+
+function residenceTarget(): LabTsbSealTarget {
+  const target = SAMPLE_LAB_TSB_SEAL_CATALOGUE.targets[0];
+  expect(target).toBeTruthy();
+  if (!target) {
+    throw new Error('SAMPLE_LAB seal catalogue missing Residence target');
+  }
+  return target;
+}
 
 describe('SAMPLE_LAB TSB eng seal catalogue (SF-60)', () => {
   it('Residence target artifact_hash matches CMP-052-shaped recomputation', () => {
@@ -18,11 +28,11 @@ describe('SAMPLE_LAB TSB eng seal catalogue (SF-60)', () => {
       pins,
     });
     expect(hash).toBe(SAMPLE_LAB_TSB_SEAL_DEFAULTS.artifact_hash);
-    expect(SAMPLE_LAB_TSB_SEAL_CATALOGUE.targets[0]?.artifact_hash).toBe(hash);
+    expect(residenceTarget().artifact_hash).toBe(hash);
   });
 
   it('proveLabTsbEngSeal seals PUBLISHED SAMPLE_LAB target without claiming G6', () => {
-    const target = SAMPLE_LAB_TSB_SEAL_CATALOGUE.targets[0]!;
+    const target = residenceTarget();
     const att = proveLabTsbEngSeal({
       environment: 'LOCAL',
       source: 'SAMPLE_LAB',
@@ -49,7 +59,7 @@ describe('SAMPLE_LAB TSB eng seal catalogue (SF-60)', () => {
   });
 
   it('refuses DRAFT and non-lab environments', () => {
-    const target = SAMPLE_LAB_TSB_SEAL_CATALOGUE.targets[0]!;
+    const target = residenceTarget();
     const draft = proveLabTsbEngSeal({
       environment: 'LOCAL',
       binding: {
@@ -82,7 +92,7 @@ describe('SAMPLE_LAB TSB eng seal catalogue (SF-60)', () => {
   });
 
   it('detects hash mismatch', () => {
-    const target = SAMPLE_LAB_TSB_SEAL_CATALOGUE.targets[0]!;
+    const target = residenceTarget();
     const att = proveLabTsbEngSeal({
       environment: 'CI',
       binding: {

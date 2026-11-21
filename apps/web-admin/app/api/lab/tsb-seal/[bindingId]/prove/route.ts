@@ -7,7 +7,25 @@ import {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+/** Linear UUID check — avoids njsscan regex_dos on user-supplied bindingId. */
+function isUuid(value: string): boolean {
+  if (value.length !== 36) return false;
+  for (let i = 0; i < 36; i++) {
+    const c = value.charCodeAt(i);
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      if (c !== 45) return false;
+      continue;
+    }
+    const isDigit = c >= 48 && c <= 57;
+    const isLower = c >= 97 && c <= 102;
+    const isUpper = c >= 65 && c <= 70;
+    if (!isDigit && !isLower && !isUpper) return false;
+  }
+  const version = value.charCodeAt(14);
+  if (version < 49 || version > 56) return false;
+  const variant = value.charAt(19).toLowerCase();
+  return variant === '8' || variant === '9' || variant === 'a' || variant === 'b';
+}
 
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {
@@ -22,7 +40,7 @@ function json(status: number, body: unknown): Response {
  */
 export async function POST(_request: Request, context: { params: Promise<{ bindingId: string }> }) {
   const { bindingId } = await context.params;
-  if (!UUID_RE.test(bindingId)) {
+  if (!isUuid(bindingId)) {
     return json(400, {
       error_code: 'SF-SYS-003',
       message: 'bindingId must be a UUID',

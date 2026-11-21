@@ -11,11 +11,21 @@ import {
   proveLabTsbEngSeal,
   registerLabTsbSealRoutes,
   sampleLabResidencePins,
+  type LabTsbSealTarget,
 } from '../src/platform/tsb-seal.js';
 
 const ROOT = join(import.meta.dirname, '../../..');
 const FIXTURE = join(ROOT, 'fixtures/lab/platform/tsb-seal-catalogue.json');
 const PACKAGE_SRC = join(ROOT, 'packages/m10-sample-lab/src/tsb-seal-catalogue.ts');
+
+function residenceTarget(): LabTsbSealTarget {
+  const target = LAB_TSB_SEAL_CATALOGUE.targets[0];
+  expect(target).toBeTruthy();
+  if (!target) {
+    throw new Error('SAMPLE_LAB seal catalogue missing Residence target');
+  }
+  return target;
+}
 
 describe('SAMPLE_LAB TSB eng seal (SF-60)', () => {
   it('fixture and built-in catalogue share Residence artifact_hash', () => {
@@ -40,7 +50,7 @@ describe('SAMPLE_LAB TSB eng seal (SF-60)', () => {
   });
 
   it('proveLabTsbEngSeal succeeds for PUBLISHED SAMPLE_LAB target', () => {
-    const target = LAB_TSB_SEAL_CATALOGUE.targets[0]!;
+    const target = residenceTarget();
     const att = proveLabTsbEngSeal({
       environment: 'LOCAL',
       now: '2026-11-21T21:00:00.000Z',
@@ -64,7 +74,7 @@ describe('SAMPLE_LAB TSB eng seal (SF-60)', () => {
   });
 
   it('proveLabTsbEngSeal refuses PRODUCTION and DRAFT', () => {
-    const target = LAB_TSB_SEAL_CATALOGUE.targets[0]!;
+    const target = residenceTarget();
     expect(
       proveLabTsbEngSeal({
         environment: 'PRODUCTION',

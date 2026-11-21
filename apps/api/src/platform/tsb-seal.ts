@@ -13,7 +13,26 @@ import { assertSimulatorEnvironment } from './simulators.js';
  * G6 gate `tsb_immutability_sealed` stays false (owner/REAL DigiLocker).
  */
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+/** Linear UUID check — avoids njsscan regex_dos on user-supplied ids. */
+function isHexChar(c: number): boolean {
+  return (c >= 48 && c <= 57) || (c >= 97 && c <= 102) || (c >= 65 && c <= 70);
+}
+
+function isUuid(value: string): boolean {
+  if (value.length !== 36) return false;
+  for (let i = 0; i < 36; i++) {
+    const c = value.charCodeAt(i);
+    if (i === 8 || i === 13 || i === 18 || i === 23) {
+      if (c !== 45) return false;
+      continue;
+    }
+    if (!isHexChar(c)) return false;
+  }
+  const version = value.charCodeAt(14);
+  if (version < 49 || version > 56) return false;
+  const variant = value.charAt(19).toLowerCase();
+  return variant === '8' || variant === '9' || variant === 'a' || variant === 'b';
+}
 
 export const TSB_SEAL_PIN_KEYS = [
   'service',
@@ -85,11 +104,11 @@ export const LAB_TSB_SEAL_DEFAULTS = {
   test_run_id: 'sample-lab-tsb-seal',
   tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
   tenant_service_binding_id: '0d15ba00-0002-4000-8000-0d15ba0000d2',
-  binding_key: 'ind-soc-002.odisha.sample',
+  binding_key: 'ind-soc-002.sample-lab',
   offering_ref: 'IND-SOC-002',
-  metadata_bundle_ref: 'bundle.ind-soc-002.odisha.sample.v1',
+  metadata_bundle_ref: 'bundle.ind-soc-002.sample-lab.v1',
   pin_content_hash: 'sha256:abababababababababababababababababababababababababababababababab',
-  artifact_hash: 'sha256:0ea5eaaf48283c56419ec8d1e0a7c33a375c78d7d90d475541a48dc45d72fed0',
+  artifact_hash: 'sha256:62ac3e74e877b0c045cedcf10d34c4b253dcc6f2c98cd187e37cfb72fea3f4af',
 } as const;
 
 function sha256Fingerprint(parts: readonly string[]): string {
@@ -119,7 +138,7 @@ export function sampleLabResidencePins(): TsbSealPinMap {
   const pins = {} as TsbSealPinMap;
   for (const key of TSB_SEAL_PIN_KEYS) {
     pins[key] = {
-      version_ref: `ind-soc-002-${key}-v1@0.2.0-odisha-sample`,
+      version_ref: `ind-soc-002-${key}-v1@0.2.0-sample-lab`,
       content_hash: hash,
     };
   }
@@ -233,8 +252,8 @@ export function parseTsbSealCatalogue(raw: unknown): LabTsbSealCatalogue {
     const pins = t['pins'];
     if (
       !catalogue_id ||
-      !UUID.test(tenant_id) ||
-      !UUID.test(tenant_service_binding_id) ||
+      !isUuid(tenant_id) ||
+      !isUuid(tenant_service_binding_id) ||
       !binding_key ||
       !offering_ref ||
       !metadata_bundle_ref ||
@@ -307,7 +326,7 @@ async function readPublishedBinding(
   tenantId: string,
   bindingId: string,
 ): Promise<PublishedSealRow | null> {
-  if (!pool || !UUID.test(tenantId) || !UUID.test(bindingId)) return null;
+  if (!pool || !isUuid(tenantId) || !isUuid(bindingId)) return null;
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -415,7 +434,7 @@ export function registerLabTsbSealRoutes(
   }>('/v1/lab/tsb-seal/:bindingId/prove', async (req, reply) => {
     const bindingId = req.params.bindingId;
     const tenantId =
-      typeof req.body?.tenant_id === 'string' && UUID.test(req.body.tenant_id)
+      typeof req.body?.tenant_id === 'string' && isUuid(req.body.tenant_id)
         ? req.body.tenant_id
         : (opts.defaultTenantId ?? LAB_TSB_SEAL_DEFAULTS.tenant_id);
     const catalogueId =
