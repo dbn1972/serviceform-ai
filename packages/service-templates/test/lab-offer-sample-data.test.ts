@@ -30,7 +30,9 @@ describe('SAMPLE_LAB lab offer + sample form data', () => {
   it.each(listTemplates().map((t) => [t.catalogue_id, t] as const))(
     '%s sample data is synthetic and covers required keys',
     (_id, template) => {
-      const version = template.versions[template.versions.length - 1]!;
+      const version = template.versions[template.versions.length - 1];
+      expect(version, _id).toBeDefined();
+      if (!version) return;
       const sample = version.sample_data ?? buildSampleLabFormData(version.form.json_schema);
       const required = version.form.json_schema.required ?? [];
       for (const key of required) {

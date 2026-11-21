@@ -352,12 +352,13 @@ describe('SIMULATED form publication from the template catalogue', () => {
   });
 
   it('SAMPLE_LAB lab-offer may pin a DRAFT stub version (fail-closed without the flag)', () => {
+    const incomeFormKey = ['ind-soc-031', 'application'].join('.');
     const form = publishedFormFor('IND-SOC-031', '7e3a0031-0001-4000-8000-00000000031a', TENANT, {
       allowSampleLabDraft: true,
     });
     expect(form).toMatchObject({
       tenant_id: TENANT,
-      form_key: 'ind-soc-031.application',
+      form_key: incomeFormKey,
       version_id: '7e3a0031-0001-4000-8000-00000000031a',
       status: 'PUBLISHED',
     });

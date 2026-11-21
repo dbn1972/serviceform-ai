@@ -74,3 +74,18 @@ targetRules = ["curl-auth-header"]
 paths = [
   '''evidence/SF-M10-B-2/api-smoke\.sh$''',
 ]
+
+# TEST_FIXTURE only. generic-api-key matched the catalogue form_key literal
+# `ind-soc-031.application` in apps/api/test/platform-lab.test.ts (commit 2cc17f75).
+# HEAD joins the segments; history still scans the literal. Not a credential.
+[[allowlists]]
+id = "sf-m10-platform-lab-income-form-key-literal"
+description = "TEST_FIXTURE: SAMPLE_LAB Income form_key literal in apps/api/test/platform-lab.test.ts (generic-api-key). Not credentials. History-only after HEAD join()."
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = [
+  '''apps/api/test/platform-lab\.test\.ts$''',
+]
+regexes = [
+  '''ind-soc-031\.application''',
+]

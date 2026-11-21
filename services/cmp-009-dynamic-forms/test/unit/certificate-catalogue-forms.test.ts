@@ -22,7 +22,10 @@ const byId = (id: string) => templates.find((t) => t.catalogue_id === id);
 
 function offerVersion(t: CertificateTemplate): TemplateVersion {
   const published = [...t.versions].reverse().find((v) => v.status === 'PUBLISHED');
-  return published ?? t.versions[t.versions.length - 1]!;
+  if (published) return published;
+  const draft = t.versions[t.versions.length - 1];
+  if (!draft) throw new Error(`Template ${t.catalogue_id} has no versions`);
+  return draft;
 }
 
 describe('certificate catalogue forms (CMP-009 runtime, all catalogueIds)', () => {
