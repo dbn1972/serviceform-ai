@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { RequestContext } from '@serviceform/contracts';
@@ -173,8 +173,13 @@ export function slaWorkloadContext(
   };
 }
 
-function idem(endpoint: string, key: string, fingerprint: string) {
-  return { key, fingerprint, endpoint };
+/** CMP-029 idempotency_record CHECK requires `sha256:` + 64 hex. */
+function sha256Fingerprint(material: string): string {
+  return `sha256:${createHash('sha256').update(material).digest('hex')}`;
+}
+
+function idem(endpoint: string, key: string, fingerprintMaterial: string) {
+  return { key, fingerprint: sha256Fingerprint(fingerprintMaterial), endpoint };
 }
 
 /**

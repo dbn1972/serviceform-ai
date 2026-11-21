@@ -1321,7 +1321,14 @@ export async function buildPlatformLab(
       await privacy.publish();
       if (documentUpload) await documentUpload.seedPolicy();
       await workflow.start();
-      if (slaLifecycle) await slaLifecycle.ensurePublishedPolicy();
+      // SF-53: seed CMP-029 calendar/policy fail-soft so a seed fault never blocks lab readiness.
+      if (slaLifecycle) {
+        try {
+          await slaLifecycle.ensurePublishedPolicy();
+        } catch {
+          // Lab host stays up; clocks remain unavailable until seed succeeds on retry.
+        }
+      }
     },
     async close() {
       await workflow.close();

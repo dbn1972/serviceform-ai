@@ -100,4 +100,37 @@ describe('SAMPLE_LAB SLA host adapters', () => {
     expect(caseCommandName({})).toBeNull();
     expect(caseCommandName(null)).toBeNull();
   });
+
+  it('seeds calendar/policy with sha256 idempotency fingerprints required by CMP-029 PG check', async () => {
+    const fingerprints: string[] = [];
+    const service = {
+      createCalendar: async (_ctx: unknown, _input: unknown, idem: { fingerprint: string }) => {
+        fingerprints.push(idem.fingerprint);
+        return {
+          status: 201,
+          body: { calendar_version_id: '0d15ba00-0c01-4000-8000-0d15ba000c01' },
+        };
+      },
+      createPolicy: async (_ctx: unknown, _input: unknown, idem: { fingerprint: string }) => {
+        fingerprints.push(idem.fingerprint);
+        return {
+          status: 201,
+          body: { sla_policy_version_id: '0d15ba00-0p01-4000-8000-0d15ba000p01' },
+        };
+      },
+    };
+    const { LabSlaLifecycle } = await import('../src/platform/sla.js');
+    const lifecycle = new LabSlaLifecycle(
+      service as never,
+      LAB_SLA_DEFAULTS,
+      'cell',
+      '0d15ba00-0001-4000-8000-0d15ba0000d1',
+    );
+    const policyId = await lifecycle.ensurePublishedPolicy();
+    expect(policyId).toBe('0d15ba00-0p01-4000-8000-0d15ba000p01');
+    expect(fingerprints).toHaveLength(2);
+    for (const fp of fingerprints) {
+      expect(fp).toMatch(/^sha256:[0-9a-f]{64}$/);
+    }
+  });
 });
