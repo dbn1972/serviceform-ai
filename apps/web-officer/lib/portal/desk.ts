@@ -12,6 +12,7 @@ export const DESK_LABELS: Record<string, string> = {
   SAMPLE_LAB_HELPDESK_L1: 'Helpdesk L1',
   SAMPLE_LAB_HELPDESK_L2: 'Helpdesk L2',
   SAMPLE_LAB_HELPDESK_L3: 'Helpdesk L3',
+  SAMPLE_LAB_INSPECTION_OFFICER: 'Inspection desk',
 };
 
 const CASE_DESK_ROLE_CODES = [
@@ -22,6 +23,10 @@ const CASE_DESK_ROLE_CODES = [
 
 export function isHelpdeskRole(roleCode: string): boolean {
   return roleCode.startsWith('SAMPLE_LAB_HELPDESK_');
+}
+
+export function isInspectionRole(roleCode: string): boolean {
+  return roleCode === 'SAMPLE_LAB_INSPECTION_OFFICER';
 }
 
 export function deskRoles(roles: readonly string[]): string[] {
@@ -46,8 +51,13 @@ export function deskActionsForRole(roleCode: string): DeskAction[] {
 export function deskHomeForRoles(roles: readonly string[]): string {
   const has = (code: string) => roles.includes(code);
   const helpdesk = roles.filter(isHelpdeskRole);
+  const inspection = roles.filter(isInspectionRole);
   const caseDesks = CASE_DESK_ROLE_CODES.filter(has);
 
+  // Single-purpose desks win when no case desk is also present.
+  if (inspection.length > 0 && caseDesks.length === 0 && helpdesk.length === 0) {
+    return '/inspection';
+  }
   if (helpdesk.length > 0 && caseDesks.length === 0) return '/helpdesk';
 
   const [only, ...rest] = caseDesks;

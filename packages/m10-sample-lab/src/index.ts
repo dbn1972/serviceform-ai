@@ -42,3 +42,16 @@ export {
   type SampleLabNotificationTemplate,
   type JourneyNotifyTrigger,
 } from './notification-catalogue';
+export {
+  SAMPLE_LAB_INSPECTION_ROLE,
+  SAMPLE_LAB_VERIFICATION_RESULTS,
+  SAMPLE_LAB_INSPECTION_ASSIGNMENT,
+  SAMPLE_LAB_INSPECTION_PINS,
+  isSampleLabVerificationResult,
+  pinForCode,
+  pinsForCatalogue,
+  verificationResultLabel,
+  type SampleLabVerificationResult,
+  type SampleLabInspectionPin,
+  type SampleLabInspectionChecklistItem,
+} from './inspection-catalogue';

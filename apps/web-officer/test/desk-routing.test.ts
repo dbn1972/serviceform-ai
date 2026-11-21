@@ -41,6 +41,11 @@ describe('SAMPLE_LAB desk home routing (SF-50)', () => {
     expect(isHelpdeskRole('SAMPLE_LAB_SCRUTINY_OFFICER')).toBe(false);
   });
 
+  it('routes inspection-only role codes to /inspection (SF-57)', () => {
+    expect(deskHomeForRoles(['SAMPLE_LAB_INSPECTION_OFFICER'])).toBe('/inspection');
+  });
+
+
   it('does not invent a case desk for studio-only roles', () => {
     expect(deskHomeForRoles(['STUDIO_DESIGNER'])).toBe('/');
     expect(deskHomeForRoles(['STUDIO_CHECKER', 'TENANT_ADMIN_STUDIO'])).toBe('/');

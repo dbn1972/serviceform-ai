@@ -470,6 +470,51 @@
     },
     "NOTICE_ACKNOWLEDGE": {
       "action_class": "PROTECTED"
+    },
+    "INSPECTION_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_SCHEDULE": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_REASSIGN": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_START": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_RECORD_CHECKLIST": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_RECORD_OBSERVATION": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_ATTACH_EVIDENCE": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_RECORD_FINDING": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_RECORD_RESULT": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_CANCEL": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_REINSPECT": {
+      "action_class": "PROTECTED"
+    },
+    "INSPECTION_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "INSPECTION_READ_HISTORY": {
+      "action_class": "READ_ONLY"
+    },
+    "INSPECTION_LIST": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -508,7 +553,8 @@
     "AssistedSession",
     "NotificationDispatch",
     "NotificationTemplate",
-    "MessageThread"
+    "MessageThread",
+    "Inspection"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

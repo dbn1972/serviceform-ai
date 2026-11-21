@@ -35,6 +35,7 @@ await lab.registerStudioWorkflow(app);
 await lab.registerStudioRules(app);
 await lab.registerFormPins(app);
 if (lab.registerGrievance) await lab.registerGrievance(app);
+if (lab.registerInspection) await lab.registerInspection(app);
 if (lab.registerAssisted) await lab.registerAssisted(app);
 await lab.start();
 
