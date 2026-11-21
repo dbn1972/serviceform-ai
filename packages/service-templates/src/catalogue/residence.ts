@@ -78,8 +78,9 @@ const properties = (): Record<string, FormSchemaNode> => ({
     minLength: 1,
     maxLength: 120,
     'x-ux4g': {
-      hint: 'After CMP-013 upload, SAMPLE_LAB stores the technically accepted document id here',
-      error_messages: { REQUIRED: 'Upload supporting evidence before you submit' },
+      // Keep hint stable: PUBLISHED content_hash pins this package (SF-49 stores document id at runtime).
+      hint: 'SAMPLE_LAB records a synthetic file reference only',
+      error_messages: { REQUIRED: 'Attach a SAMPLE_LAB evidence file name' },
     },
   },
   evidence_mime: {
