@@ -1,4 +1,10 @@
-import { crossSiteRefusal, currentOfficer, json, platform, relay } from '../../../../../lib/portal/platform';
+import {
+  crossSiteRefusal,
+  currentOfficer,
+  json,
+  platform,
+  relay,
+} from '../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

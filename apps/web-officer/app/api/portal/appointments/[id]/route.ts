@@ -24,16 +24,15 @@ async function load(
   return { status: 200, view: res.body as unknown as PlatformAppointmentView, body: res.body };
 }
 
-export async function GET(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
   const { id } = await ctx.params;
-  if (!isUuid(id)) return json(400, { error_code: 'SF-SYS-003', message: 'Invalid appointment id' });
+  if (!isUuid(id))
+    return json(400, { error_code: 'SF-SYS-003', message: 'Invalid appointment id' });
   const loaded = await load(id, officer.token, request);
-  if (loaded.status !== 200 || !loaded.view) return relay({ status: loaded.status, body: loaded.body });
+  if (loaded.status !== 200 || !loaded.view)
+    return relay({ status: loaded.status, body: loaded.body });
   return json(200, {
     source: 'PLATFORM',
     g6_issued: false,
@@ -42,16 +41,14 @@ export async function GET(
   });
 }
 
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
   const { id } = await ctx.params;
-  if (!isUuid(id)) return json(400, { error_code: 'SF-SYS-003', message: 'Invalid appointment id' });
+  if (!isUuid(id))
+    return json(400, { error_code: 'SF-SYS-003', message: 'Invalid appointment id' });
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   const action = body?.['action'];
   if (typeof action !== 'string') {
