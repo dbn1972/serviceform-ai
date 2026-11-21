@@ -30,6 +30,8 @@ const ROLES = [
   { login: 'sf_lab_cmp004', member: 'sf_cmp004_rw', env: 'DATABASE_URL_CMP004' },
   { login: 'sf_lab_cmp009', member: 'sf_cmp009_rw', env: 'DATABASE_URL_CMP009' },
   { login: 'sf_lab_cmp015', member: 'sf_cmp015_rw', env: 'DATABASE_URL_CMP015' },
+  // SF-47: CMP-019 deficiency notices (Raise Deficiency → citizen resubmit)
+  { login: 'sf_lab_cmp019', member: 'sf_cmp019_rw', env: 'DATABASE_URL_CMP019' },
   { login: 'sf_lab_cmp016', member: 'sf_cmp016_rw', env: 'DATABASE_URL_CMP016' },
   { login: 'sf_lab_cmp022', member: 'sf_cmp022_rw', env: 'DATABASE_URL_CMP022' },
   { login: 'sf_lab_cmp024', member: 'sf_cmp024_rw', env: 'DATABASE_URL_CMP024' },

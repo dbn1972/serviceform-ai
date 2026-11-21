@@ -123,6 +123,8 @@ export async function readWorkingData(officer: Officer, id: string) {
 const INTAKE: Record<string, string> = {
   SUBMITTED: 'MARK_RECEIVED',
   RECEIVED: 'ENTER_SCRUTINY',
+  // After citizen deficiency response, resume scrutiny before a human decision.
+  CITIZEN_RESPONSE: 'ENTER_SCRUTINY',
   UNDER_SCRUTINY: 'ENTER_DECISION_PENDING',
 };
 

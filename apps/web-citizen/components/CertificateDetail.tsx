@@ -1,6 +1,7 @@
 'use client';
 
-import { Icon } from '@serviceform/ui-ux4g';
+import { Icon, Button, Checkbox, TextInput } from '@serviceform/ui-ux4g';
+import { itemLabel, reasonLabel } from '@serviceform/m10-sample-lab';
 import { maskMobile } from '@serviceform/m10-sample-lab/identity-rules';
 import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
@@ -38,6 +39,16 @@ type App = {
   };
 };
 
+type DeficiencyNotice = {
+  deficiency_id: string;
+  status: string;
+  reason_code: string;
+  notice_code: string;
+  instruction_ref: string;
+  response_due_at: string | null;
+  items: { item_code: string; required: boolean; item_status: string }[];
+};
+
 type Step = { label: string; detail: string; done: boolean; current: boolean };
 
 const STATUS_ICON = {
@@ -48,20 +59,23 @@ const STATUS_ICON = {
 } as const;
 
 function timeline(app: App): Step[] {
+  const actionRequired = app.status === 'ACTION_REQUIRED';
   const decided = ['APPROVED', 'ISSUED', 'REJECTED'].includes(app.status);
   const issued = app.status === 'ISSUED';
   const published = app.digilocker.status === 'PUBLISHED';
   return [
     { label: 'Submitted', detail: formatDate(app.created_at), done: true, current: false },
     {
-      label: app.status === 'REJECTED' ? 'Not approved' : 'Officer decision',
-      detail: decided
-        ? app.status === 'REJECTED'
-          ? 'Decision recorded'
-          : 'Approved'
-        : 'Under review',
+      label: actionRequired ? 'Action required' : app.status === 'REJECTED' ? 'Not approved' : 'Officer decision',
+      detail: actionRequired
+        ? 'More information requested'
+        : decided
+          ? app.status === 'REJECTED'
+            ? 'Decision recorded'
+            : 'Approved'
+          : 'Under review',
       done: decided,
-      current: app.status === 'SUBMITTED',
+      current: app.status === 'SUBMITTED' || actionRequired,
     },
     {
       label: 'Certificate issued',
@@ -80,21 +94,90 @@ function timeline(app: App): Step[] {
 
 export function CertificateDetail({ id }: { id: string }) {
   const [app, setApp] = useState<App | null>(null);
+  const [openDeficiency, setOpenDeficiency] = useState<DeficiencyNotice | null>(null);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
+  const [narrative, setNarrative] = useState('');
+  const [provided, setProvided] = useState<string[]>([]);
+  const [fileName, setFileName] = useState('');
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/portal/applications/${id}`);
-    const body = (await res.json().catch(() => ({}))) as { application?: App; message?: string };
-    if (!res.ok || !body.application) {
+    const [appRes, defRes] = await Promise.all([
+      fetch(`/api/portal/applications/${id}`),
+      fetch(`/api/portal/applications/${id}/deficiencies`),
+    ]);
+    const body = (await appRes.json().catch(() => ({}))) as { application?: App; message?: string };
+    if (!appRes.ok || !body.application) {
       setError(body.message ?? 'We could not find this application.');
       return;
     }
     setApp(body.application);
+    if (defRes.ok) {
+      const defBody = (await defRes.json()) as {
+        open_deficiency?: DeficiencyNotice | null;
+      };
+      const open = defBody.open_deficiency ?? null;
+      setOpenDeficiency(open);
+      if (open) {
+        setProvided(open.items.filter((i) => i.required).map((i) => i.item_code));
+      }
+    }
   }, [id]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  function toggleItem(code: string) {
+    setProvided((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
+    );
+  }
+
+  async function submitResponse() {
+    if (!openDeficiency) return;
+    setError('');
+    setInfo('');
+    if (narrative.trim().length < 3) {
+      setError('Please describe how you are responding.');
+      return;
+    }
+    if (provided.length < 1) {
+      setError('Select at least one requested document you are providing.');
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/portal/applications/${id}/deficiencies`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          deficiency_id: openDeficiency.deficiency_id,
+          narrative,
+          provided_item_codes: provided,
+          file_name: fileName || undefined,
+        }),
+      });
+      const body = (await res.json()) as {
+        message?: string;
+        error_code?: string;
+        application?: App;
+      };
+      if (!res.ok) {
+        setError(body.message ?? body.error_code ?? 'We could not submit your response.');
+        return;
+      }
+      if (body.application) setApp(body.application);
+      setOpenDeficiency(null);
+      setInfo(
+        'Your response was submitted. The office will continue reviewing your application. CERTIFIED=false · G6=false.',
+      );
+      await load();
+    } finally {
+      setBusy(false);
+    }
+  }
 
   if (!app && !error) {
     return (
@@ -150,6 +233,18 @@ export function CertificateDetail({ id }: { id: string }) {
             from Officer Workbench → Applications.
           </FormAlert>
         ) : null}
+        {app.status === 'ACTION_REQUIRED' && openDeficiency ? (
+          <FormAlert tone="warning" title="Action needed — more information requested">
+            {reasonLabel(openDeficiency.reason_code)}. Please provide the documents listed below and
+            submit your response. Upload is SIMULATED in this lab (no real file store).
+          </FormAlert>
+        ) : null}
+        {app.status === 'ACTION_REQUIRED' && !openDeficiency ? (
+          <FormAlert tone="info" title="Action needed">
+            The office asked for more information. Refresh this page if the request details have not
+            loaded yet.
+          </FormAlert>
+        ) : null}
         {app.status === 'REJECTED' ? (
           <FormAlert tone="error" title="Application not approved">
             {app.rejection_reason ?? 'The officer recorded a decision on this application.'}
@@ -174,7 +269,60 @@ export function CertificateDetail({ id }: { id: string }) {
             retry it, and you do not need to apply again.
           </FormAlert>
         ) : null}
+        {info ? (
+          <FormAlert tone="success" title="Response submitted">
+            {info}
+          </FormAlert>
+        ) : null}
+        {error ? (
+          <FormAlert tone="error" title="Could not submit">
+            {error}
+          </FormAlert>
+        ) : null}
       </section>
+
+      {app.status === 'ACTION_REQUIRED' && openDeficiency ? (
+        <section className="sf-panel" aria-labelledby="deficiency-title">
+          <h2 id="deficiency-title" className="ux4g-heading-xs-strong">
+            Respond to evidence request
+          </h2>
+          <p className="ux4g-body-m-default">
+            Notice {openDeficiency.notice_code} · {reasonLabel(openDeficiency.reason_code)}
+          </p>
+          <fieldset className="sf-section">
+            <legend className="ux4g-label-m-strong">Documents you are providing</legend>
+            <div className="sf-section">
+              {openDeficiency.items.map((item) => (
+                <Checkbox
+                  key={item.item_code}
+                  id={`item-${item.item_code}`}
+                  label={`${itemLabel(item.item_code)}${item.required ? '' : ' (optional)'}`}
+                  checked={provided.includes(item.item_code)}
+                  onChange={() => toggleItem(item.item_code)}
+                />
+              ))}
+            </div>
+          </fieldset>
+          <TextInput
+            label="Short note to the office"
+            value={narrative}
+            onChange={(e) => setNarrative(e.target.value)}
+            hint="Explain what you are uploading. Do not include Aadhaar numbers or other sensitive data."
+          />
+          <TextInput
+            label="Evidence file name (SIMULATED)"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            optional
+            hint="SAMPLE_LAB stores a SIMULATED evidence reference only — no real upload."
+          />
+          <div className="sf-actions">
+            <Button disabled={busy} onClick={() => void submitResponse()}>
+              Submit response
+            </Button>
+          </div>
+        </section>
+      ) : null}
 
       <div className="sf-detail-grid">
         <section className="sf-panel" aria-labelledby="detail-applicant">

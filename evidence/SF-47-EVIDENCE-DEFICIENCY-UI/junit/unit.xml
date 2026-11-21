@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="0.874550678">
+    <testsuite name="apps/api/test/deficiency-lab.test.ts" timestamp="2026-11-21T17:26:05.756Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.004148822">
+        <testcase classname="apps/api/test/deficiency-lab.test.ts" name="SAMPLE_LAB deficiency host adapters &gt; publishes reason/item codes in the lab fixture and package source" time="0.001773875">
+        </testcase>
+        <testcase classname="apps/api/test/deficiency-lab.test.ts" name="SAMPLE_LAB deficiency host adapters &gt; maps CMP-015 success bodies through LabCaseCommandPort" time="0.000363646">
+        </testcase>
+        <testcase classname="apps/api/test/deficiency-lab.test.ts" name="SAMPLE_LAB deficiency host adapters &gt; surfaces CMP-015 failures with detail codes for the reconciler" time="0.000958195">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/platform-lab.test.ts" timestamp="2026-11-21T17:26:05.758Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.864500042">
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="portal placement (SF-CON-PORTAL-PLACEMENT, ADR-0007 D-1/D-4) &gt; accepts the SAMPLE_LAB placement in its own environment" time="0.032828018">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="portal placement (SF-CON-PORTAL-PLACEMENT, ADR-0007 D-1/D-4) &gt; refuses production, environment mismatch and invalid placements" time="0.001120867">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="placement context resolver (ADR-0007 D-1) &gt; gives a citizen the placement tenant and no roles" time="0.001029049">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="placement context resolver (ADR-0007 D-1) &gt; keeps an officer session tenant only when it is the placement tenant" time="0.000528296">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="placement context resolver (ADR-0007 D-1) &gt; returns null without a verified principal, on actor mismatch, or unresolved session" time="0.000512637">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SAMPLE_LAB simulators (INT-013: LOCAL/CI only) &gt; refuses environments other than LOCAL/CI" time="0.000451268">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SAMPLE_LAB simulators (INT-013: LOCAL/CI only) &gt; OTP inbox records through the wrapped adapter and expires" time="0.000414064">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SAMPLE_LAB simulators (INT-013: LOCAL/CI only) &gt; serves the inbox by challenge id and mints assertions only for directory officers" time="0.028924345">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="buildPlatformLab composition &gt; composes CMP-004/005/009/015/030/033/051/052, CMP-016 sequencing and M07 issuance mounts from SAMPLE_LAB fixtures" time="0.750922834">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="buildPlatformLab composition &gt; fails closed on missing config, a short pepper or a non-lab environment" time="0.045171113">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SIMULATED form publication from the template catalogue &gt; publishes the PUBLISHED catalogue version the binding pins" time="0.000453512">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SIMULATED form publication from the template catalogue &gt; refuses a pin that is not the PUBLISHED version, or an unknown service" time="0.000294979">
+        </testcase>
+        <testcase classname="apps/api/test/platform-lab.test.ts" name="SIMULATED form publication from the template catalogue &gt; SAMPLE_LAB lab-offer may pin a DRAFT stub version (fail-closed without the flag)" time="0.000296377">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-citizen/test/deficiency.test.ts" timestamp="2026-11-21T17:26:05.760Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.002828543">
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; maps DEFICIENCY_RAISED to ACTION_REQUIRED with citizen-facing wording" time="0.001418556">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; selects only OPEN notices for the resubmit form" time="0.000215252">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; labels catalogue codes without inventing statute text" time="0.000266326">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/deficiency.test.ts" timestamp="2026-11-21T17:26:05.760Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003073271">
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="SAMPLE_LAB deficiency catalogue (officer) &gt; exposes published reason and IND-SOC-002 evidence item codes" time="0.001858883">
+        </testcase>
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="workbench status for deficiency path &gt; surfaces DEFICIENCY_RAISED and CITIZEN_RESPONSE without inventing states" time="0.000262414">
+        </testcase>
+    </testsuite>
+</testsuites>
