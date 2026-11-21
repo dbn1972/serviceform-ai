@@ -129,6 +129,8 @@ export function loadUploadPolicyFixture(dir: string, environment: string): Uploa
 /**
  * Citizen DOCUMENT_UPLOAD_SESSION_CREATE has no owner yet; inject self as owner_id
  * (same pattern as APPLICATION_CREATE_DRAFT / FORM_EXECUTION_EXECUTE).
+ * Also default missing classification to CITIZEN_PRIVATE so OPA tenant.rego does not
+ * treat empty classification as TENANT_MISMATCH (CMP-013 session create must set it).
  */
 export function documentOwnerEnrichingAuthorizer(pdp: AuthorizationPort): AuthorizationPort {
   return {
@@ -138,12 +140,15 @@ export function documentOwnerEnrichingAuthorizer(pdp: AuthorizationPort): Author
       if (
         subject.actor_type === 'CITIZEN' &&
         resource.resource_type === 'Document' &&
-        input.action === 'DOCUMENT_UPLOAD_SESSION_CREATE' &&
-        !resource.owner_id
+        input.action === 'DOCUMENT_UPLOAD_SESSION_CREATE'
       ) {
         return pdp.decide({
           ...input,
-          resource: { ...resource, owner_id: subject.user_id },
+          resource: {
+            ...resource,
+            ...(resource.owner_id ? {} : { owner_id: subject.user_id }),
+            ...(resource.classification ? {} : { classification: 'CITIZEN_PRIVATE' }),
+          },
         });
       }
       return pdp.decide(input);

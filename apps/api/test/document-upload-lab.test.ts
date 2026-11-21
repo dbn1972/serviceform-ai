@@ -84,7 +84,10 @@ describe('SAMPLE_LAB CMP-013 composition helpers (SF-49)', () => {
       environment: { request_time: '2026-11-21T00:00:00Z' },
     });
     expect(seen[0]).toMatchObject({
-      resource: { owner_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' },
+      resource: {
+        owner_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        classification: 'CITIZEN_PRIVATE',
+      },
     });
   });
 });
