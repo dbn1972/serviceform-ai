@@ -341,6 +341,58 @@ class PgTx implements GrievanceTx {
     );
   }
 
+  async replaceAssignmentRequest(row: AssignmentRequestRow): Promise<void> {
+    const updated = await this.client.query(
+      `UPDATE sf_grievance.assignment_request
+          SET role_code = $1, organisation_id = $2, office_id = $3, jurisdiction_id = $4,
+              service_scope_id = $5, created_at = $6, correlation_id = $7, request_id = $8
+        WHERE grievance_id = $9`,
+      [
+        row.assignment.role_code,
+        row.assignment.organisation_id,
+        row.assignment.office_id,
+        row.assignment.jurisdiction_id,
+        row.assignment.service_scope_id,
+        row.created_at,
+        row.correlation_id,
+        row.request_id,
+        row.grievance_id,
+      ],
+    );
+    if ((updated.rowCount ?? 0) === 0) {
+      await this.insertAssignmentRequest(row);
+    }
+  }
+
+  async listByFiler(filerId: string, limit: number): Promise<GrievanceRow[]> {
+    const { rows } = await this.client.query(
+      `SELECT ${G_COLS.join(',')} FROM sf_grievance.grievance
+        WHERE filer_id = $1
+        ORDER BY created_at DESC
+        LIMIT $2`,
+      [filerId, limit],
+    );
+    return rows.map(grievanceFromRow);
+  }
+
+  async listQueue(params: {
+    statuses: readonly GrievanceStatus[];
+    roleCode: string | null;
+    limit: number;
+  }): Promise<GrievanceRow[]> {
+    const { rows } = await this.client.query(
+      `SELECT g.${G_COLS.join(', g.')}
+         FROM sf_grievance.grievance g
+         LEFT JOIN sf_grievance.assignment_request ar ON ar.grievance_id = g.grievance_id
+        WHERE g.status = ANY($1::text[])
+          AND ($2::text IS NULL OR ar.role_code = $2)
+        ORDER BY g.updated_at DESC
+        LIMIT $3`,
+      [params.statuses as string[], params.roleCode, params.limit],
+    );
+    return rows.map(grievanceFromRow);
+  }
+
   async getAssignmentRequest(grievanceId: string): Promise<AssignmentRequestRow | null> {
     const { rows } = await this.client.query(
       `SELECT request_id, tenant_id, grievance_id, role_code, organisation_id, office_id,

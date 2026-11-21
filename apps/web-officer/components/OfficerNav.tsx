@@ -22,7 +22,10 @@ export function OfficerNav() {
       .then((body) => {
         setSignedIn(Boolean(body.authenticated));
         const roles = Array.isArray(body.roles) ? body.roles : [];
-        setShowHelpdesk(roles.some(isHelpdeskRole));
+        // SF-50 helpdesk personas + SF-52 case-officer grievance desk.
+        setShowHelpdesk(
+          roles.some(isHelpdeskRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER'),
+        );
       })
       .catch(() => {
         setSignedIn(false);

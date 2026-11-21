@@ -265,26 +265,100 @@ export class GrievanceFeedbackService {
   async get(rawCtx: unknown, grievanceId: unknown): Promise<ServiceResult> {
     const ctx = requireTenantContext(rawCtx);
     const id = requireId(grievanceId, '/grievance_id');
+    const row = await this.store.withTx(sessionOf(ctx), (tx) => tx.getGrievance(id));
+    if (!row) throw new Cmp027Error('SF-SYS-002');
     await authorizeAction(
       this.authorizer,
       ctx,
       'GRIEVANCE_READ',
-      { grievanceId: id },
+      {
+        grievanceId: id,
+        ownerId: row.filer_id,
+        serviceId: row.service_id,
+        organisationId: row.organisation_id,
+        jurisdictionId: row.jurisdiction_id,
+      },
       this.clock(),
     );
-    const row = await this.store.withTx(sessionOf(ctx), (tx) => tx.getGrievance(id));
-    if (!row) throw new Cmp027Error('SF-SYS-002');
     return { status: 200, body: { grievance: view(row) }, replayed: false };
+  }
+
+  /** Citizen list — filer_id forced to the authenticated actor (OPA owner path). */
+  async listMine(rawCtx: unknown, rawLimit: unknown): Promise<ServiceResult> {
+    const ctx = requireTenantContext(rawCtx);
+    const limit = clampLimit(rawLimit);
+    await authorizeAction(
+      this.authorizer,
+      ctx,
+      'GRIEVANCE_LIST',
+      { ownerId: ctx.actor.id },
+      this.clock(),
+    );
+    const rows = await this.store.withTx(sessionOf(ctx), (tx) =>
+      tx.listByFiler(ctx.actor.id, limit),
+    );
+    return {
+      status: 200,
+      body: { grievances: rows.map(view) },
+      replayed: false,
+    };
+  }
+
+  /** Officer/helpdesk queue — optional role_code filter from assignment desk metadata. */
+  async listQueue(
+    rawCtx: unknown,
+    rawQuery: unknown,
+  ): Promise<ServiceResult> {
+    const ctx = requireTenantContext(rawCtx);
+    const q =
+      typeof rawQuery === 'object' && rawQuery !== null
+        ? (rawQuery as Record<string, unknown>)
+        : {};
+    const limit = clampLimit(q['limit']);
+    const roleCode = optionalCode(q['role_code'], '/role_code');
+    await authorizeAction(
+      this.authorizer,
+      ctx,
+      'GRIEVANCE_LIST',
+      {
+        organisationId: ctx.organisation_id ?? null,
+        jurisdictionId: ctx.jurisdiction_ids[0] ?? null,
+      },
+      this.clock(),
+    );
+    const statuses: GrievanceStatus[] = [
+      'FILED',
+      'CATEGORISED',
+      'ROUTED',
+      'OPEN',
+      'PENDING_RESPONSE',
+    ];
+    const rows = await this.store.withTx(sessionOf(ctx), (tx) =>
+      tx.listQueue({ statuses, roleCode, limit }),
+    );
+    return {
+      status: 200,
+      body: { grievances: rows.map(view) },
+      replayed: false,
+    };
   }
 
   async listTransitions(rawCtx: unknown, grievanceId: unknown): Promise<ServiceResult> {
     const ctx = requireTenantContext(rawCtx);
     const id = requireId(grievanceId, '/grievance_id');
+    const snapshot = await this.store.withTx(sessionOf(ctx), (tx) => tx.getGrievance(id));
+    if (!snapshot) throw new Cmp027Error('SF-SYS-002');
     await authorizeAction(
       this.authorizer,
       ctx,
       'GRIEVANCE_READ',
-      { grievanceId: id },
+      {
+        grievanceId: id,
+        ownerId: snapshot.filer_id,
+        serviceId: snapshot.service_id,
+        organisationId: snapshot.organisation_id,
+        jurisdictionId: snapshot.jurisdiction_id,
+      },
       this.clock(),
     );
     const rows = await this.store.withTx(sessionOf(ctx), (tx) => tx.listTransitions(id));
@@ -300,11 +374,19 @@ export class GrievanceFeedbackService {
   async listResponses(rawCtx: unknown, grievanceId: unknown): Promise<ServiceResult> {
     const ctx = requireTenantContext(rawCtx);
     const id = requireId(grievanceId, '/grievance_id');
+    const snapshot = await this.store.withTx(sessionOf(ctx), (tx) => tx.getGrievance(id));
+    if (!snapshot) throw new Cmp027Error('SF-SYS-002');
     await authorizeAction(
       this.authorizer,
       ctx,
       'GRIEVANCE_READ',
-      { grievanceId: id },
+      {
+        grievanceId: id,
+        ownerId: snapshot.filer_id,
+        serviceId: snapshot.service_id,
+        organisationId: snapshot.organisation_id,
+        jurisdictionId: snapshot.jurisdiction_id,
+      },
       this.clock(),
     );
     const rows = await this.store.withTx(sessionOf(ctx), (tx) => tx.listResponses(id));
@@ -386,7 +468,7 @@ export class GrievanceFeedbackService {
       });
     }
     let assignment: Assignment | null = null;
-    if (command === 'REQUEST_ASSIGNMENT') {
+    if (command === 'REQUEST_ASSIGNMENT' || command === 'ESCALATE') {
       assignment =
         body['assignment'] !== undefined
           ? parseAssignment(body['assignment'])
@@ -397,6 +479,18 @@ export class GrievanceFeedbackService {
               jurisdiction_id: snapshot.jurisdiction_id,
               service_scope_id: snapshot.service_id,
             });
+    }
+    if (command === 'ESCALATE') {
+      if (!assignment) {
+        throw new Cmp027Error('SF-SYS-003', {
+          details: detail('ASSIGNMENT_REQUIRED', '/assignment'),
+        });
+      }
+      if (!reasonCode) {
+        throw new Cmp027Error('SF-SYS-003', {
+          details: detail('REASON_REQUIRED', '/reason_code'),
+        });
+      }
     }
     let bodyRef: string | null = null;
     if (command === 'RECORD_RESPONSE') {
@@ -488,7 +582,10 @@ export class GrievanceFeedbackService {
           );
         }
         let assignmentRow: AssignmentRequestRow | null = null;
-        if (command === 'REQUEST_ASSIGNMENT' && assignment) {
+        if (
+          (command === 'REQUEST_ASSIGNMENT' || command === 'ESCALATE') &&
+          assignment
+        ) {
           assignmentRow = {
             request_id: randomUUID(),
             tenant_id: ctx.tenant_id,
@@ -498,7 +595,11 @@ export class GrievanceFeedbackService {
             created_at: occurred,
             correlation_id: ctx.correlation_id,
           };
-          await tx.insertAssignmentRequest(assignmentRow);
+          if (command === 'ESCALATE') {
+            await tx.replaceAssignmentRequest(assignmentRow);
+          } else {
+            await tx.insertAssignmentRequest(assignmentRow);
+          }
           await tx.insertOutbox(
             envelopeOf({
               eventType: EVENT_TYPES.assignmentRequested,
@@ -506,7 +607,11 @@ export class GrievanceFeedbackService {
               aggregateId: id,
               aggregateVersion: next.aggregate_version,
               occurredAt: occurred,
-              data: { assignment, request_id: assignmentRow.request_id },
+              data: {
+                assignment,
+                request_id: assignmentRow.request_id,
+                escalate: command === 'ESCALATE',
+              },
             }),
             TOPIC_DOMAIN,
           );
@@ -802,6 +907,17 @@ export class GrievanceFeedbackService {
       }
     }
   }
+}
+
+function clampLimit(value: unknown): number {
+  if (typeof value === 'number' && Number.isInteger(value) && value >= 1 && value <= 100) {
+    return value;
+  }
+  if (typeof value === 'string' && /^\d+$/.test(value)) {
+    const n = Number(value);
+    if (n >= 1 && n <= 100) return n;
+  }
+  return 50;
 }
 
 function isStatusExpect(value: unknown): value is GrievanceStatus {

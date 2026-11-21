@@ -187,8 +187,37 @@ class MemoryTx implements GrievanceTx {
     this.s.assignments.set(row.grievance_id, structuredClone(row));
   }
 
+  async replaceAssignmentRequest(row: AssignmentRequestRow): Promise<void> {
+    this.s.assignments.set(row.grievance_id, structuredClone(row));
+  }
+
   async getAssignmentRequest(grievanceId: string): Promise<AssignmentRequestRow | null> {
     return this.visible(this.s.assignments.get(grievanceId));
+  }
+
+  async listByFiler(filerId: string, limit: number): Promise<GrievanceRow[]> {
+    return [...this.s.grievances.values()]
+      .filter((g) => g.tenant_id === this.session.tenantId && g.filer_id === filerId)
+      .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+      .slice(0, limit);
+  }
+
+  async listQueue(params: {
+    statuses: readonly GrievanceRow['status'][];
+    roleCode: string | null;
+    limit: number;
+  }): Promise<GrievanceRow[]> {
+    const statusSet = new Set(params.statuses);
+    return [...this.s.grievances.values()]
+      .filter((g) => {
+        if (g.tenant_id !== this.session.tenantId) return false;
+        if (!statusSet.has(g.status)) return false;
+        if (!params.roleCode) return true;
+        const asg = this.s.assignments.get(g.grievance_id);
+        return asg?.assignment.role_code === params.roleCode;
+      })
+      .sort((a, b) => (a.updated_at < b.updated_at ? 1 : -1))
+      .slice(0, params.limit);
   }
 
   async insertAiAssist(row: AiAssistRow): Promise<void> {

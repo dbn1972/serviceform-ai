@@ -267,4 +267,39 @@ describe('CMP-027 grievance/feedback service', () => {
       'STALE_STATUS',
     );
   });
+
+  it('lists grievances for filer and officer queue; escalate replaces assignment', async () => {
+    const id = await file();
+    await toOpen(id);
+    const mine = await h.service.listMine(citizen(), 10);
+    expect((mine.body as { grievances: { grievance_id: string }[] }).grievances[0]?.grievance_id).toBe(
+      id,
+    );
+    const queue = await h.service.listQueue(officer(), { limit: 10 });
+    expect(
+      (queue.body as { grievances: { grievance_id: string }[] }).grievances.some(
+        (g) => g.grievance_id === id,
+      ),
+    ).toBe(true);
+    const higher = {
+      ...FIXED_ASSIGNMENT,
+      role_code: 'GRIEVANCE_SUPERVISOR',
+    };
+    await run(officer(), id, 'ESCALATE', {
+      assignment: higher,
+      reason_code: 'ESCALATE_L2',
+    });
+    expect(stateOf(id).status).toBe('OPEN');
+    const asg = await store.withTx(
+      {
+        tenantId: T1,
+        cellId: 'cell-01',
+        actorType: 'OFFICER',
+        actorId: OFFICER,
+        correlationId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+      },
+      (tx) => tx.getAssignmentRequest(id),
+    );
+    expect(asg?.assignment.role_code).toBe('GRIEVANCE_SUPERVISOR');
+  });
 });

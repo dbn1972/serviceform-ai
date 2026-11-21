@@ -12,6 +12,8 @@ describe('CMP-027 domain machine', () => {
     expect(resolveTransition('CATEGORISE', 'FILED')?.to).toBe('CATEGORISED');
     expect(resolveTransition('ROUTE', 'CATEGORISED')?.to).toBe('ROUTED');
     expect(resolveTransition('REQUEST_ASSIGNMENT', 'ROUTED')?.to).toBe('OPEN');
+    expect(resolveTransition('ESCALATE', 'OPEN')?.to).toBe('OPEN');
+    expect(resolveTransition('ESCALATE', 'PENDING_RESPONSE')?.to).toBe('OPEN');
     expect(resolveTransition('RESOLVE', 'OPEN')?.to).toBe('RESOLVED');
     expect(resolveTransition('CLOSE', 'RESOLVED')?.to).toBe('CLOSED');
   });

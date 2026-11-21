@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.009605979">
+    <testsuite name="apps/api/test/grievance-lab.test.ts" timestamp="2026-11-21T17:55:18.071Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003397565">
+        <testcase classname="apps/api/test/grievance-lab.test.ts" name="SAMPLE_LAB grievance catalogue / routing &gt; routes published categories to L1 desk without named officers" time="0.001452333">
+        </testcase>
+        <testcase classname="apps/api/test/grievance-lab.test.ts" name="SAMPLE_LAB grievance catalogue / routing &gt; refuses categories outside the published catalogue (fail-closed)" time="0.000891599">
+        </testcase>
+        <testcase classname="apps/api/test/grievance-lab.test.ts" name="SAMPLE_LAB grievance catalogue / routing &gt; builds escalation assignment for allowed levels only" time="0.000182338">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-citizen/test/grievances.test.ts" timestamp="2026-11-21T17:55:18.073Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.002817014">
+        <testcase classname="apps/web-citizen/test/grievances.test.ts" name="citizen grievance portal helpers &gt; maps published categories and portal view" time="0.001366949">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/grievances.test.ts" name="citizen grievance portal helpers &gt; builds opaque SIMULATED body refs without free-form PII columns" time="0.000502897">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/grievances.test.ts" timestamp="2026-11-21T17:55:18.073Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.0033914">
+        <testcase classname="apps/web-officer/test/grievances.test.ts" name="officer helpdesk portal helpers &gt; exposes assign/route/escalate flags from status + metadata" time="0.002086176">
+        </testcase>
+        <testcase classname="apps/web-officer/test/grievances.test.ts" name="officer helpdesk portal helpers &gt; builds role-only assignment from published ladder" time="0.000336396">
+        </testcase>
+    </testsuite>
+</testsuites>

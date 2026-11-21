@@ -24,6 +24,8 @@ export const COMMANDS = [
   'RESOLVE',
   'CLOSE',
   'WITHDRAW',
+  /** Raise desk level when published metadata allows (IGM-inspired; no statutory outcome). */
+  'ESCALATE',
 ] as const;
 export type TransitionCommand = (typeof COMMANDS)[number];
 
@@ -100,6 +102,9 @@ export const TRANSITIONS: ReadonlyArray<{
   { command: 'WITHDRAW', from: 'ROUTED', to: 'WITHDRAWN' },
   { command: 'WITHDRAW', from: 'OPEN', to: 'WITHDRAWN' },
   { command: 'WITHDRAW', from: 'PENDING_RESPONSE', to: 'WITHDRAWN' },
+  /** Desk ladder only — reassigns by role/org/jurisdiction; never an LLM statutory close. */
+  { command: 'ESCALATE', from: 'OPEN', to: 'OPEN' },
+  { command: 'ESCALATE', from: 'PENDING_RESPONSE', to: 'OPEN' },
 ];
 
 export function resolveTransition(
@@ -201,7 +206,13 @@ export function assertStatutoryClose(params: {
   command: TransitionCommand;
   actorType: string;
 }): void {
-  if (params.command !== 'RESOLVE' && params.command !== 'CLOSE') return;
+  const officerOnly =
+    params.command === 'RESOLVE' ||
+    params.command === 'CLOSE' ||
+    params.command === 'ESCALATE' ||
+    params.command === 'ROUTE' ||
+    params.command === 'REQUEST_ASSIGNMENT';
+  if (!officerOnly) return;
   if (params.actorType === 'INTEGRATION') {
     throw new Cmp027Error('SF-AUTH-002', { details: detail('AI_FINAL_DISPOSITION_FORBIDDEN') });
   }

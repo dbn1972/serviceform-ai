@@ -82,6 +82,12 @@ import {
   type Cmp017Module,
 } from './tasks.js';
 import { deficiencyOwnerEnrichingAuthorizer, LabCaseCommandPort } from './deficiency.js';
+import {
+  composeLabGrievance,
+  loadGrievanceCatalogue,
+  registerLabGrievanceRoutes,
+  type LabGrievanceCatalogue,
+} from './grievance.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -112,6 +118,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP033?: string;
   DATABASE_URL_CMP051?: string;
   DATABASE_URL_CMP052?: string;
+  /** Optional SAMPLE_LAB CMP-027 grievance/helpdesk mount. */
+  DATABASE_URL_CMP027?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -156,6 +164,8 @@ export interface PlatformLab {
   registerStudioRules(app: FastifyInstance): Promise<void>;
   /** Phase C live-pins: resolve Studio form pin (form_key + hash) by CMP-033 version id. */
   registerFormPins(app: FastifyInstance): Promise<void>;
+  /** SAMPLE_LAB CMP-027 lab list/catalogue routes (optional when DATABASE_URL_CMP027 is set). */
+  registerGrievance?(app: FastifyInstance): Promise<void>;
   /**
    * Publishes the SAMPLE_LAB privacy purposes (CMP-030), connects Temporal, seeds the pinned
    * workflow versions and starts the CMP-016 worker.
@@ -558,6 +568,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP052
       ? { cmp052: new pg.Pool({ connectionString: env.DATABASE_URL_CMP052, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP027
+      ? { cmp027: new pg.Pool({ connectionString: env.DATABASE_URL_CMP027, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -573,6 +586,7 @@ export async function buildPlatformLab(
     cmp033?: pg.Pool;
     cmp051?: pg.Pool;
     cmp052?: pg.Pool;
+    cmp027?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -891,6 +905,18 @@ export async function buildPlatformLab(
     opa as unknown as { decide(input: unknown): Promise<{ allow?: unknown }> },
   );
 
+  let grievanceCatalogue: LabGrievanceCatalogue | null = null;
+  let grievanceService: ReturnType<typeof composeLabGrievance> | null = null;
+  if (pools.cmp027) {
+    grievanceCatalogue = loadGrievanceCatalogue(dir);
+    grievanceService = composeLabGrievance({
+      pool: pools.cmp027,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      environment,
+      catalogue: grievanceCatalogue,
+    });
+  }
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1028,6 +1054,14 @@ export async function buildPlatformLab(
             },
           }
         : {}),
+      ...(grievanceService
+        ? {
+            grievance: {
+              service: grievanceService,
+              resolveContext,
+            },
+          }
+        : {}),
     },
     wave2: {
       consentPrivacy: {
@@ -1057,6 +1091,7 @@ export async function buildPlatformLab(
       ...(pools.cmp033 ? [poolReadiness('cmp033-db', pools.cmp033)] : []),
       ...(pools.cmp051 ? [poolReadiness('cmp051-db', pools.cmp051)] : []),
       ...(pools.cmp052 ? [poolReadiness('cmp052-db', pools.cmp052)] : []),
+      ...(pools.cmp027 ? [poolReadiness('cmp027-db', pools.cmp027)] : []),
       ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
@@ -1095,6 +1130,17 @@ export async function buildPlatformLab(
         ),
         resolveContext,
       }),
+    ...(grievanceService && grievanceCatalogue
+      ? {
+          registerGrievance: async (app: FastifyInstance) => {
+            registerLabGrievanceRoutes(app, {
+              service: grievanceService,
+              resolveContext,
+              catalogue: grievanceCatalogue,
+            });
+          },
+        }
+      : {}),
     async start() {
       await privacy.publish();
       await workflow.start();

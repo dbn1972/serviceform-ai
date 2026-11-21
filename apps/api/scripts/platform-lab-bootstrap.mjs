@@ -44,6 +44,8 @@ const ROLES = [
   { login: 'sf_lab_cmp033', member: 'sf_cmp033_rw', env: 'DATABASE_URL_CMP033' },
   { login: 'sf_lab_cmp051', member: 'sf_cmp051_rw', env: 'DATABASE_URL_CMP051' },
   { login: 'sf_lab_cmp052', member: 'sf_cmp052_rw', env: 'DATABASE_URL_CMP052' },
+  // SAMPLE_LAB grievance / helpdesk (CMP-027)
+  { login: 'sf_lab_cmp027', member: 'sf_cmp027_rw', env: 'DATABASE_URL_CMP027' },
 ];
 
 function previous() {

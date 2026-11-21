@@ -299,6 +299,45 @@
     },
     "TASK_LIST": {
       "action_class": "READ_ONLY"
+    },
+    "GRIEVANCE_FILE": {
+      "action_class": "PROTECTED"
+    },
+    "FEEDBACK_RECORD": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "GRIEVANCE_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "GRIEVANCE_CATEGORISE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_ROUTE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_REQUEST_ASSIGNMENT": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_RECORD_RESPONSE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_RESOLVE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_CLOSE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_WITHDRAW": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_ESCALATE": {
+      "action_class": "PROTECTED"
+    },
+    "GRIEVANCE_AI_ASSIST": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -327,7 +366,8 @@
     "WorkflowDefinition",
     "WorkflowVersion",
     "RulePack",
-    "HumanTask"
+    "HumanTask",
+    "GrievanceFeedback"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -362,6 +402,18 @@
     },
     "Consent": {
       "actions": ["CONSENT_GRANT", "CONSENT_READ"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "GrievanceFeedback": {
+      "actions": [
+        "GRIEVANCE_FILE",
+        "FEEDBACK_RECORD",
+        "GRIEVANCE_READ",
+        "GRIEVANCE_LIST",
+        "GRIEVANCE_CATEGORISE",
+        "GRIEVANCE_RECORD_RESPONSE",
+        "GRIEVANCE_WITHDRAW"
+      ],
       "assurance": ["OTP", "MFA"]
     }
   },
