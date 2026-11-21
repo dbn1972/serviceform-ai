@@ -119,6 +119,12 @@ import {
   type LabGrievanceCatalogue,
 } from './grievance.js';
 import {
+  composeLabInspection,
+  loadInspectionCatalogue,
+  registerLabInspectionRoutes,
+  type LabInspectionCatalogue,
+} from './inspection.js';
+import {
   caseCommandName,
   composeLabSla,
   loadSlaCatalogue,
@@ -172,6 +178,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP052?: string;
   /** Optional SAMPLE_LAB CMP-027 grievance/helpdesk mount. */
   DATABASE_URL_CMP027?: string;
+  /** SF-57: optional CMP-018 inspection / verification desk. */
+  DATABASE_URL_CMP018?: string;
   /** SF-53: optional CMP-029 SLA clocks (officer visibility + deficiency pause). */
   DATABASE_URL_CMP029?: string;
   /** Optional SAMPLE_LAB CMP-057 assisted / CSC apply shell. */
@@ -228,6 +236,8 @@ export interface PlatformLab {
   registerFormPins(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-027 lab list/catalogue routes (optional when DATABASE_URL_CMP027 is set). */
   registerGrievance?(app: FastifyInstance): Promise<void>;
+  /** SF-57: SAMPLE_LAB CMP-018 lab catalogue route (optional when DATABASE_URL_CMP018 is set). */
+  registerInspection?(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-057 assisted/CSC lab routes (optional when DATABASE_URL_CMP057 is set). */
   registerAssisted?(app: FastifyInstance): Promise<void>;
   /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
@@ -694,6 +704,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP027
       ? { cmp027: new pg.Pool({ connectionString: env.DATABASE_URL_CMP027, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP018
+      ? { cmp018: new pg.Pool({ connectionString: env.DATABASE_URL_CMP018, max: 4 }) }
+      : {}),
     ...(env.DATABASE_URL_CMP029
       ? { cmp029: new pg.Pool({ connectionString: env.DATABASE_URL_CMP029, max: 4 }) }
       : {}),
@@ -723,6 +736,7 @@ export async function buildPlatformLab(
     cmp051?: pg.Pool;
     cmp052?: pg.Pool;
     cmp027?: pg.Pool;
+    cmp018?: pg.Pool;
     cmp029?: pg.Pool;
     cmp057?: pg.Pool;
     cmp025?: pg.Pool;
@@ -1144,6 +1158,17 @@ export async function buildPlatformLab(
     });
   }
 
+  let inspectionCatalogue: LabInspectionCatalogue | null = null;
+  let inspectionService: ReturnType<typeof composeLabInspection> | null = null;
+  if (pools.cmp018) {
+    inspectionCatalogue = loadInspectionCatalogue(dir);
+    inspectionService = composeLabInspection({
+      pool: pools.cmp018,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      catalogue: inspectionCatalogue,
+    });
+  }
+
   let slaLifecycle: LabSlaLifecycle | null = null;
   let slaMount: {
     pool: pg.Pool;
@@ -1338,6 +1363,14 @@ export async function buildPlatformLab(
             },
           }
         : {}),
+      ...(inspectionService
+        ? {
+            inspection: {
+              service: inspectionService,
+              resolveContext,
+            },
+          }
+        : {}),
       ...(slaMount ? { sla: slaMount } : {}),
     },
     wave2: {
@@ -1370,6 +1403,7 @@ export async function buildPlatformLab(
       ...(pools.cmp051 ? [poolReadiness('cmp051-db', pools.cmp051)] : []),
       ...(pools.cmp052 ? [poolReadiness('cmp052-db', pools.cmp052)] : []),
       ...(pools.cmp027 ? [poolReadiness('cmp027-db', pools.cmp027)] : []),
+      ...(pools.cmp018 ? [poolReadiness('cmp018-db', pools.cmp018)] : []),
       ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
       ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
       ...(pools.cmp025 ? [poolReadiness('cmp025-db', pools.cmp025)] : []),
@@ -1442,6 +1476,13 @@ export async function buildPlatformLab(
               resolveContext,
               catalogue: grievanceCatalogue,
             });
+          },
+        }
+      : {}),
+    ...(inspectionService && inspectionCatalogue
+      ? {
+          registerInspection: async (app: FastifyInstance) => {
+            registerLabInspectionRoutes(app, { catalogue: inspectionCatalogue });
           },
         }
       : {}),

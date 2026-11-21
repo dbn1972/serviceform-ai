@@ -242,6 +242,9 @@ describe('buildPlatformLab composition', () => {
       expect(lab.m05.applicationCase?.service).toBeDefined();
       expect(lab.m05.tasks?.service).toBeDefined();
       expect(lab.m05.deficiency?.pool).toBeDefined();
+      // SF-57: CMP-018 is optional — absent without DATABASE_URL_CMP018.
+      expect(lab.m05.inspection).toBeUndefined();
+      expect(lab.registerInspection).toBeUndefined();
       expect(lab.m04.forms?.forms).toBeDefined();
       expect(lab.m03?.metadata?.pool).toBeDefined();
       expect(lab.m03?.makerChecker?.pool).toBeDefined();
@@ -275,12 +278,13 @@ describe('buildPlatformLab composition', () => {
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
       const directory = (officers.json() as { officers: { subject: string; roles: string[] }[] })
         .officers;
-      // Case + scrutiny + approving + helpdesk desks + Studio designer/checker + tenant admin (SF-46/50).
-      expect(directory).toHaveLength(7);
+      // Case + scrutiny + approving + helpdesk + inspection desks + Studio designer/checker + tenant admin (SF-46/50/57).
+      expect(directory).toHaveLength(8);
       expect(directory.map((o) => o.subject).sort()).toEqual([
         'sample-lab-approving-officer-1',
         'sample-lab-case-officer-1',
         'sample-lab-helpdesk-officer-1',
+        'sample-lab-inspection-officer-1',
         'sample-lab-scrutiny-officer-1',
         'sample-lab-studio-checker-1',
         'sample-lab-studio-designer-1',
@@ -296,6 +300,8 @@ describe('buildPlatformLab composition', () => {
       );
       const helpdesk = directory.find((o) => o.subject === 'sample-lab-helpdesk-officer-1');
       expect(helpdesk?.roles).toEqual(['SAMPLE_LAB_HELPDESK_L1']);
+      const inspection = directory.find((o) => o.subject === 'sample-lab-inspection-officer-1');
+      expect(inspection?.roles).toEqual(['SAMPLE_LAB_INSPECTION_OFFICER']);
     } finally {
       await lab.close();
     }
@@ -344,6 +350,20 @@ describe('buildPlatformLab composition', () => {
     await expect(buildPlatformLab({ ...env, SF_FORMS_RATE_LIMIT_MAX: '0' })).rejects.toThrow(
       /SF_FORMS_RATE_LIMIT_MAX/,
     );
+  });
+
+  it('SF-57: mounts CMP-018 inspection when DATABASE_URL_CMP018 is set', async () => {
+    const lab = await buildPlatformLab({
+      ...env,
+      DATABASE_URL_CMP018: 'postgres://u:p@127.0.0.1:1/none',
+    });
+    try {
+      expect(lab.m05.inspection?.service).toBeDefined();
+      expect(lab.registerInspection).toBeTypeOf('function');
+      expect(lab.readinessChecks.map((c) => c.name)).toContain('cmp018-db');
+    } finally {
+      await lab.close();
+    }
   });
 });
 

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { isHelpdeskRole } from '../lib/portal/desk';
+import { isHelpdeskRole, isInspectionRole } from '../lib/portal/desk';
 
 const baseLinks = [
   { href: '/', label: 'Home' },
@@ -16,6 +16,7 @@ export function OfficerNav() {
   const pathname = usePathname();
   const [signedIn, setSignedIn] = useState(false);
   const [showHelpdesk, setShowHelpdesk] = useState(false);
+  const [showInspection, setShowInspection] = useState(false);
 
   useEffect(() => {
     void fetch('/api/portal/session')
@@ -25,10 +26,15 @@ export function OfficerNav() {
         const roles = Array.isArray(body.roles) ? body.roles : [];
         // SF-50 helpdesk personas + SF-52 case-officer grievance desk.
         setShowHelpdesk(roles.some(isHelpdeskRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER'));
+        // SF-57 inspection desk + case officer can open CMP-018.
+        setShowInspection(
+          roles.some(isInspectionRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER'),
+        );
       })
       .catch(() => {
         setSignedIn(false);
         setShowHelpdesk(false);
+        setShowInspection(false);
       });
   }, [pathname]);
 
@@ -36,13 +42,16 @@ export function OfficerNav() {
     await fetch('/api/portal/session', { method: 'DELETE' });
     setSignedIn(false);
     setShowHelpdesk(false);
+    setShowInspection(false);
     router.replace('/login');
     router.refresh();
   }
 
-  const links = showHelpdesk
-    ? [...baseLinks, { href: '/helpdesk', label: 'Helpdesk' } as const]
-    : baseLinks;
+  const links = [
+    ...baseLinks,
+    ...(showHelpdesk ? ([{ href: '/helpdesk', label: 'Helpdesk' }] as const) : []),
+    ...(showInspection ? ([{ href: '/inspection', label: 'Inspection' }] as const) : []),
+  ];
 
   return (
     <nav aria-label="Officer">

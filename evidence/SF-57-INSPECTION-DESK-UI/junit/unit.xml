@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="0" errors="0" time="0.012657597">
+    <testsuite name="apps/api/test/inspection-lab.test.ts" timestamp="2026-11-21T19:56:32.654Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003545134">
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; keeps valid pins and drops invalid workflow_node_id (fail-closed metadata)" time="0.001705426">
+        </testcase>
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; builds assignment from catalogue without named officers" time="0.000349823">
+        </testcase>
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; exposes DEFICIENCY_NOTED as a non-statutory verification result" time="0.000183255">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/desk-routing.test.ts" timestamp="2026-11-21T19:56:32.655Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.004658414">
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; routes single scrutiny / approving desks to applications?desk=&lt;role_code&gt;" time="0.001341125">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; routes combined case / multi-desk officers to the neutral applications queue" time="0.000264825">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; routes helpdesk-only role codes to /helpdesk" time="0.000220688">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; routes inspection-only role codes to /inspection (SF-57)" time="0.000196433">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; does not invent a case desk for studio-only roles" time="0.000182915">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; never branches on display names or subjects (role_code matrix only)" time="0.000107212">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; safeNext keeps ?next= override and rejects open redirects onto the desk home" time="0.000229799">
+        </testcase>
+        <testcase classname="apps/web-officer/test/desk-routing.test.ts" name="SAMPLE_LAB desk home routing (SF-50) &gt; keeps SF-46 desk labels and actions for HUMAN_TASK role codes" time="0.000565798">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/inspection.test.ts" timestamp="2026-11-21T19:56:32.656Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004454049">
+        <testcase classname="apps/web-officer/test/inspection.test.ts" name="officer inspection desk helpers &gt; projects REQUESTED card with schedule action and pin label" time="0.001384497">
+        </testcase>
+        <testcase classname="apps/web-officer/test/inspection.test.ts" name="officer inspection desk helpers &gt; enables result + complete only in IN_PROGRESS after result recorded" time="0.000345539">
+        </testcase>
+        <testcase classname="apps/web-officer/test/inspection.test.ts" name="officer inspection desk helpers &gt; builds create body from published pin metadata (no service forks)" time="0.001030794">
+        </testcase>
+        <testcase classname="apps/web-officer/test/inspection.test.ts" name="officer inspection desk helpers &gt; accepts only catalogue verification results" time="0.000342044">
+        </testcase>
+        <testcase classname="apps/web-officer/test/inspection.test.ts" name="officer inspection desk helpers &gt; routes inspection-only officers to /inspection" time="0.000246483">
+        </testcase>
+    </testsuite>
+</testsuites>

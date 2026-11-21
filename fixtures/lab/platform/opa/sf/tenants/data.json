@@ -49,7 +49,22 @@
           "ASSISTED_SESSION_VERIFY_REPRESENTATION",
           "ASSISTED_SESSION_SUBMIT",
           "ASSISTED_SESSION_HANDOFF",
-          "ASSISTED_SESSION_CLOSE"
+          "ASSISTED_SESSION_CLOSE",
+          "INSPECTION_CREATE",
+          "INSPECTION_SCHEDULE",
+          "INSPECTION_REASSIGN",
+          "INSPECTION_START",
+          "INSPECTION_RECORD_CHECKLIST",
+          "INSPECTION_RECORD_OBSERVATION",
+          "INSPECTION_ATTACH_EVIDENCE",
+          "INSPECTION_RECORD_FINDING",
+          "INSPECTION_RECORD_RESULT",
+          "INSPECTION_COMPLETE",
+          "INSPECTION_CANCEL",
+          "INSPECTION_REINSPECT",
+          "INSPECTION_READ",
+          "INSPECTION_READ_HISTORY",
+          "INSPECTION_LIST"
         ],
         "resource_types": [
           "ApplicationCase",
@@ -60,8 +75,37 @@
           "Document",
           "UploadPolicy",
           "SlaClock",
-          "AssistedSession"
+          "AssistedSession",
+          "Inspection"
         ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_INSPECTION_OFFICER": {
+        "_note": "SF-57: CMP-018 inspection/verification desk. Assignment role_code only — never named officers. Non-statutory VERIFIED/NOT_VERIFIED/INCONCLUSIVE/DEFICIENCY_NOTED.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "APPLICATION_READ",
+          "APPLICATION_LIST",
+          "APPLICATION_TRANSITIONS_READ",
+          "INSPECTION_CREATE",
+          "INSPECTION_SCHEDULE",
+          "INSPECTION_REASSIGN",
+          "INSPECTION_START",
+          "INSPECTION_RECORD_CHECKLIST",
+          "INSPECTION_RECORD_OBSERVATION",
+          "INSPECTION_ATTACH_EVIDENCE",
+          "INSPECTION_RECORD_FINDING",
+          "INSPECTION_RECORD_RESULT",
+          "INSPECTION_COMPLETE",
+          "INSPECTION_CANCEL",
+          "INSPECTION_REINSPECT",
+          "INSPECTION_READ",
+          "INSPECTION_READ_HISTORY",
+          "INSPECTION_LIST"
+        ],
+        "resource_types": ["OfficerSession", "ApplicationCase", "Inspection"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

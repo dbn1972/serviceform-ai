@@ -1,0 +1,96 @@
+{
+  "_note": "SAMPLE_LAB published inspection/verification pins (CMP-018). Metadata-driven — services that pin an inspection workflow node appear here. Not statute. CERTIFIED=false · G6=false.",
+  "simulation": "SIMULATED",
+  "assignment_defaults": {
+    "role_code": "SAMPLE_LAB_INSPECTION_OFFICER",
+    "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+    "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01",
+    "office_id": null
+  },
+  "verification_results": [
+    {
+      "code": "VERIFIED",
+      "label": "Verified",
+      "description": "Non-statutory site/evidence verification passed"
+    },
+    {
+      "code": "NOT_VERIFIED",
+      "label": "Not verified",
+      "description": "Non-statutory verification failed"
+    },
+    {
+      "code": "INCONCLUSIVE",
+      "label": "Inconclusive",
+      "description": "Verification could not be completed"
+    },
+    {
+      "code": "DEFICIENCY_NOTED",
+      "label": "Deficiency noted",
+      "description": "Verification recorded a deficiency for follow-up (not statutory reject)"
+    }
+  ],
+  "pins": [
+    {
+      "pin_code": "TRADE_LICENCE_SITE_VISIT",
+      "catalogue_id": "IND-LIC-001",
+      "label": "Trade licence site visit",
+      "description": "SAMPLE_LAB pin for licence offerings that require a site verification node",
+      "workflow_node_id": "SITE_VISIT",
+      "checklist_items": [
+        {
+          "code": "SITE_ACCESS",
+          "label": "Premises accessible",
+          "required": true
+        },
+        {
+          "code": "SIGNAGE",
+          "label": "Business identity visible",
+          "required": true
+        },
+        {
+          "code": "DOCUMENTS_ON_SITE",
+          "label": "Required documents available on site",
+          "required": false
+        }
+      ]
+    },
+    {
+      "pin_code": "FACTORY_LICENCE_INSPECTION",
+      "catalogue_id": "IND-LIC-FACTORY-001",
+      "label": "Factory licence inspection",
+      "description": "SAMPLE_LAB pin for factory/establishment licence verification",
+      "workflow_node_id": "FACTORY_INSPECTION",
+      "checklist_items": [
+        {
+          "code": "SAFETY_POSTERS",
+          "label": "Safety notices posted",
+          "required": true
+        },
+        {
+          "code": "EGRESS_CLEAR",
+          "label": "Egress paths clear",
+          "required": true
+        }
+      ]
+    },
+    {
+      "pin_code": "GENERIC_VERIFICATION",
+      "catalogue_id": null,
+      "label": "Generic verification node",
+      "description": "Catalogue-agnostic pin for any SAMPLE_LAB case that references WORKFLOW node SITE_VERIFY",
+      "workflow_node_id": "SITE_VERIFY",
+      "checklist_items": [
+        {
+          "code": "IDENTITY_MATCH",
+          "label": "Subject identity matches application",
+          "required": true
+        },
+        {
+          "code": "LOCATION_MATCH",
+          "label": "Location matches declared address",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
