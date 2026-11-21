@@ -117,6 +117,13 @@ import {
   registerLabGrievanceRoutes,
   type LabGrievanceCatalogue,
 } from './grievance.js';
+import {
+  caseCommandName,
+  composeLabSla,
+  loadSlaCatalogue,
+  type LabSlaLifecycle,
+  type SlaServiceLike,
+} from './sla.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -151,6 +158,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP052?: string;
   /** Optional SAMPLE_LAB CMP-027 grievance/helpdesk mount. */
   DATABASE_URL_CMP027?: string;
+  /** SF-53: optional CMP-029 SLA clocks (officer visibility + deficiency pause). */
+  DATABASE_URL_CMP029?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -213,11 +222,18 @@ export interface PlatformLab {
  * retries the start.
  */
 class SequencedApplicationCaseService extends ApplicationCaseService {
+  private slaLifecycle: LabSlaLifecycle | null = null;
+
   constructor(
     deps: ConstructorParameters<typeof ApplicationCaseService>[0],
     private readonly sequencing: LabWorkflowBridge,
   ) {
     super(deps);
+  }
+
+  /** Optional SF-53 SLA hooks — set after CMP-029 compose so draft construction stays unchanged. */
+  bindSlaLifecycle(lifecycle: LabSlaLifecycle | null): void {
+    this.slaLifecycle = lifecycle;
   }
 
   override async createDraft(rawCtx: unknown, rawBody: unknown, rawKey: unknown) {
@@ -231,6 +247,33 @@ class SequencedApplicationCaseService extends ApplicationCaseService {
         workflow_version_id: application.pins.workflow_version_id,
         correlation_id: ctx.correlation_id,
       });
+    }
+    return result;
+  }
+
+  override async executeCommand(
+    rawCtx: unknown,
+    rawApplicationId: unknown,
+    rawBody: unknown,
+    rawKey: unknown,
+  ) {
+    const result = await super.executeCommand(rawCtx, rawApplicationId, rawBody, rawKey);
+    const sla = this.slaLifecycle;
+    if (!sla || result.status !== 200) return result;
+    const application = (result.body as { application?: { application_id?: string } } | undefined)
+      ?.application;
+    const applicationId =
+      typeof application?.application_id === 'string'
+        ? application.application_id
+        : typeof rawApplicationId === 'string'
+          ? rawApplicationId
+          : null;
+    if (!applicationId) return result;
+    const command = caseCommandName(rawBody);
+    if (command === 'SUBMIT') {
+      void sla.startAfterSubmit(applicationId);
+    } else if (command === 'APPROVE' || command === 'REJECT') {
+      void sla.completeAfterDecision(applicationId);
     }
     return result;
   }
@@ -607,6 +650,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP027
       ? { cmp027: new pg.Pool({ connectionString: env.DATABASE_URL_CMP027, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP029
+      ? { cmp029: new pg.Pool({ connectionString: env.DATABASE_URL_CMP029, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -624,6 +670,7 @@ export async function buildPlatformLab(
     cmp051?: pg.Pool;
     cmp052?: pg.Pool;
     cmp027?: pg.Pool;
+    cmp029?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -996,6 +1043,40 @@ export async function buildPlatformLab(
     });
   }
 
+  let slaLifecycle: LabSlaLifecycle | null = null;
+  let slaMount: {
+    pool: pg.Pool;
+    resolveContext: typeof resolveContext;
+    authorizer: { decide: (input: unknown) => Promise<unknown> };
+  } | null = null;
+  let slaClockPort: ReturnType<typeof composeLabSla>['clockPort'] | null = null;
+  if (pools.cmp029) {
+    const cmp029 = await loadComponent<{
+      buildSlaService: (opts: {
+        pool: pg.Pool;
+        authorizer: { decide: (input: unknown) => Promise<unknown> };
+        clock?: () => Date;
+      }) => SlaServiceLike;
+    }>('@serviceform/cmp-029-sla-escalation', 'cmp-029-sla-escalation');
+    const slaCatalogue = loadSlaCatalogue(dir);
+    const composed = composeLabSla({
+      pool: pools.cmp029,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      buildSlaService: cmp029.buildSlaService,
+      catalogue: slaCatalogue,
+      cellId: placement.cell_id,
+      tenantId: placement.tenant_id,
+    });
+    slaLifecycle = composed.lifecycle;
+    slaClockPort = composed.clockPort;
+    slaMount = {
+      pool: pools.cmp029,
+      resolveContext,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+    };
+    applicationCase.bindSlaLifecycle(slaLifecycle);
+  }
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1129,8 +1210,9 @@ export async function buildPlatformLab(
                 placement.cell_id,
               ) as { decide: (input: unknown) => Promise<unknown> },
               caseCommands: new LabCaseCommandPort(applicationCase),
-              // SAMPLE_LAB: CMP-029 SLA not mounted; UnboundSlaClockPort / UnboundNotificationPort
-              // are the CMP-019 defaults when slaClock/notifier are omitted.
+              // SF-53: when CMP-029 is mounted, INT-009 pause/resume uses LabSlaClockPort.
+              // Otherwise UnboundSlaClockPort remains the CMP-019 default.
+              ...(slaClockPort ? { slaClock: slaClockPort } : {}),
             },
           }
         : {}),
@@ -1142,6 +1224,7 @@ export async function buildPlatformLab(
             },
           }
         : {}),
+      ...(slaMount ? { sla: slaMount } : {}),
     },
     wave2: {
       consentPrivacy: {
@@ -1173,6 +1256,7 @@ export async function buildPlatformLab(
       ...(pools.cmp051 ? [poolReadiness('cmp051-db', pools.cmp051)] : []),
       ...(pools.cmp052 ? [poolReadiness('cmp052-db', pools.cmp052)] : []),
       ...(pools.cmp027 ? [poolReadiness('cmp027-db', pools.cmp027)] : []),
+      ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
       ...workflow.readinessChecks,
     ],
     registerSimulators: (app) =>
@@ -1237,6 +1321,7 @@ export async function buildPlatformLab(
       await privacy.publish();
       if (documentUpload) await documentUpload.seedPolicy();
       await workflow.start();
+      if (slaLifecycle) await slaLifecycle.ensurePublishedPolicy();
     },
     async close() {
       await workflow.close();

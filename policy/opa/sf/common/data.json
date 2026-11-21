@@ -362,6 +362,33 @@
     },
     "DOCUMENT_SCAN_RECORD": {
       "action_class": "PROTECTED"
+    },
+    "SLA_CALENDAR_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_POLICY_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_POLICY_RETIRE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_START": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_PAUSE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_RESUME": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_EVALUATE": {
+      "action_class": "PROTECTED"
+    },
+    "SLA_CLOCK_READ": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -393,7 +420,10 @@
     "HumanTask",
     "GrievanceFeedback",
     "Document",
-    "UploadPolicy"
+    "UploadPolicy",
+    "SlaCalendar",
+    "SlaPolicy",
+    "SlaClock"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

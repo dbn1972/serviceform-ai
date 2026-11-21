@@ -19,3 +19,10 @@ export {
   nextEscalationLevel,
 } from './grievance-catalogue';
 export type { SampleLabGrievanceCategoryCode } from './grievance-catalogue';
+export {
+  SAMPLE_LAB_SLA_CATALOGUE,
+  pauseReasonLabel,
+  clockStatusLabel,
+  type SampleLabSlaCatalogue,
+  type SlaEscalationStep,
+} from './sla-catalogue';
