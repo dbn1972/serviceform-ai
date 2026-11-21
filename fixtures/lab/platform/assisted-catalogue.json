@@ -1,0 +1,60 @@
+{
+  "_note": "SAMPLE_LAB assisted-service / CSC catalogue (SF-54 / Constitution #36). Opaque refs only — not statute. Operator applied_by never impersonates citizen applied_for. CERTIFIED=false · G6=false.",
+  "simulation": "SIMULATED",
+  "default_channel": "CSC",
+  "channels": [
+    {
+      "code": "CSC",
+      "label": "CSC / common service centre",
+      "description": "Operator assists the citizen at a CSC counter; never logs in as the citizen.",
+      "requires_representation_authority": false
+    },
+    {
+      "code": "COUNTER",
+      "label": "Department counter",
+      "description": "In-office assisted filing; applied_by remains the operator.",
+      "requires_representation_authority": false
+    },
+    {
+      "code": "KIOSK",
+      "label": "Assisted kiosk",
+      "description": "Staffed kiosk channel with the same applied_by / applied_for separation.",
+      "requires_representation_authority": false
+    },
+    {
+      "code": "CALL_CENTRE",
+      "label": "Call centre",
+      "description": "Remote assisted filing; consent read-back still required.",
+      "requires_representation_authority": false
+    },
+    {
+      "code": "AUTHORIZED_REPRESENTATIVE",
+      "label": "Authorized representative",
+      "description": "Third-party representation; opaque authority ref + independent verifier required.",
+      "requires_representation_authority": true
+    },
+    {
+      "code": "GUARDIAN",
+      "label": "Guardian",
+      "description": "Guardian channel; opaque authority ref only — no statute invented here.",
+      "requires_representation_authority": true
+    },
+    {
+      "code": "INSTITUTIONAL",
+      "label": "Institutional operator",
+      "description": "Institutional filing; opaque authority ref + independent verifier required.",
+      "requires_representation_authority": true
+    }
+  ],
+  "consent": {
+    "purpose_code": "SAMPLE_LAB_ASSISTED_APPLY",
+    "consent_ref_prefix": "consent:assisted-readback",
+    "label": "SAMPLE_LAB: the operator may file this application for me; my identity stays applied_for and the operator stays applied_by",
+    "read_back_required": true
+  },
+  "assurance": {
+    "default_ref": "assurance:sample-lab/citizen-present",
+    "label": "Citizen present at assisted channel (lab assurance label)"
+  },
+  "default_offering_catalogue_id": "IND-SOC-002"
+}

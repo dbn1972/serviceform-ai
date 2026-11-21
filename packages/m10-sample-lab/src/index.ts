@@ -26,3 +26,11 @@ export {
   type SampleLabSlaCatalogue,
   type SlaEscalationStep,
 } from './sla-catalogue';
+export {
+  SAMPLE_LAB_ASSISTED_CHANNELS,
+  SAMPLE_LAB_ASSISTED_CONSENT,
+  SAMPLE_LAB_ASSISTED_ASSURANCE,
+  channelRequiresAuthority,
+  isSampleLabAssistedChannel,
+} from './assisted-catalogue';
+export type { SampleLabAssistedChannelCode } from './assisted-catalogue';

@@ -50,6 +50,8 @@ const ROLES = [
   { login: 'sf_lab_cmp027', member: 'sf_cmp027_rw', env: 'DATABASE_URL_CMP027' },
   // SF-53: CMP-029 SLA clocks (officer case visibility + deficiency pause)
   { login: 'sf_lab_cmp029', member: 'sf_cmp029_rw', env: 'DATABASE_URL_CMP029' },
+  // SF-54: CMP-057 assisted / CSC apply shell (Constitution #36)
+  { login: 'sf_lab_cmp057', member: 'sf_cmp057_rw', env: 'DATABASE_URL_CMP057' },
 ];
 
 function previous() {

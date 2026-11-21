@@ -53,6 +53,21 @@ export default function HomePage() {
           resolve, or escalate. Not a statutory appeal court; CERTIFIED=false.
         </p>
       </Card>
+
+      <Card
+        title="Assisted apply"
+        subtitle="CMP-057 · CSC channel · Constitution #36"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/assisted">Open assisted shell</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Operator <code>applied_by</code> + citizen <code>applied_for</code> + representation
+          basis + fail-closed consent. Never impersonate. CERTIFIED=false · G6=false.
+        </p>
+      </Card>
     </AppShell>
   );
 }

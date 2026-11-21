@@ -124,6 +124,13 @@ import {
   type LabSlaLifecycle,
   type SlaServiceLike,
 } from './sla.js';
+import {
+  composeLabAssisted,
+  loadAssistedCatalogue,
+  registerLabAssistedRoutes,
+  type LabAssistedCatalogue,
+} from './assisted.js';
+import type { M09PluginMounts } from '../composition/m09.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -160,6 +167,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP027?: string;
   /** SF-53: optional CMP-029 SLA clocks (officer visibility + deficiency pause). */
   DATABASE_URL_CMP029?: string;
+  /** Optional SAMPLE_LAB CMP-057 assisted / CSC apply shell. */
+  DATABASE_URL_CMP057?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -206,6 +215,10 @@ export interface PlatformLab {
   registerFormPins(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-027 lab list/catalogue routes (optional when DATABASE_URL_CMP027 is set). */
   registerGrievance?(app: FastifyInstance): Promise<void>;
+  /** SAMPLE_LAB CMP-057 assisted/CSC lab routes (optional when DATABASE_URL_CMP057 is set). */
+  registerAssisted?(app: FastifyInstance): Promise<void>;
+  /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
+  m09?: import('../composition/m09.js').M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
   registerDocumentUploadSimulators(app: FastifyInstance): Promise<void>;
   /**
@@ -653,6 +666,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP029
       ? { cmp029: new pg.Pool({ connectionString: env.DATABASE_URL_CMP029, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP057
+      ? { cmp057: new pg.Pool({ connectionString: env.DATABASE_URL_CMP057, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -671,6 +687,7 @@ export async function buildPlatformLab(
     cmp052?: pg.Pool;
     cmp027?: pg.Pool;
     cmp029?: pg.Pool;
+    cmp057?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -1077,6 +1094,17 @@ export async function buildPlatformLab(
     applicationCase.bindSlaLifecycle(slaLifecycle);
   }
 
+  let assistedCatalogue: LabAssistedCatalogue | null = null;
+  let assistedMount: ReturnType<typeof composeLabAssisted> | null = null;
+  if (pools.cmp057) {
+    assistedCatalogue = loadAssistedCatalogue(dir);
+    assistedMount = composeLabAssisted({
+      pool: pools.cmp057,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      applicants: new cmp004.PgCitizenSubjectDirectory(pools.cmp004),
+    });
+  }
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1257,8 +1285,19 @@ export async function buildPlatformLab(
       ...(pools.cmp052 ? [poolReadiness('cmp052-db', pools.cmp052)] : []),
       ...(pools.cmp027 ? [poolReadiness('cmp027-db', pools.cmp027)] : []),
       ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
+      ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
       ...workflow.readinessChecks,
     ],
+    ...(assistedMount
+      ? {
+          m09: {
+            assisted: {
+              service: assistedMount.service,
+              resolveContext,
+            },
+          } satisfies M09PluginMounts,
+        }
+      : {}),
     registerSimulators: (app) =>
       registerLabSimulators(app, {
         environment,
@@ -1313,6 +1352,20 @@ export async function buildPlatformLab(
               service: grievanceService,
               resolveContext,
               catalogue: grievanceCatalogue,
+            });
+          },
+        }
+      : {}),
+    ...(assistedMount && assistedCatalogue
+      ? {
+          registerAssisted: async (app: FastifyInstance) => {
+            registerLabAssistedRoutes(app, {
+              service: assistedMount.service,
+              resolveContext,
+              catalogue: assistedCatalogue,
+              ledger: assistedMount.ledger,
+              applicationCase,
+              offerings: placement.offerings,
             });
           },
         }
