@@ -82,10 +82,10 @@ paths = [
 id = "sf-m10-platform-lab-income-form-key-literal"
 description = "TEST_FIXTURE: SAMPLE_LAB Income form_key literal in apps/api/test/platform-lab.test.ts (generic-api-key). Not credentials. History-only after HEAD join()."
 targetRules = ["generic-api-key"]
-condition = "AND"
 paths = [
   '''apps/api/test/platform-lab\.test\.ts$''',
 ]
 regexes = [
-  '''ind-soc-031\.application''',
+  '''(?i)ind-soc-031\.application''',
 ]
+regexTarget = "secret"
