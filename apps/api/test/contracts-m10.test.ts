@@ -134,7 +134,17 @@ describe('OPA common policy covers every CMP-015 action (ADR-0007 D-2)', () => {
     expect(common.citizen_published_grants).toEqual({
       FormDefinition: { actions: ['FORM_INTERPRET'], assurance: ['OTP', 'MFA'] },
       Purpose: { actions: ['PURPOSE_READ'], assurance: ['OTP', 'MFA'] },
+      // SF-49: citizens may read the active SAMPLE_LAB upload policy (CMP-013).
+      UploadPolicy: { actions: ['UPLOAD_POLICY_READ'], assurance: ['OTP', 'MFA'] },
     });
+    expect(common.citizen_owner_grants['Document']?.actions).toEqual(
+      expect.arrayContaining([
+        'DOCUMENT_UPLOAD_SESSION_CREATE',
+        'DOCUMENT_UPLOAD_COMPLETE',
+        'DOCUMENT_READ',
+        'DOCUMENT_ACCESS',
+      ]),
+    );
     for (const action of [
       'PROFILE_READ',
       'PROFILE_WRITE',
@@ -147,6 +157,11 @@ describe('OPA common policy covers every CMP-015 action (ADR-0007 D-2)', () => {
       'CONSENT_READ',
       'CONSENT_WITHDRAW',
       'PRIVACY_ACCESS_CHECK',
+      'UPLOAD_POLICY_READ',
+      'DOCUMENT_UPLOAD_SESSION_CREATE',
+      'DOCUMENT_UPLOAD_COMPLETE',
+      'DOCUMENT_READ',
+      'DOCUMENT_ACCESS',
     ]) {
       expect(common.actions[action], action).toBeDefined();
     }

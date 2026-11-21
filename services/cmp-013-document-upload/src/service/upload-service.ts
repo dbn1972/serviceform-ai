@@ -283,8 +283,14 @@ export class UploadService {
     input: SessionInput,
     idem: Idempotency,
   ): Promise<{ status: number; body: Record<string, unknown> & { upload: UploadTarget | null } }> {
+    // Classification is required by OPA tenant.rego (empty classification ⇒ TENANT_MISMATCH).
+    // Load the active policy before the PDP call so CITIZEN_PRIVATE / TENANT_SCOPED is correct.
+    const policyPreview = assertPolicyUsable(
+      await this.d.repo.withTx(ctx, (tx) => tx.latestPolicy(input.policy_code)),
+    );
     await this.decide(ctx, 'DOCUMENT_UPLOAD_SESSION_CREATE', {
       resource_type: 'Document',
+      classification: policyPreview.classification,
       ...(input.application_ref ? { application_id: input.application_ref } : {}),
     });
     if (this.d.storage.mode === 'SIMULATED' && !this.d.storage.simulation) {

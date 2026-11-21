@@ -78,6 +78,7 @@ const properties = (): Record<string, FormSchemaNode> => ({
     minLength: 1,
     maxLength: 120,
     'x-ux4g': {
+      // Keep hint stable: PUBLISHED content_hash pins this package (SF-49 stores document id at runtime).
       hint: 'SAMPLE_LAB records a synthetic file reference only',
       error_messages: { REQUIRED: 'Attach a SAMPLE_LAB evidence file name' },
     },

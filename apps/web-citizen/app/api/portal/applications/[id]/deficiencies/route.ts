@@ -58,7 +58,7 @@ export async function GET(request: Request, ctx: Ctx) {
   });
 }
 
-/** Citizen response to an OPEN deficiency (SIMULATED evidence refs). */
+/** Citizen response to an OPEN deficiency (CMP-013 AVAILABLE document_id required). */
 export async function POST(request: Request, ctx: Ctx) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
@@ -72,7 +72,7 @@ export async function POST(request: Request, ctx: Ctx) {
     deficiency_id?: unknown;
     narrative?: unknown;
     provided_item_codes?: unknown;
-    file_name?: unknown;
+    document_id?: unknown;
   } | null;
   if (!body || typeof body.deficiency_id !== 'string' || !isUuid(body.deficiency_id)) {
     return json(400, { error_code: 'SF-SYS-003', message: 'deficiency_id is required' });
@@ -87,6 +87,12 @@ export async function POST(request: Request, ctx: Ctx) {
     return json(400, {
       error_code: 'SF-SYS-003',
       message: 'Select at least one requested item you are providing',
+    });
+  }
+  if (typeof body.document_id !== 'string' || !isUuid(body.document_id)) {
+    return json(400, {
+      error_code: 'SF-SYS-003',
+      message: 'Upload a supporting document (CMP-013) before you respond',
     });
   }
   const codes = body.provided_item_codes.filter((c): c is string => typeof c === 'string');
@@ -125,7 +131,7 @@ export async function POST(request: Request, ctx: Ctx) {
   const responded = await respondToDeficiency(citizen, app, open, {
     narrative: body.narrative,
     provided_item_codes: codes,
-    ...(typeof body.file_name === 'string' ? { file_name: body.file_name } : {}),
+    document_id: body.document_id,
   });
   if (!responded.ok) return relay(responded.res);
 

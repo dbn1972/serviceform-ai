@@ -1,11 +1,12 @@
 /**
- * Citizen BFF helpers for CMP-019 deficiency response (SF-47). Evidence upload is
- * SIMULATED: the portal mints opaque evidence_ref UUIDs and kind codes from the
- * SAMPLE_LAB catalogue — no real document store on this path.
+ * Citizen BFF helpers for CMP-019 deficiency response (SF-47) with CMP-013 evidence (SF-49).
+ * Evidence refs are AVAILABLE CMP-013 document ids (technical accept only).
+ * CERTIFIED=false. G6=false.
  */
 import { randomUUID } from 'node:crypto';
 import { platform, type Citizen, type PlatformResponse } from './platform';
 import type { PlatformApplication } from './applications';
+import { isTechnicallyAccepted, getDocument, toDeficiencyEvidence } from './documents';
 
 export interface DeficiencyItem {
   item_seq: number;
@@ -51,14 +52,6 @@ export function activeOpenNotice(deficiencies: DeficiencyNotice[]): DeficiencyNo
   return deficiencies.find((d) => d.status === 'OPEN');
 }
 
-/** SIMULATED evidence attachment: opaque UUID ref + catalogue kind code. */
-export function simulatedEvidenceRef(kindCode = 'CITIZEN_UPLOAD'): {
-  evidence_ref: string;
-  kind_code: string;
-} {
-  return { evidence_ref: randomUUID(), kind_code: kindCode };
-}
-
 export async function respondToDeficiency(
   citizen: Citizen,
   app: PlatformApplication,
@@ -66,9 +59,26 @@ export async function respondToDeficiency(
   input: {
     narrative: string;
     provided_item_codes: string[];
-    file_name?: string;
+    /** CMP-013 document id that must be AVAILABLE (technical accept). */
+    document_id: string;
   },
 ): Promise<{ ok: true; notice: DeficiencyNotice } | { ok: false; res: PlatformResponse }> {
+  const got = await getDocument(citizen, input.document_id);
+  if (!got.ok) return { ok: false, res: got.res };
+  if (!isTechnicallyAccepted(got.document)) {
+    return {
+      ok: false,
+      res: {
+        status: 422,
+        body: {
+          error_code: 'SF-EVD-002',
+          message: 'Upload a document that is technically accepted (AVAILABLE) before you respond.',
+          details: [{ code: got.document.status }],
+        },
+      },
+    };
+  }
+
   const narrativeSlug = input.narrative
     .trim()
     .toLowerCase()
@@ -76,11 +86,8 @@ export async function respondToDeficiency(
     .replace(/^-+|-+$/g, '')
     .slice(0, 80);
   const narrative_ref = `ref:response:${narrativeSlug || 'citizen'}:${randomUUID().slice(0, 8)}`;
-  const evidence = [simulatedEvidenceRef('CITIZEN_UPLOAD')];
-  if (input.file_name) {
-    // File name is not stored as PII on the notice; only the SIMULATED ref is linked.
-    void input.file_name;
-  }
+  const evidence = [toDeficiencyEvidence(input.document_id, 'CITIZEN_UPLOAD')];
+
   const res = await platform('POST', `/v1/deficiencies/${deficiency.deficiency_id}/response`, {
     token: citizen.token,
     idempotent: true,

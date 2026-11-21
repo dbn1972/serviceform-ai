@@ -27,6 +27,7 @@ const app = await buildApp(config, {
   wave2: lab.wave2,
 });
 await lab.registerSimulators(app);
+await lab.registerDocumentUploadSimulators(app);
 await lab.registerIssuance(app);
 await lab.registerStudioWorkflow(app);
 await lab.registerStudioRules(app);

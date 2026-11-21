@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="0.010481858">
+    <testsuite name="apps/api/test/document-upload-lab.test.ts" timestamp="2026-11-21T18:06:58.477Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003590993">
+        <testcase classname="apps/api/test/document-upload-lab.test.ts" name="SAMPLE_LAB CMP-013 composition helpers (SF-49) &gt; parses the SIMULATED upload policy fixture and refuses non-SIMULATED" time="0.001721913">
+        </testcase>
+        <testcase classname="apps/api/test/document-upload-lab.test.ts" name="SAMPLE_LAB CMP-013 composition helpers (SF-49) &gt; injects citizen self-owner on DOCUMENT_UPLOAD_SESSION_CREATE" time="0.000792699">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-citizen/test/deficiency.test.ts" timestamp="2026-11-21T18:06:58.479Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003065198">
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; maps DEFICIENCY_RAISED to ACTION_REQUIRED with citizen-facing wording" time="0.001469898">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; selects only OPEN notices for the resubmit form" time="0.000218612">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; labels catalogue codes without inventing statute text" time="0.000234117">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/deficiency.test.ts" name="citizen deficiency status mapping &gt; binds deficiency evidence to a CMP-013 document id (not a random UUID mint)" time="0.000226989">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-citizen/test/documents.test.ts" timestamp="2026-11-21T18:06:58.479Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.003825667">
+        <testcase classname="apps/web-citizen/test/documents.test.ts" name="citizen document upload helpers (SF-49) &gt; accepts policy-aligned PDF/PNG/JPEG sizes and refuses others" time="0.001528751">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/documents.test.ts" name="citizen document upload helpers (SF-49) &gt; maps AVAILABLE documents to deficiency evidence refs" time="0.000270456">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/documents.test.ts" name="citizen document upload helpers (SF-49) &gt; treats only AVAILABLE + technically_accepted as usable evidence" time="0.000193949">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/documents.test.ts" name="citizen document upload helpers (SF-49) &gt; sanitizes file names and hashes bytes without logging content" time="0.000613164">
+        </testcase>
+    </testsuite>
+</testsuites>

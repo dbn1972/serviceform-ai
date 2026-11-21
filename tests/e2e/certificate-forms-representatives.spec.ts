@@ -6,6 +6,7 @@
  */
 import { randomInt } from 'node:crypto';
 import { expect, test, type Page } from '@playwright/test';
+import { withEvidenceIfRequired } from './helpers/evidence-upload';
 
 const CITIZEN = 'http://127.0.0.1:3000';
 const OFFICER = 'http://127.0.0.1:3001';
@@ -91,10 +92,15 @@ test.describe('SAMPLE_LAB certificate representatives — form load + submit API
       });
       expect(bad.status(), `${catalogueId} invalid`).toBe(422);
 
-      const data = {
-        ...body.prefill,
-        declaration_accepted: true,
-      };
+      const data = await withEvidenceIfRequired(
+        page.request,
+        cookie,
+        body.form.package.json_schema,
+        {
+          ...body.prefill,
+          declaration_accepted: true,
+        },
+      );
       const submit = await page.request.post(`${CITIZEN}/api/portal/applications`, {
         headers: { cookie, 'idempotency-key': `rep-${catalogueId}-${randomInt(1e9)}` },
         data: { catalogue_id: catalogueId, data },
@@ -130,12 +136,21 @@ test.describe('SAMPLE_LAB certificate representatives — officer + DigiLocker S
         headers: { cookie },
       });
       expect(form.status()).toBe(200);
-      const body = (await form.json()) as { prefill: Record<string, unknown> };
+      const body = (await form.json()) as {
+        prefill: Record<string, unknown>;
+        form: { package: { json_schema: unknown } };
+      };
+      const data = await withEvidenceIfRequired(
+        citizen.request,
+        cookie,
+        body.form.package.json_schema,
+        { ...body.prefill, declaration_accepted: true },
+      );
       const submit = await citizen.request.post(`${CITIZEN}/api/portal/applications`, {
         headers: { cookie, 'idempotency-key': `e2e-${catalogueId}-${randomInt(1e9)}` },
         data: {
           catalogue_id: catalogueId,
-          data: { ...body.prefill, declaration_accepted: true },
+          data,
         },
       });
       expect(submit.status(), await submit.text()).toBe(201);

@@ -36,14 +36,20 @@
           "GRIEVANCE_RESOLVE",
           "GRIEVANCE_CLOSE",
           "GRIEVANCE_ESCALATE",
-          "GRIEVANCE_AI_ASSIST"
+          "GRIEVANCE_AI_ASSIST",
+          "UPLOAD_POLICY_WRITE",
+          "UPLOAD_POLICY_READ",
+          "DOCUMENT_READ",
+          "DOCUMENT_ACCESS"
         ],
         "resource_types": [
           "ApplicationCase",
           "OfficerSession",
           "HumanTask",
           "DeficiencyNotice",
-          "GrievanceFeedback"
+          "GrievanceFeedback",
+          "Document",
+          "UploadPolicy"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
