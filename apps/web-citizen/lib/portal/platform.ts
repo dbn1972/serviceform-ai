@@ -211,8 +211,12 @@ export function relay(res: PlatformResponse, fallbackMessage = 'Request denied')
  * CSRF guard for cookie-authenticated writes (SameSite=Lax alone admits same-site siblings and
  * cross-site simple requests). Browsers always send Sec-Fetch-Site and/or Origin on such requests;
  * JSON is required so a cross-site `text/plain` or form POST cannot reach the platform.
+ * Opt-in `allowMultipart` for same-origin file uploads (multipart is not a CORS-simple type).
  */
-export function crossSiteRefusal(request: Request): Response | null {
+export function crossSiteRefusal(
+  request: Request,
+  opts: { allowMultipart?: boolean } = {},
+): Response | null {
   const refused = () =>
     json(403, { error_code: 'SF-AUTH-002', message: 'Cross-site request refused' });
   const site = request.headers.get('sec-fetch-site');
@@ -229,10 +233,15 @@ export function crossSiteRefusal(request: Request): Response | null {
   }
   if (request.method !== 'DELETE') {
     const type = (request.headers.get('content-type') ?? '').split(';')[0]?.trim().toLowerCase();
-    if (type !== 'application/json') {
+    const allowed =
+      type === 'application/json' ||
+      (opts.allowMultipart === true && type === 'multipart/form-data');
+    if (!allowed) {
       return json(415, {
         error_code: 'SF-SYS-003',
-        message: 'Send the request as application/json',
+        message: opts.allowMultipart
+          ? 'Send the request as application/json or multipart/form-data'
+          : 'Send the request as application/json',
       });
     }
   }

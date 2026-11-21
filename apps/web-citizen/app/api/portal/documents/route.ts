@@ -21,7 +21,7 @@ export const dynamic = 'force-dynamic';
  * CERTIFIED=false. G6=false. Never business-verifies evidence.
  */
 export async function POST(request: Request) {
-  const refusal = crossSiteRefusal(request);
+  const refusal = crossSiteRefusal(request, { allowMultipart: true });
   if (refusal) return refusal;
   const citizen = await currentCitizen(request);
   if (!citizen) {

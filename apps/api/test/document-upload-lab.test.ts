@@ -3,6 +3,7 @@ import {
   documentOwnerEnrichingAuthorizer,
   parseUploadPolicyFixture,
   SAMPLE_LAB_UPLOAD_POLICY_CODE,
+  seedLabUploadPolicy,
 } from '../src/platform/document-upload.js';
 
 describe('SAMPLE_LAB CMP-013 composition helpers (SF-49)', () => {
@@ -23,6 +24,38 @@ describe('SAMPLE_LAB CMP-013 composition helpers (SF-49)', () => {
     expect(() => parseUploadPolicyFixture({ ...fixture, simulation: 'REAL' }, 'LOCAL')).toThrow(
       /SIMULATED/,
     );
+  });
+
+  it('seeds upload policy with sha256: fingerprint (CMP-013 idempotency CHECK)', async () => {
+    const seen: { fingerprint?: string }[] = [];
+    const service = {
+      createPolicyVersion: async (
+        _ctx: unknown,
+        _input: unknown,
+        idem: { fingerprint: string },
+      ) => {
+        seen.push(idem);
+        return { status: 201, body: { ok: true } };
+      },
+    };
+    const fixture = parseUploadPolicyFixture(
+      {
+        simulation: 'SIMULATED',
+        policy_code: SAMPLE_LAB_UPLOAD_POLICY_CODE,
+        allowed_content_types: ['application/pdf'],
+        max_bytes: 1024,
+        session_ttl_seconds: 900,
+        max_scan_attempts: 2,
+        classification: 'CITIZEN_PRIVATE',
+      },
+      'LOCAL',
+    );
+    await seedLabUploadPolicy({
+      service: service as never,
+      fixture,
+      ctx: { tenant_id: '11111111-1111-4111-8111-111111111111' } as never,
+    });
+    expect(seen[0]?.fingerprint).toMatch(/^sha256:[0-9a-f]{64}$/);
   });
 
   it('injects citizen self-owner on DOCUMENT_UPLOAD_SESSION_CREATE', async () => {

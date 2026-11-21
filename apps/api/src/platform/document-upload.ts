@@ -226,24 +226,29 @@ export async function seedLabUploadPolicy(opts: {
   fixture: UploadPolicyFixture;
   ctx: RequestContext;
 }): Promise<void> {
-  const fingerprint = createHash('sha256').update(JSON.stringify(opts.fixture)).digest('hex');
-  await opts.service.createPolicyVersion(
-    opts.ctx,
-    {
-      policy_code: opts.fixture.policy_code,
-      allowed_content_types: opts.fixture.allowed_content_types,
-      max_bytes: opts.fixture.max_bytes,
-      session_ttl_seconds: opts.fixture.session_ttl_seconds,
-      max_scan_attempts: opts.fixture.max_scan_attempts,
-      classification: opts.fixture.classification,
-      status: 'ACTIVE',
-    },
-    {
-      key: `lab-seed-${opts.fixture.policy_code}`,
-      endpoint: 'POST /v1/upload-policies',
-      fingerprint,
-    },
-  );
+  const policyBody = {
+    policy_code: opts.fixture.policy_code,
+    allowed_content_types: opts.fixture.allowed_content_types,
+    max_bytes: opts.fixture.max_bytes,
+    session_ttl_seconds: opts.fixture.session_ttl_seconds,
+    max_scan_attempts: opts.fixture.max_scan_attempts,
+    classification: opts.fixture.classification,
+    status: 'ACTIVE' as const,
+  };
+  // CMP-013 idempotency CHECK requires `sha256:` + 64 hex (same shape as requestFingerprint).
+  const fingerprint = `sha256:${createHash('sha256')
+    .update(`POST /v1/upload-policies\n${JSON.stringify(policyBody)}`)
+    .digest('hex')}`;
+  const result = await opts.service.createPolicyVersion(opts.ctx, policyBody, {
+    key: `lab-seed-${opts.fixture.policy_code}`,
+    endpoint: 'POST /v1/upload-policies',
+    fingerprint,
+  });
+  if (result.status >= 400) {
+    throw new Error(
+      `SF-49: upload policy seed refused (${result.status}): ${JSON.stringify(result.body)}`,
+    );
+  }
 }
 
 function errorBody(code: string, message: string, correlationId: string) {

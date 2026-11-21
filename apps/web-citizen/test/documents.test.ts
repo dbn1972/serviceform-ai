@@ -7,6 +7,7 @@ import {
   toDeficiencyEvidence,
   type DocumentView,
 } from '../lib/portal/documents';
+import { crossSiteRefusal } from '../lib/portal/platform';
 
 // REQ SF-49: CMP-013 technical-accept helpers fail closed; never claim business verification.
 describe('citizen document upload helpers (SF-49)', () => {
@@ -51,5 +52,30 @@ describe('citizen document upload helpers (SF-49)', () => {
     expect(sanitizeFileName('')).toBe('evidence.bin');
     const bytes = new TextEncoder().encode('%PDF-1.7\nlab\n%%EOF\n');
     expect(sha256Hex(bytes)).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it('allows same-origin multipart only when opted in (SF-49 document upload)', async () => {
+    const multipart = new Request('http://127.0.0.1:3000/api/portal/documents', {
+      method: 'POST',
+      headers: {
+        'content-type': 'multipart/form-data; boundary=----lab',
+        origin: 'http://127.0.0.1:3000',
+        host: '127.0.0.1:3000',
+        'sec-fetch-site': 'same-origin',
+      },
+    });
+    expect(crossSiteRefusal(multipart)).not.toBeNull();
+    expect(crossSiteRefusal(multipart, { allowMultipart: true })).toBeNull();
+    const plain = new Request('http://127.0.0.1:3000/api/portal/documents', {
+      method: 'POST',
+      headers: {
+        'content-type': 'text/plain',
+        origin: 'http://127.0.0.1:3000',
+        host: '127.0.0.1:3000',
+        'sec-fetch-site': 'same-origin',
+      },
+    });
+    const refused = crossSiteRefusal(plain, { allowMultipart: true });
+    expect(refused?.status).toBe(415);
   });
 });
