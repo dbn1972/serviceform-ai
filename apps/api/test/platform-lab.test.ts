@@ -179,7 +179,11 @@ describe('SAMPLE_LAB simulators (INT-013: LOCAL/CI only)', () => {
       url: '/v1/simulated/idp/assertions',
       payload: { subject: 'lab-officer' },
     });
-    expect(ok.json()).toMatchObject({ assertion: 'simidp.x.y', simulation: true });
+    expect(ok.json()).toMatchObject({
+      assertion: 'simidp.x.y',
+      simulation: true,
+      roles: ['SAMPLE_LAB_CASE_OFFICER'],
+    });
     expect(minted[0]).toMatchObject({ officer_id: OFFICER, tenant_id: TENANT, exp: 130 });
     const denied = await app.inject({
       method: 'POST',
@@ -268,11 +272,12 @@ describe('buildPlatformLab composition', () => {
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
       const directory = (officers.json() as { officers: { subject: string; roles: string[] }[] })
         .officers;
-      // Case + scrutiny + approving desks + Studio designer/checker + tenant admin (SF-46).
-      expect(directory).toHaveLength(6);
+      // Case + scrutiny + approving + helpdesk desks + Studio designer/checker + tenant admin (SF-46/50).
+      expect(directory).toHaveLength(7);
       expect(directory.map((o) => o.subject).sort()).toEqual([
         'sample-lab-approving-officer-1',
         'sample-lab-case-officer-1',
+        'sample-lab-helpdesk-officer-1',
         'sample-lab-scrutiny-officer-1',
         'sample-lab-studio-checker-1',
         'sample-lab-studio-designer-1',
@@ -286,6 +291,8 @@ describe('buildPlatformLab composition', () => {
           'SAMPLE_LAB_APPROVING_AUTHORITY',
         ]),
       );
+      const helpdesk = directory.find((o) => o.subject === 'sample-lab-helpdesk-officer-1');
+      expect(helpdesk?.roles).toEqual(['SAMPLE_LAB_HELPDESK_L1']);
     } finally {
       await lab.close();
     }

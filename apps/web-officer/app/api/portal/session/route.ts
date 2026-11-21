@@ -52,12 +52,18 @@ export async function POST(request: Request) {
   });
   const token = session.body['session_token'];
   if (session.status !== 200 || typeof token !== 'string') return relay(session);
+  const roles = Array.isArray(assertion.body['roles'])
+    ? assertion.body['roles'].filter((r): r is string => typeof r === 'string')
+    : [];
   return json(
     201,
     {
       authenticated: true,
       display_name: assertion.body['display_name'] ?? 'Officer',
+      roles,
       simulation: true,
+      certified: false,
+      g6_issued: false,
     },
     { 'set-cookie': sessionCookie(token, SESSION_MAX_AGE_SECONDS) },
   );

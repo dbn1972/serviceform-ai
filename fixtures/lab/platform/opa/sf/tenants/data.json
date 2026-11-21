@@ -77,6 +77,13 @@
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
+      "SAMPLE_LAB_HELPDESK_L1": {
+        "_note": "SF-50: SAMPLE_LAB helpdesk desk persona for role-aware login routing. Session only — no case decide / TASK_* (OPA fail-closed). Grievance actions land with SF-52 when catalogue actions exist.",
+        "actions": ["OFFICER_SESSION_ISSUE", "OFFICER_SESSION_REVOKE"],
+        "resource_types": ["OfficerSession"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
       "SAMPLE_LAB_WORKFLOW_SEQUENCER": {
         "_note": "Phase C live-pins + SF-46: APPLICATION_READ / WORKING_DATA_READ for rules; TASK_CREATE / TASK_CANCEL_CLOSE for HUMAN_TASK from graph (CMP-016 → CMP-017).",
         "actions": [

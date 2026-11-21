@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DESK_LABELS, deskActionsForRole, deskRoles } from '../lib/portal/desk';
+import { DESK_LABELS, deskActionsForRole, deskHomeForRoles, deskRoles } from '../lib/portal/desk';
 
 describe('SAMPLE_LAB multi-desk helpers (SF-46)', () => {
   it('maps desk role codes to labels without inventing statutory titles', () => {
@@ -21,5 +21,10 @@ describe('SAMPLE_LAB multi-desk helpers (SF-46)', () => {
     expect(deskActionsForRole('SAMPLE_LAB_SCRUTINY_OFFICER')).toEqual(['FORWARD', 'REJECT']);
     expect(deskActionsForRole('SAMPLE_LAB_APPROVING_AUTHORITY')).toEqual(['APPROVE', 'REJECT']);
     expect(deskActionsForRole('SAMPLE_LAB_CASE_OFFICER')).toEqual(['APPROVE', 'REJECT']);
+  });
+
+  it('SF-50: deskHomeForRoles is role_code only (pairs with multi-desk filter)', () => {
+    expect(deskHomeForRoles(['SAMPLE_LAB_SCRUTINY_OFFICER'])).toContain('desk=');
+    expect(deskHomeForRoles(['SAMPLE_LAB_HELPDESK_L1'])).toBe('/helpdesk');
   });
 });

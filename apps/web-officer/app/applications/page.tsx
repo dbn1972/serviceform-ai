@@ -1,7 +1,8 @@
 'use client';
 
 import { AppShell, Alert, Card, Select, TextLink } from '@serviceform/ui-ux4g';
-import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { OfficerNav } from '../../components/OfficerNav';
 import { RequireOfficerSession } from '../../components/RequireOfficerSession';
 import { DESK_LABELS } from '../../lib/portal/desk';
@@ -26,11 +27,23 @@ type Task = {
 
 type Desk = { role_code: string; label: string; open_count: number };
 
+function initialDeskFilter(raw: string | null): string {
+  if (!raw) return 'ALL';
+  if (raw === 'ALL' || raw === 'TASKS') return raw;
+  if (raw in DESK_LABELS || raw.startsWith('SAMPLE_LAB_')) return raw;
+  return 'ALL';
+}
+
 function QueueList() {
+  const searchParams = useSearchParams();
   const [apps, setApps] = useState<App[] | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [desks, setDesks] = useState<Desk[]>([]);
-  const [deskFilter, setDeskFilter] = useState('ALL');
+  const [deskFilter, setDeskFilter] = useState(() => initialDeskFilter(searchParams.get('desk')));
+
+  useEffect(() => {
+    setDeskFilter(initialDeskFilter(searchParams.get('desk')));
+  }, [searchParams]);
 
   useEffect(() => {
     void Promise.all([
@@ -168,7 +181,9 @@ export default function ApplicationsPage() {
       </Alert>
 
       <RequireOfficerSession>
-        <QueueList />
+        <Suspense fallback={<p className="ux4g-body-m-default">Loading queue…</p>}>
+          <QueueList />
+        </Suspense>
       </RequireOfficerSession>
     </AppShell>
   );
