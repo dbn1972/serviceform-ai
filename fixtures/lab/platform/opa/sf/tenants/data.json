@@ -295,6 +295,26 @@
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
+      "SAMPLE_LAB_PAYMENT_WORKLOAD": {
+        "_note": "SF-56: SYSTEM workload for CMP-020 fee quote read (FeeQuotePort) and CMP-015 MARK_RECEIVED after SIM payment CAPTURED. Cannot invent fee amounts or record a statutory decision.",
+        "actions": [
+          "FEE_QUOTE_READ",
+          "PAYMENT_INTENT_READ",
+          "APPLICATION_READ",
+          "APPLICATION_TRANSITIONS_READ",
+          "APPLICATION_MARK_RECEIVED"
+        ],
+        "resource_types": ["FeeQuote", "PaymentIntent", "ApplicationCase"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_PAYMENT_INTEGRATION": {
+        "_note": "SF-56: INTEGRATION actor for CMP-021 SIMULATED PSP callback (HMAC). Same state machine as REAL HubPsp; REAL deferred to owner.",
+        "actions": ["PAYMENT_CALLBACK_APPLY", "PAYMENT_INTENT_READ"],
+        "resource_types": ["PaymentIntent"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
       "SAMPLE_LAB_ISSUANCE_WORKLOAD": {
         "_note": "SF-M10-B-3 host SYSTEM workload for post-approval issuance and SIMULATED DigiLocker publish. It cannot record a decision.",
         "actions": [

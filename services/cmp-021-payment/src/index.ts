@@ -56,7 +56,11 @@ export function buildPaymentApi(opts: PaymentOptions): ReturnType<typeof createP
 export { PaymentService } from './service/service.js';
 export { createPaymentApi, ROUTE_DESCRIPTORS } from './api/handler.js';
 export { PgPaymentRepository } from './repo/pg.js';
-export { SimulatedPspConnector } from './connectors/simulated-psp.js';
+export {
+  SimulatedPspConnector,
+  simulatorSecret,
+  signPayload,
+} from './connectors/simulated-psp.js';
 export { HubPspConnector } from './connectors/hub-psp.js';
 export { intentView } from './domain/intent-view.js';
 export { callbackView } from './domain/callback-view.js';

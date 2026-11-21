@@ -432,6 +432,21 @@
     "NOTIFICATION_TEMPLATE_READ": {
       "action_class": "READ_ONLY"
     },
+    "FEE_QUOTE_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "FEE_QUOTE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PAYMENT_INTENT_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "PAYMENT_INTENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PAYMENT_CALLBACK_APPLY": {
+      "action_class": "PROTECTED"
+    },
     "THREAD_OPEN": {
       "action_class": "PROTECTED"
     },
@@ -554,7 +569,9 @@
     "NotificationDispatch",
     "NotificationTemplate",
     "MessageThread",
-    "Inspection"
+    "Inspection",
+    "FeeQuote",
+    "PaymentIntent"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -570,9 +587,18 @@
         "APPLICATION_MARK_READY_TO_SUBMIT",
         "APPLICATION_RETURN_TO_DRAFT",
         "APPLICATION_SUBMIT",
+        "APPLICATION_ENTER_PAYMENT_PENDING",
         "APPLICATION_RECORD_CITIZEN_RESPONSE",
         "APPLICATION_REQUEST_WITHDRAWAL"
       ],
+      "assurance": ["OTP", "MFA"]
+    },
+    "FeeQuote": {
+      "actions": ["FEE_QUOTE_CREATE", "FEE_QUOTE_READ"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "PaymentIntent": {
+      "actions": ["PAYMENT_INTENT_CREATE", "PAYMENT_INTENT_READ"],
       "assurance": ["OTP", "MFA"]
     },
     "DeficiencyNotice": {

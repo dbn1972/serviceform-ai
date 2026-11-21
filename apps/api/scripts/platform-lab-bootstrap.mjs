@@ -58,6 +58,9 @@ const ROLES = [
   // SF-55: CMP-025/026 journey notifications (SIM SMS + messaging)
   { login: 'sf_lab_cmp025', member: 'sf_cmp025_rw', env: 'DATABASE_URL_CMP025' },
   { login: 'sf_lab_cmp026', member: 'sf_cmp026_rw', env: 'DATABASE_URL_CMP026' },
+  // SF-56: CMP-020/021 SAMPLE_LAB DUMMY fee>0 + SIMULATED payment (REAL owner-held)
+  { login: 'sf_lab_cmp020', member: 'sf_cmp020_rw', env: 'DATABASE_URL_CMP020' },
+  { login: 'sf_lab_cmp021', member: 'sf_cmp021_rw', env: 'DATABASE_URL_CMP021' },
 ];
 
 function previous() {

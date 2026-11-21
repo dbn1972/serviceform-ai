@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
 import { EvidenceUploadField, type EvidenceUploadValue } from './EvidenceUploadField';
 import { FormAlert } from './FormFeedback';
+import { PaymentStep } from './PaymentStep';
 
 type App = {
   id: string;
@@ -61,11 +62,22 @@ const STATUS_ICON = {
 
 function timeline(app: App): Step[] {
   const actionRequired = app.status === 'ACTION_REQUIRED';
+  const paymentRequired = app.status === 'PAYMENT_REQUIRED';
   const decided = ['APPROVED', 'ISSUED', 'REJECTED'].includes(app.status);
   const issued = app.status === 'ISSUED';
   const published = app.digilocker.status === 'PUBLISHED';
   return [
     { label: 'Submitted', detail: formatDate(app.created_at), done: true, current: false },
+    {
+      label: paymentRequired ? 'Fee payment' : 'Fee',
+      detail: paymentRequired
+        ? 'SAMPLE_LAB DUMMY fee due (SIMULATED)'
+        : decided || app.status === 'SUBMITTED' || actionRequired
+          ? 'Paid or not required'
+          : 'Pending',
+      done: !paymentRequired,
+      current: paymentRequired,
+    },
     {
       label: actionRequired
         ? 'Action required'
@@ -237,6 +249,9 @@ export function CertificateDetail({ id }: { id: string }) {
           ))}
         </ol>
 
+        {app.status === 'PAYMENT_REQUIRED' ? (
+          <PaymentStep applicationId={app.id} onPaid={() => void load()} />
+        ) : null}
         {app.status === 'SUBMITTED' ? (
           <FormAlert tone="info" title="Awaiting officer decision">
             An officer will review your details and supporting document. In SAMPLE_LAB, approve it

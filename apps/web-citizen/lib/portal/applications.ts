@@ -21,6 +21,7 @@ export type CaseState =
 export type PortalStatus =
   | 'DRAFT'
   | 'SUBMITTED'
+  | 'PAYMENT_REQUIRED'
   | 'ACTION_REQUIRED'
   | 'APPROVED'
   | 'REJECTED'
@@ -103,6 +104,8 @@ export function portalStatus(state: CaseState): PortalStatus {
     case 'DRAFT':
     case 'READY_TO_SUBMIT':
       return 'DRAFT';
+    case 'PAYMENT_PENDING':
+      return 'PAYMENT_REQUIRED';
     case 'APPROVED':
     case 'SIGNING_PENDING':
       return 'APPROVED';

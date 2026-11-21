@@ -55,3 +55,10 @@ export {
   type SampleLabInspectionPin,
   type SampleLabInspectionChecklistItem,
 } from './inspection-catalogue';
+export {
+  SAMPLE_LAB_FEE_DEFAULTS,
+  SAMPLE_LAB_FEE_CATALOGUE,
+  feePolicyForCatalogue,
+  requiresLabPayment,
+} from './fee-catalogue';
+export type { SampleLabFeeCatalogue, SampleLabFeePolicyRow } from './fee-catalogue';
