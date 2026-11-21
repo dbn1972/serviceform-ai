@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="0.011245594">
+    <testsuite name="apps/api/test/assisted-lab-apply.test.ts" timestamp="2026-11-21T19:27:41.400Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003625543">
+        <testcase classname="apps/api/test/assisted-lab-apply.test.ts" name="lab assisted apply gate &gt; allows apply only after representation/consent verification" time="0.002099128">
+        </testcase>
+        <testcase classname="apps/api/test/assisted-lab-apply.test.ts" name="lab assisted apply gate &gt; refuses self-assisted / impersonation shapes" time="0.000337091">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/assisted-lab.test.ts" timestamp="2026-11-21T19:27:41.401Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.004213595">
+        <testcase classname="apps/api/test/assisted-lab.test.ts" name="SAMPLE_LAB assisted catalogue / consent fail-closed &gt; defaults CSC and keeps representation flags from published catalogue" time="0.001432585">
+        </testcase>
+        <testcase classname="apps/api/test/assisted-lab.test.ts" name="SAMPLE_LAB assisted catalogue / consent fail-closed &gt; refuses consent capture without read-back (fail-closed)" time="0.000312905">
+        </testcase>
+        <testcase classname="apps/api/test/assisted-lab.test.ts" name="SAMPLE_LAB assisted catalogue / consent fail-closed &gt; records consent only after read-back and verifies fail-closed otherwise" time="0.000292442">
+        </testcase>
+        <testcase classname="apps/api/test/assisted-lab.test.ts" name="SAMPLE_LAB assisted catalogue / consent fail-closed &gt; applicant existence is delegated to the identity directory" time="0.001057873">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/assisted.test.ts" timestamp="2026-11-21T19:27:41.401Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003406456">
+        <testcase classname="apps/web-officer/test/assisted.test.ts" name="officer assisted apply shell helpers &gt; projects session proof with apply gates and no impersonation" time="0.001208986">
+        </testcase>
+        <testcase classname="apps/web-officer/test/assisted.test.ts" name="officer assisted apply shell helpers &gt; fail-closes consent without read-back or when applied_by equals applied_for" time="0.000820399">
+        </testcase>
+        <testcase classname="apps/web-officer/test/assisted.test.ts" name="officer assisted apply shell helpers &gt; requires opaque authority only on representation channels" time="0.000345067">
+        </testcase>
+    </testsuite>
+</testsuites>

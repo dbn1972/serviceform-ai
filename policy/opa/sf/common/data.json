@@ -389,6 +389,30 @@
     },
     "SLA_CLOCK_READ": {
       "action_class": "READ_ONLY"
+    },
+    "ASSISTED_SESSION_START": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "ASSISTED_SESSION_BIND_APPLICANT": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_VERIFY_REPRESENTATION": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_SUBMIT": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_HANDOFF": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_RESUME": {
+      "action_class": "PROTECTED"
+    },
+    "ASSISTED_SESSION_CLOSE": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -423,7 +447,8 @@
     "UploadPolicy",
     "SlaCalendar",
     "SlaPolicy",
-    "SlaClock"
+    "SlaClock",
+    "AssistedSession"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -479,6 +504,10 @@
         "DOCUMENT_READ",
         "DOCUMENT_ACCESS"
       ],
+      "assurance": ["OTP", "MFA"]
+    },
+    "AssistedSession": {
+      "actions": ["ASSISTED_SESSION_READ", "ASSISTED_SESSION_RESUME"],
       "assurance": ["OTP", "MFA"]
     }
   },

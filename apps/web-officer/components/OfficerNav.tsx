@@ -8,6 +8,7 @@ import { isHelpdeskRole } from '../lib/portal/desk';
 const baseLinks = [
   { href: '/', label: 'Home' },
   { href: '/applications', label: 'Applications' },
+  { href: '/assisted', label: 'Assisted apply' },
 ] as const;
 
 export function OfficerNav() {

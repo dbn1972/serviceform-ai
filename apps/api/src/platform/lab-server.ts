@@ -25,6 +25,7 @@ const app = await buildApp(config, {
   m05: lab.m05,
   m07: lab.m07,
   wave2: lab.wave2,
+  ...(lab.m09 ? { m09: lab.m09 } : {}),
 });
 await lab.registerSimulators(app);
 await lab.registerDocumentUploadSimulators(app);
@@ -33,6 +34,7 @@ await lab.registerStudioWorkflow(app);
 await lab.registerStudioRules(app);
 await lab.registerFormPins(app);
 if (lab.registerGrievance) await lab.registerGrievance(app);
+if (lab.registerAssisted) await lab.registerAssisted(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {
@@ -53,10 +55,12 @@ logger.info(
       ...(app.m04Mounted ?? []),
       ...(app.m05Mounted ?? []),
       ...(app.m07Mounted ?? []),
+      ...(app.m09Mounted ?? []),
       ...app.wave2Mounted,
     ],
     simulation: true,
     g6_issued: false,
+    certified: false,
   },
   'platform lab started',
 );
