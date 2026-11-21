@@ -249,7 +249,11 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       environmentLabel: 'SAMPLE_LAB',
     });
     expect(scoped.allowed_states).toEqual(['LGD-S-01', 'LGD-S-02']);
-    const form = applyJurisdictionScopeToFormSchema(licence!.versions[0]!.form.json_schema, scoped);
+    expect(licence).toBeTruthy();
+    const licenceVersion = licence?.versions[0];
+    expect(licenceVersion).toBeTruthy();
+    if (!licenceVersion) return;
+    const form = applyJurisdictionScopeToFormSchema(licenceVersion.form.json_schema, scoped);
     const addr = form.properties?.['applicant_address']?.properties;
     expect(addr?.['state_code']?.enum).toEqual(['LGD-S-01', 'LGD-S-02']);
     expect(addr?.['district']?.enum).toEqual(['LGD-D-0101', 'LGD-D-0102']);

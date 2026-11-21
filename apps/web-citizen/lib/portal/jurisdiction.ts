@@ -13,7 +13,7 @@ export function offeringJurisdictionScope(catalogueId: string): JurisdictionScop
   const placement = portalPlacement();
   return resolveTenantJurisdictionScope({
     catalogueId,
-    tenantId: placement.tenant_id,
+    tenantId: placement.tenant_id ?? null,
     environmentLabel: placement.environment_label ?? null,
   });
 }

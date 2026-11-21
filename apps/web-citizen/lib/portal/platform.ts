@@ -153,6 +153,8 @@ export interface PortalOffering {
 }
 
 interface PlacementFile {
+  /** Server-side placement tenant (never from client headers). Used for SAMPLE_LAB overlays. */
+  tenant_id?: string;
   environment: string;
   environment_label?: string;
   offerings: PortalOffering[];
