@@ -2,7 +2,8 @@
 
 **Stamp:** CERTIFIED=false · G6=false · self_certified=false  
 **Requirement:** Citizen raise/track + officer helpdesk (CMP-027) · ONDC IGM–inspired categories  
-**Branch:** `cursor/grievance-helpdesk-dd41`
+**Branch:** `cursor/grievance-helpdesk-dd41`  
+**Commit:** `b1aad49a5ad61a27cb1a44112b40833320088d1b`
 
 ## Executed checks
 
