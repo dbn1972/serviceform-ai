@@ -50,8 +50,8 @@ export function deskHomeForRoles(roles: readonly string[]): string {
 
   if (helpdesk.length > 0 && caseDesks.length === 0) return '/helpdesk';
 
-  if (caseDesks.length === 1) {
-    const only = caseDesks[0]!;
+  const [only, ...rest] = caseDesks;
+  if (only !== undefined && rest.length === 0) {
     if (only === 'SAMPLE_LAB_CASE_OFFICER') return '/applications';
     return `/applications?desk=${encodeURIComponent(only)}`;
   }
