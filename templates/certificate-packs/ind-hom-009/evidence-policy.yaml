@@ -1,0 +1,12 @@
+# IND-HOM-009 evidence policy — SAMPLE_LAB DUMMY (tenant-overridable)
+# Synthetic only · not statutory · not for production · CERTIFIED=false · G6=false
+evidence_policy_id: ind-hom-009-evidence-policy-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
+mandatory_documents_min: 1
+mandatory_documents:
+  - document_code: SAMPLE_LAB_DUMMY_EVIDENCE_ANY
+    label: SAMPLE_LAB DUMMY evidence (synthetic placeholder)
+optional_documents: []
+notes: >
+  SAMPLE_LAB DUMMY evidence list. Not a government accepted-proof catalogue.
+  Tenants override via owner-config / CMP-052. Refuse outside SAMPLE_LAB.

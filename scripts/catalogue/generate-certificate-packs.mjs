@@ -139,7 +139,14 @@ function formSchema(entry, idLower) {
       type: 'object',
       title: 'Address',
       additionalProperties: false,
-      required: ['house_no_or_name', 'locality', 'district', 'state_code', 'pincode'],
+      required: [
+        'house_no_or_name',
+        'locality',
+        'district',
+        'municipality_code',
+        'state_code',
+        'pincode',
+      ],
       properties: {
         house_no_or_name: {
           type: 'string',
@@ -154,14 +161,41 @@ function formSchema(entry, idLower) {
           maxLength: 80,
         },
         post_office: { type: 'string', title: 'Post office', maxLength: 80 },
-        district: { type: 'string', title: 'District', minLength: 1, maxLength: 80 },
-        state_code: { type: 'string', title: 'State / UT code', minLength: 2, maxLength: 2 },
+        district: {
+          type: 'string',
+          title: 'District (LGD code)',
+          minLength: 2,
+          maxLength: 64,
+          pattern: '^[A-Z0-9][A-Z0-9._-]{1,63}$',
+          semanticElementId: 'SF-SEM-ADDR-DISTRICT',
+          'x-ux4g': { hint: 'Tenant-allowed district LGD codes (Admin → Bindings)' },
+        },
+        municipality_code: {
+          type: 'string',
+          title: 'Municipality / ULB (LGD local-body code)',
+          minLength: 2,
+          maxLength: 64,
+          pattern: '^[A-Z0-9][A-Z0-9._-]{1,63}$',
+          semanticElementId: 'SF-SEM-ADDR-MUNICIPALITY',
+          'x-ux4g': {
+            hint: 'Tenant-allowed municipality / ULB LGD codes (Admin → Bindings)',
+          },
+        },
+        state_code: {
+          type: 'string',
+          title: 'State / UT (LGD code)',
+          minLength: 2,
+          maxLength: 64,
+          pattern: '^[A-Z0-9][A-Z0-9._-]{1,63}$',
+          semanticElementId: 'SF-SEM-ADDR-STATE-CODE',
+          'x-ux4g': { hint: 'Tenant-allowed state LGD codes (Admin → Bindings)' },
+        },
         pincode: { type: 'string', title: 'PIN code', pattern: '^[1-9][0-9]{5}$' },
       },
     },
     purpose_of_certificate: {
       type: 'string',
-      title: 'Purpose of certificate',
+      title: 'Purpose of certificate / licence / permit',
       minLength: 1,
       maxLength: 500,
       semanticElementId: 'SF-SEM-PURPOSE',
@@ -293,11 +327,17 @@ function writePack(entry, path, skeletons, defaults, manifest) {
   });
 }
 
+const LP_UNIVERSE = join(
+  ROOT,
+  'packages/service-templates/src/catalogue/licence-permit-universe.json',
+);
+
 function main() {
   const universe = JSON.parse(readFileSync(UNIVERSE, 'utf8'));
   if (universe.filter.equals !== 'Certificate') {
     throw new Error('universe filter must be Certificate');
   }
+  const lpUniverse = JSON.parse(readFileSync(LP_UNIVERSE, 'utf8'));
   const defaults = JSON.parse(readFileSync(DEFAULTS, 'utf8'));
   if (defaults.policy_kind !== 'SAMPLE_LAB_DUMMY') {
     throw new Error('sample-lab-dummy/defaults.json must declare SAMPLE_LAB_DUMMY');
@@ -319,10 +359,11 @@ function main() {
 
   const manifest = {
     generated_at_note:
-      'SAMPLE_LAB DUMMY factory output — synthetic defaults; tenant-overridable; not CERTIFIED; G6=false',
+      'SAMPLE_LAB DUMMY factory output — Certificate + Licence + Permit; tenant-overridable jurisdiction.allowed_states/districts/municipalities; not CERTIFIED; G6=false',
     catalogue_version: universe.catalogue_version,
     source: universe.source,
     filter: universe.filter,
+    licence_permit_filter: lpUniverse.filter,
     policy_kind: 'SAMPLE_LAB_DUMMY',
     defaults_ref: 'templates/certificate-packs/sample-lab-dummy/defaults.json',
     tenant_overlay_schema_ref:
@@ -348,6 +389,13 @@ function main() {
     }
 
     writePack(entry, path, skeletons, defaults, manifest);
+    generated += 1;
+  }
+
+  for (const entry of lpUniverse.entries) {
+    writePack(entry, authoringPath(entry['Canonical Service ID']), skeletons, defaults, manifest);
+    const last = manifest.packs[manifest.packs.length - 1];
+    last.note = `Registry ${entry['Service / Output Type']} — same tenant jurisdiction scope pattern`;
     generated += 1;
   }
 
@@ -386,6 +434,7 @@ function main() {
         generated,
         policy_kind: 'SAMPLE_LAB_DUMMY',
         skipped_handcrafted: [...SKIP_IDS],
+        licence_permit: lpUniverse.count,
         manifest_entries: manifest.packs.length,
         out: 'templates/certificate-packs/',
       },

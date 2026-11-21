@@ -5,7 +5,8 @@ import type { FormSchemaNode } from './types';
  * Never invents statute; values are lab-only placeholders (names start with SAMPLE/Lab).
  */
 
-const SAMPLE_ADDRESS = {
+/** Legacy Residence-style sample (OD) when schema still uses SAMPLE_LAB OD/XX enum. */
+const SAMPLE_ADDRESS_LEGACY = {
   house_no_or_name: 'SAMPLE Plot 1',
   locality: 'SAMPLE Locality',
   post_office: 'SAMPLE Post Office',
@@ -13,6 +14,23 @@ const SAMPLE_ADDRESS = {
   state_code: 'OD',
   pincode: '751001',
 } as const;
+
+/** Tenant-scoped LGD sample (matches SAMPLE_LAB defaults allowed_* lists). */
+const SAMPLE_ADDRESS_LGD = {
+  house_no_or_name: 'SAMPLE Plot 1',
+  locality: 'SAMPLE Locality',
+  post_office: 'SAMPLE Post Office',
+  district: 'LGD-D-0101',
+  municipality_code: 'LGD-U-010101',
+  state_code: 'LGD-S-01',
+  pincode: '751001',
+} as const;
+
+function sampleAddressFor(node: FormSchemaNode) {
+  const state = node.properties?.['state_code'];
+  if (state?.enum?.includes('OD')) return { ...SAMPLE_ADDRESS_LEGACY };
+  return { ...SAMPLE_ADDRESS_LGD };
+}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -54,7 +72,19 @@ function sampleForNode(name: string, node: FormSchemaNode): unknown {
     return 'SAMPLE Lab Citizen';
   }
   if (name.includes('address') && node.type === 'object') {
-    return { ...SAMPLE_ADDRESS };
+    return sampleAddressFor(node);
+  }
+  if (node.semanticElementId === 'SF-SEM-ADDR-STATE-CODE') {
+    if (node.enum && node.enum.length > 0) return node.enum[0];
+    return SAMPLE_ADDRESS_LGD.state_code;
+  }
+  if (node.semanticElementId === 'SF-SEM-ADDR-DISTRICT') {
+    if (node.enum && node.enum.length > 0) return node.enum[0];
+    return SAMPLE_ADDRESS_LGD.district;
+  }
+  if (node.semanticElementId === 'SF-SEM-ADDR-MUNICIPALITY') {
+    if (node.enum && node.enum.length > 0) return node.enum[0];
+    return SAMPLE_ADDRESS_LGD.municipality_code;
   }
   if (name.includes('purpose')) return 'SAMPLE_LAB purpose — synthetic only';
   if (name.includes('evidence_type')) return 'SAMPLE_LAB_DUMMY_EVIDENCE_ANY';
@@ -81,7 +111,7 @@ export function buildSampleLabFormData(schema: FormSchemaNode): Record<string, u
       'pincode' in node.properties &&
       'state_code' in node.properties
     ) {
-      data[name] = { ...SAMPLE_ADDRESS };
+      data[name] = sampleAddressFor(node);
       continue;
     }
     data[name] = sampleForNode(name, node);

@@ -76,32 +76,57 @@ export const aadhaarLast4 = (): FormSchemaNode => ({
 
 export const STATE_CODE_LABELS: Record<string, string> = { OD: 'OD', XX: 'XX (other sample)' };
 
+/**
+ * LGD-like code pattern (Constitution §3 — codes, not place names).
+ * Must stay inside CMP-009's bounded pattern subset (no `:`, no unbounded quantifiers).
+ */
+export const LGD_CODE_PATTERN = '^[A-Z0-9][A-Z0-9._-]{1,63}$';
+
+const addressPartsBase = () => ({
+  house_no_or_name: {
+    type: 'string' as const,
+    title: 'House no / name',
+    minLength: 1,
+    maxLength: 100,
+    semanticElementId: 'SF-SEM-ADDR-HOUSE',
+  },
+  locality: {
+    type: 'string' as const,
+    title: 'Locality / village / ward',
+    minLength: 1,
+    maxLength: 150,
+    semanticElementId: 'SF-SEM-ADDR-LOCALITY',
+  },
+  post_office: {
+    type: 'string' as const,
+    title: 'Post office',
+    maxLength: 100,
+    semanticElementId: 'SF-SEM-ADDR-POST-OFFICE',
+  },
+  pincode: {
+    type: 'string' as const,
+    title: 'PIN code',
+    pattern: '^[0-9]{6}$',
+    semanticElementId: 'SF-SEM-ADDR-PINCODE',
+    'x-ux4g': {
+      inputMode: 'numeric' as const,
+      autocomplete: 'postal-code',
+      error_messages: { PATTERN: 'PIN code must be 6 digits' },
+    },
+  },
+});
+
+/**
+ * Legacy SAMPLE_LAB postal address (Residence PUBLISHED 1.0.0 pin — IN-OD package).
+ * Frozen content hash — do not change field shape without a new published version.
+ */
 export const postalAddress = (title: string): FormSchemaNode => ({
   type: 'object',
   title,
   additionalProperties: false,
   required: ['house_no_or_name', 'locality', 'district', 'state_code', 'pincode'],
   properties: {
-    house_no_or_name: {
-      type: 'string',
-      title: 'House no / name',
-      minLength: 1,
-      maxLength: 100,
-      semanticElementId: 'SF-SEM-ADDR-HOUSE',
-    },
-    locality: {
-      type: 'string',
-      title: 'Locality / village / ward',
-      minLength: 1,
-      maxLength: 150,
-      semanticElementId: 'SF-SEM-ADDR-LOCALITY',
-    },
-    post_office: {
-      type: 'string',
-      title: 'Post office',
-      maxLength: 100,
-      semanticElementId: 'SF-SEM-ADDR-POST-OFFICE',
-    },
+    ...addressPartsBase(),
     district: {
       type: 'string',
       title: 'District',
@@ -116,25 +141,84 @@ export const postalAddress = (title: string): FormSchemaNode => ({
       semanticElementId: 'SF-SEM-ADDR-STATE-CODE',
       'x-ux4g': { enum_labels: STATE_CODE_LABELS },
     },
-    pincode: {
+  },
+});
+
+/**
+ * Tenant-scoped postal address for Certificate / Licence / Permit / Registration stubs.
+ * State, district, and municipality (ULB / local body) are LGD-like codes;
+ * runtime applies tenant allowed_* enums from TSB overlay.
+ */
+export const lgdPostalAddress = (title: string): FormSchemaNode => ({
+  type: 'object',
+  title,
+  additionalProperties: false,
+  required: [
+    'house_no_or_name',
+    'locality',
+    'district',
+    'municipality_code',
+    'state_code',
+    'pincode',
+  ],
+  properties: {
+    ...addressPartsBase(),
+    district: {
       type: 'string',
-      title: 'PIN code',
-      pattern: '^[0-9]{6}$',
-      semanticElementId: 'SF-SEM-ADDR-PINCODE',
+      title: 'District (LGD code)',
+      minLength: 2,
+      maxLength: 64,
+      pattern: LGD_CODE_PATTERN,
+      semanticElementId: 'SF-SEM-ADDR-DISTRICT',
       'x-ux4g': {
-        inputMode: 'numeric',
-        autocomplete: 'postal-code',
-        error_messages: { PATTERN: 'PIN code must be 6 digits' },
+        hint: 'Tenant-allowed district LGD codes (set in Admin → Bindings)',
+        error_messages: { PATTERN: 'Enter a district LGD code' },
+      },
+    },
+    municipality_code: {
+      type: 'string',
+      title: 'Municipality / ULB (LGD local-body code)',
+      minLength: 2,
+      maxLength: 64,
+      pattern: LGD_CODE_PATTERN,
+      semanticElementId: 'SF-SEM-ADDR-MUNICIPALITY',
+      'x-ux4g': {
+        hint: 'Tenant-allowed municipality / ULB LGD codes (set in Admin → Bindings)',
+        error_messages: { PATTERN: 'Enter a municipality / ULB LGD code' },
+      },
+    },
+    state_code: {
+      type: 'string',
+      title: 'State / UT (LGD code)',
+      minLength: 2,
+      maxLength: 64,
+      pattern: LGD_CODE_PATTERN,
+      semanticElementId: 'SF-SEM-ADDR-STATE-CODE',
+      'x-ux4g': {
+        hint: 'Tenant-allowed state LGD codes (set in Admin → Bindings)',
+        error_messages: { PATTERN: 'Enter a state LGD code' },
       },
     },
   },
 });
 
+/** Legacy Residence PUBLISHED pin UI parts — do not add fields (frozen content hash). */
 export const ADDRESS_PARTS = [
   'house_no_or_name',
   'locality',
   'post_office',
   'district',
+  'state_code',
+  'pincode',
+] as const;
+
+/** LGD-scoped address UI parts (state / district / municipality). */
+export const LGD_ADDRESS_PARTS = [
+  'house_no_or_name',
+  'locality',
+  'post_office',
+  'district',
+  'municipality_code',
   'state_code',
   'pincode',
 ] as const;

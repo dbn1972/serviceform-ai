@@ -2,7 +2,7 @@
  * Node-only SAMPLE_LAB sample-parameter resolve (reads owner-config JSON from disk).
  * Do not import from Next.js client bundles — use `@serviceform/service-templates/sample-lab-dummy-resolve`.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -14,9 +14,15 @@ import {
   type SampleLabDummyDefaults,
   type SampleLabTenantOverlay,
 } from './sample-lab-dummy';
+import {
+  extractJurisdictionScope,
+  resolveJurisdictionScope,
+  type JurisdictionScope,
+} from './jurisdiction-scope';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const DEFAULTS_PATH = join(ROOT, 'templates/certificate-packs/sample-lab-dummy/defaults.json');
+const TENANT_OVERLAY_ROOT = join(ROOT, 'fixtures/lab/platform/tenant-overlays');
 
 export function loadSampleLabDummyDefaults(): SampleLabDummyDefaults {
   const raw = JSON.parse(readFileSync(DEFAULTS_PATH, 'utf8')) as SampleLabDummyDefaults;
@@ -30,17 +36,59 @@ const HANDCRAFTED_OWNER_CONFIG: Record<string, string> = {
   'IND-SOC-031': 'templates/income-certificate/owner-config.json',
 };
 
-export function loadPerIdOwnerConfig(catalogueId: string): PerIdOwnerConfigOverlay {
+export function loadPerIdOwnerConfig(catalogueId: string): PerIdOwnerConfigOverlay | null {
   const relative =
     HANDCRAFTED_OWNER_CONFIG[catalogueId] ??
     `templates/certificate-packs/${catalogueId.toLowerCase()}/owner-config.json`;
   const path = join(ROOT, relative);
+  if (!existsSync(path)) return null;
   return JSON.parse(readFileSync(path, 'utf8')) as PerIdOwnerConfigOverlay;
+}
+
+function overlayPath(tenantId: string, catalogueId: string): string {
+  return join(TENANT_OVERLAY_ROOT, tenantId, `${catalogueId.toUpperCase()}.json`);
+}
+
+/** Load a persisted SAMPLE_LAB tenant/TSB overlay (any catalogue offering id). */
+export function loadTenantOverlay(
+  tenantId: string,
+  catalogueId: string,
+): SampleLabTenantOverlay | null {
+  const path = overlayPath(tenantId, catalogueId);
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, 'utf8')) as SampleLabTenantOverlay;
+}
+
+/**
+ * Persist a SAMPLE_LAB tenant/TSB overlay for any catalogue offering
+ * (Certificate, Licence, Permit, Registration, …). Fail-closed outside SAMPLE_LAB.
+ */
+export function saveTenantOverlay(overlay: SampleLabTenantOverlay): SampleLabTenantOverlay {
+  assertSampleLabDummyAllowed(overlay.environment_label ?? SAMPLE_LAB_ENVIRONMENT);
+  if (!/^[0-9a-f-]{36}$/i.test(overlay.tenant_id)) {
+    throw new Error('tenant_id must be a UUID');
+  }
+  if (!/^IND-[A-Z]{3}-[0-9]{3}$/.test(overlay.catalogue_id)) {
+    throw new Error('catalogue_id must match IND-XXX-000');
+  }
+  const dir = join(TENANT_OVERLAY_ROOT, overlay.tenant_id);
+  mkdirSync(dir, { recursive: true });
+  const stored: SampleLabTenantOverlay = {
+    ...overlay,
+    catalogue_id: overlay.catalogue_id.toUpperCase(),
+    environment_label: SAMPLE_LAB_ENVIRONMENT,
+  };
+  writeFileSync(
+    overlayPath(overlay.tenant_id, stored.catalogue_id),
+    `${JSON.stringify(stored, null, 2)}\n`,
+  );
+  return stored;
 }
 
 /**
  * Resolve owner-config for a catalogue id:
- * shared defaults → per-id overlay → optional tenant/TSB overlay.
+ * shared defaults → per-id overlay (if pack exists) → optional tenant/TSB overlay.
+ * Works for Certificate, Licence, Permit and other registry offerings.
  */
 export function resolveSampleLabOwnerConfig(
   catalogueId: string,
@@ -66,7 +114,7 @@ export function resolveSampleLabOwnerConfig(
   } = tenantOverlay ?? {};
   const resolved = deepMerge(
     defaults as unknown as Record<string, unknown>,
-    perId as unknown as Record<string, unknown>,
+    (perId ?? { catalogue_id: catalogueId }) as unknown as Record<string, unknown>,
     overlayFields as Record<string, unknown>,
   );
   return {
@@ -83,3 +131,23 @@ export function resolveSampleLabOwnerConfig(
     jurisdiction_code: tenantOverlay?.jurisdiction_code ?? null,
   };
 }
+
+/** Resolve jurisdiction.allowed_states / allowed_districts / allowed_municipalities for a tenant+offering. */
+export function resolveTenantJurisdictionScope(input: {
+  catalogueId: string;
+  tenantId?: string | null;
+  tenantOverlay?: SampleLabTenantOverlay | null;
+  environmentLabel?: string | null;
+}): JurisdictionScope {
+  const overlay =
+    input.tenantOverlay ??
+    (input.tenantId ? loadTenantOverlay(input.tenantId, input.catalogueId) : null);
+  const resolved = resolveSampleLabOwnerConfig(
+    input.catalogueId,
+    overlay,
+    input.environmentLabel ?? SAMPLE_LAB_ENVIRONMENT,
+  );
+  return resolveJurisdictionScope(resolved, input.environmentLabel ?? SAMPLE_LAB_ENVIRONMENT);
+}
+
+export { extractJurisdictionScope, TENANT_OVERLAY_ROOT };

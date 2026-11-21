@@ -7,6 +7,10 @@ import {
   sampleLab,
   type FormPin,
 } from '../../../../../lib/portal/forms';
+import {
+  formPackageWithJurisdictionScope,
+  offeringJurisdictionScope,
+} from '../../../../../lib/portal/jurisdiction';
 import { crossSiteRefusal, currentCitizen, json, relay } from '../../../../../lib/portal/platform';
 import { profilePrefill, readProfile } from '../../../../../lib/portal/profile';
 
@@ -56,11 +60,13 @@ export async function GET(request: Request, ctx: Ctx) {
   const live = await livePin(citizen, catalogueId);
   if (!live) return json(404, NOT_OFFERED);
   const { template, version } = offered;
+  const scope = offeringJurisdictionScope(catalogueId);
+  const scopedForm = formPackageWithJurisdictionScope(version.form, scope);
   const sample = sampleLab()
-    ? (version.sample_data ?? buildSampleLabFormData(version.form.json_schema))
+    ? (version.sample_data ?? buildSampleLabFormData(scopedForm.json_schema))
     : {};
   const profile = await readProfile(citizen);
-  const prefill = profilePrefill(version.form.json_schema, sample, profile);
+  const prefill = profilePrefill(scopedForm.json_schema, sample, profile);
   const res = await interpret(citizen, live.pin, prefill);
   if (res.status !== 200) return relay(res, 'The form engine is unavailable');
   return json(200, {
@@ -73,8 +79,13 @@ export async function GET(request: Request, ctx: Ctx) {
     form: {
       pin: live.pin,
       version: version.version,
-      package: version.form,
+      package: scopedForm,
       pin_source: live.source,
+    },
+    jurisdiction_scope: {
+      allowed_states: scope.allowed_states,
+      allowed_districts: scope.allowed_districts,
+      allowed_municipalities: scope.allowed_municipalities,
     },
     prefill,
     prefill_source: profile ? 'CMP-005' : sampleLab() ? 'SAMPLE_LAB' : null,
@@ -82,6 +93,7 @@ export async function GET(request: Request, ctx: Ctx) {
     engine: 'CMP-009',
     publication: live.source === 'CMP-033' ? 'STUDIO' : 'SIMULATED',
     g6_issued: false,
+    certified: false,
   });
 }
 

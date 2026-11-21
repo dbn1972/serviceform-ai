@@ -186,6 +186,9 @@ importers:
 
   apps/web-admin:
     dependencies:
+      '@serviceform/service-templates':
+        specifier: workspace:*
+        version: link:../../packages/service-templates
       '@serviceform/ui-ux4g':
         specifier: workspace:*
         version: link:../../packages/ui-ux4g

@@ -12,6 +12,10 @@ import {
   validateWithEngine,
 } from '../../../../lib/portal/forms';
 import {
+  jurisdictionRefusal,
+  offeringJurisdictionScope,
+} from '../../../../lib/portal/jurisdiction';
+import {
   crossSiteRefusal,
   currentCitizen,
   json,
@@ -72,6 +76,12 @@ export async function POST(request: Request) {
   if (sampleLab()) {
     const refusal = syntheticNameRefusal(version.form.json_schema, data);
     if (refusal) return json(400, { error_code: 'SF-SYS-003', ...refusal });
+  }
+
+  const scope = offeringJurisdictionScope(catalogueId);
+  const outOfScope = jurisdictionRefusal(version.form.json_schema, data, scope);
+  if (outOfScope) {
+    return json(400, { error_code: 'SF-SYS-003', ...outOfScope });
   }
 
   const cataloguePin = pinFor(version);

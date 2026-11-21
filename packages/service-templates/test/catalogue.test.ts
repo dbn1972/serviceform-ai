@@ -5,8 +5,10 @@ import { describe, expect, it } from 'vitest';
 import {
   CERTIFICATE_OUTPUT_TYPE,
   CERTIFICATE_UNIVERSE_FILTER,
+  LICENCE_PERMIT_UNIVERSE_FILTER,
   catalogueIdForFormVersion,
   certificateUniverseIds,
+  licencePermitUniverseIds,
   diffVersions,
   formFields,
   formPin,
@@ -16,6 +18,8 @@ import {
   publishedVersion,
   sampleLabDummyAllowed,
   assertSampleLabDummyAllowed,
+  resolveJurisdictionScope,
+  applyJurisdictionScopeToFormSchema,
   stepLabels,
   templateByCatalogueId,
   templateById,
@@ -24,7 +28,12 @@ import {
   type UiElement,
 } from '../src/index';
 import { assertVersionIntegrity, formContentHash } from '../src/integrity';
-import { resolveSampleLabOwnerConfig } from '../src/sample-lab-dummy-resolve';
+import {
+  resolveSampleLabOwnerConfig,
+  resolveTenantJurisdictionScope,
+  saveTenantOverlay,
+  loadTenantOverlay,
+} from '../src/sample-lab-dummy-resolve';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const registry = JSON.parse(readFileSync(join(ROOT, TEMPLATE_REGISTRY_SOURCE.path), 'utf8')) as {
@@ -47,6 +56,9 @@ const templates = listTemplates();
 const registryCertificates = registry.canonical_services.filter(
   (e) => e['Service / Output Type'] === CERTIFICATE_OUTPUT_TYPE,
 );
+const registryLicencePermits = registry.canonical_services.filter((e) =>
+  ['Licence', 'Permit'].includes(e['Service / Output Type'] ?? ''),
+);
 
 function scopes(node: UiElement): string[] {
   if (node.type === 'Control') return [node.scope];
@@ -58,12 +70,14 @@ const scopeToPointer = (scope: string) =>
 
 // REQ: catalogue grounded in docs/catalogue; published metadata immutable (Constitution).
 describe('template catalogue (SAMPLE_LAB)', () => {
-  it('covers the Certificate universe plus Birth Registration stub', () => {
+  it('covers Certificate + Birth + Licence + Permit stubs', () => {
     expect(CERTIFICATE_UNIVERSE_FILTER.equals).toBe('Certificate');
     expect(certificateUniverseIds()).toHaveLength(registryCertificates.length);
+    expect(licencePermitUniverseIds()).toHaveLength(registryLicencePermits.length);
+    expect(LICENCE_PERMIT_UNIVERSE_FILTER.equals_any).toEqual(['Licence', 'Permit']);
     expect(templates.filter((t) => t.maturity === 'SAMPLE_LAB_PUBLISHED')).toHaveLength(1);
-    // 158 Certificate templates + Birth (IND-CIV-001 Registration) hand-crafted stub
-    expect(templates).toHaveLength(registryCertificates.length + 1);
+    // 158 Certificate + Birth (Registration) + 55 Licence/Permit
+    expect(templates).toHaveLength(registryCertificates.length + 1 + registryLicencePermits.length);
     expect(templates.filter((t) => t.maturity === 'SAMPLE_LAB_STUB')).toHaveLength(
       templates.length - 1,
     );
@@ -71,7 +85,12 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     for (const id of certificateUniverseIds()) {
       expect(templateByCatalogueId(id), id).toBeDefined();
     }
+    for (const id of licencePermitUniverseIds()) {
+      expect(templateByCatalogueId(id), id).toBeDefined();
+    }
     expect(templateByCatalogueId('IND-CIV-001')?.output_type).toBe('Registration');
+    expect(templateByCatalogueId('IND-AGR-010')?.output_type).toBe('Licence');
+    expect(templateByCatalogueId('IND-AGR-030')?.output_type).toBe('Permit');
     expect(templateByCatalogueId('IND-SOC-002')?.name).toBe('Residence Certificate');
     expect(templateById('ind-soc-031.income-certificate')?.catalogue_id).toBe('IND-SOC-031');
     expect(HANDCRAFTED_CERTIFICATE_IDS.has('IND-SOC-002')).toBe(true);
@@ -126,8 +145,9 @@ describe('template catalogue (SAMPLE_LAB)', () => {
   });
 
   it('configurable pack factory covers stubs with on-disk SAMPLE_LAB DUMMY artefacts', () => {
-    expect(packManifest.generated_pack_count).toBe(157);
-    expect(packManifest.total_manifest_entries).toBe(159);
+    // Certificate stubs (minus 2 handcrafted) + Birth + 55 Licence/Permit
+    expect(packManifest.generated_pack_count).toBe(212);
+    expect(packManifest.total_manifest_entries).toBe(214);
     expect(existsSync(join(ROOT, 'templates/certificate-packs/owner-config.schema.json'))).toBe(
       true,
     );
@@ -189,6 +209,64 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     expect(
       (income['credential'] as { credential_template_id: string }).credential_template_id,
     ).toBe('SAMPLE_LAB_DUMMY_IND_SOC_031_V1');
+    const licence = resolveSampleLabOwnerConfig('IND-AGR-010');
+    expect(licence['catalogue_id']).toBe('IND-AGR-010');
+    const jur = (licence['jurisdiction'] as { allowed_states: string[] }).allowed_states;
+    expect(jur).toHaveLength(10);
+  });
+
+  it('tenant jurisdiction scope constrains form enums for any offering; fail-closed outside lab', () => {
+    const birth = templateByCatalogueId('IND-CIV-001');
+    const licence = templateByCatalogueId('IND-AGR-010');
+    expect(birth && licence).toBeTruthy();
+    const scope = resolveTenantJurisdictionScope({
+      catalogueId: 'IND-CIV-001',
+      environmentLabel: 'SAMPLE_LAB',
+    });
+    expect(scope.allowed_states).toHaveLength(10);
+    expect(scope.allowed_districts).toHaveLength(10);
+    expect(scope.allowed_municipalities).toHaveLength(10);
+    expect(() =>
+      resolveJurisdictionScope(
+        {
+          jurisdiction: {
+            allowed_states: [],
+            allowed_districts: [],
+            allowed_municipalities: [],
+          },
+        },
+        'PRODUCTION',
+      ),
+    ).toThrow(/fail-closed/);
+
+    const custom = {
+      tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
+      catalogue_id: 'IND-AGR-010',
+      environment_label: 'SAMPLE_LAB' as const,
+      jurisdiction: {
+        allowed_states: ['LGD-S-01', 'LGD-S-02'],
+        allowed_districts: ['LGD-D-0101', 'LGD-D-0102'],
+        allowed_municipalities: ['LGD-U-010101', 'LGD-U-010102'],
+      },
+    };
+    saveTenantOverlay(custom);
+    expect(loadTenantOverlay(custom.tenant_id, 'IND-AGR-010')?.catalogue_id).toBe('IND-AGR-010');
+    const scoped = resolveTenantJurisdictionScope({
+      catalogueId: 'IND-AGR-010',
+      tenantId: custom.tenant_id,
+      environmentLabel: 'SAMPLE_LAB',
+    });
+    expect(scoped.allowed_states).toEqual(['LGD-S-01', 'LGD-S-02']);
+    expect(scoped.allowed_municipalities).toEqual(['LGD-U-010101', 'LGD-U-010102']);
+    expect(licence).toBeTruthy();
+    const licenceVersion = licence?.versions[0];
+    expect(licenceVersion).toBeTruthy();
+    if (!licenceVersion) return;
+    const form = applyJurisdictionScopeToFormSchema(licenceVersion.form.json_schema, scoped);
+    const addr = form.properties?.['applicant_address']?.properties;
+    expect(addr?.['state_code']?.enum).toEqual(['LGD-S-01', 'LGD-S-02']);
+    expect(addr?.['district']?.enum).toEqual(['LGD-D-0101', 'LGD-D-0102']);
+    expect(addr?.['municipality_code']?.enum).toEqual(['LGD-U-010101', 'LGD-U-010102']);
   });
 
   it('every version has a unique UUID, ascending semver and a matching content hash', () => {

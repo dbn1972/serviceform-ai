@@ -1,13 +1,13 @@
 import { createHash } from 'node:crypto';
 import {
-  ADDRESS_PARTS,
+  LGD_ADDRESS_PARTS,
   control,
   dateOfBirth,
   declaration,
   fullName,
   gender,
   mobile,
-  postalAddress,
+  lgdPostalAddress,
   purpose,
 } from '../fields';
 import { formContentHash } from '../integrity';
@@ -258,7 +258,7 @@ function addressGroup(): UiElement {
   return {
     type: 'Group',
     label: 'Address',
-    elements: ADDRESS_PARTS.map((p) => control(`applicant_address/${p}`)),
+    elements: LGD_ADDRESS_PARTS.map((p) => control(`applicant_address/${p}`)),
   };
 }
 
@@ -284,7 +284,7 @@ function genericForm(
     applicant_dob: dateOfBirth(),
     applicant_gender: gender(),
     applicant_mobile: mobile(),
-    applicant_address: postalAddress('Address'),
+    applicant_address: lgdPostalAddress('Address'),
     purpose_of_certificate: purpose(),
     declaration_accepted: declaration(STUB_DECLARATION),
   };

@@ -1,5 +1,5 @@
 import {
-  ADDRESS_PARTS,
+  LGD_ADDRESS_PARTS,
   control,
   dateOfBirth,
   declaration,
@@ -9,7 +9,7 @@ import {
   GENDER_LABELS,
   mobile,
   personName,
-  postalAddress,
+  lgdPostalAddress,
   purpose,
 } from '../fields';
 import { SAMPLE_LAB_DUMMY_POLICY_FACTS } from '../sample-lab-dummy';
@@ -72,7 +72,7 @@ const applicantCategory = (extra: string[] = []) => ({
 const addressGroup = (pointer: string, label: string) => ({
   type: 'Group' as const,
   label,
-  elements: ADDRESS_PARTS.map((p) => control(`${pointer}/${p}`)),
+  elements: LGD_ADDRESS_PARTS.map((p) => control(`${pointer}/${p}`)),
 });
 
 const reviewCategory = () => ({
@@ -103,7 +103,7 @@ const incomeForm = (): FormPackage => ({
       applicant_dob: dateOfBirth(),
       applicant_gender: gender(),
       applicant_mobile: mobile(),
-      residential_address: postalAddress('Residential address'),
+      residential_address: lgdPostalAddress('Residential address'),
       family_household_id: {
         type: 'string',
         title: 'Family / household ID',
@@ -180,7 +180,7 @@ const domicileForm = (): FormPackage => ({
       applicant_dob: dateOfBirth(),
       applicant_gender: gender(),
       applicant_mobile: mobile(),
-      permanent_address: postalAddress('Permanent address'),
+      permanent_address: lgdPostalAddress('Permanent address'),
       purpose_of_certificate: purpose(),
       declaration_accepted: declaration(STUB_DECLARATION),
     },
@@ -266,7 +266,7 @@ const birthForm = (): FormPackage => ({
       father_name: personName("Father's name", 'SF-SEM-PERSON-FATHER-NAME'),
       informant_name: personName('Name of the informant', 'SF-SEM-INFORMANT-NAME'),
       informant_mobile: mobile(),
-      address_at_birth: postalAddress('Address of parents at the time of birth'),
+      address_at_birth: lgdPostalAddress('Address of parents at the time of birth'),
       declaration_accepted: declaration(STUB_DECLARATION),
     },
   },
@@ -355,7 +355,7 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0031-0001-4000-8000-00000000031a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:39a81f7763e09f3a006112656bfc84d846372e8500f3510e7b3d3da8b53b52d3',
+      content_hash: 'sha256:0dd84a88b61cf499faa8cf08dcf9325742d18a88d702bf9a918f49c99a75a7c9',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: incomeForm(),
@@ -402,7 +402,7 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0001-0001-4000-8000-00000000001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:b12d8e1e085ff314d22f0228d5f5850307ecb4ad06ff58dcb441f06d006caa01',
+      content_hash: 'sha256:b6884452d845c231aae3d2aea8a836b4a9a96f9ada718815b4ccc349cb0c3593',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: domicileForm(),
@@ -444,7 +444,7 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3ac001-0001-4000-8000-0000000c001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:6da761ffc76ffa2e50c1f36ebac67a55f56c6564c43e8bcf5f3ad6a5e95567b6',
+      content_hash: 'sha256:ec7822548d87b65aa8fcbdd079a9c376d3cf049d71e8d9d7b577d81edc57b4e7',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: birthForm(),

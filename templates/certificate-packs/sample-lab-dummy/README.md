@@ -8,8 +8,8 @@ CMP-052 TSB overlays. Not locked fake statute.
 
 | File | Role |
 | --- | --- |
-| `defaults.json` | Shared SAMPLE_LAB sample parameters (fee, SLA, eligibility, evidence, jurisdiction, …) |
-| `tenant-overlay.schema.json` | Per-tenant / TSB / jurisdiction override shape (CMP-052) |
+| `defaults.json` | Shared SAMPLE_LAB sample parameters (fee, SLA, eligibility, evidence, jurisdiction incl. sample LGD `allowed_states` / `allowed_districts`, …) |
+| `tenant-overlay.schema.json` | Per-tenant / TSB / jurisdiction override shape (CMP-052) — may override allowed state/district LGD codes |
 | `../owner-config.schema.json` | Full owner-config schema (defaults + per-id + overlays validate against) |
 
 ## Merge order (tenant-wise, not global hardcode)

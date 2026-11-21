@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "serviceform://templates/certificate-packs/ind-agr-015/form.schema.json",
+  "title": "Pesticide / Insecticide Dealer Licence application",
+  "description": "Aligned to registry Recommended Core Fields. SAMPLE_LAB DUMMY owner-config defaults fill fee/eligibility/evidence/SLA/jurisdiction slots (synthetic; tenant-overridable). Not statutory. CERTIFIED=false · G6=false.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "applicant_name",
+    "applicant_dob",
+    "applicant_gender",
+    "applicant_address",
+    "purpose_of_certificate",
+    "declaration_accepted"
+  ],
+  "properties": {
+    "applicant_name": {
+      "type": "string",
+      "title": "Full name (as per official record)",
+      "minLength": 1,
+      "maxLength": 120,
+      "semanticElementId": "SF-SEM-PERSON-FULL-NAME"
+    },
+    "applicant_dob": {
+      "type": "string",
+      "format": "date",
+      "title": "Date of birth",
+      "semanticElementId": "SF-SEM-PERSON-DOB"
+    },
+    "applicant_gender": {
+      "type": "string",
+      "title": "Gender",
+      "enum": [
+        "MALE",
+        "FEMALE",
+        "TRANSGENDER",
+        "OTHER",
+        "PREFER_NOT_TO_SAY"
+      ],
+      "semanticElementId": "SF-SEM-PERSON-GENDER"
+    },
+    "applicant_mobile": {
+      "type": "string",
+      "title": "Mobile number",
+      "pattern": "^[6-9][0-9]{9}$",
+      "semanticElementId": "SF-SEM-PERSON-MOBILE"
+    },
+    "applicant_address": {
+      "type": "object",
+      "title": "Address",
+      "additionalProperties": false,
+      "required": [
+        "house_no_or_name",
+        "locality",
+        "district",
+        "municipality_code",
+        "state_code",
+        "pincode"
+      ],
+      "properties": {
+        "house_no_or_name": {
+          "type": "string",
+          "title": "House no. / name",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "locality": {
+          "type": "string",
+          "title": "Locality / village / ward",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "post_office": {
+          "type": "string",
+          "title": "Post office",
+          "maxLength": 80
+        },
+        "district": {
+          "type": "string",
+          "title": "District (LGD code)",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$",
+          "semanticElementId": "SF-SEM-ADDR-DISTRICT",
+          "x-ux4g": {
+            "hint": "Tenant-allowed district LGD codes (Admin → Bindings)"
+          }
+        },
+        "municipality_code": {
+          "type": "string",
+          "title": "Municipality / ULB (LGD local-body code)",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$",
+          "semanticElementId": "SF-SEM-ADDR-MUNICIPALITY",
+          "x-ux4g": {
+            "hint": "Tenant-allowed municipality / ULB LGD codes (Admin → Bindings)"
+          }
+        },
+        "state_code": {
+          "type": "string",
+          "title": "State / UT (LGD code)",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$",
+          "semanticElementId": "SF-SEM-ADDR-STATE-CODE",
+          "x-ux4g": {
+            "hint": "Tenant-allowed state LGD codes (Admin → Bindings)"
+          }
+        },
+        "pincode": {
+          "type": "string",
+          "title": "PIN code",
+          "pattern": "^[1-9][0-9]{5}$"
+        }
+      }
+    },
+    "purpose_of_certificate": {
+      "type": "string",
+      "title": "Purpose of certificate / licence / permit",
+      "minLength": 1,
+      "maxLength": 500,
+      "semanticElementId": "SF-SEM-PURPOSE"
+    },
+    "declaration_accepted": {
+      "type": "boolean",
+      "title": "I declare that the particulars above are true for this SAMPLE_LAB preview and that no real personal data has been entered.",
+      "const": true
+    },
+    "core_valid_from": {
+      "type": "string",
+      "title": "Valid From",
+      "maxLength": 200,
+      "semanticElementId": "SF-SEM-CORE-VALID-FROM",
+      "x-ux4g": {
+        "hint": "Registry core field · free text · SAMPLE_LAB DUMMY until owner policy"
+      }
+    },
+    "core_valid_until": {
+      "type": "string",
+      "title": "Valid Until",
+      "maxLength": 200,
+      "semanticElementId": "SF-SEM-CORE-VALID-UNTIL",
+      "x-ux4g": {
+        "hint": "Registry core field · free text · SAMPLE_LAB DUMMY until owner policy"
+      }
+    },
+    "core_conditions": {
+      "type": "string",
+      "title": "Conditions",
+      "maxLength": 200,
+      "semanticElementId": "SF-SEM-CORE-CONDITIONS",
+      "x-ux4g": {
+        "hint": "Registry core field · free text · SAMPLE_LAB DUMMY until owner policy"
+      }
+    }
+  }
+}
