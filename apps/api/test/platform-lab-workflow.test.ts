@@ -131,12 +131,27 @@ describe('SAMPLE_LAB workflow fixture (CMP-016 canonical graph)', () => {
     expect(cmp016.graphHash(cmp016.parseGraph(wf.graph))).toBe(wf.graph_hash);
   });
 
-  it('only sequences CMP-015 ALWAYS_LEGAL transitions: every edge outcome is the committed command', () => {
+  it('only sequences CMP-015 ALWAYS_LEGAL transitions; HUMAN_TASK desks carry role assignments', () => {
     const graph = wf.graph as {
-      nodes: { node_id: string; kind: string }[];
+      nodes: {
+        node_id: string;
+        kind: string;
+        assignment?: { role_code: string; organisation_id: string; jurisdiction_id: string };
+      }[];
       edges: { from_node: string; to_node: string; outcome?: string }[];
     };
-    expect(graph.nodes.map((n) => n.kind).filter((k) => k !== 'WAIT')).toEqual(['START', 'END']);
+    expect(
+      graph.nodes.map((n) => n.kind).filter((k) => k !== 'WAIT' && k !== 'HUMAN_TASK'),
+    ).toEqual(['START', 'END']);
+    const desks = graph.nodes.filter((n) => n.kind === 'HUMAN_TASK');
+    expect(desks.map((n) => n.node_id).sort()).toEqual([
+      'WAIT_DECISION_PENDING',
+      'WAIT_UNDER_SCRUTINY',
+    ]);
+    expect(desks.every((n) => n.assignment?.role_code.startsWith('SAMPLE_LAB_'))).toBe(true);
+    expect(desks.every((n) => n.assignment?.organisation_id && n.assignment?.jurisdiction_id)).toBe(
+      true,
+    );
     const legal = new Set(
       TRANSITIONS.filter((t) => t.cls === 'ALWAYS_LEGAL').map(
         (t) => `WAIT_${t.from}>${t.to === 'CLOSED' ? 'END_CLOSED' : `WAIT_${t.to}`}:${t.command}`,

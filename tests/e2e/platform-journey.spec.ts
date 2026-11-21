@@ -82,6 +82,19 @@ async function officerSignIn(page: Page, path = '/applications'): Promise<void> 
   await expect(page).toHaveURL(`${OFFICER}${path}`);
 }
 
+/** SAMPLE_LAB multi-desk: scrutiny HUMAN_TASK → Forward, then approving desk → Approve. */
+async function officerCompleteMultiDeskApproval(page: Page): Promise<void> {
+  const forward = page.getByRole('button', { name: 'Forward for approval' });
+  const approve = page.getByRole('button', { name: 'Approve' });
+  await expect(forward.or(approve)).toBeVisible({ timeout: 60_000 });
+  if (await forward.isVisible()) {
+    await forward.click();
+    await expect(page.getByText(/Forwarded to the approving desk/i)).toBeVisible();
+    await expect(approve).toBeVisible({ timeout: 60_000 });
+  }
+  await approve.click();
+}
+
 async function expectNoAxeViolations(page: Page): Promise<void> {
   const results = await new AxeBuilder({ page }).withTags(WCAG).analyze();
   expect(results.violations.map((v) => `${v.id}: ${v.help} (${v.nodes.length})`)).toEqual([]);
@@ -522,7 +535,7 @@ test.describe('officer decision on CMP-015 (CMP-004 officer session, HUMAN decis
     await expect(officer.getByText(`Ref ${id.slice(0, 8)}…`)).toBeVisible();
     await open(officer, `${OFFICER}/applications/${id}`);
     await expect(officer.getByText('SAMPLE Decision Citizen')).toBeVisible();
-    await officer.getByRole('button', { name: 'Approve' }).click();
+    await officerCompleteMultiDeskApproval(officer);
     await expect(officer.getByText(/recorded on the case as a human decision/i)).toBeVisible();
     await expect(officer.getByText(/published to DigiLocker \(SIMULATED\)/i)).toBeVisible();
     await expect(officer.getByText('ISSUED', { exact: true }).first()).toBeVisible();

@@ -118,6 +118,7 @@ export async function platform(
 export interface Officer {
   token: string;
   officer_id: string;
+  roles: string[];
 }
 
 /** CMP-004 `GET /v1/identity/me`; only an active OFFICER session counts. */
@@ -128,7 +129,10 @@ export async function currentOfficer(request: Request): Promise<Officer | null> 
   if (me.status !== 200 || me.body['actor_type'] !== 'OFFICER' || !isUuid(me.body['subject_id'])) {
     return null;
   }
-  return { token, officer_id: me.body['subject_id'] };
+  const roles = Array.isArray(me.body['roles'])
+    ? me.body['roles'].filter((r): r is string => typeof r === 'string')
+    : [];
+  return { token, officer_id: me.body['subject_id'], roles };
 }
 
 export function json(

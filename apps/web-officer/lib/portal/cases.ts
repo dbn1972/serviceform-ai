@@ -21,7 +21,7 @@ const LAB_FORM_CATALOGUE: Record<string, string> = {
   '7e3a0031-0001-4000-8000-00000000031a': 'IND-SOC-031',
 };
 
-export type DecisionAction = 'APPROVE' | 'REJECT';
+export type DecisionAction = 'APPROVE' | 'REJECT' | 'FORWARD';
 
 /** Host projection of CMP-022 issuance and CMP-012 publish (CCR-M10-003). */
 export interface IssuanceProjection {
@@ -116,11 +116,12 @@ export async function readWorkingData(officer: Officer, id: string) {
 }
 
 /**
- * Until CMP-016 sequences the case (Phase B slice B-2c), the officer's decision drives the
- * intake transitions itself. Every step is a separate CMP-015 command, OPA-authorized and
- * audited as this officer; the final decision is attested HUMAN (Constitution #20).
+ * Officer-driven case commands remain OPA-authorized HUMAN actions on CMP-015. CMP-016 Temporal
+ * sequences WAIT/HUMAN_TASK nodes after each commit and creates/closes CMP-017 tasks from the
+ * Studio graph assignment (role_code + org + jurisdiction). FORWARD stops at DECISION_PENDING
+ * for the approving desk; APPROVE/REJECT record the final human decision (Constitution #20).
  */
-const INTAKE: Record<string, string> = {
+const INTAKE_TO_DECISION: Record<string, string> = {
   SUBMITTED: 'MARK_RECEIVED',
   RECEIVED: 'ENTER_SCRUTINY',
   UNDER_SCRUTINY: 'ENTER_DECISION_PENDING',
@@ -132,10 +133,27 @@ export async function decide(
   action: DecisionAction,
 ): Promise<{ ok: true; app: PlatformApplication } | { ok: false; res: PlatformResponse }> {
   let app = start;
-  for (let guard = 0; guard < 4 && INTAKE[app.state]; guard += 1) {
-    const step = await command(officer, app, { command: INTAKE[app.state] as string });
+  for (let guard = 0; guard < 4 && INTAKE_TO_DECISION[app.state]; guard += 1) {
+    const step = await command(officer, app, {
+      command: INTAKE_TO_DECISION[app.state] as string,
+    });
     if (!step.ok) return step;
     app = step.app;
+  }
+  if (action === 'FORWARD') {
+    if (app.state !== 'DECISION_PENDING') {
+      return {
+        ok: false,
+        res: {
+          status: 409,
+          body: {
+            error_code: 'SF-APP-001',
+            message: 'This case could not be forwarded to the approving desk',
+          },
+        },
+      };
+    }
+    return { ok: true, app };
   }
   if (app.state !== 'DECISION_PENDING') {
     return {

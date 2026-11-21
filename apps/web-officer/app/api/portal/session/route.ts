@@ -21,6 +21,9 @@ export async function GET(request: Request) {
     identity_source: 'CMP-004',
     simulation: true,
     g6_issued: false,
+    certified: false,
+    roles: officer.roles,
+    officer_id: officer.officer_id,
   });
 }
 

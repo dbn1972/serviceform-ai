@@ -579,6 +579,8 @@ export class IdentityService {
     tenant_id: string | null;
     assurance: AuthAssurance;
     methods: string[];
+    /** Officer session role codes (CMP-004); absent for citizens. */
+    roles?: string[];
   }> {
     if (ctx.actor.type === 'CITIZEN') {
       const methods = await withContextTx(this.opts.pool, ctx, async (c) => {
@@ -603,6 +605,7 @@ export class IdentityService {
         tenant_id: ctx.tenant_id,
         assurance: ctx.auth_assurance,
         methods: ['IDP'],
+        roles: [...ctx.roles],
       };
     }
     throw new Cmp004Error('SF-AUTH-002');

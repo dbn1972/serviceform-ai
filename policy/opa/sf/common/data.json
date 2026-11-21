@@ -257,6 +257,36 @@
     },
     "RULE_PACK_TEST": {
       "action_class": "READ_ONLY"
+    },
+    "TASK_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_CLAIM": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_UNCLAIM": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_FORCE_UNCLAIM": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_REASSIGN": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_CANCEL_CLOSE": {
+      "action_class": "PROTECTED"
+    },
+    "TASK_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "TASK_READ_HISTORY": {
+      "action_class": "READ_ONLY"
+    },
+    "TASK_LIST": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -283,7 +313,8 @@
     "ArtifactVersion",
     "WorkflowDefinition",
     "WorkflowVersion",
-    "RulePack"
+    "RulePack",
+    "HumanTask"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

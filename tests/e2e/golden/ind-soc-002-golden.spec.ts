@@ -140,6 +140,19 @@ async function signInAsSampleOfficer(page: Page): Promise<void> {
   await expect(page).toHaveURL(`${OFFICER_WORKBENCH}/applications`);
 }
 
+/** SAMPLE_LAB multi-desk: scrutiny HUMAN_TASK → Forward, then approving desk → Approve. */
+async function officerCompleteMultiDeskApproval(page: Page): Promise<void> {
+  const forward = page.getByRole('button', { name: 'Forward for approval' });
+  const approve = page.getByRole('button', { name: 'Approve' });
+  await expect(forward.or(approve)).toBeVisible({ timeout: 60_000 });
+  if (await forward.isVisible()) {
+    await forward.click();
+    await expect(page.getByText(/Forwarded to the approving desk/i)).toBeVisible();
+    await expect(approve).toBeVisible({ timeout: 60_000 });
+  }
+  await approve.click();
+}
+
 /** Walk SAMPLE_LAB Residence Certificate wizard: applicant → residence → evidence → preview. */
 async function completeResidenceWizardToPreview(page: Page): Promise<void> {
   await expect(page.getByRole('navigation', { name: /Application steps/i })).toBeVisible();
@@ -192,7 +205,7 @@ test.describe('M10 Golden E2E — SAMPLE_LAB journey routes', () => {
     const officer = await (await browser.newContext()).newPage();
     await signInAsSampleOfficer(officer);
     await officer.goto(`${OFFICER_WORKBENCH}/applications/${id}`);
-    await officer.getByRole('button', { name: 'Approve' }).click();
+    await officerCompleteMultiDeskApproval(officer);
     await expect(officer.getByText(/recorded on the case as a human decision/i)).toBeVisible();
     await expect(officer.getByText(/published to DigiLocker \(SIMULATED\)/i)).toBeVisible();
     await officer.close();

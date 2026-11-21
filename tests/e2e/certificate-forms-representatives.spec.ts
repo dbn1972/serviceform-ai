@@ -43,6 +43,19 @@ async function officerSignIn(page: Page): Promise<void> {
   await expect(page).toHaveURL(`${OFFICER}/applications`);
 }
 
+/** SAMPLE_LAB multi-desk: scrutiny HUMAN_TASK → Forward, then approving desk → Approve. */
+async function officerCompleteMultiDeskApproval(page: Page): Promise<void> {
+  const forward = page.getByRole('button', { name: 'Forward for approval' });
+  const approve = page.getByRole('button', { name: 'Approve' });
+  await expect(forward.or(approve)).toBeVisible({ timeout: 60_000 });
+  if (await forward.isVisible()) {
+    await forward.click();
+    await expect(page.getByText(/Forwarded to the approving desk/i)).toBeVisible();
+    await expect(approve).toBeVisible({ timeout: 60_000 });
+  }
+  await approve.click();
+}
+
 async function cookieFor(page: Page, name: string): Promise<string> {
   const cookies = await page.context().cookies();
   const hit = cookies.find((c) => c.name === name);
@@ -135,10 +148,7 @@ test.describe('SAMPLE_LAB certificate representatives — officer + DigiLocker S
       const officer = await (await browser.newContext()).newPage();
       await officerSignIn(officer);
       await open(officer, `${OFFICER}/applications/${id}`);
-      await expect(officer.getByRole('button', { name: 'Approve' })).toBeVisible({
-        timeout: 60_000,
-      });
-      await officer.getByRole('button', { name: 'Approve' }).click();
+      await officerCompleteMultiDeskApproval(officer);
       await expect(officer.getByText(/published to DigiLocker \(SIMULATED\)/i)).toBeVisible({
         timeout: 60_000,
       });

@@ -182,6 +182,24 @@ export class TaskService {
     return taskView(task);
   }
 
+  /**
+   * Active OPEN/CLAIMED task for an application workflow node. Used by the CMP-016 HumanTaskPort
+   * bridge before cancel-close when the graph leaves the node. Lookup itself is not an OPA action;
+   * cancelCloseTask still authorizes TASK_CANCEL_CLOSE. Returns null when already terminal.
+   */
+  async findActiveByNode(
+    ctx: TenantContext,
+    applicationId: string,
+    workflowNodeId: string,
+  ): Promise<TaskView | null> {
+    this.guard(ctx);
+    if (!NODE_ID.test(workflowNodeId)) throw invalid('/workflow_node_id');
+    const row = await this.deps.repo.read(ctx, (tx) =>
+      tx.findActiveByNode(applicationId, workflowNodeId),
+    );
+    return row ? taskView(row) : null;
+  }
+
   async getHistory(ctx: TenantContext, taskId: string): Promise<{ items: HistoryView[] }> {
     const task = await this.load(ctx, taskId);
     await this.authorize(ctx, 'TASK_READ_HISTORY', resourceOf(task), task.task_id);

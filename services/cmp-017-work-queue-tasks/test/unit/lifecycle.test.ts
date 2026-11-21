@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { TaskView } from '../../src/service/views.js';
 import { TOPIC_AUDIT, TOPIC_DOMAIN } from '../../src/outbox.js';
 import {
+  APP_1,
   ctxFor,
   createBody,
   OFFICER_1,
@@ -229,12 +230,15 @@ describe('reassign and cancel/close', () => {
 
   it('cancels/closes OPEN and CLAIMED tasks with an outcome code', async () => {
     const { service, task } = await created();
+    const found = await service.findActiveByNode(system, APP_1, 'SCRUTINY');
+    expect(found?.task_id).toBe(task.task_id);
     const closed = await service.cancelCloseTask(
       system,
       task.task_id,
       { outcome: 'CASE_WITHDRAWN' },
       idem('POST /v1/tasks/{task_id}/cancel'),
     );
+    expect(await service.findActiveByNode(system, APP_1, 'SCRUTINY')).toBeNull();
     expect(closed.body.task_state).toBe('CANCELLED_CLOSED');
     await expect(
       service.cancelCloseTask(system, task.task_id, {}, idem('POST /v1/tasks/{task_id}/cancel')),

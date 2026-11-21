@@ -5,7 +5,7 @@ const TENANT = '0d15ba00-0001-4000-8000-0d15ba0000d1';
 const BINDING = '0d15ba00-0002-4000-8000-0d15ba0000d2';
 const REQUEST = '05100000-0000-4000-8000-000000000051';
 const CHECKER = '0d15ba00-0f03-4000-8000-0d15ba000f03';
-const VERSION = '0d15ba00-0012-4000-8000-0d15ba000012';
+const VERSION = '0d15ba00-001d-4000-8000-0d15ba00001d';
 const HASH = `sha256:${'a'.repeat(64)}`;
 
 type QueryResult<T> = { rows: T[] };

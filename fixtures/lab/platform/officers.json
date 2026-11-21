@@ -1,13 +1,36 @@
 {
-  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench and Studio/Admin desks. Synthetic officers only; role codes are lab labels, not statutory designations (assignment roles remain POLICY_INPUT_REQUIRED in templates/residence-certificate/workflow.yaml).",
+  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench and Studio/Admin desks. Synthetic officers only; role codes are lab labels, not statutory designations. Multi-desk HUMAN_TASK queue uses SAMPLE_LAB_SCRUTINY_OFFICER and SAMPLE_LAB_APPROVING_AUTHORITY (never named officers).",
   "simulation": "SIMULATED",
+  "lab_assignment": {
+    "_note": "Organisation and jurisdiction UUIDs used on SAMPLE_LAB HUMAN_TASK assignments in workflow.json. Officers covering these desks receive the same scope via PrincipalScopePort (TENANT_WIDE).",
+    "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+    "jurisdiction_id": "0d15ba00-0b01-4000-8000-0d15ba000b01"
+  },
   "officers": [
     {
       "officer_id": "0d15ba00-0f01-4000-8000-0d15ba000f01",
       "subject": "sample-lab-case-officer-1",
       "display_name": "SAMPLE LAB Case Officer",
       "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
-      "roles": ["SAMPLE_LAB_CASE_OFFICER"]
+      "roles": [
+        "SAMPLE_LAB_CASE_OFFICER",
+        "SAMPLE_LAB_SCRUTINY_OFFICER",
+        "SAMPLE_LAB_APPROVING_AUTHORITY"
+      ]
+    },
+    {
+      "officer_id": "0d15ba00-0f05-4000-8000-0d15ba000f05",
+      "subject": "sample-lab-scrutiny-officer-1",
+      "display_name": "SAMPLE LAB Scrutiny Desk",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["SAMPLE_LAB_SCRUTINY_OFFICER"]
+    },
+    {
+      "officer_id": "0d15ba00-0f06-4000-8000-0d15ba000f06",
+      "subject": "sample-lab-approving-officer-1",
+      "display_name": "SAMPLE LAB Approving Desk",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["SAMPLE_LAB_APPROVING_AUTHORITY"]
     },
     {
       "officer_id": "0d15ba00-0f02-4000-8000-0d15ba000f02",
