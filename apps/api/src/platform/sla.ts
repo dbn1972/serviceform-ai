@@ -9,14 +9,14 @@ import type pg from 'pg';
  * seed published calendar/policy from SAMPLE_LAB catalogue, start clock after SUBMIT,
  * complete after decision, INT-009 pause/resume via SYSTEM workload (fail-closed OPA).
  * Catalogue mirrors packages/m10-sample-lab + fixtures/lab/platform/sla-catalogue.json
- * (Odisha IND-SOC-002 overlay). CERTIFIED=false. G6=false.
+ * (IND-SOC-002 public-sample overlay). CERTIFIED=false. G6=false.
  */
 
 /** Fail-closed defaults — must stay aligned with fixtures/lab/platform/sla-catalogue.json. */
 export const LAB_SLA_DEFAULTS = {
   policy_code: 'SAMPLE_LAB_IND_SOC_002_SLA',
-  calendar_code: 'SAMPLE_LAB_WORKING_WEEK_IST',
-  publication_ref: 'sample-lab:ind-soc-002-sla-v1@0.2.0-odisha-sample',
+  calendar_code: 'SAMPLE_LAB_WORKING_WEEK_UTC_PLUS_330',
+  publication_ref: 'sample-lab:ind-soc-002-sla-v1@0.2.0-public-sample',
   portal_clock_start_event: 'APPLICATION_SUBMITTED',
   cmp029_start_anchor: 'PUBLISHED_POLICY_ANCHOR',
   completion_anchor: 'DECISION_RECORDED',
@@ -140,7 +140,7 @@ export function loadSlaCatalogue(dir: string): LabSlaCatalogue {
   try {
     const raw = JSON.parse(readFileSync(join(dir, 'sla-catalogue.json'), 'utf8')) as unknown;
     const obj = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
-    // Fail closed when fixture drifts from known Odisha SAMPLE_LAB values.
+    // Fail closed when fixture drifts from known SAMPLE_LAB IND-SOC-002 values.
     if (
       obj['policy_code'] !== LAB_SLA_DEFAULTS.policy_code ||
       obj['duration_minutes'] !== LAB_SLA_DEFAULTS.duration_minutes ||

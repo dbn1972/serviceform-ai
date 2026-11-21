@@ -1,7 +1,7 @@
 /**
  * SAMPLE_LAB published SLA catalogue (SF-53 / CMP-029).
  * Mirrors fixtures/lab/platform/sla-catalogue.json. Anchors and duration come from the
- * public Odisha IND-SOC-002 overlay (POLICY_INPUT_REQUIRED) — not invented statute.
+ * public IND-SOC-002 pilot overlay (POLICY_INPUT_REQUIRED) — not invented statute.
  * CMP-029 FROZEN start_anchor enum uses PUBLISHED_POLICY_ANCHOR as the carrier for the
  * portal mapping APPLICATION_SUBMITTED. CERTIFIED=false. G6=false.
  */
@@ -43,9 +43,9 @@ export interface SampleLabSlaCatalogue {
 export const SAMPLE_LAB_SLA_CATALOGUE: SampleLabSlaCatalogue = {
   source: 'SAMPLE_LAB',
   catalogue_id: 'IND-SOC-002',
-  publication_ref: 'sample-lab:ind-soc-002-sla-v1@0.2.0-odisha-sample',
+  publication_ref: 'sample-lab:ind-soc-002-sla-v1@0.2.0-public-sample',
   policy_code: 'SAMPLE_LAB_IND_SOC_002_SLA',
-  calendar_code: 'SAMPLE_LAB_WORKING_WEEK_IST',
+  calendar_code: 'SAMPLE_LAB_WORKING_WEEK_UTC_PLUS_330',
   portal_clock_start_event: 'APPLICATION_SUBMITTED',
   cmp029_start_anchor: 'PUBLISHED_POLICY_ANCHOR',
   completion_anchor: 'DECISION_RECORDED',

@@ -18,7 +18,7 @@ Logs: `vitest-unit.log`, `junit/unit.xml`, `typecheck-*.log`.
 
 ## Architecture notes
 
-- Host composition mounts CMP-029 when `DATABASE_URL_CMP029` is set; seeds calendar/policy from SAMPLE_LAB Odisha overlay (10 working days).
+- Host composition mounts CMP-029 when `DATABASE_URL_CMP029` is set; seeds calendar/policy from SAMPLE_LAB IND-SOC-002 overlay (10 working days).
 - Portal start event `APPLICATION_SUBMITTED` maps to FROZEN CMP-029 enum carrier `PUBLISHED_POLICY_ANCHOR` (no CCR; no invented statute).
 - INT-009 deficiency pause/resume via `LabSlaClockPort` (SYSTEM workload) when CMP-029 mounted; otherwise UnboundSlaClockPort.
 - Officer case detail shows clock status, pause reason, breach/escalation from server evaluate + read.

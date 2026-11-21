@@ -1,27 +1,14 @@
 /**
  * Officer BFF helpers for CMP-029 SLA visibility (SF-53).
  * Read + evaluate only — never invent anchors or durations. CERTIFIED=false.
+ * Server-only (imports platform → node:net). Client UI uses ./sla-view.
  */
 import { SAMPLE_LAB_SLA_CATALOGUE } from '@serviceform/m10-sample-lab/sla-catalogue';
 import { platform, type Officer, type PlatformResponse } from './platform';
+import type { SlaClockView } from './sla-view';
 
-export interface SlaClockView {
-  clock_id: string;
-  application_id: string;
-  stage_code: string;
-  clock_status: string;
-  deadline_at: string;
-  pause_reason_code: string | null;
-  breach_at: string | null;
-  escalation_level: number;
-  start_anchor: string;
-  completion_anchor: string;
-  portal_clock_start_event: string;
-  warning_emitted_at: string | null;
-  started_at: string | null;
-  paused_at: string | null;
-  completed_at: string | null;
-}
+export type { SlaClockView } from './sla-view';
+export { slaStatusTag } from './sla-view';
 
 export interface SlaCaseProjection {
   application_id: string;
@@ -125,19 +112,4 @@ export async function loadCaseSla(
       g6_issued: false,
     },
   };
-}
-
-export function slaStatusTag(status: string): string {
-  switch (status) {
-    case 'RUNNING':
-      return 'ux4g-tag-tonal-info';
-    case 'PAUSED':
-      return 'ux4g-tag-tonal-warning';
-    case 'BREACHED':
-      return 'ux4g-tag-tonal-error';
-    case 'COMPLETED':
-      return 'ux4g-tag-tonal-success';
-    default:
-      return 'ux4g-tag-tonal-neutral';
-  }
 }

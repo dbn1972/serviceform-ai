@@ -8,7 +8,7 @@ import {
   pauseReasonLabel,
   SAMPLE_LAB_SLA_CATALOGUE,
 } from '@serviceform/m10-sample-lab/sla-catalogue';
-import { slaStatusTag, type SlaClockView } from '../lib/portal/sla';
+import { slaStatusTag, type SlaClockView } from '../lib/portal/sla-view';
 
 type App = {
   id: string;
@@ -532,7 +532,7 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <Card
         title="SLA clock"
-        subtitle="CMP-029 · SAMPLE_LAB published Odisha overlay (10 working days) · CERTIFIED=false"
+        subtitle="CMP-029 · SAMPLE_LAB published IND-SOC-002 overlay (10 working days) · CERTIFIED=false"
       >
         {!slaMounted ? (
           <Alert variant="info" title="SLA not mounted on this lab host">

@@ -13,9 +13,9 @@ const ROOT = join(import.meta.dirname, '../../..');
 const FIXTURE = join(ROOT, 'fixtures/lab/platform/sla-catalogue.json');
 const PACKAGE_SRC = join(ROOT, 'packages/m10-sample-lab/src/sla-catalogue.ts');
 
-// REQ SF-53: SAMPLE_LAB SLA catalogue stays aligned with Odisha overlay; no invented anchors.
+// REQ SF-53: SAMPLE_LAB SLA catalogue stays aligned with IND-SOC-002 overlay; no invented anchors.
 describe('SAMPLE_LAB SLA host adapters', () => {
-  it('publishes Odisha overlay duration and portal start mapping without inventing statute', () => {
+  it('publishes IND-SOC-002 overlay duration and portal start mapping without inventing statute', () => {
     const file = JSON.parse(readFileSync(FIXTURE, 'utf8')) as {
       processing_days_working: number;
       portal_clock_start_event: string;

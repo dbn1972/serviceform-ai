@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SAMPLE_LAB_SLA_CATALOGUE } from '@serviceform/m10-sample-lab/sla-catalogue';
-import { slaStatusTag } from '../lib/portal/sla';
+import { slaStatusTag } from '../lib/portal/sla-view';
 
 // REQ SF-53: officer SLA panel uses published SAMPLE_LAB catalogue only.
 describe('SAMPLE_LAB SLA catalogue (officer)', () => {
