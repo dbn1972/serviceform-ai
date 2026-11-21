@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.009287885">
+    <testsuite name="apps/api/test/scheduler-lab.test.ts" timestamp="2026-11-21T21:34:23.713Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003216081">
+        <testcase classname="apps/api/test/scheduler-lab.test.ts" name="SAMPLE_LAB appointment catalogue (CMP-056) &gt; parses opaque types and refuses empty refs" time="0.002016106">
+        </testcase>
+        <testcase classname="apps/api/test/scheduler-lab.test.ts" name="SAMPLE_LAB appointment catalogue (CMP-056) &gt; falls back to defaults when raw is empty" time="0.000283257">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/appointments.test.ts" timestamp="2026-11-21T21:34:23.713Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.002779177">
+        <testcase classname="apps/web-officer/test/appointments.test.ts" name="officer scheduling desk helpers &gt; projects open slots with book action and catalogue label" time="0.001255871">
+        </testcase>
+        <testcase classname="apps/web-officer/test/appointments.test.ts" name="officer scheduling desk helpers &gt; enables lifecycle actions only while booked/rescheduled" time="0.00036897">
+        </testcase>
+        <testcase classname="apps/web-officer/test/appointments.test.ts" name="officer scheduling desk helpers &gt; keeps inspection desk routing for inspection-only officers" time="0.000186679">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/appointment-catalogue.test.ts" timestamp="2026-11-21T21:34:23.714Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003292627">
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; exposes opaque metadata refs only (no statute calendar free text)" time="0.001757493">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; links site-visit type to inspection pin metadata without forking on officer names" time="0.000239134">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; labels lifecycle statuses for desk UI" time="0.000133031">
+        </testcase>
+    </testsuite>
+</testsuites>

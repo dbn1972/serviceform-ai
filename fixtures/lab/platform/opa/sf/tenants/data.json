@@ -64,7 +64,15 @@
           "INSPECTION_REINSPECT",
           "INSPECTION_READ",
           "INSPECTION_READ_HISTORY",
-          "INSPECTION_LIST"
+          "INSPECTION_LIST",
+          "APPOINTMENT_SLOT_PUBLISH",
+          "APPOINTMENT_SLOT_LIST",
+          "APPOINTMENT_BOOK",
+          "APPOINTMENT_READ",
+          "APPOINTMENT_RESCHEDULE",
+          "APPOINTMENT_CANCEL",
+          "APPOINTMENT_COMPLETE",
+          "APPOINTMENT_NO_SHOW"
         ],
         "resource_types": [
           "ApplicationCase",
@@ -76,13 +84,15 @@
           "UploadPolicy",
           "SlaClock",
           "AssistedSession",
-          "Inspection"
+          "Inspection",
+          "Appointment",
+          "AppointmentSlot"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_INSPECTION_OFFICER": {
-        "_note": "SF-57: CMP-018 inspection/verification desk. Assignment role_code only — never named officers. Non-statutory VERIFIED/NOT_VERIFIED/INCONCLUSIVE/DEFICIENCY_NOTED.",
+        "_note": "SF-57/SF-62: CMP-018 inspection desk + CMP-056 scheduling shell beside it. Assignment role_code only — never named officers. Non-statutory verification + opaque appointment metadata.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -103,9 +113,35 @@
           "INSPECTION_REINSPECT",
           "INSPECTION_READ",
           "INSPECTION_READ_HISTORY",
-          "INSPECTION_LIST"
+          "INSPECTION_LIST",
+          "APPOINTMENT_SLOT_PUBLISH",
+          "APPOINTMENT_SLOT_LIST",
+          "APPOINTMENT_BOOK",
+          "APPOINTMENT_READ",
+          "APPOINTMENT_RESCHEDULE",
+          "APPOINTMENT_CANCEL",
+          "APPOINTMENT_COMPLETE",
+          "APPOINTMENT_NO_SHOW"
         ],
-        "resource_types": ["OfficerSession", "ApplicationCase", "Inspection"],
+        "resource_types": [
+          "OfficerSession",
+          "ApplicationCase",
+          "Inspection",
+          "Appointment",
+          "AppointmentSlot"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_SCHEDULER_ADMIN": {
+        "_note": "SF-62: SYSTEM workload for CMP-056 catalogue type/slot seed. Opaque metadata refs only — cannot invent statutory calendars or record case decisions.",
+        "actions": [
+          "APPOINTMENT_TYPE_REGISTER",
+          "APPOINTMENT_SLOT_PUBLISH",
+          "APPOINTMENT_SLOT_LIST",
+          "APPOINTMENT_READ"
+        ],
+        "resource_types": ["AppointmentType", "AppointmentSlot", "Appointment"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

@@ -530,6 +530,33 @@
     },
     "INSPECTION_LIST": {
       "action_class": "READ_ONLY"
+    },
+    "APPOINTMENT_TYPE_REGISTER": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_SLOT_PUBLISH": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_SLOT_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "APPOINTMENT_BOOK": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "APPOINTMENT_RESCHEDULE": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_CANCEL": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
+    "APPOINTMENT_NO_SHOW": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -570,6 +597,9 @@
     "NotificationTemplate",
     "MessageThread",
     "Inspection",
+    "Appointment",
+    "AppointmentSlot",
+    "AppointmentType",
     "FeeQuote",
     "PaymentIntent"
   ],
@@ -640,6 +670,19 @@
     },
     "AssistedSession": {
       "actions": ["ASSISTED_SESSION_READ", "ASSISTED_SESSION_RESUME"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "Appointment": {
+      "actions": [
+        "APPOINTMENT_BOOK",
+        "APPOINTMENT_READ",
+        "APPOINTMENT_RESCHEDULE",
+        "APPOINTMENT_CANCEL"
+      ],
+      "assurance": ["OTP", "MFA"]
+    },
+    "AppointmentSlot": {
+      "actions": ["APPOINTMENT_SLOT_LIST"],
       "assurance": ["OTP", "MFA"]
     }
   },

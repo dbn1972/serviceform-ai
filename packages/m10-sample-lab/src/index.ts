@@ -56,6 +56,20 @@ export {
   type SampleLabInspectionChecklistItem,
 } from './inspection-catalogue';
 export {
+  SAMPLE_LAB_SCHEDULER_ADMIN_ROLE,
+  SAMPLE_LAB_SCHEDULER_DESK_ROLE,
+  SAMPLE_LAB_SCHEDULER_WORKLOAD,
+  SAMPLE_LAB_APPOINTMENT_TYPES,
+  SAMPLE_LAB_SLOT_TEMPLATES,
+  appointmentTypeByRef,
+  slotTemplateByRef,
+  appointmentTypeLabel,
+  lifecycleLabel,
+  LIFECYCLE_LABELS,
+  type SampleLabAppointmentType,
+  type SampleLabSlotTemplate,
+} from './appointment-catalogue';
+export {
   SAMPLE_LAB_FEE_DEFAULTS,
   SAMPLE_LAB_FEE_CATALOGUE,
   feePolicyForCatalogue,

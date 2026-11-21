@@ -107,6 +107,13 @@ export function InspectionDesk() {
           noted) for services that pin inspection nodes. Metadata-driven · no service forks · fail-
           closed OPA · CERTIFIED=false · G6=false.
         </p>
+        <p className="ux4g-body-m-default">
+          For departmental capacity calendars, use the{' '}
+          <Link href="/scheduling" className="ux4g-link">
+            scheduling desk
+          </Link>{' '}
+          (CMP-056 · Constitution #37).
+        </p>
       </section>
 
       {error ? (
