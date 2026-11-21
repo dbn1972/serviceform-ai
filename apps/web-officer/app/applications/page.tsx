@@ -4,7 +4,7 @@ import { AppShell, Alert, Card, Select, TextLink } from '@serviceform/ui-ux4g';
 import { useEffect, useMemo, useState } from 'react';
 import { OfficerNav } from '../../components/OfficerNav';
 import { RequireOfficerSession } from '../../components/RequireOfficerSession';
-import { DESK_LABELS } from '../../lib/portal/tasks';
+import { DESK_LABELS } from '../../lib/portal/desk';
 
 type App = {
   id: string;

@@ -1,5 +1,7 @@
 import { platform, type Officer, type PlatformResponse } from './platform';
 
+export { DESK_LABELS, deskActionsForRole, deskRoles, type DeskAction } from './desk';
+
 /** CMP-017 human-task projection for the officer workbench (SAMPLE_LAB multi-desk). */
 export interface WorkbenchTask {
   task_id: string;
@@ -16,17 +18,6 @@ export interface WorkbenchTask {
   aggregate_version: number;
   created_at: string;
   updated_at: string;
-}
-
-/** SAMPLE_LAB desk labels — role codes only; not statutory designations. */
-export const DESK_LABELS: Record<string, string> = {
-  SAMPLE_LAB_SCRUTINY_OFFICER: 'Scrutiny desk',
-  SAMPLE_LAB_APPROVING_AUTHORITY: 'Approving desk',
-  SAMPLE_LAB_CASE_OFFICER: 'Case desk',
-};
-
-export function deskRoles(roles: readonly string[]): string[] {
-  return roles.filter((r) => r in DESK_LABELS || r.startsWith('SAMPLE_LAB_'));
 }
 
 export async function listAvailableTasks(
@@ -49,14 +40,4 @@ export async function claimTask(
   });
   const task = res.body as unknown as WorkbenchTask;
   return res.status === 200 && task?.task_id ? { ok: true, task } : { ok: false, res };
-}
-
-/** Desk action implied by the HUMAN_TASK role_code (graph assignment). */
-export type DeskAction = 'FORWARD' | 'APPROVE' | 'REJECT';
-
-export function deskActionsForRole(roleCode: string): DeskAction[] {
-  if (roleCode === 'SAMPLE_LAB_APPROVING_AUTHORITY') return ['APPROVE', 'REJECT'];
-  if (roleCode === 'SAMPLE_LAB_SCRUTINY_OFFICER') return ['FORWARD', 'REJECT'];
-  // Combined case desk (golden path): full decide + approve.
-  return ['APPROVE', 'REJECT'];
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DESK_LABELS, deskActionsForRole, deskRoles } from '../lib/portal/tasks';
+import { DESK_LABELS, deskActionsForRole, deskRoles } from '../lib/portal/desk';
 
 describe('SAMPLE_LAB multi-desk helpers (SF-46)', () => {
   it('maps desk role codes to labels without inventing statutory titles', () => {

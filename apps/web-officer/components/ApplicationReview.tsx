@@ -2,7 +2,7 @@
 
 import { Alert, Button, Card } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
-import { DESK_LABELS, deskActionsForRole, type DeskAction } from '../lib/portal/tasks';
+import { DESK_LABELS, deskActionsForRole, type DeskAction } from '../lib/portal/desk';
 
 type App = {
   id: string;
@@ -131,9 +131,7 @@ export function ApplicationReview({ id }: { id: string }) {
   if (!app) return null;
 
   const deskRole = task?.assignment.role_code;
-  const actions: DeskAction[] = deskRole
-    ? deskActionsForRole(deskRole)
-    : ['APPROVE', 'REJECT'];
+  const actions: DeskAction[] = deskRole ? deskActionsForRole(deskRole) : ['APPROVE', 'REJECT'];
   const canDecide =
     app.status === 'SUBMITTED' ||
     ['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING'].includes(app.platform_state);
