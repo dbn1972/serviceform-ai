@@ -57,8 +57,8 @@ importers:
         specifier: 13.1.1
         version: 13.1.1
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@fastify/under-pressure':
         specifier: 9.2.0
         version: 9.2.0
@@ -391,8 +391,8 @@ importers:
   packages/security:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@opentelemetry/api':
         specifier: 1.9.1
         version: 1.9.1
@@ -499,8 +499,8 @@ importers:
   services/cmp-004-identity-access:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -527,8 +527,8 @@ importers:
   services/cmp-005-citizen-profile:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -570,8 +570,8 @@ importers:
   services/cmp-008-rules:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@gorules/zen-engine':
         specifier: 2.0.2
         version: 2.0.2(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
@@ -592,8 +592,8 @@ importers:
   services/cmp-009-dynamic-forms:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -617,8 +617,8 @@ importers:
   services/cmp-011-evidence-requirements:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -742,8 +742,8 @@ importers:
   services/cmp-031-audit-ledger:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/audit-client':
         specifier: workspace:*
         version: link:../../packages/audit-client
@@ -773,8 +773,8 @@ importers:
   services/cmp-032-storage:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -804,8 +804,8 @@ importers:
   services/cmp-033-metadata:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -853,8 +853,8 @@ importers:
   services/cmp-036-api-gateway:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -919,8 +919,8 @@ importers:
   services/cmp-039-ai-gateway:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -991,8 +991,8 @@ importers:
   services/cmp-051-maker-checker:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -1019,8 +1019,8 @@ importers:
   services/cmp-052-versioning:
     dependencies:
       '@fastify/rate-limit':
-        specifier: 11.2.1
-        version: 11.2.1
+        specifier: 11.2.2
+        version: 11.2.2
       '@serviceform/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -1407,6 +1407,9 @@ packages:
 
   '@fastify/rate-limit@11.2.1':
     resolution: {integrity: sha512-uTQjii3tJUnb6ZyEMcunuvKE3FDKNZEaPpxdyWADDgthHnUV1swdvwuiZfi3DDDgxm1iBrhOkQ/w0yDBQ8qJtA==}
+
+  '@fastify/rate-limit@11.2.2':
+    resolution: {integrity: sha512-Ynxk9BU82Y5Ux7NOk9NqyZpTMdFes8EY8quXrN6ePDsbtG4G9Afb3l9mD8Vw2nv0hXg0iFjV+gkdABReFPlShw==}
 
   '@fastify/under-pressure@9.2.0':
     resolution: {integrity: sha512-1dtlvCEf/EGx2s474/GyrqkQ9fKkkhbGC6h200AZ+GLwVn7QkNcLDWmGUeOC2US8RzdsL8A7BsYzMBaEH0uoeg==}
@@ -2015,6 +2018,7 @@ packages:
   '@opentelemetry/propagator-jaeger@2.11.0':
     resolution: {integrity: sha512-RUOqgoIqXOPQTOhpBrs07Y8sBlxVoLY5Fka6ueZ0prW+k6fWQsba/nHDY4gm+gmfuwtRqbX5Y9YKhDvktjbIqQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Package no longer supported. See https://github.com/open-telemetry/opentelemetry-js/pull/7077
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -2045,12 +2049,14 @@ packages:
   '@opentelemetry/sdk-trace-base@2.11.0':
     resolution: {integrity: sha512-H19x/TX/LZdqiYOjM7fqtSxwlplC5pgelavqbQdHbhdq0q/AI/TGkM2dfGuuynTXmJPeF2HoZVoPDu+TGoW78A==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.3.0 <1.10.0'
 
   '@opentelemetry/sdk-trace-node@2.11.0':
     resolution: {integrity: sha512-CuvCMJmZxswhNLlM2LfuLOW3h3fZujA4hsG4B+Sz4dX2zvaXO8Ng74cnDHWD64gLszTlhiG3c0iNUjj4g+0/sA==}
     engines: {node: ^18.19.0 || >=20.6.0}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -4506,6 +4512,13 @@ snapshots:
       ipaddr.js: 2.5.0
 
   '@fastify/rate-limit@11.2.1':
+    dependencies:
+      '@lukeed/ms': 2.0.2
+      fastify-plugin: 6.0.1
+      ip-address: 10.7.4
+      toad-cache: 3.7.4
+
+  '@fastify/rate-limit@11.2.2':
     dependencies:
       '@lukeed/ms': 2.0.2
       fastify-plugin: 6.0.1
