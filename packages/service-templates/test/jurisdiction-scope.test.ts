@@ -7,7 +7,7 @@ import {
   resolveJurisdictionScope,
   validateFormDataAgainstJurisdictionScope,
 } from '../src/jurisdiction-scope';
-import { lgdPostalAddress } from '../src/fields';
+import { lgdPostalAddress, postalAddress } from '../src/fields';
 
 describe('jurisdiction scope (all offerings)', () => {
   it('parses LGD code lists and rejects empty outside SAMPLE_LAB', () => {
@@ -61,5 +61,41 @@ describe('jurisdiction scope (all offerings)', () => {
       scope,
     );
     expect(bad[0]?.code).toBe('JURISDICTION_OUT_OF_SCOPE');
+  });
+
+  it('preserves Residence PUBLISHED OD/XX enum and skips free-text district', () => {
+    const schema = {
+      type: 'object' as const,
+      properties: { residence_address: postalAddress('Residence address') },
+    };
+    const scope = {
+      allowed_states: [...SAMPLE_LAB_LGD_STATES],
+      allowed_districts: [...SAMPLE_LAB_LGD_DISTRICTS],
+    };
+    const constrained = applyJurisdictionScopeToFormSchema(schema, scope);
+    expect(constrained.properties?.['residence_address']?.properties?.['state_code']?.enum).toEqual(
+      ['OD', 'XX'],
+    );
+    expect(
+      constrained.properties?.['residence_address']?.properties?.['district']?.enum,
+    ).toBeUndefined();
+    expect(
+      validateFormDataAgainstJurisdictionScope(
+        schema,
+        {
+          residence_address: { state_code: 'OD', district: 'SAMPLE District' },
+        },
+        scope,
+      ),
+    ).toEqual([]);
+    expect(
+      validateFormDataAgainstJurisdictionScope(
+        schema,
+        {
+          residence_address: { state_code: 'LGD-S-01', district: 'SAMPLE District' },
+        },
+        scope,
+      )[0]?.code,
+    ).toBe('JURISDICTION_OUT_OF_SCOPE');
   });
 });

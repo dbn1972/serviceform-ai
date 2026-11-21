@@ -125,10 +125,40 @@ function labelsFor(codes: readonly string[]): Record<string, string> {
   return labels;
 }
 
+function enumCodes(node: FormSchemaNode): string[] {
+  return Array.isArray(node.enum)
+    ? node.enum.filter((v): v is string => typeof v === 'string').map((v) => v.toUpperCase())
+    : [];
+}
+
+/** True when the field is LGD-code shaped (pattern or already enum), not free-text district. */
+function isCodeConstrainedField(node: FormSchemaNode): boolean {
+  if (enumCodes(node).length > 0) return true;
+  return typeof node.pattern === 'string' && node.pattern.length > 0;
+}
+
+/**
+ * Effective allowed codes for a field: intersect tenant scope with a frozen form enum when present.
+ * If the published form enum does not overlap the overlay/default LGD set (e.g. Residence OD/XX),
+ * keep the form enum so SAMPLE_LAB PUBLISHED pins stay usable until a new version uses LGD codes.
+ */
+export function effectiveAllowedCodes(
+  field: FormSchemaNode,
+  scopeCodes: readonly string[],
+): string[] | null {
+  if (!isCodeConstrainedField(field)) return null;
+  const existing = enumCodes(field);
+  if (existing.length === 0) return [...scopeCodes];
+  const scopeSet = new Set(scopeCodes.map((c) => c.toUpperCase()));
+  const inter = existing.filter((c) => scopeSet.has(c));
+  return inter.length > 0 ? inter : existing;
+}
+
 /**
  * Constrain address state/district choice lists from tenant scope.
  * Matches SF-SEM-ADDR-STATE-CODE and SF-SEM-ADDR-DISTRICT anywhere in the schema.
  * Returns a deep-cloned schema (does not mutate published catalogue metadata).
+ * Free-text district fields (Residence PUBLISHED pin) are left unchanged.
  */
 export function applyJurisdictionScopeToFormSchema(
   schema: FormSchemaNode,
@@ -138,23 +168,29 @@ export function applyJurisdictionScopeToFormSchema(
 
   const walk = (node: FormSchemaNode): void => {
     if (node.semanticElementId === STATE_SEMANTIC_ID) {
-      node.enum = [...scope.allowed_states];
-      node['x-ux4g'] = {
-        ...(node['x-ux4g'] ?? {}),
-        enum_labels: labelsFor(scope.allowed_states),
-        hint: 'Tenant-allowed state LGD codes',
-      };
-      delete node.pattern;
+      const codes = effectiveAllowedCodes(node, scope.allowed_states);
+      if (codes) {
+        node.enum = codes;
+        node['x-ux4g'] = {
+          ...(node['x-ux4g'] ?? {}),
+          enum_labels: labelsFor(codes),
+          hint: 'Tenant-allowed state codes for this offering',
+        };
+        delete node.pattern;
+      }
     }
     if (node.semanticElementId === DISTRICT_SEMANTIC_ID) {
-      node.enum = [...scope.allowed_districts];
-      node['x-ux4g'] = {
-        ...(node['x-ux4g'] ?? {}),
-        enum_labels: labelsFor(scope.allowed_districts),
-        hint: 'Tenant-allowed district LGD codes',
-      };
-      delete node.pattern;
-      delete node.maxLength;
+      const codes = effectiveAllowedCodes(node, scope.allowed_districts);
+      if (codes) {
+        node.enum = codes;
+        node['x-ux4g'] = {
+          ...(node['x-ux4g'] ?? {}),
+          enum_labels: labelsFor(codes),
+          hint: 'Tenant-allowed district codes for this offering',
+        };
+        delete node.pattern;
+        delete node.maxLength;
+      }
     }
     for (const child of Object.values(node.properties ?? {})) walk(child);
   };
@@ -173,12 +209,16 @@ function valueAt(data: unknown, pointer: string): unknown {
     );
 }
 
-function semanticPointers(schema: FormSchemaNode, semanticId: string, base = ''): string[] {
+function semanticFieldNodes(
+  schema: FormSchemaNode,
+  semanticId: string,
+  base = '',
+): { pointer: string; node: FormSchemaNode }[] {
   return Object.entries(schema.properties ?? {}).flatMap(([name, node]) => {
     const pointer = `${base}/${name}`;
     return [
-      ...(node.semanticElementId === semanticId ? [pointer] : []),
-      ...(node.type === 'object' ? semanticPointers(node, semanticId, pointer) : []),
+      ...(node.semanticElementId === semanticId ? [{ pointer, node }] : []),
+      ...(node.type === 'object' ? semanticFieldNodes(node, semanticId, pointer) : []),
     ];
   });
 }
@@ -190,13 +230,13 @@ export function validateFormDataAgainstJurisdictionScope(
   scope: JurisdictionScope,
 ): JurisdictionScopeIssue[] {
   const issues: JurisdictionScopeIssue[] = [];
-  const states = new Set(scope.allowed_states);
-  const districts = new Set(scope.allowed_districts);
 
-  for (const pointer of semanticPointers(schema, STATE_SEMANTIC_ID)) {
+  for (const { pointer, node } of semanticFieldNodes(schema, STATE_SEMANTIC_ID)) {
+    const allowed = effectiveAllowedCodes(node, scope.allowed_states);
+    if (!allowed) continue;
     const value = valueAt(data, pointer);
     if (value === undefined || value === null || value === '') continue;
-    if (typeof value !== 'string' || !states.has(value.toUpperCase())) {
+    if (typeof value !== 'string' || !allowed.includes(value.toUpperCase())) {
       issues.push({
         code: 'JURISDICTION_OUT_OF_SCOPE',
         pointer,
@@ -204,10 +244,12 @@ export function validateFormDataAgainstJurisdictionScope(
       });
     }
   }
-  for (const pointer of semanticPointers(schema, DISTRICT_SEMANTIC_ID)) {
+  for (const { pointer, node } of semanticFieldNodes(schema, DISTRICT_SEMANTIC_ID)) {
+    const allowed = effectiveAllowedCodes(node, scope.allowed_districts);
+    if (!allowed) continue; // free-text district (e.g. Residence PUBLISHED pin)
     const value = valueAt(data, pointer);
     if (value === undefined || value === null || value === '') continue;
-    if (typeof value !== 'string' || !districts.has(value.toUpperCase())) {
+    if (typeof value !== 'string' || !allowed.includes(value.toUpperCase())) {
       issues.push({
         code: 'JURISDICTION_OUT_OF_SCOPE',
         pointer,
