@@ -208,6 +208,7 @@ describe('buildPlatformLab composition', () => {
     SF_PLATFORM_LAB_DIR: LAB,
     DATABASE_URL_CMP004: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP015: 'postgres://u:p@127.0.0.1:1/none',
+    DATABASE_URL_CMP019: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP009: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP016: 'postgres://u:p@127.0.0.1:1/none',
     DATABASE_URL_CMP017: 'postgres://u:p@127.0.0.1:1/none',
@@ -240,6 +241,7 @@ describe('buildPlatformLab composition', () => {
       expect(lab.wave2.consentPrivacy?.pool).toBeDefined();
       expect(lab.m05.applicationCase?.service).toBeDefined();
       expect(lab.m05.tasks?.service).toBeDefined();
+      expect(lab.m05.deficiency?.pool).toBeDefined();
       expect(lab.m04.forms?.forms).toBeDefined();
       expect(lab.m03?.metadata?.pool).toBeDefined();
       expect(lab.m03?.makerChecker?.pool).toBeDefined();
@@ -252,6 +254,7 @@ describe('buildPlatformLab composition', () => {
         'cmp004-db',
         'cmp009-db',
         'cmp015-db',
+        'cmp019-db',
         'cmp016-db',
         'cmp017-db',
         'cmp022-db',

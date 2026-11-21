@@ -72,6 +72,18 @@
     "APPLICATION_RECORD_CITIZEN_RESPONSE": {
       "action_class": "PROTECTED"
     },
+    "DEFICIENCY_OPEN": {
+      "action_class": "PROTECTED"
+    },
+    "DEFICIENCY_RESPOND": {
+      "action_class": "PROTECTED"
+    },
+    "DEFICIENCY_CLOSE": {
+      "action_class": "PROTECTED"
+    },
+    "DEFICIENCY_READ": {
+      "action_class": "READ_ONLY"
+    },
     "APPLICATION_ENTER_VERIFICATION": {
       "action_class": "PROTECTED"
     },
@@ -295,6 +307,7 @@
     "SecurityPolicy",
     "SecurityIncident",
     "ApplicationCase",
+    "DeficiencyNotice",
     "OfficerSession",
     "FormDefinition",
     "FormExecution",
@@ -333,6 +346,10 @@
         "APPLICATION_RECORD_CITIZEN_RESPONSE",
         "APPLICATION_REQUEST_WITHDRAWAL"
       ],
+      "assurance": ["OTP", "MFA"]
+    },
+    "DeficiencyNotice": {
+      "actions": ["DEFICIENCY_READ", "DEFICIENCY_RESPOND"],
       "assurance": ["OTP", "MFA"]
     },
     "FormExecution": {

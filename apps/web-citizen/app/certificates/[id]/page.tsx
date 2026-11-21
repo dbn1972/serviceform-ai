@@ -21,7 +21,7 @@ export default async function CertificatePage({ params }: { params: Promise<{ id
         <CitizenPageHeader
           crumbs={[{ href: '/certificates', label: 'My applications' }, { label: `Ref ${ref}` }]}
           title="Residence Certificate"
-          lead={`Application reference ${ref}. Track progress and publish the issued certificate to DigiLocker (SIMULATED).`}
+          lead={`Application reference ${ref}. Track progress, respond if more evidence is requested, and publish the issued certificate to DigiLocker (SIMULATED).`}
         />
         <CertificateDetail id={id} />
       </RequireCitizenSession>
