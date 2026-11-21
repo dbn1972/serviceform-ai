@@ -1,0 +1,118 @@
+{
+  "_note": "SAMPLE_LAB M08 search/discovery/analytics/ops catalogue (SF-63). Opaque facets and aggregate metrics only — no PII, no invented statute. CERTIFIED=false · G6=false.",
+  "workload": {
+    "actor_id": "00800800-0000-4000-8000-008008008008",
+    "roles": ["SAMPLE_LAB_OPS_ANALYST"]
+  },
+  "catalogue_version_id": "0d15ba00-0c08-4000-8000-0d15ba000c08",
+  "jurisdiction_code": "IN-OD-SAMPLE-LAB",
+  "search_documents": [
+    {
+      "document_id": "03503503-0001-4000-8000-035035035001",
+      "source_record_id": "01501501-0001-4000-8000-015015015001",
+      "source_cmp_id": "CMP-015",
+      "facets": {
+        "catalogue_id": "IND-SOC-002",
+        "case_state": "IN_SCRUTINY",
+        "application_ref": "lab-app:residence-1"
+      }
+    },
+    {
+      "document_id": "03503503-0002-4000-8000-035035035002",
+      "source_record_id": "01501501-0002-4000-8000-015015015002",
+      "source_cmp_id": "CMP-015",
+      "facets": {
+        "catalogue_id": "IND-EDU-004",
+        "case_state": "PAYMENT_PENDING",
+        "application_ref": "lab-app:transfer-1"
+      }
+    },
+    {
+      "document_id": "03503503-0003-4000-8000-035035035003",
+      "source_record_id": "01501501-0003-4000-8000-015015015003",
+      "source_cmp_id": "CMP-015",
+      "facets": {
+        "catalogue_id": "IND-SOC-002",
+        "case_state": "APPROVED",
+        "application_ref": "lab-app:residence-2"
+      }
+    }
+  ],
+  "metric_definitions": [
+    {
+      "metric_code": "LAB_CASE_TRANSITIONS",
+      "publication_ref": "meta:analytics:sample-lab:case-transitions",
+      "purpose_code": "OPS_MIS",
+      "source_event_type": "ApplicationCaseTransitioned",
+      "source_aggregate_type": "ApplicationCase",
+      "source_schema_version": 1,
+      "aggregation": "COUNT",
+      "value_field": null,
+      "period_granularity": "DAY",
+      "dimensions": [
+        {
+          "key": "to_state",
+          "source_field": "to_state",
+          "allowed_values": ["DRAFT", "IN_SCRUTINY", "APPROVED", "REJECTED", "CLOSED"]
+        }
+      ],
+      "min_cohort_size": 1
+    }
+  ],
+  "ops_samples": {
+    "SLA_SUMMARY": {
+      "status": "OK",
+      "metrics": [
+        { "metric_code": "SLA_CLOCKS", "value": 4, "dimensions": { "clock_status": "RUNNING" } },
+        { "metric_code": "SLA_CLOCKS", "value": 1, "dimensions": { "clock_status": "PAUSED" } },
+        { "metric_code": "SLA_CLOCKS", "value": 0, "dimensions": { "clock_status": "BREACHED" } }
+      ]
+    },
+    "QUEUE_SUMMARY": {
+      "status": "OK",
+      "metrics": [
+        { "metric_code": "OPEN_TASKS", "value": 6, "dimensions": { "desk": "SCRUTINY" } },
+        { "metric_code": "OPEN_TASKS", "value": 2, "dimensions": { "desk": "APPROVING" } },
+        { "metric_code": "OPEN_TASKS", "value": 1, "dimensions": { "desk": "HELPDESK" } }
+      ]
+    },
+    "INTEGRATION_HEALTH": {
+      "status": "DEGRADED",
+      "metrics": [
+        { "metric_code": "CONNECTOR_MODE", "value": 1, "dimensions": { "mode": "SIMULATED" } }
+      ]
+    },
+    "EVENT_HEALTH": {
+      "status": "OK",
+      "metrics": [
+        { "metric_code": "OUTBOX_LAG", "value": 0, "dimensions": { "topic": "sf.lab.events.v1" } }
+      ]
+    },
+    "PLATFORM_HEALTH": {
+      "status": "OK",
+      "metrics": [
+        { "metric_code": "READINESS", "value": 1, "dimensions": { "component": "SAMPLE_LAB" } }
+      ]
+    }
+  },
+  "discovery_services": [
+    {
+      "service_id": "0d15ba00-0003-4000-8000-0d15ba0000d3",
+      "service_code": "IND-SOC-002",
+      "category_code": "CERTIFICATE",
+      "service_binding_version_id": "0d15ba00-0002-4000-8000-0d15ba0000d2",
+      "label_key": "svc.IND-SOC-002.name",
+      "label": "Residence Certificate (SAMPLE_LAB)",
+      "jurisdiction_codes": ["IN-OD-SAMPLE-LAB"]
+    },
+    {
+      "service_id": "0d15bae4-0003-4000-8000-0d15bae40003",
+      "service_code": "IND-EDU-004",
+      "category_code": "CERTIFICATE",
+      "service_binding_version_id": "0d15bae4-0002-4000-8000-0d15bae40002",
+      "label_key": "svc.IND-EDU-004.name",
+      "label": "Transfer Certificate (SAMPLE_LAB DUMMY fee)",
+      "jurisdiction_codes": ["IN-OD-SAMPLE-LAB"]
+    }
+  ]
+}

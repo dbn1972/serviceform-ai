@@ -173,6 +173,12 @@ const ALLOWED_PREFIXES = [
   'offerings',
   'admin/categories',
   'admin/canonical-services',
+  // SF-63 M08 golden UI (analytics / ops / discovery / search + lab ensure)
+  'analytics/',
+  'ops/',
+  'discovery/',
+  'search/',
+  'lab/m08/',
 ];
 
 export function assertPlatformPath(path: string): string {

@@ -17,6 +17,8 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('href="/bindings"');
     expect(html).toContain('href="/reviews"');
     expect(html).toContain('href="/branding"');
+    expect(html).toContain('href="/analytics"');
+    expect(html).toContain('href="/discovery"');
   });
 
   it('bindings page includes reusable jurisdiction scope desk for any offering', () => {

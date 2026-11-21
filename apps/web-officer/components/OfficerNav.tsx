@@ -18,6 +18,7 @@ export function OfficerNav() {
   const [showHelpdesk, setShowHelpdesk] = useState(false);
   const [showInspection, setShowInspection] = useState(false);
   const [showScheduling, setShowScheduling] = useState(false);
+  const [showSearchOps, setShowSearchOps] = useState(false);
 
   useEffect(() => {
     void fetch('/api/portal/session')
@@ -33,12 +34,20 @@ export function OfficerNav() {
         setShowInspection(inspectionDesk);
         // SF-62 scheduling shell beside inspection (same desk roles).
         setShowScheduling(inspectionDesk);
+        // SF-63 M08 search / ops golden path.
+        setShowSearchOps(
+          roles.includes('SAMPLE_LAB_CASE_OFFICER') ||
+            roles.includes('SAMPLE_LAB_SCRUTINY_OFFICER') ||
+            roles.includes('SAMPLE_LAB_APPROVING_AUTHORITY') ||
+            roles.includes('SAMPLE_LAB_OPS_ANALYST'),
+        );
       })
       .catch(() => {
         setSignedIn(false);
         setShowHelpdesk(false);
         setShowInspection(false);
         setShowScheduling(false);
+        setShowSearchOps(false);
       });
   }, [pathname]);
 
@@ -48,6 +57,7 @@ export function OfficerNav() {
     setShowHelpdesk(false);
     setShowInspection(false);
     setShowScheduling(false);
+    setShowSearchOps(false);
     router.replace('/login');
     router.refresh();
   }
@@ -57,6 +67,12 @@ export function OfficerNav() {
     ...(showHelpdesk ? ([{ href: '/helpdesk', label: 'Helpdesk' }] as const) : []),
     ...(showInspection ? ([{ href: '/inspection', label: 'Inspection' }] as const) : []),
     ...(showScheduling ? ([{ href: '/scheduling', label: 'Scheduling' }] as const) : []),
+    ...(showSearchOps
+      ? ([
+          { href: '/search', label: 'Search' },
+          { href: '/ops', label: 'Ops' },
+        ] as const)
+      : []),
   ];
 
   return (

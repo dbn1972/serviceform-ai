@@ -72,7 +72,15 @@
           "APPOINTMENT_RESCHEDULE",
           "APPOINTMENT_CANCEL",
           "APPOINTMENT_COMPLETE",
-          "APPOINTMENT_NO_SHOW"
+          "APPOINTMENT_NO_SHOW",
+          "SEARCH_DOCUMENT_QUERY",
+          "SEARCH_DOCUMENT_READ",
+          "OPS_VIEW_SLA",
+          "OPS_VIEW_QUEUE",
+          "OPS_VIEW_INTEGRATION",
+          "OPS_VIEW_EVENTS",
+          "OPS_VIEW_HEALTH",
+          "OPS_REFRESH_VIEW"
         ],
         "resource_types": [
           "ApplicationCase",
@@ -86,13 +94,15 @@
           "AssistedSession",
           "Inspection",
           "Appointment",
-          "AppointmentSlot"
+          "AppointmentSlot",
+          "SearchDocument",
+          "OpsDashboardView"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_INSPECTION_OFFICER": {
-        "_note": "SF-57/SF-62: CMP-018 inspection desk + CMP-056 scheduling shell beside it. Assignment role_code only — never named officers. Non-statutory verification + opaque appointment metadata.",
+        "_note": "SF-57/SF-62: CMP-018 inspection desk + CMP-056 scheduling shell beside it. Assignment role_code only \u2014 never named officers. Non-statutory verification + opaque appointment metadata.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -134,7 +144,7 @@
         "all_services": true
       },
       "SAMPLE_LAB_SCHEDULER_ADMIN": {
-        "_note": "SF-62: SYSTEM workload for CMP-056 catalogue type/slot seed. Opaque metadata refs only — cannot invent statutory calendars or record case decisions.",
+        "_note": "SF-62: SYSTEM workload for CMP-056 catalogue type/slot seed. Opaque metadata refs only \u2014 cannot invent statutory calendars or record case decisions.",
         "actions": [
           "APPOINTMENT_TYPE_REGISTER",
           "APPOINTMENT_SLOT_PUBLISH",
@@ -146,7 +156,7 @@
         "all_services": true
       },
       "SAMPLE_LAB_SCRUTINY_OFFICER": {
-        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for scrutiny. Lab label only — not a statutory designation.",
+        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for scrutiny. Lab label only \u2014 not a statutory designation.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -169,20 +179,30 @@
           "DEFICIENCY_CLOSE",
           "DEFICIENCY_READ",
           "SLA_CLOCK_READ",
-          "SLA_CLOCK_EVALUATE"
+          "SLA_CLOCK_EVALUATE",
+          "SEARCH_DOCUMENT_QUERY",
+          "SEARCH_DOCUMENT_READ",
+          "OPS_VIEW_SLA",
+          "OPS_VIEW_QUEUE",
+          "OPS_VIEW_INTEGRATION",
+          "OPS_VIEW_EVENTS",
+          "OPS_VIEW_HEALTH",
+          "OPS_REFRESH_VIEW"
         ],
         "resource_types": [
           "ApplicationCase",
           "OfficerSession",
           "HumanTask",
           "DeficiencyNotice",
-          "SlaClock"
+          "SlaClock",
+          "SearchDocument",
+          "OpsDashboardView"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_APPROVING_AUTHORITY": {
-        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for final human decision. Lab label only — not a statutory designation.",
+        "_note": "SAMPLE_LAB multi-desk: HUMAN_TASK role_code for final human decision. Lab label only \u2014 not a statutory designation.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -201,14 +221,24 @@
           "TASK_COMPLETE",
           "DEFICIENCY_READ",
           "SLA_CLOCK_READ",
-          "SLA_CLOCK_EVALUATE"
+          "SLA_CLOCK_EVALUATE",
+          "SEARCH_DOCUMENT_QUERY",
+          "SEARCH_DOCUMENT_READ",
+          "OPS_VIEW_SLA",
+          "OPS_VIEW_QUEUE",
+          "OPS_VIEW_INTEGRATION",
+          "OPS_VIEW_EVENTS",
+          "OPS_VIEW_HEALTH",
+          "OPS_REFRESH_VIEW"
         ],
         "resource_types": [
           "ApplicationCase",
           "OfficerSession",
           "HumanTask",
           "DeficiencyNotice",
-          "SlaClock"
+          "SlaClock",
+          "SearchDocument",
+          "OpsDashboardView"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
@@ -274,7 +304,7 @@
         "all_services": true
       },
       "SAMPLE_LAB_WORKFLOW_SEQUENCER": {
-        "_note": "Phase C live-pins + SF-46: APPLICATION_READ / WORKING_DATA_READ for rules; TASK_CREATE / TASK_CANCEL_CLOSE for HUMAN_TASK from graph (CMP-016 → CMP-017).",
+        "_note": "Phase C live-pins + SF-46: APPLICATION_READ / WORKING_DATA_READ for rules; TASK_CREATE / TASK_CANCEL_CLOSE for HUMAN_TASK from graph (CMP-016 \u2192 CMP-017).",
         "actions": [
           "WORKFLOW_INSTANCE_START",
           "WORKFLOW_SIGNAL_ADVANCE",
@@ -467,13 +497,71 @@
           "TENANT_SERVICE_BINDING_PUBLISH",
           "PUBLICATION_REQUEST_READ",
           "PUBLICATION_REQUEST_APPROVE",
-          "PUBLICATION_REQUEST_REJECT"
+          "PUBLICATION_REQUEST_REJECT",
+          "SEARCH_DOCUMENT_QUERY",
+          "SEARCH_DOCUMENT_READ",
+          "OPS_VIEW_SLA",
+          "OPS_VIEW_QUEUE",
+          "OPS_VIEW_INTEGRATION",
+          "OPS_VIEW_EVENTS",
+          "OPS_VIEW_HEALTH",
+          "OPS_REFRESH_VIEW",
+          "ANALYTICS_DEFINITION_CREATE",
+          "ANALYTICS_DEFINITION_RETIRE",
+          "ANALYTICS_DEFINITION_READ",
+          "ANALYTICS_METRIC_READ",
+          "ANALYTICS_EVENT_INGEST",
+          "ANALYTICS_PROJECTION_REBUILD",
+          "DISCOVERY_QUERY",
+          "DISCOVERY_QUERY_READ",
+          "DISCOVERY_SERVICE_SELECT"
         ],
         "resource_types": [
           "OfficerSession",
           "TenantServiceBinding",
           "ArtifactVersion",
-          "PublicationRequest"
+          "PublicationRequest",
+          "MetricDefinition",
+          "AnalyticsMetric",
+          "OpsDashboardView",
+          "DiscoveryQuery",
+          "DiscoverySelection",
+          "SearchDocument"
+        ],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_OPS_ANALYST": {
+        "_note": "SF-63: M08 search/analytics/ops/discovery thin golden UI. Fail-closed OPA. No statute. CERTIFIED=false \u00b7 G6=false.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "SEARCH_DOCUMENT_QUERY",
+          "SEARCH_DOCUMENT_READ",
+          "OPS_VIEW_SLA",
+          "OPS_VIEW_QUEUE",
+          "OPS_VIEW_INTEGRATION",
+          "OPS_VIEW_EVENTS",
+          "OPS_VIEW_HEALTH",
+          "OPS_REFRESH_VIEW",
+          "ANALYTICS_DEFINITION_CREATE",
+          "ANALYTICS_DEFINITION_RETIRE",
+          "ANALYTICS_DEFINITION_READ",
+          "ANALYTICS_METRIC_READ",
+          "ANALYTICS_EVENT_INGEST",
+          "ANALYTICS_PROJECTION_REBUILD",
+          "DISCOVERY_QUERY",
+          "DISCOVERY_QUERY_READ",
+          "DISCOVERY_SERVICE_SELECT"
+        ],
+        "resource_types": [
+          "OfficerSession",
+          "MetricDefinition",
+          "AnalyticsMetric",
+          "OpsDashboardView",
+          "DiscoveryQuery",
+          "DiscoverySelection",
+          "SearchDocument"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true

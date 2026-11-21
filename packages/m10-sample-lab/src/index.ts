@@ -95,3 +95,16 @@ export type {
   TsbSealPinMap,
   TsbSealPinRef,
 } from './tsb-seal-catalogue';
+export {
+  SAMPLE_LAB_OPS_ANALYST_ROLE,
+  SAMPLE_LAB_M08_OPS_CATALOGUE,
+  searchHitLabel,
+  opsViewLabel,
+} from './m08-ops-catalogue';
+export type {
+  SampleLabM08OpsCatalogue,
+  SampleLabSearchDocumentSeed,
+  SampleLabMetricDefinitionSeed,
+  SampleLabOpsSample,
+  SampleLabDiscoveryService,
+} from './m08-ops-catalogue';

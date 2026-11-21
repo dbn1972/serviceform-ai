@@ -18,7 +18,7 @@ export default function HomePage() {
         </p>
         <div className="sf-meta-row">
           <span className="ux4g-tag-tonal-primary">
-            Scrutiny · Approving · Helpdesk · Inspection · Scheduling
+            Scrutiny · Approving · Helpdesk · Inspection · Scheduling · Search · Ops
           </span>
           <span className="ux4g-tag-outline-warning">G6 not issued</span>
           <span className="ux4g-tag-outline-neutral">CERTIFIED=false</span>
@@ -104,6 +104,22 @@ export default function HomePage() {
           Reusable opaque appointment types and capacity slots beside inspection — book, reschedule,
           complete, or no-show. Atomic capacity; notify failure does not cancel. CERTIFIED=false ·
           G6=false.
+        </p>
+      </Card>
+
+      <Card
+        title="Search & ops"
+        subtitle="M08 · CMP-035 / CMP-046 · find-case + workload views"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/search">Open case search</TextLink>
+            <TextLink href="/ops">Open ops dashboard</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Faceted case projections and non-authoritative ops aggregates beyond a single queue.
+          Fail-closed OPA/RLS. No PII in facets. CERTIFIED=false · G6=false.
         </p>
       </Card>
     </AppShell>
