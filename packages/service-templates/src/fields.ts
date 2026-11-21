@@ -146,13 +146,21 @@ export const postalAddress = (title: string): FormSchemaNode => ({
 
 /**
  * Tenant-scoped postal address for Certificate / Licence / Permit / Registration stubs.
- * State and district are LGD-like codes; runtime applies tenant allowed_* enums from TSB overlay.
+ * State, district, and municipality (ULB / local body) are LGD-like codes;
+ * runtime applies tenant allowed_* enums from TSB overlay.
  */
 export const lgdPostalAddress = (title: string): FormSchemaNode => ({
   type: 'object',
   title,
   additionalProperties: false,
-  required: ['house_no_or_name', 'locality', 'district', 'state_code', 'pincode'],
+  required: [
+    'house_no_or_name',
+    'locality',
+    'district',
+    'municipality_code',
+    'state_code',
+    'pincode',
+  ],
   properties: {
     ...addressPartsBase(),
     district: {
@@ -165,6 +173,18 @@ export const lgdPostalAddress = (title: string): FormSchemaNode => ({
       'x-ux4g': {
         hint: 'Tenant-allowed district LGD codes (set in Admin → Bindings)',
         error_messages: { PATTERN: 'Enter a district LGD code' },
+      },
+    },
+    municipality_code: {
+      type: 'string',
+      title: 'Municipality / ULB (LGD local-body code)',
+      minLength: 2,
+      maxLength: 64,
+      pattern: LGD_CODE_PATTERN,
+      semanticElementId: 'SF-SEM-ADDR-MUNICIPALITY',
+      'x-ux4g': {
+        hint: 'Tenant-allowed municipality / ULB LGD codes (set in Admin → Bindings)',
+        error_messages: { PATTERN: 'Enter a municipality / ULB LGD code' },
       },
     },
     state_code: {
@@ -182,11 +202,23 @@ export const lgdPostalAddress = (title: string): FormSchemaNode => ({
   },
 });
 
+/** Legacy Residence PUBLISHED pin UI parts — do not add fields (frozen content hash). */
 export const ADDRESS_PARTS = [
   'house_no_or_name',
   'locality',
   'post_office',
   'district',
+  'state_code',
+  'pincode',
+] as const;
+
+/** LGD-scoped address UI parts (state / district / municipality). */
+export const LGD_ADDRESS_PARTS = [
+  'house_no_or_name',
+  'locality',
+  'post_office',
+  'district',
+  'municipality_code',
   'state_code',
   'pincode',
 ] as const;

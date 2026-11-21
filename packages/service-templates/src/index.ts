@@ -47,9 +47,11 @@ export {
 export { buildInvalidLabFormData, buildSampleLabFormData } from './sample-lab-form-data';
 export {
   SAMPLE_LAB_LGD_DISTRICTS,
+  SAMPLE_LAB_LGD_MUNICIPALITIES,
   SAMPLE_LAB_LGD_STATES,
   STATE_SEMANTIC_ID,
   DISTRICT_SEMANTIC_ID,
+  MUNICIPALITY_SEMANTIC_ID,
   applyJurisdictionScopeToFormSchema,
   effectiveAllowedCodes,
   extractJurisdictionScope,

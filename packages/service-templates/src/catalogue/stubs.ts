@@ -1,5 +1,5 @@
 import {
-  ADDRESS_PARTS,
+  LGD_ADDRESS_PARTS,
   control,
   dateOfBirth,
   declaration,
@@ -72,7 +72,7 @@ const applicantCategory = (extra: string[] = []) => ({
 const addressGroup = (pointer: string, label: string) => ({
   type: 'Group' as const,
   label,
-  elements: ADDRESS_PARTS.map((p) => control(`${pointer}/${p}`)),
+  elements: LGD_ADDRESS_PARTS.map((p) => control(`${pointer}/${p}`)),
 });
 
 const reviewCategory = () => ({
@@ -355,7 +355,7 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0031-0001-4000-8000-00000000031a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:cf79c84eb131a7241f67a9181c05df4030879466e3151589f7f6e622523642be',
+      content_hash: 'sha256:0dd84a88b61cf499faa8cf08dcf9325742d18a88d702bf9a918f49c99a75a7c9',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: incomeForm(),
@@ -402,7 +402,7 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0001-0001-4000-8000-00000000001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:55a4db0e216c91afe9d0bffdd620f3ff67c242e8b297ccdb87f719cc7d97e020',
+      content_hash: 'sha256:b6884452d845c231aae3d2aea8a836b4a9a96f9ada718815b4ccc349cb0c3593',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: domicileForm(),
@@ -444,7 +444,7 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3ac001-0001-4000-8000-0000000c001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:3b955ea295679338d01e1829ec1d74829deaa008a5ca164d77f6d8893fde1fe7',
+      content_hash: 'sha256:ec7822548d87b65aa8fcbdd079a9c376d3cf049d71e8d9d7b577d81edc57b4e7',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: birthForm(),

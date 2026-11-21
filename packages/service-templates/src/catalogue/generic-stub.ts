@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import {
-  ADDRESS_PARTS,
+  LGD_ADDRESS_PARTS,
   control,
   dateOfBirth,
   declaration,
@@ -258,7 +258,7 @@ function addressGroup(): UiElement {
   return {
     type: 'Group',
     label: 'Address',
-    elements: ADDRESS_PARTS.map((p) => control(`applicant_address/${p}`)),
+    elements: LGD_ADDRESS_PARTS.map((p) => control(`applicant_address/${p}`)),
   };
 }
 

@@ -36,6 +36,8 @@ export interface SampleLabJurisdictionOverlay {
   allowed_states?: string[];
   /** LGD-like district codes allowed for this tenant+offering (not display names). */
   allowed_districts?: string[];
+  /** LGD local-body / ULB (municipality) codes allowed for this tenant+offering. */
+  allowed_municipalities?: string[];
 }
 
 export interface SampleLabTenantOverlay {

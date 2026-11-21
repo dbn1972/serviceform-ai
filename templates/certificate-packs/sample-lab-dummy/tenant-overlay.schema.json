@@ -58,6 +58,17 @@
             "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
           },
           "uniqueItems": true
+        },
+        "allowed_municipalities": {
+          "type": "array",
+          "description": "Override allowed municipality / ULB (LGD local-body) codes for this tenant+offering (not display names).",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
+          },
+          "uniqueItems": true
         }
       }
     },

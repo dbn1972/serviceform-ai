@@ -21,9 +21,10 @@ describe('web-admin markup (UX4G)', () => {
 
   it('bindings page includes reusable jurisdiction scope desk for any offering', () => {
     const html = renderToStaticMarkup(<BindingsPage />);
-    expect(html).toContain('Jurisdiction scope (states / districts)');
+    expect(html).toContain('Jurisdiction scope (states / districts / municipalities)');
     expect(html).toContain('Allowed states (LGD codes, one per line)');
     expect(html).toContain('Allowed districts (LGD codes, one per line)');
-    expect(html).toContain('Catalogue id (e.g. IND-CIV-001, IND-AGR-010)');
+    expect(html).toContain('Allowed municipalities / ULBs (LGD local-body codes, one per line)');
+    expect(html).toContain('Catalogue id (e.g. IND-CIV-001, IND-ULB-007)');
   });
 });

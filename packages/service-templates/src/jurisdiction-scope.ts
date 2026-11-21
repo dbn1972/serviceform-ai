@@ -3,12 +3,14 @@ import { SAMPLE_LAB_ENVIRONMENT, sampleLabDummyAllowed } from './sample-lab-dumm
 
 /**
  * Tenant/offering geographic scope (Constitution §2–§3).
- * Codes are LGD-like identifiers — never hard-coded state/district *names* in domain logic.
+ * Codes are LGD-like identifiers — never hard-coded place *names* in domain logic.
+ * Levels: state / district / municipality (ULB / local body).
  * Applies to every catalogue offering (Certificate, Licence, Permit, Registration, …).
  */
 
 export const STATE_SEMANTIC_ID = 'SF-SEM-ADDR-STATE-CODE';
 export const DISTRICT_SEMANTIC_ID = 'SF-SEM-ADDR-DISTRICT';
+export const MUNICIPALITY_SEMANTIC_ID = 'SF-SEM-ADDR-MUNICIPALITY';
 
 /** SAMPLE_LAB synthetic LGD-like codes (starting defaults; tenants override via overlay). */
 export const SAMPLE_LAB_LGD_STATES = [
@@ -37,11 +39,26 @@ export const SAMPLE_LAB_LGD_DISTRICTS = [
   'LGD-D-0502',
 ] as const;
 
+/** SAMPLE_LAB synthetic LGD local-body / ULB codes (municipality). */
+export const SAMPLE_LAB_LGD_MUNICIPALITIES = [
+  'LGD-U-010101',
+  'LGD-U-010102',
+  'LGD-U-020101',
+  'LGD-U-020102',
+  'LGD-U-030101',
+  'LGD-U-030102',
+  'LGD-U-040101',
+  'LGD-U-040102',
+  'LGD-U-050101',
+  'LGD-U-050102',
+] as const;
+
 const LGD_CODE_RE = /^[A-Z0-9][A-Z0-9._-]{1,63}$/;
 
 export interface JurisdictionScope {
   allowed_states: readonly string[];
   allowed_districts: readonly string[];
+  allowed_municipalities: readonly string[];
 }
 
 export type JurisdictionScopeIssue = {
@@ -79,11 +96,12 @@ export function extractJurisdictionScope(ownerConfig: Record<string, unknown>): 
   return {
     allowed_states: normalizeCodes(jurisdiction['allowed_states']),
     allowed_districts: normalizeCodes(jurisdiction['allowed_districts']),
+    allowed_municipalities: normalizeCodes(jurisdiction['allowed_municipalities']),
   };
 }
 
 /**
- * Fail-closed when allowed lists are empty outside SAMPLE_LAB.
+ * Fail-closed when any allowed list is empty outside SAMPLE_LAB.
  * Inside SAMPLE_LAB, empty lists fall back to sample LGD codes (still not statute).
  */
 export function resolveJurisdictionScope(
@@ -93,26 +111,33 @@ export function resolveJurisdictionScope(
   const extracted = extractJurisdictionScope(ownerConfig ?? {});
   const states = [...extracted.allowed_states];
   const districts = [...extracted.allowed_districts];
+  const municipalities = [...extracted.allowed_municipalities];
 
-  if (states.length === 0 || districts.length === 0) {
+  if (states.length === 0 || districts.length === 0 || municipalities.length === 0) {
     if (!sampleLabDummyAllowed(environmentLabel)) {
       throw new Error(
-        'Jurisdiction scope refused: allowed_states/allowed_districts empty outside SAMPLE_LAB (fail-closed)',
+        'Jurisdiction scope refused: allowed_states/allowed_districts/allowed_municipalities empty outside SAMPLE_LAB (fail-closed)',
       );
     }
     return {
       allowed_states: states.length > 0 ? states : [...SAMPLE_LAB_LGD_STATES],
       allowed_districts: districts.length > 0 ? districts : [...SAMPLE_LAB_LGD_DISTRICTS],
+      allowed_municipalities:
+        municipalities.length > 0 ? municipalities : [...SAMPLE_LAB_LGD_MUNICIPALITIES],
     };
   }
 
-  for (const code of [...states, ...districts]) {
+  for (const code of [...states, ...districts, ...municipalities]) {
     if (!isLgdLikeCode(code)) {
       throw new Error(`Jurisdiction scope refused: invalid LGD-like code ${code}`);
     }
   }
 
-  return { allowed_states: states, allowed_districts: districts };
+  return {
+    allowed_states: states,
+    allowed_districts: districts,
+    allowed_municipalities: municipalities,
+  };
 }
 
 function cloneNode(node: FormSchemaNode): FormSchemaNode {
@@ -155,8 +180,8 @@ export function effectiveAllowedCodes(
 }
 
 /**
- * Constrain address state/district choice lists from tenant scope.
- * Matches SF-SEM-ADDR-STATE-CODE and SF-SEM-ADDR-DISTRICT anywhere in the schema.
+ * Constrain address state/district/municipality choice lists from tenant scope.
+ * Matches SF-SEM-ADDR-STATE-CODE, SF-SEM-ADDR-DISTRICT, SF-SEM-ADDR-MUNICIPALITY.
  * Returns a deep-cloned schema (does not mutate published catalogue metadata).
  * Free-text district fields (Residence PUBLISHED pin) are left unchanged.
  */
@@ -166,32 +191,46 @@ export function applyJurisdictionScopeToFormSchema(
 ): FormSchemaNode {
   const next = cloneNode(schema);
 
+  const constrain = (
+    node: FormSchemaNode,
+    semanticId: string,
+    scopeCodes: readonly string[],
+    hint: string,
+  ): void => {
+    if (node.semanticElementId !== semanticId) return;
+    const codes = effectiveAllowedCodes(node, scopeCodes);
+    if (!codes) return;
+    node.enum = codes;
+    node['x-ux4g'] = {
+      ...(node['x-ux4g'] ?? {}),
+      enum_labels: labelsFor(codes),
+      hint,
+    };
+    delete node.pattern;
+    if (semanticId === DISTRICT_SEMANTIC_ID || semanticId === MUNICIPALITY_SEMANTIC_ID) {
+      delete node.maxLength;
+    }
+  };
+
   const walk = (node: FormSchemaNode): void => {
-    if (node.semanticElementId === STATE_SEMANTIC_ID) {
-      const codes = effectiveAllowedCodes(node, scope.allowed_states);
-      if (codes) {
-        node.enum = codes;
-        node['x-ux4g'] = {
-          ...(node['x-ux4g'] ?? {}),
-          enum_labels: labelsFor(codes),
-          hint: 'Tenant-allowed state codes for this offering',
-        };
-        delete node.pattern;
-      }
-    }
-    if (node.semanticElementId === DISTRICT_SEMANTIC_ID) {
-      const codes = effectiveAllowedCodes(node, scope.allowed_districts);
-      if (codes) {
-        node.enum = codes;
-        node['x-ux4g'] = {
-          ...(node['x-ux4g'] ?? {}),
-          enum_labels: labelsFor(codes),
-          hint: 'Tenant-allowed district codes for this offering',
-        };
-        delete node.pattern;
-        delete node.maxLength;
-      }
-    }
+    constrain(
+      node,
+      STATE_SEMANTIC_ID,
+      scope.allowed_states,
+      'Tenant-allowed state codes for this offering',
+    );
+    constrain(
+      node,
+      DISTRICT_SEMANTIC_ID,
+      scope.allowed_districts,
+      'Tenant-allowed district codes for this offering',
+    );
+    constrain(
+      node,
+      MUNICIPALITY_SEMANTIC_ID,
+      scope.allowed_municipalities,
+      'Tenant-allowed municipality / ULB (local body) LGD codes for this offering',
+    );
     for (const child of Object.values(node.properties ?? {})) walk(child);
   };
 
@@ -254,6 +293,19 @@ export function validateFormDataAgainstJurisdictionScope(
         code: 'JURISDICTION_OUT_OF_SCOPE',
         pointer,
         message: 'District code is outside this tenant offering scope',
+      });
+    }
+  }
+  for (const { pointer, node } of semanticFieldNodes(schema, MUNICIPALITY_SEMANTIC_ID)) {
+    const allowed = effectiveAllowedCodes(node, scope.allowed_municipalities);
+    if (!allowed) continue;
+    const value = valueAt(data, pointer);
+    if (value === undefined || value === null || value === '') continue;
+    if (typeof value !== 'string' || !allowed.includes(value.toUpperCase())) {
+      issues.push({
+        code: 'JURISDICTION_OUT_OF_SCOPE',
+        pointer,
+        message: 'Municipality / ULB code is outside this tenant offering scope',
       });
     }
   }

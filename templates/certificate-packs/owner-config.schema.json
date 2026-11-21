@@ -72,6 +72,17 @@
             "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
           },
           "uniqueItems": true
+        },
+        "allowed_municipalities": {
+          "type": "array",
+          "description": "Tenant/offering-allowed municipality / ULB (LGD local-body) codes (not display names). Empty fails closed outside SAMPLE_LAB.",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$"
+          },
+          "uniqueItems": true
         }
       }
     },

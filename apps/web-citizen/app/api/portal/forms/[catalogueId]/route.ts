@@ -85,6 +85,7 @@ export async function GET(request: Request, ctx: Ctx) {
     jurisdiction_scope: {
       allowed_states: scope.allowed_states,
       allowed_districts: scope.allowed_districts,
+      allowed_municipalities: scope.allowed_municipalities,
     },
     prefill,
     prefill_source: profile ? 'CMP-005' : sampleLab() ? 'SAMPLE_LAB' : null,

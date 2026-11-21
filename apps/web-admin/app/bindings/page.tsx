@@ -11,7 +11,7 @@ export default function BindingsPage() {
       <Card title="Version pin">
         <BindingDesk />
       </Card>
-      <Card title="Jurisdiction scope (states / districts)">
+      <Card title="Jurisdiction scope (states / districts / municipalities)">
         <JurisdictionScopeDesk />
       </Card>
     </AppShell>

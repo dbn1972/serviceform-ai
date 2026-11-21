@@ -225,9 +225,16 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     });
     expect(scope.allowed_states).toHaveLength(10);
     expect(scope.allowed_districts).toHaveLength(10);
+    expect(scope.allowed_municipalities).toHaveLength(10);
     expect(() =>
       resolveJurisdictionScope(
-        { jurisdiction: { allowed_states: [], allowed_districts: [] } },
+        {
+          jurisdiction: {
+            allowed_states: [],
+            allowed_districts: [],
+            allowed_municipalities: [],
+          },
+        },
         'PRODUCTION',
       ),
     ).toThrow(/fail-closed/);
@@ -239,6 +246,7 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       jurisdiction: {
         allowed_states: ['LGD-S-01', 'LGD-S-02'],
         allowed_districts: ['LGD-D-0101', 'LGD-D-0102'],
+        allowed_municipalities: ['LGD-U-010101', 'LGD-U-010102'],
       },
     };
     saveTenantOverlay(custom);
@@ -249,6 +257,7 @@ describe('template catalogue (SAMPLE_LAB)', () => {
       environmentLabel: 'SAMPLE_LAB',
     });
     expect(scoped.allowed_states).toEqual(['LGD-S-01', 'LGD-S-02']);
+    expect(scoped.allowed_municipalities).toEqual(['LGD-U-010101', 'LGD-U-010102']);
     expect(licence).toBeTruthy();
     const licenceVersion = licence?.versions[0];
     expect(licenceVersion).toBeTruthy();
@@ -257,6 +266,7 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     const addr = form.properties?.['applicant_address']?.properties;
     expect(addr?.['state_code']?.enum).toEqual(['LGD-S-01', 'LGD-S-02']);
     expect(addr?.['district']?.enum).toEqual(['LGD-D-0101', 'LGD-D-0102']);
+    expect(addr?.['municipality_code']?.enum).toEqual(['LGD-U-010101', 'LGD-U-010102']);
   });
 
   it('every version has a unique UUID, ascending semver and a matching content hash', () => {

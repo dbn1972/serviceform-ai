@@ -139,7 +139,14 @@ function formSchema(entry, idLower) {
       type: 'object',
       title: 'Address',
       additionalProperties: false,
-      required: ['house_no_or_name', 'locality', 'district', 'state_code', 'pincode'],
+      required: [
+        'house_no_or_name',
+        'locality',
+        'district',
+        'municipality_code',
+        'state_code',
+        'pincode',
+      ],
       properties: {
         house_no_or_name: {
           type: 'string',
@@ -162,6 +169,17 @@ function formSchema(entry, idLower) {
           pattern: '^[A-Z0-9][A-Z0-9._-]{1,63}$',
           semanticElementId: 'SF-SEM-ADDR-DISTRICT',
           'x-ux4g': { hint: 'Tenant-allowed district LGD codes (Admin → Bindings)' },
+        },
+        municipality_code: {
+          type: 'string',
+          title: 'Municipality / ULB (LGD local-body code)',
+          minLength: 2,
+          maxLength: 64,
+          pattern: '^[A-Z0-9][A-Z0-9._-]{1,63}$',
+          semanticElementId: 'SF-SEM-ADDR-MUNICIPALITY',
+          'x-ux4g': {
+            hint: 'Tenant-allowed municipality / ULB LGD codes (Admin → Bindings)',
+          },
         },
         state_code: {
           type: 'string',
@@ -341,7 +359,7 @@ function main() {
 
   const manifest = {
     generated_at_note:
-      'SAMPLE_LAB DUMMY factory output — Certificate + Licence + Permit; tenant-overridable jurisdiction.allowed_states/districts; not CERTIFIED; G6=false',
+      'SAMPLE_LAB DUMMY factory output — Certificate + Licence + Permit; tenant-overridable jurisdiction.allowed_states/districts/municipalities; not CERTIFIED; G6=false',
     catalogue_version: universe.catalogue_version,
     source: universe.source,
     filter: universe.filter,

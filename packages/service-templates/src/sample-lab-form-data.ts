@@ -21,6 +21,7 @@ const SAMPLE_ADDRESS_LGD = {
   locality: 'SAMPLE Locality',
   post_office: 'SAMPLE Post Office',
   district: 'LGD-D-0101',
+  municipality_code: 'LGD-U-010101',
   state_code: 'LGD-S-01',
   pincode: '751001',
 } as const;
@@ -80,6 +81,10 @@ function sampleForNode(name: string, node: FormSchemaNode): unknown {
   if (node.semanticElementId === 'SF-SEM-ADDR-DISTRICT') {
     if (node.enum && node.enum.length > 0) return node.enum[0];
     return SAMPLE_ADDRESS_LGD.district;
+  }
+  if (node.semanticElementId === 'SF-SEM-ADDR-MUNICIPALITY') {
+    if (node.enum && node.enum.length > 0) return node.enum[0];
+    return SAMPLE_ADDRESS_LGD.municipality_code;
   }
   if (name.includes('purpose')) return 'SAMPLE_LAB purpose — synthetic only';
   if (name.includes('evidence_type')) return 'SAMPLE_LAB_DUMMY_EVIDENCE_ANY';

@@ -132,7 +132,7 @@ export function resolveSampleLabOwnerConfig(
   };
 }
 
-/** Resolve jurisdiction.allowed_states / allowed_districts for a tenant+offering. */
+/** Resolve jurisdiction.allowed_states / allowed_districts / allowed_municipalities for a tenant+offering. */
 export function resolveTenantJurisdictionScope(input: {
   catalogueId: string;
   tenantId?: string | null;
