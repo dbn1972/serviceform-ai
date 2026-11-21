@@ -7,7 +7,6 @@
  */
 import { randomInt } from 'node:crypto';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
-import { requiresLabPayment } from '@serviceform/m10-sample-lab/fee-catalogue';
 import { withEvidenceIfRequired } from './helpers/evidence-upload';
 
 const CITIZEN = 'http://127.0.0.1:3000';
@@ -21,6 +20,13 @@ const REPRESENTATIVES = [
   'IND-AGR-002',
   'IND-EDU-004',
 ] as const;
+
+/** SAMPLE_LAB DUMMY fee>0 overlays exercised by SF-56 (keep in sync with fee-catalogue). */
+const FEE_GT_ZERO_CATALOGUES = new Set<string>(['IND-EDU-004']);
+
+function requiresLabPayment(catalogueId: string): boolean {
+  return FEE_GT_ZERO_CATALOGUES.has(catalogueId);
+}
 
 const uniqueMobile = () => `9${randomInt(100_000_000, 1_000_000_000)}`;
 
