@@ -8,9 +8,9 @@ import type { PgCaseStore } from '@serviceform/cmp-015-application-case';
 import type { CaseServiceLike, ServiceResultLike } from './issuance.js';
 
 /**
- * SAMPLE_LAB CMP-019 host adapters (SF-47). Composition only: CaseCommandPort → CMP-015,
- * owner enrichment for citizen DeficiencyNotice authz, Unbound SLA/notification OK in lab.
- * CERTIFIED=false. G6=false.
+ * SAMPLE_LAB CMP-019 host adapters (SF-47/SF-55). Composition only: CaseCommandPort → CMP-015,
+ * owner enrichment for citizen DeficiencyNotice authz. SF-55 binds CMP-025 SIM notifier when
+ * DATABASE_URL_CMP025 is set (else UnboundNotificationPort). CERTIFIED=false. G6=false.
  */
 
 export interface CaseCommand {

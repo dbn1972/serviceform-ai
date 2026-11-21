@@ -413,6 +413,63 @@
     },
     "ASSISTED_SESSION_CLOSE": {
       "action_class": "PROTECTED"
+    },
+    "NOTIFICATION_DISPATCH": {
+      "action_class": "PROTECTED"
+    },
+    "NOTIFICATION_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "NOTIFICATION_DELIVER": {
+      "action_class": "PROTECTED"
+    },
+    "NOTIFICATION_RECEIPT_RECORD": {
+      "action_class": "PROTECTED"
+    },
+    "NOTIFICATION_TEMPLATE_PUBLISH": {
+      "action_class": "PROTECTED"
+    },
+    "NOTIFICATION_TEMPLATE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "THREAD_OPEN": {
+      "action_class": "PROTECTED"
+    },
+    "THREAD_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "THREAD_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "THREAD_CLOSE": {
+      "action_class": "PROTECTED"
+    },
+    "THREAD_REOPEN": {
+      "action_class": "PROTECTED"
+    },
+    "THREAD_ARCHIVE": {
+      "action_class": "PROTECTED"
+    },
+    "PARTICIPANT_ADD": {
+      "action_class": "PROTECTED"
+    },
+    "PARTICIPANT_REMOVE": {
+      "action_class": "PROTECTED"
+    },
+    "MESSAGE_SEND": {
+      "action_class": "PROTECTED"
+    },
+    "MESSAGE_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "MESSAGE_RETRACT": {
+      "action_class": "PROTECTED"
+    },
+    "NOTICE_SEND": {
+      "action_class": "PROTECTED"
+    },
+    "NOTICE_ACKNOWLEDGE": {
+      "action_class": "PROTECTED"
     }
   },
   "resource_types": [
@@ -448,7 +505,10 @@
     "SlaCalendar",
     "SlaPolicy",
     "SlaClock",
-    "AssistedSession"
+    "AssistedSession",
+    "NotificationDispatch",
+    "NotificationTemplate",
+    "MessageThread"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

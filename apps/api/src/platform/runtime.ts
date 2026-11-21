@@ -18,6 +18,7 @@ import type { M02PluginMounts } from '../composition/m02.js';
 import type { M03PluginMounts } from '../composition/m03.js';
 import type { M04PluginMounts } from '../composition/m04.js';
 import type { M05PluginMounts } from '../composition/m05.js';
+import type { M06PluginMounts } from '../composition/m06.js';
 import type { M07PluginMounts } from '../composition/m07.js';
 import type { Wave2PluginMounts } from '../composition/wave2.js';
 import type { ReadinessCheck } from '../plugins/health.js';
@@ -131,6 +132,12 @@ import {
   type LabAssistedCatalogue,
 } from './assisted.js';
 import type { M09PluginMounts } from '../composition/m09.js';
+import {
+  composeLabNotification,
+  journeyTriggerForCommand,
+  loadNotificationCatalogue,
+  type LabJourneyNotifyBridge,
+} from './notification.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -169,6 +176,10 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP029?: string;
   /** Optional SAMPLE_LAB CMP-057 assisted / CSC apply shell. */
   DATABASE_URL_CMP057?: string;
+  /** SF-55: optional CMP-025 notification (journey SIM SMS). */
+  DATABASE_URL_CMP025?: string;
+  /** SF-55: optional CMP-026 messaging (official notices; fanout still CMP-025). */
+  DATABASE_URL_CMP026?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -201,6 +212,8 @@ export interface PlatformLab {
   m03?: M03PluginMounts;
   m04: M04PluginMounts;
   m05: M05PluginMounts;
+  /** SF-55: CMP-025/026 when DATABASE_URL_CMP025(/026) are set. */
+  m06?: M06PluginMounts;
   m07: M07PluginMounts;
   wave2: Wave2PluginMounts;
   readinessChecks: ReadinessCheck[];
@@ -236,6 +249,7 @@ export interface PlatformLab {
  */
 class SequencedApplicationCaseService extends ApplicationCaseService {
   private slaLifecycle: LabSlaLifecycle | null = null;
+  private journeyNotify: LabJourneyNotifyBridge | null = null;
 
   constructor(
     deps: ConstructorParameters<typeof ApplicationCaseService>[0],
@@ -247,6 +261,11 @@ class SequencedApplicationCaseService extends ApplicationCaseService {
   /** Optional SF-53 SLA hooks — set after CMP-029 compose so draft construction stays unchanged. */
   bindSlaLifecycle(lifecycle: LabSlaLifecycle | null): void {
     this.slaLifecycle = lifecycle;
+  }
+
+  /** Optional SF-55 journey notify — set after CMP-025 compose. */
+  bindJourneyNotify(bridge: LabJourneyNotifyBridge | null): void {
+    this.journeyNotify = bridge;
   }
 
   override async createDraft(rawCtx: unknown, rawBody: unknown, rawKey: unknown) {
@@ -271,8 +290,7 @@ class SequencedApplicationCaseService extends ApplicationCaseService {
     rawKey: unknown,
   ) {
     const result = await super.executeCommand(rawCtx, rawApplicationId, rawBody, rawKey);
-    const sla = this.slaLifecycle;
-    if (!sla || result.status !== 200) return result;
+    if (result.status !== 200) return result;
     const application = (result.body as { application?: { application_id?: string } } | undefined)
       ?.application;
     const applicationId =
@@ -283,10 +301,23 @@ class SequencedApplicationCaseService extends ApplicationCaseService {
           : null;
     if (!applicationId) return result;
     const command = caseCommandName(rawBody);
-    if (command === 'SUBMIT') {
-      void sla.startAfterSubmit(applicationId);
-    } else if (command === 'APPROVE' || command === 'REJECT') {
-      void sla.completeAfterDecision(applicationId);
+    const sla = this.slaLifecycle;
+    if (sla) {
+      if (command === 'SUBMIT') {
+        void sla.startAfterSubmit(applicationId);
+      } else if (
+        command === 'RECORD_APPROVED' ||
+        command === 'RECORD_REJECTED' ||
+        // Legacy aliases if any host path still used them
+        command === 'APPROVE' ||
+        command === 'REJECT'
+      ) {
+        void sla.completeAfterDecision(applicationId);
+      }
+    }
+    const notify = this.journeyNotify;
+    if (notify && journeyTriggerForCommand(command)) {
+      void notify.notifyAfterDecision(applicationId, command as string);
     }
     return result;
   }
@@ -669,6 +700,12 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP057
       ? { cmp057: new pg.Pool({ connectionString: env.DATABASE_URL_CMP057, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP025
+      ? { cmp025: new pg.Pool({ connectionString: env.DATABASE_URL_CMP025, max: 4 }) }
+      : {}),
+    ...(env.DATABASE_URL_CMP026
+      ? { cmp026: new pg.Pool({ connectionString: env.DATABASE_URL_CMP026, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -688,6 +725,8 @@ export async function buildPlatformLab(
     cmp027?: pg.Pool;
     cmp029?: pg.Pool;
     cmp057?: pg.Pool;
+    cmp025?: pg.Pool;
+    cmp026?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -980,14 +1019,59 @@ export async function buildPlatformLab(
     }),
     runtimeEnvironment: environment,
   });
+  const resolveContext = placementContextResolver({ verifier, sessions, placement });
+
+  // SF-55: CMP-025/026 journey notifications (SIM). Optional when DATABASE_URL_CMP025 is set.
+  let journeyNotify: LabJourneyNotifyBridge | null = null;
+  let deficiencyNotifier: ReturnType<typeof composeLabNotification>['deficiencyNotifier'] | null =
+    null;
+  let m06: M06PluginMounts | undefined;
+  if (pools.cmp025) {
+    const [cmp025, cmp026] = await Promise.all([
+      loadComponent<{
+        buildNotificationService: (opts: Record<string, unknown>) => unknown;
+        buildDeliveryWorker: (opts: Record<string, unknown>) => unknown;
+        DefaultConnectorRegistry: new (opts: { simulation: { testRunId: string } }) => unknown;
+      }>('@serviceform/cmp-025-notification', 'cmp-025-notification'),
+      pools.cmp026
+        ? loadComponent<{
+            MessagingService: new (deps: Record<string, unknown>) => unknown;
+            PgMessagingStore: new (pool: pg.Pool) => unknown;
+            SimulatedCaseParticipation: new () => unknown;
+            SimulatedAttachmentStorage: new () => unknown;
+            loadConfig: (env: Record<string, string | undefined>) => unknown;
+            OutboxOnlyWorkflowSignal: new () => unknown;
+          }>('@serviceform/cmp-026-communication-messaging', 'cmp-026-communication-messaging')
+        : Promise.resolve(undefined),
+    ]);
+    const notifyCatalogue = loadNotificationCatalogue(dir);
+    const composed = composeLabNotification({
+      pool: pools.cmp025,
+      ...(pools.cmp026 ? { messagingPool: pools.cmp026 } : {}),
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      resolveContext: (request) => resolveContext(request as Parameters<typeof resolveContext>[0]),
+      environment,
+      testRunId: issuance.test_run_id,
+      catalogue: notifyCatalogue,
+      cellId: placement.cell_id,
+      tenantId: placement.tenant_id,
+      cmp025: cmp025 as never,
+      ...(cmp026 ? { cmp026: cmp026 as never } : {}),
+    });
+    journeyNotify = composed.bridge;
+    deficiencyNotifier = composed.deficiencyNotifier;
+    m06 = composed.m06 as M06PluginMounts;
+    applicationCase.bindJourneyNotify(journeyNotify);
+  }
+
   const coordinator = new LabIssuanceCoordinator({
     config: issuance,
     cases,
     credentialApi: bound(cmp022.createCredentialApi, credential),
     digilockerApi: bound(cmp012.createDigilockerApi, digilocker),
     workload,
+    ...(journeyNotify ? { journeyNotify } : {}),
   });
-  const resolveContext = placementContextResolver({ verifier, sessions, placement });
 
   // SF-49: optional CMP-013 document upload (SIMULATED storage/scanner).
   let documentUpload: {
@@ -1241,6 +1325,8 @@ export async function buildPlatformLab(
               // SF-53: when CMP-029 is mounted, INT-009 pause/resume uses LabSlaClockPort.
               // Otherwise UnboundSlaClockPort remains the CMP-019 default.
               ...(slaClockPort ? { slaClock: slaClockPort } : {}),
+              // SF-55: CMP-025 SIM journey notify (was UnboundNotificationPort).
+              ...(deficiencyNotifier ? { notifier: deficiencyNotifier } : {}),
             },
           }
         : {}),
@@ -1286,8 +1372,11 @@ export async function buildPlatformLab(
       ...(pools.cmp027 ? [poolReadiness('cmp027-db', pools.cmp027)] : []),
       ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
       ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
+      ...(pools.cmp025 ? [poolReadiness('cmp025-db', pools.cmp025)] : []),
+      ...(pools.cmp026 ? [poolReadiness('cmp026-db', pools.cmp026)] : []),
       ...workflow.readinessChecks,
     ],
+    ...(m06 ? { m06 } : {}),
     ...(assistedMount
       ? {
           m09: {
@@ -1380,6 +1469,14 @@ export async function buildPlatformLab(
           await slaLifecycle.ensurePublishedPolicy();
         } catch {
           // Lab host stays up; clocks remain unavailable until seed succeeds on retry.
+        }
+      }
+      // SF-55: publish CMP-025 journey templates fail-soft.
+      if (journeyNotify) {
+        try {
+          await journeyNotify.ensureTemplatesPublished();
+        } catch {
+          // Lab host stays up; dispatch retries seed on next event.
         }
       }
     },

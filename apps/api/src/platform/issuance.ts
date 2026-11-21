@@ -491,6 +491,14 @@ function componentError(err: unknown): IssuanceError {
   return new IssuanceError(503, 'SF-SYS-004', 'Service temporarily unavailable');
 }
 
+/** Optional SF-55 CMP-025 journey notify after credential ISSUED (SIM). */
+export type JourneyNotifyPort = {
+  notifyCredentialIssued(
+    applicationId: string,
+    credentialId: string,
+  ): Promise<{ notification_ref: string; dispatch_id: string | null }>;
+};
+
 export class LabIssuanceCoordinator {
   constructor(
     private readonly deps: {
@@ -500,6 +508,8 @@ export class LabIssuanceCoordinator {
       credentialApi: (ctx: RequestContext) => NeutralApiLike;
       digilockerApi: (ctx: RequestContext) => NeutralApiLike;
       workload: () => RequestContext;
+      /** SF-55: SIM journey notify + CMP-022 NOTIFICATION downstream outcome. */
+      journeyNotify?: JourneyNotifyPort;
     },
   ) {}
 
@@ -627,6 +637,15 @@ export class LabIssuanceCoordinator {
       step = 'RECORD_ISSUED';
       if (app.state === 'SIGNING_PENDING') app = await this.caseCommand(app, 'RECORD_ISSUED');
 
+      // SF-55: CMP-025 SIM credential-issued notify (fail-soft; never reverses ISSUED).
+      if (this.deps.journeyNotify && credential && credential.lifecycle_status === 'ISSUED') {
+        const notified = await this.deps.journeyNotify.notifyCredentialIssued(
+          app.application_id,
+          credential.credential_id,
+        );
+        await this.recordNotificationOutcome(credential.credential_id, notified.notification_ref);
+      }
+
       step = 'DIGILOCKER_PUBLISH';
       const records = await this.publishRecords(credential.credential_id);
       let latest = records[0];
@@ -682,6 +701,28 @@ export class LabIssuanceCoordinator {
           outcome: succeeded ? 'SUCCEEDED' : 'FAILED',
           outcome_ref: `cmp012.publish:${record.publish_request_id}`,
           ...(succeeded ? {} : { failure_code: record.failure_code ?? 'SF-INT-001' }),
+        },
+      })
+      .catch(() => undefined);
+  }
+
+  /** Append-only CMP-022 NOTIFICATION channel outcome (SF-55). Never reverses ISSUED. */
+  private async recordNotificationOutcome(
+    credentialId: string,
+    notificationRef: string,
+  ): Promise<void> {
+    const succeeded = notificationRef.startsWith('cmp025.dispatch:');
+    await this.deps
+      .credentialApi(this.deps.workload())
+      .handle({
+        method: 'POST',
+        path: `/v1/credentials/${credentialId}/downstream-outcomes`,
+        headers: { 'idempotency-key': `sample-lab.notify-outcome.${credentialId}` },
+        body: {
+          channel: 'NOTIFICATION',
+          outcome: succeeded ? 'SUCCEEDED' : 'FAILED',
+          outcome_ref: notificationRef,
+          ...(succeeded ? {} : { failure_code: 'SF-INT-001' }),
         },
       })
       .catch(() => undefined);
