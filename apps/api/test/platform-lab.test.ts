@@ -278,13 +278,14 @@ describe('buildPlatformLab composition', () => {
       const officers = await app.inject({ url: '/v1/simulated/idp/officers' });
       const directory = (officers.json() as { officers: { subject: string; roles: string[] }[] })
         .officers;
-      // Case + scrutiny + approving + helpdesk + inspection desks + Studio designer/checker + tenant admin (SF-46/50/57).
-      expect(directory).toHaveLength(8);
+      // Case + scrutiny + approving + helpdesk + inspection + Studio designer/checker + tenant admin + ops analyst (SF-46/50/57/63).
+      expect(directory).toHaveLength(9);
       expect(directory.map((o) => o.subject).sort()).toEqual([
         'sample-lab-approving-officer-1',
         'sample-lab-case-officer-1',
         'sample-lab-helpdesk-officer-1',
         'sample-lab-inspection-officer-1',
+        'sample-lab-ops-analyst-1',
         'sample-lab-scrutiny-officer-1',
         'sample-lab-studio-checker-1',
         'sample-lab-studio-designer-1',
@@ -302,6 +303,8 @@ describe('buildPlatformLab composition', () => {
       expect(helpdesk?.roles).toEqual(['SAMPLE_LAB_HELPDESK_L1']);
       const inspection = directory.find((o) => o.subject === 'sample-lab-inspection-officer-1');
       expect(inspection?.roles).toEqual(['SAMPLE_LAB_INSPECTION_OFFICER']);
+      const opsAnalyst = directory.find((o) => o.subject === 'sample-lab-ops-analyst-1');
+      expect(opsAnalyst?.roles).toEqual(['SAMPLE_LAB_OPS_ANALYST']);
     } finally {
       await lab.close();
     }
