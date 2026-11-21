@@ -355,7 +355,7 @@ export const INCOME_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0031-0001-4000-8000-00000000031a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:99db6533c49b977ed6e8f43aba329b26da638e3aa291119112d76c37bf2f9fd2',
+      content_hash: 'sha256:cf79c84eb131a7241f67a9181c05df4030879466e3151589f7f6e622523642be',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: incomeForm(),
@@ -402,7 +402,7 @@ export const DOMICILE_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3a0001-0001-4000-8000-00000000001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:9335340819b78ca12ca674aa894c279815ac0a92e2012972c61f1759d3b02afb',
+      content_hash: 'sha256:55a4db0e216c91afe9d0bffdd620f3ff67c242e8b297ccdb87f719cc7d97e020',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: domicileForm(),
@@ -444,7 +444,7 @@ export const BIRTH_CERTIFICATE: CertificateTemplate = {
       version_id: '7e3ac001-0001-4000-8000-0000000c001a',
       status: 'DRAFT',
       published_at: null,
-      content_hash: 'sha256:4bc3513f83b5b8d1943a117158d6b13b8eb6c9425b6920d456debd87ee93b26e',
+      content_hash: 'sha256:3b955ea295679338d01e1829ec1d74829deaa008a5ca164d77f6d8893fde1fe7',
       change_summary:
         'SAMPLE_LAB stub from registry core fields; SAMPLE_LAB DUMMY policy defaults (tenant-overridable).',
       form: birthForm(),
