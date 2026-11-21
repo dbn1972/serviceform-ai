@@ -30,17 +30,27 @@ describe('M10 G6 REAL-connector and TSB seal holds', () => {
     expect(refuseSampleLabDoc).toBe(true);
   });
 
-  it('TSB immutability seal remains false until REAL DigiLocker/DLT bindings exist', () => {
+  it('G6/production TSB immutability seal remains false until REAL DigiLocker/DLT bindings exist', () => {
     // Mirrors fixtures/golden/ind-soc-002/tsb-publish-fixture.json publish_gate_requirements.
+    // SF-60 lab eng seal (lab_eng_sealed) is separate and must not flip this G6 gate.
     const gate = {
       all_policy_input_required_fields_resolved: true,
       tsb_immutability_sealed: false,
       production_digilocker_ready: false,
       production_dlt_ready: false,
     };
+    const labEng = {
+      lab_eng_sealed: true,
+      lab_eng_seal_mode: 'SAMPLE_LAB' as const,
+      certified: false,
+      g6: false,
+    };
     expect(gate.all_policy_input_required_fields_resolved).toBe(true);
     expect(gate.tsb_immutability_sealed).toBe(false);
     expect(gate.production_digilocker_ready).toBe(false);
+    expect(labEng.lab_eng_sealed).toBe(true);
+    expect(labEng.g6).toBe(false);
+    expect(labEng.certified).toBe(false);
   });
 
   it.todo(

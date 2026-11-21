@@ -27,4 +27,9 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('Allowed municipalities / ULBs (LGD local-body codes, one per line)');
     expect(html).toContain('Catalogue id (e.g. IND-CIV-001, IND-ULB-007)');
   });
+
+  it('bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)', () => {
+    const html = renderToStaticMarkup(<BindingsPage />);
+    expect(html).toContain('Prove lab eng seal');
+  });
 });

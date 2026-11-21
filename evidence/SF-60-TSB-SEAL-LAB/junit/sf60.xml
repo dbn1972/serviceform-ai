@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="0.042408855">
+    <testsuite name="apps/api/test/tsb-seal-lab.test.ts" timestamp="2026-11-21T21:04:36.996Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.021800227">
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; fixture and built-in catalogue share Residence artifact_hash" time="0.001903441">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; package source declares lab eng seal without G6 claim" time="0.000440169">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; proveLabTsbEngSeal succeeds for PUBLISHED SAMPLE_LAB target" time="0.000443539">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal (SF-60) &gt; proveLabTsbEngSeal refuses PRODUCTION and DRAFT" time="0.000798302">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal HTTP routes &gt; GET catalogue exposes lab eng seal without G6 claim" time="0.007515499">
+        </testcase>
+        <testcase classname="apps/api/test/tsb-seal-lab.test.ts" name="SAMPLE_LAB TSB eng seal HTTP routes &gt; POST prove seals Residence binding and GET returns attestation" time="0.003129726">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-admin/test/markup.test.tsx" timestamp="2026-11-21T21:04:36.997Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.015727047">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; keeps the shell heading and landmarks" time="0.008384667">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; exposes binding and review destinations" time="0.00127274">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page includes reusable jurisdiction scope desk for any offering" time="0.002995162">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)" time="0.002081326">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" timestamp="2026-11-21T21:04:36.998Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004881581">
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; Residence target artifact_hash matches CMP-052-shaped recomputation" time="0.001503742">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; proveLabTsbEngSeal seals PUBLISHED SAMPLE_LAB target without claiming G6" time="0.000471451">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; refuses DRAFT and non-lab environments" time="0.000664216">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; detects hash mismatch" time="0.000900165">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/tsb-seal-catalogue.test.ts" name="SAMPLE_LAB TSB eng seal catalogue (SF-60) &gt; catalogue G6 gate fields stay false" time="0.000223967">
+        </testcase>
+    </testsuite>
+</testsuites>

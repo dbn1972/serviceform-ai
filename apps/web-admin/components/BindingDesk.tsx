@@ -3,6 +3,9 @@
 import { Alert, Button, TextInput } from '@serviceform/ui-ux4g';
 import { useState } from 'react';
 
+/** SAMPLE_LAB Residence placement binding used by eng seal prove (SF-60). */
+const LAB_SEAL_BINDING_ID = '0d15ba00-0002-4000-8000-0d15ba0000d2';
+
 export function BindingDesk() {
   const [bindingKey, setBindingKey] = useState('generic.binding');
   const [offeringRef, setOfferingRef] = useState('generic.offering');
@@ -10,6 +13,8 @@ export function BindingDesk() {
   const [bindingId, setBindingId] = useState('');
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
+  const [labEngSealed, setLabEngSealed] = useState(false);
+  const [sealNote, setSealNote] = useState('');
 
   async function create() {
     setError('');
@@ -50,6 +55,32 @@ export function BindingDesk() {
     setStatus(body.status ?? 'PUBLISHED');
   }
 
+  async function proveLabEngSeal() {
+    setError('');
+    setSealNote('');
+    const id = bindingId || LAB_SEAL_BINDING_ID;
+    const res = await fetch(`/api/lab/tsb-seal/${id}/prove`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ catalogue_id: 'IND-SOC-002' }),
+    });
+    const body = (await res.json()) as {
+      error_code?: string;
+      lab_eng_sealed?: boolean;
+      tsb_immutability_sealed?: boolean;
+      note?: string;
+    };
+    if (!res.ok) {
+      setError(body.error_code ?? 'SF-SYS-004');
+      setLabEngSealed(false);
+      return;
+    }
+    setLabEngSealed(body.lab_eng_sealed === true);
+    setSealNote(
+      body.note ?? 'Lab eng seal only. G6/production tsb_immutability_sealed remains false.',
+    );
+  }
+
   return (
     <div>
       <TextInput
@@ -83,9 +114,18 @@ export function BindingDesk() {
           {status}
         </Alert>
       ) : null}
+      {labEngSealed ? (
+        <Alert variant="info" title="Lab eng sealed">
+          {sealNote ||
+            'SAMPLE_LAB eng seal proven. CERTIFIED=false. G6=false. Owner owns G6 seal claim.'}
+        </Alert>
+      ) : null}
       <Button onClick={() => void create()}>Create draft binding</Button>
       <Button variant="outline-primary" onClick={() => void publish()}>
         Publish (requires checker approval)
+      </Button>
+      <Button variant="outline-primary" onClick={() => void proveLabEngSeal()}>
+        Prove lab eng seal
       </Button>
     </div>
   );

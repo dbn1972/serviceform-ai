@@ -150,6 +150,12 @@ import {
   registerLabPaymentRoutes,
   type ComposeLabPaymentResult,
 } from './payment.js';
+import {
+  createLabTsbSealStore,
+  loadTsbSealCatalogue,
+  registerLabTsbSealRoutes,
+  type LabTsbSealCatalogue,
+} from './tsb-seal.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -252,6 +258,8 @@ export interface PlatformLab {
   registerAssisted?(app: FastifyInstance): Promise<void>;
   /** SF-56: lab SIM payment callback (INTEGRATION + HMAC) when CMP-020/021 mounted. */
   registerPayment?(app: FastifyInstance): Promise<void>;
+  /** SF-60: SAMPLE_LAB TSB eng seal prove routes (hash + mutation gate; G6 seal still false). */
+  registerTsbSeal(app: FastifyInstance): Promise<void>;
   /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
   m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
@@ -1273,6 +1281,10 @@ export async function buildPlatformLab(
     });
   }
 
+  // SF-60: SAMPLE_LAB TSB eng seal catalogue (always available; CMP-052 pool optional).
+  const tsbSealCatalogue: LabTsbSealCatalogue = loadTsbSealCatalogue(dir);
+  const tsbSealStore = createLabTsbSealStore();
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1571,6 +1583,15 @@ export async function buildPlatformLab(
           },
         }
       : {}),
+    registerTsbSeal: async (app: FastifyInstance) => {
+      registerLabTsbSealRoutes(app, {
+        environment,
+        catalogue: tsbSealCatalogue,
+        store: tsbSealStore,
+        ...(pools.cmp052 ? { pool: pools.cmp052 } : {}),
+        defaultTenantId: placement.tenant_id,
+      });
+    },
     async start() {
       await privacy.publish();
       if (documentUpload) await documentUpload.seedPolicy();
