@@ -224,6 +224,33 @@
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
+      "SAMPLE_LAB_NOTIFY_OPERATOR": {
+        "_note": "SF-55: OFFICER workload for CMP-025 template publish + journey dispatch and CMP-026 official notices. SIMULATED SMS only; cannot record a case decision.",
+        "actions": [
+          "NOTIFICATION_DISPATCH",
+          "NOTIFICATION_READ",
+          "NOTIFICATION_TEMPLATE_PUBLISH",
+          "NOTIFICATION_TEMPLATE_READ",
+          "THREAD_OPEN",
+          "THREAD_LIST",
+          "THREAD_READ",
+          "THREAD_CLOSE",
+          "PARTICIPANT_ADD",
+          "MESSAGE_SEND",
+          "MESSAGE_READ",
+          "NOTICE_SEND"
+        ],
+        "resource_types": ["NotificationDispatch", "NotificationTemplate", "MessageThread"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_NOTIFY_WORKER": {
+        "_note": "SF-55: SYSTEM workload for CMP-025 SIM delivery drain (same state machine as REAL hub). Cannot record a case decision.",
+        "actions": ["NOTIFICATION_DELIVER", "NOTIFICATION_READ", "NOTIFICATION_RECEIPT_RECORD"],
+        "resource_types": ["NotificationDispatch"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
       "SAMPLE_LAB_ISSUANCE_WORKLOAD": {
         "_note": "SF-M10-B-3 host SYSTEM workload for post-approval issuance and SIMULATED DigiLocker publish. It cannot record a decision.",
         "actions": [

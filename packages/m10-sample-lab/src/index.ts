@@ -34,3 +34,11 @@ export {
   isSampleLabAssistedChannel,
 } from './assisted-catalogue';
 export type { SampleLabAssistedChannelCode } from './assisted-catalogue';
+export {
+  SAMPLE_LAB_NOTIFICATION_CATALOGUE,
+  templateForTrigger,
+  deficiencyKindToTrigger,
+  type SampleLabNotificationCatalogue,
+  type SampleLabNotificationTemplate,
+  type JourneyNotifyTrigger,
+} from './notification-catalogue';

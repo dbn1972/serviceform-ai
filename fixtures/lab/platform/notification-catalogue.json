@@ -1,0 +1,54 @@
+{
+  "_note": "SAMPLE_LAB CMP-025/026 journey notify catalogue (SF-55). SIMULATED SMS only. REAL SMS owner-held. CERTIFIED=false. G6=false. Params are opaque refs — never raw PII.",
+  "simulation": "SIMULATED",
+  "test_run_id_prefix": "platform-lab",
+  "locale": "en-IN",
+  "channel": "SMS",
+  "sms_binding_id": "0d15ba00-0c25-4000-8000-0d15ba000c25",
+  "recipient_handle_class": "CITIZEN_HANDLE_REF",
+  "recipient_handle_ref": "sample-lab.citizen.handle",
+  "simulator_version": "sample-lab-notify-sim-1",
+  "workload": {
+    "publisher_actor_id": "0d15ba00-0025-4000-8000-0d15ba00025a",
+    "publisher_roles": ["SAMPLE_LAB_NOTIFY_OPERATOR"],
+    "worker_actor_id": "0d15ba00-0025-4000-8000-0d15ba00025b",
+    "worker_roles": ["SAMPLE_LAB_NOTIFY_WORKER"]
+  },
+  "templates": [
+    {
+      "template_ref": "sample-lab.deficiency.opened.v1",
+      "trigger": "DEFICIENCY_OPENED",
+      "subject_template": null,
+      "body_template": "Action needed on application {{application_ref}}. Additional documents requested. Open your portal to respond.",
+      "allowed_params": ["application_ref"]
+    },
+    {
+      "template_ref": "sample-lab.deficiency.closed.v1",
+      "trigger": "DEFICIENCY_CLOSED",
+      "subject_template": null,
+      "body_template": "Deficiency closed for application {{application_ref}}. Processing will continue.",
+      "allowed_params": ["application_ref"]
+    },
+    {
+      "template_ref": "sample-lab.decision.approved.v1",
+      "trigger": "APPLICATION_APPROVED",
+      "subject_template": null,
+      "body_template": "Decision recorded for application {{application_ref}}: approved. Credential issuance may follow.",
+      "allowed_params": ["application_ref"]
+    },
+    {
+      "template_ref": "sample-lab.decision.rejected.v1",
+      "trigger": "APPLICATION_REJECTED",
+      "subject_template": null,
+      "body_template": "Decision recorded for application {{application_ref}}: not approved. Check your portal for next steps.",
+      "allowed_params": ["application_ref"]
+    },
+    {
+      "template_ref": "sample-lab.credential.issued.v1",
+      "trigger": "CREDENTIAL_ISSUED",
+      "subject_template": null,
+      "body_template": "Credential issued for application {{application_ref}}. Available in your portal and DigiLocker (SIMULATED).",
+      "allowed_params": ["application_ref"]
+    }
+  ]
+}
