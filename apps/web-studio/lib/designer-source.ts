@@ -60,3 +60,6 @@ export function workflowSource(
 
 /** What the rules designer opens: a saved CMP-033 RULES draft, a template or a blank table. */
 export const rulesSource = workflowSource;
+
+/** Fee / SLA / Evidence / Credential designers share the same blank|template|document source shape. */
+export const metaKindSource = workflowSource;

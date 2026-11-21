@@ -173,6 +173,23 @@ function validateRulePackContent(payload: Record<string, unknown>): void {
   }
 }
 
+/**
+ * Optional Studio designer pin. When `content_hash` is present it must be the canonical digest of
+ * the structural executable fragment (authoring / labels are not hashed). Missing hash remains
+ * valid for hand-authored JSON drafts.
+ */
+function validateOptionalStructuralHash(
+  payload: Record<string, unknown>,
+  structural: unknown,
+): void {
+  if (payload['content_hash'] === undefined) return;
+  const declared = requireString(payload, 'content_hash', '/payload/content_hash');
+  if (!CONTENT_HASH_RE.test(declared)) fail('/payload/content_hash', 'invalid content hash');
+  if (canonicalContentHash(structural) !== declared) {
+    fail('/payload/content_hash', 'content hash does not match structural payload');
+  }
+}
+
 /** Structural kind schemas only. No named-service or statutory content. */
 export function validateKindPayload(kind: MetadataKind, payload: unknown): void {
   if (!isRecord(payload)) fail('/payload', 'payload must be an object');
@@ -228,6 +245,13 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
         }
         requireString(req, 'artifact_type', `/payload/requirements/${i}/artifact_type`);
       }
+      // Optional Studio designer pin: content_hash over {requirements:[{id,artifact_type}]}.
+      validateOptionalStructuralHash(payload, {
+        requirements: reqs.map((req) => {
+          const r = req as Record<string, unknown>;
+          return { id: r['id'], artifact_type: r['artifact_type'] };
+        }),
+      });
       return;
     }
     case 'FEE': {
@@ -242,6 +266,20 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
           fail(`/payload/items/${i}/amount_minor`, 'invalid amount');
         }
       }
+      // Optional Studio designer pin: content_hash over structural fee items.
+      validateOptionalStructuralHash(payload, {
+        items: items.map((item) => {
+          const it = item as Record<string, unknown>;
+          const row: Record<string, unknown> = {
+            id: it['id'],
+            amount_minor: it['amount_minor'],
+          };
+          if (typeof it['description_code'] === 'string') {
+            row['description_code'] = it['description_code'];
+          }
+          return row;
+        }),
+      });
       return;
     }
     case 'WORKFLOW': {
@@ -266,6 +304,13 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
         const dur = requireString(clock, 'duration_iso', `/payload/clocks/${i}/duration_iso`);
         if (!ISO_DURATION.test(dur)) fail(`/payload/clocks/${i}/duration_iso`, 'invalid duration');
       }
+      // Optional Studio designer pin: content_hash over {clocks:[{id,duration_iso}]}.
+      validateOptionalStructuralHash(payload, {
+        clocks: clocks.map((clock) => {
+          const c = clock as Record<string, unknown>;
+          return { id: c['id'], duration_iso: c['duration_iso'] };
+        }),
+      });
       return;
     }
     case 'ACCESS': {
@@ -281,6 +326,8 @@ export function validateKindPayload(kind: MetadataKind, payload: unknown): void 
       if (!KEY_RE.test(requireString(payload, 'template_key', '/payload/template_key'))) {
         fail('/payload/template_key', 'invalid key');
       }
+      // Optional Studio designer pin: content_hash over {template_key}.
+      validateOptionalStructuralHash(payload, { template_key: payload['template_key'] });
       return;
     }
     case 'NOTIFICATION': {

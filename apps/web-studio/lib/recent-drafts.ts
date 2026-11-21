@@ -4,7 +4,7 @@
  */
 export interface RecentDraft {
   id: string;
-  kind?: 'FORM' | 'WORKFLOW' | 'RULES';
+  kind?: 'FORM' | 'WORKFLOW' | 'RULES' | 'FEE' | 'SLA' | 'EVIDENCE' | 'CREDENTIAL';
   key: string;
   title: string;
   status: string;
