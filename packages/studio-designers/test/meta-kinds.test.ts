@@ -47,7 +47,10 @@ describe('fee designer', () => {
 
   it('refuses negative amounts', () => {
     const design = blankFee();
-    design.items[0]!.amount_minor = -1;
+    const [item] = design.items;
+    expect(item).toBeDefined();
+    if (!item) return;
+    item.amount_minor = -1;
     expect(lintFee(design).some((i) => i.code === 'AMOUNT_INVALID')).toBe(true);
   });
 });
@@ -64,7 +67,10 @@ describe('sla designer', () => {
 
   it('refuses invalid ISO durations', () => {
     const design = blankSla();
-    design.clocks[0]!.duration_iso = '10 days';
+    const [clock] = design.clocks;
+    expect(clock).toBeDefined();
+    if (!clock) return;
+    clock.duration_iso = '10 days';
     expect(lintSla(design).some((i) => i.code === 'DURATION_INVALID')).toBe(true);
   });
 });
