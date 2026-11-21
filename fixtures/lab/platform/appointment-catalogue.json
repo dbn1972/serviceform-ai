@@ -1,0 +1,67 @@
+{
+  "_note": "SAMPLE_LAB CMP-056 appointment / scheduler catalogue (SF-62 / Constitution #37). Opaque refs only — not statute. No invented hearing/inspection statutory calendars. CERTIFIED=false · G6=false.",
+  "workload": {
+    "actor_id": "05605605-0000-4000-8000-056056056056",
+    "roles": ["SAMPLE_LAB_SCHEDULER_ADMIN"]
+  },
+  "appointment_types": [
+    {
+      "appointment_type_ref": "meta:appointment-type:site-visit",
+      "resource_calendar_ref": "meta:calendar:sample-lab-working-week",
+      "label": "Site visit appointment",
+      "description": "SAMPLE_LAB opaque booking type for licence/site verification visits (beside CMP-018 SITE_VISIT)",
+      "related_inspection_pin": "TRADE_LICENCE_SITE_VISIT",
+      "catalogue_id": "IND-LIC-001"
+    },
+    {
+      "appointment_type_ref": "meta:appointment-type:factory-inspection",
+      "resource_calendar_ref": "meta:calendar:sample-lab-working-week",
+      "label": "Factory inspection appointment",
+      "description": "SAMPLE_LAB opaque booking type for factory verification visits (beside CMP-018 FACTORY_INSPECTION)",
+      "related_inspection_pin": "FACTORY_LICENCE_INSPECTION",
+      "catalogue_id": "IND-LIC-FACTORY-001"
+    },
+    {
+      "appointment_type_ref": "meta:appointment-type:counter-visit",
+      "resource_calendar_ref": "meta:calendar:sample-lab-working-week",
+      "label": "Counter / interview appointment",
+      "description": "Catalogue-agnostic SAMPLE_LAB counter visit / interview slot (not statute)",
+      "related_inspection_pin": null,
+      "catalogue_id": null
+    }
+  ],
+  "slot_templates": [
+    {
+      "appointment_type_ref": "meta:appointment-type:site-visit",
+      "slot_ref": "slot:sample-lab:site-visit:morning-1",
+      "capacity": 1,
+      "opens_offset_hours": 24,
+      "duration_hours": 2,
+      "label": "Site visit · morning"
+    },
+    {
+      "appointment_type_ref": "meta:appointment-type:site-visit",
+      "slot_ref": "slot:sample-lab:site-visit:afternoon-1",
+      "capacity": 1,
+      "opens_offset_hours": 30,
+      "duration_hours": 2,
+      "label": "Site visit · afternoon"
+    },
+    {
+      "appointment_type_ref": "meta:appointment-type:factory-inspection",
+      "slot_ref": "slot:sample-lab:factory:morning-1",
+      "capacity": 1,
+      "opens_offset_hours": 48,
+      "duration_hours": 3,
+      "label": "Factory inspection · morning"
+    },
+    {
+      "appointment_type_ref": "meta:appointment-type:counter-visit",
+      "slot_ref": "slot:sample-lab:counter:window-1",
+      "capacity": 2,
+      "opens_offset_hours": 12,
+      "duration_hours": 1,
+      "label": "Counter window"
+    }
+  ]
+}

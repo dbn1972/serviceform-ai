@@ -55,6 +55,8 @@ const ROLES = [
   { login: 'sf_lab_cmp029', member: 'sf_cmp029_rw', env: 'DATABASE_URL_CMP029' },
   // SF-54: CMP-057 assisted / CSC apply shell (Constitution #36)
   { login: 'sf_lab_cmp057', member: 'sf_cmp057_rw', env: 'DATABASE_URL_CMP057' },
+  // SF-62: CMP-056 appointment / scheduling shell (Constitution #37)
+  { login: 'sf_lab_cmp056', member: 'sf_cmp056_rw', env: 'DATABASE_URL_CMP056' },
   // SF-55: CMP-025/026 journey notifications (SIM SMS + messaging)
   { login: 'sf_lab_cmp025', member: 'sf_cmp025_rw', env: 'DATABASE_URL_CMP025' },
   { login: 'sf_lab_cmp026', member: 'sf_cmp026_rw', env: 'DATABASE_URL_CMP026' },

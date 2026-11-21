@@ -137,6 +137,12 @@ import {
   registerLabAssistedRoutes,
   type LabAssistedCatalogue,
 } from './assisted.js';
+import {
+  composeLabScheduler,
+  loadAppointmentCatalogue,
+  registerLabSchedulerRoutes,
+  type LabAppointmentCatalogue,
+} from './scheduler.js';
 import type { M09PluginMounts } from '../composition/m09.js';
 import {
   composeLabNotification,
@@ -196,6 +202,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP029?: string;
   /** Optional SAMPLE_LAB CMP-057 assisted / CSC apply shell. */
   DATABASE_URL_CMP057?: string;
+  /** SF-62: optional CMP-056 appointment / scheduling shell (Constitution #37). */
+  DATABASE_URL_CMP056?: string;
   /** SF-55: optional CMP-025 notification (journey SIM SMS). */
   DATABASE_URL_CMP025?: string;
   /** SF-55: optional CMP-026 messaging (official notices; fanout still CMP-025). */
@@ -256,11 +264,13 @@ export interface PlatformLab {
   registerInspection?(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-057 assisted/CSC lab routes (optional when DATABASE_URL_CMP057 is set). */
   registerAssisted?(app: FastifyInstance): Promise<void>;
+  /** SF-62: SAMPLE_LAB CMP-056 lab catalogue/ensure routes (optional when DATABASE_URL_CMP056 is set). */
+  registerScheduler?(app: FastifyInstance): Promise<void>;
   /** SF-56: lab SIM payment callback (INTEGRATION + HMAC) when CMP-020/021 mounted. */
   registerPayment?(app: FastifyInstance): Promise<void>;
   /** SF-60: SAMPLE_LAB TSB eng seal prove routes (hash + mutation gate; G6 seal still false). */
   registerTsbSeal(app: FastifyInstance): Promise<void>;
-  /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
+  /** M09 mounts (CMP-056 scheduler / CMP-057 assisted) when corresponding pools are set. */
   m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
   registerDocumentUploadSimulators(app: FastifyInstance): Promise<void>;
@@ -733,6 +743,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP057
       ? { cmp057: new pg.Pool({ connectionString: env.DATABASE_URL_CMP057, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP056
+      ? { cmp056: new pg.Pool({ connectionString: env.DATABASE_URL_CMP056, max: 4 }) }
+      : {}),
     ...(env.DATABASE_URL_CMP025
       ? { cmp025: new pg.Pool({ connectionString: env.DATABASE_URL_CMP025, max: 4 }) }
       : {}),
@@ -765,6 +778,7 @@ export async function buildPlatformLab(
     cmp018?: pg.Pool;
     cmp029?: pg.Pool;
     cmp057?: pg.Pool;
+    cmp056?: pg.Pool;
     cmp025?: pg.Pool;
     cmp026?: pg.Pool;
     cmp020?: pg.Pool;
@@ -1281,6 +1295,19 @@ export async function buildPlatformLab(
     });
   }
 
+  let appointmentCatalogue: LabAppointmentCatalogue | null = null;
+  let schedulerMount: ReturnType<typeof composeLabScheduler> | null = null;
+  if (pools.cmp056) {
+    appointmentCatalogue = loadAppointmentCatalogue(dir);
+    schedulerMount = composeLabScheduler({
+      pool: pools.cmp056,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      catalogue: appointmentCatalogue,
+      cellId: placement.cell_id,
+      tenantId: placement.tenant_id,
+    });
+  }
+
   // SF-60: SAMPLE_LAB TSB eng seal catalogue (always available; CMP-052 pool optional).
   const tsbSealCatalogue: LabTsbSealCatalogue = loadTsbSealCatalogue(dir);
   const tsbSealStore = createLabTsbSealStore();
@@ -1477,6 +1504,7 @@ export async function buildPlatformLab(
       ...(pools.cmp018 ? [poolReadiness('cmp018-db', pools.cmp018)] : []),
       ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
       ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
+      ...(pools.cmp056 ? [poolReadiness('cmp056-db', pools.cmp056)] : []),
       ...(pools.cmp025 ? [poolReadiness('cmp025-db', pools.cmp025)] : []),
       ...(pools.cmp026 ? [poolReadiness('cmp026-db', pools.cmp026)] : []),
       ...(pools.cmp020 ? [poolReadiness('cmp020-db', pools.cmp020)] : []),
@@ -1484,13 +1512,25 @@ export async function buildPlatformLab(
       ...workflow.readinessChecks,
     ],
     ...(m06 ? { m06 } : {}),
-    ...(assistedMount
+    ...(schedulerMount || assistedMount
       ? {
           m09: {
-            assisted: {
-              service: assistedMount.service,
-              resolveContext,
-            },
+            ...(schedulerMount
+              ? {
+                  scheduler: {
+                    service: schedulerMount.service,
+                    resolveContext,
+                  },
+                }
+              : {}),
+            ...(assistedMount
+              ? {
+                  assisted: {
+                    service: assistedMount.service,
+                    resolveContext,
+                  },
+                }
+              : {}),
           } satisfies M09PluginMounts,
         }
       : {}),
@@ -1573,6 +1613,16 @@ export async function buildPlatformLab(
           },
         }
       : {}),
+    ...(schedulerMount && appointmentCatalogue
+      ? {
+          registerScheduler: async (app: FastifyInstance) => {
+            registerLabSchedulerRoutes(app, {
+              catalogue: appointmentCatalogue,
+              seeder: schedulerMount.seeder,
+            });
+          },
+        }
+      : {}),
     ...(paymentLab
       ? {
           registerPayment: async (app: FastifyInstance) => {
@@ -1610,6 +1660,14 @@ export async function buildPlatformLab(
           await journeyNotify.ensureTemplatesPublished();
         } catch {
           // Lab host stays up; dispatch retries seed on next event.
+        }
+      }
+      // SF-62: seed CMP-056 opaque appointment types + capacity slots fail-soft.
+      if (schedulerMount) {
+        try {
+          await schedulerMount.seeder.ensureCatalogueSeeded();
+        } catch {
+          // Lab host stays up; desk ensure route can retry.
         }
       }
     },

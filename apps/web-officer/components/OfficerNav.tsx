@@ -17,6 +17,7 @@ export function OfficerNav() {
   const [signedIn, setSignedIn] = useState(false);
   const [showHelpdesk, setShowHelpdesk] = useState(false);
   const [showInspection, setShowInspection] = useState(false);
+  const [showScheduling, setShowScheduling] = useState(false);
 
   useEffect(() => {
     void fetch('/api/portal/session')
@@ -27,14 +28,17 @@ export function OfficerNav() {
         // SF-50 helpdesk personas + SF-52 case-officer grievance desk.
         setShowHelpdesk(roles.some(isHelpdeskRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER'));
         // SF-57 inspection desk + case officer can open CMP-018.
-        setShowInspection(
-          roles.some(isInspectionRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER'),
-        );
+        const inspectionDesk =
+          roles.some(isInspectionRole) || roles.includes('SAMPLE_LAB_CASE_OFFICER');
+        setShowInspection(inspectionDesk);
+        // SF-62 scheduling shell beside inspection (same desk roles).
+        setShowScheduling(inspectionDesk);
       })
       .catch(() => {
         setSignedIn(false);
         setShowHelpdesk(false);
         setShowInspection(false);
+        setShowScheduling(false);
       });
   }, [pathname]);
 
@@ -43,6 +47,7 @@ export function OfficerNav() {
     setSignedIn(false);
     setShowHelpdesk(false);
     setShowInspection(false);
+    setShowScheduling(false);
     router.replace('/login');
     router.refresh();
   }
@@ -51,6 +56,7 @@ export function OfficerNav() {
     ...baseLinks,
     ...(showHelpdesk ? ([{ href: '/helpdesk', label: 'Helpdesk' }] as const) : []),
     ...(showInspection ? ([{ href: '/inspection', label: 'Inspection' }] as const) : []),
+    ...(showScheduling ? ([{ href: '/scheduling', label: 'Scheduling' }] as const) : []),
   ];
 
   return (

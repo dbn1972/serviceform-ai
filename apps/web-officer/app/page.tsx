@@ -13,11 +13,12 @@ export default function HomePage() {
         <h1 className="ux4g-heading-2xl-strong">Officer Workbench</h1>
         <p className="ux4g-body-m-default">
           Role-aware SIM login routes each desk role_code to its queue — scrutiny, approving,
-          helpdesk, or inspection — then HUMAN_TASK decisions and SAMPLE_LAB credential issuance.
+          helpdesk, inspection, or scheduling — then HUMAN_TASK decisions and SAMPLE_LAB credential
+          issuance.
         </p>
         <div className="sf-meta-row">
           <span className="ux4g-tag-tonal-primary">
-            Scrutiny · Approving · Helpdesk · Inspection
+            Scrutiny · Approving · Helpdesk · Inspection · Scheduling
           </span>
           <span className="ux4g-tag-outline-warning">G6 not issued</span>
           <span className="ux4g-tag-outline-neutral">CERTIFIED=false</span>
@@ -32,6 +33,7 @@ export default function HomePage() {
             <TextLink href="/applications">Open applications</TextLink>
             <TextLink href="/helpdesk">Helpdesk desk</TextLink>
             <TextLink href="/inspection">Inspection desk</TextLink>
+            <TextLink href="/scheduling">Scheduling desk</TextLink>
           </div>
         }
       >
@@ -78,6 +80,7 @@ export default function HomePage() {
         footer={
           <div className="sf-actions">
             <TextLink href="/inspection">Open inspection desk</TextLink>
+            <TextLink href="/scheduling">Open scheduling</TextLink>
           </div>
         }
       >
@@ -85,6 +88,22 @@ export default function HomePage() {
           Metadata pins for services that require a verification node. Record VERIFIED /
           NOT_VERIFIED / INCONCLUSIVE / DEFICIENCY_NOTED — never statutory approve/reject.
           CERTIFIED=false · G6=false.
+        </p>
+      </Card>
+
+      <Card
+        title="Scheduling desk"
+        subtitle="CMP-056 · Constitution #37 · appointment calendars"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/scheduling">Open scheduling desk</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Reusable opaque appointment types and capacity slots beside inspection — book, reschedule,
+          complete, or no-show. Atomic capacity; notify failure does not cancel. CERTIFIED=false ·
+          G6=false.
         </p>
       </Card>
     </AppShell>
