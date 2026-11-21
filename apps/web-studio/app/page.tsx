@@ -34,6 +34,28 @@ export default function HomePage() {
       </Card>
 
       <Card
+        title="Studio designers"
+        subtitle="Forms · Workflow · Rules · Fee · SLA · Evidence · Credential"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/forms">Forms</TextLink>
+            <TextLink href="/workflows">Workflows</TextLink>
+            <TextLink href="/rules">Rules</TextLink>
+            <TextLink href="/fees">Fees</TextLink>
+            <TextLink href="/sla">SLA</TextLink>
+            <TextLink href="/evidence">Evidence</TextLink>
+            <TextLink href="/credentials">Credentials</TextLink>
+            <TextLink href="/publication">Publication desk</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Metadata-driven authoring with UX4G. SAMPLE_LAB_DUMMY overlays are labeled; nothing here
+          invents statute. CERTIFIED=false · G6=false.
+        </p>
+      </Card>
+
+      <Card
         title="Residence Certificate template"
         subtitle="IND-SOC-002 · public e-District sample"
         footer={

@@ -231,4 +231,39 @@ describe('CMP-033 kind payload schemas', () => {
     expect(publishFingerprint('id'));
     expect(composeFingerprint({ bundle_key: 'b.one', document_ids: ['b', 'a'] }));
   });
+
+  it('accepts optional Studio content_hash pins for FEE/SLA/EVIDENCE/CREDENTIAL', () => {
+    const feeItems = [
+      { id: 'fee.one', amount_minor: 999, description_code: 'SAMPLE_LAB_DUMMY_FEE' },
+    ];
+    validateKindPayload('FEE', {
+      items: feeItems,
+      content_hash: canonicalContentHash({ items: feeItems }),
+    });
+    expectFail('FEE', {
+      items: feeItems,
+      content_hash: canonicalContentHash({ items: [{ id: 'fee.one', amount_minor: 0 }] }),
+    });
+
+    const clocks = [{ id: 'clock.one', duration_iso: 'P10D' }];
+    validateKindPayload('SLA', {
+      clocks,
+      content_hash: canonicalContentHash({
+        clocks: clocks.map((c) => ({ id: c.id, duration_iso: c.duration_iso })),
+      }),
+    });
+
+    const requirements = [{ id: 'req.one', artifact_type: 'proof_of_address', label: 'x' }];
+    validateKindPayload('EVIDENCE', {
+      requirements,
+      content_hash: canonicalContentHash({
+        requirements: requirements.map((r) => ({ id: r.id, artifact_type: r.artifact_type })),
+      }),
+    });
+
+    validateKindPayload('CREDENTIAL', {
+      template_key: 'tpl.generic',
+      content_hash: canonicalContentHash({ template_key: 'tpl.generic' }),
+    });
+  });
 });

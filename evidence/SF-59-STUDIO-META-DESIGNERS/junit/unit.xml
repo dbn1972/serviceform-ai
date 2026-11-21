@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="18" failures="0" errors="0" time="0.060115255">
+    <testsuite name="apps/web-studio/test/meta-designers.test.tsx" timestamp="2026-11-21T20:56:55.884Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.037765447">
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; exposes Fees, SLA, Evidence and Credentials in the nav" time="0.009280517">
+        </testcase>
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; offers blank, draft and template starting points on each landing page" time="0.016255418">
+        </testcase>
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; renders SAMPLE_LAB template designers with checks and not-statutory banners" time="0.011140045">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/studio-designers/test/meta-kinds.test.ts" timestamp="2026-11-21T20:56:55.886Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="0" time="0.011055516">
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="fee designer &gt; compiles SAMPLE_LAB DUMMY fee&gt;0 with content_hash over items" time="0.004658972">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="fee designer &gt; refuses negative amounts" time="0.000605022">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="sla designer &gt; compiles SAMPLE_LAB residence SLA with ISO duration pin" time="0.001918548">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="sla designer &gt; refuses invalid ISO durations" time="0.000279903">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="evidence designer &gt; compiles SAMPLE_LAB evidence requirements" time="0.001423186">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="credential designer &gt; compiles SAMPLE_LAB DigiLocker label overlay" time="0.000726946">
+        </testcase>
+    </testsuite>
+    <testsuite name="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" timestamp="2026-11-21T20:56:55.887Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.011294292">
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; rejects non-objects and unknown kinds" time="0.002015463">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; validates SERVICE / OFFERING / CREDENTIAL" time="0.000636609">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; validates FORM / RULES / EVIDENCE graphs" time="0.000711485">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; verifies an embedded Studio form_package against its declared content hash" time="0.001328234">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; verifies an embedded Studio workflow_graph against its declared graph hash" time="0.000592601">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; verifies an embedded Studio rule pack against its declared content hash" time="0.000588849">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; validates FEE / WORKFLOW / SLA / ACCESS / NOTIFICATION" time="0.001464328">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; covers fingerprints, keys, schema ids" time="0.000969152">
+        </testcase>
+        <testcase classname="services/cmp-033-metadata/test/unit/kinds-payload.test.ts" name="CMP-033 kind payload schemas &gt; accepts optional Studio content_hash pins for FEE/SLA/EVIDENCE/CREDENTIAL" time="0.000600728">
+        </testcase>
+    </testsuite>
+</testsuites>
