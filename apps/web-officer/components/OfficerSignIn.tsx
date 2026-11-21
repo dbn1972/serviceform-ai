@@ -3,6 +3,7 @@
 import { Alert, Button, Card, RadioGroup } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { deskHomeForRoles } from '../lib/portal/desk';
 import { safeNext } from '../lib/safe-next';
 
 type LabOfficer = { subject: string; display_name: string; roles: string[] };
@@ -40,7 +41,10 @@ export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined })
       setError(body.message ?? 'Sign in failed');
       return;
     }
-    router.push(safeNext(nextParam));
+    const body = (await res.json().catch(() => ({}))) as { roles?: string[] };
+    const roles = Array.isArray(body.roles) ? body.roles : [];
+    // Role-code desk home only — never subject/display_name. ?next= still wins via safeNext.
+    router.push(safeNext(nextParam, deskHomeForRoles(roles)));
     router.refresh();
   }
 

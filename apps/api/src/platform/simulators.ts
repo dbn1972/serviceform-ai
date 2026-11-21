@@ -138,8 +138,11 @@ export async function registerLabSimulators(
       assurance: 'MFA',
       exp: Math.floor(clock() / 1000) + 120,
     });
-    return reply
-      .header('cache-control', 'no-store')
-      .send({ assertion, display_name: officer.display_name, simulation: true });
+    return reply.header('cache-control', 'no-store').send({
+      assertion,
+      display_name: officer.display_name,
+      roles: officer.roles,
+      simulation: true,
+    });
   });
 }

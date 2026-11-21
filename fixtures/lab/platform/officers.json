@@ -1,5 +1,5 @@
 {
-  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench and Studio/Admin desks. Synthetic officers only; role codes are lab labels, not statutory designations. Multi-desk HUMAN_TASK queue uses SAMPLE_LAB_SCRUTINY_OFFICER and SAMPLE_LAB_APPROVING_AUTHORITY (never named officers).",
+  "_note": "SAMPLE_LAB SIMULATED IdP directory for the officer workbench and Studio/Admin desks. Synthetic officers only; role codes are lab labels, not statutory designations. Multi-desk HUMAN_TASK queue uses SAMPLE_LAB_SCRUTINY_OFFICER and SAMPLE_LAB_APPROVING_AUTHORITY; helpdesk uses SAMPLE_LAB_HELPDESK_L* (never named officers). Post-login desk routing (SF-50) branches on role_code only.",
   "simulation": "SIMULATED",
   "lab_assignment": {
     "_note": "Organisation and jurisdiction UUIDs used on SAMPLE_LAB HUMAN_TASK assignments in workflow.json. Officers covering these desks receive the same scope via PrincipalScopePort (TENANT_WIDE).",
@@ -31,6 +31,13 @@
       "display_name": "SAMPLE LAB Approving Desk",
       "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
       "roles": ["SAMPLE_LAB_APPROVING_AUTHORITY"]
+    },
+    {
+      "officer_id": "0d15ba00-0f07-4000-8000-0d15ba000f07",
+      "subject": "sample-lab-helpdesk-officer-1",
+      "display_name": "SAMPLE LAB Helpdesk Desk",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "roles": ["SAMPLE_LAB_HELPDESK_L1"]
     },
     {
       "officer_id": "0d15ba00-0f02-4000-8000-0d15ba000f02",

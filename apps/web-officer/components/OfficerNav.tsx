@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { isHelpdeskRole } from '../lib/portal/desk';
 
-const links = [
+const baseLinks = [
   { href: '/', label: 'Home' },
   { href: '/applications', label: 'Applications' },
 ] as const;
@@ -13,20 +14,33 @@ export function OfficerNav() {
   const router = useRouter();
   const pathname = usePathname();
   const [signedIn, setSignedIn] = useState(false);
+  const [showHelpdesk, setShowHelpdesk] = useState(false);
 
   useEffect(() => {
     void fetch('/api/portal/session')
-      .then((r) => r.json() as Promise<{ authenticated?: boolean }>)
-      .then((body) => setSignedIn(Boolean(body.authenticated)))
-      .catch(() => setSignedIn(false));
+      .then((r) => r.json() as Promise<{ authenticated?: boolean; roles?: string[] }>)
+      .then((body) => {
+        setSignedIn(Boolean(body.authenticated));
+        const roles = Array.isArray(body.roles) ? body.roles : [];
+        setShowHelpdesk(roles.some(isHelpdeskRole));
+      })
+      .catch(() => {
+        setSignedIn(false);
+        setShowHelpdesk(false);
+      });
   }, [pathname]);
 
   async function signOut() {
     await fetch('/api/portal/session', { method: 'DELETE' });
     setSignedIn(false);
+    setShowHelpdesk(false);
     router.replace('/login');
     router.refresh();
   }
+
+  const links = showHelpdesk
+    ? [...baseLinks, { href: '/helpdesk', label: 'Helpdesk' } as const]
+    : baseLinks;
 
   return (
     <nav aria-label="Officer">
