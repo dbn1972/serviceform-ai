@@ -1,0 +1,52 @@
+# IND-HOM-018 — Private Security Agency Licence service metadata shell
+# SAMPLE_LAB DUMMY defaults (tenant-overridable) — synthetic only, not statute.
+# Not CERTIFIED. G6 not self-issued. Constitution §1 §3 §31 §34.
+# Generated from templates/certificate-pack-skeleton — regenerate via scripts/catalogue.
+
+catalogue_id: IND-HOM-018
+record_type: service_template
+version: "0.2.0-sample-lab-dummy"
+status: SAMPLE_LAB_STUB
+policy_kind: SAMPLE_LAB_DUMMY
+policy_source_url: "https://example.invalid/sample-lab-dummy-not-a-portal"
+not_for_production: true
+not_statutory: true
+
+metadata:
+  title: "Private Security Agency Licence"
+  description: >
+    Normalized regulatory service authorizing the activity represented by “Private Security Agency Licence”, subject to local eligibility, inspection, fee, conditions and renewal rules.
+    Fee, eligibility, evidence, SLA and jurisdiction use SAMPLE_LAB DUMMY defaults
+    (templates/certificate-packs/sample-lab-dummy/defaults.json) until the owner
+    replaces them via per-id owner-config and/or CMP-052 tenant overlay.
+  category: police_home_public_safety
+  tags: [certificate, sample_lab, sample_lab_dummy, configurable_pack, tenant_overridable]
+
+policy_fields:
+  legal_basis: "SAMPLE_LAB DUMMY — not a statutory Act/Rules citation; owner must replace before any non-lab use"
+  issuing_authority_class: "Police / Home Department / District Magistrate / Fire Service"
+  eligibility_summary: "SAMPLE_LAB DUMMY — synthetic eligibility claim only; not government policy"
+  applicant_scope: "SAMPLE_LAB_DUMMY_APPLICANT_SCOPE"
+  validity_period_days: "SAMPLE_LAB_DUMMY_UNSPECIFIED"
+  evidence_requirements: "SAMPLE_LAB DUMMY · synthetic evidence list (not statutory)"
+  fee_schedule: "SAMPLE_LAB DUMMY · ₹9.99 (999 paise; tenant-overridable)"
+  service_time: "SAMPLE_LAB DUMMY · 15 working days (tenant-overridable)"
+  pilot_state_or_jurisdiction: "SAMPLE_LAB_PILOT_CELL"
+
+offering:
+  offering_id: "IND-HOM-018-OFFERING-SAMPLE-LAB-DUMMY"
+  form_schema_ref: "ind-hom-018-form-draft"
+  rule_set_ref: "ind-hom-018-rules-sample-lab-dummy"
+  workflow_ref: "ind-hom-018-workflow-sample-lab-dummy"
+  evidence_policy_ref: "ind-hom-018-evidence-policy-sample-lab-dummy"
+  fee_policy_ref: "ind-hom-018-fee-policy-sample-lab-dummy"
+  sla_policy_ref: "ind-hom-018-sla-policy-sample-lab-dummy"
+  credential_template_ref: "SAMPLE_LAB_DUMMY_IND_HOM_018_V1"
+  notification_template_ref: "ind-hom-018-notifications-sample-lab-dummy"
+  access_policy_ref: "ind-hom-018-access-policy-sample-lab-dummy"
+
+owner_config_ref: "owner-config.json"
+defaults_ref: "../sample-lab-dummy/defaults.json"
+tenant_overlay_schema_ref: "../sample-lab-dummy/tenant-overlay.schema.json"
+citizen_placement_requires_published_tsb: true
+fail_closed_outside_sample_lab: true

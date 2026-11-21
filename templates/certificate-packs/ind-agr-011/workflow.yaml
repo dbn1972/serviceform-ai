@@ -1,0 +1,15 @@
+# IND-AGR-011 workflow shell — SAMPLE_LAB DUMMY
+# Reuses the platform Application/Case state machine via CMP-016 WAIT-only sequencing
+# (same class as fixtures/lab/platform/workflow.json). No Camunda. No named officers.
+workflow_id: ind-agr-011-workflow-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
+runtime: temporal
+bpmn_profile: import_export_only
+assignment:
+  target: role_org_jurisdiction_service_scope
+  named_officers_forbidden: true
+  role_codes:
+    - SAMPLE_LAB_CASE_OFFICER
+notes: >
+  SAMPLE_LAB DUMMY role codes only. Tenant overlay may replace assignment roles.
+  Fail-closed outside SAMPLE_LAB. Do not add service-specific backend branching for IND-AGR-011.

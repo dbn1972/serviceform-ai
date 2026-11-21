@@ -50,6 +50,28 @@
         "issuing_authority_designation": {
           "type": "string",
           "description": "Owner-confirmed designation within the registry issuing-authority class."
+        },
+        "allowed_states": {
+          "type": "array",
+          "description": "Tenant/offering-allowed state LGD codes (not display names). Empty fails closed outside SAMPLE_LAB.",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$"
+          },
+          "uniqueItems": true
+        },
+        "allowed_districts": {
+          "type": "array",
+          "description": "Tenant/offering-allowed district LGD codes (not display names). Empty fails closed outside SAMPLE_LAB.",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$"
+          },
+          "uniqueItems": true
         }
       }
     },

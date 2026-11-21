@@ -76,15 +76,25 @@
         },
         "district": {
           "type": "string",
-          "title": "District",
-          "minLength": 1,
-          "maxLength": 80
+          "title": "District (LGD code)",
+          "minLength": 2,
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$",
+          "semanticElementId": "SF-SEM-ADDR-DISTRICT",
+          "x-ux4g": {
+            "hint": "Tenant-allowed district LGD codes (Admin → Bindings)"
+          }
         },
         "state_code": {
           "type": "string",
-          "title": "State / UT code",
+          "title": "State / UT (LGD code)",
           "minLength": 2,
-          "maxLength": 2
+          "maxLength": 64,
+          "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$",
+          "semanticElementId": "SF-SEM-ADDR-STATE-CODE",
+          "x-ux4g": {
+            "hint": "Tenant-allowed state LGD codes (Admin → Bindings)"
+          }
         },
         "pincode": {
           "type": "string",
@@ -95,7 +105,7 @@
     },
     "purpose_of_certificate": {
       "type": "string",
-      "title": "Purpose of certificate",
+      "title": "Purpose of certificate / licence / permit",
       "minLength": 1,
       "maxLength": 500,
       "semanticElementId": "SF-SEM-PURPOSE"

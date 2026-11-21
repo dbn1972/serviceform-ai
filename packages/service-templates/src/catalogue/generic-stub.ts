@@ -7,7 +7,7 @@ import {
   fullName,
   gender,
   mobile,
-  postalAddress,
+  lgdPostalAddress,
   purpose,
 } from '../fields';
 import { formContentHash } from '../integrity';
@@ -284,7 +284,7 @@ function genericForm(
     applicant_dob: dateOfBirth(),
     applicant_gender: gender(),
     applicant_mobile: mobile(),
-    applicant_address: postalAddress('Address'),
+    applicant_address: lgdPostalAddress('Address'),
     purpose_of_certificate: purpose(),
     declaration_accepted: declaration(STUB_DECLARATION),
   };

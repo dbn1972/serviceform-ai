@@ -1,0 +1,9 @@
+# IND-BTP-001 SLA / service_time — SAMPLE_LAB DUMMY (tenant-overridable)
+# Synthetic only · not statutory · not for production · CERTIFIED=false · G6=false
+sla_policy_id: ind-btp-001-sla-policy-sample-lab-dummy
+status: SAMPLE_LAB_DUMMY
+processing_days_working: 15
+clock_start_event: APPLICATION_SUBMITTED
+notes: >
+  SAMPLE_LAB DUMMY default (15 working days). Tenant/TSB overlay may override.
+  Fail-closed outside SAMPLE_LAB. Owner must replace before any non-lab use.

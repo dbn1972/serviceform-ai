@@ -1,10 +1,15 @@
 import { GENERATED_CERTIFICATE_STUBS } from './catalogue/generated-stubs';
+import { GENERATED_LICENCE_PERMIT_STUBS } from './catalogue/generated-licence-permit-stubs';
 import { RESIDENCE_CERTIFICATE } from './catalogue/residence';
 import { BIRTH_CERTIFICATE, DOMICILE_CERTIFICATE, INCOME_CERTIFICATE } from './catalogue/stubs';
 import type { CertificateTemplate, FormSchemaNode, TemplateVersion, UiLayout } from './types';
 
 export type * from './types';
 export { CERTIFICATE_UNIVERSE_FILTER, certificateUniverseIds } from './catalogue/generated-stubs';
+export {
+  LICENCE_PERMIT_UNIVERSE_FILTER,
+  licencePermitUniverseIds,
+} from './catalogue/generated-licence-permit-stubs';
 export { CERTIFICATE_OUTPUT_TYPE, HANDCRAFTED_CERTIFICATE_IDS } from './catalogue/generic-stub';
 
 export const TEMPLATE_CATALOGUE_VERSION = '2026.11.1';
@@ -15,8 +20,9 @@ export const TEMPLATE_REGISTRY_SOURCE = {
 
 /**
  * Catalogue order: published Residence, hand-crafted stubs (Income/Domicile/Birth),
- * then generated Certificate stubs (registry filter: Service / Output Type == Certificate).
+ * generated Certificate stubs, then Licence + Permit stubs.
  * Stubs carry authoring_path to configurable SAMPLE_LAB packs (SAMPLE_LAB DUMMY defaults).
+ * Every offering supports tenant jurisdiction.allowed_states / allowed_districts overlays.
  */
 
 export {
@@ -29,6 +35,7 @@ export {
   usesSampleLabDummyPolicy,
   type PerIdOwnerConfigOverlay,
   type SampleLabDummyDefaults,
+  type SampleLabJurisdictionOverlay,
   type SampleLabTenantOverlay,
 } from './sample-lab-dummy';
 export {
@@ -38,6 +45,20 @@ export {
   type SampleLabRepresentativeId,
 } from './lab-offer';
 export { buildInvalidLabFormData, buildSampleLabFormData } from './sample-lab-form-data';
+export {
+  SAMPLE_LAB_LGD_DISTRICTS,
+  SAMPLE_LAB_LGD_STATES,
+  STATE_SEMANTIC_ID,
+  DISTRICT_SEMANTIC_ID,
+  applyJurisdictionScopeToFormSchema,
+  extractJurisdictionScope,
+  isLgdLikeCode,
+  parseLgdCodeList,
+  resolveJurisdictionScope,
+  validateFormDataAgainstJurisdictionScope,
+  type JurisdictionScope,
+  type JurisdictionScopeIssue,
+} from './jurisdiction-scope';
 /** Node-only file-backed resolve — import from `@serviceform/service-templates/sample-lab-dummy-resolve`. */
 const TEMPLATES: readonly CertificateTemplate[] = [
   RESIDENCE_CERTIFICATE,
@@ -45,6 +66,7 @@ const TEMPLATES: readonly CertificateTemplate[] = [
   DOMICILE_CERTIFICATE,
   BIRTH_CERTIFICATE,
   ...GENERATED_CERTIFICATE_STUBS,
+  ...GENERATED_LICENCE_PERMIT_STUBS,
 ];
 
 export function listTemplates(): readonly CertificateTemplate[] {

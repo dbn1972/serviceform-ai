@@ -36,7 +36,29 @@
       "additionalProperties": false,
       "properties": {
         "pilot_state_or_jurisdiction": { "type": "string", "minLength": 2 },
-        "issuing_authority_designation": { "type": "string" }
+        "issuing_authority_designation": { "type": "string" },
+        "allowed_states": {
+          "type": "array",
+          "description": "Override allowed state LGD codes for this tenant+offering (not display names).",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$"
+          },
+          "uniqueItems": true
+        },
+        "allowed_districts": {
+          "type": "array",
+          "description": "Override allowed district LGD codes for this tenant+offering (not display names).",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 64,
+            "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$"
+          },
+          "uniqueItems": true
+        }
       }
     },
     "legal_basis": {

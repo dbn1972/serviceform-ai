@@ -1,10 +1,17 @@
 {
-  "generated_at_note": "SAMPLE_LAB DUMMY factory output — synthetic defaults; tenant-overridable; not CERTIFIED; G6=false",
+  "generated_at_note": "SAMPLE_LAB DUMMY factory output — Certificate + Licence + Permit; tenant-overridable jurisdiction.allowed_states/districts; not CERTIFIED; G6=false",
   "catalogue_version": "1.0",
   "source": "docs/catalogue/India_Gov_Normalized_Service_Registry.json",
   "filter": {
     "field": "Service / Output Type",
     "equals": "Certificate"
+  },
+  "licence_permit_filter": {
+    "field": "Service / Output Type",
+    "equals_any": [
+      "Licence",
+      "Permit"
+    ]
   },
   "policy_kind": "SAMPLE_LAB_DUMMY",
   "defaults_ref": "templates/certificate-packs/sample-lab-dummy/defaults.json",
@@ -1277,6 +1284,501 @@
       "content_fingerprint": "074f560ec91c8423"
     },
     {
+      "catalogue_id": "IND-AGR-010",
+      "authoring_path": "templates/certificate-packs/ind-agr-010/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "23e69f53a507f06c",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-011",
+      "authoring_path": "templates/certificate-packs/ind-agr-011/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "b7f23ce694abef2f",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-012",
+      "authoring_path": "templates/certificate-packs/ind-agr-012/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5163afc48fd49706",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-014",
+      "authoring_path": "templates/certificate-packs/ind-agr-014/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "50c59fc80fb6ae98",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-015",
+      "authoring_path": "templates/certificate-packs/ind-agr-015/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "7be838556a323f2f",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-030",
+      "authoring_path": "templates/certificate-packs/ind-agr-030/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "24a18325511f524e",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-AGR-033",
+      "authoring_path": "templates/certificate-packs/ind-agr-033/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "aa30b0d91963cb2f",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-FRC-014",
+      "authoring_path": "templates/certificate-packs/ind-frc-014/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e3c98f4cc831afbe",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-FRC-015",
+      "authoring_path": "templates/certificate-packs/ind-frc-015/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "d29bca57f0806ce5",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-FRC-019",
+      "authoring_path": "templates/certificate-packs/ind-frc-019/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "87bc03c5458d045b",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-FRC-020",
+      "authoring_path": "templates/certificate-packs/ind-frc-020/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a08d8ebcd2bff0d6",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-LAB-012",
+      "authoring_path": "templates/certificate-packs/ind-lab-012/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a75ff22e320036cb",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-LAB-013",
+      "authoring_path": "templates/certificate-packs/ind-lab-013/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1c3bcd69b607a753",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-LAB-018",
+      "authoring_path": "templates/certificate-packs/ind-lab-018/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "f056f604dbe75196",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-LAB-019",
+      "authoring_path": "templates/certificate-packs/ind-lab-019/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "740b7ffd611d04d4",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-LAB-020",
+      "authoring_path": "templates/certificate-packs/ind-lab-020/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "137c8f857a128632",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HLT-020",
+      "authoring_path": "templates/certificate-packs/ind-hlt-020/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cc06dc7227893e80",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HLT-021",
+      "authoring_path": "templates/certificate-packs/ind-hlt-021/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2846aebd35101a15",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-001",
+      "authoring_path": "templates/certificate-packs/ind-trn-001/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "c0375442b654ad4a",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-002",
+      "authoring_path": "templates/certificate-packs/ind-trn-002/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "ec8c331e11c8b373",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-003",
+      "authoring_path": "templates/certificate-packs/ind-trn-003/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "86b3804be9b1a580",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-004",
+      "authoring_path": "templates/certificate-packs/ind-trn-004/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "20c271661edd236a",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-005",
+      "authoring_path": "templates/certificate-packs/ind-trn-005/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4cc7e9c05136e268",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-006",
+      "authoring_path": "templates/certificate-packs/ind-trn-006/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "6d42a70500ad2a78",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-017",
+      "authoring_path": "templates/certificate-packs/ind-trn-017/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a67ac539e21db21c",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-018",
+      "authoring_path": "templates/certificate-packs/ind-trn-018/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e59bd5c2a5b0d64b",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-019",
+      "authoring_path": "templates/certificate-packs/ind-trn-019/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8b83cdf5e74442d6",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-020",
+      "authoring_path": "templates/certificate-packs/ind-trn-020/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "0bd45f6348fd59c7",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-027",
+      "authoring_path": "templates/certificate-packs/ind-trn-027/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "52f0820b6f742dab",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-TRN-028",
+      "authoring_path": "templates/certificate-packs/ind-trn-028/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "1d70970365de6c36",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ULB-004",
+      "authoring_path": "templates/certificate-packs/ind-ulb-004/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4243651adc27dec4",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ULB-005",
+      "authoring_path": "templates/certificate-packs/ind-ulb-005/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "6ed21784cff4c66c",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ULB-007",
+      "authoring_path": "templates/certificate-packs/ind-ulb-007/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "439fa26dbd03afc9",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-001",
+      "authoring_path": "templates/certificate-packs/ind-btp-001/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "5ee08d5ad2166386",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-002",
+      "authoring_path": "templates/certificate-packs/ind-btp-002/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "267d4fcace5394d5",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-009",
+      "authoring_path": "templates/certificate-packs/ind-btp-009/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "cfa666d0ad790e77",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-010",
+      "authoring_path": "templates/certificate-packs/ind-btp-010/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4db2cbbc64fc4131",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-011",
+      "authoring_path": "templates/certificate-packs/ind-btp-011/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "eefa4e207a99a8fb",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-012",
+      "authoring_path": "templates/certificate-packs/ind-btp-012/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "35e62846e8ec2a73",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-013",
+      "authoring_path": "templates/certificate-packs/ind-btp-013/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "8d030d9bc84bf9bb",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-014",
+      "authoring_path": "templates/certificate-packs/ind-btp-014/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "4e0217e201ead78a",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-015",
+      "authoring_path": "templates/certificate-packs/ind-btp-015/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "b43ee2daf301f49b",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-016",
+      "authoring_path": "templates/certificate-packs/ind-btp-016/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "97e86a63af256a78",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-017",
+      "authoring_path": "templates/certificate-packs/ind-btp-017/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "3a30925bdad4c4e0",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-018",
+      "authoring_path": "templates/certificate-packs/ind-btp-018/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "b46daccec2cf480e",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-021",
+      "authoring_path": "templates/certificate-packs/ind-btp-021/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "582a715d276f0f89",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-BTP-022",
+      "authoring_path": "templates/certificate-packs/ind-btp-022/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "aa5f032f8fca5e94",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HOM-009",
+      "authoring_path": "templates/certificate-packs/ind-hom-009/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "a28501946ce094ae",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HOM-010",
+      "authoring_path": "templates/certificate-packs/ind-hom-010/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "bb14d6bf90fd8963",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HOM-012",
+      "authoring_path": "templates/certificate-packs/ind-hom-012/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2aabe4c868f805f1",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-HOM-018",
+      "authoring_path": "templates/certificate-packs/ind-hom-018/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "39e7efda12ce5225",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ENV-002",
+      "authoring_path": "templates/certificate-packs/ind-env-002/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "e21422b5f6da5f71",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ENV-003",
+      "authoring_path": "templates/certificate-packs/ind-env-003/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "089cbecccc531f97",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ENV-004",
+      "authoring_path": "templates/certificate-packs/ind-env-004/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "2ee01134a9c2ed99",
+      "note": "Registry Permit — same tenant jurisdiction scope pattern"
+    },
+    {
+      "catalogue_id": "IND-ENV-010",
+      "authoring_path": "templates/certificate-packs/ind-env-010/",
+      "generator": "certificate-pack-factory",
+      "status": "SAMPLE_LAB_STUB",
+      "policy_kind": "SAMPLE_LAB_DUMMY",
+      "content_fingerprint": "9d0d2439005eeba1",
+      "note": "Registry Licence — same tenant jurisdiction scope pattern"
+    },
+    {
       "catalogue_id": "IND-CIV-001",
       "authoring_path": "templates/certificate-packs/ind-civ-001/",
       "generator": "certificate-pack-factory",
@@ -1286,6 +1788,6 @@
       "note": "Registration exception outside Certificate filter"
     }
   ],
-  "generated_pack_count": 157,
-  "total_manifest_entries": 159
+  "generated_pack_count": 212,
+  "total_manifest_entries": 214
 }

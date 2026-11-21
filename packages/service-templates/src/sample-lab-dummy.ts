@@ -29,13 +29,22 @@ export type SampleLabDummyDefaults = Record<string, unknown> & {
   g6: false;
 };
 
+export interface SampleLabJurisdictionOverlay {
+  pilot_state_or_jurisdiction?: string;
+  issuing_authority_designation?: string;
+  /** LGD-like state codes allowed for this tenant+offering (not display names). */
+  allowed_states?: string[];
+  /** LGD-like district codes allowed for this tenant+offering (not display names). */
+  allowed_districts?: string[];
+}
+
 export interface SampleLabTenantOverlay {
   tenant_id: string;
   catalogue_id: string;
   tenant_service_binding_id?: string;
   jurisdiction_code?: string;
   environment_label?: typeof SAMPLE_LAB_ENVIRONMENT;
-  jurisdiction?: Record<string, unknown>;
+  jurisdiction?: SampleLabJurisdictionOverlay;
   legal_basis?: Record<string, unknown>;
   eligibility?: Record<string, unknown>;
   evidence?: Record<string, unknown>;

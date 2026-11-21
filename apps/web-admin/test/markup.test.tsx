@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
+import BindingsPage from '../app/bindings/page';
 import HomePage from '../app/page';
 import { AdminNav } from '../components/AdminNav';
 
@@ -16,5 +17,13 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('href="/bindings"');
     expect(html).toContain('href="/reviews"');
     expect(html).toContain('href="/branding"');
+  });
+
+  it('bindings page includes reusable jurisdiction scope desk for any offering', () => {
+    const html = renderToStaticMarkup(<BindingsPage />);
+    expect(html).toContain('Jurisdiction scope (states / districts)');
+    expect(html).toContain('Allowed states (LGD codes, one per line)');
+    expect(html).toContain('Allowed districts (LGD codes, one per line)');
+    expect(html).toContain('Catalogue id (e.g. IND-CIV-001, IND-AGR-010)');
   });
 });
