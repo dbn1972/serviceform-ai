@@ -38,6 +38,21 @@ export default function HomePage() {
           HUMAN_TASK; final approval issues the credential through SIMULATED connectors.
         </p>
       </Card>
+
+      <Card
+        title="Helpdesk"
+        subtitle="CMP-027 grievance tickets · role desks L1–L3"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/helpdesk">Open helpdesk</TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Citizen-raised grievances linked to applications. Assign by role metadata, respond,
+          resolve, or escalate. Not a statutory appeal court; CERTIFIED=false.
+        </p>
+      </Card>
     </AppShell>
   );
 }

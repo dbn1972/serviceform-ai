@@ -10,3 +10,12 @@ export {
   type DeficiencyCatalogueItem,
   type DeficiencyCatalogueReason,
 } from './deficiency-catalogue';
+export {
+  SAMPLE_LAB_GRIEVANCE_CATEGORIES,
+  SAMPLE_LAB_GRIEVANCE_ESCALATION,
+  SAMPLE_LAB_GRIEVANCE_ROUTING,
+  isSampleLabGrievanceCategory,
+  escalationForLevel,
+  nextEscalationLevel,
+} from './grievance-catalogue';
+export type { SampleLabGrievanceCategoryCode } from './grievance-catalogue';

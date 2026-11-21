@@ -31,6 +31,7 @@ await lab.registerIssuance(app);
 await lab.registerStudioWorkflow(app);
 await lab.registerStudioRules(app);
 await lab.registerFormPins(app);
+if (lab.registerGrievance) await lab.registerGrievance(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {

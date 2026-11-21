@@ -124,9 +124,17 @@ export interface GrievanceTx {
   insertResponse(row: ResponseRow): Promise<void>;
   listResponses(grievanceId: string): Promise<ResponseRow[]>;
   insertAssignmentRequest(row: AssignmentRequestRow): Promise<void>;
+  /** Replace current desk assignment (UNIQUE per grievance); used by ESCALATE. */
+  replaceAssignmentRequest(row: AssignmentRequestRow): Promise<void>;
   getAssignmentRequest(grievanceId: string): Promise<AssignmentRequestRow | null>;
   insertAiAssist(row: AiAssistRow): Promise<void>;
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void>;
+  listByFiler(filerId: string, limit: number): Promise<GrievanceRow[]>;
+  listQueue(params: {
+    statuses: readonly GrievanceStatus[];
+    roleCode: string | null;
+    limit: number;
+  }): Promise<GrievanceRow[]>;
 }
 
 export interface GrievanceStore {

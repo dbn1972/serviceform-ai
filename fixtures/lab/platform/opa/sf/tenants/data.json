@@ -3,7 +3,7 @@
     "_note": "SAMPLE_LAB runtime tenant data loaded beside the bundle (never committed under policy/opa).",
     "roles": {
       "SAMPLE_LAB_CASE_OFFICER": {
-        "_note": "Golden-path combined desk (SAMPLE_LAB only). Holds case commands; desk role codes below filter CMP-017 HUMAN_TASK queues.",
+        "_note": "Golden-path combined desk + SAMPLE_LAB helpdesk (CMP-027). Desk role codes below filter CMP-017 HUMAN_TASK queues; HELPDESK_L* are assignment metadata only.",
         "actions": [
           "OFFICER_SESSION_ISSUE",
           "OFFICER_SESSION_REVOKE",
@@ -26,9 +26,25 @@
           "TASK_COMPLETE",
           "DEFICIENCY_OPEN",
           "DEFICIENCY_CLOSE",
-          "DEFICIENCY_READ"
+          "DEFICIENCY_READ",
+          "GRIEVANCE_READ",
+          "GRIEVANCE_LIST",
+          "GRIEVANCE_CATEGORISE",
+          "GRIEVANCE_ROUTE",
+          "GRIEVANCE_REQUEST_ASSIGNMENT",
+          "GRIEVANCE_RECORD_RESPONSE",
+          "GRIEVANCE_RESOLVE",
+          "GRIEVANCE_CLOSE",
+          "GRIEVANCE_ESCALATE",
+          "GRIEVANCE_AI_ASSIST"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
+        "resource_types": [
+          "ApplicationCase",
+          "OfficerSession",
+          "HumanTask",
+          "DeficiencyNotice",
+          "GrievanceFeedback"
+        ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -85,9 +101,62 @@
         "all_services": true
       },
       "SAMPLE_LAB_HELPDESK_L1": {
-        "_note": "SF-50: SAMPLE_LAB helpdesk desk persona for role-aware login routing. Session only — no case decide / TASK_* (OPA fail-closed). Grievance actions land with SF-52 when catalogue actions exist.",
-        "actions": ["OFFICER_SESSION_ISSUE", "OFFICER_SESSION_REVOKE"],
-        "resource_types": ["OfficerSession"],
+        "_note": "SF-50/SF-52: helpdesk L1 login persona + CMP-027 ticket actions. No case decide / TASK_* (OPA fail-closed). L2/L3 below are assignment/login ladder metadata.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "GRIEVANCE_READ",
+          "GRIEVANCE_LIST",
+          "GRIEVANCE_CATEGORISE",
+          "GRIEVANCE_ROUTE",
+          "GRIEVANCE_REQUEST_ASSIGNMENT",
+          "GRIEVANCE_RECORD_RESPONSE",
+          "GRIEVANCE_RESOLVE",
+          "GRIEVANCE_CLOSE",
+          "GRIEVANCE_ESCALATE",
+          "GRIEVANCE_AI_ASSIST"
+        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_HELPDESK_L2": {
+        "_note": "SF-52: helpdesk L2 ladder role (login + assignment). Same CMP-027 actions as L1; no case decide.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "GRIEVANCE_READ",
+          "GRIEVANCE_LIST",
+          "GRIEVANCE_CATEGORISE",
+          "GRIEVANCE_ROUTE",
+          "GRIEVANCE_REQUEST_ASSIGNMENT",
+          "GRIEVANCE_RECORD_RESPONSE",
+          "GRIEVANCE_RESOLVE",
+          "GRIEVANCE_CLOSE",
+          "GRIEVANCE_ESCALATE",
+          "GRIEVANCE_AI_ASSIST"
+        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_HELPDESK_L3": {
+        "_note": "SF-52: helpdesk L3 ladder role (login + assignment). Same CMP-027 actions as L1; no case decide.",
+        "actions": [
+          "OFFICER_SESSION_ISSUE",
+          "OFFICER_SESSION_REVOKE",
+          "GRIEVANCE_READ",
+          "GRIEVANCE_LIST",
+          "GRIEVANCE_CATEGORISE",
+          "GRIEVANCE_ROUTE",
+          "GRIEVANCE_REQUEST_ASSIGNMENT",
+          "GRIEVANCE_RECORD_RESPONSE",
+          "GRIEVANCE_RESOLVE",
+          "GRIEVANCE_CLOSE",
+          "GRIEVANCE_ESCALATE",
+          "GRIEVANCE_AI_ASSIST"
+        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

@@ -1,0 +1,43 @@
+{
+  "_note": "SAMPLE_LAB published grievance/helpdesk catalogue. ONDC IGM–inspired categories adapted for government casework. Not statute. CERTIFIED=false.",
+  "simulation": "SIMULATED",
+  "categories": [
+    {
+      "code": "CASE",
+      "label": "Case / application decision",
+      "description": "Delay, status, or process concern about a filed application"
+    },
+    {
+      "code": "DOCUMENT",
+      "label": "Document / credential",
+      "description": "Issued document, DigiLocker publish, or evidence handling"
+    },
+    {
+      "code": "PAYMENT",
+      "label": "Fee / payment",
+      "description": "Fee collection, receipt, or refund process"
+    },
+    {
+      "code": "FULFILLMENT",
+      "label": "Issuance / fulfillment",
+      "description": "Credential issuance or delivery after approval"
+    },
+    {
+      "code": "OTHER",
+      "label": "Other",
+      "description": "General helpdesk when no other category fits"
+    }
+  ],
+  "escalation": [
+    { "level": 1, "role_code": "SAMPLE_LAB_HELPDESK_L1", "label": "Helpdesk L1" },
+    { "level": 2, "role_code": "SAMPLE_LAB_HELPDESK_L2", "label": "Supervisor L2" },
+    { "level": 3, "role_code": "SAMPLE_LAB_HELPDESK_L3", "label": "Appellate desk L3" }
+  ],
+  "routing": {
+    "organisation_id": "0d15ba00-0a01-4000-8000-0d15ba000a01",
+    "jurisdiction_id": "0d15ba00-0j01-4000-8000-0d15ba000j01",
+    "office_id": null,
+    "max_escalation_level": 3,
+    "citizen_may_request_escalation": true
+  }
+}

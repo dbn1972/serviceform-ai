@@ -341,6 +341,66 @@ class PgTx implements GrievanceTx {
     );
   }
 
+  async replaceAssignmentRequest(row: AssignmentRequestRow): Promise<void> {
+    const updated = await this.client.query(
+      `UPDATE sf_grievance.assignment_request
+          SET role_code = $1, organisation_id = $2, office_id = $3, jurisdiction_id = $4,
+              service_scope_id = $5, created_at = $6, correlation_id = $7, request_id = $8
+        WHERE grievance_id = $9`,
+      [
+        row.assignment.role_code,
+        row.assignment.organisation_id,
+        row.assignment.office_id,
+        row.assignment.jurisdiction_id,
+        row.assignment.service_scope_id,
+        row.created_at,
+        row.correlation_id,
+        row.request_id,
+        row.grievance_id,
+      ],
+    );
+    if ((updated.rowCount ?? 0) === 0) {
+      await this.insertAssignmentRequest(row);
+    }
+  }
+
+  async listByFiler(filerId: string, limit: number): Promise<GrievanceRow[]> {
+    // Column list is a fixed constant (not user input); keep SQL static for SAST.
+    const { rows } = await this.client.query(
+      `SELECT grievance_id, tenant_id, cell_id, kind, status, aggregate_version, reference_code,
+              category_code, filer_id, organisation_id, jurisdiction_id, office_id, service_id,
+              application_id, workflow_version_id, created_by, created_at, updated_at,
+              last_correlation_id
+         FROM sf_grievance.grievance
+        WHERE filer_id = $1
+        ORDER BY created_at DESC
+        LIMIT $2`,
+      [filerId, limit],
+    );
+    return rows.map(grievanceFromRow);
+  }
+
+  async listQueue(params: {
+    statuses: readonly GrievanceStatus[];
+    roleCode: string | null;
+    limit: number;
+  }): Promise<GrievanceRow[]> {
+    const { rows } = await this.client.query(
+      `SELECT g.grievance_id, g.tenant_id, g.cell_id, g.kind, g.status, g.aggregate_version,
+              g.reference_code, g.category_code, g.filer_id, g.organisation_id, g.jurisdiction_id,
+              g.office_id, g.service_id, g.application_id, g.workflow_version_id, g.created_by,
+              g.created_at, g.updated_at, g.last_correlation_id
+         FROM sf_grievance.grievance g
+         LEFT JOIN sf_grievance.assignment_request ar ON ar.grievance_id = g.grievance_id
+        WHERE g.status = ANY($1::text[])
+          AND ($2::text IS NULL OR ar.role_code = $2)
+        ORDER BY g.updated_at DESC
+        LIMIT $3`,
+      [params.statuses as string[], params.roleCode, params.limit],
+    );
+    return rows.map(grievanceFromRow);
+  }
+
   async getAssignmentRequest(grievanceId: string): Promise<AssignmentRequestRow | null> {
     const { rows } = await this.client.query(
       `SELECT request_id, tenant_id, grievance_id, role_code, organisation_id, office_id,
