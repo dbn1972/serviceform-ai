@@ -343,8 +343,8 @@ export function ApplicationReview({ id }: { id: string }) {
         }
       >
         <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
-          Desks follow Studio workflow HUMAN_TASK role_code assignments (never named officers). Raise
-          deficiency uses CMP-019 with published SAMPLE_LAB catalogue codes only. After final
+          Desks follow Studio workflow HUMAN_TASK role_code assignments (never named officers).
+          Raise deficiency uses CMP-019 with published SAMPLE_LAB catalogue codes only. After final
           approval, the platform signs and issues the certificate and publishes it to DigiLocker
           using SIMULATED connectors. CERTIFIED=false.
         </Alert>
