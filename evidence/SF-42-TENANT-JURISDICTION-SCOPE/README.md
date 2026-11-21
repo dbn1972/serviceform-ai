@@ -11,8 +11,9 @@
 | `packages/service-templates/test/catalogue.test.ts` | PASS |
 | `packages/service-templates/test/lab-offer-sample-data.test.ts` | PASS |
 | `packages/service-templates/test/jurisdiction-scope.test.ts` | PASS |
+| `services/cmp-009-dynamic-forms/test/unit/certificate-catalogue-forms.test.ts` | PASS (215) — LGD pattern inside CMP-009 subset |
 | `apps/web-admin/test/markup.test.tsx` | PASS |
-| Totals | **660** tests |
+| Totals | see latest `junit/unit.xml` |
 
 Artifacts: `junit/unit.xml`, `logs/unit.log`.
 

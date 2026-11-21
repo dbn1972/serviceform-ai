@@ -37,7 +37,7 @@ export const SAMPLE_LAB_LGD_DISTRICTS = [
   'LGD-D-0502',
 ] as const;
 
-const LGD_CODE_RE = /^[A-Z0-9][A-Z0-9._:-]{1,63}$/;
+const LGD_CODE_RE = /^[A-Z0-9][A-Z0-9._-]{1,63}$/;
 
 export interface JurisdictionScope {
   allowed_states: readonly string[];

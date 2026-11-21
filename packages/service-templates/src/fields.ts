@@ -76,8 +76,11 @@ export const aadhaarLast4 = (): FormSchemaNode => ({
 
 export const STATE_CODE_LABELS: Record<string, string> = { OD: 'OD', XX: 'XX (other sample)' };
 
-/** LGD-like code pattern (Constitution §3 — codes, not place names, in domain logic). */
-export const LGD_CODE_PATTERN = '^[A-Z0-9][A-Z0-9._:-]{1,63}$';
+/**
+ * LGD-like code pattern (Constitution §3 — codes, not place names).
+ * Must stay inside CMP-009's bounded pattern subset (no `:`, no unbounded quantifiers).
+ */
+export const LGD_CODE_PATTERN = '^[A-Z0-9][A-Z0-9._-]{1,63}$';
 
 const addressPartsBase = () => ({
   house_no_or_name: {

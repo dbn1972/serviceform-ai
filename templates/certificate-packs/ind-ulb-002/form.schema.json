@@ -79,7 +79,7 @@
           "title": "District (LGD code)",
           "minLength": 2,
           "maxLength": 64,
-          "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$",
+          "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$",
           "semanticElementId": "SF-SEM-ADDR-DISTRICT",
           "x-ux4g": {
             "hint": "Tenant-allowed district LGD codes (Admin → Bindings)"
@@ -90,7 +90,7 @@
           "title": "State / UT (LGD code)",
           "minLength": 2,
           "maxLength": 64,
-          "pattern": "^[A-Z0-9][A-Z0-9._:-]{1,63}$",
+          "pattern": "^[A-Z0-9][A-Z0-9._-]{1,63}$",
           "semanticElementId": "SF-SEM-ADDR-STATE-CODE",
           "x-ux4g": {
             "hint": "Tenant-allowed state LGD codes (Admin → Bindings)"
