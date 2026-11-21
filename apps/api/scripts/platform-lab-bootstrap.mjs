@@ -48,6 +48,8 @@ const ROLES = [
   { login: 'sf_lab_cmp052', member: 'sf_cmp052_rw', env: 'DATABASE_URL_CMP052' },
   // SAMPLE_LAB grievance / helpdesk (CMP-027)
   { login: 'sf_lab_cmp027', member: 'sf_cmp027_rw', env: 'DATABASE_URL_CMP027' },
+  // SF-53: CMP-029 SLA clocks (officer case visibility + deficiency pause)
+  { login: 'sf_lab_cmp029', member: 'sf_cmp029_rw', env: 'DATABASE_URL_CMP029' },
 ];
 
 function previous() {

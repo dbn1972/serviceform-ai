@@ -3,6 +3,12 @@
 import { Alert, Button, Card, Checkbox, Select, TextInput } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
 import { DESK_LABELS, deskActionsForRole, type DeskAction } from '../lib/portal/desk';
+import {
+  clockStatusLabel,
+  pauseReasonLabel,
+  SAMPLE_LAB_SLA_CATALOGUE,
+} from '@serviceform/m10-sample-lab/sla-catalogue';
+import { slaStatusTag, type SlaClockView } from '../lib/portal/sla-view';
 
 type App = {
   id: string;
@@ -91,6 +97,8 @@ export function ApplicationReview({ id }: { id: string }) {
   const [task, setTask] = useState<Task | null>(null);
   const [catalogue, setCatalogue] = useState<Catalogue | null>(null);
   const [deficiencies, setDeficiencies] = useState<DeficiencyNotice[]>([]);
+  const [slaClocks, setSlaClocks] = useState<SlaClockView[]>([]);
+  const [slaMounted, setSlaMounted] = useState(false);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
   const [raising, setRaising] = useState(false);
@@ -99,7 +107,7 @@ export function ApplicationReview({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    // Sequential: app (with task) first; deficiencies only after success so an IDOR
+    // Sequential: app (with task) first; deficiencies/SLA only after success so an IDOR
     // 404 never leaves an unread body holding Playwright networkidle open.
     const appRes = await fetch(`/api/portal/applications/${id}`);
     const appBody = (await appRes.json().catch(() => ({}))) as {
@@ -110,6 +118,8 @@ export function ApplicationReview({ id }: { id: string }) {
     if (!appRes.ok || !appBody.application) {
       setError(appBody.message ?? 'Application not found');
       setDeficiencies([]);
+      setSlaClocks([]);
+      setSlaMounted(false);
       setTask(null);
       return;
     }
@@ -118,25 +128,37 @@ export function ApplicationReview({ id }: { id: string }) {
     const defRes = await fetch(`/api/portal/applications/${id}/deficiencies`);
     if (!defRes.ok) {
       setDeficiencies([]);
+    } else {
+      const defBody = (await defRes.json().catch(() => ({}))) as {
+        deficiencies?: DeficiencyNotice[];
+        catalogue?: Catalogue;
+      };
+      setDeficiencies(defBody.deficiencies ?? []);
+      if (defBody.catalogue) {
+        setCatalogue(defBody.catalogue);
+        setReasonCode((prev) => {
+          if (prev) return prev;
+          const first = defBody.catalogue?.reasons[0];
+          if (first) {
+            setItemCodes([...first.default_item_codes]);
+            return first.reason_code;
+          }
+          return prev;
+        });
+      }
+    }
+    const slaRes = await fetch(`/api/portal/applications/${id}/sla`);
+    if (!slaRes.ok) {
+      setSlaClocks([]);
+      setSlaMounted(false);
       return;
     }
-    const defBody = (await defRes.json().catch(() => ({}))) as {
-      deficiencies?: DeficiencyNotice[];
-      catalogue?: Catalogue;
+    const slaBody = (await slaRes.json().catch(() => ({}))) as {
+      clocks?: SlaClockView[];
+      mounted?: boolean;
     };
-    setDeficiencies(defBody.deficiencies ?? []);
-    if (defBody.catalogue) {
-      setCatalogue(defBody.catalogue);
-      setReasonCode((prev) => {
-        if (prev) return prev;
-        const first = defBody.catalogue?.reasons[0];
-        if (first) {
-          setItemCodes([...first.default_item_codes]);
-          return first.reason_code;
-        }
-        return prev;
-      });
-    }
+    setSlaClocks(slaBody.clocks ?? []);
+    setSlaMounted(slaBody.mounted === true);
   }, [id]);
 
   useEffect(() => {
@@ -302,7 +324,7 @@ export function ApplicationReview({ id }: { id: string }) {
     <div className="sf-section">
       <Card
         title="Review application"
-        subtitle="Human decision on Application/Case (CMP-015) · queue from HUMAN_TASK graph (CMP-017) · deficiency via CMP-019"
+        subtitle="Human decision on Application/Case (CMP-015) · queue from HUMAN_TASK graph (CMP-017) · deficiency via CMP-019 · SLA via CMP-029"
         footer={
           canDecide ? (
             <div className="sf-actions">
@@ -507,6 +529,72 @@ export function ApplicationReview({ id }: { id: string }) {
           </ul>
         </Card>
       ) : null}
+
+      <Card
+        title="SLA clock"
+        subtitle="CMP-029 · SAMPLE_LAB published IND-SOC-002 overlay (10 working days) · CERTIFIED=false"
+      >
+        {!slaMounted ? (
+          <Alert variant="info" title="SLA not mounted on this lab host">
+            CMP-029 is optional (`DATABASE_URL_CMP029`). When unset, deficiency still works with an
+            unbound SLA port.
+          </Alert>
+        ) : slaClocks.length === 0 ? (
+          <p className="ux4g-body-m-default">
+            No clock yet. The OVERALL clock starts after citizen SUBMIT (portal mapping{' '}
+            {SAMPLE_LAB_SLA_CATALOGUE.portal_clock_start_event} →{' '}
+            {SAMPLE_LAB_SLA_CATALOGUE.cmp029_start_anchor}).
+          </p>
+        ) : (
+          <ul className="sf-section">
+            {slaClocks.map((clock) => (
+              <li key={clock.clock_id} className="sf-section">
+                <div className="sf-meta-row">
+                  <span className={slaStatusTag(clock.clock_status)}>
+                    {clockStatusLabel(clock.clock_status)}
+                  </span>
+                  <span className="ux4g-tag-tonal-neutral">{clock.stage_code}</span>
+                  {clock.pause_reason_code ? (
+                    <span className="ux4g-tag-tonal-warning">
+                      {pauseReasonLabel(clock.pause_reason_code)}
+                    </span>
+                  ) : null}
+                  {clock.breach_at ? (
+                    <span className="ux4g-tag-tonal-error">Breach recorded</span>
+                  ) : null}
+                  {clock.escalation_level > 0 ? (
+                    <span className="ux4g-tag-tonal-error">
+                      Escalation L{clock.escalation_level}
+                    </span>
+                  ) : null}
+                </div>
+                <dl className="sf-dl">
+                  <dt>Deadline</dt>
+                  <dd>{clock.deadline_at || '—'}</dd>
+                  <dt>Start anchor</dt>
+                  <dd>
+                    {clock.portal_clock_start_event} ({clock.start_anchor})
+                  </dd>
+                  <dt>Completion anchor</dt>
+                  <dd>{clock.completion_anchor}</dd>
+                  {clock.breach_at ? (
+                    <>
+                      <dt>Breach at</dt>
+                      <dd>{clock.breach_at}</dd>
+                    </>
+                  ) : null}
+                  {clock.paused_at ? (
+                    <>
+                      <dt>Paused at</dt>
+                      <dd>{clock.paused_at}</dd>
+                    </>
+                  ) : null}
+                </dl>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
     </div>
   );
 }

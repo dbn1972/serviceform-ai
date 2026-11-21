@@ -20,6 +20,7 @@ import {
   type ClockTransition,
   type PolicySpec,
 } from '../domain/clock.js';
+import { sha256Prefixed } from '../domain/fingerprint.js';
 import { Cmp029Error, detail } from '../errors.js';
 import { envelopeOf, TOPIC_DOMAIN, type DomainEventType } from '../outbox.js';
 import type {
@@ -750,7 +751,7 @@ export class SlaService implements DeficiencyClockPort {
       { reason_code: command.reason_code },
       {
         key: command.idempotency_key,
-        fingerprint: `int009:pause:${row.clock_id}:${command.reason_code}`,
+        fingerprint: sha256Prefixed(`int009:pause:${row.clock_id}:${command.reason_code}`),
         endpoint: 'INT-009 pause',
       },
     );
@@ -764,7 +765,7 @@ export class SlaService implements DeficiencyClockPort {
     const row = await this.resolveDeficiencyClock(ctx, command);
     const res = await this.resume(ctx, row.clock_id, {
       key: command.idempotency_key,
-      fingerprint: `int009:resume:${row.clock_id}`,
+      fingerprint: sha256Prefixed(`int009:resume:${row.clock_id}`),
       endpoint: 'INT-009 resume',
     });
     return this.toDeficiencyResult(res.body);

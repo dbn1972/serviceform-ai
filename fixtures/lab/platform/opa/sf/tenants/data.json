@@ -27,6 +27,8 @@
           "DEFICIENCY_OPEN",
           "DEFICIENCY_CLOSE",
           "DEFICIENCY_READ",
+          "SLA_CLOCK_READ",
+          "SLA_CLOCK_EVALUATE",
           "GRIEVANCE_READ",
           "GRIEVANCE_LIST",
           "GRIEVANCE_CATEGORISE",
@@ -49,7 +51,8 @@
           "DeficiencyNotice",
           "GrievanceFeedback",
           "Document",
-          "UploadPolicy"
+          "UploadPolicy",
+          "SlaClock"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
@@ -76,9 +79,17 @@
           "TASK_COMPLETE",
           "DEFICIENCY_OPEN",
           "DEFICIENCY_CLOSE",
-          "DEFICIENCY_READ"
+          "DEFICIENCY_READ",
+          "SLA_CLOCK_READ",
+          "SLA_CLOCK_EVALUATE"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
+        "resource_types": [
+          "ApplicationCase",
+          "OfficerSession",
+          "HumanTask",
+          "DeficiencyNotice",
+          "SlaClock"
+        ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -100,9 +111,17 @@
           "TASK_CLAIM",
           "TASK_UNCLAIM",
           "TASK_COMPLETE",
-          "DEFICIENCY_READ"
+          "DEFICIENCY_READ",
+          "SLA_CLOCK_READ",
+          "SLA_CLOCK_EVALUATE"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
+        "resource_types": [
+          "ApplicationCase",
+          "OfficerSession",
+          "HumanTask",
+          "DeficiencyNotice",
+          "SlaClock"
+        ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -177,6 +196,23 @@
           "TASK_CANCEL_CLOSE"
         ],
         "resource_types": ["Application", "ApplicationCase", "HumanTask"],
+        "jurisdiction_scope": "TENANT_WIDE",
+        "all_services": true
+      },
+      "SAMPLE_LAB_SLA_OPERATOR": {
+        "_note": "SF-53: SYSTEM workload for CMP-029 calendar/policy seed, clock start after SUBMIT, complete after decision, and INT-009 deficiency pause/resume. Cannot record a case decision.",
+        "actions": [
+          "SLA_CALENDAR_CREATE",
+          "SLA_POLICY_CREATE",
+          "SLA_POLICY_RETIRE",
+          "SLA_CLOCK_START",
+          "SLA_CLOCK_PAUSE",
+          "SLA_CLOCK_RESUME",
+          "SLA_CLOCK_COMPLETE",
+          "SLA_CLOCK_EVALUATE",
+          "SLA_CLOCK_READ"
+        ],
+        "resource_types": ["SlaCalendar", "SlaPolicy", "SlaClock"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
