@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import type { AuthzDecisionInput } from '@serviceform/contracts';
+import { describe, expect, it } from 'vitest';
+import type { AuthzDecisionInput, AuthzDecisionOutput } from '@serviceform/contracts';
 import {
   LAB_FEE_DEFAULTS,
   LAB_FEE_IND_EDU_004,
@@ -67,8 +67,19 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
   });
 
   it('paymentOwnerEnrichingAuthorizer injects citizen self as FeeQuote/PaymentIntent owner_id', async () => {
-    const decide = vi.fn(async () => ({ allow: true }));
-    const pdp = paymentOwnerEnrichingAuthorizer({ decide });
+    const seen: AuthzDecisionInput[] = [];
+    const allow: AuthzDecisionOutput = {
+      allow: true,
+      reason_code: 'TEST',
+      policy_revision: 'test',
+      decision_id: '00000000-0000-4000-8000-000000000001',
+    };
+    const pdp = paymentOwnerEnrichingAuthorizer({
+      decide: async (input) => {
+        seen.push(input);
+        return allow;
+      },
+    });
     const citizen = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
     const base = {
       subject: {
@@ -91,7 +102,7 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
         classification: 'TENANT_SCOPED',
       },
     } as AuthzDecisionInput);
-    expect(decide.mock.calls[0]?.[0].resource.owner_id).toBe(citizen);
+    expect(seen[0]?.resource.owner_id).toBe(citizen);
 
     await pdp.decide({
       ...base,
@@ -102,7 +113,7 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
         classification: 'TENANT_SCOPED',
       },
     } as AuthzDecisionInput);
-    expect(decide.mock.calls[1]?.[0].resource.owner_id).toBe(citizen);
+    expect(seen[1]?.resource.owner_id).toBe(citizen);
 
     // Officers / SYSTEM: no injection
     await pdp.decide({
@@ -122,6 +133,6 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
       },
       environment: { trace_id: 't' },
     } as AuthzDecisionInput);
-    expect(decide.mock.calls[2]?.[0].resource.owner_id).toBeUndefined();
+    expect(seen[2]?.resource.owner_id).toBeUndefined();
   });
 });
