@@ -317,20 +317,12 @@ export function ApplicationReview({ id }: { id: string }) {
                 </Button>
               ) : null}
               {actions.includes('REJECT') ? (
-                <Button
-                  variant="outline-danger"
-                  disabled={busy}
-                  onClick={() => void act('REJECT')}
-                >
+                <Button variant="outline-danger" disabled={busy} onClick={() => void act('REJECT')}>
                   Reject
                 </Button>
               ) : null}
               {canRaise ? (
-                <Button
-                  variant="outline-primary"
-                  disabled={busy}
-                  onClick={() => setRaising(true)}
-                >
+                <Button variant="outline-primary" disabled={busy} onClick={() => setRaising(true)}>
                   Raise deficiency
                 </Button>
               ) : null}

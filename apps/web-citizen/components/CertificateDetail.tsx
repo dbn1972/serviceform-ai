@@ -1,7 +1,7 @@
 'use client';
 
 import { Icon, Button, Checkbox, TextInput } from '@serviceform/ui-ux4g';
-import { itemLabel, reasonLabel } from '@serviceform/m10-sample-lab';
+import { itemLabel, reasonLabel } from '@serviceform/m10-sample-lab/deficiency-catalogue';
 import { maskMobile } from '@serviceform/m10-sample-lab/identity-rules';
 import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
@@ -66,7 +66,11 @@ function timeline(app: App): Step[] {
   return [
     { label: 'Submitted', detail: formatDate(app.created_at), done: true, current: false },
     {
-      label: actionRequired ? 'Action required' : app.status === 'REJECTED' ? 'Not approved' : 'Officer decision',
+      label: actionRequired
+        ? 'Action required'
+        : app.status === 'REJECTED'
+          ? 'Not approved'
+          : 'Officer decision',
       detail: actionRequired
         ? 'More information requested'
         : decided
@@ -130,9 +134,7 @@ export function CertificateDetail({ id }: { id: string }) {
   }, [load]);
 
   function toggleItem(code: string) {
-    setProvided((prev) =>
-      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
-    );
+    setProvided((prev) => (prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]));
   }
 
   async function submitResponse() {

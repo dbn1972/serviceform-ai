@@ -5,10 +5,7 @@ import { LabCaseCommandPort } from '../src/platform/deficiency.js';
 
 const ROOT = join(import.meta.dirname, '../../..');
 const FIXTURE = join(ROOT, 'fixtures/lab/platform/deficiency-catalogue.json');
-const PACKAGE_SRC = join(
-  ROOT,
-  'packages/m10-sample-lab/src/deficiency-catalogue.ts',
-);
+const PACKAGE_SRC = join(ROOT, 'packages/m10-sample-lab/src/deficiency-catalogue.ts');
 
 // REQ SF-47: lab fixture and m10-sample-lab catalogue stay aligned; CaseCommandPort is host-only.
 describe('SAMPLE_LAB deficiency host adapters', () => {
@@ -18,10 +15,7 @@ describe('SAMPLE_LAB deficiency host adapters', () => {
       item_codes: { item_code: string }[];
     };
     const src = readFileSync(PACKAGE_SRC, 'utf8');
-    expect(file.reasons.map((r) => r.reason_code)).toEqual([
-      'MISSING_PROOF',
-      'ADDRESS_MISMATCH',
-    ]);
+    expect(file.reasons.map((r) => r.reason_code)).toEqual(['MISSING_PROOF', 'ADDRESS_MISMATCH']);
     expect(file.item_codes.some((i) => i.item_code === 'ELECTRICITY_BILL')).toBe(true);
     for (const code of file.reasons.map((r) => r.reason_code)) {
       expect(src).toContain(`reason_code: '${code}'`);

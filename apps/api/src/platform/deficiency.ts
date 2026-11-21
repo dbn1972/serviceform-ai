@@ -1,6 +1,10 @@
 import { randomUUID } from 'node:crypto';
-import type { AuthzDecisionInput, AuthzDecisionOutput, RequestContext } from '@serviceform/contracts';
-import { PgCaseStore } from '@serviceform/cmp-015-application-case';
+import type {
+  AuthzDecisionInput,
+  AuthzDecisionOutput,
+  RequestContext,
+} from '@serviceform/contracts';
+import type { PgCaseStore } from '@serviceform/cmp-015-application-case';
 import type { CaseServiceLike, ServiceResultLike } from './issuance.js';
 
 /**

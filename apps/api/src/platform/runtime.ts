@@ -81,10 +81,7 @@ import {
   readLabAssignmentScope,
   type Cmp017Module,
 } from './tasks.js';
-import {
-  deficiencyOwnerEnrichingAuthorizer,
-  LabCaseCommandPort,
-} from './deficiency.js';
+import { deficiencyOwnerEnrichingAuthorizer, LabCaseCommandPort } from './deficiency.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,

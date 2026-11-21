@@ -1,4 +1,4 @@
-import { SAMPLE_LAB_DEFICIENCY_CATALOGUE } from '@serviceform/m10-sample-lab';
+import { SAMPLE_LAB_DEFICIENCY_CATALOGUE } from '@serviceform/m10-sample-lab/deficiency-catalogue';
 import {
   advanceToScrutiny,
   closeDeficiency,

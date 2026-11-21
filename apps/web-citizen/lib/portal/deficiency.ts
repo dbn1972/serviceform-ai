@@ -47,9 +47,7 @@ export async function listDeficiencies(
   };
 }
 
-export function activeOpenNotice(
-  deficiencies: DeficiencyNotice[],
-): DeficiencyNotice | undefined {
+export function activeOpenNotice(deficiencies: DeficiencyNotice[]): DeficiencyNotice | undefined {
   return deficiencies.find((d) => d.status === 'OPEN');
 }
 

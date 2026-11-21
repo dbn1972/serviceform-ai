@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SAMPLE_LAB_DEFICIENCY_CATALOGUE } from '@serviceform/m10-sample-lab';
+import { SAMPLE_LAB_DEFICIENCY_CATALOGUE } from '@serviceform/m10-sample-lab/deficiency-catalogue';
 import { workbenchStatus } from '../lib/portal/cases';
 
 // REQ SF-47: officer Raise Deficiency uses published SAMPLE_LAB catalogue codes only.
@@ -16,9 +16,9 @@ describe('SAMPLE_LAB deficiency catalogue (officer)', () => {
       expect(reason.instruction_ref.startsWith('ref:')).toBe(true);
       expect(reason.default_item_codes.length).toBeGreaterThan(0);
       for (const code of reason.default_item_codes) {
-        expect(
-          SAMPLE_LAB_DEFICIENCY_CATALOGUE.item_codes.some((i) => i.item_code === code),
-        ).toBe(true);
+        expect(SAMPLE_LAB_DEFICIENCY_CATALOGUE.item_codes.some((i) => i.item_code === code)).toBe(
+          true,
+        );
       }
     }
   });

@@ -3,7 +3,7 @@ import {
   itemLabel,
   reasonLabel,
   SAMPLE_LAB_DEFICIENCY_CATALOGUE,
-} from '@serviceform/m10-sample-lab';
+} from '@serviceform/m10-sample-lab/deficiency-catalogue';
 import { portalStatus } from '../lib/portal/applications';
 import { applicationStatus } from '../lib/ind-soc-002';
 import { activeOpenNotice, type DeficiencyNotice } from '../lib/portal/deficiency';
@@ -51,7 +51,15 @@ describe('citizen deficiency status mapping', () => {
         closed_at: null,
         close_reason_code: null,
         aggregate_version: 1,
-        items: [{ item_seq: 1, item_code: 'ELECTRICITY_BILL', evidence_requirement_ref: null, required: true, item_status: 'REQUESTED' }],
+        items: [
+          {
+            item_seq: 1,
+            item_code: 'ELECTRICITY_BILL',
+            evidence_requirement_ref: null,
+            required: true,
+            item_status: 'REQUESTED',
+          },
+        ],
         evidence: [],
       },
     ];
