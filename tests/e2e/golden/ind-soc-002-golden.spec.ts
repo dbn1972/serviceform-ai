@@ -8,6 +8,7 @@
 
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { uploadEvidenceOnWizard } from '../helpers/evidence-upload';
 
 const OWNER_INPUTS_READY = process.env['SF_M10_OWNER_INPUTS_READY'] === '1';
 
@@ -157,10 +158,11 @@ async function officerCompleteMultiDeskApproval(page: Page): Promise<void> {
 async function completeResidenceWizardToPreview(page: Page): Promise<void> {
   await expect(page.getByRole('navigation', { name: /Application steps/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Save & continue/i })).toBeVisible();
-  // Applicant → Residence → Evidence → Preview (defaults are prefilled for SAMPLE_LAB)
-  for (let i = 0; i < 3; i += 1) {
-    await page.getByRole('button', { name: /Save & continue/i }).click();
-  }
+  // Applicant → Residence → Evidence (CMP-013 technical accept) → Preview
+  await page.getByRole('button', { name: /Save & continue/i }).click();
+  await page.getByRole('button', { name: /Save & continue/i }).click();
+  await uploadEvidenceOnWizard(page);
+  await page.getByRole('button', { name: /Save & continue/i }).click();
   await expect(page.getByRole('heading', { name: /Preview application/i })).toBeVisible();
   await page.getByRole('checkbox').check();
   await expect(page.getByRole('button', { name: /Submit application/i })).toBeVisible();

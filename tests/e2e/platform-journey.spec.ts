@@ -9,6 +9,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { randomInt } from 'node:crypto';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { uploadEvidenceOnWizard, uploadEvidenceViaApi } from './helpers/evidence-upload';
 
 const CITIZEN = 'http://127.0.0.1:3000';
 const OFFICER = 'http://127.0.0.1:3001';
@@ -44,9 +45,11 @@ async function signIn(page: Page, mobile: string, path = '/services/IND-SOC-002'
 async function submitApplication(page: Page, name = 'SAMPLE Platform Citizen'): Promise<string> {
   await open(page, `${CITIZEN}/services/IND-SOC-002/apply`);
   await page.getByLabel('Full name (as per official record)').fill(name);
-  for (let i = 0; i < 3; i += 1) {
-    await page.getByRole('button', { name: /Save & continue/i }).click();
-  }
+  // Applicant → Residence → Evidence (upload) → Preview
+  await page.getByRole('button', { name: /Save & continue/i }).click();
+  await page.getByRole('button', { name: /Save & continue/i }).click();
+  await uploadEvidenceOnWizard(page);
+  await page.getByRole('button', { name: /Save & continue/i }).click();
   await page.getByRole('checkbox').check();
   await page.getByRole('button', { name: /Submit application/i }).click();
   await expect(page).toHaveURL(/\/certificates\/[0-9a-f-]{36}$/);
@@ -217,9 +220,10 @@ test.describe('citizen identity on CMP-004 (opaque session, ADR-0007 D-3)', () =
     await expect(page.getByLabel('Full name (as per official record)')).toHaveValue(
       'SAMPLE Registered Citizen',
     );
-    for (let i = 0; i < 3; i += 1) {
-      await page.getByRole('button', { name: /Save & continue/i }).click();
-    }
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+    await page.getByRole('button', { name: /Save & continue/i }).click();
+    await uploadEvidenceOnWizard(page);
+    await page.getByRole('button', { name: /Save & continue/i }).click();
     await page.getByRole('checkbox').check();
     await page.getByRole('button', { name: /Submit application/i }).click();
     await expect(page).toHaveURL(/\/certificates\/[0-9a-f-]{36}$/);
@@ -336,7 +340,15 @@ test.describe('application journey on CMP-015 (RLS + OPA citizen-owner)', () => 
   }) => {
     await signIn(page, uniqueMobile());
     const cookie = await cookieFor(page, 'sf_citizen_session');
-    const form = { catalogue_id: 'IND-SOC-002', data: syntheticData('SAMPLE Retry Citizen') };
+    const evidence = await uploadEvidenceViaApi(page.request, cookie);
+    const form = {
+      catalogue_id: 'IND-SOC-002',
+      data: {
+        ...syntheticData('SAMPLE Retry Citizen'),
+        evidence_file_name: evidence.document_id,
+        evidence_mime: evidence.content_type,
+      },
+    };
     const key = `retry${randomInt(1_000_000_000, 9_999_999_999)}abcdef`;
     const submit = () =>
       page.request.post(`${CITIZEN}/api/portal/applications`, {
@@ -425,6 +437,7 @@ test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
     await expect(page.getByText('PIN code must be 6 digits').first()).toBeVisible();
     await page.getByLabel('PIN code').fill('751001');
     await page.getByRole('button', { name: /Save & continue/i }).click();
+    await uploadEvidenceOnWizard(page);
     await page.getByRole('button', { name: /Save & continue/i }).click();
 
     await expect(page.getByText('Indicative check: met')).toBeVisible();
