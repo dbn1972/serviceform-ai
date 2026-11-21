@@ -14,7 +14,9 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
     >
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Application review</h1>
-        <p className="ux4g-body-m-default">Record an approve or reject decision for this case.</p>
+        <p className="ux4g-body-m-default">
+          Record an approve or reject decision, or raise a deficiency when more evidence is needed.
+        </p>
       </section>
       <RequireOfficerSession>
         <ApplicationReview id={id} />

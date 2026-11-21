@@ -81,6 +81,10 @@ import {
   readLabAssignmentScope,
   type Cmp017Module,
 } from './tasks.js';
+import {
+  deficiencyOwnerEnrichingAuthorizer,
+  LabCaseCommandPort,
+} from './deficiency.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -97,6 +101,8 @@ export interface PlatformLabEnv {
   SF_PLATFORM_LAB_DIR?: string;
   DATABASE_URL_CMP004?: string;
   DATABASE_URL_CMP015?: string;
+  /** SF-47 CMP-019 deficiency. Optional — when set, Raise Deficiency / citizen respond mount. */
+  DATABASE_URL_CMP019?: string;
   DATABASE_URL_CMP009?: string;
   DATABASE_URL_CMP016?: string;
   /** SF-46: CMP-017 work queue / HUMAN_TASK from graph. */
@@ -535,6 +541,9 @@ export async function buildPlatformLab(
     cmp004: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP004'), max: 8 }),
     cmp009: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP009'), max: 8 }),
     cmp015: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP015'), max: 8 }),
+    ...(env.DATABASE_URL_CMP019
+      ? { cmp019: new pg.Pool({ connectionString: env.DATABASE_URL_CMP019, max: 4 }) }
+      : {}),
     cmp016: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP016'), max: 8 }),
     cmp017: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP017'), max: 8 }),
     cmp022: new pg.Pool({ connectionString: required(env, 'DATABASE_URL_CMP022'), max: 4 }),
@@ -556,6 +565,7 @@ export async function buildPlatformLab(
     cmp004: pg.Pool;
     cmp009: pg.Pool;
     cmp015: pg.Pool;
+    cmp019?: pg.Pool;
     cmp016: pg.Pool;
     cmp017: pg.Pool;
     cmp022: pg.Pool;
@@ -1005,6 +1015,22 @@ export async function buildPlatformLab(
         service: taskService,
         resolveContext,
       },
+      ...(pools.cmp019
+        ? {
+            deficiency: {
+              pool: pools.cmp019,
+              resolveContext,
+              authorizer: deficiencyOwnerEnrichingAuthorizer(
+                opa as never,
+                new PgCaseStore(pools.cmp015),
+                placement.cell_id,
+              ) as { decide: (input: unknown) => Promise<unknown> },
+              caseCommands: new LabCaseCommandPort(applicationCase),
+              // SAMPLE_LAB: CMP-029 SLA not mounted; UnboundSlaClockPort / UnboundNotificationPort
+              // are the CMP-019 defaults when slaClock/notifier are omitted.
+            },
+          }
+        : {}),
     },
     wave2: {
       consentPrivacy: {
@@ -1023,6 +1049,7 @@ export async function buildPlatformLab(
       poolReadiness('cmp004-db', pools.cmp004),
       poolReadiness('cmp009-db', pools.cmp009),
       poolReadiness('cmp015-db', pools.cmp015),
+      ...(pools.cmp019 ? [poolReadiness('cmp019-db', pools.cmp019)] : []),
       poolReadiness('cmp016-db', pools.cmp016),
       poolReadiness('cmp017-db', pools.cmp017),
       poolReadiness('cmp022-db', pools.cmp022),

@@ -1,0 +1,44 @@
+{
+  "_note": "SAMPLE_LAB published deficiency catalogue for CMP-019 UI (SF-47). Codes only — not statute. Item codes reuse IND-SOC-002 evidence_requirements.mandatory_documents from fixtures/golden/ind-soc-002/tenant-overlay.yaml. Reason/notice/close codes are lab configuration labels for officer/citizen screens; owner statute is never invented here.",
+  "environment_label": "SAMPLE_LAB",
+  "catalogue_id": "IND-SOC-002",
+  "reasons": [
+    {
+      "reason_code": "MISSING_PROOF",
+      "label": "Supporting document missing or unclear",
+      "notice_code": "CLARIFY_EVIDENCE",
+      "instruction_ref": "ref:sample-lab:deficiency:clarify-evidence",
+      "default_item_codes": ["ELECTRICITY_BILL", "EPIC_OR_AADHAAR", "RATION_CARD"]
+    },
+    {
+      "reason_code": "ADDRESS_MISMATCH",
+      "label": "Address details need clarification",
+      "notice_code": "CLARIFY_ADDRESS",
+      "instruction_ref": "ref:sample-lab:deficiency:clarify-address",
+      "default_item_codes": ["ELECTRICITY_BILL", "LEASE_AGREEMENT", "HOLDING_TAX_RECEIPT"]
+    }
+  ],
+  "item_codes": [
+    { "item_code": "ELECTRICITY_BILL", "label": "Electricity bill" },
+    { "item_code": "ROR_COPY", "label": "Copy of RoR" },
+    { "item_code": "EPIC_OR_AADHAAR", "label": "EPIC / Aadhaar card" },
+    { "item_code": "LANDLINE_TELEPHONE_BILL", "label": "Landline telephone bill" },
+    { "item_code": "WATER_CONNECTION_BILL", "label": "Water connection bill" },
+    { "item_code": "RATION_CARD", "label": "Ration card" },
+    { "item_code": "HOLDING_TAX_RECEIPT", "label": "Holding tax receipt" },
+    { "item_code": "LEASE_AGREEMENT", "label": "Lease agreement with house owner" },
+    { "item_code": "EMPLOYER_CERTIFICATE", "label": "Certificate from the employer" },
+    { "item_code": "BANK_PASSBOOK_FIRST_PAGE", "label": "First page of bank passbook" },
+    { "item_code": "VOTER_LIST_EXTRACT", "label": "Extract of latest voter list" },
+    { "item_code": "NREGA_JOB_CARD", "label": "NREGA job card" },
+    { "item_code": "OTHER_RELEVANT", "label": "Other relevant document" }
+  ],
+  "close_reason_codes": [
+    { "close_reason_code": "CITIZEN_RESPONDED", "label": "Citizen response received" },
+    { "close_reason_code": "NO_LONGER_REQUIRED", "label": "Further evidence no longer required" }
+  ],
+  "evidence_kind_codes": {
+    "officer_notice": "NOTICE_ATTACHMENT",
+    "citizen_upload": "CITIZEN_UPLOAD"
+  }
+}

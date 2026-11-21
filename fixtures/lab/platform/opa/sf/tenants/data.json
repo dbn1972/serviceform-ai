@@ -23,9 +23,12 @@
           "TASK_READ_HISTORY",
           "TASK_CLAIM",
           "TASK_UNCLAIM",
-          "TASK_COMPLETE"
+          "TASK_COMPLETE",
+          "DEFICIENCY_OPEN",
+          "DEFICIENCY_CLOSE",
+          "DEFICIENCY_READ"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -48,9 +51,12 @@
           "TASK_READ_HISTORY",
           "TASK_CLAIM",
           "TASK_UNCLAIM",
-          "TASK_COMPLETE"
+          "TASK_COMPLETE",
+          "DEFICIENCY_OPEN",
+          "DEFICIENCY_CLOSE",
+          "DEFICIENCY_READ"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -71,9 +77,10 @@
           "TASK_READ_HISTORY",
           "TASK_CLAIM",
           "TASK_UNCLAIM",
-          "TASK_COMPLETE"
+          "TASK_COMPLETE",
+          "DEFICIENCY_READ"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask"],
+        "resource_types": ["ApplicationCase", "OfficerSession", "HumanTask", "DeficiencyNotice"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
