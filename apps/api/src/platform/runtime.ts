@@ -218,7 +218,7 @@ export interface PlatformLab {
   /** SAMPLE_LAB CMP-057 assisted/CSC lab routes (optional when DATABASE_URL_CMP057 is set). */
   registerAssisted?(app: FastifyInstance): Promise<void>;
   /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
-  m09?: import('../composition/m09.js').M09PluginMounts;
+  m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
   registerDocumentUploadSimulators(app: FastifyInstance): Promise<void>;
   /**
