@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { SAMPLE_LAB_GRIEVANCE_CATEGORIES } from '@serviceform/m10-sample-lab';
+import { SAMPLE_LAB_GRIEVANCE_CATEGORIES } from '@serviceform/m10-sample-lab/grievance-catalogue';
 
 interface PortalGrievance {
   grievance_id: string;

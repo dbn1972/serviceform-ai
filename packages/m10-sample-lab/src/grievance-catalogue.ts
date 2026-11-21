@@ -68,10 +68,7 @@ export const SAMPLE_LAB_GRIEVANCE_ROUTING = {
 export function isSampleLabGrievanceCategory(
   value: unknown,
 ): value is SampleLabGrievanceCategoryCode {
-  return (
-    typeof value === 'string' &&
-    SAMPLE_LAB_GRIEVANCE_CATEGORIES.some((c) => c.code === value)
-  );
+  return typeof value === 'string' && SAMPLE_LAB_GRIEVANCE_CATEGORIES.some((c) => c.code === value);
 }
 
 export function escalationForLevel(level: number) {

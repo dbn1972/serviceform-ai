@@ -305,10 +305,7 @@ export class GrievanceFeedbackService {
   }
 
   /** Officer/helpdesk queue — optional role_code filter from assignment desk metadata. */
-  async listQueue(
-    rawCtx: unknown,
-    rawQuery: unknown,
-  ): Promise<ServiceResult> {
+  async listQueue(rawCtx: unknown, rawQuery: unknown): Promise<ServiceResult> {
     const ctx = requireTenantContext(rawCtx);
     const q =
       typeof rawQuery === 'object' && rawQuery !== null
@@ -582,10 +579,7 @@ export class GrievanceFeedbackService {
           );
         }
         let assignmentRow: AssignmentRequestRow | null = null;
-        if (
-          (command === 'REQUEST_ASSIGNMENT' || command === 'ESCALATE') &&
-          assignment
-        ) {
+        if ((command === 'REQUEST_ASSIGNMENT' || command === 'ESCALATE') && assignment) {
           assignmentRow = {
             request_id: randomUUID(),
             tenant_id: ctx.tenant_id,

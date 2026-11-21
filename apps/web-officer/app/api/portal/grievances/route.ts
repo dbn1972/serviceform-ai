@@ -1,7 +1,4 @@
-import {
-  toHelpdeskTicket,
-  type PlatformGrievance,
-} from '../../../../lib/portal/grievances';
+import { toHelpdeskTicket, type PlatformGrievance } from '../../../../lib/portal/grievances';
 import { currentOfficer, json, platform, relay } from '../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';

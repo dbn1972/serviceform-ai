@@ -1,7 +1,7 @@
 import {
   SAMPLE_LAB_GRIEVANCE_CATEGORIES,
   SAMPLE_LAB_GRIEVANCE_ROUTING,
-} from '@serviceform/m10-sample-lab';
+} from '@serviceform/m10-sample-lab/grievance-catalogue';
 import {
   parseCategory,
   toPortalGrievance,

@@ -3,7 +3,7 @@ import {
   SAMPLE_LAB_GRIEVANCE_ROUTING,
   isSampleLabGrievanceCategory,
   type SampleLabGrievanceCategoryCode,
-} from '@serviceform/m10-sample-lab';
+} from '@serviceform/m10-sample-lab/grievance-catalogue';
 import { randomUUID } from 'node:crypto';
 
 export interface PlatformGrievance {

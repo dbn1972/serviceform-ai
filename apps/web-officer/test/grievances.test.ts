@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  labAssignment,
-  toHelpdeskTicket,
-  type PlatformGrievance,
-} from '../lib/portal/grievances';
+import { labAssignment, toHelpdeskTicket, type PlatformGrievance } from '../lib/portal/grievances';
 
 const base: PlatformGrievance = {
   grievance_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',

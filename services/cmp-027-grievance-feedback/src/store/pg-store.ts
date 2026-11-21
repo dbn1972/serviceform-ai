@@ -365,8 +365,13 @@ class PgTx implements GrievanceTx {
   }
 
   async listByFiler(filerId: string, limit: number): Promise<GrievanceRow[]> {
+    // Column list is a fixed constant (not user input); keep SQL static for SAST.
     const { rows } = await this.client.query(
-      `SELECT ${G_COLS.join(',')} FROM sf_grievance.grievance
+      `SELECT grievance_id, tenant_id, cell_id, kind, status, aggregate_version, reference_code,
+              category_code, filer_id, organisation_id, jurisdiction_id, office_id, service_id,
+              application_id, workflow_version_id, created_by, created_at, updated_at,
+              last_correlation_id
+         FROM sf_grievance.grievance
         WHERE filer_id = $1
         ORDER BY created_at DESC
         LIMIT $2`,
@@ -381,7 +386,10 @@ class PgTx implements GrievanceTx {
     limit: number;
   }): Promise<GrievanceRow[]> {
     const { rows } = await this.client.query(
-      `SELECT g.${G_COLS.join(', g.')}
+      `SELECT g.grievance_id, g.tenant_id, g.cell_id, g.kind, g.status, g.aggregate_version,
+              g.reference_code, g.category_code, g.filer_id, g.organisation_id, g.jurisdiction_id,
+              g.office_id, g.service_id, g.application_id, g.workflow_version_id, g.created_by,
+              g.created_at, g.updated_at, g.last_correlation_id
          FROM sf_grievance.grievance g
          LEFT JOIN sf_grievance.assignment_request ar ON ar.grievance_id = g.grievance_id
         WHERE g.status = ANY($1::text[])

@@ -26,13 +26,16 @@ describe('SAMPLE_LAB grievance catalogue / routing', () => {
 
   it('routes published categories to L1 desk without named officers', async () => {
     const port = new LabGrievanceRoutingPort(catalogue);
-    const a = await port.resolve({}, {
-      category_code: 'CASE',
-      kind: 'GRIEVANCE',
-      organisation_id: null,
-      jurisdiction_id: null,
-      service_scope_id: null,
-    });
+    const a = await port.resolve(
+      {},
+      {
+        category_code: 'CASE',
+        kind: 'GRIEVANCE',
+        organisation_id: null,
+        jurisdiction_id: null,
+        service_scope_id: null,
+      },
+    );
     expect(a.role_code).toBe('SAMPLE_LAB_HELPDESK_L1');
     expect(Object.keys(a).sort()).toEqual(
       ['jurisdiction_id', 'office_id', 'organisation_id', 'role_code', 'service_scope_id'].sort(),
@@ -42,13 +45,16 @@ describe('SAMPLE_LAB grievance catalogue / routing', () => {
   it('refuses categories outside the published catalogue (fail-closed)', async () => {
     const port = new LabGrievanceRoutingPort(catalogue);
     await expect(
-      port.resolve({}, {
-        category_code: 'ORDER',
-        kind: 'GRIEVANCE',
-        organisation_id: null,
-        jurisdiction_id: null,
-        service_scope_id: null,
-      }),
+      port.resolve(
+        {},
+        {
+          category_code: 'ORDER',
+          kind: 'GRIEVANCE',
+          organisation_id: null,
+          jurisdiction_id: null,
+          service_scope_id: null,
+        },
+      ),
     ).rejects.toThrow(/CATEGORY_NOT_IN_PUBLISHED_CATALOGUE/);
   });
 

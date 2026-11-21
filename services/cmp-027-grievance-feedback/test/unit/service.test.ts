@@ -272,9 +272,9 @@ describe('CMP-027 grievance/feedback service', () => {
     const id = await file();
     await toOpen(id);
     const mine = await h.service.listMine(citizen(), 10);
-    expect((mine.body as { grievances: { grievance_id: string }[] }).grievances[0]?.grievance_id).toBe(
-      id,
-    );
+    expect(
+      (mine.body as { grievances: { grievance_id: string }[] }).grievances[0]?.grievance_id,
+    ).toBe(id);
     const queue = await h.service.listQueue(officer(), { limit: 10 });
     expect(
       (queue.body as { grievances: { grievance_id: string }[] }).grievances.some(

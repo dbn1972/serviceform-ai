@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import { SAMPLE_LAB_GRIEVANCE_ESCALATION } from '@serviceform/m10-sample-lab';
+import { SAMPLE_LAB_GRIEVANCE_ESCALATION } from '@serviceform/m10-sample-lab/grievance-catalogue';
 
 interface Ticket {
   grievance_id: string;
@@ -207,8 +207,7 @@ export function HelpdeskDesk() {
             ) : null}
           </div>
           <p className="ux4g-body-s-default">
-            Desk ladder:{' '}
-            {SAMPLE_LAB_GRIEVANCE_ESCALATION.map((e) => e.role_code).join(' → ')}
+            Desk ladder: {SAMPLE_LAB_GRIEVANCE_ESCALATION.map((e) => e.role_code).join(' → ')}
           </p>
         </section>
       ) : null}

@@ -2,7 +2,7 @@ import {
   SAMPLE_LAB_GRIEVANCE_ESCALATION,
   SAMPLE_LAB_GRIEVANCE_ROUTING,
   nextEscalationLevel,
-} from '@serviceform/m10-sample-lab';
+} from '@serviceform/m10-sample-lab/grievance-catalogue';
 import { randomUUID } from 'node:crypto';
 
 export interface PlatformGrievance {
@@ -68,8 +68,7 @@ export function toHelpdeskTicket(
     can_respond: g.status === 'OPEN' || g.status === 'PENDING_RESPONSE',
     can_resolve: g.status === 'OPEN' || g.status === 'PENDING_RESPONSE',
     can_close: g.status === 'RESOLVED',
-    can_escalate:
-      (g.status === 'OPEN' || g.status === 'PENDING_RESPONSE') && nextLevel !== null,
+    can_escalate: (g.status === 'OPEN' || g.status === 'PENDING_RESPONSE') && nextLevel !== null,
     next_escalation_level: nextLevel,
   };
 }

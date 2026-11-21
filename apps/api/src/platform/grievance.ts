@@ -108,8 +108,7 @@ export class LabGrievanceRoutingPort implements RoutingPolicyPort {
         code: 'SF-SYS-003',
       });
     }
-    const l1 =
-      this.catalogue.escalation.find((e) => e.level === 1) ?? DEFAULT_ESCALATION[0];
+    const l1 = this.catalogue.escalation.find((e) => e.level === 1) ?? DEFAULT_ESCALATION[0];
     return {
       role_code: l1.role_code,
       organisation_id: input.organisation_id ?? this.catalogue.routing.organisation_id,
