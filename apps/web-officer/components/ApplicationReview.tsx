@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Card } from '@serviceform/ui-ux4g';
+import { Alert, Button, Card, Checkbox, Select, TextInput } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
 
 type App = {
@@ -26,7 +26,30 @@ type App = {
   issuance_error?: { error_code: string; step: string };
 };
 
+type Catalogue = {
+  reasons: {
+    reason_code: string;
+    label: string;
+    notice_code: string;
+    instruction_ref: string;
+    default_item_codes: string[];
+  }[];
+  item_codes: { item_code: string; label: string }[];
+  close_reason_codes: { close_reason_code: string; label: string }[];
+};
+
+type DeficiencyNotice = {
+  deficiency_id: string;
+  status: string;
+  reason_code: string;
+  notice_code: string;
+  items: { item_code: string; required: boolean; item_status: string }[];
+  responded_at: string | null;
+  closed_at: string | null;
+};
+
 const AWAITING_ISSUE = ['APPROVED', 'SIGNING_PENDING'];
+const CAN_RAISE = ['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY'];
 
 function statusTag(status: string): string {
   switch (status) {
@@ -36,64 +59,195 @@ function statusTag(status: string): string {
       return 'ux4g-tag-tonal-error';
     case 'SUBMITTED':
       return 'ux4g-tag-tonal-info';
+    case 'DEFICIENCY_RAISED':
+    case 'ACTION_REQUIRED':
+      return 'ux4g-tag-tonal-warning';
+    case 'CITIZEN_RESPONSE':
+      return 'ux4g-tag-tonal-info';
     default:
       return 'ux4g-tag-tonal-neutral';
   }
 }
 
+function itemLabel(catalogue: Catalogue | null, code: string): string {
+  return catalogue?.item_codes.find((i) => i.item_code === code)?.label ?? code;
+}
+
+function reasonLabel(catalogue: Catalogue | null, code: string): string {
+  return catalogue?.reasons.find((r) => r.reason_code === code)?.label ?? code;
+}
+
 export function ApplicationReview({ id }: { id: string }) {
   const [app, setApp] = useState<App | null>(null);
+  const [catalogue, setCatalogue] = useState<Catalogue | null>(null);
+  const [deficiencies, setDeficiencies] = useState<DeficiencyNotice[]>([]);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
+  const [raising, setRaising] = useState(false);
+  const [reasonCode, setReasonCode] = useState('');
+  const [itemCodes, setItemCodes] = useState<string[]>([]);
+  const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    const res = await fetch(`/api/portal/applications/${id}`);
-    const body = (await res.json().catch(() => ({}))) as { application?: App; message?: string };
-    if (!res.ok || !body.application) {
-      setError(body.message ?? 'Application not found');
+    const [appRes, defRes] = await Promise.all([
+      fetch(`/api/portal/applications/${id}`),
+      fetch(`/api/portal/applications/${id}/deficiencies`),
+    ]);
+    const appBody = (await appRes.json().catch(() => ({}))) as {
+      application?: App;
+      message?: string;
+    };
+    if (!appRes.ok || !appBody.application) {
+      setError(appBody.message ?? 'Application not found');
       return;
     }
-    setApp(body.application);
+    setApp(appBody.application);
+    if (defRes.ok) {
+      const defBody = (await defRes.json()) as {
+        deficiencies?: DeficiencyNotice[];
+        catalogue?: Catalogue;
+      };
+      setDeficiencies(defBody.deficiencies ?? []);
+      if (defBody.catalogue) {
+        setCatalogue(defBody.catalogue);
+        setReasonCode((prev) => {
+          if (prev) return prev;
+          const first = defBody.catalogue?.reasons[0];
+          if (first) {
+            setItemCodes([...first.default_item_codes]);
+            return first.reason_code;
+          }
+          return prev;
+        });
+      }
+    }
   }, [id]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
+  function onReasonChange(next: string) {
+    setReasonCode(next);
+    const reason = catalogue?.reasons.find((r) => r.reason_code === next);
+    if (reason) setItemCodes([...reason.default_item_codes]);
+  }
+
+  function toggleItem(code: string) {
+    setItemCodes((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code],
+    );
+  }
+
   async function act(action: 'APPROVE' | 'REJECT' | 'ISSUE') {
     setError('');
     setInfo('');
-    const res = await fetch(`/api/portal/applications/${id}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ action }),
-    });
-    const body = (await res.json()) as {
-      error_code?: string;
-      message?: string;
-      application?: App;
-    };
-    if (!res.ok) {
-      setError(body.message ?? body.error_code ?? 'The decision could not be recorded');
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/portal/applications/${id}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action }),
+      });
+      const body = (await res.json()) as {
+        error_code?: string;
+        message?: string;
+        application?: App;
+      };
+      if (!res.ok) {
+        setError(body.message ?? body.error_code ?? 'The decision could not be recorded');
+        return;
+      }
+      const next = body.application;
+      if (next) setApp(next);
+      if (action === 'REJECT') {
+        setInfo('Rejected. Your decision is recorded on the case as a human decision.');
+        return;
+      }
+      const decision =
+        action === 'APPROVE'
+          ? 'Approved. Your decision is recorded on the case as a human decision. '
+          : '';
+      setInfo(
+        next?.issuance_error
+          ? `${decision}Issuance did not complete (${next.issuance_error.step}: ${next.issuance_error.error_code}); you can retry it.`
+          : next?.digilocker?.status === 'PUBLISHED'
+            ? `${decision}Certificate issued and published to DigiLocker (SIMULATED).`
+            : `${decision}Certificate issued; DigiLocker publish is ${next?.digilocker?.status ?? 'pending'}.`,
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function raiseDeficiency() {
+    setError('');
+    setInfo('');
+    if (!reasonCode || itemCodes.length < 1) {
+      setError('Choose a reason and at least one document to request');
       return;
     }
-    const next = body.application;
-    if (next) setApp(next);
-    if (action === 'REJECT') {
-      setInfo('Rejected. Your decision is recorded on the case as a human decision.');
-      return;
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/portal/applications/${id}/deficiencies`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          action: 'RAISE',
+          reason_code: reasonCode,
+          item_codes: itemCodes,
+        }),
+      });
+      const body = (await res.json()) as {
+        message?: string;
+        error_code?: string;
+        application?: App;
+        deficiency?: DeficiencyNotice;
+      };
+      if (!res.ok) {
+        setError(body.message ?? body.error_code ?? 'Could not raise deficiency');
+        return;
+      }
+      if (body.application) setApp(body.application);
+      setRaising(false);
+      setInfo(
+        'Deficiency raised. The case is now DEFICIENCY_RAISED / ACTION_REQUIRED for the citizen.',
+      );
+      await load();
+    } finally {
+      setBusy(false);
     }
-    const decision =
-      action === 'APPROVE'
-        ? 'Approved. Your decision is recorded on the case as a human decision. '
-        : '';
-    setInfo(
-      next?.issuance_error
-        ? `${decision}Issuance did not complete (${next.issuance_error.step}: ${next.issuance_error.error_code}); you can retry it.`
-        : next?.digilocker?.status === 'PUBLISHED'
-          ? `${decision}Certificate issued and published to DigiLocker (SIMULATED).`
-          : `${decision}Certificate issued; DigiLocker publish is ${next?.digilocker?.status ?? 'pending'}.`,
-    );
+  }
+
+  async function closeOpenDeficiency(deficiencyId: string) {
+    setError('');
+    setInfo('');
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/portal/applications/${id}/deficiencies`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          action: 'CLOSE',
+          deficiency_id: deficiencyId,
+          close_reason_code: catalogue?.close_reason_codes[0]?.close_reason_code,
+        }),
+      });
+      const body = (await res.json()) as {
+        message?: string;
+        error_code?: string;
+        application?: App;
+      };
+      if (!res.ok) {
+        setError(body.message ?? body.error_code ?? 'Could not close deficiency');
+        return;
+      }
+      if (body.application) setApp(body.application);
+      setInfo('Deficiency notice closed.');
+      await load();
+    } finally {
+      setBusy(false);
+    }
   }
 
   if (!app && !error) return <p className="ux4g-body-m-default">Loading…</p>;
@@ -106,94 +260,224 @@ export function ApplicationReview({ id }: { id: string }) {
   }
   if (!app) return null;
 
+  const openNotice = deficiencies.find((d) => d.status === 'OPEN');
+  const responseNotice = deficiencies.find((d) => d.status === 'RESPONSE_RECEIVED');
+  const canRaise =
+    CAN_RAISE.includes(app.platform_state) && !openNotice && !raising && catalogue;
+  const canDecide =
+    app.status === 'SUBMITTED' ||
+    app.platform_state === 'CITIZEN_RESPONSE' ||
+    app.platform_state === 'UNDER_SCRUTINY' ||
+    app.platform_state === 'DECISION_PENDING';
+
   return (
-    <Card
-      title="Review application"
-      subtitle="Human decision recorded on the Application/Case service (CMP-015)"
-      footer={
-        app.status === 'SUBMITTED' ? (
-          <div className="sf-actions">
-            <Button onClick={() => void act('APPROVE')}>Approve</Button>
-            <Button variant="outline-danger" onClick={() => void act('REJECT')}>
-              Reject
-            </Button>
-          </div>
-        ) : AWAITING_ISSUE.includes(app.platform_state) ? (
-          <div className="sf-actions">
-            <Button variant="outline-primary" onClick={() => void act('ISSUE')}>
-              Retry issuance
-            </Button>
-          </div>
-        ) : null
-      }
-    >
-      <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
-        After you approve, the platform signs and issues the certificate and publishes it to
-        DigiLocker using SIMULATED connectors. Eligibility rules are not evaluated here yet; review
-        the details yourself.
-      </Alert>
-
-      <div className="sf-meta-row">
-        <span className={statusTag(app.status)}>{app.status}</span>
-        <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
-        {app.digilocker ? (
-          <>
-            <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>
-            <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
-          </>
-        ) : null}
-      </div>
-
-      <dl className="sf-dl">
-        <dt>Applicant</dt>
-        <dd>
-          {app.applicant_name}
-          {app.applicant_mobile ? ` · ${app.applicant_mobile}` : ''}
-        </dd>
-        <dt>Address</dt>
-        <dd>
-          {app.residence_address
-            ? `${app.residence_address.house_no_or_name}, ${app.residence_address.locality}, ${app.residence_address.district}, ${app.residence_address.state_code} ${app.residence_address.pincode}`
-            : '—'}
-        </dd>
-        <dt>Residence</dt>
-        <dd>{app.residence_duration_months ?? '—'} months</dd>
-        <dt>Evidence</dt>
-        <dd>
-          {app.evidence_type}
-          {app.evidence_file_name ? ` · ${app.evidence_file_name}` : ''}
-        </dd>
-        <dt>Purpose</dt>
-        <dd>{app.purpose_of_certificate ?? '—'}</dd>
-        {app.credential_id ? (
-          <>
-            <dt>Credential</dt>
-            <dd>{app.credential_id}</dd>
-          </>
-        ) : null}
-        {app.digilocker?.provider_transaction_ref ? (
-          <>
-            <dt>DigiLocker ref</dt>
-            <dd>{app.digilocker.provider_transaction_ref}</dd>
-          </>
-        ) : null}
-      </dl>
-
-      {app.rejection_reason ? (
-        <Alert variant="error" title="Rejection">
-          {app.rejection_reason}
+    <div className="sf-section">
+      <Card
+        title="Review application"
+        subtitle="Human decision recorded on the Application/Case service (CMP-015)"
+        footer={
+          canDecide && !openNotice && !raising ? (
+            <div className="sf-actions">
+              <Button disabled={busy} onClick={() => void act('APPROVE')}>
+                Approve
+              </Button>
+              <Button
+                variant="outline-danger"
+                disabled={busy}
+                onClick={() => void act('REJECT')}
+              >
+                Reject
+              </Button>
+              {canRaise ? (
+                <Button
+                  variant="outline-primary"
+                  disabled={busy}
+                  onClick={() => setRaising(true)}
+                >
+                  Raise deficiency
+                </Button>
+              ) : null}
+            </div>
+          ) : AWAITING_ISSUE.includes(app.platform_state) ? (
+            <div className="sf-actions">
+              <Button
+                variant="outline-primary"
+                disabled={busy}
+                onClick={() => void act('ISSUE')}
+              >
+                Retry issuance
+              </Button>
+            </div>
+          ) : canRaise ? (
+            <div className="sf-actions">
+              <Button
+                variant="outline-primary"
+                disabled={busy}
+                onClick={() => setRaising(true)}
+              >
+                Raise deficiency
+              </Button>
+            </div>
+          ) : null
+        }
+      >
+        <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
+          After you approve, the platform signs and issues the certificate and publishes it to
+          DigiLocker using SIMULATED connectors. Eligibility rules are not evaluated here yet; review
+          the details yourself. Raise deficiency uses CMP-019 with published SAMPLE_LAB catalogue
+          codes only.
         </Alert>
+
+        <div className="sf-meta-row">
+          <span className={statusTag(app.status)}>{app.status}</span>
+          <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
+          {app.digilocker ? (
+            <>
+              <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>
+              <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
+            </>
+          ) : null}
+        </div>
+
+        <dl className="sf-dl">
+          <dt>Applicant</dt>
+          <dd>
+            {app.applicant_name}
+            {app.applicant_mobile ? ` · ${app.applicant_mobile}` : ''}
+          </dd>
+          <dt>Address</dt>
+          <dd>
+            {app.residence_address
+              ? `${app.residence_address.house_no_or_name}, ${app.residence_address.locality}, ${app.residence_address.district}, ${app.residence_address.state_code} ${app.residence_address.pincode}`
+              : '—'}
+          </dd>
+          <dt>Residence</dt>
+          <dd>{app.residence_duration_months ?? '—'} months</dd>
+          <dt>Evidence</dt>
+          <dd>
+            {app.evidence_type}
+            {app.evidence_file_name ? ` · ${app.evidence_file_name}` : ''}
+          </dd>
+          <dt>Purpose</dt>
+          <dd>{app.purpose_of_certificate ?? '—'}</dd>
+          {app.credential_id ? (
+            <>
+              <dt>Credential</dt>
+              <dd>{app.credential_id}</dd>
+            </>
+          ) : null}
+          {app.digilocker?.provider_transaction_ref ? (
+            <>
+              <dt>DigiLocker ref</dt>
+              <dd>{app.digilocker.provider_transaction_ref}</dd>
+            </>
+          ) : null}
+        </dl>
+
+        {app.rejection_reason ? (
+          <Alert variant="error" title="Rejection">
+            {app.rejection_reason}
+          </Alert>
+        ) : null}
+        {info ? (
+          <Alert variant="success" title="Recorded">
+            {info}
+          </Alert>
+        ) : null}
+        {error ? (
+          <Alert variant="error" title="Action failed">
+            {error}
+          </Alert>
+        ) : null}
+      </Card>
+
+      {raising && catalogue ? (
+        <Card
+          title="Raise deficiency"
+          subtitle="Request more evidence via CMP-019 (SAMPLE_LAB catalogue codes)"
+          footer={
+            <div className="sf-actions">
+              <Button disabled={busy} onClick={() => void raiseDeficiency()}>
+                Send request to citizen
+              </Button>
+              <Button
+                variant="outline-neutral"
+                disabled={busy}
+                onClick={() => setRaising(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          }
+        >
+          <Select
+            label="Reason"
+            value={reasonCode}
+            onChange={(e) => onReasonChange(e.target.value)}
+            options={catalogue.reasons.map((r) => ({
+              value: r.reason_code,
+              label: r.label,
+            }))}
+          />
+          <fieldset className="sf-section">
+            <legend className="ux4g-label-m-strong">Documents to request</legend>
+            <div className="sf-section">
+              {catalogue.item_codes.map((item) => (
+                <Checkbox
+                  key={item.item_code}
+                  label={item.label}
+                  checked={itemCodes.includes(item.item_code)}
+                  onChange={() => toggleItem(item.item_code)}
+                />
+              ))}
+            </div>
+          </fieldset>
+          <TextInput
+            label="Instruction reference (published)"
+            value={
+              catalogue.reasons.find((r) => r.reason_code === reasonCode)?.instruction_ref ?? ''
+            }
+            readOnly
+          />
+        </Card>
       ) : null}
-      {info ? (
-        <Alert variant="success" title="Decision recorded">
-          {info}
-        </Alert>
+
+      {openNotice || responseNotice || deficiencies.length > 0 ? (
+        <Card title="Deficiency notices" subtitle="CMP-019 status for this case">
+          <ul className="sf-section">
+            {deficiencies.map((d) => (
+              <li key={d.deficiency_id} className="sf-section">
+                <div className="sf-meta-row">
+                  <span className={statusTag(d.status)}>{d.status}</span>
+                  <span className="ux4g-tag-tonal-neutral">
+                    {reasonLabel(catalogue, d.reason_code)}
+                  </span>
+                </div>
+                <p className="ux4g-body-s-default">
+                  Requested:{' '}
+                  {d.items.map((i) => itemLabel(catalogue, i.item_code)).join(', ')}
+                </p>
+                {d.status === 'OPEN' ? (
+                  <p className="ux4g-body-s-default">
+                    Waiting for the citizen to upload and resubmit.
+                  </p>
+                ) : null}
+                {d.status === 'RESPONSE_RECEIVED' ? (
+                  <div className="sf-actions">
+                    <Button
+                      variant="outline-primary"
+                      disabled={busy}
+                      onClick={() => void closeOpenDeficiency(d.deficiency_id)}
+                    >
+                      Close deficiency
+                    </Button>
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </Card>
       ) : null}
-      {error ? (
-        <Alert variant="error" title="Action failed">
-          {error}
-        </Alert>
-      ) : null}
-    </Card>
+    </div>
   );
 }

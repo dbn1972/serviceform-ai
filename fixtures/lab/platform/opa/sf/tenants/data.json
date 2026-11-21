@@ -16,9 +16,12 @@
           "APPLICATION_RAISE_DEFICIENCY",
           "APPLICATION_RECORD_APPROVED",
           "APPLICATION_RECORD_REJECTED",
-          "APPLICATION_CLOSE"
+          "APPLICATION_CLOSE",
+          "DEFICIENCY_OPEN",
+          "DEFICIENCY_CLOSE",
+          "DEFICIENCY_READ"
         ],
-        "resource_types": ["ApplicationCase", "OfficerSession"],
+        "resource_types": ["ApplicationCase", "DeficiencyNotice", "OfficerSession"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

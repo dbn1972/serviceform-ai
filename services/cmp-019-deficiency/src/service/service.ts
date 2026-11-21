@@ -372,7 +372,10 @@ export class DeficiencyService {
     idem: Idempotency,
   ): Promise<CommandResult> {
     this.assertActor(ctx, ['CITIZEN']);
-    await this.guard(ctx, DEFICIENCY_ACTIONS.respond);
+    // Pre-read outside the mutating txn so PEP can carry application_id (citizen owner path).
+    const peeked = await this.deps.repo.withTx(ctx, (tx) => tx.getNotice(deficiencyId));
+    if (!peeked) throw new Cmp019Error('SF-SYS-002');
+    await this.guard(ctx, DEFICIENCY_ACTIONS.respond, peeked.application_id);
     return this.idempotent(ctx, idem, async (tx, now) => {
       const existing = await tx.getNotice(deficiencyId);
       if (!existing) throw new Cmp019Error('SF-SYS-002');
@@ -471,7 +474,9 @@ export class DeficiencyService {
     idem: Idempotency,
   ): Promise<CommandResult> {
     this.assertActor(ctx, ['OFFICER']);
-    await this.guard(ctx, DEFICIENCY_ACTIONS.close);
+    const peeked = await this.deps.repo.withTx(ctx, (tx) => tx.getNotice(deficiencyId));
+    if (!peeked) throw new Cmp019Error('SF-SYS-002');
+    await this.guard(ctx, DEFICIENCY_ACTIONS.close, peeked.application_id);
     return this.idempotent(ctx, idem, async (tx, now) => {
       const existing = await tx.getNotice(deficiencyId);
       if (!existing) throw new Cmp019Error('SF-SYS-002');
@@ -541,7 +546,9 @@ export class DeficiencyService {
   }
 
   async get(ctx: TenantContext, deficiencyId: string): Promise<CommandResult> {
-    await this.guard(ctx, DEFICIENCY_ACTIONS.read);
+    const peeked = await this.deps.repo.withTx(ctx, (tx) => tx.getNotice(deficiencyId));
+    if (!peeked) throw new Cmp019Error('SF-SYS-002');
+    await this.guard(ctx, DEFICIENCY_ACTIONS.read, peeked.application_id);
     return this.deps.repo.withTx(ctx, async (tx) => {
       const row = await tx.getNotice(deficiencyId);
       if (!row) throw new Cmp019Error('SF-SYS-002');
