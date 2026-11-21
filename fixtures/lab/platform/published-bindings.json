@@ -1,5 +1,5 @@
 {
-  "_note": "SAMPLE_LAB SIMULATED published-binding port data for the platform lab host (LOCAL/CI only; CMP-015 refuses SIMULATED ports in UAT/PREPROD/PRODUCTION). UUID re-stamp of fixtures/golden/ind-soc-002/tsb-publish-fixture.json pins. Studio/CMP-052 publication replaces this in slice B-4. Not CERTIFIED. G6=false.",
+  "_note": "SAMPLE_LAB SIMULATED published-binding port data for the platform lab host (LOCAL/CI only; CMP-015 refuses SIMULATED ports in UAT/PREPROD/PRODUCTION). Residence uses PUBLISHED catalogue pins; other rows are SAMPLE_LAB lab-offer pins for DRAFT stubs with SAMPLE_LAB DUMMY policy (fail-closed outside SAMPLE_LAB). Not CERTIFIED. G6=false.",
   "source_fixture": "fixtures/golden/ind-soc-002/tsb-publish-fixture.json",
   "simulation": "SIMULATED",
   "bindings": [
@@ -14,6 +14,101 @@
         "form_version_id": "0d15ba00-0010-4000-8000-0d15ba000010",
         "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
         "workflow_version_id": "0d15ba00-0012-4000-8000-0d15ba000012",
+        "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
+        "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
+        "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",
+        "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+        "notification_version_id": "0d15ba00-0017-4000-8000-0d15ba000017",
+        "authorization_policy_version_id": "0d15ba00-0018-4000-8000-0d15ba000018"
+      }
+    },
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "catalogue_id": "IND-SOC-031",
+      "tenant_service_binding_id": "0d15ba31-0002-4000-8000-0d15ba310002",
+      "service_id": "0d15ba31-0003-4000-8000-0d15ba310003",
+      "status": "PUBLISHED",
+      "pins": {
+        "tenant_service_binding_id": "0d15ba31-0002-4000-8000-0d15ba310002",
+        "form_version_id": "7e3a0031-0001-4000-8000-00000000031a",
+        "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
+        "workflow_version_id": "0d15ba31-0012-4000-8000-0d15ba310012",
+        "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
+        "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
+        "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",
+        "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+        "notification_version_id": "0d15ba00-0017-4000-8000-0d15ba000017",
+        "authorization_policy_version_id": "0d15ba00-0018-4000-8000-0d15ba000018"
+      }
+    },
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "catalogue_id": "IND-SOC-001",
+      "tenant_service_binding_id": "0d15ba01-0002-4000-8000-0d15ba010002",
+      "service_id": "0d15ba01-0003-4000-8000-0d15ba010003",
+      "status": "PUBLISHED",
+      "pins": {
+        "tenant_service_binding_id": "0d15ba01-0002-4000-8000-0d15ba010002",
+        "form_version_id": "7e3a0001-0001-4000-8000-00000000001a",
+        "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
+        "workflow_version_id": "0d15ba01-0012-4000-8000-0d15ba010012",
+        "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
+        "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
+        "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",
+        "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+        "notification_version_id": "0d15ba00-0017-4000-8000-0d15ba000017",
+        "authorization_policy_version_id": "0d15ba00-0018-4000-8000-0d15ba000018"
+      }
+    },
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "catalogue_id": "IND-CIV-001",
+      "tenant_service_binding_id": "0d15bac1-0002-4000-8000-0d15bac10002",
+      "service_id": "0d15bac1-0003-4000-8000-0d15bac10003",
+      "status": "PUBLISHED",
+      "pins": {
+        "tenant_service_binding_id": "0d15bac1-0002-4000-8000-0d15bac10002",
+        "form_version_id": "7e3ac001-0001-4000-8000-0000000c001a",
+        "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
+        "workflow_version_id": "0d15bac1-0012-4000-8000-0d15bac10012",
+        "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
+        "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
+        "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",
+        "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+        "notification_version_id": "0d15ba00-0017-4000-8000-0d15ba000017",
+        "authorization_policy_version_id": "0d15ba00-0018-4000-8000-0d15ba000018"
+      }
+    },
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "catalogue_id": "IND-AGR-002",
+      "tenant_service_binding_id": "0d15baa2-0002-4000-8000-0d15baa20002",
+      "service_id": "0d15baa2-0003-4000-8000-0d15baa20003",
+      "status": "PUBLISHED",
+      "pins": {
+        "tenant_service_binding_id": "0d15baa2-0002-4000-8000-0d15baa20002",
+        "form_version_id": "0f1015d4-fb7c-441b-ab16-4310fdf0fe25",
+        "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
+        "workflow_version_id": "0d15baa2-0012-4000-8000-0d15baa20012",
+        "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
+        "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
+        "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",
+        "credential_template_version_id": "0d15ba00-0016-4000-8000-0d15ba000016",
+        "notification_version_id": "0d15ba00-0017-4000-8000-0d15ba000017",
+        "authorization_policy_version_id": "0d15ba00-0018-4000-8000-0d15ba000018"
+      }
+    },
+    {
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "catalogue_id": "IND-EDU-004",
+      "tenant_service_binding_id": "0d15bae4-0002-4000-8000-0d15bae40002",
+      "service_id": "0d15bae4-0003-4000-8000-0d15bae40003",
+      "status": "PUBLISHED",
+      "pins": {
+        "tenant_service_binding_id": "0d15bae4-0002-4000-8000-0d15bae40002",
+        "form_version_id": "71259f27-72ff-4dce-a7b2-b9d924c00c4b",
+        "rule_version_id": "0d15ba00-0011-4000-8000-0d15ba000011",
+        "workflow_version_id": "0d15bae4-0012-4000-8000-0d15bae40012",
         "evidence_policy_version_id": "0d15ba00-0013-4000-8000-0d15ba000013",
         "sla_policy_version_id": "0d15ba00-0014-4000-8000-0d15ba000014",
         "fee_policy_version_id": "0d15ba00-0015-4000-8000-0d15ba000015",

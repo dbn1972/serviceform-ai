@@ -396,11 +396,19 @@ interface TemplateVersionLike {
   form: { form_id: string };
 }
 
+interface TemplateLike {
+  catalogue_id: string;
+  versions: readonly TemplateVersionLike[];
+  policy: { fee: string; service_time: string; eligibility: string; evidence: string };
+}
+
 interface TemplatesModule {
-  listTemplates(): readonly { catalogue_id: string; versions: readonly TemplateVersionLike[] }[];
-  publishedVersion(template: {
-    versions: readonly TemplateVersionLike[];
-  }): TemplateVersionLike | null;
+  listTemplates(): readonly TemplateLike[];
+  publishedVersion(template: TemplateLike): TemplateVersionLike | null;
+  labOfferVersion(
+    template: TemplateLike,
+    opts?: { environmentLabel?: string | null },
+  ): TemplateVersionLike | null;
 }
 
 interface TemplateIntegrityModule {
@@ -466,9 +474,25 @@ function poolReadiness(name: string, pool: pg.Pool): ReadinessCheck {
  * binding's pinned form version must be a PUBLISHED catalogue version whose recorded content hash
  * still matches its form, or the host refuses to start.
  */
-export function publishedFormFor(catalogueId: string, formVersionId: string, tenantId: string) {
+/**
+ * Resolve a catalogue form pin for the SIMULATED lab host.
+ * PUBLISHED versions are preferred. In SAMPLE_LAB only, DRAFT stubs that use SAMPLE_LAB DUMMY
+ * policy may be offered when a placement binds them — CMP-009 still receives status PUBLISHED
+ * so the engine accepts the pin; production/non-lab refuse DRAFT.
+ */
+export function publishedFormFor(
+  catalogueId: string,
+  formVersionId: string,
+  tenantId: string,
+  opts: { allowSampleLabDraft?: boolean } = {},
+) {
   const template = templates.catalogue.listTemplates().find((t) => t.catalogue_id === catalogueId);
-  const version = template ? templates.catalogue.publishedVersion(template) : null;
+  let version = template ? templates.catalogue.publishedVersion(template) : null;
+  if (!version && opts.allowSampleLabDraft && template) {
+    version = templates.catalogue.labOfferVersion(template, {
+      environmentLabel: 'SAMPLE_LAB',
+    });
+  }
   if (!version || version.version_id !== formVersionId) {
     throw new Error(`SF-M10: no PUBLISHED form version ${formVersionId} for ${catalogueId}`);
   }
@@ -736,9 +760,12 @@ export async function buildPlatformLab(
     ).toString(),
   });
   const catalogueForms = new cmp009.SimulatedFormDefinitionPort(formsConfig);
+  const allowSampleLabDraft = placement.environment_label === 'SAMPLE_LAB';
   for (const b of offeredBindings) {
     catalogueForms.publish(
-      publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id),
+      publishedFormFor(b.catalogue_id, b.pins.form_version_id, placement.tenant_id, {
+        allowSampleLabDraft,
+      }),
     );
   }
   // SF-M10-C-1: Studio forms frozen in CMP-033 resolve by hash pin after the catalogue.

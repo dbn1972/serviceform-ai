@@ -100,7 +100,7 @@ export default async function TemplateDetailPage({ params, searchParams }: Props
       </section>
 
       {template.maturity === 'SAMPLE_LAB_STUB' ? (
-        <Alert variant="warning" title="SAMPLE_LAB stub — not offered to citizens">
+        <Alert variant="warning" title="SAMPLE_LAB stub — DRAFT (lab-offer only when placement binds it)">
           Form fields follow the registry core fields. Fee, service time, eligibility and evidence
           use SAMPLE_LAB sample parameters (configurable per tenant via CMP-052) — starting lab
           values, not locked statute. Edit per tenant; replace before any non-lab use. Apply still

@@ -107,7 +107,9 @@ test.describe('Studio template catalogue', () => {
 
   test('a stub shows SAMPLE_LAB sample parameter labels (configurable)', async ({ page }) => {
     await open(page, `${STUDIO}/templates/ind-soc-031.income-certificate`);
-    await expect(page.getByText('SAMPLE_LAB stub — not offered to citizens')).toBeVisible();
+    await expect(
+      page.getByText(/SAMPLE_LAB stub — DRAFT \(lab-offer only when placement binds it\)/),
+    ).toBeVisible();
     await expect(page.getByText(/SAMPLE_LAB (DUMMY|sample)/).first()).toBeVisible();
     await expect(page.getByText('Policy input required')).toHaveCount(0);
     await expect(page.getByLabel('Annual income (₹)')).toHaveCount(0);
@@ -125,36 +127,38 @@ test.describe('citizen service catalogue', () => {
   }) => {
     await citizenSignIn(page, '/services');
     const online = page.getByRole('list', { name: 'Services you can apply for' });
-    await expect(online.getByRole('article')).toHaveCount(1);
+    await expect(online.getByRole('article')).toHaveCount(6);
     await expect(
       online.getByRole('link', { name: 'Apply now for Residence Certificate' }),
     ).toBeVisible();
+    await expect(
+      online.getByRole('link', { name: /Apply now for Income Certificate/ }),
+    ).toBeVisible();
     const upcoming = page.getByRole('list', { name: 'Services not yet available' });
     const upcomingCount = await upcoming.getByRole('article').count();
-    expect(upcomingCount).toBeGreaterThanOrEqual(157);
+    expect(upcomingCount).toBeGreaterThanOrEqual(152);
     await expect(upcoming.getByRole('link', { name: /^Apply now/ })).toHaveCount(0);
-    await page.getByLabel('Search services').fill('birth registration and birth');
+    await page.getByLabel('Search services').fill('permanent residence certificate');
     await expect(upcoming.getByRole('article')).toHaveCount(1);
-    await expect(page.getByText('No online service matches your search.')).toBeVisible();
+    await expect(upcoming.getByText('IND-SOC-003')).toBeVisible();
     await page.getByLabel('Search services').fill('');
     await expectAccessible(page);
 
     await page.getByLabel('Search services').fill('income certificate (individual)');
-    await upcoming
+    await online
       .getByRole('link', { name: 'View details of Income Certificate (individual)' })
       .click();
     await expect(page).toHaveURL(`${CITIZEN}/services/IND-SOC-031`);
-    await expect(
-      page.getByText('You cannot apply for this service in this portal yet'),
-    ).toBeVisible();
     await expect(page.getByText(/SAMPLE_LAB (DUMMY|sample)/).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /Start application/ })).toHaveCount(0);
+    await expect(page.getByRole('link', { name: /Start application/ })).toBeVisible();
     await expect(page.getByText('Annual income (₹)')).toBeVisible();
     await expectAccessible(page);
 
     const apply = await page.goto(`${CITIZEN}/services/IND-SOC-031/apply`);
-    expect(apply?.status()).toBe(404);
+    expect(apply?.status()).toBe(200);
     const unknown = await page.goto(`${CITIZEN}/services/IND-NOPE-000`);
     expect(unknown?.status()).toBe(404);
+    const unoffered = await page.goto(`${CITIZEN}/services/IND-SOC-003/apply`);
+    expect(unoffered?.status()).toBe(404);
   });
 });

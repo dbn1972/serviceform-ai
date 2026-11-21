@@ -1,3 +1,4 @@
+import { buildSampleLabFormData } from '@serviceform/service-templates';
 import {
   interpret,
   liveOfferingFormPin,
@@ -55,7 +56,9 @@ export async function GET(request: Request, ctx: Ctx) {
   const live = await livePin(citizen, catalogueId);
   if (!live) return json(404, NOT_OFFERED);
   const { template, version } = offered;
-  const sample = sampleLab() ? (version.sample_data ?? {}) : {};
+  const sample = sampleLab()
+    ? (version.sample_data ?? buildSampleLabFormData(version.form.json_schema))
+    : {};
   const profile = await readProfile(citizen);
   const prefill = profilePrefill(version.form.json_schema, sample, profile);
   const res = await interpret(citizen, live.pin, prefill);

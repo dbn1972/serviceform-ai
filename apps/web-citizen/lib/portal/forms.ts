@@ -1,7 +1,8 @@
 import { validateDisplayName } from '@serviceform/m10-sample-lab/identity-rules';
 import {
   formPin,
-  publishedVersion,
+  labOfferVersion,
+  policyInputsPending,
   templateByCatalogueId,
   type CertificateTemplate,
   type FormSchemaNode,
@@ -34,8 +35,11 @@ export interface OfferedForm {
 export function offeredForm(catalogueId: string): OfferedForm | null {
   const offering = offeringFor(catalogueId);
   const template = offering ? templateByCatalogueId(catalogueId) : null;
-  const version = template ? publishedVersion(template) : null;
-  return offering && template && version ? { template, version, offering } : null;
+  if (!offering || !template || policyInputsPending(template)) return null;
+  const version = labOfferVersion(template, {
+    environmentLabel: portalPlacement().environment_label ?? null,
+  });
+  return version ? { template, version, offering } : null;
 }
 
 export function sampleLab(): boolean {
