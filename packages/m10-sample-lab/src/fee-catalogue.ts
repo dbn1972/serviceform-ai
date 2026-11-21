@@ -88,8 +88,7 @@ export const SAMPLE_LAB_FEE_CATALOGUE: SampleLabFeeCatalogue = {
       tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
       tenant_service_binding_id: '0d15bae4-0002-4000-8000-0d15bae40002',
       publication_status: 'PUBLISHED',
-      content_hash:
-        'sha256:9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f',
+      content_hash: 'sha256:9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f',
       currency: 'INR',
       rule_version_id: null,
       waiver_policy_ref: null,

@@ -58,6 +58,33 @@ export type LabFeeCatalogue = {
 };
 
 /** Fail-closed defaults — must stay aligned with fixtures/lab/platform/fee-catalogue.json. */
+export const LAB_FEE_CONTENT_HASH =
+  'sha256:9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f';
+
+export const LAB_FEE_IND_EDU_004: SampleLabFeePolicyRow = {
+  catalogue_id: 'IND-EDU-004',
+  label: 'SAMPLE_LAB DUMMY · Transfer Certificate fee overlay (₹9.99)',
+  fee_policy_version_id: '0d15bae4-0015-4000-8000-0d15bae40015',
+  tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
+  tenant_service_binding_id: '0d15bae4-0002-4000-8000-0d15bae40002',
+  publication_status: 'PUBLISHED',
+  content_hash: LAB_FEE_CONTENT_HASH,
+  currency: 'INR',
+  rule_version_id: null,
+  waiver_policy_ref: null,
+  amount_minor: 999,
+  amount_display: 'SAMPLE_LAB DUMMY · ₹9.99',
+  fee_schedule_ref: 'SAMPLE_LAB_DUMMY_FEE_SCHEDULE',
+  lines: [
+    {
+      code: 'SAMPLE_LAB_DUMMY_BASE',
+      basis: 'FIXED_AMOUNT',
+      amount_minor: 999,
+      description_code: 'SAMPLE_LAB_DUMMY_FEE',
+    },
+  ],
+};
+
 export const LAB_FEE_DEFAULTS: LabFeeCatalogue = {
   source: 'SAMPLE_LAB',
   policy_kind: 'SAMPLE_LAB_DUMMY',
@@ -75,32 +102,7 @@ export const LAB_FEE_DEFAULTS: LabFeeCatalogue = {
     integration_actor_id: '0d15ba00-0021-4000-8000-0d15ba00021b',
     integration_roles: ['SAMPLE_LAB_PAYMENT_INTEGRATION'],
   },
-  policies: [
-    {
-      catalogue_id: 'IND-EDU-004',
-      label: 'SAMPLE_LAB DUMMY · Transfer Certificate fee overlay (₹9.99)',
-      fee_policy_version_id: '0d15bae4-0015-4000-8000-0d15bae40015',
-      tenant_id: '0d15ba00-0001-4000-8000-0d15ba0000d1',
-      tenant_service_binding_id: '0d15bae4-0002-4000-8000-0d15bae40002',
-      publication_status: 'PUBLISHED',
-      content_hash:
-        'sha256:9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f',
-      currency: 'INR',
-      rule_version_id: null,
-      waiver_policy_ref: null,
-      amount_minor: 999,
-      amount_display: 'SAMPLE_LAB DUMMY · ₹9.99',
-      fee_schedule_ref: 'SAMPLE_LAB_DUMMY_FEE_SCHEDULE',
-      lines: [
-        {
-          code: 'SAMPLE_LAB_DUMMY_BASE',
-          basis: 'FIXED_AMOUNT',
-          amount_minor: 999,
-          description_code: 'SAMPLE_LAB_DUMMY_FEE',
-        },
-      ],
-    },
-  ],
+  policies: [LAB_FEE_IND_EDU_004],
 };
 
 export type FeeServiceLike = {
@@ -192,10 +194,7 @@ type FeeQuotePortLike = {
 };
 
 type ConnectorBindingPortLike = {
-  resolve(
-    tenantId: string,
-    connectorBindingId: string,
-  ): Promise<Record<string, unknown> | null>;
+  resolve(tenantId: string, connectorBindingId: string): Promise<Record<string, unknown> | null>;
   resolveDefault(
     tenantId: string,
     connectorType: 'PAYMENT',
@@ -241,11 +240,10 @@ export function parseFeeCatalogue(raw: unknown): LabFeeCatalogue {
       tenant_id: String(p['tenant_id'] ?? ''),
       tenant_service_binding_id: String(p['tenant_service_binding_id'] ?? ''),
       publication_status: 'PUBLISHED',
-      content_hash: String(p['content_hash'] ?? LAB_FEE_DEFAULTS.policies[0]!.content_hash),
+      content_hash: String(p['content_hash'] ?? LAB_FEE_CONTENT_HASH),
       currency: String(p['currency'] ?? 'INR'),
       rule_version_id: typeof p['rule_version_id'] === 'string' ? p['rule_version_id'] : null,
-      waiver_policy_ref:
-        typeof p['waiver_policy_ref'] === 'string' ? p['waiver_policy_ref'] : null,
+      waiver_policy_ref: typeof p['waiver_policy_ref'] === 'string' ? p['waiver_policy_ref'] : null,
       amount_minor: Number(p['amount_minor'] ?? 0),
       amount_display: String(p['amount_display'] ?? 'SAMPLE_LAB DUMMY'),
       fee_schedule_ref: String(p['fee_schedule_ref'] ?? 'SAMPLE_LAB_DUMMY_FEE_SCHEDULE'),
@@ -306,7 +304,10 @@ export function loadFeeCatalogue(dir: string): LabFeeCatalogue {
 }
 
 /** True when SAMPLE_LAB DUMMY overlay pins a fee amount > 0 (not Residence ₹0). */
-export function requiresLabPayment(catalogueId: string, catalogue: LabFeeCatalogue = LAB_FEE_DEFAULTS): boolean {
+export function requiresLabPayment(
+  catalogueId: string,
+  catalogue: LabFeeCatalogue = LAB_FEE_DEFAULTS,
+): boolean {
   const row = catalogue.policies.find((p) => p.catalogue_id === catalogueId);
   return row !== null && row !== undefined && row.amount_minor > 0;
 }
@@ -529,8 +530,7 @@ export function composeLabPayment(params: {
 }): ComposeLabPaymentResult {
   assertSimulatorEnvironment(params.environment);
 
-  const systemCtx = () =>
-    paymentWorkloadContext(params.catalogue, params.cellId, params.tenantId);
+  const systemCtx = () => paymentWorkloadContext(params.catalogue, params.cellId, params.tenantId);
   const integrationCtx = () =>
     paymentIntegrationContext(params.catalogue, params.cellId, params.tenantId);
 
@@ -615,9 +615,11 @@ export function registerLabPaymentRoutes(
     const body = (request.body ?? {}) as Record<string, unknown>;
     const paymentIntentId =
       typeof body['payment_intent_id'] === 'string' ? body['payment_intent_id'] : '';
-    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-      paymentIntentId,
-    )) {
+    if (
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        paymentIntentId,
+      )
+    ) {
       return reply.code(400).send({
         error_code: 'SF-SYS-003',
         message: 'payment_intent_id UUID required',

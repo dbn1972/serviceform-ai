@@ -33,10 +33,7 @@ async function loadOwnedApplication(token: string, id: string) {
   return { ok: true as const, app };
 }
 
-export async function GET(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const citizen = await currentCitizen(request);
   if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
   const { id } = await ctx.params;
@@ -98,10 +95,7 @@ export async function GET(
   });
 }
 
-export async function POST(
-  request: Request,
-  ctx: { params: Promise<{ id: string }> },
-) {
+export async function POST(request: Request, ctx: { params: Promise<{ id: string }> }) {
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const citizen = await currentCitizen(request);

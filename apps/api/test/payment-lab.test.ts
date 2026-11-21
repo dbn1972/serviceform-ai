@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   LAB_FEE_DEFAULTS,
+  LAB_FEE_IND_EDU_004,
   LabFeePolicyPort,
   LabPaymentConnectorBindingPort,
   parseFeeCatalogue,
@@ -29,21 +30,29 @@ describe('SAMPLE_LAB DUMMY fee catalogue / SIM payment compose helpers (SF-56)',
 
   it('LabFeePolicyPort returns PUBLISHED FIXED_AMOUNT policy for pinned version', async () => {
     const port = new LabFeePolicyPort(LAB_FEE_DEFAULTS);
-    const row = LAB_FEE_DEFAULTS.policies[0]!;
-    const policy = await port.getPublishedVersion({ tenant_id: row.tenant_id }, row.fee_policy_version_id);
+    const row = LAB_FEE_IND_EDU_004;
+    const policy = await port.getPublishedVersion(
+      { tenant_id: row.tenant_id },
+      row.fee_policy_version_id,
+    );
     expect(policy?.publication_status).toBe('PUBLISHED');
     expect(policy?.lines[0]?.basis).toBe('FIXED_AMOUNT');
     expect(policy?.lines[0]?.amount_minor).toBe(999);
-    expect(await port.getPublishedVersion({ tenant_id: row.tenant_id }, '00000000-0000-4000-8000-000000000000')).toBeNull();
+    expect(
+      await port.getPublishedVersion(
+        { tenant_id: row.tenant_id },
+        '00000000-0000-4000-8000-000000000000',
+      ),
+    ).toBeNull();
   });
 
   it('LabPaymentConnectorBindingPort is SIMULATED PAYMENT only', async () => {
     const port = new LabPaymentConnectorBindingPort(
       LAB_FEE_DEFAULTS,
-      LAB_FEE_DEFAULTS.policies[0]!.tenant_id,
+      LAB_FEE_IND_EDU_004.tenant_id,
       'LOCAL',
     );
-    const binding = await port.resolveDefault(LAB_FEE_DEFAULTS.policies[0]!.tenant_id, 'PAYMENT');
+    const binding = await port.resolveDefault(LAB_FEE_IND_EDU_004.tenant_id, 'PAYMENT');
     expect(binding?.['mode']).toBe('SIMULATED');
     expect(binding?.['connector_type']).toBe('PAYMENT');
     expect(binding?.['secret_ref']).toBeNull();
