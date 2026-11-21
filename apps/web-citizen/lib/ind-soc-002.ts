@@ -47,6 +47,8 @@ export function applicationStatus(app: Pick<ApplicationSummary, 'status' | 'digi
   switch (app.status) {
     case 'SUBMITTED':
       return { label: 'Submitted · under review', tone: 'info' };
+    case 'PAYMENT_REQUIRED':
+      return { label: 'Fee payment required (SAMPLE_LAB DUMMY)', tone: 'info' };
     case 'APPROVED':
       return { label: 'Approved · certificate being issued', tone: 'info' };
     case 'ISSUED':

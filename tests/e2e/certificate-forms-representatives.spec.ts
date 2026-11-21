@@ -1,11 +1,12 @@
 /**
  * SAMPLE_LAB representative certificate E2E: Residence re-smoke + 5 lab-offered stubs.
- * Citizen apply → officer approve → DigiLocker SIMULATED for each representative.
+ * Citizen apply → (fee>0 SIM pay) → officer approve → DigiLocker SIMULATED.
+ * IND-EDU-004 uses SAMPLE_LAB DUMMY fee overlay (SF-56); Residence stays ₹0.
  * Full catalogue (159) form contract coverage lives in CMP-009 unit suite.
- * CERTIFIED=false · G6=false · DigiLocker SIMULATED · no invented statute.
+ * CERTIFIED=false · G6=false · DigiLocker/Payment SIMULATED · no invented statute.
  */
 import { randomInt } from 'node:crypto';
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import { withEvidenceIfRequired } from './helpers/evidence-upload';
 
 const CITIZEN = 'http://127.0.0.1:3000';
@@ -19,6 +20,13 @@ const REPRESENTATIVES = [
   'IND-AGR-002',
   'IND-EDU-004',
 ] as const;
+
+/** SAMPLE_LAB DUMMY fee>0 overlays exercised by SF-56 (keep in sync with fee-catalogue). */
+const FEE_GT_ZERO_CATALOGUES = new Set<string>(['IND-EDU-004']);
+
+function requiresLabPayment(catalogueId: string): boolean {
+  return FEE_GT_ZERO_CATALOGUES.has(catalogueId);
+}
 
 const uniqueMobile = () => `9${randomInt(100_000_000, 1_000_000_000)}`;
 
@@ -62,6 +70,43 @@ async function cookieFor(page: Page, name: string): Promise<string> {
   const hit = cookies.find((c) => c.name === name);
   if (!hit) throw new Error(`missing cookie ${name}`);
   return `${name}=${hit.value}`;
+}
+
+/**
+ * SF-56: SAMPLE_LAB DUMMY fee>0 (e.g. IND-EDU-004) lands in PAYMENT_REQUIRED.
+ * Complete SIMULATED pay via BFF before officer path. Residence ₹0 skips this.
+ */
+async function completeSimPaymentIfRequired(
+  request: APIRequestContext,
+  cookie: string,
+  catalogueId: string,
+  applicationId: string,
+  status: string,
+): Promise<void> {
+  if (!requiresLabPayment(catalogueId) && status !== 'PAYMENT_REQUIRED') return;
+  expect(status).toBe('PAYMENT_REQUIRED');
+  const pay = await request.post(`${CITIZEN}/api/portal/applications/${applicationId}/payment`, {
+    headers: {
+      cookie,
+      'content-type': 'application/json',
+      'idempotency-key': `e2e-pay-${applicationId.slice(0, 8)}`,
+    },
+    data: {},
+  });
+  expect(pay.status(), `${catalogueId} SIM payment ${await pay.text()}`).toBe(200);
+  const body = (await pay.json()) as {
+    application?: { status?: string; platform_state?: string };
+    connector_mode?: string;
+    certified?: boolean;
+    g6_issued?: boolean;
+  };
+  expect(body.connector_mode).toBe('SIMULATED');
+  expect(body.certified).toBe(false);
+  expect(body.g6_issued).toBe(false);
+  expect(['SUBMITTED', 'ACTION_REQUIRED']).toContain(body.application?.status);
+  expect(['RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING', 'SUBMITTED']).toContain(
+    body.application?.platform_state,
+  );
 }
 
 test.describe('SAMPLE_LAB certificate representatives — form load + submit API', () => {
@@ -114,10 +159,22 @@ test.describe('SAMPLE_LAB certificate representatives — form load + submit API
       expect(created.application.id).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
-      expect(['SUBMITTED', 'ACTION_REQUIRED']).toContain(created.application.status);
-      expect(['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING']).toContain(
-        created.application.platform_state,
-      );
+      if (requiresLabPayment(catalogueId)) {
+        expect(created.application.status).toBe('PAYMENT_REQUIRED');
+        expect(created.application.platform_state).toBe('PAYMENT_PENDING');
+        await completeSimPaymentIfRequired(
+          page.request,
+          cookie,
+          catalogueId,
+          created.application.id,
+          created.application.status,
+        );
+      } else {
+        expect(['SUBMITTED', 'ACTION_REQUIRED']).toContain(created.application.status);
+        expect(['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING']).toContain(
+          created.application.platform_state,
+        );
+      }
     });
   }
 });
@@ -154,10 +211,19 @@ test.describe('SAMPLE_LAB certificate representatives — officer + DigiLocker S
         },
       });
       expect(submit.status(), await submit.text()).toBe(201);
-      const app = (await submit.json()) as { application: { id: string } };
+      const app = (await submit.json()) as {
+        application: { id: string; status: string };
+      };
       const id = app.application.id;
       expect(id).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+      );
+      await completeSimPaymentIfRequired(
+        citizen.request,
+        cookie,
+        catalogueId,
+        id,
+        app.application.status,
       );
 
       const officer = await (await browser.newContext()).newPage();

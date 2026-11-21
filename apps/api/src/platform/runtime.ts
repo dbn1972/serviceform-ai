@@ -144,6 +144,12 @@ import {
   loadNotificationCatalogue,
   type LabJourneyNotifyBridge,
 } from './notification.js';
+import {
+  composeLabPayment,
+  loadFeeCatalogue,
+  registerLabPaymentRoutes,
+  type ComposeLabPaymentResult,
+} from './payment.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -188,6 +194,10 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP025?: string;
   /** SF-55: optional CMP-026 messaging (official notices; fanout still CMP-025). */
   DATABASE_URL_CMP026?: string;
+  /** SF-56: optional CMP-020 fee calculation (SAMPLE_LAB DUMMY fee>0). */
+  DATABASE_URL_CMP020?: string;
+  /** SF-56: optional CMP-021 payment (SIMULATED PSP only; REAL owner-held). */
+  DATABASE_URL_CMP021?: string;
   SF_TEMPORAL_ADDRESS?: string;
   SF_TEMPORAL_NAMESPACE?: string;
   SF_TEMPORAL_TASK_QUEUE?: string;
@@ -220,7 +230,7 @@ export interface PlatformLab {
   m03?: M03PluginMounts;
   m04: M04PluginMounts;
   m05: M05PluginMounts;
-  /** SF-55: CMP-025/026 when DATABASE_URL_CMP025(/026) are set. */
+  /** SF-55/SF-56: CMP-020/021/025/026 when corresponding DATABASE_URL_CMP* are set. */
   m06?: M06PluginMounts;
   m07: M07PluginMounts;
   wave2: Wave2PluginMounts;
@@ -240,6 +250,8 @@ export interface PlatformLab {
   registerInspection?(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB CMP-057 assisted/CSC lab routes (optional when DATABASE_URL_CMP057 is set). */
   registerAssisted?(app: FastifyInstance): Promise<void>;
+  /** SF-56: lab SIM payment callback (INTEGRATION + HMAC) when CMP-020/021 mounted. */
+  registerPayment?(app: FastifyInstance): Promise<void>;
   /** M09 mounts (CMP-057 assisted) when DATABASE_URL_CMP057 is set. */
   m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
@@ -719,6 +731,12 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP026
       ? { cmp026: new pg.Pool({ connectionString: env.DATABASE_URL_CMP026, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP020
+      ? { cmp020: new pg.Pool({ connectionString: env.DATABASE_URL_CMP020, max: 4 }) }
+      : {}),
+    ...(env.DATABASE_URL_CMP021
+      ? { cmp021: new pg.Pool({ connectionString: env.DATABASE_URL_CMP021, max: 4 }) }
+      : {}),
   } as {
     cmp004: pg.Pool;
     cmp009: pg.Pool;
@@ -741,6 +759,8 @@ export async function buildPlatformLab(
     cmp057?: pg.Pool;
     cmp025?: pg.Pool;
     cmp026?: pg.Pool;
+    cmp020?: pg.Pool;
+    cmp021?: pg.Pool;
   };
   const opa = new OpaPdpClient({
     opaUrl: required(env, 'SF_OPA_URL'),
@@ -1078,6 +1098,45 @@ export async function buildPlatformLab(
     applicationCase.bindJourneyNotify(journeyNotify);
   }
 
+  // SF-56: CMP-020/021 SAMPLE_LAB DUMMY fee>0 + SIMULATED payment. Merges into m06 mounts.
+  let paymentLab: ComposeLabPaymentResult | null = null;
+  if (pools.cmp020 && pools.cmp021) {
+    const [cmp020, cmp021] = await Promise.all([
+      loadComponent<{
+        buildFeeService: (opts: Record<string, unknown>) => unknown;
+      }>('@serviceform/cmp-020-fee-calculation', 'cmp-020-fee-calculation'),
+      loadComponent<{
+        buildPaymentService: (opts: Record<string, unknown>) => unknown;
+        SimulatedPspConnector: new (marker: {
+          simulation: true;
+          scenario: string;
+          test_run_id: string;
+          connector_binding_id: string;
+          environment: string;
+        }) => unknown;
+        simulatorSecret: (testRunId: string) => string;
+        signPayload: (secret: string, payload: Record<string, unknown>) => string;
+      }>('@serviceform/cmp-021-payment', 'cmp-021-payment'),
+    ]);
+    paymentLab = composeLabPayment({
+      feePool: pools.cmp020,
+      paymentPool: pools.cmp021,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+      resolveContext: (request) => resolveContext(request as Parameters<typeof resolveContext>[0]),
+      environment,
+      catalogue: loadFeeCatalogue(dir),
+      cellId: placement.cell_id,
+      tenantId: placement.tenant_id,
+      cases: applicationCase,
+      cmp020: cmp020 as never,
+      cmp021: cmp021 as never,
+    });
+    m06 = {
+      ...(m06 ?? {}),
+      ...paymentLab.m06FeePayment,
+    } as M06PluginMounts;
+  }
+
   const coordinator = new LabIssuanceCoordinator({
     config: issuance,
     cases,
@@ -1408,6 +1467,8 @@ export async function buildPlatformLab(
       ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
       ...(pools.cmp025 ? [poolReadiness('cmp025-db', pools.cmp025)] : []),
       ...(pools.cmp026 ? [poolReadiness('cmp026-db', pools.cmp026)] : []),
+      ...(pools.cmp020 ? [poolReadiness('cmp020-db', pools.cmp020)] : []),
+      ...(pools.cmp021 ? [poolReadiness('cmp021-db', pools.cmp021)] : []),
       ...workflow.readinessChecks,
     ],
     ...(m06 ? { m06 } : {}),
@@ -1496,6 +1557,16 @@ export async function buildPlatformLab(
               ledger: assistedMount.ledger,
               applicationCase,
               offerings: placement.offerings,
+            });
+          },
+        }
+      : {}),
+    ...(paymentLab
+      ? {
+          registerPayment: async (app: FastifyInstance) => {
+            registerLabPaymentRoutes(app, {
+              environment,
+              applySimulatedCapture: paymentLab.applySimulatedCapture,
             });
           },
         }

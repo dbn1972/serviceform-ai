@@ -23,6 +23,7 @@ import {
   platform,
   relay,
 } from '../../../../lib/portal/platform';
+import { requiresLabPayment } from '@serviceform/m10-sample-lab/fee-catalogue';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -168,10 +169,25 @@ export async function POST(request: Request) {
     if (!next.ok) return relay(next.res);
     app = next.app;
   }
+
+  // SF-56: SAMPLE_LAB DUMMY fee>0 (e.g. IND-EDU-004) enters PAYMENT_PENDING.
+  // Residence ₹0 and other zero-fee offers skip payment (unchanged MARK_RECEIVED path).
+  if (sampleLab() && requiresLabPayment(catalogueId)) {
+    const pay = await command(
+      citizen,
+      app,
+      'ENTER_PAYMENT_PENDING',
+      keys.base ? `${keys.base}-enter-payment` : undefined,
+    );
+    if (!pay.ok) return relay(pay.res);
+    app = pay.app;
+  }
+
   return json(201, {
     application: toPortalApplication(app, data, null, catalogueId),
     form_execution: validated.execution,
     source: 'PLATFORM',
     g6_issued: false,
+    certified: false,
   });
 }

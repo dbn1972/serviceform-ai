@@ -1,0 +1,49 @@
+{
+  "_note": "SAMPLE_LAB DUMMY fee catalogue for CMP-020/021 (SF-56). Not statute. Residence (IND-SOC-002) stays ₹0 and is absent here. IND-EDU-004 Transfer Certificate uses FIXED_AMOUNT 999 paise (₹9.99) labeled SAMPLE_LAB DUMMY. Payment connector is SIMULATED only — REAL HubPsp owner-held. CERTIFIED=false. G6=false.",
+  "source": "SAMPLE_LAB",
+  "policy_kind": "SAMPLE_LAB_DUMMY",
+  "not_statutory": true,
+  "not_for_production": true,
+  "certified": false,
+  "g6": false,
+  "self_certified": false,
+  "connector": {
+    "connector_binding_id": "0d15ba00-0021-4000-8000-0d15ba000021",
+    "connector_type": "PAYMENT",
+    "mode": "SIMULATED",
+    "simulator_version": "sample-lab-psp-1",
+    "critical": false
+  },
+  "test_run_id": "sample-lab-payment",
+  "workload": {
+    "payment_actor_id": "0d15ba00-0021-4000-8000-0d15ba00021a",
+    "payment_roles": ["SAMPLE_LAB_PAYMENT_WORKLOAD"],
+    "integration_actor_id": "0d15ba00-0021-4000-8000-0d15ba00021b",
+    "integration_roles": ["SAMPLE_LAB_PAYMENT_INTEGRATION"]
+  },
+  "policies": [
+    {
+      "catalogue_id": "IND-EDU-004",
+      "label": "SAMPLE_LAB DUMMY · Transfer Certificate fee overlay (₹9.99)",
+      "fee_policy_version_id": "0d15bae4-0015-4000-8000-0d15bae40015",
+      "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+      "tenant_service_binding_id": "0d15bae4-0002-4000-8000-0d15bae40002",
+      "publication_status": "PUBLISHED",
+      "content_hash": "sha256:9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f9f",
+      "currency": "INR",
+      "rule_version_id": null,
+      "waiver_policy_ref": null,
+      "amount_minor": 999,
+      "amount_display": "SAMPLE_LAB DUMMY · ₹9.99",
+      "fee_schedule_ref": "SAMPLE_LAB_DUMMY_FEE_SCHEDULE",
+      "lines": [
+        {
+          "code": "SAMPLE_LAB_DUMMY_BASE",
+          "basis": "FIXED_AMOUNT",
+          "amount_minor": 999,
+          "description_code": "SAMPLE_LAB_DUMMY_FEE"
+        }
+      ]
+    }
+  ]
+}
