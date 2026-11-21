@@ -10,9 +10,9 @@ describe('SAMPLE_LAB M08 ops catalogue', () => {
   it('exposes opaque search seeds and ops analyst role', () => {
     expect(SAMPLE_LAB_OPS_ANALYST_ROLE).toBe('SAMPLE_LAB_OPS_ANALYST');
     expect(SAMPLE_LAB_M08_OPS_CATALOGUE.search_documents.length).toBeGreaterThan(0);
-    expect(SAMPLE_LAB_M08_OPS_CATALOGUE.discovery_services.some((s) => s.service_code === 'IND-SOC-002')).toBe(
-      true,
-    );
+    expect(
+      SAMPLE_LAB_M08_OPS_CATALOGUE.discovery_services.some((s) => s.service_code === 'IND-SOC-002'),
+    ).toBe(true);
   });
 
   it('labels search hits and ops views without inventing statute', () => {

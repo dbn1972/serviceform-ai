@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.026759917">
-    <testsuite name="apps/api/test/m08-ops-lab.test.ts" timestamp="2026-11-21T21:54:18.975Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003550515">
-        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; parses search, analytics, ops and discovery seeds without PII facet names" time="0.001956749">
+<testsuites name="vitest tests" tests="11" failures="0" errors="0" time="0.032298545">
+    <testsuite name="apps/api/test/m08-ops-lab.test.ts" timestamp="2026-11-21T22:01:10.295Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.004313869">
+        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; parses search, analytics, ops and discovery seeds without PII facet names" time="0.002487659">
         </testcase>
-        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; falls back safely on empty input" time="0.000528976">
-        </testcase>
-    </testsuite>
-    <testsuite name="apps/web-admin/test/markup.test.tsx" timestamp="2026-11-21T21:54:18.976Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.017534257">
-        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; keeps the shell heading and landmarks" time="0.010000963">
-        </testcase>
-        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; exposes binding and review destinations" time="0.001254106">
-        </testcase>
-        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page includes reusable jurisdiction scope desk for any offering" time="0.003125592">
-        </testcase>
-        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)" time="0.002161173">
+        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; falls back safely on empty input" time="0.000664232">
         </testcase>
     </testsuite>
-    <testsuite name="apps/web-officer/test/search-ops.test.ts" timestamp="2026-11-21T21:54:18.976Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003079167">
-        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; builds CMP-035 query with opaque facets only" time="0.001513675">
+    <testsuite name="apps/web-admin/test/markup.test.tsx" timestamp="2026-11-21T22:01:10.296Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.020164031">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; keeps the shell heading and landmarks" time="0.01089543">
         </testcase>
-        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects search hits as non-authoritative cards" time="0.000329064">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; exposes binding and review destinations" time="0.001475594">
         </testcase>
-        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects ops views with refresh enabled" time="0.000263457">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page includes reusable jurisdiction scope desk for any offering" time="0.003749114">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)" time="0.002744914">
         </testcase>
     </testsuite>
-    <testsuite name="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" timestamp="2026-11-21T21:54:18.977Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.002595978">
-        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; exposes opaque search seeds and ops analyst role" time="0.001308464">
+    <testsuite name="apps/web-officer/test/search-ops.test.ts" timestamp="2026-11-21T22:01:10.296Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.004883886">
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; builds CMP-035 query with opaque facets only" time="0.00231852">
         </testcase>
-        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; labels search hits and ops views without inventing statute" time="0.000333849">
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects search hits as non-authoritative cards" time="0.000589132">
+        </testcase>
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects ops views with refresh enabled" time="0.000403405">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" timestamp="2026-11-21T22:01:10.297Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.002936759">
+        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; exposes opaque search seeds and ops analyst role" time="0.00133177">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; labels search hits and ops views without inventing statute" time="0.000323436">
         </testcase>
     </testsuite>
 </testsuites>

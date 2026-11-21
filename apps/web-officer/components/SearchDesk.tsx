@@ -109,7 +109,9 @@ export function SearchDesk() {
 
       <ul className="sf-list" aria-label="Search results">
         {hits.length === 0 ? (
-          <li className="ux4g-body-m-default">No projection hits yet. Run a search or seed lab ensure.</li>
+          <li className="ux4g-body-m-default">
+            No projection hits yet. Run a search or seed lab ensure.
+          </li>
         ) : (
           hits.map((hit) => (
             <li key={hit.document_id}>

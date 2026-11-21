@@ -1,4 +1,8 @@
-import { buildSearchBody, toSearchHitCard, type PlatformSearchHit } from '../../../../lib/portal/search';
+import {
+  buildSearchBody,
+  toSearchHitCard,
+  type PlatformSearchHit,
+} from '../../../../lib/portal/search';
 import {
   crossSiteRefusal,
   currentOfficer,

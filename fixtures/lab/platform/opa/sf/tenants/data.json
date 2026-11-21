@@ -151,11 +151,7 @@
           "APPOINTMENT_SLOT_LIST",
           "APPOINTMENT_READ"
         ],
-        "resource_types": [
-          "AppointmentType",
-          "AppointmentSlot",
-          "Appointment"
-        ],
+        "resource_types": ["AppointmentType", "AppointmentSlot", "Appointment"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -263,10 +259,7 @@
           "GRIEVANCE_ESCALATE",
           "GRIEVANCE_AI_ASSIST"
         ],
-        "resource_types": [
-          "OfficerSession",
-          "GrievanceFeedback"
-        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -286,10 +279,7 @@
           "GRIEVANCE_ESCALATE",
           "GRIEVANCE_AI_ASSIST"
         ],
-        "resource_types": [
-          "OfficerSession",
-          "GrievanceFeedback"
-        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -309,10 +299,7 @@
           "GRIEVANCE_ESCALATE",
           "GRIEVANCE_AI_ASSIST"
         ],
-        "resource_types": [
-          "OfficerSession",
-          "GrievanceFeedback"
-        ],
+        "resource_types": ["OfficerSession", "GrievanceFeedback"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -326,11 +313,7 @@
           "TASK_CREATE",
           "TASK_CANCEL_CLOSE"
         ],
-        "resource_types": [
-          "Application",
-          "ApplicationCase",
-          "HumanTask"
-        ],
+        "resource_types": ["Application", "ApplicationCase", "HumanTask"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -347,11 +330,7 @@
           "SLA_CLOCK_EVALUATE",
           "SLA_CLOCK_READ"
         ],
-        "resource_types": [
-          "SlaCalendar",
-          "SlaPolicy",
-          "SlaClock"
-        ],
+        "resource_types": ["SlaCalendar", "SlaPolicy", "SlaClock"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -371,24 +350,14 @@
           "MESSAGE_READ",
           "NOTICE_SEND"
         ],
-        "resource_types": [
-          "NotificationDispatch",
-          "NotificationTemplate",
-          "MessageThread"
-        ],
+        "resource_types": ["NotificationDispatch", "NotificationTemplate", "MessageThread"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_NOTIFY_WORKER": {
         "_note": "SF-55: SYSTEM workload for CMP-025 SIM delivery drain (same state machine as REAL hub). Cannot record a case decision.",
-        "actions": [
-          "NOTIFICATION_DELIVER",
-          "NOTIFICATION_READ",
-          "NOTIFICATION_RECEIPT_RECORD"
-        ],
-        "resource_types": [
-          "NotificationDispatch"
-        ],
+        "actions": ["NOTIFICATION_DELIVER", "NOTIFICATION_READ", "NOTIFICATION_RECEIPT_RECORD"],
+        "resource_types": ["NotificationDispatch"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -401,23 +370,14 @@
           "APPLICATION_TRANSITIONS_READ",
           "APPLICATION_MARK_RECEIVED"
         ],
-        "resource_types": [
-          "FeeQuote",
-          "PaymentIntent",
-          "ApplicationCase"
-        ],
+        "resource_types": ["FeeQuote", "PaymentIntent", "ApplicationCase"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_PAYMENT_INTEGRATION": {
         "_note": "SF-56: INTEGRATION actor for CMP-021 SIMULATED PSP callback (HMAC). Same state machine as REAL HubPsp; REAL deferred to owner.",
-        "actions": [
-          "PAYMENT_CALLBACK_APPLY",
-          "PAYMENT_INTENT_READ"
-        ],
-        "resource_types": [
-          "PaymentIntent"
-        ],
+        "actions": ["PAYMENT_CALLBACK_APPLY", "PAYMENT_INTENT_READ"],
+        "resource_types": ["PaymentIntent"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
@@ -446,26 +406,14 @@
         "all_services": true
       },
       "SAMPLE_LAB_CONSENT_GATE": {
-        "actions": [
-          "PRIVACY_ACCESS_CHECK"
-        ],
-        "resource_types": [
-          "Consent"
-        ],
+        "actions": ["PRIVACY_ACCESS_CHECK"],
+        "resource_types": ["Consent"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },
       "SAMPLE_LAB_PRIVACY_PUBLISHER": {
-        "actions": [
-          "PURPOSE_CREATE",
-          "PURPOSE_READ",
-          "NOTICE_CREATE",
-          "NOTICE_PUBLISH"
-        ],
-        "resource_types": [
-          "Purpose",
-          "PrivacyNotice"
-        ],
+        "actions": ["PURPOSE_CREATE", "PURPOSE_READ", "NOTICE_CREATE", "NOTICE_PUBLISH"],
+        "resource_types": ["Purpose", "PrivacyNotice"],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true
       },

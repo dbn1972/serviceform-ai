@@ -7,10 +7,7 @@ import {
   type SearchDocumentRow,
   type SearchStore,
 } from '@serviceform/cmp-035-search-indexing';
-import {
-  buildAnalyticsService,
-  type AnalyticsService,
-} from '@serviceform/cmp-045-analytics-mis';
+import { buildAnalyticsService, type AnalyticsService } from '@serviceform/cmp-045-analytics-mis';
 import {
   buildOpsDashboardService,
   VIEW_CODES,
@@ -144,12 +141,17 @@ export function parseM08OpsCatalogue(raw: unknown): LabM08OpsCatalogue {
     if (!metric_code) continue;
     metric_definitions.push({
       metric_code,
-      publication_ref: typeof m['publication_ref'] === 'string' ? m['publication_ref'] : metric_code,
+      publication_ref:
+        typeof m['publication_ref'] === 'string' ? m['publication_ref'] : metric_code,
       purpose_code: typeof m['purpose_code'] === 'string' ? m['purpose_code'] : 'OPS_MIS',
       source_event_type:
-        typeof m['source_event_type'] === 'string' ? m['source_event_type'] : 'ApplicationCaseTransitioned',
+        typeof m['source_event_type'] === 'string'
+          ? m['source_event_type']
+          : 'ApplicationCaseTransitioned',
       source_aggregate_type:
-        typeof m['source_aggregate_type'] === 'string' ? m['source_aggregate_type'] : 'ApplicationCase',
+        typeof m['source_aggregate_type'] === 'string'
+          ? m['source_aggregate_type']
+          : 'ApplicationCase',
       source_schema_version:
         typeof m['source_schema_version'] === 'number' ? m['source_schema_version'] : 1,
       aggregation: m['aggregation'] === 'SUM' ? 'SUM' : 'COUNT',
@@ -189,9 +191,7 @@ export function parseM08OpsCatalogue(raw: unknown): LabM08OpsCatalogue {
       s['status'] === 'DEGRADED' || s['status'] === 'UNAVAILABLE' || s['status'] === 'OK'
         ? s['status']
         : 'OK';
-    const metrics = Array.isArray(s['metrics'])
-      ? (s['metrics'] as LabOpsSample['metrics'])
-      : [];
+    const metrics = Array.isArray(s['metrics']) ? (s['metrics'] as LabOpsSample['metrics']) : [];
     ops_samples[code] = { status, metrics };
   }
 
@@ -346,7 +346,9 @@ class LabDiscoverySearchPort implements SearchPort {
       return keywords.every((k) => hay.includes(k));
     });
     rows = rows.slice(input.offset, input.offset + input.limit);
-    return Promise.resolve(rows.map((s) => ({ tenant_id: this.tenantId, service_id: s.service_id })));
+    return Promise.resolve(
+      rows.map((s) => ({ tenant_id: this.tenantId, service_id: s.service_id })),
+    );
   }
 }
 

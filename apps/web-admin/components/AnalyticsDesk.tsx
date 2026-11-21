@@ -62,18 +62,25 @@ export function AnalyticsDesk() {
         </div>
       ) : null}
       <div className="sf-actions">
-        <button type="button" className="ux4g-btn-secondary" disabled={busy} onClick={() => void refresh()}>
+        <button
+          type="button"
+          className="ux4g-btn-secondary"
+          disabled={busy}
+          onClick={() => void refresh()}
+        >
           {busy ? 'Refreshing…' : 'Refresh definitions'}
         </button>
       </div>
       <ul className="sf-list" aria-label="Metric definitions">
         {defs.length === 0 ? (
-          <li className="ux4g-body-m-default">No definitions yet. Lab ensure seeds LAB_CASE_TRANSITIONS.</li>
+          <li className="ux4g-body-m-default">
+            No definitions yet. Lab ensure seeds LAB_CASE_TRANSITIONS.
+          </li>
         ) : (
           defs.map((d) => (
             <li key={d.definition_id}>
-              <strong>{d.metric_code}</strong> · {d.status} · {d.aggregation}/{d.period_granularity} ·
-              purpose {d.purpose_code}
+              <strong>{d.metric_code}</strong> · {d.status} · {d.aggregation}/{d.period_granularity}{' '}
+              · purpose {d.purpose_code}
             </li>
           ))
         )}

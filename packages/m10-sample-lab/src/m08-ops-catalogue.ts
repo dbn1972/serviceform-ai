@@ -141,21 +141,15 @@ export const SAMPLE_LAB_M08_OPS_CATALOGUE: SampleLabM08OpsCatalogue = {
     },
     INTEGRATION_HEALTH: {
       status: 'DEGRADED',
-      metrics: [
-        { metric_code: 'CONNECTOR_MODE', value: 1, dimensions: { mode: 'SIMULATED' } },
-      ],
+      metrics: [{ metric_code: 'CONNECTOR_MODE', value: 1, dimensions: { mode: 'SIMULATED' } }],
     },
     EVENT_HEALTH: {
       status: 'OK',
-      metrics: [
-        { metric_code: 'OUTBOX_LAG', value: 0, dimensions: { topic: 'sf.lab.events.v1' } },
-      ],
+      metrics: [{ metric_code: 'OUTBOX_LAG', value: 0, dimensions: { topic: 'sf.lab.events.v1' } }],
     },
     PLATFORM_HEALTH: {
       status: 'OK',
-      metrics: [
-        { metric_code: 'READINESS', value: 1, dimensions: { component: 'SAMPLE_LAB' } },
-      ],
+      metrics: [{ metric_code: 'READINESS', value: 1, dimensions: { component: 'SAMPLE_LAB' } }],
     },
   },
   discovery_services: [

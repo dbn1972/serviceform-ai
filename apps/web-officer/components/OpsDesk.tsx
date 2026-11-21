@@ -62,8 +62,9 @@ export function OpsDesk() {
         setError(body.message ?? 'Refresh refused');
         return;
       }
-      if (body.view) {
-        setViews((prev) => prev.map((v) => (v.view_code === viewCode ? body.view! : v)));
+      const refreshed = body.view;
+      if (refreshed) {
+        setViews((prev) => prev.map((v) => (v.view_code === viewCode ? refreshed : v)));
       } else {
         await load();
       }
