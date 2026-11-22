@@ -48,9 +48,7 @@ test.describe('M11 second-service reuse — Income SAMPLE_LAB lab-offer', () => 
     await expect(
       page.getByText(/SAMPLE_LAB sample|SAMPLE_LAB DUMMY|SAMPLE_LAB stub|stub/i).first(),
     ).toBeVisible();
-    await expect(
-      page.getByRole('link', { name: /Fee designer \(DUMMY ₹9\.99\)/i }),
-    ).toBeVisible();
+    await expect(page.getByRole('link', { name: /Fee designer \(DUMMY ₹9\.99\)/i })).toBeVisible();
     await page.goto(`${STUDIO}/forms`);
     const incomeRow = page.getByRole('row', { name: /IND-SOC-031/ });
     await expect(incomeRow).toBeVisible();

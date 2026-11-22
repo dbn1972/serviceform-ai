@@ -2,11 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import {
-  policyInputsPending,
-  templateByCatalogueId,
-  usesSampleLabDummyPolicy,
-} from '../src/index';
+import { policyInputsPending, templateByCatalogueId, usesSampleLabDummyPolicy } from '../src/index';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const M11 = join(ROOT, 'fixtures/m11/ind-soc-031');
@@ -34,7 +30,9 @@ describe('M11 Income dry-run fixtures (SF-61)', () => {
       expect(existsSync(join(M11, name)), name).toBe(true);
     }
     expect(
-      existsSync(join(ROOT, 'fixtures/catalogue/certificate-packs/ind-soc-031.SAMPLE_LAB_DUMMY.md')),
+      existsSync(
+        join(ROOT, 'fixtures/catalogue/certificate-packs/ind-soc-031.SAMPLE_LAB_DUMMY.md'),
+      ),
     ).toBe(true);
 
     const tsb = JSON.parse(readFileSync(join(M11, 'tsb-dry-run-fixture.json'), 'utf8')) as {
