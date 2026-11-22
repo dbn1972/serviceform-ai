@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   SAMPLE_LAB_M08_OPS_CATALOGUE,
   SAMPLE_LAB_OPS_ANALYST_ROLE,
+  openSearchMirrorLabel,
   opsViewLabel,
   searchHitLabel,
 } from '../src/m08-ops-catalogue.js';
@@ -13,6 +14,8 @@ describe('SAMPLE_LAB M08 ops catalogue', () => {
     expect(
       SAMPLE_LAB_M08_OPS_CATALOGUE.discovery_services.some((s) => s.service_code === 'IND-SOC-002'),
     ).toBe(true);
+    expect(SAMPLE_LAB_M08_OPS_CATALOGUE.opensearch_mirror.mode).toBe('SIMULATED');
+    expect(SAMPLE_LAB_M08_OPS_CATALOGUE.opensearch_mirror.real_deferred).toBe(true);
   });
 
   it('labels search hits and ops views without inventing statute', () => {
@@ -24,5 +27,8 @@ describe('SAMPLE_LAB M08 ops catalogue', () => {
       }),
     ).toContain('IND-SOC-002');
     expect(opsViewLabel('QUEUE_SUMMARY')).toBe('Work queue summary');
+    expect(
+      openSearchMirrorLabel({ mode: 'SIMULATED', document_count: 3, real_deferred: true }),
+    ).toContain('REAL deferred');
   });
 });

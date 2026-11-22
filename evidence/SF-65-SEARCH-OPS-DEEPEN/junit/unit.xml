@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="0" errors="0" time="0.033304887">
+    <testsuite name="apps/api/test/m08-opensearch-mirror.test.ts" timestamp="2026-11-22T02:11:31.222Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.005632442">
+        <testcase classname="apps/api/test/m08-opensearch-mirror.test.ts" name="SAMPLE_LAB OpenSearch mirror (SF-65) &gt; refuses SIMULATED mirror in PRODUCTION and UAT (fail-closed)" time="0.001658299">
+        </testcase>
+        <testcase classname="apps/api/test/m08-opensearch-mirror.test.ts" name="SAMPLE_LAB OpenSearch mirror (SF-65) &gt; syncs opaque facets and reports REAL deferred status" time="0.001943536">
+        </testcase>
+        <testcase classname="apps/api/test/m08-opensearch-mirror.test.ts" name="SAMPLE_LAB OpenSearch mirror (SF-65) &gt; unbound mirror never fabricates healthy REAL OpenSearch" time="0.000204678">
+        </testcase>
+        <testcase classname="apps/api/test/m08-opensearch-mirror.test.ts" name="SAMPLE_LAB richer M08 ops ports helpers (SF-65) &gt; parses opensearch_mirror seed and derives opaque facet metrics" time="0.000746164">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/m08-ops-lab.test.ts" timestamp="2026-11-22T02:11:31.224Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003877081">
+        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; parses search, analytics, ops and discovery seeds without PII facet names" time="0.002215304">
+        </testcase>
+        <testcase classname="apps/api/test/m08-ops-lab.test.ts" name="SAMPLE_LAB M08 ops catalogue (SF-63) &gt; falls back safely on empty input" time="0.000641527">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-admin/test/markup.test.tsx" timestamp="2026-11-22T02:11:31.224Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.016725644">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; keeps the shell heading and landmarks" time="0.008482654">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; exposes binding and review destinations" time="0.001222079">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page includes reusable jurisdiction scope desk for any offering" time="0.003631923">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)" time="0.002402821">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/search-ops.test.ts" timestamp="2026-11-22T02:11:31.225Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.004041873">
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; builds CMP-035 query with opaque facets only" time="0.001753912">
+        </testcase>
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects search hits as non-authoritative cards" time="0.000568751">
+        </testcase>
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects ops views with refresh enabled" time="0.000293918">
+        </testcase>
+        <testcase classname="apps/web-officer/test/search-ops.test.ts" name="officer search / ops desk helpers &gt; projects OpenSearch mirror status as SIMULATED / REAL deferred" time="0.000356914">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" timestamp="2026-11-22T02:11:31.226Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003027847">
+        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; exposes opaque search seeds and ops analyst role" time="0.001500819">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/m08-ops-catalogue.test.ts" name="SAMPLE_LAB M08 ops catalogue &gt; labels search hits and ops views without inventing statute" time="0.000468562">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -100,6 +100,7 @@ export {
   SAMPLE_LAB_M08_OPS_CATALOGUE,
   searchHitLabel,
   opsViewLabel,
+  openSearchMirrorLabel,
 } from './m08-ops-catalogue';
 export type {
   SampleLabM08OpsCatalogue,
@@ -107,4 +108,5 @@ export type {
   SampleLabMetricDefinitionSeed,
   SampleLabOpsSample,
   SampleLabDiscoveryService,
+  SampleLabOpenSearchMirrorSeed,
 } from './m08-ops-catalogue';
