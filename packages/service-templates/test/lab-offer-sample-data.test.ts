@@ -10,10 +10,13 @@ import {
 } from '../src/index';
 
 describe('SAMPLE_LAB lab offer + sample form data', () => {
-  it('lists Residence plus five representative stubs', () => {
-    expect(SAMPLE_LAB_REPRESENTATIVE_CATALOGUE_IDS).toHaveLength(6);
+  it('lists Residence plus Certificate/Licence/Permit SAMPLE_LAB lab offers', () => {
+    expect(SAMPLE_LAB_REPRESENTATIVE_CATALOGUE_IDS).toHaveLength(13);
     expect(isSampleLabRepresentative('IND-SOC-002')).toBe(true);
-    expect(isSampleLabRepresentative('IND-SOC-003')).toBe(false);
+    expect(isSampleLabRepresentative('IND-SOC-003')).toBe(true);
+    expect(isSampleLabRepresentative('IND-BTP-001')).toBe(true);
+    expect(isSampleLabRepresentative('IND-ULB-007')).toBe(true);
+    expect(isSampleLabRepresentative('IND-SOC-014')).toBe(false);
   });
 
   it('labOfferVersion returns PUBLISHED for Residence; DRAFT stubs only in SAMPLE_LAB', () => {

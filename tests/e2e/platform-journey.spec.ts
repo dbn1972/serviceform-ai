@@ -514,7 +514,8 @@ test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
         version: '1.0.0',
       },
     });
-    for (const id of ['IND-SOC-003', 'IND-EDU-002', 'NOT-A-SERVICE']) {
+    // Still-unoffered stubs (not in SAMPLE_LAB lab-offer placement expansion).
+    for (const id of ['IND-SOC-014', 'IND-EDU-005', 'NOT-A-SERVICE']) {
       const stub = await page.request.get(`${CITIZEN}/api/portal/forms/${id}`, {
         headers: { cookie },
       });
@@ -522,7 +523,7 @@ test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
     }
     const apply = await page.request.post(`${CITIZEN}/api/portal/applications`, {
       headers: { cookie },
-      data: { catalogue_id: 'IND-SOC-003', data: syntheticData('SAMPLE Stub Citizen') },
+      data: { catalogue_id: 'IND-SOC-014', data: syntheticData('SAMPLE Stub Citizen') },
     });
     expect(apply.status()).toBe(404);
   });

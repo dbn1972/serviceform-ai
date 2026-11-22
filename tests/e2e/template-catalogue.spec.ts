@@ -127,20 +127,24 @@ test.describe('citizen service catalogue', () => {
   }) => {
     await citizenSignIn(page, '/services');
     const online = page.getByRole('list', { name: 'Services you can apply for' });
-    await expect(online.getByRole('article')).toHaveCount(6);
+    await expect(online.getByRole('article')).toHaveCount(13);
     await expect(
       online.getByRole('link', { name: 'Apply now for Residence Certificate' }),
     ).toBeVisible();
     await expect(
       online.getByRole('link', { name: /Apply now for Income Certificate/ }),
     ).toBeVisible();
+    await expect(online.getByRole('link', { name: /Apply now for Trade Licence/ })).toBeVisible();
+    await expect(
+      online.getByRole('link', { name: /Apply now for Building Construction Permit/ }),
+    ).toBeVisible();
     const upcoming = page.getByRole('list', { name: 'Services not yet available' });
     const upcomingCount = await upcoming.getByRole('article').count();
-    expect(upcomingCount).toBeGreaterThanOrEqual(152);
+    expect(upcomingCount).toBeGreaterThanOrEqual(145);
     await expect(upcoming.getByRole('link', { name: /^Apply now/ })).toHaveCount(0);
-    await page.getByLabel('Search services').fill('permanent residence certificate');
+    await page.getByLabel('Search services').fill('caste certificate - scheduled caste');
     await expect(upcoming.getByRole('article')).toHaveCount(1);
-    await expect(upcoming.getByText('IND-SOC-003')).toBeVisible();
+    await expect(upcoming.getByText('IND-SOC-014')).toBeVisible();
     await page.getByLabel('Search services').fill('');
     await expectAccessible(page);
 
@@ -158,7 +162,7 @@ test.describe('citizen service catalogue', () => {
     expect(apply?.status()).toBe(200);
     const unknown = await page.goto(`${CITIZEN}/services/IND-NOPE-000`);
     expect(unknown?.status()).toBe(404);
-    const unoffered = await page.goto(`${CITIZEN}/services/IND-SOC-003/apply`);
+    const unoffered = await page.goto(`${CITIZEN}/services/IND-SOC-014/apply`);
     expect(unoffered?.status()).toBe(404);
   });
 });

@@ -1,6 +1,8 @@
 /**
  * SAMPLE_LAB Licence/Permit Studio → TSB pin demos.
- * Real registry catalogue IDs only. DRAFT/DUMMY · not citizen-offerable · not statute.
+ * Real registry catalogue IDs only. DRAFT/DUMMY · not statute / not production policy.
+ * `citizen_offerable: false` means no statute claim — SAMPLE_LAB DUMMY lab placement may
+ * still bind these ids for apply demos (see placement.citizen.json lab-offer expansion).
  * Aligns CMP-018 / CMP-056 pin metadata to IND-BTP-001 / IND-LAB-019 / IND-ULB-007.
  * CERTIFIED=false · G6=false. No DigiLocker/SMS/Payment REAL.
  */

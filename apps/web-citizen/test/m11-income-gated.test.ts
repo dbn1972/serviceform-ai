@@ -43,14 +43,16 @@ describe('M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer', () => {
     expect(entry?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
   });
 
-  it('keeps non-representative stubs unoffered', () => {
+  it('keeps Income DUMMY-labeled among expanded lab offers; non-offers stay gated', () => {
     const offered = catalogueEntries()
       .filter((e) => e.offered)
       .map((e) => e.catalogue_id)
       .sort();
     expect(offered).toContain('IND-SOC-002');
     expect(offered).toContain('IND-SOC-031');
-    expect(offered).not.toContain('IND-SOC-003');
-    expect(offered).toHaveLength(6);
+    expect(offered).toContain('IND-SOC-003');
+    expect(offered).toContain('IND-BTP-001');
+    expect(offered).not.toContain('IND-SOC-014');
+    expect(offered).toHaveLength(13);
   });
 });
