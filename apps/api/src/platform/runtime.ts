@@ -1354,14 +1354,7 @@ export async function buildPlatformLab(
       cellId: placement.cell_id,
       tenantId: placement.tenant_id,
       environment: environment as
-        | 'LOCAL'
-        | 'CI'
-        | 'DEVELOPMENT'
-        | 'SIT'
-        | 'PERFORMANCE'
-        | 'UAT'
-        | 'PREPROD'
-        | 'PRODUCTION',
+        'LOCAL' | 'CI' | 'DEVELOPMENT' | 'SIT' | 'PERFORMANCE' | 'UAT' | 'PREPROD' | 'PRODUCTION',
     });
   }
 
