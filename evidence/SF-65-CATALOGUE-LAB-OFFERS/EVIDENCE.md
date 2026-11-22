@@ -54,7 +54,15 @@ PR [#266](https://github.com/dbn1972/serviceform-ai/pull/266) tip `5d6e1902` fai
 2. **web shells smoke** — DigiLocker SIM after approve for `IND-BTP-001` missing because
    `fixtures/lab/platform/issuance.json` lacked credential_template rows for the seven new TSB ids
 
-Fix: prettier --write on those files + add seven SIMULATED credential_template entries (shared SAMPLE_LAB template pin). Still DUMMY-only; no REAL connectors; Income statute not invented.
+Fix: prettier --write on those files + add seven SIMULATED credential_template entries (shared SAMPLE_LAB template pin).
+
+Tip `20284f7a` (post-#268 rebase) failed unit:
+
+3. **licence-permit-pin-demos.test.ts** — #265 asserted pin-demo ids stay off `placement.citizen.json`;
+   lab-offer expansion places `IND-BTP-001` / `IND-LAB-019` / `IND-ULB-007` as SAMPLE_LAB DUMMY.
+   Updated test: pin-demo `citizen_offerable=false` (no statute claim) coexists with SAMPLE_LAB placement.
+
+Still DUMMY-only; no REAL connectors; Income statute not invented. Rebased onto `d41302b4` (#264).
 
 ## Recommended gate
 

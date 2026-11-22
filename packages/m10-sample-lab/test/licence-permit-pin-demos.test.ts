@@ -16,7 +16,8 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
 describe('SAMPLE_LAB Licence/Permit Studio→TSB pin demos', () => {
-  it('exposes three DRAFT/DUMMY targets that are not citizen-offerable', () => {
+  it('exposes three DRAFT/DUMMY targets with no statute/production offer claim', () => {
+    // citizen_offerable=false = no statute claim; SAMPLE_LAB DUMMY lab placement may still bind.
     expect(SAMPLE_LAB_LICENCE_PERMIT_PIN_DEMOS.citizen_offerable).toBe(false);
     expect(SAMPLE_LAB_LICENCE_PERMIT_PIN_DEMOS.certified).toBe(false);
     expect(SAMPLE_LAB_LICENCE_PERMIT_PIN_DEMOS.g6).toBe(false);
@@ -54,7 +55,7 @@ describe('SAMPLE_LAB Licence/Permit Studio→TSB pin demos', () => {
     ).toBe('IND-LAB-019');
   });
 
-  it('fixture mirrors the TypeScript catalogue and stays off citizen placement', () => {
+  it('fixture mirrors the TypeScript catalogue; SAMPLE_LAB DUMMY lab placement may bind demos', () => {
     const fixture = JSON.parse(
       readFileSync(join(ROOT, 'fixtures/lab/platform/licence-permit-pin-demos.json'), 'utf8'),
     ) as {
@@ -70,11 +71,13 @@ describe('SAMPLE_LAB Licence/Permit Studio→TSB pin demos', () => {
       );
     }
 
+    // Lab-offer expansion places these DRAFT stubs on SAMPLE_LAB placement (DUMMY only).
     const placement = JSON.parse(
       readFileSync(join(ROOT, 'fixtures/lab/platform/placement.citizen.json'), 'utf8'),
-    ) as { offerings: { catalogue_id: string }[] };
+    ) as { offerings: { catalogue_id: string }[]; environment_label?: string };
+    expect(placement.environment_label).toBe('SAMPLE_LAB');
     for (const id of pinDemoCatalogueIds()) {
-      expect(placement.offerings.some((o) => o.catalogue_id === id)).toBe(false);
+      expect(placement.offerings.some((o) => o.catalogue_id === id)).toBe(true);
       expect(isLicencePermitPinDemo(id)).toBe(true);
     }
   });
