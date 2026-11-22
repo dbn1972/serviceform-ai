@@ -28,8 +28,9 @@ export default function HomePage() {
         }
       >
         <p className="ux4g-body-m-default">
-          Residence Certificate is published to the SAMPLE_LAB citizen portal; Income, Domicile and
-          Birth are stubs from the national registry awaiting statutory policy input.
+          Residence Certificate is published to the SAMPLE_LAB citizen portal. Income (IND-SOC-031)
+          has a SAMPLE_LAB DUMMY config-reuse dry-run (DRAFT / lab-offer only); SF-33 still gates
+          statutory PUBLISH. Other stubs remain browse/preview until owner policy.
         </p>
       </Card>
 
@@ -70,6 +71,30 @@ export default function HomePage() {
         <p className="ux4g-body-m-default">
           No bespoke backend for this normal service. DigiLocker remains SAMPLE_LAB / SIMULATED. G6
           not issued.
+        </p>
+      </Card>
+
+      <Card
+        title="Income Certificate — M11 dry-run"
+        subtitle="IND-SOC-031 · SAMPLE_LAB DUMMY · DRAFT · SF-33 gated for PUBLISH"
+        footer={
+          <div className="sf-actions">
+            <TextLink href="/templates/ind-soc-031.income-certificate">Open template</TextLink>
+            <TextLink href="/forms/designer?template=ind-soc-031.income-certificate">
+              Forms designer
+            </TextLink>
+            <TextLink href="/fees/designer?template=ind-soc-031-dummy">Fee (DUMMY)</TextLink>
+            <TextLink href="/sla/designer?template=ind-soc-031-sla">SLA (DUMMY)</TextLink>
+            <TextLink href="/evidence/designer?template=ind-soc-031-evidence">Evidence</TextLink>
+            <TextLink href="/credentials/designer?template=ind-soc-031-credential">
+              Credential
+            </TextLink>
+          </div>
+        }
+      >
+        <p className="ux4g-body-m-default">
+          Second-service config-reuse path. No bespoke Income backend. Lab-offer of DRAFT under
+          SAMPLE_LAB only — not a statutory PUBLISHED offering. CERTIFIED=false · G6=false.
         </p>
       </Card>
     </AppShell>

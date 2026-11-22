@@ -48,11 +48,24 @@ test.describe('M11 second-service reuse — Income SAMPLE_LAB lab-offer', () => 
     await expect(
       page.getByText(/SAMPLE_LAB sample|SAMPLE_LAB DUMMY|SAMPLE_LAB stub|stub/i).first(),
     ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Fee designer \(DUMMY ₹9\.99\)/i }),
+    ).toBeVisible();
     await page.goto(`${STUDIO}/forms`);
     const incomeRow = page.getByRole('row', { name: /IND-SOC-031/ });
     await expect(incomeRow).toBeVisible();
     await expect(
       incomeRow.getByRole('link', { name: /Open Income Certificate \(individual\) in designer/i }),
     ).toBeVisible();
+  });
+
+  test('Studio Fee designer exposes Income SAMPLE_LAB DUMMY starter', async ({ page }) => {
+    await page.goto(`${STUDIO}/fees`);
+    await expect(
+      page.getByRole('link', { name: /Income Certificate SAMPLE_LAB DUMMY fee/i }),
+    ).toBeVisible();
+    await page.goto(`${STUDIO}/fees/designer?template=ind-soc-031-dummy`);
+    await expect(page.getByText(/SAMPLE_LAB DUMMY · Income Certificate fee/i)).toBeVisible();
+    await expect(page.getByText(/Not statutory|SAMPLE_LAB DUMMY/i).first()).toBeVisible();
   });
 });

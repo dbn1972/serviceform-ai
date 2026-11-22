@@ -38,12 +38,33 @@ export function residenceSampleCredential(): CredentialDesign {
   };
 }
 
+/** IND-SOC-031 SAMPLE_LAB DUMMY credential / DigiLocker label (M11 dry-run; SIM only). */
+export function incomeCertificateDummyCredential(): CredentialDesign {
+  return {
+    packKey: 'lab.ind-soc-031.credential',
+    title: 'Income Certificate credential (SAMPLE_LAB DUMMY)',
+    version: '1.0.0',
+    templateKey: 'lab.ind-soc-031.income-certificate',
+    displayTitle: 'Income Certificate (SAMPLE_LAB DUMMY)',
+    digilockerLabel: 'SAMPLE_LAB_DUMMY_IND_SOC_031',
+    notStatutory: true,
+    policyKind: 'SAMPLE_LAB_DUMMY',
+  };
+}
+
 export const CREDENTIAL_TEMPLATES = [
   {
     id: 'ind-soc-002-credential',
     title: 'Residence Certificate credential',
     description: 'SAMPLE_LAB DigiLocker label overlay. Not statute; SIM publish only.',
     create: residenceSampleCredential,
+  },
+  {
+    id: 'ind-soc-031-credential',
+    title: 'Income Certificate credential (SAMPLE_LAB DUMMY)',
+    description:
+      'IND-SOC-031 M11 dry-run DigiLocker label. Not statute; SIM only; SF-33 gates PUBLISH.',
+    create: incomeCertificateDummyCredential,
   },
 ] as const;
 

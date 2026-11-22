@@ -5,7 +5,7 @@
 | Status | **IMPLEMENTED for SAMPLE_LAB** — capability-gap fix required before a second service can reuse the citizen/officer portals without bespoke backend |
 | Change class | **Additive / non-breaking for Residence.** Bare apply bodies without `catalogue_id` still default to IND-SOC-002 (CCR-M10-002 compat). Portal views resolve `catalogue_id` from the case pin + placement instead of a hard-coded literal |
 | Components | Citizen BFF (`apps/web-citizen`), Officer Workbench copy (`apps/web-officer`), catalogue offer gate (`apps/web-citizen/lib/catalogue.ts`) |
-| Related | Constitution §1 §31; `specs/build-plan.yaml` M11; CCR-M10-002 |
+| Related | Constitution §1 §31; `specs/build-plan.yaml` M11; CCR-M10-002; SF-61 path polish |
 
 ## Why
 
@@ -27,13 +27,17 @@ platform surface.
    queue label). Queue row summary prefers `applicant_name` + ref; residence months shown only when
    present in working data.
 
-## Not changed / blockers
+## Lab-offer vs statutory PUBLISH (SF-61 honesty)
 
-- IND-SOC-031 (and other stubs) remain **not offered**: no PUBLISHED version, policy still
-  `POLICY_INPUT_REQUIRED`, placement does not bind them. See
-  `fixtures/m11/ind-soc-031/POLICY_INPUT_REQUIRED.md`.
+- IND-SOC-031 maturity remains **SAMPLE_LAB_STUB**; version remains **DRAFT** (not PUBLISHED).
+- SAMPLE_LAB placement may **lab-offer** the DRAFT form when SAMPLE_LAB DUMMY policy stamps clear
+  `policyInputsPending` (`labOfferVersion` fail-closed outside `environment_label=SAMPLE_LAB`).
+- That lab-offer is **not** a statutory citizen-offerable PUBLISHED service. **SF-33** owner policy
+  inputs are still required before statutory PUBLISH / non-DUMMY placement.
+- Dry-run Studio→TSB fixtures: `fixtures/m11/ind-soc-031/` (SF-61). Designer starters
+  `ind-soc-031-*` are SAMPLE_LAB DUMMY labeled.
 - Certificate detail UI still renders Residence-shaped fields when present; generic field rendering
-  for arbitrary Studio schemas is a follow-up capability gap (not required to keep Income gated).
+  for arbitrary Studio schemas is a follow-up capability gap.
 - DigiLocker / OTP / IdP remain **SIMULATED**. **CERTIFIED=false · G6=false · self_certified=false**.
 
 ## Delta vs metadata-only rule

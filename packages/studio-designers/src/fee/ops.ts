@@ -51,6 +51,29 @@ export function transferCertificateDummyFee(): FeeDesign {
   };
 }
 
+/** IND-SOC-031 SAMPLE_LAB DUMMY fee overlay (₹9.99) — M11 dry-run; not statute (SF-33). */
+export function incomeCertificateDummyFee(): FeeDesign {
+  return {
+    packKey: 'lab.ind-soc-031.fee',
+    title: 'SAMPLE_LAB DUMMY · Income Certificate fee',
+    version: '1.0.0',
+    currency: 'INR',
+    policyKind: 'SAMPLE_LAB_DUMMY',
+    amountDisplay: 'SAMPLE_LAB DUMMY · ₹9.99',
+    feeScheduleRef: 'SAMPLE_LAB_DUMMY_FEE_SCHEDULE',
+    items: [
+      {
+        id: 'fee_base',
+        key: 'fee.base',
+        label: 'SAMPLE_LAB DUMMY base fee',
+        amount_minor: 999,
+        description_code: 'SAMPLE_LAB_DUMMY_FEE',
+      },
+    ],
+    notStatutory: true,
+  };
+}
+
 /** Residence Certificate public sample is ₹0 (ZERO policy). */
 export function residenceZeroFee(): FeeDesign {
   return {
@@ -79,6 +102,13 @@ export const FEE_TEMPLATES = [
     title: 'Transfer Certificate SAMPLE_LAB DUMMY fee',
     description: 'IND-EDU-004 lab overlay ₹9.99 — labeled SAMPLE_LAB DUMMY, not statute.',
     create: transferCertificateDummyFee,
+  },
+  {
+    id: 'ind-soc-031-dummy',
+    title: 'Income Certificate SAMPLE_LAB DUMMY fee',
+    description:
+      'IND-SOC-031 M11 dry-run overlay ₹9.99 — SAMPLE_LAB DUMMY only; SF-33 gates statutory PUBLISH.',
+    create: incomeCertificateDummyFee,
   },
   {
     id: 'ind-soc-002-zero',

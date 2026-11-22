@@ -8,4 +8,6 @@ Shared defaults: `templates/certificate-packs/sample-lab-dummy/defaults.json`
 Per-id overlay: `templates/income-certificate/owner-config.json`  
 Tenant overlay schema: `templates/certificate-packs/sample-lab-dummy/tenant-overlay.schema.json`
 
-Citizen apply still requires a PUBLISHED TSB placement. Fail-closed outside SAMPLE_LAB.
+Maturity stays SAMPLE_LAB_STUB / DRAFT. SAMPLE_LAB placement may lab-offer the DRAFT form;
+statutory PUBLISH still requires SF-33 owner policy. Fail-closed outside SAMPLE_LAB.
+Dry-run path: `fixtures/m11/ind-soc-031/`.

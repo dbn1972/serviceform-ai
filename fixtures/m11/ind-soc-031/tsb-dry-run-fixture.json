@@ -1,0 +1,68 @@
+{
+  "_fixture_note": "SF-61 M11 Income dry-run TSB pin graph. SAMPLE_LAB DUMMY only. Not statutory PUBLISH. Not CERTIFIED. Not G6.",
+  "_invented_statutory_policy_forbidden": true,
+  "_embedded_secrets_forbidden": true,
+  "_overlay_status": "SAMPLE_LAB_DUMMY_DRY_RUN",
+  "_policy_source_url": "https://example.invalid/sample-lab-dummy-not-a-portal",
+  "_sf33_owner_policy_required_for_statutory_publish": true,
+  "_non_claims": {
+    "certified": false,
+    "g6": false,
+    "self_certified": false,
+    "release_certified": false,
+    "production_digilocker_registered": false,
+    "citizen_offerable_published": false
+  },
+  "tsb": {
+    "tenant_service_binding_id": "tsb-ind-soc-031-sample-lab-dummy-dry-run-v1",
+    "catalogue_id": "IND-SOC-031",
+    "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+    "service_template_ref": "templates/income-certificate",
+    "overlay_ref": "fixtures/m11/ind-soc-031/tenant-overlay.sample-lab-dummy.yaml",
+    "publication_state": "SAMPLE_LAB_DRY_RUN_DRAFT",
+    "published_at": null,
+    "version_status": "DRAFT",
+    "maturity": "SAMPLE_LAB_STUB",
+    "published_by_maker": "a11ce000-0001-4000-8000-0000000000a1",
+    "published_by_checker": null,
+    "maker_checker_record_ref": "fixtures/m11/ind-soc-031/maker-checker-dry-run.yaml",
+    "immutable_once_published": true,
+    "pin_graph": {
+      "_note": "Dry-run pin stamps aligned to authoring shell refs; Studio re-stamps on real publish after SF-33",
+      "form_version_id": "7e3a0031-0001-4000-8000-00000000031a",
+      "rule_version_id": "ind-soc-031-rules-sample-lab-dummy",
+      "workflow_version_id": "ind-soc-031-workflow-sample-lab-dummy",
+      "evidence_policy_version_id": "ind-soc-031-evidence-policy-sample-lab-dummy",
+      "fee_policy_version_id": "ind-soc-031-fee-policy-sample-lab-dummy",
+      "sla_policy_version_id": "ind-soc-031-sla-policy-sample-lab-dummy",
+      "credential_template_version_id": "SAMPLE_LAB_DUMMY_IND_SOC_031_V1",
+      "notification_version_id": "ind-soc-031-notifications-sample-lab-dummy",
+      "authorization_policy_version_id": "ind-soc-031-access-policy-sample-lab-dummy"
+    }
+  },
+  "lab_offer": {
+    "environment_label_required": "SAMPLE_LAB",
+    "offers_draft_with_sample_lab_dummy": true,
+    "placement_ref": "fixtures/lab/platform/placement.citizen.json",
+    "fail_closed_outside_sample_lab": true
+  },
+  "publish_gate_requirements": {
+    "all_policy_input_required_fields_resolved": false,
+    "sf33_owner_policy_inputs_supplied": false,
+    "maker_approval_obtained": true,
+    "checker_approval_obtained": false,
+    "legal_basis_reviewed": false,
+    "pin_graph_all_version_ids_stamped": true,
+    "tsb_immutability_sealed": false,
+    "production_digilocker_ready": false,
+    "production_dlt_ready": false
+  },
+  "lab_eng_gate": {
+    "_note": "Dry-run only. Distinct from SF-60 Residence lab eng seal and from G6 seal claim.",
+    "lab_eng_sealed": false,
+    "lab_eng_seal_mode": "SAMPLE_LAB_DRY_RUN",
+    "certified": false,
+    "g6": false,
+    "self_certified": false
+  }
+}

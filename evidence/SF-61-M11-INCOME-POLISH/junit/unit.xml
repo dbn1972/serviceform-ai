@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="0.074500536">
+    <testsuite name="apps/web-citizen/test/m11-income-gated.test.ts" timestamp="2026-11-22T02:10:55.048Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.011879595">
+        <testcase classname="apps/web-citizen/test/m11-income-gated.test.ts" name="M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer &gt; uses SAMPLE_LAB DUMMY policy with Studio authoring shell; policyInputsPending cleared" time="0.001339789">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/m11-income-gated.test.ts" name="M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer &gt; is lab-offered on the SAMPLE_LAB placement (DRAFT pin, not CERTIFIED)" time="0.006488113">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/m11-income-gated.test.ts" name="M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer &gt; keeps non-representative stubs unoffered" time="0.001225678">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-studio/test/meta-designers.test.tsx" timestamp="2026-11-22T02:10:55.049Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.047106172">
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; exposes Fees, SLA, Evidence and Credentials in the nav" time="0.008500924">
+        </testcase>
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; offers blank, draft and template starting points on each landing page" time="0.024745534">
+        </testcase>
+        <testcase classname="apps/web-studio/test/meta-designers.test.tsx" name="Studio meta-kind designers &gt; renders SAMPLE_LAB template designers with checks and not-statutory banners" time="0.012871619">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/service-templates/test/m11-income-dry-run-fixtures.test.ts" timestamp="2026-11-22T02:10:55.050Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.003144969">
+        <testcase classname="packages/service-templates/test/m11-income-dry-run-fixtures.test.ts" name="M11 Income dry-run fixtures (SF-61) &gt; keeps IND-SOC-031 DRAFT stub with SAMPLE_LAB DUMMY (not PUBLISHED)" time="0.001278335">
+        </testcase>
+        <testcase classname="packages/service-templates/test/m11-income-dry-run-fixtures.test.ts" name="M11 Income dry-run fixtures (SF-61) &gt; ships dry-run path fixtures without inventing statute" time="0.000809192">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/studio-designers/test/meta-kinds.test.ts" timestamp="2026-11-22T02:10:55.051Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.0123698">
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="fee designer &gt; compiles SAMPLE_LAB DUMMY fee&gt;0 with content_hash over items" time="0.004822948">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="fee designer &gt; refuses negative amounts" time="0.000598959">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="sla designer &gt; compiles SAMPLE_LAB residence SLA with ISO duration pin" time="0.000894979">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="sla designer &gt; refuses invalid ISO durations" time="0.00030269">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="evidence designer &gt; compiles SAMPLE_LAB evidence requirements" time="0.001445315">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="credential designer &gt; compiles SAMPLE_LAB DigiLocker label overlay" time="0.000729374">
+        </testcase>
+        <testcase classname="packages/studio-designers/test/meta-kinds.test.ts" name="Income Certificate M11 dry-run starters &gt; compiles SAMPLE_LAB DUMMY fee/SLA/evidence/credential for IND-SOC-031" time="0.001806805">
+        </testcase>
+    </testsuite>
+</testsuites>
