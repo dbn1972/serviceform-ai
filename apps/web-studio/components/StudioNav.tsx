@@ -13,6 +13,7 @@ const links = [
   { href: '/session', label: 'Session' },
   { href: '/metadata', label: 'Metadata' },
   { href: '/publication', label: 'Publication' },
+  { href: '/interop', label: 'Interop' },
   { href: '/services/new', label: 'New service' },
 ] as const;
 

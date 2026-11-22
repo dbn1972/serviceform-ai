@@ -16,5 +16,6 @@ describe('web-studio markup (UX4G)', () => {
     const html = renderToStaticMarkup(<StudioNav />);
     expect(html).toContain('href="/metadata"');
     expect(html).toContain('href="/publication"');
+    expect(html).toContain('href="/interop"');
   });
 });

@@ -47,6 +47,7 @@ export default function HomePage() {
             <TextLink href="/evidence">Evidence</TextLink>
             <TextLink href="/credentials">Credentials</TextLink>
             <TextLink href="/publication">Publication desk</TextLink>
+            <TextLink href="/interop">Interop hygiene</TextLink>
           </div>
         }
       >

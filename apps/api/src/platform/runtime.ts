@@ -179,6 +179,11 @@ import {
   loadLicencePermitPinDemos,
   registerLabLicencePermitPinDemoRoutes,
 } from './licence-permit-pin-demos.js';
+import {
+  loadInteropHygieneCatalogue,
+  registerLabInteropHygieneRoutes,
+  type LabInteropHygieneCatalogue,
+} from './interop-hygiene.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -300,6 +305,8 @@ export interface PlatformLab {
   registerTsbSeal(app: FastifyInstance): Promise<void>;
   /** Licence/Permit Studio→TSB pin demos (DRAFT/DUMMY; not citizen-offerable). */
   registerLicencePermitPinDemos(app: FastifyInstance): Promise<void>;
+  /** SAMPLE_LAB BPMN / .sfpackage / migration interop hygiene lab routes (no Camunda runtime). */
+  registerInteropHygiene(app: FastifyInstance): Promise<void>;
   /** M08 mounts (CMP-035/045/046/006) when corresponding pools are set. */
   m08?: M08PluginMounts;
   /** M09 mounts (CMP-056/057/061) when corresponding pools are set. */
@@ -1396,6 +1403,9 @@ export async function buildPlatformLab(
   // Licence/Permit Studio→TSB pin demos (DRAFT/DUMMY; not on citizen placement).
   const licencePermitPinDemos = loadLicencePermitPinDemos(dir);
 
+  // SAMPLE_LAB BPMN / .sfpackage / migration interop hygiene (always available; no Camunda).
+  const interopHygieneCatalogue: LabInteropHygieneCatalogue = loadInteropHygieneCatalogue(dir);
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1777,6 +1787,12 @@ export async function buildPlatformLab(
       registerLabLicencePermitPinDemoRoutes(app, {
         environment,
         catalogue: licencePermitPinDemos,
+      });
+    },
+    registerInteropHygiene: async (app: FastifyInstance) => {
+      registerLabInteropHygieneRoutes(app, {
+        environment,
+        catalogue: interopHygieneCatalogue,
       });
     },
     async start() {

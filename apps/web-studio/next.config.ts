@@ -8,6 +8,7 @@ const config: NextConfig = {
     '@serviceform/ui-ux4g',
     '@serviceform/service-templates',
     '@serviceform/studio-designers',
+    '@serviceform/m10-sample-lab',
   ],
   async headers() {
     return [
