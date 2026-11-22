@@ -1,0 +1,85 @@
+{
+  "_note": "SAMPLE_LAB BPMN / .sfpackage / migration interop hygiene catalogue. Lab demo only. No Camunda runtime. CERTIFIED=false. G6=false.",
+  "source": "SAMPLE_LAB",
+  "policy_kind": "SAMPLE_LAB_INTEROP_HYGIENE",
+  "test_run_id": "sample-lab-interop-hygiene",
+  "mode": "SAMPLE_LAB",
+  "certified": false,
+  "g6": false,
+  "camunda_runtime_forbidden": true,
+  "temporal_remains_runtime": true,
+  "bpmn_role": "IMPORT_EXPORT_PROFILE_ONLY",
+  "embedded_secrets_forbidden": true,
+  "silent_repoint_forbidden": true,
+  "bpmn_fixtures": [
+    {
+      "fixture_id": "bpmn-supported-round-trip",
+      "label": "Supported BPMN profile round-trip (Temporal runtime)",
+      "direction": "ROUND_TRIP",
+      "expect_supported": true,
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:sf=\"https://contracts.serviceform.ai/bpmn/profile/v1\" targetNamespace=\"https://contracts.serviceform.ai/bpmn/profile/v1\" sf:profile=\"IMPORT_EXPORT_PROFILE_ONLY\" sf:runtime=\"TEMPORAL\"><bpmn:process id=\"sf_process\" isExecutable=\"false\"><bpmn:startEvent id=\"START\" sf:kind=\"START\"/><bpmn:userTask id=\"SCRUTINY\" sf:kind=\"HUMAN_TASK\" sf:roleCode=\"SAMPLE_LAB_SCRUTINY_OFFICER\"/><bpmn:endEvent id=\"END\" sf:kind=\"END\"/><bpmn:sequenceFlow id=\"F1\" sourceRef=\"START\" targetRef=\"SCRUTINY\"/><bpmn:sequenceFlow id=\"F2\" sourceRef=\"SCRUTINY\" targetRef=\"END\"/></bpmn:process></bpmn:definitions>"
+    },
+    {
+      "fixture_id": "bpmn-camunda-assignee-forbidden",
+      "label": "Camunda assignee refused (no second runtime)",
+      "direction": "IMPORT",
+      "expect_supported": false,
+      "refuse_reason": "BPMN_RUNTIME_CONSTRUCT_FORBIDDEN",
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:camunda=\"http://camunda.org/schema/1.0/bpmn\"><bpmn:process id=\"p\" isExecutable=\"true\"><bpmn:startEvent id=\"START\"/><bpmn:userTask id=\"T\" camunda:assignee=\"officer.jane\"/><bpmn:endEvent id=\"END\"/><bpmn:sequenceFlow id=\"F1\" sourceRef=\"START\" targetRef=\"T\"/><bpmn:sequenceFlow id=\"F2\" sourceRef=\"T\" targetRef=\"END\"/></bpmn:process></bpmn:definitions>"
+    }
+  ],
+  "sfpackage": {
+    "package_id": "0d15ba00-00f1-4000-8000-0d15ba0000f1",
+    "catalogue_id": "IND-SOC-002",
+    "tenant_id": "0d15ba00-0001-4000-8000-0d15ba0000d1",
+    "content_address": "sha256:c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00c0ffee00",
+    "signature_ref": "sig:cmp-037:sample-lab:interop-hygiene:PENDING",
+    "embedded_secrets_forbidden": true,
+    "invented_statutory_policy_forbidden": true,
+    "label": "SAMPLE_LAB .sfpackage · IND-SOC-002 Residence (lab promotion hygiene)",
+    "artifact_hashes": [
+      {
+        "path": "templates/residence-certificate/service.yaml",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "path": "templates/residence-certificate/workflow.yaml",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      },
+      {
+        "path": "package.yaml",
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ],
+    "dependency_versions": {
+      "SF-CON-SFPACKAGE-MANIFEST": "FROZEN",
+      "SF-CON-WORKFLOW-MODEL": "FROZEN",
+      "SF-CON-BPMN-PROFILE": "FROZEN"
+    }
+  },
+  "migration_scenarios": [
+    {
+      "scenario_id": "mig-continue-old",
+      "label": "Continue on pinned old workflow version",
+      "mode": "CONTINUE_OLD_VERSION",
+      "from_version_id": "0d15ba00-0016-4000-8000-0d15ba001601",
+      "to_version_id": "0d15ba00-0016-4000-8000-0d15ba001601",
+      "node_mapping": {},
+      "dry_run_required": true,
+      "maker_checker_required": true
+    },
+    {
+      "scenario_id": "mig-safe-point",
+      "label": "Migrate at safe boundary (WAIT → WAIT)",
+      "mode": "MIGRATE_AT_SAFE_POINT",
+      "from_version_id": "0d15ba00-0016-4000-8000-0d15ba001601",
+      "to_version_id": "0d15ba00-0016-4000-8000-0d15ba001602",
+      "node_mapping": {
+        "WAIT_UNDER_SCRUTINY": "WAIT_UNDER_SCRUTINY",
+        "WAIT_DECISION_PENDING": "WAIT_DECISION_PENDING"
+      },
+      "dry_run_required": true,
+      "maker_checker_required": true
+    }
+  ]
+}

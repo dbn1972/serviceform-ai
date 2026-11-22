@@ -138,3 +138,31 @@ export type {
   LicencePermitPinDemoTarget,
   LicencePermitPinDemoPins,
 } from './licence-permit-pin-demos';
+export {
+  SAMPLE_LAB_INTEROP_DEFAULTS,
+  SAMPLE_LAB_INTEROP_HYGIENE_CATALOGUE,
+  SAMPLE_LAB_BPMN_SUPPORTED_XML,
+  SAMPLE_LAB_BPMN_CAMUNDA_FORBIDDEN_XML,
+  MIGRATION_MODES,
+  isInteropUuid,
+  isSampleLabInteropEnvironment,
+  screenBpmnProfile,
+  proveBpmnFixture,
+  validateSfPackageManifest,
+  proveSfPackagePromotion,
+  simulateInFlightMigration,
+  fixtureById,
+  scenarioById,
+  runInteropHygieneSuite,
+} from './interop-hygiene-catalogue';
+export type {
+  MigrationMode,
+  BpmnProfileFixture,
+  SfPackageArtifactHash,
+  SfPackageManifestSeed,
+  MigrationScenario,
+  SampleLabInteropHygieneCatalogue,
+  BpmnScreenResult,
+  SfPackageValidationResult,
+  MigrationSimulationResult,
+} from './interop-hygiene-catalogue';
