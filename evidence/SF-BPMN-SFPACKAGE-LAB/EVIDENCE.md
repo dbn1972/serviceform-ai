@@ -22,6 +22,11 @@
 | eslint (changed files) | PASS (see lint.log) |
 | Unit vitest (catalogue + API routes + Studio markup) | **15/15 PASS** |
 
+## CI rematch
+
+- Tip after CI fix: Studio client desk no longer imports `@serviceform/m10-sample-lab` (barrel pulled `node:fs` into Turbopack client chunk). Catalogue/prove go through `/api/lab/interop/*` BFF (`runtime = 'nodejs'`).
+- Local `pnpm --filter @serviceform/web-studio run build` PASS (`/interop` + BFF routes).
+
 ## Honest limits
 
 - Lab demo / hygiene prove only — not a second BPMN runtime (no Camunda/Zeebe).
