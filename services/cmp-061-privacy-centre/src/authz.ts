@@ -10,6 +10,15 @@ export function authzInput(
   action: string,
   resourceType: string,
 ): AuthzDecisionInput {
+  const resource: AuthzDecisionInput['resource'] = {
+    resource_type: resourceType,
+    tenant_id: ctx.tenant_id,
+    classification: 'TENANT_SCOPED',
+  };
+  // Citizens hold no tenant roles; OPA citizen_owner_grants require owner_id == subject.
+  if (ctx.actor.type === 'CITIZEN') {
+    resource.owner_id = ctx.actor.id;
+  }
   return {
     subject: {
       user_id: ctx.actor.id,
@@ -19,11 +28,7 @@ export function authzInput(
       jurisdiction_ids: ctx.jurisdiction_ids,
       assurance: ctx.auth_assurance,
     },
-    resource: {
-      resource_type: resourceType,
-      tenant_id: ctx.tenant_id,
-      classification: 'TENANT_SCOPED',
-    },
+    resource,
     action,
     environment: { trace_id: ctx.trace_id },
   };

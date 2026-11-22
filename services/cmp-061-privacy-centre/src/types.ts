@@ -75,6 +75,8 @@ export interface AuthzDecisionInput {
     resource_type: string;
     tenant_id: string | null;
     classification?: 'TENANT_SCOPED';
+    /** Set for CITIZEN actor so OPA citizen_owner_grants can match (fail-closed otherwise). */
+    owner_id?: string;
   };
   action: string;
   environment?: { trace_id?: string };
