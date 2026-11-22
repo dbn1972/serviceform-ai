@@ -10,6 +10,8 @@ export interface AppointmentNotifyRequest {
   slot_ref: string;
   lifecycle_status: string;
   correlation_id: string;
+  /** Opaque participant ref when known (citizen / application correlation for wait release). */
+  participant_ref?: string | null;
 }
 
 export interface NotificationPort {

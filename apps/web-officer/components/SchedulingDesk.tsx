@@ -141,13 +141,15 @@ export function SchedulingDesk() {
         <p className="ux4g-body-m-default">
           Book, reschedule, and close appointments from reusable CMP-056 calendar metadata — beside
           inspection verification. Opaque refs only · atomic capacity · notify failure does not
-          cancel · CERTIFIED=false · G6=false.
+          cancel · COMPLETED can release WAIT_VERIFICATION without polling · CERTIFIED=false ·
+          G6=false.
         </p>
         <p className="ux4g-body-m-default">
           <Link href="/inspection" className="ux4g-link">
             Open inspection desk
           </Link>{' '}
-          for CMP-018 results after a site visit is booked.
+          for CMP-018 results after a site visit is booked. Citizens self-serve at the citizen
+          portal Appointments desk.
         </p>
       </section>
 

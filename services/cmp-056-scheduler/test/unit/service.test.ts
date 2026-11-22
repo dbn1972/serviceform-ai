@@ -126,6 +126,49 @@ describe('reschedule / cancel', () => {
   });
 });
 
+describe('lifecycle notify + listByParticipantRef', () => {
+  it('notifies after complete and lists by opaque participant_ref', async () => {
+    const h = makeHarness();
+    await seedTypeAndSlot(h, 1);
+    h.state.ctx = ctxFor(TENANT_A, ACTOR_CITIZEN, 'CITIZEN');
+    const booked = await h.call('POST', '/v1/appointments', {
+      slot_ref: SLOT_REF_1,
+      participant_ref: 'participant:application:dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+    });
+    expect(booked.status).toBe(201);
+    const notifyCountAfterBook = h.notifier.calls.length;
+    expect(notifyCountAfterBook).toBeGreaterThanOrEqual(1);
+
+    h.state.ctx = ctxFor(TENANT_A); // officer/system for complete
+    const id = (booked.body as Body)['appointment']['appointment_id'] as string;
+    const ver = (booked.body as Body)['appointment_version'] as number;
+    const done = await h.call('POST', `/v1/appointments/${id}/complete`, {
+      expected_version: ver,
+    });
+    expect(done.status, JSON.stringify(done.body)).toBe(200);
+    expect((done.body as Body)['appointment']['lifecycle_status']).toBe('COMPLETED');
+    expect(h.notifier.calls.length).toBeGreaterThan(notifyCountAfterBook);
+    const last = h.notifier.calls[h.notifier.calls.length - 1] as {
+      lifecycle_status?: string;
+      participant_ref?: string;
+    };
+    expect(last?.lifecycle_status).toBe('COMPLETED');
+    expect(last?.participant_ref).toBe(
+      'participant:application:dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+    );
+
+    h.state.ctx = ctxFor(TENANT_A, ACTOR_CITIZEN, 'CITIZEN');
+    const listed = await h.service.listByParticipantRef(
+      h.state.ctx as never,
+      'participant:application:dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+    );
+    expect(listed.status).toBe(200);
+    const appts = (listed.body as Body)['appointments'] as Body[];
+    expect(appts).toHaveLength(1);
+    expect(appts[0]?.['appointment']?.['appointment_id']).toBe(id);
+  });
+});
+
 describe('tenant / OPA / statutory invention', () => {
   it('refuses client-supplied tenant_id and invented statutory calendars', async () => {
     const h = makeHarness();

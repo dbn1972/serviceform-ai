@@ -226,6 +226,7 @@ export class AppointmentSchedulerService {
         slot_ref: row.slot_ref,
         lifecycle_status: row.lifecycle_status,
         correlation_id: ctx.correlation_id,
+        participant_ref: row.participant_ref,
       });
       await this.deps.repo.withTx(ctx, async (tx) => {
         const current = await tx.getAppointment(row.appointment_id, true);
@@ -506,6 +507,41 @@ export class AppointmentSchedulerService {
     return { status: 200, body: appointmentView(row) };
   }
 
+  /**
+   * List appointments for an opaque participant_ref (citizen mine / wait correlation).
+   * OPA APPOINTMENT_READ on the collection; caller filters ownership via participant_ref.
+   */
+  async listByParticipantRef(
+    ctx: TenantContext,
+    participantRef: string,
+  ): Promise<CommandResult> {
+    const collectionId = collectionResourceId(ctx.tenant_id, 'APPOINTMENTS');
+    await this.guard(ctx, ACTIONS.read, APPOINTMENT_RESOURCE_TYPE, collectionId, BOOK_ACTORS);
+    if (!participantRef || participantRef.length > 128) {
+      throw new Cmp056Error('SF-SYS-003', detail('PARTICIPANT_REF_INVALID', '/participant_ref'));
+    }
+    const now = this.deps.clock();
+    const rows = await this.deps.repo.withTx(ctx, async (tx) => {
+      const found = await tx.listAppointmentsByParticipantRef(participantRef);
+      await appendAudit(tx, ctx, {
+        action: ACTIONS.read,
+        actionClass: 'READ',
+        resourceType: APPOINTMENT_RESOURCE_TYPE,
+        resourceId: collectionId,
+        result: 'SUCCESS',
+        now,
+      });
+      return found;
+    });
+    return {
+      status: 200,
+      body: {
+        appointments: rows.map((r) => appointmentView(r)),
+        capacity_atomic: CAPACITY_ATOMIC,
+      },
+    };
+  }
+
   async reschedule(
     ctx: TenantContext,
     appointmentId: string,
@@ -519,7 +555,7 @@ export class AppointmentSchedulerService {
       appointmentId,
       BOOK_ACTORS,
     );
-    return this.command(ctx, idem, async (tx, now) => {
+    const result = await this.command(ctx, idem, async (tx, now) => {
       const current = await tx.getAppointment(appointmentId, true);
       if (!current) throw new Cmp056Error('SF-SYS-002', detail('APPOINTMENT_NOT_FOUND'));
       if (current.appointment_version !== input.expected_version) {
@@ -620,6 +656,15 @@ export class AppointmentSchedulerService {
       });
       return { status: 200, body: appointmentView(next, idem.key) };
     });
+    if (result.status === 200) {
+      const refreshed = await this.deps.repo.withTx(ctx, (tx) => tx.getAppointment(appointmentId));
+      if (refreshed) {
+        await this.notifyAfterCommit(ctx, refreshed);
+        const after = await this.deps.repo.withTx(ctx, (tx) => tx.getAppointment(appointmentId));
+        if (after) return { status: 200, body: appointmentView(after, idem.key) };
+      }
+    }
+    return result;
   }
 
   private async terminalTransition(
@@ -632,7 +677,7 @@ export class AppointmentSchedulerService {
     eventType: DomainEventType,
   ): Promise<CommandResult> {
     await this.guard(ctx, action, APPOINTMENT_RESOURCE_TYPE, appointmentId, BOOK_ACTORS);
-    return this.command(ctx, idem, async (tx, now) => {
+    const result = await this.command(ctx, idem, async (tx, now) => {
       const current = await tx.getAppointment(appointmentId, true);
       if (!current) throw new Cmp056Error('SF-SYS-002', detail('APPOINTMENT_NOT_FOUND'));
       if (current.appointment_version !== input.expected_version) {
@@ -705,6 +750,16 @@ export class AppointmentSchedulerService {
       });
       return { status: 200, body: appointmentView(next, idem.key) };
     });
+    // Lifecycle notify after commit — enables workflow wait-on-appointment without polling.
+    if (result.status === 200) {
+      const refreshed = await this.deps.repo.withTx(ctx, (tx) => tx.getAppointment(appointmentId));
+      if (refreshed) {
+        await this.notifyAfterCommit(ctx, refreshed);
+        const after = await this.deps.repo.withTx(ctx, (tx) => tx.getAppointment(appointmentId));
+        if (after) return { status: 200, body: appointmentView(after, idem.key) };
+      }
+    }
+    return result;
   }
 
   cancel(

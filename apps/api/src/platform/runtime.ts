@@ -1337,6 +1337,7 @@ export async function buildPlatformLab(
       catalogue: appointmentCatalogue,
       cellId: placement.cell_id,
       tenantId: placement.tenant_id,
+      cases,
     });
   }
 
@@ -1681,6 +1682,8 @@ export async function buildPlatformLab(
             registerLabSchedulerRoutes(app, {
               catalogue: appointmentCatalogue,
               seeder: schedulerMount.seeder,
+              service: schedulerMount.service,
+              resolveContext,
             });
           },
         }
