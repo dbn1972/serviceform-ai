@@ -13,3 +13,14 @@ assignment:
 notes: >
   SAMPLE_LAB DUMMY role codes only. Tenant overlay may replace assignment roles.
   Fail-closed outside SAMPLE_LAB. Do not add service-specific backend branching for IND-LAB-019.
+
+# SAMPLE_LAB Studio → TSB pin-demo metadata (not citizen-offerable; DRAFT/DUMMY only)
+pin_demo:
+  catalogue_id: IND-LAB-019
+  output_type: Licence
+  citizen_offerable: false
+  policy_kind: SAMPLE_LAB_DUMMY
+  inspection_pin_code: FACTORY_LICENCE_INSPECTION
+  appointment_type_ref: meta:appointment-type:factory-inspection
+  workflow_nodes:
+    - FACTORY_INSPECTION

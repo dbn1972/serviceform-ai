@@ -39,18 +39,18 @@ export const SAMPLE_LAB_APPOINTMENT_TYPES: readonly SampleLabAppointmentType[] =
     resource_calendar_ref: 'meta:calendar:sample-lab-working-week',
     label: 'Site visit appointment',
     description:
-      'SAMPLE_LAB opaque booking type for licence/site verification visits (beside CMP-018 SITE_VISIT)',
+      'SAMPLE_LAB opaque booking type beside CMP-018 SITE_VISIT for IND-BTP-001 Trade Licence pin demo',
     related_inspection_pin: 'TRADE_LICENCE_SITE_VISIT',
-    catalogue_id: 'IND-LIC-001',
+    catalogue_id: 'IND-BTP-001',
   },
   {
     appointment_type_ref: 'meta:appointment-type:factory-inspection',
     resource_calendar_ref: 'meta:calendar:sample-lab-working-week',
     label: 'Factory inspection appointment',
     description:
-      'SAMPLE_LAB opaque booking type for factory verification visits (beside CMP-018 FACTORY_INSPECTION)',
+      'SAMPLE_LAB opaque booking type beside CMP-018 FACTORY_INSPECTION for IND-LAB-019 pin demo',
     related_inspection_pin: 'FACTORY_LICENCE_INSPECTION',
-    catalogue_id: 'IND-LIC-FACTORY-001',
+    catalogue_id: 'IND-LAB-019',
   },
   {
     appointment_type_ref: 'meta:appointment-type:counter-visit',

@@ -20,7 +20,7 @@ describe('SAMPLE_LAB inspection catalogue', () => {
     pins: [
       {
         pin_code: 'TRADE_LICENCE_SITE_VISIT',
-        catalogue_id: 'IND-LIC-001',
+        catalogue_id: 'IND-BTP-001',
         label: 'Trade licence site visit',
         description: 'lab',
         workflow_node_id: 'SITE_VISIT',

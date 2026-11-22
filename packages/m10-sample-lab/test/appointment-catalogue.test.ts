@@ -24,7 +24,7 @@ describe('SAMPLE_LAB appointment catalogue', () => {
   it('links site-visit type to inspection pin metadata without forking on officer names', () => {
     const site = appointmentTypeByRef('meta:appointment-type:site-visit');
     expect(site?.related_inspection_pin).toBe('TRADE_LICENCE_SITE_VISIT');
-    expect(site?.catalogue_id).toBe('IND-LIC-001');
+    expect(site?.catalogue_id).toBe('IND-BTP-001');
     expect(slotTemplateByRef('slot:sample-lab:site-visit:morning-1')?.capacity).toBe(1);
   });
 

@@ -241,6 +241,21 @@
           "const": "required_before_publish"
         }
       }
+    },
+    "pin_demo": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "SAMPLE_LAB Studio→TSB pin-demo overlay for Licence/Permit packs. Never citizen-offerable until owner statute + placement.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "citizen_offerable": { "type": "boolean", "const": false },
+        "inspection_pin_code": { "type": ["string", "null"] },
+        "appointment_type_ref": { "type": ["string", "null"] },
+        "workflow_nodes": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+        }
+      }
     }
   }
 }

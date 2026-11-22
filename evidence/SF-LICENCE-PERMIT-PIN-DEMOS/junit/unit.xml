@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="453" failures="0" errors="0" time="0.242358223">
+    <testsuite name="apps/api/test/inspection-lab.test.ts" timestamp="2026-11-22T02:11:51.362Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003087857">
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; keeps valid pins and drops invalid workflow_node_id (fail-closed metadata)" time="0.001514601">
+        </testcase>
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; builds assignment from catalogue without named officers" time="0.00029009">
+        </testcase>
+        <testcase classname="apps/api/test/inspection-lab.test.ts" name="SAMPLE_LAB inspection catalogue &gt; exposes DEFICIENCY_NOTED as a non-statutory verification result" time="0.000163527">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/licence-permit-pin-demos.test.ts" timestamp="2026-11-22T02:11:51.363Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.0651271">
+        <testcase classname="apps/api/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit pin-demo routes &gt; lists pin demos in LOCAL and refuses PRODUCTION" time="0.058361532">
+        </testcase>
+        <testcase classname="apps/api/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit pin-demo routes &gt; resolves Trade Licence Studio→TSB pin graph without claiming offerable" time="0.005731103">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/api/test/scheduler-lab.test.ts" timestamp="2026-11-22T02:11:51.363Z" hostname="cursor" tests="2" failures="0" errors="0" skipped="0" time="0.006883036">
+        <testcase classname="apps/api/test/scheduler-lab.test.ts" name="SAMPLE_LAB appointment catalogue (CMP-056) &gt; parses opaque types and refuses empty refs" time="0.001957581">
+        </testcase>
+        <testcase classname="apps/api/test/scheduler-lab.test.ts" name="SAMPLE_LAB appointment catalogue (CMP-056) &gt; falls back to defaults when raw is empty" time="0.002009648">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/appointment-catalogue.test.ts" timestamp="2026-11-22T02:11:51.364Z" hostname="cursor" tests="3" failures="0" errors="0" skipped="0" time="0.003523891">
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; exposes opaque metadata refs only (no statute calendar free text)" time="0.001614103">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; links site-visit type to inspection pin metadata without forking on officer names" time="0.000340475">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/appointment-catalogue.test.ts" name="SAMPLE_LAB appointment catalogue &gt; labels lifecycle statuses for desk UI" time="0.000209555">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/m10-sample-lab/test/licence-permit-pin-demos.test.ts" timestamp="2026-11-22T02:11:51.365Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.004393929">
+        <testcase classname="packages/m10-sample-lab/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit Studio→TSB pin demos &gt; exposes three DRAFT/DUMMY targets that are not citizen-offerable" time="0.002217176">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit Studio→TSB pin demos &gt; aligns inspection and appointment catalogues to real registry ids" time="0.00030254">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit Studio→TSB pin demos &gt; fixture mirrors the TypeScript catalogue and stays off citizen placement" time="0.000624505">
+        </testcase>
+        <testcase classname="packages/m10-sample-lab/test/licence-permit-pin-demos.test.ts" name="SAMPLE_LAB Licence/Permit Studio→TSB pin demos &gt; fail-closes outside SAMPLE_LAB LOCAL/CI" time="0.000273911">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/service-templates/test/catalogue.test.ts" timestamp="2026-11-22T02:11:51.365Z" hostname="cursor" tests="439" failures="0" errors="0" skipped="0" time="0.15934241">
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; covers Certificate + Birth + Licence + Permit stubs" time="0.011146348">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-002 matches the normalized registry entry" time="0.000395622">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-031 matches the normalized registry entry" time="0.000229965">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-001 matches the normalized registry entry" time="0.000231041">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-001 matches the normalized registry entry" time="0.00016697">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-003 matches the normalized registry entry" time="0.000236672">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-004 matches the normalized registry entry" time="0.001716831">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-009 matches the normalized registry entry" time="0.000253137">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-021 matches the normalized registry entry" time="0.000407092">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-CIV-022 matches the normalized registry entry" time="0.000209317">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-003 matches the normalized registry entry" time="0.000178321">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-004 matches the normalized registry entry" time="0.000114272">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-005 matches the normalized registry entry" time="0.000094619">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-006 matches the normalized registry entry" time="0.000086895">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-007 matches the normalized registry entry" time="0.001082488">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-008 matches the normalized registry entry" time="0.000657637">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-009 matches the normalized registry entry" time="0.000125396">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-010 matches the normalized registry entry" time="0.000094556">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-011 matches the normalized registry entry" time="0.000086466">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-012 matches the normalized registry entry" time="0.000086246">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-013 matches the normalized registry entry" time="0.000082018">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-014 matches the normalized registry entry" time="0.00008953">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-015 matches the normalized registry entry" time="0.000085166">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-016 matches the normalized registry entry" time="0.00008392">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-017 matches the normalized registry entry" time="0.00008381">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-018 matches the normalized registry entry" time="0.000082988">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-019 matches the normalized registry entry" time="0.000086068">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-020 matches the normalized registry entry" time="0.00008354">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-021 matches the normalized registry entry" time="0.000084232">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-022 matches the normalized registry entry" time="0.000083261">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-023 matches the normalized registry entry" time="0.000084406">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-024 matches the normalized registry entry" time="0.000086836">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-025 matches the normalized registry entry" time="0.000083968">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-026 matches the normalized registry entry" time="0.000111838">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-027 matches the normalized registry entry" time="0.000085326">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-028 matches the normalized registry entry" time="0.000084764">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-029 matches the normalized registry entry" time="0.000084494">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-030 matches the normalized registry entry" time="0.000086434">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-032 matches the normalized registry entry" time="0.009810992">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-033 matches the normalized registry entry" time="0.000125173">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-034 matches the normalized registry entry" time="0.000079325">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SOC-035 matches the normalized registry entry" time="0.000070767">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-001 matches the normalized registry entry" time="0.00006728">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-002 matches the normalized registry entry" time="0.000067579">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-003 matches the normalized registry entry" time="0.000067685">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-004 matches the normalized registry entry" time="0.000093468">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-005 matches the normalized registry entry" time="0.000146553">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-006 matches the normalized registry entry" time="0.000085545">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-007 matches the normalized registry entry" time="0.000070119">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-008 matches the normalized registry entry" time="0.000067433">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-009 matches the normalized registry entry" time="0.000066471">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-010 matches the normalized registry entry" time="0.000064668">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-011 matches the normalized registry entry" time="0.000064186">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-012 matches the normalized registry entry" time="0.000065135">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-013 matches the normalized registry entry" time="0.000064342">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-014 matches the normalized registry entry" time="0.00017811">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-015 matches the normalized registry entry" time="0.000097774">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-016 matches the normalized registry entry" time="0.000090895">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-017 matches the normalized registry entry" time="0.000154387">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-018 matches the normalized registry entry" time="0.000081255">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-019 matches the normalized registry entry" time="0.000067151">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-020 matches the normalized registry entry" time="0.000065089">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-024 matches the normalized registry entry" time="0.000076925">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FAM-025 matches the normalized registry entry" time="0.000074281">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-017 matches the normalized registry entry" time="0.00006936">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-018 matches the normalized registry entry" time="0.000066232">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-019 matches the normalized registry entry" time="0.000091527">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-020 matches the normalized registry entry" time="0.000074077">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-021 matches the normalized registry entry" time="0.000066124">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-022 matches the normalized registry entry" time="0.000066315">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-023 matches the normalized registry entry" time="0.00006701">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-024 matches the normalized registry entry" time="0.0000637">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-025 matches the normalized registry entry" time="0.000063402">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-026 matches the normalized registry entry" time="0.000066783">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-032 matches the normalized registry entry" time="0.000082611">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-033 matches the normalized registry entry" time="0.000067441">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-034 matches the normalized registry entry" time="0.000064343">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-035 matches the normalized registry entry" time="0.000063221">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-036 matches the normalized registry entry" time="0.003827034">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-037 matches the normalized registry entry" time="0.000118455">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-042 matches the normalized registry entry" time="0.000087596">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-044 matches the normalized registry entry" time="0.000070919">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LRP-045 matches the normalized registry entry" time="0.000064028">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-002 matches the normalized registry entry" time="0.000064946">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-003 matches the normalized registry entry" time="0.000065758">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-004 matches the normalized registry entry" time="0.000064667">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-005 matches the normalized registry entry" time="0.000066419">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-006 matches the normalized registry entry" time="0.000091944">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-020 matches the normalized registry entry" time="0.000066244">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-028 matches the normalized registry entry" time="0.000065517">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-029 matches the normalized registry entry" time="0.000081961">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-031 matches the normalized registry entry" time="0.000068684">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FRC-016 matches the normalized registry entry" time="0.000066212">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SWB-007 matches the normalized registry entry" time="0.000071338">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SWB-026 matches the normalized registry entry" time="0.000065856">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-002 matches the normalized registry entry" time="0.000064506">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-003 matches the normalized registry entry" time="0.000064269">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-004 matches the normalized registry entry" time="0.000063681">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-005 matches the normalized registry entry" time="0.000065433">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-006 matches the normalized registry entry" time="0.000064297">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-007 matches the normalized registry entry" time="0.000063526">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-010 matches the normalized registry entry" time="0.000064604">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-011 matches the normalized registry entry" time="0.00006354">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-012 matches the normalized registry entry" time="0.000065606">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-013 matches the normalized registry entry" time="0.000064677">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-015 matches the normalized registry entry" time="0.000063706">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-016 matches the normalized registry entry" time="0.000072571">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-017 matches the normalized registry entry" time="0.002839906">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-018 matches the normalized registry entry" time="0.000143083">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-019 matches the normalized registry entry" time="0.000117254">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-020 matches the normalized registry entry" time="0.000070609">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-021 matches the normalized registry entry" time="0.000065978">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-025 matches the normalized registry entry" time="0.000065828">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-EDU-029 matches the normalized registry entry" time="0.000065442">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-003 matches the normalized registry entry" time="0.000065031">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-005 matches the normalized registry entry" time="0.000064436">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-006 matches the normalized registry entry" time="0.001607132">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-021 matches the normalized registry entry" time="0.001097531">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-022 matches the normalized registry entry" time="0.000111221">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-001 matches the normalized registry entry" time="0.000078991">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-002 matches the normalized registry entry" time="0.000067564">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-004 matches the normalized registry entry" time="0.000067742">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-005 matches the normalized registry entry" time="0.000063359">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-006 matches the normalized registry entry" time="0.000063493">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-008 matches the normalized registry entry" time="0.000069368">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-011 matches the normalized registry entry" time="0.000065266">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-012 matches the normalized registry entry" time="0.000065615">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-013 matches the normalized registry entry" time="0.002603484">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-017 matches the normalized registry entry" time="0.000112917">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-024 matches the normalized registry entry" time="0.000072285">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-025 matches the normalized registry entry" time="0.000066146">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-015 matches the normalized registry entry" time="0.000067448">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-022 matches the normalized registry entry" time="0.000061466">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-024 matches the normalized registry entry" time="0.000060392">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-025 matches the normalized registry entry" time="0.00006115">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-026 matches the normalized registry entry" time="0.000074599">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-029 matches the normalized registry entry" time="0.000065798">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-001 matches the normalized registry entry" time="0.000065517">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-002 matches the normalized registry entry" time="0.000063">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-008 matches the normalized registry entry" time="0.000060336">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-009 matches the normalized registry entry" time="0.000060468">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-010 matches the normalized registry entry" time="0.00006023">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-014 matches the normalized registry entry" time="0.000061799">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-022 matches the normalized registry entry" time="0.000060566">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-001 matches the normalized registry entry" time="0.000061714">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-003 matches the normalized registry entry" time="0.000061002">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-005 matches the normalized registry entry" time="0.000061485">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-006 matches the normalized registry entry" time="0.000060486">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-UTL-006 matches the normalized registry entry" time="0.000061409">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-UTL-015 matches the normalized registry entry" time="0.000060965">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-DRM-001 matches the normalized registry entry" time="0.000061603">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-DRM-003 matches the normalized registry entry" time="0.00006027">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-DRM-004 matches the normalized registry entry" time="0.000061241">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-DRM-009 matches the normalized registry entry" time="0.000082193">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-002 matches the normalized registry entry" time="0.00006386">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-003 matches the normalized registry entry" time="0.000060744">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-004 matches the normalized registry entry" time="0.00006022">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-005 matches the normalized registry entry" time="0.000061089">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-007 matches the normalized registry entry" time="0.000061872">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-SPC-010 matches the normalized registry entry" time="0.000061577">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-010 matches the normalized registry entry" time="0.000060746">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-011 matches the normalized registry entry" time="0.000059237">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-012 matches the normalized registry entry" time="0.000059824">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-014 matches the normalized registry entry" time="0.000059364">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-015 matches the normalized registry entry" time="0.003303115">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-030 matches the normalized registry entry" time="0.000103711">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-AGR-033 matches the normalized registry entry" time="0.000070896">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FRC-014 matches the normalized registry entry" time="0.000067896">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FRC-015 matches the normalized registry entry" time="0.000068129">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FRC-019 matches the normalized registry entry" time="0.000063429">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-FRC-020 matches the normalized registry entry" time="0.000061269">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-012 matches the normalized registry entry" time="0.000061274">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-013 matches the normalized registry entry" time="0.000061894">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-018 matches the normalized registry entry" time="0.000061339">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-019 matches the normalized registry entry" time="0.000061422">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-LAB-020 matches the normalized registry entry" time="0.000059079">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-020 matches the normalized registry entry" time="0.000062253">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HLT-021 matches the normalized registry entry" time="0.000061044">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-001 matches the normalized registry entry" time="0.000061266">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-002 matches the normalized registry entry" time="0.000059928">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-003 matches the normalized registry entry" time="0.000060063">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-004 matches the normalized registry entry" time="0.000060564">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-005 matches the normalized registry entry" time="0.000063134">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-006 matches the normalized registry entry" time="0.000061436">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-017 matches the normalized registry entry" time="0.000060976">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-018 matches the normalized registry entry" time="0.000127128">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-019 matches the normalized registry entry" time="0.000073351">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-020 matches the normalized registry entry" time="0.000061429">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-027 matches the normalized registry entry" time="0.000061034">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-TRN-028 matches the normalized registry entry" time="0.00006084">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-004 matches the normalized registry entry" time="0.000061602">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-005 matches the normalized registry entry" time="0.000059469">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ULB-007 matches the normalized registry entry" time="0.000060541">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-001 matches the normalized registry entry" time="0.000060925">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-002 matches the normalized registry entry" time="0.000059417">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-009 matches the normalized registry entry" time="0.000060648">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-010 matches the normalized registry entry" time="0.000178763">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-011 matches the normalized registry entry" time="0.000067024">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-012 matches the normalized registry entry" time="0.000083301">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-013 matches the normalized registry entry" time="0.000127834">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-014 matches the normalized registry entry" time="0.000090771">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-015 matches the normalized registry entry" time="0.000109558">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-016 matches the normalized registry entry" time="0.000147358">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-017 matches the normalized registry entry" time="0.000116516">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-018 matches the normalized registry entry" time="0.000090208">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-021 matches the normalized registry entry" time="0.00006475">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-BTP-022 matches the normalized registry entry" time="0.000087269">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-009 matches the normalized registry entry" time="0.000117083">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-010 matches the normalized registry entry" time="0.000140599">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-012 matches the normalized registry entry" time="0.000096316">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-HOM-018 matches the normalized registry entry" time="0.000063808">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-002 matches the normalized registry entry" time="0.000060945">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-003 matches the normalized registry entry" time="0.000105126">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-004 matches the normalized registry entry" time="0.000063834">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; IND-ENV-010 matches the normalized registry entry" time="0.000098716">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; stubs use SAMPLE_LAB DUMMY policy and have no PUBLISHED version" time="0.009995242">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; configurable pack factory covers stubs with on-disk SAMPLE_LAB DUMMY artefacts" time="0.029843938">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; resolves SAMPLE_LAB DUMMY owner-config with tenant overlay; refuses outside lab" time="0.001214572">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; tenant jurisdiction scope constrains form enums for any offering; fail-closed outside lab" time="0.001631414">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; every version has a unique UUID, ascending semver and a matching content hash" time="0.036945394">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; PUBLISHED Residence 1.0.0 is frozen (the TSB pins its id and hash)" time="0.000649389">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-002.residence-certificate@1.0.0: UI controls and schema fields agree; last step is a review" time="0.000449714">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-002.residence-certificate@1.1.0: UI controls and schema fields agree; last step is a review" time="0.000121661">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-031.income-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00008187">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-001.domicile-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000082655">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-001.birth-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000096035">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-003.birth-certificate-correction@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000084102">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-004.birth-certificate-name-addition@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000110415">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-009.death-certificate-correction@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000075966">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-021.age-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000072589">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-civ-022.nationality-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000123663">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-003.permanent-residence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000053624">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-004.temporary-residence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058638">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-005.nativity-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047267">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-006.local-resident-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00009184">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-007.bonafide-resident-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000051516">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-008.rural-area-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000063289">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-009.hill-hilly-area-residence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050938">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-010.backward-area-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000080633">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-011.border-area-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000066891">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-012.sub-mountain-kandi-area-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000109425">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-013.tribal-scheduled-area-residence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000072574">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-014.caste-certificate-scheduled-caste@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000567077">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-015.caste-certificate-scheduled-tribe@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000075157">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-016.caste-certificate-other-backward-class@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000052958">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-017.caste-certificate-backward-class-state-backward-class@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049299">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-018.caste-certificate-extremely-backward-class@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047628">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-019.caste-certificate-special-backward-class-mbc@0.1.0: UI controls and schema fields agree; last step is a review" time="0.0000469">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-020.caste-certificate-general-unreserved-category@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045616">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-021.community-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000056712">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-022.integrated-community-and-nativity-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000059239">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-023.obc-non-creamy-layer-certificate-state@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048292">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-024.obc-non-creamy-layer-certificate-central@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048681">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-025.sebc-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004926">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-026.economically-backward-class-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048346">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-027.economically-weaker-section-income-and-asset-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046792">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-028.religious-minority-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045624">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-029.denotified-nomadic-semi-nomadic-tribe-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047114">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-030.primitive-particularly-vulnerable-tribal-group-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004787">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-032.income-certificate-family@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050041">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-033.agricultural-income-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00008664">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-034.no-earning-member-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000060025">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-soc-035.below-poverty-line-status-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000075091">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-001.legal-heir-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000099461">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-002.surviving-member-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000061754">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-003.surviving-family-member-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004619">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-004.family-membership-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004533">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-005.next-of-kin-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004894">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-006.dependency-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045943">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-007.relationship-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000139165">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-008.guardianship-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000071956">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-009.widow-widower-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000081959">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-010.destitute-widow-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000083394">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-011.deserted-woman-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058117">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-012.divorcee-status-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000056076">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-013.unmarried-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046414">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-014.non-remarriage-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000062496">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-015.inter-caste-marriage-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000128313">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-016.family-migration-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000076875">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-017.no-male-child-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00049465">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-018.orphan-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000104503">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-019.single-parent-single-woman-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000088953">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-020.dependent-children-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000078454">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-024.separation-split-family-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000051356">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-fam-025.freedom-fighter-dependent-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046619">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-017.land-use-conversion-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000055986">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-018.possession-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000059372">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-019.possession-and-non-attachment-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045392">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-020.land-ownership-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049279">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-021.land-holding-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048434">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-022.small-marginal-landholder-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000070799">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-023.landless-person-landless-labourer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058411">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-024.agriculturist-farmer-status-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000134903">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-025.tenancy-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000053865">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-026.patta-transfer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049675">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-032.location-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000068894">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-033.land-valuation-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050408">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-034.property-valuation-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048333">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-035.solvency-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044627">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-036.non-encumbrance-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000053033">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-037.encumbrance-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049477">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-042.property-ownership-holding-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046307">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-044.property-tax-no-dues-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048233">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lrp-045.lal-dora-abadi-area-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042093">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-002.farmer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000160594">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-003.small-marginal-farmer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050954">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-004.agricultural-family-member-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058246">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-005.agricultural-labourer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000194869">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-006.landless-agricultural-labourer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058759">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-020.kisan-credit-agriculture-loan-eligibility-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046781">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-028.livestock-ownership-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046026">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-029.cattle-livestock-health-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047536">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-031.veterinary-fitness-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049433">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-frc-016.food-grain-entitlement-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043406">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-swb-007.senior-citizen-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004471">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-swb-026.destitute-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043582">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-002.bonafide-student-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043739">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-003.school-leaving-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042261">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-004.transfer-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042783">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-005.migration-certificate-school@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041681">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-006.migration-certificate-university@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043009">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-007.character-certificate-educational-institution@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042396">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-010.passing-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043197">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-011.degree-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042814">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-012.diploma-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043009">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-013.provisional-degree-diploma-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048719">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-015.equivalence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044889">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-016.eligibility-certificate-for-admission@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043911">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-017.first-graduate-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042756">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-018.gap-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042419">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-019.medium-of-instruction-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042381">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-020.course-completion-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043579">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-021.apprenticeship-completion-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044676">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-025.hostel-admission-residence-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043976">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-edu-029.teacher-eligibility-qualification-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041928">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-003.unemployment-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041901">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-005.experience-certificate-government-public-service@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043186">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-006.service-certificate-employee@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004305">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-021.boiler-operator-welder-competency-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000066113">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-022.trade-skill-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004571">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-001.disability-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044825">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-002.benchmark-disability-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044704">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-004.medical-fitness-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046315">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-005.medical-board-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043969">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-006.health-medical-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041762">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-008.vaccination-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00005491">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-011.cause-of-death-medical-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.0000495">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-012.food-handler-medical-fitness-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047088">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-013.sanitary-health-certificate-for-premises@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043631">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-017.blood-donor-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042429">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-024.communicable-disease-clearance-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004325">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-025.occupational-health-fitness-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047445">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-015.vehicle-fitness-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045068">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-022.no-cancellation-certificate-for-vehicle-address-change@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042221">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-024.vehicle-tax-no-dues-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000063332">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-025.pollution-under-control-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045092">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-026.road-worthiness-inspection-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042703">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-029.dealer-trade-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042742">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-001.birth-certificate-municipal-service@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045504">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-002.death-certificate-municipal-service@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045697">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-008.commencement-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000059945">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-009.completion-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048303">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-010.occupancy-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043543">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-014.property-tax-no-dues-certificate-municipal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047413">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-022.street-vendor-certificate-certificate-of-vending@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043487">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-001.police-clearance-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043549">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-003.character-certificate-police-revenue@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042295">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-005.forest-rights-title-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004251">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-006.community-forest-rights-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047494">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-utl-006.electricity-no-dues-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046767">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-utl-015.utility-service-no-dues-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044609">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-drm-001.natural-disaster-damage-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041415">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-drm-003.crop-disaster-loss-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043611">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-drm-004.livestock-loss-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042713">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-drm-009.fire-accident-loss-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041741">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-002.dependent-of-ex-servicemen-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042283">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-003.war-widow-defence-widow-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000042516">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-004.freedom-fighter-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000043825">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-005.dependent-of-freedom-fighter-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041527">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-007.vigilance-clearance-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041637">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-spc-010.government-dues-no-dues-certificate@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000041306">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-010.seed-dealer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046523">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-011.seed-licence-district@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000074281">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-012.seed-licence-state@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004968">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-014.fertilizer-dealer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048619">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-015.pesticide-insecticide-dealer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046611">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-030.animal-movement-transport-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046086">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-agr-033.fishing-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046026">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-frc-014.fair-price-shop-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046205">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-frc-015.fair-price-shop-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004767">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-frc-019.weights-and-measures-dealer-repairer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046463">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-frc-020.essential-commodity-dealer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000044994">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-012.contract-labour-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045771">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-013.contract-labour-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046279">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-018.beedi-and-cigar-establishment-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004582">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-019.factory-registration-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047086">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-lab-020.factory-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000052966">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-020.pharmacy-drug-retail-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046393">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hlt-021.medical-store-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046254">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-001.learner-driving-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047632">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-002.driving-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047712">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-003.driving-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046078">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-004.duplicate-driving-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046145">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-005.international-driving-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000056415">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-006.addition-of-vehicle-class-to-driving-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048641">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-017.transport-vehicle-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045128">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-018.permit-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045822">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-019.national-inter-state-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047102">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-020.temporary-vehicle-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046058">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-027.conductor-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000049491">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-trn-028.driving-school-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004703">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-004.trade-licence-municipal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050448">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-005.trade-licence-renewal-municipal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00007788">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-ulb-007.building-construction-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047912">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-001.trade-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000048096">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-002.trade-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045573">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-009.stamp-vendor-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058603">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-010.stamp-vendor-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.00004734">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-011.money-lending-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000046502">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-012.pawn-broker-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045531">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-013.cinema-cinematograph-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045087">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-014.cinematograph-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045646">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-015.petroleum-storage-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000050053">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-016.kerosene-dealer-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047138">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-017.small-savings-agent-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.001861333">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-018.event-cultural-programme-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000077014">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-021.electrical-contractor-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000059015">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-btp-022.electrical-workman-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000052069">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-009.arms-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047359">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-010.arms-licence-renewal@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000051519">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-012.explosives-firecracker-temporary-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000074768">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-hom-018.private-security-agency-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000052233">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-002.tree-transit-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000058059">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-003.forest-produce-transit-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000047031">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-004.minor-forest-produce-collection-permit@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045127">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; ind-env-010.dog-registration-licence@0.1.0: UI controls and schema fields agree; last step is a review" time="0.000045492">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; sample data is synthetic only" time="0.000209321">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; maps form version ids to catalogue ids; SAMPLE_LAB DUMMY clears policyInputsPending" time="0.000225272">
+        </testcase>
+        <testcase classname="packages/service-templates/test/catalogue.test.ts" name="template catalogue (SAMPLE_LAB) &gt; diffs versions at field level" time="0.000304663">
+        </testcase>
+    </testsuite>
+</testsuites>

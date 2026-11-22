@@ -56,7 +56,7 @@ const DEFAULT_TYPES: readonly LabAppointmentType[] = [
     label: 'Site visit appointment',
     description: 'SAMPLE_LAB opaque booking type beside CMP-018 SITE_VISIT',
     related_inspection_pin: 'TRADE_LICENCE_SITE_VISIT',
-    catalogue_id: 'IND-LIC-001',
+    catalogue_id: 'IND-BTP-001',
   },
 ];
 
