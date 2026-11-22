@@ -46,6 +46,16 @@ Result: **all passed** (676 tests across those files; lab-offer suite alone 229 
 
 Form pin IDs for all 13 offers verified against `stubVersionId` / handcrafted version ids.
 
+## CI rematch notes
+
+PR [#266](https://github.com/dbn1972/serviceform-ai/pull/266) tip `5d6e1902` failed:
+
+1. **format** — Prettier on new tenant overlays, `workflow.json`, `inspection-catalogue.ts`
+2. **web shells smoke** — DigiLocker SIM after approve for `IND-BTP-001` missing because
+   `fixtures/lab/platform/issuance.json` lacked credential_template rows for the seven new TSB ids
+
+Fix: prettier --write on those files + add seven SIMULATED credential_template entries (shared SAMPLE_LAB template pin). Still DUMMY-only; no REAL connectors; Income statute not invented.
+
 ## Recommended gate
 
 Design/Develop complete for lab-offer expansion. **Not** VERIFIED/CERTIFIED. `CERTIFIED=false`. `G6=false`.
