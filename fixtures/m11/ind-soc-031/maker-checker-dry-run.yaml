@@ -1,0 +1,61 @@
+# IND-SOC-031 TSB dry-run maker-checker — SAMPLE_LAB roles (no named officers)
+# SAMPLE_LAB DUMMY only. SF-33 still required for statutory PUBLISH.
+# Not CERTIFIED. Not G6. Agents do not self-certify.
+
+record_schema_version: "1.0"
+catalogue_id: IND-SOC-031
+record_type: TSB_DRY_RUN_APPROVAL
+status: SAMPLE_LAB_DRY_RUN_AWAITING_OWNER_POLICY
+invented_statutory_policy_forbidden: true
+embedded_secrets_forbidden: true
+policy_source_url: "https://example.invalid/sample-lab-dummy-not-a-portal"
+sf33_owner_policy_required: true
+
+maker:
+  user_id: "a11ce000-0001-4000-8000-0000000000a1"
+  user_role: TENANT_CONFIG_MAKER
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
+  action: SUBMIT_TSB_DRY_RUN
+  action_taken_at: "2026-11-22T00:00:00.000Z"
+  action_notes: >
+    SAMPLE_LAB maker submits Income dry-run pin graph against authoring shell
+    templates/income-certificate/ with SAMPLE_LAB DUMMY overlays. Does not
+    invent statutory eligibility, fee, or DigiLocker registrar labels.
+  overlay_version_at_action: "0.2.0-sample-lab-dummy"
+
+checker:
+  user_id: null
+  user_role: TENANT_CONFIG_CHECKER
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
+  action: PENDING_OWNER_SF33
+  action_taken_at: null
+  action_notes: >
+    Checker approval for statutory PUBLISH blocked until SF-33 owner policy
+    inputs replace SAMPLE_LAB DUMMY. Lab-offer of DRAFT under SAMPLE_LAB may
+    continue without claiming PUBLISHED.
+  checker_distinct_from_maker: true
+
+subject:
+  tsb_id: "tsb-ind-soc-031-sample-lab-dummy-dry-run-v1"
+  overlay_ref: fixtures/m11/ind-soc-031/tenant-overlay.sample-lab-dummy.yaml
+  policy_input_fields_all_resolved: false
+  version_status: DRAFT
+  maturity: SAMPLE_LAB_STUB
+
+outcome:
+  decision: DRY_RUN_HELD_FOR_SF33
+  decided_at: null
+  tsb_immutability_sealed: false
+  lab_eng_sealed: false
+  version_pinned: false
+  note: >
+    SF-61 path polish only. Do not claim CERTIFIED, G6, or citizen-offerable
+    PUBLISHED service. DigiLocker remains SIMULATED.
+
+non_claims:
+  certified: false
+  g6: false
+  self_certified: false
+  release_certified: false
+  llm_made_eligibility_decision: false
+  citizen_offerable_published: false

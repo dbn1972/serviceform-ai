@@ -1,0 +1,92 @@
+# IND-SOC-031 SAMPLE_LAB DUMMY tenant overlay — synthetic only, not statute.
+# SF-33 owner must replace before any non-lab / statutory PUBLISH.
+# Not CERTIFIED. G6 not self-issued. DigiLocker SIMULATED.
+
+overlay_schema_version: "1.0"
+catalogue_id: IND-SOC-031
+service_template_ref: templates/income-certificate
+overlay_status: SAMPLE_LAB_DUMMY_DRY_RUN
+invented_statutory_policy_forbidden: true
+embedded_secrets_forbidden: true
+policy_source_url: "https://example.invalid/sample-lab-dummy-not-a-portal"
+policy_kind: SAMPLE_LAB_DUMMY
+not_for_production: true
+not_statutory: true
+
+tenant:
+  tenant_id: "0d15ba00-0001-4000-8000-0d15ba0000d1"
+  tenant_name: "SAMPLE_LAB_PILOT_CELL"
+  state_code: SAMPLE_LAB_PILOT_CELL
+  issuing_authority: "SAMPLE_LAB_DUMMY_ISSUING_AUTHORITY"
+
+service_localisation:
+  catalogue_id: IND-SOC-031
+  local_service_code: "SAMPLE_LAB-DUMMY-INCOME"
+  display_name:
+    en: "Income Certificate (individual) — SAMPLE_LAB DUMMY"
+  description:
+    en: >
+      SAMPLE_LAB DUMMY config-reuse shell for M11. Not a statutory Income
+      Certificate offering. Owner SF-33 inputs required before PUBLISHED use.
+  department: "SAMPLE_LAB_DUMMY_DEPARTMENT"
+  jurisdiction: "SAMPLE_LAB_PILOT_CELL"
+
+legal_basis:
+  statutory_authority: "SAMPLE_LAB DUMMY — not a statutory Act/Rules citation"
+  act_name: "SAMPLE_LAB DUMMY — owner must replace (SF-33)"
+  act_section: "POLICY_INPUT_REQUIRED"
+  gazette_reference: "SAMPLE_LAB_DUMMY"
+  effective_date: "POLICY_INPUT_REQUIRED"
+
+eligibility:
+  rule_engine: gorules
+  rules_ref: "templates/income-certificate/rules.gorules.yaml"
+  description: "SAMPLE_LAB DUMMY — synthetic eligibility claim only; not government policy"
+  thresholds: "POLICY_INPUT_REQUIRED"
+
+evidence_requirements:
+  mandatory_documents_min: 1
+  mandatory_documents:
+    - SAMPLE_LAB_DUMMY_EVIDENCE_ANY
+  optional_documents: []
+  digilocker_document_types:
+    - SAMPLE_LAB_DUMMY_IND_SOC_031
+  physical_accepted: true
+
+fee:
+  currency: INR
+  amount: 9.99
+  amount_paisa: 999
+  fee_schedule_ref: SAMPLE_LAB_DUMMY_FEE_SCHEDULE
+  waivers: []
+  payment_gateway_ref: "SAMPLE_LAB_SIM_PAYMENT"
+  treasury_head: "SAMPLE_LAB_DUMMY"
+
+sla:
+  processing_days_working: 15
+  clock_start_event: APPLICATION_SUBMITTED
+  escalation_days: 15
+  statutory_reference: "SAMPLE_LAB DUMMY — not a statutory SLA"
+
+credential:
+  template_id: "SAMPLE_LAB_DUMMY_IND_SOC_031_V1"
+  digilocker_doc_type: "SAMPLE_LAB_DUMMY_IND_SOC_031"
+  digilocker_mode: SIMULATED
+  issuing_authority: "SAMPLE_LAB_DUMMY_ISSUING_AUTHORITY"
+  validity_years: "SAMPLE_LAB_DUMMY_UNSPECIFIED"
+  vc_context: "SAMPLE_LAB_VC_CONTEXT"
+
+notifications:
+  sms_dlt_pe_id: "SAMPLE_LAB_DLT_PE_ID"
+  sms_template_id_submitted: "SAMPLE_LAB_SMS_SUBMITTED"
+  sms_template_id_approved: "SAMPLE_LAB_SMS_APPROVED"
+  sms_template_id_rejected: "SAMPLE_LAB_SMS_REJECTED"
+
+non_claims:
+  certified: false
+  g6: false
+  self_certified: false
+  release_certified: false
+  production_digilocker_registered: false
+  production_dlt_registered: false
+  citizen_offerable_published: false

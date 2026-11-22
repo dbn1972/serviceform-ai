@@ -1,4 +1,4 @@
-import { Alert, AppShell, Card } from '@serviceform/ui-ux4g';
+import { Alert, AppShell, Card, TextLink } from '@serviceform/ui-ux4g';
 import {
   diffVersions,
   formFields,
@@ -266,6 +266,55 @@ export default async function TemplateDetailPage({ params, searchParams }: Props
             <p className="ux4g-body-s-default">
               Authoring source: <code className="sf-hash">{template.authoring_path}</code>
             </p>
+          ) : null}
+          {template.catalogue_id === 'IND-SOC-031' ? (
+            <Card
+              title="M11 config-reuse designers"
+              subtitle="SAMPLE_LAB DUMMY · DRAFT · SF-33 gates PUBLISH"
+            >
+              <ul className="sf-diff-list">
+                <li>
+                  <TextLink
+                    href={`/forms/designer?template=${template.template_id}&v=${selected.version}`}
+                  >
+                    Forms designer
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="/fees/designer?template=ind-soc-031-dummy">
+                    Fee designer (DUMMY ₹9.99)
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="/sla/designer?template=ind-soc-031-sla">
+                    SLA designer (DUMMY P15D)
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="/evidence/designer?template=ind-soc-031-evidence">
+                    Evidence designer (DUMMY)
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="/credentials/designer?template=ind-soc-031-credential">
+                    Credential designer (SIM DigiLocker label)
+                  </TextLink>
+                </li>
+                <li>
+                  <TextLink href="/workflows">Workflow designer</TextLink>
+                </li>
+                <li>
+                  <TextLink href="/rules">Rules designer</TextLink>
+                </li>
+                <li>
+                  <TextLink href="/publication">Publication desk</TextLink>
+                </li>
+              </ul>
+              <p className="ux4g-body-s-default">
+                Dry-run fixtures: <code className="sf-hash">fixtures/m11/ind-soc-031/</code>. Do not
+                invent statute. CERTIFIED=false · G6=false.
+              </p>
+            </Card>
           ) : null}
         </aside>
       </div>

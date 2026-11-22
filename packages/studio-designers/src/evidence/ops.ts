@@ -56,12 +56,40 @@ export function residenceSampleEvidence(): EvidenceDesign {
   };
 }
 
+/** IND-SOC-031 SAMPLE_LAB DUMMY evidence list (M11 dry-run; not statute). */
+export function incomeCertificateDummyEvidence(): EvidenceDesign {
+  return {
+    packKey: 'lab.ind-soc-031.evidence',
+    title: 'Income Certificate evidence (SAMPLE_LAB DUMMY)',
+    version: '1.0.0',
+    requirements: [
+      {
+        id: 'req_any',
+        key: 'req.sample-lab-dummy-evidence-any',
+        label: 'SAMPLE_LAB DUMMY · Evidence (synthetic placeholder)',
+        artifact_type: 'document',
+        required: true,
+        guidance: 'SAMPLE_LAB_DUMMY_EVIDENCE_ANY — not a government accepted-proof catalogue.',
+      },
+    ],
+    notStatutory: true,
+    policyKind: 'SAMPLE_LAB_DUMMY',
+  };
+}
+
 export const EVIDENCE_TEMPLATES = [
   {
     id: 'ind-soc-002-evidence',
     title: 'Residence Certificate evidence',
     description: 'SAMPLE_LAB DUMMY address + identity requirements. Not statute.',
     create: residenceSampleEvidence,
+  },
+  {
+    id: 'ind-soc-031-evidence',
+    title: 'Income Certificate evidence (SAMPLE_LAB DUMMY)',
+    description:
+      'IND-SOC-031 M11 dry-run SAMPLE_LAB_DUMMY_EVIDENCE_ANY. Not statute; SF-33 gates PUBLISH.',
+    create: incomeCertificateDummyEvidence,
   },
 ] as const;
 

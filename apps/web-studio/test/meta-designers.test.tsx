@@ -25,14 +25,26 @@ describe('Studio meta-kind designers', () => {
     expect(renderToStaticMarkup(<FeesPage />)).toContain(
       'href="/fees/designer?template=ind-edu-004-dummy"',
     );
+    expect(renderToStaticMarkup(<FeesPage />)).toContain(
+      'href="/fees/designer?template=ind-soc-031-dummy"',
+    );
     expect(renderToStaticMarkup(<SlaPage />)).toContain('>SLA designer</h1>');
     expect(renderToStaticMarkup(<SlaPage />)).toContain(
       'href="/sla/designer?template=ind-soc-002-sla"',
     );
+    expect(renderToStaticMarkup(<SlaPage />)).toContain(
+      'href="/sla/designer?template=ind-soc-031-sla"',
+    );
     expect(renderToStaticMarkup(<EvidencePage />)).toContain('>Evidence designer</h1>');
+    expect(renderToStaticMarkup(<EvidencePage />)).toContain(
+      'href="/evidence/designer?template=ind-soc-031-evidence"',
+    );
     expect(renderToStaticMarkup(<CredentialsPage />)).toContain('>Credential designer</h1>');
     expect(renderToStaticMarkup(<CredentialsPage />)).toContain(
       'href="/credentials/designer?template=ind-soc-002-credential"',
+    );
+    expect(renderToStaticMarkup(<CredentialsPage />)).toContain(
+      'href="/credentials/designer?template=ind-soc-031-credential"',
     );
   });
 
@@ -62,5 +74,12 @@ describe('Studio meta-kind designers', () => {
     );
     expect(cred).toContain('SAMPLE_LAB_IND_SOC_002_RESIDENT');
     expect(cred).toContain('DigiLocker');
+
+    const incomeFee = renderToStaticMarkup(
+      <FeeDesigner source={{ kind: 'template', id: 'ind-soc-031-dummy' }} />,
+    );
+    expect(incomeFee).toContain('SAMPLE_LAB DUMMY · Income Certificate fee');
+    expect(incomeFee).toContain('999');
+    expect(incomeFee).toContain('Not statutory');
   });
 });

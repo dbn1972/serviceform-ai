@@ -49,6 +49,28 @@ export function residenceSampleSla(): SlaDesign {
   };
 }
 
+/** IND-SOC-031 SAMPLE_LAB DUMMY: 15 working-day style period as P15D ISO (M11 dry-run). */
+export function incomeCertificateDummySla(): SlaDesign {
+  return {
+    packKey: 'lab.ind-soc-031.sla',
+    title: 'Income Certificate SLA (SAMPLE_LAB DUMMY)',
+    version: '1.0.0',
+    startEventLabel: 'APPLICATION_SUBMITTED',
+    completionLabel: 'DECISION_RECORDED',
+    clocks: [
+      {
+        id: 'clock_processing',
+        key: 'clock.processing',
+        label: 'Processing (SAMPLE_LAB DUMMY 15 working days → P15D lab ISO)',
+        duration_iso: 'P15D',
+        pause_reason_codes: ['DEFICIENCY_OPEN'],
+      },
+    ],
+    notStatutory: true,
+    policyKind: 'SAMPLE_LAB_DUMMY',
+  };
+}
+
 export const SLA_TEMPLATES = [
   {
     id: 'ind-soc-002-sla',
@@ -56,6 +78,13 @@ export const SLA_TEMPLATES = [
     description:
       'SAMPLE_LAB overlay from the public sample policy (10 working days as P10D). Not statute.',
     create: residenceSampleSla,
+  },
+  {
+    id: 'ind-soc-031-sla',
+    title: 'Income Certificate SLA (SAMPLE_LAB DUMMY)',
+    description:
+      'IND-SOC-031 M11 dry-run overlay (15 working days as P15D). Not statute; SF-33 gates PUBLISH.',
+    create: incomeCertificateDummySla,
   },
 ] as const;
 

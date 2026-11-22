@@ -4,12 +4,14 @@ import {
   buildFeeDocument,
   feeDocumentOf,
   feeHasErrors,
+  incomeCertificateDummyFee,
   lintFee,
   transferCertificateDummyFee,
 } from '../src/fee';
 import {
   blankSla,
   buildSlaDocument,
+  incomeCertificateDummySla,
   lintSla,
   residenceSampleSla,
   slaDocumentOf,
@@ -20,6 +22,7 @@ import {
   buildEvidenceDocument,
   evidenceDocumentOf,
   evidenceHasErrors,
+  incomeCertificateDummyEvidence,
   lintEvidence,
   residenceSampleEvidence,
 } from '../src/evidence';
@@ -28,6 +31,7 @@ import {
   buildCredentialDocument,
   credentialDocumentOf,
   credentialHasErrors,
+  incomeCertificateDummyCredential,
   lintCredential,
   residenceSampleCredential,
 } from '../src/credential';
@@ -94,5 +98,31 @@ describe('credential designer', () => {
     expect(doc.payload.digilocker_label).toMatch(/SAMPLE_LAB/);
     expect(credentialDocumentOf(doc.payload)?.design.templateKey).toBe(design.templateKey);
     expect(credentialHasErrors(lintCredential(blankCredential()))).toBe(false);
+  });
+});
+
+// REQ: SF-61 M11 Income dry-run designer starters (SAMPLE_LAB DUMMY; not statute).
+describe('Income Certificate M11 dry-run starters', () => {
+  it('compiles SAMPLE_LAB DUMMY fee/SLA/evidence/credential for IND-SOC-031', async () => {
+    const fee = await buildFeeDocument(incomeCertificateDummyFee());
+    expect(fee.payload.items[0]?.amount_minor).toBe(999);
+    expect(fee.payload.amount_display).toMatch(/SAMPLE_LAB DUMMY/);
+    expect(fee.payload.not_statutory).toBe(true);
+    expect(feeHasErrors(lintFee(incomeCertificateDummyFee()))).toBe(false);
+
+    const sla = await buildSlaDocument(incomeCertificateDummySla());
+    expect(sla.payload.clocks[0]?.duration_iso).toBe('P15D');
+    expect(sla.payload.not_statutory).toBe(true);
+    expect(slaHasErrors(lintSla(incomeCertificateDummySla()))).toBe(false);
+
+    const evd = await buildEvidenceDocument(incomeCertificateDummyEvidence());
+    expect(evd.payload.requirements).toHaveLength(1);
+    expect(evd.payload.requirements[0]?.label).toMatch(/SAMPLE_LAB DUMMY/);
+    expect(evidenceHasErrors(lintEvidence(incomeCertificateDummyEvidence()))).toBe(false);
+
+    const cred = await buildCredentialDocument(incomeCertificateDummyCredential());
+    expect(cred.payload.template_key).toBe('lab.ind-soc-031.income-certificate');
+    expect(cred.payload.digilocker_label).toBe('SAMPLE_LAB_DUMMY_IND_SOC_031');
+    expect(credentialHasErrors(lintCredential(incomeCertificateDummyCredential()))).toBe(false);
   });
 });
