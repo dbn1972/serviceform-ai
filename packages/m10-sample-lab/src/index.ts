@@ -119,3 +119,16 @@ export {
   scopeTemplateLabel,
 } from './privacy-catalogue';
 export type { SampleLabPrivacyRequestType } from './privacy-catalogue';
+export {
+  SAMPLE_LAB_LICENCE_PERMIT_PIN_DEMOS,
+  stubFormVersionId,
+  pinDemoForCatalogue,
+  pinDemoCatalogueIds,
+  isLicencePermitPinDemo,
+  isSampleLabPinDemoEnvironment,
+} from './licence-permit-pin-demos';
+export type {
+  LicencePermitPinDemoCatalogue,
+  LicencePermitPinDemoTarget,
+  LicencePermitPinDemoPins,
+} from './licence-permit-pin-demos';

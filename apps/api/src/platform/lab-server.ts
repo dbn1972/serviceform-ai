@@ -43,6 +43,7 @@ if (lab.registerPrivacyCentre) await lab.registerPrivacyCentre(app);
 if (lab.registerM08) await lab.registerM08(app);
 if (lab.registerPayment) await lab.registerPayment(app);
 await lab.registerTsbSeal(app);
+await lab.registerLicencePermitPinDemos(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {

@@ -175,6 +175,10 @@ import {
   registerLabTsbSealRoutes,
   type LabTsbSealCatalogue,
 } from './tsb-seal.js';
+import {
+  loadLicencePermitPinDemos,
+  registerLabLicencePermitPinDemoRoutes,
+} from './licence-permit-pin-demos.js';
 
 /**
  * SF-M10-B-2/B-2c/B-2d/B-3 SAMPLE_LAB platform host: CMP-004 identity, CMP-009 dynamic forms,
@@ -294,6 +298,8 @@ export interface PlatformLab {
   registerPayment?(app: FastifyInstance): Promise<void>;
   /** SF-60: SAMPLE_LAB TSB eng seal prove routes (hash + mutation gate; G6 seal still false). */
   registerTsbSeal(app: FastifyInstance): Promise<void>;
+  /** Licence/Permit Studio→TSB pin demos (DRAFT/DUMMY; not citizen-offerable). */
+  registerLicencePermitPinDemos(app: FastifyInstance): Promise<void>;
   /** M08 mounts (CMP-035/045/046/006) when corresponding pools are set. */
   m08?: M08PluginMounts;
   /** M09 mounts (CMP-056/057/061) when corresponding pools are set. */
@@ -1386,6 +1392,9 @@ export async function buildPlatformLab(
   const tsbSealCatalogue: LabTsbSealCatalogue = loadTsbSealCatalogue(dir);
   const tsbSealStore = createLabTsbSealStore();
 
+  // Licence/Permit Studio→TSB pin demos (DRAFT/DUMMY; not on citizen placement).
+  const licencePermitPinDemos = loadLicencePermitPinDemos(dir);
+
   // SF-M10-B-4 / Phase C live-pins: mount CMP-033/051/052 when pool env vars are present.
   // CMP-052 ApprovalPort is CMP-051-backed (no SimulatedApprovalPort(allow=true) short-circuit).
   let m03: M03PluginMounts | undefined;
@@ -1759,6 +1768,12 @@ export async function buildPlatformLab(
         store: tsbSealStore,
         ...(pools.cmp052 ? { pool: pools.cmp052 } : {}),
         defaultTenantId: placement.tenant_id,
+      });
+    },
+    registerLicencePermitPinDemos: async (app: FastifyInstance) => {
+      registerLabLicencePermitPinDemoRoutes(app, {
+        environment,
+        catalogue: licencePermitPinDemos,
       });
     },
     async start() {

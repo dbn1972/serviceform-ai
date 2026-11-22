@@ -45,7 +45,14 @@ const packManifest = JSON.parse(
 ) as {
   generated_pack_count: number;
   total_manifest_entries: number;
-  packs: { catalogue_id: string; authoring_path: string; generator: string }[];
+  pin_demo_catalogue_ids?: string[];
+  packs: {
+    catalogue_id: string;
+    authoring_path: string;
+    generator: string;
+    pin_demo?: boolean;
+    citizen_offerable?: boolean;
+  }[];
 };
 const bindings = JSON.parse(
   readFileSync(join(ROOT, 'fixtures/lab/platform/published-bindings.json'), 'utf8'),
@@ -184,6 +191,20 @@ describe('template catalogue (SAMPLE_LAB)', () => {
     expect(byId.get('IND-SOC-031')?.generator).toBe('handcrafted');
     expect(byId.get('IND-AGR-002')?.authoring_path).toBe(
       'templates/certificate-packs/ind-agr-002/',
+    );
+    // Licence/Permit Studio→TSB pin-demo targets stay DRAFT and off citizen placement.
+    expect(packManifest.pin_demo_catalogue_ids).toEqual([
+      'IND-BTP-001',
+      'IND-LAB-019',
+      'IND-ULB-007',
+    ]);
+    expect(byId.get('IND-BTP-001')?.pin_demo).toBe(true);
+    expect(byId.get('IND-BTP-001')?.citizen_offerable).toBe(false);
+    expect(
+      readFileSync(join(ROOT, 'templates/certificate-packs/ind-btp-001/workflow.yaml'), 'utf8'),
+    ).toMatch(/inspection_pin_code: TRADE_LICENCE_SITE_VISIT/);
+    expect(existsSync(join(ROOT, 'fixtures/lab/platform/licence-permit-pin-demos.json'))).toBe(
+      true,
     );
   });
 

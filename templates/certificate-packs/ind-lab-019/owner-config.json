@@ -18,5 +18,14 @@
     "notification_pack_id": "ind-lab-019-notifications-sample-lab-dummy",
     "sms_dlt_pe_id": "SAMPLE_LAB_DLT_PE_ID"
   },
-  "_comment": "Per-id SAMPLE_LAB DUMMY overlay on shared defaults. Tenants override via CMP-052 tenant-overlay. Not statute."
+  "_comment": "Per-id SAMPLE_LAB DUMMY overlay on shared defaults. Tenants override via CMP-052 tenant-overlay. Not statute.",
+  "pin_demo": {
+    "enabled": true,
+    "citizen_offerable": false,
+    "inspection_pin_code": "FACTORY_LICENCE_INSPECTION",
+    "appointment_type_ref": "meta:appointment-type:factory-inspection",
+    "workflow_nodes": [
+      "FACTORY_INSPECTION"
+    ]
+  }
 }

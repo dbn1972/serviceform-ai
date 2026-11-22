@@ -15,7 +15,7 @@ describe('SAMPLE_LAB appointment catalogue (CMP-056)', () => {
           label: 'Site visit',
           description: 'lab',
           related_inspection_pin: 'TRADE_LICENCE_SITE_VISIT',
-          catalogue_id: 'IND-LIC-001',
+          catalogue_id: 'IND-BTP-001',
         },
         {
           appointment_type_ref: '',
