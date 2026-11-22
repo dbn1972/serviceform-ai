@@ -66,8 +66,7 @@ export async function GET(request: Request) {
     g6_issued: false,
     certified: false,
     wait_on_appointment_without_polling: true,
-    wait_bindings:
-      waitBindings.status === 200 ? (waitBindings.body['wait_bindings'] ?? []) : [],
+    wait_bindings: waitBindings.status === 200 ? (waitBindings.body['wait_bindings'] ?? []) : [],
     appointments: [...byId.values()].map(toAppointmentCard),
   });
 }

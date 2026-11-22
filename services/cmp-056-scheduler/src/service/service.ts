@@ -511,10 +511,7 @@ export class AppointmentSchedulerService {
    * List appointments for an opaque participant_ref (citizen mine / wait correlation).
    * OPA APPOINTMENT_READ on the collection; caller filters ownership via participant_ref.
    */
-  async listByParticipantRef(
-    ctx: TenantContext,
-    participantRef: string,
-  ): Promise<CommandResult> {
+  async listByParticipantRef(ctx: TenantContext, participantRef: string): Promise<CommandResult> {
     const collectionId = collectionResourceId(ctx.tenant_id, 'APPOINTMENTS');
     await this.guard(ctx, ACTIONS.read, APPOINTMENT_RESOURCE_TYPE, collectionId, BOOK_ACTORS);
     if (!participantRef || participantRef.length > 128) {

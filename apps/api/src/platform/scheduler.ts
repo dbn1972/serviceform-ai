@@ -58,13 +58,7 @@ export interface LabAppointmentCatalogue {
   wait_bindings: readonly LabAppointmentWaitBinding[];
 }
 
-const LIFECYCLE_STATUSES = new Set([
-  'BOOKED',
-  'RESCHEDULED',
-  'CANCELLED',
-  'COMPLETED',
-  'NO_SHOW',
-]);
+const LIFECYCLE_STATUSES = new Set(['BOOKED', 'RESCHEDULED', 'CANCELLED', 'COMPLETED', 'NO_SHOW']);
 
 const APP_PARTICIPANT_RE =
   /^participant:application:([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i;
