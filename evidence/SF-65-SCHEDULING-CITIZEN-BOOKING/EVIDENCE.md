@@ -3,7 +3,8 @@
 **Stamp:** CERTIFIED=false · G6=false · self_certified=false  
 **Requirement:** Constitution #37 scheduling deepen — citizen self-serve booking + CMP-056 ↔ workflow wait-on-appointment (no polling)  
 **Gap item:** overnight-gap-closure P3 scheduling deepen; platform-capability-gap-analysis rank 31  
-**Branch:** `cursor/scheduling-citizen-booking-bfab`
+**Branch:** `cursor/scheduling-citizen-booking-bfab`  
+**Tip:** `ea2dcd8359ad8cffd6e8ac4c76e324ef7f71f205`
 
 ## Executed checks
 
