@@ -18,6 +18,7 @@ const signedInLinks: readonly NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
   { href: '/certificates', label: 'My applications' },
+  { href: '/appointments', label: 'Appointments' },
   { href: '/grievances', label: 'Grievances' },
   { href: '/privacy', label: 'Privacy' },
 ];

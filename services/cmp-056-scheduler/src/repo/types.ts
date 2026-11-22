@@ -39,6 +39,8 @@ export interface SchedulerTx {
     appointmentId: string,
     forUpdate?: boolean,
   ): Promise<AppointmentRecord | undefined>;
+  /** Tenant-scoped list by opaque participant_ref (citizen mine / wait correlation). */
+  listAppointmentsByParticipantRef(participantRef: string): Promise<AppointmentRecord[]>;
   updateAppointment(row: AppointmentRecord): Promise<void>;
   insertEventLog(row: AppointmentEventLogRow): Promise<void>;
   insertOutbox(envelope: EventEnvelope<object>, topic: string): Promise<void>;

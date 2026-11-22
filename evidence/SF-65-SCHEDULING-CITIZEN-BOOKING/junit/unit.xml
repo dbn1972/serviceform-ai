@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="23" failures="0" errors="0" time="0.051999463">
+    <testsuite name="test/contract/contracts.test.ts" timestamp="2026-11-22T02:15:24.314Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.029573792">
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT &gt; the frozen schema still pins capacity and notify-failure markers" time="0.001284313">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT &gt; frozen valid example passes and invalid examples fail" time="0.000864749">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="FROZEN SF-CON-APPOINTMENT &gt; booked appointment responses validate against the frozen schema" time="0.004475912">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; openapi paths match route descriptors" time="0.000674936">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; isolation declaration covers FORCE RLS entities" time="0.00067891">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; migration pins privilege role, schema, capacity and notify constants" time="0.000363148">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; topics and domain events align" time="0.000627487">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; error catalogue subset and shared envelopes validate" time="0.0176363">
+        </testcase>
+        <testcase classname="test/contract/contracts.test.ts" name="component contracts and migrations &gt; source does not invent statutory calendar strings outside the refusal guard" time="0.00169075">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/domain.test.ts" timestamp="2026-11-22T02:15:24.315Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.004467822">
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-APPOINTMENT constants &gt; pins capacity_atomic=true and notification_failure_invalidates_booking=false" time="0.001344157">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="SF-CON-APPOINTMENT constants &gt; projects the frozen contract shape" time="0.000914966">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="atomic capacity &gt; refuses booking when remaining capacity is zero" time="0.000343567">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="lifecycle transitions &gt; allows cancel/complete/no-show/reschedule from active states only" time="0.000328113">
+        </testcase>
+        <testcase classname="test/unit/domain.test.ts" name="invented statutory calendar guard &gt; allows opaque metadata refs and refuses statute-looking calendars" time="0.000207551">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/unit/service.test.ts" timestamp="2026-11-22T02:15:24.315Z" hostname="cursor" tests="9" failures="0" errors="0" skipped="0" time="0.017957849">
+        <testcase classname="test/unit/service.test.ts" name="book / atomic capacity (INT-014) &gt; books a single-capacity slot and refuses a second concurrent booker" time="0.00536605">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="book / atomic capacity (INT-014) &gt; keeps the booking when notification fails (notify ≠ invalidate)" time="0.001457056">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="book / atomic capacity (INT-014) &gt; emits AppointmentBooked on the domain topic" time="0.001663166">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="reschedule / cancel &gt; reschedules onto another slot and releases capacity on the old slot" time="0.002165555">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="reschedule / cancel &gt; cancels and frees capacity" time="0.001777522">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="lifecycle notify + listByParticipantRef &gt; notifies after complete and lists by opaque participant_ref" time="0.002711707">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant / OPA / statutory invention &gt; refuses client-supplied tenant_id and invented statutory calendars" time="0.000365208">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant / OPA / statutory invention &gt; denies when OPA refuses and refuses citizen type registration" time="0.00033341">
+        </testcase>
+        <testcase classname="test/unit/service.test.ts" name="tenant / OPA / statutory invention &gt; lists remaining capacity on available slots" time="0.000899412">
+        </testcase>
+    </testsuite>
+</testsuites>

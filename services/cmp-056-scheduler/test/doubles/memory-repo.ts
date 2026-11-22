@@ -218,6 +218,13 @@ class MemoryTx implements SchedulerTx {
     return Promise.resolve(row ? structuredClone(row) : undefined);
   }
 
+  listAppointmentsByParticipantRef(participantRef: string): Promise<AppointmentRecord[]> {
+    const rows = [...this.s.appointments.values()]
+      .filter((a) => a.participant_ref === participantRef)
+      .sort((a, b) => b.created_at.localeCompare(a.created_at));
+    return Promise.resolve(structuredClone(rows));
+  }
+
   updateAppointment(row: AppointmentRecord): Promise<void> {
     const old = this.s.appointments.get(row.appointment_id);
     if (!old || row.appointment_version !== old.appointment_version + 1) {

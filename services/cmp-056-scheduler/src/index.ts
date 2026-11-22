@@ -52,4 +52,4 @@ export {
 } from './domain/appointment.js';
 export type { AuthorizationPort } from './authz.js';
 export type { ContextResolver } from './context.js';
-export type { NotificationPort } from './ports/notification.js';
+export type { AppointmentNotifyRequest, NotificationPort } from './ports/notification.js';

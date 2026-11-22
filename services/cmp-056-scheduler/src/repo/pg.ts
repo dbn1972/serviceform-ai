@@ -280,6 +280,17 @@ class PgTx implements SchedulerTx {
     return res.rows[0] ? toAppt(res.rows[0]) : undefined;
   }
 
+  async listAppointmentsByParticipantRef(participantRef: string): Promise<AppointmentRecord[]> {
+    const res = await this.c.query(
+      `SELECT * FROM sf_scheduler.appointment
+        WHERE tenant_id = $1 AND participant_ref = $2
+        ORDER BY created_at DESC
+        LIMIT 100`,
+      [this.tenantId, participantRef],
+    );
+    return res.rows.map((r) => toAppt(r));
+  }
+
   async updateAppointment(row: AppointmentRecord): Promise<void> {
     const res = await this.c.query(
       `UPDATE sf_scheduler.appointment

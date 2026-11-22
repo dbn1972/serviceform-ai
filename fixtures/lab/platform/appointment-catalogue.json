@@ -1,9 +1,29 @@
 {
-  "_note": "SAMPLE_LAB CMP-056 appointment / scheduler catalogue (SF-62 / Constitution #37). Opaque refs only — not statute. No invented hearing/inspection statutory calendars. CERTIFIED=false · G6=false.",
+  "_note": "SAMPLE_LAB CMP-056 appointment / scheduler catalogue (SF-62 deepen / Constitution #37). Opaque refs only — not statute. No invented hearing/inspection statutory calendars. Wait bindings release CMP-016 WAIT via CMP-015 after appointment lifecycle commit (no polling). CERTIFIED=false · G6=false.",
   "workload": {
     "actor_id": "05605605-0000-4000-8000-056056056056",
     "roles": ["SAMPLE_LAB_SCHEDULER_ADMIN"]
   },
+  "wait_bindings": [
+    {
+      "binding_id": "wait:sample-lab:verification-on-site-visit-complete",
+      "appointment_type_ref": "meta:appointment-type:site-visit",
+      "on_lifecycle_status": "COMPLETED",
+      "case_expected_state": "VERIFICATION",
+      "case_command": "ENTER_DECISION_PENDING",
+      "workflow_wait_node_id": "WAIT_VERIFICATION",
+      "label": "Release verification wait when site-visit appointment completes"
+    },
+    {
+      "binding_id": "wait:sample-lab:verification-on-factory-complete",
+      "appointment_type_ref": "meta:appointment-type:factory-inspection",
+      "on_lifecycle_status": "COMPLETED",
+      "case_expected_state": "VERIFICATION",
+      "case_command": "ENTER_DECISION_PENDING",
+      "workflow_wait_node_id": "WAIT_VERIFICATION",
+      "label": "Release verification wait when factory-inspection appointment completes"
+    }
+  ],
   "appointment_types": [
     {
       "appointment_type_ref": "meta:appointment-type:site-visit",
