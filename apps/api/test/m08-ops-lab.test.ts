@@ -66,6 +66,8 @@ describe('SAMPLE_LAB M08 ops catalogue (SF-63)', () => {
     expect(catalogue.metric_definitions[0]?.metric_code).toBe('LAB_CASE_TRANSITIONS');
     expect(catalogue.ops_samples.QUEUE_SUMMARY?.status).toBe('OK');
     expect(catalogue.discovery_services[0]?.service_code).toBe('IND-SOC-002');
+    expect(catalogue.opensearch_mirror.mode).toBe('SIMULATED');
+    expect(catalogue.opensearch_mirror.real_deferred).toBe(true);
     const facetKeys = Object.keys(catalogue.search_documents[0]?.facets ?? {});
     expect(facetKeys.every((k) => !/name|email|phone|aadhaar|address/i.test(k))).toBe(true);
   });
@@ -74,5 +76,6 @@ describe('SAMPLE_LAB M08 ops catalogue (SF-63)', () => {
     const catalogue = parseM08OpsCatalogue(null);
     expect(catalogue.search_documents).toEqual([]);
     expect(catalogue.jurisdiction_code).toBe('IN-OD-SAMPLE-LAB');
+    expect(catalogue.opensearch_mirror.enabled).toBe(true);
   });
 });

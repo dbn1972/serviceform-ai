@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { buildSearchBody, toSearchHitCard, type PlatformSearchHit } from '../lib/portal/search';
 import { toOpsViewCard, type PlatformOpsView } from '../lib/portal/ops';
+import { toOpenSearchCard, type PlatformOpenSearchStatus } from '../lib/portal/opensearch';
 
 const hit: PlatformSearchHit = {
   document: {
@@ -59,5 +60,20 @@ describe('officer search / ops desk helpers', () => {
     expect(card.label).toBe('Work queue summary');
     expect(card.can_refresh).toBe(true);
     expect(card.metrics[0]?.dimensions_summary).toContain('desk=SCRUTINY');
+  });
+
+  it('projects OpenSearch mirror status as SIMULATED / REAL deferred', () => {
+    const status: PlatformOpenSearchStatus = {
+      mode: 'SIMULATED',
+      real_deferred: true,
+      document_count: 3,
+      last_sync_at: '2026-11-22T00:00:00.000Z',
+      opensearch_connector_type_in_contract: false,
+    };
+    const card = toOpenSearchCard(status);
+    expect(card.real_deferred).toBe(true);
+    expect(card.non_authoritative).toBe(true);
+    expect(card.label).toContain('SIMULATED');
+    expect(card.document_count).toBe(3);
   });
 });

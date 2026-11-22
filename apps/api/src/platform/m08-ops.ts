@@ -27,10 +27,18 @@ import {
 import type { RequestContext } from '@serviceform/contracts';
 import type { FastifyInstance } from 'fastify';
 import type pg from 'pg';
+import {
+  assertOpenSearchMirrorAllowed,
+  LabOpenSearchMirror,
+  type DeploymentEnvironment,
+  type LabOpenSearchMirrorStatus,
+} from './m08-opensearch-mirror.js';
 
 /**
- * SAMPLE_LAB M08 host adapter (search / discovery / analytics / ops thin golden UI).
+ * SAMPLE_LAB M08 host adapter (search / discovery / analytics / ops).
+ * SF-63 thin UI + SF-65 richer ops ports / SIMULATED OpenSearch lab mirror.
  * Surfaces existing CMP-035/045/046/006 engines — no statute, no PII in facets/logs.
+ * REAL OpenSearch deferred (no OPENSEARCH connector_type in frozen SF-CON-CONNECTOR-BINDING).
  * CERTIFIED=false · G6=false.
  */
 
@@ -78,6 +86,13 @@ export interface LabDiscoveryService {
   jurisdiction_codes: readonly string[];
 }
 
+export interface LabOpenSearchMirrorSeed {
+  enabled: boolean;
+  mode: 'SIMULATED';
+  real_deferred: true;
+  topic: string;
+}
+
 export interface LabM08OpsCatalogue {
   workload: { actor_id: string; roles: readonly string[] };
   catalogue_version_id: string;
@@ -86,11 +101,19 @@ export interface LabM08OpsCatalogue {
   metric_definitions: readonly LabMetricDefinitionSeed[];
   ops_samples: Readonly<Partial<Record<ViewCode, LabOpsSample>>>;
   discovery_services: readonly LabDiscoveryService[];
+  opensearch_mirror: LabOpenSearchMirrorSeed;
 }
 
 const DEFAULT_WORKLOAD = {
   actor_id: '00800800-0000-4000-8000-008008008008',
   roles: ['SAMPLE_LAB_OPS_ANALYST'] as const,
+};
+
+const DEFAULT_OPENSEARCH_MIRROR: LabOpenSearchMirrorSeed = {
+  enabled: true,
+  mode: 'SIMULATED',
+  real_deferred: true,
+  topic: 'sf.search.events.v1',
 };
 
 const DEFAULT_CATALOGUE: LabM08OpsCatalogue = {
@@ -101,6 +124,7 @@ const DEFAULT_CATALOGUE: LabM08OpsCatalogue = {
   metric_definitions: [],
   ops_samples: {},
   discovery_services: [],
+  opensearch_mirror: DEFAULT_OPENSEARCH_MIRROR,
 };
 
 export function parseM08OpsCatalogue(raw: unknown): LabM08OpsCatalogue {
@@ -217,6 +241,20 @@ export function parseM08OpsCatalogue(raw: unknown): LabM08OpsCatalogue {
     });
   }
 
+  const mirrorRaw =
+    obj['opensearch_mirror'] && typeof obj['opensearch_mirror'] === 'object'
+      ? (obj['opensearch_mirror'] as Record<string, unknown>)
+      : {};
+  const opensearch_mirror: LabOpenSearchMirrorSeed = {
+    enabled: mirrorRaw['enabled'] === false ? false : true,
+    mode: 'SIMULATED',
+    real_deferred: true,
+    topic:
+      typeof mirrorRaw['topic'] === 'string' && mirrorRaw['topic'].length > 0
+        ? mirrorRaw['topic']
+        : DEFAULT_OPENSEARCH_MIRROR.topic,
+  };
+
   return {
     workload: { actor_id, roles },
     catalogue_version_id:
@@ -231,6 +269,7 @@ export function parseM08OpsCatalogue(raw: unknown): LabM08OpsCatalogue {
     metric_definitions,
     ops_samples,
     discovery_services,
+    opensearch_mirror,
   };
 }
 
@@ -243,17 +282,211 @@ export function loadM08OpsCatalogue(dir: string): LabM08OpsCatalogue {
   }
 }
 
+/** Static catalogue fixture port (non-authoritative SAMPLE_LAB aggregates). */
 class LabFixtureSummaryPort implements SummaryPort {
-  constructor(private readonly sample: LabOpsSample) {}
+  constructor(
+    private readonly sample: LabOpsSample,
+    private readonly clock: () => Date = () => new Date(),
+  ) {}
   fetchSummary(): Promise<PortSample> {
     return Promise.resolve({
       status: this.sample.status,
-      source_observed_at: new Date().toISOString(),
+      source_observed_at: this.clock().toISOString(),
       metrics: this.sample.metrics.map((m) => ({
         metric_code: m.metric_code,
         value: m.value,
         ...(m.dimensions ? { dimensions: { ...m.dimensions } } : {}),
       })),
+    });
+  }
+}
+
+/**
+ * Richer INTEGRATION_HEALTH port: merges catalogue fixture with live OpenSearch
+ * mirror counts. REAL OpenSearch remains deferred — status stays DEGRADED when
+ * the mirror is SIMULATED, never claims REAL health.
+ */
+class LabIntegrationHealthPort implements SummaryPort {
+  constructor(
+    private readonly sample: LabOpsSample | undefined,
+    private readonly mirror: LabOpenSearchMirror | null,
+    private readonly clock: () => Date = () => new Date(),
+  ) {}
+  fetchSummary(): Promise<PortSample> {
+    const base = this.sample
+      ? {
+          status: this.sample.status,
+          metrics: this.sample.metrics.map((m) => ({
+            metric_code: m.metric_code,
+            value: m.value,
+            ...(m.dimensions ? { dimensions: { ...m.dimensions } } : {}),
+          })),
+        }
+      : {
+          status: 'DEGRADED' as const,
+          metrics: [
+            {
+              metric_code: 'CONNECTOR_MODE',
+              value: 1,
+              dimensions: { mode: 'SIMULATED' },
+            },
+          ],
+        };
+    const metrics = [...base.metrics];
+    const seen = new Set(
+      metrics.map(
+        (m) =>
+          `${m.metric_code}|${JSON.stringify(m.dimensions ?? {}, Object.keys(m.dimensions ?? {}).sort())}`,
+      ),
+    );
+    const push = (metric: PortSample['metrics'][number]) => {
+      const id = `${metric.metric_code}|${JSON.stringify(metric.dimensions ?? {}, Object.keys(metric.dimensions ?? {}).sort())}`;
+      if (seen.has(id)) return;
+      seen.add(id);
+      metrics.push(metric);
+    };
+    if (this.mirror) {
+      const st = this.mirror.status();
+      push({
+        metric_code: 'INDEX_DOCUMENTS',
+        value: st.document_count,
+        dimensions: { index: 'search' },
+      });
+      push({
+        metric_code: 'REAL_DEFERRED',
+        value: 1,
+        dimensions: { adapter: 'opensearch' },
+      });
+      push({
+        metric_code: 'MIRROR_SYNC',
+        value: st.last_sync_at ? 1 : 0,
+        dimensions: { topic: 'search_events' },
+      });
+    } else {
+      push({
+        metric_code: 'MIRROR_UNBOUND',
+        value: 1,
+        dimensions: { adapter: 'opensearch' },
+      });
+    }
+    const status: PortSample['status'] =
+      !this.mirror || base.status === 'UNAVAILABLE'
+        ? 'UNAVAILABLE'
+        : base.status === 'OK' && this.mirror
+          ? 'DEGRADED'
+          : base.status;
+    return Promise.resolve({
+      status,
+      source_observed_at: this.clock().toISOString(),
+      metrics,
+    });
+  }
+}
+
+/**
+ * Richer PLATFORM_HEALTH: catalogue readiness plus search projection / mirror counts.
+ * Dimension keys avoid personal/record identifiers (CMP-046 normalizeSample).
+ */
+class LabPlatformHealthPort implements SummaryPort {
+  constructor(
+    private readonly sample: LabOpsSample | undefined,
+    private readonly mirror: LabOpenSearchMirror | null,
+    private readonly searchDocCount: () => number,
+    private readonly clock: () => Date = () => new Date(),
+  ) {}
+  fetchSummary(): Promise<PortSample> {
+    const metrics: PortSample['metrics'] = [];
+    if (this.sample) {
+      for (const m of this.sample.metrics) {
+        metrics.push({
+          metric_code: m.metric_code,
+          value: m.value,
+          ...(m.dimensions ? { dimensions: { ...m.dimensions } } : {}),
+        });
+      }
+    } else {
+      metrics.push({
+        metric_code: 'READINESS',
+        value: 1,
+        dimensions: { component: 'SAMPLE_LAB' },
+      });
+    }
+    metrics.push({
+      metric_code: 'SEARCH_PROJECTIONS',
+      value: this.searchDocCount(),
+      dimensions: { store: 'cmp035' },
+    });
+    metrics.push({
+      metric_code: 'OPENSEARCH_MIRROR',
+      value: this.mirror ? this.mirror.documentCount() : 0,
+      dimensions: { mode: this.mirror ? 'SIMULATED' : 'UNBOUND' },
+    });
+    return Promise.resolve({
+      status: this.sample?.status ?? 'OK',
+      source_observed_at: this.clock().toISOString(),
+      metrics,
+    });
+  }
+}
+
+/** Derive opaque catalogue/state facet counts for QUEUE_SUMMARY enrichment. */
+export function deriveSearchFacetMetrics(
+  docs: readonly LabSearchDocumentSeed[],
+): PortSample['metrics'] {
+  const byCatalogue = new Map<string, number>();
+  const byState = new Map<string, number>();
+  for (const doc of docs) {
+    const cat = doc.facets['catalogue_id'];
+    if (typeof cat === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(cat)) {
+      byCatalogue.set(cat, (byCatalogue.get(cat) ?? 0) + 1);
+    }
+    const state = doc.facets['case_state'];
+    if (typeof state === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(state)) {
+      byState.set(state, (byState.get(state) ?? 0) + 1);
+    }
+  }
+  const metrics: PortSample['metrics'] = [];
+  for (const [catalogue, value] of byCatalogue) {
+    metrics.push({
+      metric_code: 'INDEXED_BY_CATALOGUE',
+      value,
+      dimensions: { catalogue },
+    });
+  }
+  for (const [state, value] of byState) {
+    metrics.push({
+      metric_code: 'INDEXED_BY_STATE',
+      value,
+      dimensions: { state },
+    });
+  }
+  return metrics;
+}
+
+class LabQueueSummaryPort implements SummaryPort {
+  constructor(
+    private readonly sample: LabOpsSample | undefined,
+    private readonly docs: readonly LabSearchDocumentSeed[],
+    private readonly clock: () => Date = () => new Date(),
+  ) {}
+  fetchSummary(): Promise<PortSample> {
+    const metrics: PortSample['metrics'] = [];
+    if (this.sample) {
+      for (const m of this.sample.metrics) {
+        metrics.push({
+          metric_code: m.metric_code,
+          value: m.value,
+          ...(m.dimensions ? { dimensions: { ...m.dimensions } } : {}),
+        });
+      }
+    }
+    for (const m of deriveSearchFacetMetrics(this.docs)) {
+      metrics.push(m);
+    }
+    return Promise.resolve({
+      status: this.sample?.status ?? 'OK',
+      source_observed_at: this.clock().toISOString(),
+      metrics,
     });
   }
 }
@@ -379,17 +612,23 @@ export class LabM08Seeder {
     private readonly cellId: string,
     private readonly tenantId: string,
     private readonly clock: () => Date = () => new Date(),
+    private readonly mirror: LabOpenSearchMirror | null = null,
   ) {}
 
   async ensureCatalogueSeeded(): Promise<{
     search_documents: number;
     metric_definitions: number;
+    opensearch_mirrored: number;
     already_seeded: boolean;
   }> {
     if (this.seeded) {
+      const mirrorSync = this.mirror
+        ? this.mirror.syncFromSeeds(this.catalogue.search_documents)
+        : { upserted: 0 };
       return {
         search_documents: this.catalogue.search_documents.length,
         metric_definitions: this.catalogue.metric_definitions.length,
+        opensearch_mirrored: mirrorSync.upserted,
         already_seeded: true,
       };
     }
@@ -469,10 +708,15 @@ export class LabM08Seeder {
       }
     }
 
+    const mirrorSync = this.mirror
+      ? this.mirror.syncFromSeeds(this.catalogue.search_documents)
+      : { upserted: 0 };
+
     this.seeded = true;
     return {
       search_documents: searchCount,
       metric_definitions: metricCount,
+      opensearch_mirrored: mirrorSync.upserted,
       already_seeded: false,
     };
   }
@@ -488,6 +732,7 @@ export function composeLabM08(params: {
   cellId: string;
   tenantId: string;
   clock?: () => Date;
+  environment?: DeploymentEnvironment;
 }): {
   search: SearchQueryService;
   analytics: AnalyticsService;
@@ -495,8 +740,10 @@ export function composeLabM08(params: {
   discovery: ServiceDiscoveryService;
   seeder: LabM08Seeder;
   searchStore: PgSearchStore;
+  opensearchMirror: LabOpenSearchMirror | null;
 } {
   const clock = params.clock ?? (() => new Date());
+  const environment = params.environment ?? 'LOCAL';
   const searchStore = new PgSearchStore(params.searchPool);
   const search = new SearchQueryService({
     store: searchStore,
@@ -509,10 +756,34 @@ export function composeLabM08(params: {
     consumerActorId: params.catalogue.workload.actor_id,
     clock,
   });
+
+  let opensearchMirror: LabOpenSearchMirror | null = null;
+  if (params.catalogue.opensearch_mirror.enabled) {
+    assertOpenSearchMirrorAllowed(environment);
+    opensearchMirror = new LabOpenSearchMirror(params.tenantId, environment, clock);
+  }
+
   const ports: Partial<Record<ViewCode, SummaryPort>> = {};
   for (const code of VIEW_CODES) {
     const sample = params.catalogue.ops_samples[code];
-    if (sample) ports[code] = new LabFixtureSummaryPort(sample);
+    if (code === 'INTEGRATION_HEALTH') {
+      ports[code] = new LabIntegrationHealthPort(sample, opensearchMirror, clock);
+      continue;
+    }
+    if (code === 'PLATFORM_HEALTH') {
+      ports[code] = new LabPlatformHealthPort(
+        sample,
+        opensearchMirror,
+        () => params.catalogue.search_documents.length,
+        clock,
+      );
+      continue;
+    }
+    if (code === 'QUEUE_SUMMARY') {
+      ports[code] = new LabQueueSummaryPort(sample, params.catalogue.search_documents, clock);
+      continue;
+    }
+    if (sample) ports[code] = new LabFixtureSummaryPort(sample, clock);
   }
   const ops = buildOpsDashboardService({
     pool: params.opsPool,
@@ -539,20 +810,26 @@ export function composeLabM08(params: {
     params.cellId,
     params.tenantId,
     clock,
+    opensearchMirror,
   );
-  return { search, analytics, ops, discovery, seeder, searchStore };
+  return { search, analytics, ops, discovery, seeder, searchStore, opensearchMirror };
 }
 
 /**
  * Lab-only routes (not in frozen OpenAPI — no CCR):
  * GET  /v1/lab/m08/catalogue
- * POST /v1/lab/m08/ensure — SYSTEM seed search docs + metric definitions
+ * POST /v1/lab/m08/ensure — SYSTEM seed search docs + metric definitions + OpenSearch mirror
+ * GET  /v1/lab/m08/opensearch — SIMULATED mirror status (REAL deferred)
+ * POST /v1/lab/m08/opensearch/sync — re-sync mirror from catalogue seeds
+ * POST /v1/lab/m08/opensearch/query — tenant-safe facet query against mirror
  */
 export function registerLabM08Routes(
   app: FastifyInstance,
   opts: {
     catalogue: LabM08OpsCatalogue;
     seeder: LabM08Seeder;
+    opensearchMirror: LabOpenSearchMirror | null;
+    tenantId: string;
   },
 ): void {
   app.get('/v1/lab/m08/catalogue', async (_req, reply) => {
@@ -563,6 +840,7 @@ export function registerLabM08Routes(
       module: 'M08',
       invented_statutory_policy_forbidden: true,
       pii_in_facets_forbidden: true,
+      real_opensearch_deferred: true,
       catalogue: opts.catalogue,
     });
   });
@@ -574,6 +852,7 @@ export function registerLabM08Routes(
         source: 'SAMPLE_LAB',
         g6_issued: false,
         certified: false,
+        real_opensearch_deferred: true,
         ...result,
       });
     } catch (err) {
@@ -583,5 +862,82 @@ export function registerLabM08Routes(
         .header('cache-control', 'no-store')
         .send({ error_code: 'SF-SYS-004', message });
     }
+  });
+
+  app.get('/v1/lab/m08/opensearch', async (_req, reply) => {
+    if (!opts.opensearchMirror) {
+      return reply.code(503).header('cache-control', 'no-store').send({
+        error_code: 'SF-SYS-003',
+        message: 'OpenSearch mirror unbound — REAL connector deferred',
+        detail_code: 'OPENSEARCH_MIRROR_UNBOUND',
+        certified: false,
+        g6_issued: false,
+      });
+    }
+    const status: LabOpenSearchMirrorStatus = opts.opensearchMirror.status();
+    return reply.header('cache-control', 'no-store').send({
+      source: 'SAMPLE_LAB',
+      ...status,
+    });
+  });
+
+  app.post('/v1/lab/m08/opensearch/sync', async (_req, reply) => {
+    if (!opts.opensearchMirror) {
+      return reply.code(503).header('cache-control', 'no-store').send({
+        error_code: 'SF-SYS-003',
+        message: 'OpenSearch mirror unbound',
+        detail_code: 'OPENSEARCH_MIRROR_UNBOUND',
+      });
+    }
+    const result = opts.opensearchMirror.syncFromSeeds(opts.catalogue.search_documents);
+    return reply.header('cache-control', 'no-store').send({
+      source: 'SAMPLE_LAB',
+      g6_issued: false,
+      certified: false,
+      real_opensearch_deferred: true,
+      upserted: result.upserted,
+      status: opts.opensearchMirror.status(),
+    });
+  });
+
+  app.post('/v1/lab/m08/opensearch/query', async (req, reply) => {
+    if (!opts.opensearchMirror) {
+      return reply.code(503).header('cache-control', 'no-store').send({
+        error_code: 'SF-SYS-003',
+        message: 'OpenSearch mirror unbound',
+        detail_code: 'OPENSEARCH_MIRROR_UNBOUND',
+      });
+    }
+    const body = (req.body ?? {}) as Record<string, unknown>;
+    const facetsRaw =
+      body['facets'] && typeof body['facets'] === 'object' && !Array.isArray(body['facets'])
+        ? (body['facets'] as Record<string, unknown>)
+        : {};
+    const facets: Record<string, string | number | boolean> = {};
+    for (const [k, v] of Object.entries(facetsRaw)) {
+      if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') facets[k] = v;
+    }
+    const limit = typeof body['limit'] === 'number' ? body['limit'] : 20;
+    const hits = opts.opensearchMirror.query({
+      tenant_id: opts.tenantId,
+      facets,
+      limit,
+    });
+    return reply.header('cache-control', 'no-store').send({
+      source: 'SAMPLE_LAB',
+      g6_issued: false,
+      certified: false,
+      non_authoritative: true,
+      mode: 'SIMULATED',
+      real_opensearch_deferred: true,
+      hits: hits.map((h) => ({
+        document_id: h.document_id,
+        source_cmp_id: h.source_cmp_id,
+        source_record_id: h.source_record_id,
+        facets: h.facets,
+        revision: h.revision,
+        mirrored_at: h.mirrored_at,
+      })),
+    });
   });
 }

@@ -1353,6 +1353,15 @@ export async function buildPlatformLab(
       catalogue: m08Catalogue,
       cellId: placement.cell_id,
       tenantId: placement.tenant_id,
+      environment: environment as
+        | 'LOCAL'
+        | 'CI'
+        | 'DEVELOPMENT'
+        | 'SIT'
+        | 'PERFORMANCE'
+        | 'UAT'
+        | 'PREPROD'
+        | 'PRODUCTION',
     });
   }
 
@@ -1691,6 +1700,8 @@ export async function buildPlatformLab(
             registerLabM08Routes(app, {
               catalogue: m08Catalogue,
               seeder: m08Mount.seeder,
+              opensearchMirror: m08Mount.opensearchMirror,
+              tenantId: placement.tenant_id,
             });
           },
         }

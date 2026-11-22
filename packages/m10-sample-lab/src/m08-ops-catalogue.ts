@@ -1,6 +1,7 @@
 /**
- * SAMPLE_LAB M08 search / discovery / analytics / ops catalogue (SF-63).
+ * SAMPLE_LAB M08 search / discovery / analytics / ops catalogue (SF-63 + SF-65 deepen).
  * Opaque facets and aggregate metrics only — no PII, no invented statute.
+ * OpenSearch mirror is SIMULATED lab wiring; REAL OpenSearch deferred.
  * CERTIFIED=false · G6=false.
  */
 
@@ -52,6 +53,13 @@ export interface SampleLabDiscoveryService {
   jurisdiction_codes: readonly string[];
 }
 
+export interface SampleLabOpenSearchMirrorSeed {
+  enabled: boolean;
+  mode: 'SIMULATED';
+  real_deferred: true;
+  topic: string;
+}
+
 export interface SampleLabM08OpsCatalogue {
   workload: { actor_id: string; roles: readonly string[] };
   catalogue_version_id: string;
@@ -60,6 +68,7 @@ export interface SampleLabM08OpsCatalogue {
   metric_definitions: readonly SampleLabMetricDefinitionSeed[];
   ops_samples: Readonly<Record<string, SampleLabOpsSample>>;
   discovery_services: readonly SampleLabDiscoveryService[];
+  opensearch_mirror: SampleLabOpenSearchMirrorSeed;
 }
 
 export const SAMPLE_LAB_M08_OPS_CATALOGUE: SampleLabM08OpsCatalogue = {
@@ -141,16 +150,28 @@ export const SAMPLE_LAB_M08_OPS_CATALOGUE: SampleLabM08OpsCatalogue = {
     },
     INTEGRATION_HEALTH: {
       status: 'DEGRADED',
-      metrics: [{ metric_code: 'CONNECTOR_MODE', value: 1, dimensions: { mode: 'SIMULATED' } }],
+      metrics: [
+        { metric_code: 'CONNECTOR_MODE', value: 1, dimensions: { mode: 'SIMULATED' } },
+        { metric_code: 'HUB_ADAPTERS', value: 1, dimensions: { adapter: 'opensearch' } },
+      ],
     },
     EVENT_HEALTH: {
       status: 'OK',
-      metrics: [{ metric_code: 'OUTBOX_LAG', value: 0, dimensions: { topic: 'sf.lab.events.v1' } }],
+      metrics: [
+        { metric_code: 'OUTBOX_LAG', value: 0, dimensions: { topic: 'sf.lab.events.v1' } },
+        { metric_code: 'SEARCH_TOPIC_LAG', value: 0, dimensions: { topic: 'search_events' } },
+      ],
     },
     PLATFORM_HEALTH: {
       status: 'OK',
       metrics: [{ metric_code: 'READINESS', value: 1, dimensions: { component: 'SAMPLE_LAB' } }],
     },
+  },
+  opensearch_mirror: {
+    enabled: true,
+    mode: 'SIMULATED',
+    real_deferred: true,
+    topic: 'sf.search.events.v1',
   },
   discovery_services: [
     {
@@ -201,4 +222,15 @@ export function opsViewLabel(code: string): string {
     default:
       return code;
   }
+}
+
+export function openSearchMirrorLabel(status: {
+  mode?: string;
+  document_count?: number;
+  real_deferred?: boolean;
+}): string {
+  const mode = status.mode ?? 'SIMULATED';
+  const count = typeof status.document_count === 'number' ? String(status.document_count) : '0';
+  const deferred = status.real_deferred === false ? '' : ' · REAL deferred';
+  return `OpenSearch mirror ${mode} · ${count} docs${deferred}`;
 }

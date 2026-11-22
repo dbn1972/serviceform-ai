@@ -1,5 +1,5 @@
 {
-  "_note": "SAMPLE_LAB M08 search/discovery/analytics/ops catalogue (SF-63). Opaque facets and aggregate metrics only — no PII, no invented statute. CERTIFIED=false · G6=false.",
+  "_note": "SAMPLE_LAB M08 search/discovery/analytics/ops catalogue (SF-63 + SF-65 deepen). Opaque facets and aggregate metrics only — no PII, no invented statute. OpenSearch mirror SIMULATED; REAL deferred. CERTIFIED=false · G6=false.",
   "workload": {
     "actor_id": "00800800-0000-4000-8000-008008008008",
     "roles": ["SAMPLE_LAB_OPS_ANALYST"]
@@ -79,13 +79,19 @@
     "INTEGRATION_HEALTH": {
       "status": "DEGRADED",
       "metrics": [
-        { "metric_code": "CONNECTOR_MODE", "value": 1, "dimensions": { "mode": "SIMULATED" } }
+        { "metric_code": "CONNECTOR_MODE", "value": 1, "dimensions": { "mode": "SIMULATED" } },
+        { "metric_code": "HUB_ADAPTERS", "value": 1, "dimensions": { "adapter": "opensearch" } }
       ]
     },
     "EVENT_HEALTH": {
       "status": "OK",
       "metrics": [
-        { "metric_code": "OUTBOX_LAG", "value": 0, "dimensions": { "topic": "sf.lab.events.v1" } }
+        { "metric_code": "OUTBOX_LAG", "value": 0, "dimensions": { "topic": "sf.lab.events.v1" } },
+        {
+          "metric_code": "SEARCH_TOPIC_LAG",
+          "value": 0,
+          "dimensions": { "topic": "search_events" }
+        }
       ]
     },
     "PLATFORM_HEALTH": {
@@ -94,6 +100,12 @@
         { "metric_code": "READINESS", "value": 1, "dimensions": { "component": "SAMPLE_LAB" } }
       ]
     }
+  },
+  "opensearch_mirror": {
+    "enabled": true,
+    "mode": "SIMULATED",
+    "real_deferred": true,
+    "topic": "sf.search.events.v1"
   },
   "discovery_services": [
     {

@@ -18,11 +18,30 @@ interface OpsViewCard {
   can_refresh: boolean;
 }
 
+interface OpenSearchMirrorCard {
+  label: string;
+  mode: string;
+  document_count: number;
+  last_sync_at: string | null;
+  real_deferred: true;
+}
+
 export function OpsDesk() {
   const [views, setViews] = useState<OpsViewCard[]>([]);
   const [overall, setOverall] = useState<string | null>(null);
+  const [mirror, setMirror] = useState<OpenSearchMirrorCard | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  const loadMirror = useCallback(async () => {
+    const res = await fetch('/api/portal/ops/opensearch', { cache: 'no-store' });
+    if (!res.ok) {
+      setMirror(null);
+      return;
+    }
+    const body = (await res.json()) as { mirror?: OpenSearchMirrorCard };
+    setMirror(body.mirror ?? null);
+  }, []);
 
   const load = useCallback(async () => {
     setError(null);
@@ -42,7 +61,8 @@ export function OpsDesk() {
     }
     setViews(body.views ?? []);
     setOverall(typeof body.overall_status === 'string' ? body.overall_status : null);
-  }, []);
+    await loadMirror();
+  }, [loadMirror]);
 
   useEffect(() => {
     void load();
@@ -68,6 +88,7 @@ export function OpsDesk() {
       } else {
         await load();
       }
+      await loadMirror();
     } finally {
       setBusy(false);
     }
@@ -76,14 +97,22 @@ export function OpsDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-046 operational views — derived aggregates from owner ports. Never owns case decisions.
-        CERTIFIED=false · G6=false.
+        CMP-046 operational views — richer owner-shaped aggregates plus SIMULATED OpenSearch mirror
+        (REAL deferred). Never owns case decisions. CERTIFIED=false · G6=false.
       </p>
 
       {overall ? (
         <p className="ux4g-body-s-default">
           Overall status: <strong>{overall}</strong>
         </p>
+      ) : null}
+
+      {mirror ? (
+        <div className="sf-meta-row" aria-label="OpenSearch mirror">
+          <strong>{mirror.label}</strong>
+          <span className="ux4g-tag-outline-warning">{mirror.mode}</span>
+          <span className="ux4g-tag-outline-neutral">REAL deferred</span>
+        </div>
       ) : null}
 
       {error ? (

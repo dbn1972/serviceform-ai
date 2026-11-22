@@ -54,7 +54,8 @@ export function AnalyticsDesk() {
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
         CMP-045 Analytics &amp; MIS — published metric definitions only. Aggregates never carry
-        person-level fields. CERTIFIED=false · G6=false.
+        person-level fields. INT-010 OpenSearch path remains SIMULATED lab mirror (REAL deferred).
+        CERTIFIED=false · G6=false.
       </p>
       {error ? (
         <div className="ux4g-alert-error" role="alert">

@@ -19,6 +19,7 @@ export function SearchDesk() {
   const [caseState, setCaseState] = useState('');
   const [applicationRef, setApplicationRef] = useState('');
   const [hits, setHits] = useState<SearchHitCard[]>([]);
+  const [mirrorCount, setMirrorCount] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -45,6 +46,17 @@ export function SearchDesk() {
         return;
       }
       setHits(body.hits ?? []);
+      const mirrorRes = await fetch('/api/portal/ops/opensearch', { cache: 'no-store' });
+      if (mirrorRes.ok) {
+        const mirrorBody = (await mirrorRes.json()) as {
+          mirror?: { document_count?: number };
+        };
+        setMirrorCount(
+          typeof mirrorBody.mirror?.document_count === 'number'
+            ? mirrorBody.mirror.document_count
+            : null,
+        );
+      }
     } finally {
       setBusy(false);
     }
@@ -53,9 +65,15 @@ export function SearchDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-035 projections only — find cases by opaque facets. Never authoritative; no PII in
-        facets. CERTIFIED=false · G6=false.
+        CMP-035 projections only — find cases by opaque facets. OpenSearch lab mirror is SIMULATED
+        (REAL deferred). Never authoritative; no PII in facets. CERTIFIED=false · G6=false.
       </p>
+
+      {mirrorCount !== null ? (
+        <p className="ux4g-body-s-default" aria-label="OpenSearch mirror count">
+          OpenSearch mirror (SIMULATED): {mirrorCount} docs · REAL deferred
+        </p>
+      ) : null}
 
       {error ? (
         <div className="ux4g-alert-error" role="alert">
@@ -107,6 +125,10 @@ export function SearchDesk() {
         </button>
       </div>
 
+      <p className="ux4g-body-s-default" aria-live="polite">
+        {hits.length} projection hit{hits.length === 1 ? '' : 's'}
+      </p>
+
       <ul className="sf-list" aria-label="Search results">
         {hits.length === 0 ? (
           <li className="ux4g-body-m-default">
@@ -118,6 +140,14 @@ export function SearchDesk() {
               <strong>{hit.label}</strong>
               <div className="ux4g-body-s-default">
                 {hit.source_cmp_id} · {hit.document_id.slice(0, 8)}… · non-authoritative
+              </div>
+              <div className="sf-meta-row">
+                {hit.catalogue_id ? (
+                  <span className="ux4g-tag-outline-neutral">{hit.catalogue_id}</span>
+                ) : null}
+                {hit.case_state ? (
+                  <span className="ux4g-tag-outline-neutral">{hit.case_state}</span>
+                ) : null}
               </div>
             </li>
           ))
