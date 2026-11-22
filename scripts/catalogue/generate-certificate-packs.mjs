@@ -165,7 +165,12 @@ function main() {
   writeFileSync(join(OUT, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
   const pinDemoCatalogue = buildLicencePermitPinDemoCatalogue();
-  writeFileSync(PIN_DEMOS_OUT, `${JSON.stringify(pinDemoCatalogue, null, 2)}\n`);
+  // Prettier keeps single-element arrays inline — match that so format:check stays green after regen.
+  const pinDemoJson = `${JSON.stringify(pinDemoCatalogue, null, 2)}\n`.replace(
+    /("workflow_nodes": )\[\n\s+("(?:[^"\\]|\\.)*")\n\s+\]/g,
+    '$1[$2]',
+  );
+  writeFileSync(PIN_DEMOS_OUT, pinDemoJson);
 
   console.log(
     JSON.stringify(
