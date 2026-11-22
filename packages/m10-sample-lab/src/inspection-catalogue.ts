@@ -58,11 +58,11 @@ export interface SampleLabInspectionPin {
 export const SAMPLE_LAB_INSPECTION_PINS: readonly SampleLabInspectionPin[] = [
   {
     pin_code: 'TRADE_LICENCE_SITE_VISIT',
-    /** Real registry id (IND-BTP-001 Trade Licence) — SAMPLE_LAB pin demo; not citizen-offerable. */
+    /** Real registry id (IND-BTP-001 Trade Licence) — SAMPLE_LAB DUMMY lab-offer + pin demo. */
     catalogue_id: 'IND-BTP-001',
     label: 'Trade licence site visit',
     description:
-      'SAMPLE_LAB pin for IND-BTP-001 Trade Licence site verification (Studio→TSB pin demo; DRAFT/DUMMY)',
+      'SAMPLE_LAB pin for IND-BTP-001 Trade Licence site verification (DUMMY lab-offer + Studio→TSB pin demo)',
     workflow_node_id: 'SITE_VISIT',
     checklist_items: [
       { code: 'SITE_ACCESS', label: 'Premises accessible', required: true },
@@ -76,7 +76,7 @@ export const SAMPLE_LAB_INSPECTION_PINS: readonly SampleLabInspectionPin[] = [
     catalogue_id: 'IND-LAB-019',
     label: 'Factory licence inspection',
     description:
-      'SAMPLE_LAB pin for IND-LAB-019 Factory Licence verification (Studio→TSB pin demo; DRAFT/DUMMY)',
+      'SAMPLE_LAB pin for IND-LAB-019 Factory Licence verification (DUMMY lab-offer + Studio→TSB pin demo)',
     workflow_node_id: 'FACTORY_INSPECTION',
     checklist_items: [
       { code: 'SAFETY_POSTERS', label: 'Safety notices posted', required: true },

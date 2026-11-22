@@ -1,9 +1,10 @@
 /**
- * SAMPLE_LAB representative certificate E2E: Residence re-smoke + 5 lab-offered stubs.
+ * SAMPLE_LAB lab-offer E2E: Residence + Certificate/Licence/Permit DRAFT stubs.
  * Citizen apply → (fee>0 SIM pay) → officer approve → DigiLocker SIMULATED.
  * IND-EDU-004 uses SAMPLE_LAB DUMMY fee overlay (SF-56); Residence stays ₹0.
- * Full catalogue (159) form contract coverage lives in CMP-009 unit suite.
- * CERTIFIED=false · G6=false · DigiLocker/Payment SIMULATED · no invented statute.
+ * Parameters are SAMPLE_LAB DUMMY only — not statute. Income not invented.
+ * Full catalogue form contract coverage lives in CMP-009 unit suite.
+ * CERTIFIED=false · G6=false · DigiLocker/Payment SIMULATED · no REAL connectors.
  */
 import { randomInt } from 'node:crypto';
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
@@ -19,6 +20,25 @@ const REPRESENTATIVES = [
   'IND-CIV-001',
   'IND-AGR-002',
   'IND-EDU-004',
+  'IND-SOC-003',
+  'IND-EDU-002',
+  'IND-BTP-001',
+  'IND-AGR-010',
+  'IND-LAB-019',
+  'IND-ULB-007',
+  'IND-ENV-002',
+] as const;
+
+/** Full citizen→officer DigiLocker journey: prior set + one Licence + one Permit. */
+const JOURNEY_SMOKE = [
+  'IND-SOC-002',
+  'IND-SOC-031',
+  'IND-SOC-001',
+  'IND-CIV-001',
+  'IND-AGR-002',
+  'IND-EDU-004',
+  'IND-BTP-001',
+  'IND-ULB-007',
 ] as const;
 
 /** SAMPLE_LAB DUMMY fee>0 overlays exercised by SF-56 (keep in sync with fee-catalogue). */
@@ -182,7 +202,7 @@ test.describe('SAMPLE_LAB certificate representatives — form load + submit API
 test.describe('SAMPLE_LAB certificate representatives — officer + DigiLocker SIM', () => {
   test.describe.configure({ timeout: 180_000, mode: 'serial' });
 
-  for (const catalogueId of REPRESENTATIVES) {
+  for (const catalogueId of JOURNEY_SMOKE) {
     test(`${catalogueId}: citizen → officer approve → DigiLocker SIMULATED`, async ({
       browser,
     }) => {

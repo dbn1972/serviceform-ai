@@ -15,16 +15,19 @@ describe('citizen service catalogue', () => {
     );
   });
 
-  it('offers SAMPLE_LAB placement bindings (Residence PUBLISHED + lab-offer stubs)', () => {
+  it('offers SAMPLE_LAB placement bindings (Residence PUBLISHED + Cert/Lic/Perm lab-offer stubs)', () => {
     const entries = catalogueEntries();
     expect(entries.find((e) => e.catalogue_id === 'IND-SOC-002')).toMatchObject({
       offered: true,
       fee: '₹0',
     });
-    expect(entries.filter((e) => e.offered)).toHaveLength(6);
+    expect(entries.filter((e) => e.offered)).toHaveLength(13);
     expect(entries.some((e) => e.catalogue_id === 'IND-SOC-031' && e.offered)).toBe(true);
     expect(entries.some((e) => e.catalogue_id === 'IND-CIV-001' && e.offered)).toBe(true);
-    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-003' && !e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-003' && e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-BTP-001' && e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-ULB-007' && e.offered)).toBe(true);
+    expect(entries.some((e) => e.catalogue_id === 'IND-SOC-014' && !e.offered)).toBe(true);
     const income = templateByCatalogueId('IND-SOC-031');
     expect(income && isOffered(income)).toBe(true);
   });
