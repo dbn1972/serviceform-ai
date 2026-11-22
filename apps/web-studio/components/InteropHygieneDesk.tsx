@@ -1,34 +1,64 @@
 'use client';
 
 import { Alert, Button, Card } from '@serviceform/ui-ux4g';
-import {
-  SAMPLE_LAB_INTEROP_HYGIENE_CATALOGUE,
-  type BpmnScreenResult,
-  type MigrationSimulationResult,
-  type SfPackageValidationResult,
-} from '@serviceform/m10-sample-lab';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+type CatalogueSummary = {
+  bpmn_fixtures: readonly {
+    fixture_id: string;
+    label: string;
+    expect_supported: boolean;
+  }[];
+  sfpackage: { label: string };
+  migration_scenarios: readonly { scenario_id: string; label: string; mode: string }[];
+};
 
 type SuiteResult = {
   ok: boolean;
-  bpmn: BpmnScreenResult[];
-  sfpackage: SfPackageValidationResult;
-  migration: MigrationSimulationResult[];
+  bpmn: { ok: boolean }[];
+  sfpackage: {
+    ok: boolean;
+    secrets_detected: boolean;
+    signature_ref_external: boolean;
+  };
+  migration: { ok: boolean }[];
   certified: false;
   g6: false;
-  camunda_runtime_forbidden: true;
-  temporal_remains_runtime: true;
   note?: string;
 };
 
 /**
  * SAMPLE_LAB interop hygiene desk: BPMN profile · .sfpackage · migration dry-run.
+ * Client fetches Studio BFF only — never imports @serviceform/m10-sample-lab (node:fs/crypto).
  * Temporal remains the only runtime. No Camunda. CERTIFIED=false · G6=false.
  */
 export function InteropHygieneDesk() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [catalogue, setCatalogue] = useState<CatalogueSummary | null>(null);
   const [suite, setSuite] = useState<SuiteResult | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch('/api/lab/interop/catalogue', { cache: 'no-store' });
+        const body = (await res.json()) as CatalogueSummary & { message?: string };
+        if (!res.ok) {
+          if (!cancelled) setError(body.message ?? 'Failed to load interop catalogue');
+          return;
+        }
+        if (!cancelled) setCatalogue(body);
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Failed to load interop catalogue');
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   async function prove() {
     setBusy(true);
@@ -51,8 +81,6 @@ export function InteropHygieneDesk() {
     }
   }
 
-  const catalogue = SAMPLE_LAB_INTEROP_HYGIENE_CATALOGUE;
-
   return (
     <div className="sf-stack">
       <Alert variant="info" title="Lab interop hygiene only">
@@ -64,21 +92,29 @@ export function InteropHygieneDesk() {
 
       <Card
         title="Catalogue seeds"
-        subtitle={`${catalogue.bpmn_fixtures.length} BPMN fixtures · 1 .sfpackage · ${catalogue.migration_scenarios.length} migration scenarios`}
+        subtitle={
+          catalogue
+            ? `${catalogue.bpmn_fixtures.length} BPMN fixtures · 1 .sfpackage · ${catalogue.migration_scenarios.length} migration scenarios`
+            : 'Loading SAMPLE_LAB catalogue…'
+        }
       >
-        <ul className="ux4g-body-s-default">
-          {catalogue.bpmn_fixtures.map((f) => (
-            <li key={f.fixture_id}>
-              BPMN · {f.label} · expect {f.expect_supported ? 'SUPPORTED' : 'UNSUPPORTED'}
-            </li>
-          ))}
-          <li>.sfpackage · {catalogue.sfpackage.label}</li>
-          {catalogue.migration_scenarios.map((s) => (
-            <li key={s.scenario_id}>
-              Migration · {s.label} · mode {s.mode}
-            </li>
-          ))}
-        </ul>
+        {catalogue ? (
+          <ul className="ux4g-body-s-default">
+            {catalogue.bpmn_fixtures.map((f) => (
+              <li key={f.fixture_id}>
+                BPMN · {f.label} · expect {f.expect_supported ? 'SUPPORTED' : 'UNSUPPORTED'}
+              </li>
+            ))}
+            <li>.sfpackage · {catalogue.sfpackage.label}</li>
+            {catalogue.migration_scenarios.map((s) => (
+              <li key={s.scenario_id}>
+                Migration · {s.label} · mode {s.mode}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="ux4g-body-s-default">Waiting for catalogue BFF…</p>
+        )}
       </Card>
 
       <div className="sf-actions">

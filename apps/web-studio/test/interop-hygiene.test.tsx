@@ -13,13 +13,13 @@ describe('Studio interop hygiene desk', () => {
     expect(renderToStaticMarkup(<StudioNav />)).toContain('href="/interop"');
   });
 
-  it('offers prove action and catalogue seeds without G6 claim', () => {
+  it('offers prove action without importing m10 into the client bundle', () => {
     const html = renderToStaticMarkup(<InteropHygieneDesk />);
     expect(html).toContain('Prove interop hygiene');
     expect(html).toContain('Lab interop hygiene only');
     expect(html).toContain('CERTIFIED=false');
     expect(html).toContain('G6=false');
-    expect(html).toContain('Camunda assignee refused');
     expect(html).toContain('.sfpackage');
+    expect(html).toContain('Loading SAMPLE_LAB catalogue');
   });
 });
