@@ -57,6 +57,8 @@ const ROLES = [
   { login: 'sf_lab_cmp057', member: 'sf_cmp057_rw', env: 'DATABASE_URL_CMP057' },
   // SF-62: CMP-056 appointment / scheduling shell (Constitution #37)
   { login: 'sf_lab_cmp056', member: 'sf_cmp056_rw', env: 'DATABASE_URL_CMP056' },
+  // Privacy centre UI: CMP-061 rights orchestration (consent via CMP-030; retention posture catalogue)
+  { login: 'sf_lab_cmp061', member: 'sf_cmp061_rw', env: 'DATABASE_URL_CMP061' },
   // SF-63: M08 search / analytics / ops / discovery thin golden UI
   { login: 'sf_lab_cmp035', member: 'sf_cmp035_rw', env: 'DATABASE_URL_CMP035' },
   { login: 'sf_lab_cmp045', member: 'sf_cmp045_rw', env: 'DATABASE_URL_CMP045' },

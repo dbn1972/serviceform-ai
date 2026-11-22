@@ -204,6 +204,30 @@
     "PRIVACY_ACCESS_CHECK": {
       "action_class": "READ_ONLY"
     },
+    "PRIVACY_ME_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PRIVACY_REQUEST_SUBMIT": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_REQUEST_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "PRIVACY_REQUEST_WITHDRAW": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_REQUEST_DENY": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_TASKS_REQUEST": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_TASK_OUTCOME": {
+      "action_class": "PROTECTED"
+    },
+    "PRIVACY_REQUEST_COMPLETE": {
+      "action_class": "PROTECTED"
+    },
     "METADATA_DOCUMENT_CREATE": {
       "action_class": "PROTECTED"
     },
@@ -658,7 +682,10 @@
     "AnalyticsMetric",
     "OpsDashboardView",
     "DiscoveryQuery",
-    "DiscoverySelection"
+    "DiscoverySelection",
+    "PrivacyCentre",
+    "PrivacyRequest",
+    "PrivacyFulfilmentTask"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],
@@ -748,6 +775,14 @@
     },
     "AppointmentSlot": {
       "actions": ["APPOINTMENT_SLOT_LIST"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "PrivacyCentre": {
+      "actions": ["PRIVACY_ME_READ"],
+      "assurance": ["OTP", "MFA"]
+    },
+    "PrivacyRequest": {
+      "actions": ["PRIVACY_REQUEST_SUBMIT", "PRIVACY_REQUEST_READ", "PRIVACY_REQUEST_WITHDRAW"],
       "assurance": ["OTP", "MFA"]
     }
   },

@@ -39,6 +39,7 @@ if (lab.registerGrievance) await lab.registerGrievance(app);
 if (lab.registerInspection) await lab.registerInspection(app);
 if (lab.registerAssisted) await lab.registerAssisted(app);
 if (lab.registerScheduler) await lab.registerScheduler(app);
+if (lab.registerPrivacyCentre) await lab.registerPrivacyCentre(app);
 if (lab.registerM08) await lab.registerM08(app);
 if (lab.registerPayment) await lab.registerPayment(app);
 await lab.registerTsbSeal(app);

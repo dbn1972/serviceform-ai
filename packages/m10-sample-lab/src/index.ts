@@ -110,3 +110,12 @@ export type {
   SampleLabDiscoveryService,
   SampleLabOpenSearchMirrorSeed,
 } from './m08-ops-catalogue';
+export {
+  SAMPLE_LAB_PRIVACY_REQUEST_TYPES,
+  SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES,
+  SAMPLE_LAB_PRIVACY_RETENTION,
+  isSampleLabPrivacyRequestType,
+  privacyRequestTypeLabel,
+  scopeTemplateLabel,
+} from './privacy-catalogue';
+export type { SampleLabPrivacyRequestType } from './privacy-catalogue';

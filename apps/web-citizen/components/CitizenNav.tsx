@@ -19,6 +19,7 @@ const signedInLinks: readonly NavLink[] = [
   { href: '/services', label: 'Services' },
   { href: '/certificates', label: 'My applications' },
   { href: '/grievances', label: 'Grievances' },
+  { href: '/privacy', label: 'Privacy' },
 ];
 
 function currentFor(pathname: string, href: string): 'page' | 'location' | undefined {

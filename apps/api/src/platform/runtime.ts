@@ -149,6 +149,12 @@ import {
   registerLabM08Routes,
   type LabM08OpsCatalogue,
 } from './m08-ops.js';
+import {
+  composeLabPrivacyCentre,
+  loadPrivacyCatalogue,
+  registerLabPrivacyCentreRoutes,
+  type LabPrivacyCatalogue,
+} from './privacy-centre.js';
 import type { M08PluginMounts } from '../composition/m08.js';
 import type { M09PluginMounts } from '../composition/m09.js';
 import {
@@ -211,6 +217,8 @@ export interface PlatformLabEnv {
   DATABASE_URL_CMP057?: string;
   /** SF-62: optional CMP-056 appointment / scheduling shell (Constitution #37). */
   DATABASE_URL_CMP056?: string;
+  /** Privacy centre UI: optional CMP-061 rights orchestration. */
+  DATABASE_URL_CMP061?: string;
   /** SF-63: optional M08 search / analytics / ops / discovery golden UI. */
   DATABASE_URL_CMP035?: string;
   DATABASE_URL_CMP045?: string;
@@ -278,6 +286,8 @@ export interface PlatformLab {
   registerAssisted?(app: FastifyInstance): Promise<void>;
   /** SF-62: SAMPLE_LAB CMP-056 lab catalogue/ensure routes (optional when DATABASE_URL_CMP056 is set). */
   registerScheduler?(app: FastifyInstance): Promise<void>;
+  /** Privacy centre: SAMPLE_LAB CMP-061 lab catalogue route (optional when DATABASE_URL_CMP061 is set). */
+  registerPrivacyCentre?(app: FastifyInstance): Promise<void>;
   /** SF-63: SAMPLE_LAB M08 lab catalogue/ensure routes (optional when M08 pools are set). */
   registerM08?(app: FastifyInstance): Promise<void>;
   /** SF-56: lab SIM payment callback (INTEGRATION + HMAC) when CMP-020/021 mounted. */
@@ -286,7 +296,7 @@ export interface PlatformLab {
   registerTsbSeal(app: FastifyInstance): Promise<void>;
   /** M08 mounts (CMP-035/045/046/006) when corresponding pools are set. */
   m08?: M08PluginMounts;
-  /** M09 mounts (CMP-056 scheduler / CMP-057 assisted) when corresponding pools are set. */
+  /** M09 mounts (CMP-056/057/061) when corresponding pools are set. */
   m09?: M09PluginMounts;
   /** SF-49: SIMULATED document put + sync scan drain (LOCAL/CI only). */
   registerDocumentUploadSimulators(app: FastifyInstance): Promise<void>;
@@ -762,6 +772,9 @@ export async function buildPlatformLab(
     ...(env.DATABASE_URL_CMP056
       ? { cmp056: new pg.Pool({ connectionString: env.DATABASE_URL_CMP056, max: 4 }) }
       : {}),
+    ...(env.DATABASE_URL_CMP061
+      ? { cmp061: new pg.Pool({ connectionString: env.DATABASE_URL_CMP061, max: 4 }) }
+      : {}),
     ...(env.DATABASE_URL_CMP025
       ? { cmp025: new pg.Pool({ connectionString: env.DATABASE_URL_CMP025, max: 4 }) }
       : {}),
@@ -807,6 +820,7 @@ export async function buildPlatformLab(
     cmp029?: pg.Pool;
     cmp057?: pg.Pool;
     cmp056?: pg.Pool;
+    cmp061?: pg.Pool;
     cmp025?: pg.Pool;
     cmp026?: pg.Pool;
     cmp020?: pg.Pool;
@@ -1340,6 +1354,16 @@ export async function buildPlatformLab(
     });
   }
 
+  let privacyCatalogue: LabPrivacyCatalogue | null = null;
+  let privacyCentreMount: ReturnType<typeof composeLabPrivacyCentre> | null = null;
+  if (pools.cmp061) {
+    privacyCatalogue = loadPrivacyCatalogue(dir);
+    privacyCentreMount = composeLabPrivacyCentre({
+      pool: pools.cmp061,
+      authorizer: opa as unknown as { decide: (input: unknown) => Promise<unknown> },
+    });
+  }
+
   let m08Catalogue: LabM08OpsCatalogue | null = null;
   let m08Mount: ReturnType<typeof composeLabM08> | null = null;
   if (pools.cmp035 && pools.cmp045 && pools.cmp046 && pools.cmp006) {
@@ -1555,6 +1579,7 @@ export async function buildPlatformLab(
       ...(pools.cmp029 ? [poolReadiness('cmp029-db', pools.cmp029)] : []),
       ...(pools.cmp057 ? [poolReadiness('cmp057-db', pools.cmp057)] : []),
       ...(pools.cmp056 ? [poolReadiness('cmp056-db', pools.cmp056)] : []),
+      ...(pools.cmp061 ? [poolReadiness('cmp061-db', pools.cmp061)] : []),
       ...(pools.cmp025 ? [poolReadiness('cmp025-db', pools.cmp025)] : []),
       ...(pools.cmp026 ? [poolReadiness('cmp026-db', pools.cmp026)] : []),
       ...(pools.cmp020 ? [poolReadiness('cmp020-db', pools.cmp020)] : []),
@@ -1576,7 +1601,7 @@ export async function buildPlatformLab(
           } satisfies M08PluginMounts,
         }
       : {}),
-    ...(schedulerMount || assistedMount
+    ...(schedulerMount || assistedMount || privacyCentreMount
       ? {
           m09: {
             ...(schedulerMount
@@ -1591,6 +1616,14 @@ export async function buildPlatformLab(
               ? {
                   assisted: {
                     service: assistedMount.service,
+                    resolveContext,
+                  },
+                }
+              : {}),
+            ...(privacyCentreMount
+              ? {
+                  privacy: {
+                    service: privacyCentreMount.service,
                     resolveContext,
                   },
                 }
@@ -1683,6 +1716,16 @@ export async function buildPlatformLab(
             registerLabSchedulerRoutes(app, {
               catalogue: appointmentCatalogue,
               seeder: schedulerMount.seeder,
+            });
+          },
+        }
+      : {}),
+    ...(privacyCentreMount && privacyCatalogue
+      ? {
+          registerPrivacyCentre: async (app: FastifyInstance) => {
+            registerLabPrivacyCentreRoutes(app, {
+              catalogue: privacyCatalogue,
+              resolveContext,
             });
           },
         }

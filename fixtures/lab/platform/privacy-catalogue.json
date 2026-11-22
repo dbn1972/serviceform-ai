@@ -1,0 +1,79 @@
+{
+  "_note": "SAMPLE_LAB privacy centre catalogue (CMP-061 + CMP-030 visibility + CMP-049 retention posture). Not statute. No DigiLocker/SMS/Payment. CERTIFIED=false · G6=false.",
+  "simulation": "SIMULATED",
+  "request_types": [
+    {
+      "code": "ACCESS",
+      "label": "Access my data",
+      "description": "Ask owning components for a copy of data in scope"
+    },
+    {
+      "code": "CORRECTION",
+      "label": "Correct my data",
+      "description": "Ask owning components to correct scoped records"
+    },
+    {
+      "code": "ERASURE",
+      "label": "Erase my data",
+      "description": "Ask owning components to erase scoped records when policy allows"
+    },
+    {
+      "code": "PORTABILITY",
+      "label": "Port my data",
+      "description": "Ask owning components for a portable export of scoped data"
+    },
+    {
+      "code": "CONSENT_WITHDRAWAL",
+      "label": "Withdraw consent",
+      "description": "Request withdrawal of a granted purpose consent (orchestrated; not direct CMP-030 withdraw)"
+    },
+    {
+      "code": "RESTRICT",
+      "label": "Restrict processing",
+      "description": "Ask owning components to restrict processing of scoped data"
+    }
+  ],
+  "scope_templates": [
+    {
+      "owner_component": "CMP-030",
+      "scope_ref": "consent.purpose.SAMPLE_LAB_PROFILE_PREFILL",
+      "label": "Profile prefill consent (CMP-030)"
+    },
+    {
+      "owner_component": "CMP-005",
+      "scope_ref": "profile.claims.synthetic",
+      "label": "Citizen profile claims (CMP-005)"
+    },
+    {
+      "owner_component": "CMP-015",
+      "scope_ref": "application.case.owned",
+      "label": "Your applications (CMP-015)"
+    }
+  ],
+  "retention": {
+    "visibility": "POLICY_INPUT_REQUIRED",
+    "invented_statutory_period_forbidden": true,
+    "citizen_archive_delete_forbidden": true,
+    "note": "Retention periods are owner-supplied opaque refs (CMP-049). ARCHIVE/DELETE eligibility fail closed until bound. This centre never invents statute or purges foreign tables.",
+    "entries": [
+      {
+        "owner_component": "CMP-015",
+        "resource_kind": "ApplicationCase",
+        "period_ref_status": "UNBOUND",
+        "eligibility": "ACTIVE_ONLY_UNTIL_OWNER_PERIOD"
+      },
+      {
+        "owner_component": "CMP-005",
+        "resource_kind": "CitizenProfile",
+        "period_ref_status": "UNBOUND",
+        "eligibility": "ACTIVE_ONLY_UNTIL_OWNER_PERIOD"
+      },
+      {
+        "owner_component": "CMP-030",
+        "resource_kind": "Consent",
+        "period_ref_status": "UNBOUND",
+        "eligibility": "ACTIVE_ONLY_UNTIL_OWNER_PERIOD"
+      }
+    ]
+  }
+}
