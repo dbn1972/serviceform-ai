@@ -65,10 +65,7 @@ import {
   type MintAssertion,
   type OtpAdapterLike,
 } from './simulators.js';
-import {
-  createTenantUserDirectory,
-  registerTenantUserAdminRoutes,
-} from './tenant-users.js';
+import { createTenantUserDirectory, registerTenantUserAdminRoutes } from './tenant-users.js';
 import {
   assertTemporalAddress,
   assertTemporalNamespace,

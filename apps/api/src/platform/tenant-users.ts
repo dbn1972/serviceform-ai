@@ -263,34 +263,67 @@ function parseRealmMap(raw: string | undefined): Record<string, string> {
   }
 }
 
+/** Env keys that signal Keycloak intent. Partial presence must fail closed (no silent SIM). */
+export const KEYCLOAK_ENV_HINT_KEYS = [
+  'SF_KEYCLOAK_BASE_URL',
+  'SF_KEYCLOAK_ADMIN_CLIENT_ID',
+  'SF_KEYCLOAK_ADMIN_CLIENT_SECRET',
+  'SF_KEYCLOAK_ADMIN_REALM',
+  'SF_KEYCLOAK_REALM',
+  'SF_KEYCLOAK_TENANT_ID',
+  'SF_KEYCLOAK_TENANT_REALM_MAP',
+  'SF_KEYCLOAK_TENANT_ATTRIBUTE',
+] as const;
+
+export function keycloakEnvHintsPresent(env: Record<string, string | undefined>): boolean {
+  return KEYCLOAK_ENV_HINT_KEYS.some((key) => (env[key] ?? '').trim() !== '');
+}
+
+function isHttpUrl(value: string): boolean {
+  return value.startsWith('https://') || value.startsWith('http://');
+}
+
 /**
- * Resolve Keycloak adapter config from env. Returns null → SIMULATED.
+ * Resolve Keycloak adapter config from env.
+ * - No Keycloak hints → null (SIMULATED is allowed).
+ * - Any Keycloak hint without a complete valid binding → throw (fail-closed; no silent SIM).
  * Does not claim production IdP / ADR-0007 acceptance.
  */
 export function resolveKeycloakConfig(
   env: Record<string, string | undefined>,
 ): KeycloakTenantUserConfig | null {
-  const baseUrl = (env['SF_KEYCLOAK_BASE_URL'] ?? '').replace(/\/$/, '');
-  const clientId = env['SF_KEYCLOAK_ADMIN_CLIENT_ID'] ?? '';
-  const clientSecret = env['SF_KEYCLOAK_ADMIN_CLIENT_SECRET'] ?? '';
-  if (!baseUrl || !clientId || !clientSecret) return null;
-  const adminRealm = env['SF_KEYCLOAK_ADMIN_REALM'] ?? 'master';
+  const hints = keycloakEnvHintsPresent(env);
+  const baseUrl = (env['SF_KEYCLOAK_BASE_URL'] ?? '').trim().replace(/\/$/, '');
+  const clientId = (env['SF_KEYCLOAK_ADMIN_CLIENT_ID'] ?? '').trim();
+  const clientSecret = (env['SF_KEYCLOAK_ADMIN_CLIENT_SECRET'] ?? '').trim();
+  const adminRealm = (env['SF_KEYCLOAK_ADMIN_REALM'] ?? 'master').trim() || 'master';
   const realmByTenant = parseRealmMap(env['SF_KEYCLOAK_TENANT_REALM_MAP']);
-  const singleRealm = env['SF_KEYCLOAK_REALM'] ?? '';
-  const singleTenant = env['SF_KEYCLOAK_TENANT_ID'] ?? '';
+  const singleRealm = (env['SF_KEYCLOAK_REALM'] ?? '').trim();
+  const singleTenant = (env['SF_KEYCLOAK_TENANT_ID'] ?? '').trim();
   if (singleRealm && UUID_RE.test(singleTenant) && !realmByTenant[singleTenant.toLowerCase()]) {
     realmByTenant[singleTenant.toLowerCase()] = singleRealm;
   }
-  if (Object.keys(realmByTenant).length === 0) return null;
+  const complete =
+    Boolean(baseUrl) &&
+    isHttpUrl(baseUrl) &&
+    Boolean(clientId) &&
+    Boolean(clientSecret) &&
+    Object.keys(realmByTenant).length > 0;
+  if (!hints) return null;
+  if (!complete) {
+    throw new TenantUserDirectoryError(
+      'SF-SYS-003',
+      503,
+      'Keycloak env misconfigured — SIMULATED fallback refused',
+    );
+  }
   return {
     baseUrl,
     adminRealm,
     clientId,
     clientSecret,
     realmByTenant,
-    ...(env['SF_KEYCLOAK_TENANT_ATTRIBUTE']
-      ? { tenantAttribute: env['SF_KEYCLOAK_TENANT_ATTRIBUTE'] }
-      : { tenantAttribute: 'tenant_id' }),
+    tenantAttribute: (env['SF_KEYCLOAK_TENANT_ATTRIBUTE'] ?? 'tenant_id').trim() || 'tenant_id',
   };
 }
 
@@ -301,6 +334,28 @@ export function createTenantUserDirectory(opts: {
   const kc = resolveKeycloakConfig(opts.env);
   if (kc) return new KeycloakTenantUserDirectory(kc);
   return new SimulatedTenantUserDirectory(opts.officers ?? []);
+}
+
+/** Log-safe fields only — never email/username/display_name. */
+export function safeTenantUserLogFields(
+  event: string,
+  fields: { user_id?: string; count?: number; role_count?: number; tenant_bound?: boolean },
+): Record<string, string | number | boolean> {
+  const out: Record<string, string | number | boolean> = { event };
+  if (typeof fields.user_id === 'string') out['user_id'] = fields.user_id;
+  if (typeof fields.count === 'number') out['count'] = fields.count;
+  if (typeof fields.role_count === 'number') out['role_count'] = fields.role_count;
+  if (typeof fields.tenant_bound === 'boolean') out['tenant_bound'] = fields.tenant_bound;
+  return out;
+}
+
+/** Client-supplied tenant_id in body is always refused (SF-TEN-002). */
+export function assertNoClientTenantOverride(body: unknown): void {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return;
+  if (!Object.prototype.hasOwnProperty.call(body, 'tenant_id')) return;
+  const supplied = (body as Record<string, unknown>)['tenant_id'];
+  if (supplied === undefined || supplied === null || supplied === '') return;
+  throw new TenantUserDirectoryError('SF-TEN-002', 403, 'Tenant override refused');
 }
 
 type KcToken = { access_token: string; expires_at: number };
@@ -340,7 +395,10 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
       `${this.config.baseUrl}/realms/${encodeURIComponent(this.config.adminRealm)}/protocol/openid-connect/token`,
       {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded', accept: 'application/json' },
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          accept: 'application/json',
+        },
         body,
         redirect: 'error',
       },
@@ -357,11 +415,7 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
     return json.access_token;
   }
 
-  private async adminFetch(
-    realm: string,
-    path: string,
-    init: RequestInit = {},
-  ): Promise<Response> {
+  private async adminFetch(realm: string, path: string, init: RequestInit = {}): Promise<Response> {
     const token = await this.adminToken();
     const headers = new Headers(init.headers);
     headers.set('authorization', `Bearer ${token}`);
@@ -409,7 +463,10 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
   }
 
   private async realmRoles(realm: string, userId: string): Promise<string[]> {
-    const res = await this.adminFetch(realm, `/users/${encodeURIComponent(userId)}/role-mappings/realm`);
+    const res = await this.adminFetch(
+      realm,
+      `/users/${encodeURIComponent(userId)}/role-mappings/realm`,
+    );
     if (!res.ok) return [];
     const rows = (await res.json()) as { name?: string }[];
     if (!Array.isArray(rows)) return [];
@@ -479,7 +536,8 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
     const roles = assertRoleCodes(input.roles ?? []);
     if (roles.length > 0) await this.assignRoles(tenantId, userId, roles);
     const created = await this.get(tenantId, userId);
-    if (!created) throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak create verify failed');
+    if (!created)
+      throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak create verify failed');
     return created;
   }
 
@@ -507,9 +565,11 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
       method: 'PUT',
       body: JSON.stringify(body),
     });
-    if (!res.ok) throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak update user failed');
+    if (!res.ok)
+      throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak update user failed');
     const updated = await this.get(tenantId, userId);
-    if (!updated) throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak update verify failed');
+    if (!updated)
+      throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak update verify failed');
     return updated;
   }
 
@@ -532,6 +592,14 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
         .filter((r) => typeof r.name === 'string' && typeof r.id === 'string')
         .map((r) => [r.name as string, { id: r.id as string, name: r.name as string }]),
     );
+    const missing = desired.filter((n) => !byName.has(n));
+    if (missing.length > 0) {
+      throw new TenantUserDirectoryError(
+        'SF-SYS-003',
+        400,
+        'Unknown Keycloak realm role — refuse partial assign',
+      );
+    }
     const current = await this.realmRoles(realm, userId);
     const toRemove = current
       .filter((n) => !desired.includes(n))
@@ -561,7 +629,8 @@ export class KeycloakTenantUserDirectory implements TenantUserDirectory {
       }
     }
     const updated = await this.get(tenantId, userId);
-    if (!updated) throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak roles verify failed');
+    if (!updated)
+      throw new TenantUserDirectoryError('SF-SYS-004', 502, 'Keycloak roles verify failed');
     return updated;
   }
 
@@ -633,14 +702,17 @@ function envelope(directory: TenantUserDirectory, extra: Record<string, unknown>
 }
 
 function errorReply(err: unknown): { status: number; body: Record<string, unknown> } {
+  // Never echo adapter/internal detail to clients (may include upstream text).
   if (err instanceof TenantUserDirectoryError) {
     return {
       status: err.status,
-      body: { error_code: err.code, message: 'Request denied', detail: err.message },
+      body: { error_code: err.code, message: 'Request denied' },
     };
   }
   return { status: 500, body: { error_code: 'SF-SYS-001', message: 'Unexpected server error' } };
 }
+
+type OfficerTenantContext = TenantUserRequestContext & { tenant_id: string };
 
 /**
  * Lab + Admin BFF routes (not a frozen CMP OpenAPI — no CCR):
@@ -660,12 +732,12 @@ export function registerTenantUserAdminRoutes(
     resolveContext: (request: FastifyRequest) => Promise<TenantUserRequestContext | null>;
   },
 ): void {
-  const requireOfficer = async (request: FastifyRequest): Promise<TenantUserRequestContext> => {
+  const requireOfficer = async (request: FastifyRequest): Promise<OfficerTenantContext> => {
     const ctx = await opts.resolveContext(request);
-    if (!ctx || ctx.actor.type !== 'OFFICER' || !ctx.tenant_id) {
+    if (!ctx || ctx.actor.type !== 'OFFICER' || typeof ctx.tenant_id !== 'string') {
       throw new TenantUserDirectoryError('SF-AUTH-001', 401, 'Officer session required');
     }
-    return ctx;
+    return { ...ctx, tenant_id: ctx.tenant_id };
   };
 
   app.get('/v1/admin/tenant-users/meta/adapter', async (request, reply) => {
@@ -693,7 +765,7 @@ export function registerTenantUserAdminRoutes(
         'WORKFORCE_ROLE_CATALOGUE_READ',
         'WorkforceRoleCatalogue',
       );
-      const roles = await opts.directory.roleCatalogue(ctx.tenant_id!);
+      const roles = await opts.directory.roleCatalogue(ctx.tenant_id);
       return reply
         .header('cache-control', 'no-store')
         .send(envelope(opts.directory, { roles, tenant_id: ctx.tenant_id }));
@@ -707,9 +779,13 @@ export function registerTenantUserAdminRoutes(
     try {
       const ctx = await requireOfficer(request);
       await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_LIST', 'WorkforceUser');
-      const users = await opts.directory.list(ctx.tenant_id!);
-      request.log.info(
-        { event: 'tenant_users_list', tenant_bound: true, count: users.length },
+      const users = await opts.directory.list(ctx.tenant_id);
+      // Use server logger (not request.log) so Fastify does not attach req.body PII.
+      request.server.log.info(
+        safeTenantUserLogFields('tenant_users_list', {
+          tenant_bound: true,
+          count: users.length,
+        }),
         'tenant users listed',
       );
       return reply
@@ -727,7 +803,7 @@ export function registerTenantUserAdminRoutes(
       try {
         const ctx = await requireOfficer(request);
         await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_READ', 'WorkforceUser');
-        const user = await opts.directory.get(ctx.tenant_id!, request.params.userId);
+        const user = await opts.directory.get(ctx.tenant_id, request.params.userId);
         if (!user) {
           return reply
             .code(404)
@@ -749,8 +825,8 @@ export function registerTenantUserAdminRoutes(
       const ctx = await requireOfficer(request);
       await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_CREATE', 'WorkforceUser');
       const body = (request.body ?? {}) as Record<string, unknown>;
-      // Client-supplied tenant_id is ignored — session tenant only.
-      const user = await opts.directory.create(ctx.tenant_id!, {
+      assertNoClientTenantOverride(body);
+      const user = await opts.directory.create(ctx.tenant_id, {
         username: typeof body['username'] === 'string' ? body['username'] : '',
         display_name: typeof body['display_name'] === 'string' ? body['display_name'] : '',
         email: typeof body['email'] === 'string' ? body['email'] : null,
@@ -759,8 +835,11 @@ export function registerTenantUserAdminRoutes(
           ? body['roles'].filter((r): r is string => typeof r === 'string')
           : [],
       });
-      request.log.info(
-        { event: 'tenant_user_create', user_id: user.user_id, tenant_bound: true },
+      request.server.log.info(
+        safeTenantUserLogFields('tenant_user_create', {
+          user_id: user.user_id,
+          tenant_bound: true,
+        }),
         'tenant user created',
       );
       return reply
@@ -780,15 +859,19 @@ export function registerTenantUserAdminRoutes(
         const ctx = await requireOfficer(request);
         await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_UPDATE', 'WorkforceUser');
         const body = (request.body ?? {}) as Record<string, unknown>;
+        assertNoClientTenantOverride(body);
         const patch: UpdateTenantUserInput = {};
         if (typeof body['display_name'] === 'string') patch.display_name = body['display_name'];
         if (body['email'] === null || typeof body['email'] === 'string') {
           patch.email = body['email'] as string | null;
         }
         if (typeof body['enabled'] === 'boolean') patch.enabled = body['enabled'];
-        const user = await opts.directory.update(ctx.tenant_id!, request.params.userId, patch);
-        request.log.info(
-          { event: 'tenant_user_update', user_id: user.user_id, tenant_bound: true },
+        const user = await opts.directory.update(ctx.tenant_id, request.params.userId, patch);
+        request.server.log.info(
+          safeTenantUserLogFields('tenant_user_update', {
+            user_id: user.user_id,
+            tenant_bound: true,
+          }),
           'tenant user updated',
         );
         return reply
@@ -813,21 +896,17 @@ export function registerTenantUserAdminRoutes(
           'WorkforceUser',
         );
         const body = (request.body ?? {}) as Record<string, unknown>;
+        assertNoClientTenantOverride(body);
         const roles = Array.isArray(body['roles'])
           ? body['roles'].filter((r): r is string => typeof r === 'string')
           : [];
-        const user = await opts.directory.assignRoles(
-          ctx.tenant_id!,
-          request.params.userId,
-          roles,
-        );
-        request.log.info(
-          {
-            event: 'tenant_user_roles',
+        const user = await opts.directory.assignRoles(ctx.tenant_id, request.params.userId, roles);
+        request.server.log.info(
+          safeTenantUserLogFields('tenant_user_roles', {
             user_id: user.user_id,
             role_count: user.roles.length,
             tenant_bound: true,
-          },
+          }),
           'tenant user roles assigned',
         );
         return reply

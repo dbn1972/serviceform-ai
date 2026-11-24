@@ -4,6 +4,7 @@ import {
   SimulatedTenantUserDirectory,
   createTenantUserDirectory,
   resolveKeycloakConfig,
+  safeTenantUserLogFields,
   TenantUserDirectoryError,
 } from '../src/platform/tenant-users.js';
 
@@ -81,15 +82,20 @@ describe('SF-71 tenant workforce user directory adapters', () => {
     ).rejects.toBeInstanceOf(TenantUserDirectoryError);
   });
 
-  it('resolves Keycloak config only when base URL, client, secret, and realm binding exist', () => {
+  it('resolves Keycloak config only when complete; partial env fails closed (no silent SIM)', () => {
     expect(resolveKeycloakConfig({})).toBeNull();
-    expect(
+    expect(() =>
       resolveKeycloakConfig({
         SF_KEYCLOAK_BASE_URL: 'http://keycloak.local',
         SF_KEYCLOAK_ADMIN_CLIENT_ID: 'admin-cli',
         SF_KEYCLOAK_ADMIN_CLIENT_SECRET: 'secret',
       }),
-    ).toBeNull();
+    ).toThrow(TenantUserDirectoryError);
+    expect(() =>
+      createTenantUserDirectory({
+        env: { SF_KEYCLOAK_BASE_URL: 'http://keycloak.local' },
+      }),
+    ).toThrow(/SIMULATED fallback refused/);
     const cfg = resolveKeycloakConfig({
       SF_KEYCLOAK_BASE_URL: 'http://keycloak.local/',
       SF_KEYCLOAK_ADMIN_CLIENT_ID: 'admin-cli',
@@ -131,7 +137,10 @@ describe('SF-71 tenant workforce user directory adapters', () => {
           { status: 200, headers: { 'content-type': 'application/json' } },
         );
       }
-      if (url.includes('/role-mappings/realm') && (!init || init.method === 'GET' || !init.method)) {
+      if (
+        url.includes('/role-mappings/realm') &&
+        (!init || init.method === 'GET' || !init.method)
+      ) {
         return new Response(JSON.stringify([{ name: 'TENANT_ADMIN_STUDIO' }]), {
           status: 200,
           headers: { 'content-type': 'application/json' },
@@ -154,5 +163,113 @@ describe('SF-71 tenant workforce user directory adapters', () => {
     expect(users[0]?.user_id).toBe('u-t1');
     expect(users[0]?.tenant_id).toBe(T1);
     expect(users.some((u) => u.user_id === 'u-t2')).toBe(false);
+  });
+
+  it('Keycloak get/update/assignRoles refuse foreign-tenant attribute users (IDOR)', async () => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes('/protocol/openid-connect/token')) {
+        return new Response(JSON.stringify({ access_token: 'tok', expires_in: 300 }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+      if (url.includes('/users/u-t2')) {
+        return new Response(
+          JSON.stringify({
+            id: 'u-t2',
+            username: 'tenant-two',
+            firstName: 'Two',
+            enabled: true,
+            attributes: { tenant_id: [T2] },
+          }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        );
+      }
+      return new Response('{}', { status: 404 });
+    }) as unknown as typeof fetch;
+    const dir = new KeycloakTenantUserDirectory({
+      baseUrl: 'http://keycloak.local',
+      adminRealm: 'master',
+      clientId: 'admin-cli',
+      clientSecret: 'secret',
+      realmByTenant: { [T1]: 'sf-lab' },
+      tenantAttribute: 'tenant_id',
+      fetchImpl,
+    });
+    expect(await dir.get(T1, 'u-t2')).toBeNull();
+    await expect(dir.update(T1, 'u-t2', { enabled: false })).rejects.toMatchObject({
+      code: 'SF-SYS-002',
+      status: 404,
+    });
+    await expect(dir.assignRoles(T1, 'u-t2', ['TENANT_ADMIN_STUDIO'])).rejects.toMatchObject({
+      code: 'SF-SYS-002',
+      status: 404,
+    });
+  });
+
+  it('Keycloak assignRoles fails loud when a desired realm role is missing', async () => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes('/protocol/openid-connect/token')) {
+        return new Response(JSON.stringify({ access_token: 'tok', expires_in: 300 }), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+      if (url.endsWith('/users/u-t1') || url.includes('/users/u-t1?')) {
+        return new Response(
+          JSON.stringify({
+            id: 'u-t1',
+            username: 'tenant-one',
+            firstName: 'One',
+            enabled: true,
+            attributes: { tenant_id: [T1] },
+          }),
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        );
+      }
+      if (url.endsWith('/roles')) {
+        return new Response(JSON.stringify([{ id: 'r1', name: 'TENANT_ADMIN_STUDIO' }]), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+      if (url.includes('/role-mappings/realm')) {
+        return new Response(JSON.stringify([{ name: 'TENANT_ADMIN_STUDIO' }]), {
+          status: 200,
+          headers: { 'content-type': 'application/json' },
+        });
+      }
+      return new Response('{}', { status: 404 });
+    }) as unknown as typeof fetch;
+    const dir = new KeycloakTenantUserDirectory({
+      baseUrl: 'http://keycloak.local',
+      adminRealm: 'master',
+      clientId: 'admin-cli',
+      clientSecret: 'secret',
+      realmByTenant: { [T1]: 'sf-lab' },
+      fetchImpl,
+    });
+    await expect(
+      dir.assignRoles(T1, 'u-t1', ['TENANT_ADMIN_STUDIO', 'NOT_IN_REALM']),
+    ).rejects.toMatchObject({ code: 'SF-SYS-003', status: 400 });
+  });
+
+  it('safeTenantUserLogFields never carries email/username/display_name', () => {
+    const fields = safeTenantUserLogFields('tenant_user_create', {
+      user_id: 'u-1',
+      tenant_bound: true,
+      count: 1,
+    });
+    expect(fields).toEqual({
+      event: 'tenant_user_create',
+      user_id: 'u-1',
+      tenant_bound: true,
+      count: 1,
+    });
+    expect(fields).not.toHaveProperty('email');
+    expect(fields).not.toHaveProperty('username');
+    expect(fields).not.toHaveProperty('display_name');
   });
 });

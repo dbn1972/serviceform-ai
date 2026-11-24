@@ -201,9 +201,8 @@ export function UsersDesk() {
       </p>
       {adapter ? (
         <Alert variant="info" title="Directory adapter">
-          {modeLabel}. simulation={String(adapter.simulation === true)} ·
-          adr_0007_accepted={String(adapter.adr_0007_accepted === true)} ·
-          production_idp_claimed=false
+          {modeLabel}. simulation={String(adapter.simulation === true)} · adr_0007_accepted=
+          {String(adapter.adr_0007_accepted === true)} · production_idp_claimed=false
         </Alert>
       ) : null}
       {error ? (
@@ -238,11 +237,7 @@ export function UsersDesk() {
         ) : (
           users.map((user) => (
             <li key={user.user_id}>
-              <button
-                type="button"
-                className="ux4g-text-link-md"
-                onClick={() => selectUser(user)}
-              >
+              <button type="button" className="ux4g-text-link-md" onClick={() => selectUser(user)}>
                 {user.username} · {user.enabled ? 'enabled' : 'disabled'} · roles{' '}
                 {user.roles.length}
               </button>

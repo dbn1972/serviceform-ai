@@ -179,8 +179,10 @@ const ALLOWED_PREFIXES = [
   'discovery/',
   'search/',
   'lab/m08/',
-  // SF-71 M02 tenant workforce users (Keycloak Admin REST or SIMULATED)
-  'admin/tenant-users',
+  // SF-71 M02 tenant workforce users (Keycloak Admin REST or SIMULATED).
+  // Trailing slash: exact `admin/tenant-users` OR children under `admin/tenant-users/`.
+  // Refuses prefix overmatch such as `admin/tenant-users-evil`.
+  'admin/tenant-users/',
 ];
 
 export function assertPlatformPath(path: string): string {

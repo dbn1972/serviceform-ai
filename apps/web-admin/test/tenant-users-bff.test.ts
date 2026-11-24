@@ -15,8 +15,10 @@ describe('SF-71 admin BFF tenant-users allowlist', () => {
     );
   });
 
-  it('refuses unrelated admin paths', () => {
+  it('refuses unrelated admin paths and prefix overmatch', () => {
     expect(() => assertPlatformPath('admin/secrets')).toThrow(/SF-AUTH-002/);
     expect(() => assertPlatformPath('../admin/tenant-users')).toThrow(/SF-AUTH-002/);
+    expect(() => assertPlatformPath('admin/tenant-users-evil')).toThrow(/SF-AUTH-002/);
+    expect(() => assertPlatformPath('admin/tenant-usersX')).toThrow(/SF-AUTH-002/);
   });
 });
