@@ -3,6 +3,7 @@
 import { Button, Icon } from '@serviceform/ui-ux4g';
 import {
   conditionText,
+  describeValidation,
   KIND_LABEL,
   type DesignerField,
   type DesignerForm,
@@ -66,6 +67,7 @@ export interface CanvasHandlers {
   removeField: (id: string) => void;
   addStep: () => void;
   moveSection: (id: string, delta: number) => void;
+  duplicateSection: (id: string) => void;
   removeSection: (id: string) => void;
 }
 
@@ -136,6 +138,7 @@ export function DesignerCanvas({
     const fieldIssues = issueCount('field', f.id);
     const hasError = fieldIssues.some((i) => i.severity === 'error');
     const zoneKey = `${section.id}:${index}`;
+    const checks = describeValidation(f);
     return (
       <li
         key={f.id}
@@ -185,7 +188,13 @@ export function DesignerCanvas({
             ) : null}
             {f.requiredWhen && !f.required ? (
               <span className="ux4g-tag-tonal-info">
-                Required when {conditionText(form, f.requiredWhen)}
+                Required {f.requiredWhen.unless ? 'unless' : 'when'}{' '}
+                {conditionText(form, f.requiredWhen)}
+              </span>
+            ) : null}
+            {checks.length > 0 ? (
+              <span className="ux4g-tag-outline-info" data-testid="field-validation-tag">
+                {checks.join(' · ')}
               </span>
             ) : null}
             {f.semanticElementId ? (
@@ -417,6 +426,17 @@ export function DesignerCanvas({
                         onClick={() => handlers.moveSection(section.id, 1)}
                       >
                         <Icon name="arrow-down" size={16} />
+                      </Button>
+                      <Button
+                        variant="text-neutral"
+                        size="xs"
+                        aria-label={`Duplicate section ${section.label ?? section.object?.title ?? si + 1}`}
+                        onClick={() => {
+                          handlers.duplicateSection(section.id);
+                          setAnnouncement('Section duplicated with its fields and rules');
+                        }}
+                      >
+                        <Icon name="copy" size={16} />
                       </Button>
                       <Button
                         variant="text-danger"

@@ -195,12 +195,15 @@ export function DesignerPreview({
   contentHash,
   version,
   data: initialData,
+  sampleData,
   onData,
 }: {
   form: FormPackageView;
   contentHash?: string | undefined;
   version?: string;
   data?: FormData;
+  /** Synthetic SAMPLE_LAB answers for every field (`sampleAnswers`), never real data. */
+  sampleData?: FormData;
   onData?: (data: FormData) => void;
 }) {
   const steps = useMemo(() => wizardSteps(form.ui_schema), [form]);
@@ -342,6 +345,20 @@ export function DesignerPreview({
         >
           Clear answers
         </Button>
+        {sampleData ? (
+          <Button
+            size="s"
+            variant="text-primary"
+            onClick={() => {
+              setData(sampleData);
+              setErrors({});
+              setReady(false);
+              setFurthest(steps.length - 1);
+            }}
+          >
+            Fill with sample answers
+          </Button>
+        ) : null}
         {steps.length > 1 ? (
           <Select
             id="preview-jump"

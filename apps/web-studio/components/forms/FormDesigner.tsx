@@ -14,6 +14,7 @@ import {
   changeKind,
   compileForm,
   duplicateField,
+  duplicateSection,
   emptyForm,
   findField,
   findSection,
@@ -30,6 +31,7 @@ import {
   removeField,
   removeSection,
   removeStep,
+  sampleAnswers,
   SECTION_PALETTE,
   stepDropSection,
   updateField,
@@ -40,10 +42,13 @@ import {
   type CompiledForm,
   type DesignerForm,
   type FieldPaletteItem,
+  type LibrarySection,
+  type SectionTemplate,
 } from '@serviceform/studio-designers/forms';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from '../../lib/designer-history';
 import { nextMinor, type DesignerSource } from '../../lib/designer-source';
+import { formReadiness } from '../../lib/form-readiness';
 import { metadataApi, readSession, explain, type SessionState } from '../../lib/studio-api';
 import { DesignerCanvas, type DropPayload, type Selection } from './DesignerCanvas';
 import { ChecksList, DesignerInspector } from './DesignerInspector';
@@ -51,6 +56,7 @@ import { DesignerLogic } from './DesignerLogic';
 import { DesignerPalette } from './DesignerPalette';
 import { DesignerPreview } from './DesignerPreview';
 import { DesignerPublish, type DocState } from './DesignerPublish';
+import { DesignerReadiness } from './DesignerReadiness';
 import { DesignerSchema } from './DesignerSchema';
 
 type Tab = 'design' | 'logic' | 'preview' | 'schema' | 'publish';
@@ -73,7 +79,14 @@ function initialForm(source: DesignerSource): DesignerForm {
  * schema) visually, previews it with the citizen renderer and takes it through CMP-033 draft,
  * freeze and CMP-051 maker-checker. Nothing here decides eligibility or publishes by itself.
  */
-export function FormDesigner({ source }: { source: DesignerSource }) {
+export function FormDesigner({
+  source,
+  library = [],
+}: {
+  source: DesignerSource;
+  /** Sections reused across catalogue forms (`sectionLibrary`), offered in the palette. */
+  library?: readonly LibrarySection[];
+}) {
   const history = useHistory<DesignerForm>(() => initialForm(source));
   const form = history.value;
   const [tab, setTab] = useState<Tab>('design');
@@ -93,6 +106,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
   const issues = useMemo(() => lintForm(form), [form]);
   const blocked = hasErrors(issues);
   const formPackage = useMemo(() => compileForm(form), [form]);
+  const sampleData = useMemo(() => sampleAnswers(form) as FormData, [form]);
   const readOnly = doc?.status === 'PUBLISHED' && compiled?.contentHash === doc.savedHash;
   const sourceRef = source.kind === 'template' ? source.source : undefined;
 
@@ -206,12 +220,28 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
     setSelection({ kind: 'field', id: res.id });
   };
 
-  const addSectionFromPalette = (id: string) => {
-    const item = SECTION_PALETTE.find((p) => p.id === id);
-    if (!item || !currentStep) return;
-    const res = addSection(form, currentStep.id, item.create());
+  /** A palette section preset or a catalogue section, and what its copy leaves behind. */
+  const sectionFrom = (id: string): { template: SectionTemplate; note: string } | null => {
+    const preset = SECTION_PALETTE.find((p) => p.id === id);
+    if (preset) return { template: preset.create(), note: '' };
+    const reused = library.find((s) => s.id === id);
+    if (!reused) return null;
+    return {
+      template: reused.template,
+      note:
+        reused.dropped > 0
+          ? `Copied “${reused.label}”. ${reused.dropped} ${reused.dropped === 1 ? 'rule that reads' : 'rules that read'} answers outside it stayed behind; add them in Logic if this form needs them.`
+          : `Copied “${reused.label}” from ${reused.source}.`,
+    };
+  };
+
+  const addSectionFromPalette = (id: string, stepId = currentStep?.id) => {
+    const item = sectionFrom(id);
+    if (!item || !stepId) return;
+    const res = addSection(form, stepId, item.template);
     apply(res.form);
     setSelection({ kind: 'section', id: res.id });
+    if (item.note) setNotice(item.note);
   };
 
   const dropOnStep = (payload: DropPayload, stepId: string) => {
@@ -227,11 +257,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
     }
     const field = FIELD_PALETTE.find((p) => p.id === payload.palette);
     if (!field) {
-      const item = SECTION_PALETTE.find((p) => p.id === payload.palette);
-      if (!item) return;
-      const res = addSection(form, stepId, item.create());
-      apply(res.form);
-      setSelection({ kind: 'section', id: res.id });
+      addSectionFromPalette(payload.palette, stepId);
       return;
     }
     const target = stepDropSection(form, stepId);
@@ -440,8 +466,9 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
           <div className="sf-designer-grid">
             <DesignerPalette
               disabled={readOnly}
+              library={library}
               onAddField={(item) => addFromPalette(item)}
-              onAddSection={addSectionFromPalette}
+              onAddSection={(id) => addSectionFromPalette(id)}
             />
             <DesignerCanvas
               form={form}
@@ -472,6 +499,17 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
                   setSelection({ kind: 'step', id: res.id });
                 },
                 moveSection: (id, d) => apply(moveSection(form, id, d)),
+                duplicateSection: (id) => {
+                  const res = duplicateSection(form, id);
+                  if (!res.id) return;
+                  apply(res.form);
+                  setSelection({ kind: 'section', id: res.id });
+                  if (res.dropped > 0) {
+                    setNotice(
+                      `Duplicated the section. ${res.dropped} “required when / unless” ${res.dropped === 1 ? 'rule' : 'rules'} on its own answers stayed with the original, because the form runtime checks one shared condition.`,
+                    );
+                  }
+                },
                 removeSection: (id) => {
                   apply(removeSection(form, id));
                   setSelection({ kind: 'form' });
@@ -514,8 +552,10 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
             form={form}
             formPackage={formPackage}
             issues={issues}
+            readOnly={readOnly}
             onSelect={select}
             onTry={tryInPreview}
+            onChange={(next) => apply(next)}
           />
         ) : null}
         {tab === 'preview' ? (
@@ -525,6 +565,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
             contentHash={compiled?.contentHash}
             version={form.version}
             data={previewData}
+            sampleData={sampleData}
             onData={setPreviewData}
           />
         ) : null}
@@ -541,6 +582,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
               onMilestone={(m) => authoring.current?.mark(m)}
             />
             <aside className="sf-designer-pane" aria-label="Checks">
+              <DesignerReadiness items={formReadiness(form, formPackage, issues)} />
               <ChecksList issues={issues} select={select} />
             </aside>
           </div>

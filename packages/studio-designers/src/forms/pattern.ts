@@ -132,6 +132,23 @@ export function matchesPattern(src: string, value: string): boolean {
   return positions.has(chars.length);
 }
 
+/** Fewest and most characters any value accepted by the pattern can have; null if unsupported. */
+export function patternLength(src: string): { min: number; max: number } | null {
+  const tokens = compile(src);
+  if (!tokens) return null;
+  return tokens.reduce((n, t) => ({ min: n.min + t.min, max: n.max + t.max }), { min: 0, max: 0 });
+}
+
+/** A character none of the pattern's first token accepts, for "wrong character" examples. */
+export function outsidePattern(src: string): string | null {
+  const first = compile(src)?.[0];
+  if (!first) return null;
+  for (const c of ['#', '*', '@', '~', '!']) {
+    if (!first.ranges.some((r) => cp(c) >= r.lo && cp(c) <= r.hi)) return c;
+  }
+  return null;
+}
+
 /**
  * A value the pattern accepts, preferring one between `minLength` and `maxLength`: each token
  * repeats its first allowed character as few (or, if that is too short, as many) times as it may.

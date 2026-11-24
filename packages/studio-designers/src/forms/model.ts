@@ -41,9 +41,14 @@ export interface ChoiceOption {
 export interface Condition {
   /** Root-relative field path: `notify_by_email` or `residence_address/state_code`. */
   field: string;
-  /** Exactly one of `equals` (JSON Schema `const`) or `oneOf` (`enum`). */
+  /** Exactly one of `equals` (JSON Schema `const`), `oneOf` (`enum`) or `answered`. */
   equals?: Scalar;
   oneOf?: string[];
+  /**
+   * Holds while the answer has any value (an empty rule schema). Visibility only: CMP-009 reads
+   * an empty root `if` differently when interpreting and when validating a submission.
+   */
+  answered?: true;
 }
 
 /** UI-schema rule: SHOW or HIDE a control/section while another field holds a value. */
@@ -51,13 +56,23 @@ export interface VisibilityRule extends Condition {
   effect: 'SHOW' | 'HIDE';
 }
 
-/** Root `if/then` requirement. CMP-009 evaluates one root condition, so all must share it. */
-export type RequiredWhen = Condition;
+/**
+ * Root `if/then/else` requirement. CMP-009 evaluates one root condition, so all must share it:
+ * "required when" fields join `then.required`, "required unless" (`unless`) fields `else.required`.
+ */
+export interface RequiredWhen extends Condition {
+  unless?: true;
+}
 
 /** Values a condition compares with, in declared order. */
 export function conditionValues(condition: Condition): Scalar[] {
   if (condition.oneOf !== undefined) return condition.oneOf;
   return condition.equals !== undefined ? [condition.equals] : [];
+}
+
+/** Whether the condition is complete enough to evaluate. */
+export function hasComparison(condition: Condition): boolean {
+  return condition.answered === true || conditionValues(condition).length > 0;
 }
 
 export interface DesignerField {

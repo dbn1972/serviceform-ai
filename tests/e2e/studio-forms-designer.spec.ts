@@ -255,6 +255,109 @@ test.describe('Studio forms designer', () => {
     await expect(page.getByText('Every answer passes the form checks')).toBeVisible();
   });
 
+  // REQ: P8-3 Studio designer depth — field library search and catalogue section reuse, the Logic
+  // rule builder ("required when / unless", "has any answer"), validation test cases, section
+  // duplication, sample answers in the preview and the publish readiness checklist (UX4G, axe).
+  test('reuse a catalogue section, build rules in Logic, test validation and preview sample answers', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    const views = page.getByRole('tablist', { name: 'Designer views' });
+    await open(page, `${STUDIO}/forms/designer`);
+    await page.getByLabel('Title', { exact: true }).fill('Shop registration');
+    await page.getByLabel('Form key', { exact: true }).fill('lab.shop-registration.application');
+
+    await page.getByRole('button', { name: 'Add Radio buttons' }).click();
+    await page.getByLabel('Label', { exact: true }).fill('Holds a shop licence');
+    await page.getByLabel('Data key').fill('holder');
+    await page.getByText('Paste a list of options').click();
+    await page.getByLabel('Options, one per line').fill('Yes\nNo\nApplied');
+    await page.getByRole('button', { name: 'Replace options with 3 lines' }).click();
+    await page.getByRole('button', { name: 'Add Short text' }).click();
+    await page.getByLabel('Label', { exact: true }).fill('Licence number');
+    await page.getByLabel('Data key').fill('licence_no');
+    await page.getByRole('button', { name: 'Add Long text' }).click();
+    await page.getByLabel('Label', { exact: true }).fill('Why there is no licence');
+    await page.getByLabel('Data key').fill('no_licence_reason');
+    await page.getByRole('button', { name: 'Add Email' }).click();
+    await page.getByRole('button', { name: 'Add Yes / no checkbox' }).click();
+    await page.getByLabel('Label', { exact: true }).fill('Send updates by email');
+    await page.getByLabel('Data key').fill('updates');
+
+    const search = page.getByLabel('Find a field or section');
+    await search.fill('guardian');
+    await page.getByRole('button', { name: "Add Parent or guardian's name" }).click();
+    await search.fill('address');
+    await expect(page.getByRole('button', { name: 'Add Address with LGD codes' })).toBeVisible();
+    await page.getByRole('button', { name: /^Reuse section Address from / }).click();
+    await expect(page.getByText(/^Copied “Address”/)).toBeVisible();
+    await search.fill('');
+    await expectAccessible(page);
+
+    await views.getByRole('tab', { name: 'Logic' }).click();
+    const builder = page.getByTestId('rule-builder');
+    await page.getByLabel('Rule for').selectOption({ label: 'Step 1 · “Licence number”' });
+    await page.getByLabel('It should').selectOption('REQUIRE');
+    await builder.getByLabel('Answer to').selectOption('holder');
+    await builder.getByLabel('Is', { exact: true }).selectOption('YES');
+    await builder.getByRole('button', { name: 'Add rule' }).click();
+    await page.getByLabel('Rule for').selectOption({ label: 'Step 1 · “Why there is no licence”' });
+    await page.getByLabel('It should').selectOption('REQUIRE_UNLESS');
+    await expect(builder).toContainText('Every “required when / unless” rule shares one condition');
+    await expect(page.getByTestId('rule-builder-sentence')).toContainText(
+      'Require “Why there is no licence” unless “Holds a shop licence” is Yes; then it is optional.',
+    );
+    await builder.getByRole('button', { name: 'Add rule' }).click();
+    await page.getByLabel('Rule for').selectOption({ label: 'Step 1 · “Send updates by email”' });
+    await page.getByLabel('It should').selectOption('SHOW');
+    await builder.getByLabel('Answer to').selectOption('email');
+    await builder.getByLabel('Comparison').selectOption('answered');
+    await builder.getByRole('button', { name: 'Add rule' }).click();
+    await expect(page.getByTestId('logic-rule-count')).toHaveText('3 rules');
+    await expect(page.getByRole('list', { name: 'Conditional rules' })).toContainText(
+      'Show “Send updates by email” only when “Email” has an answer.',
+    );
+    await expect(page.getByTestId('logic-matrix').locator('tbody tr')).toHaveCount(8);
+    await page.getByRole('button', { name: 'Remove the rule on Send updates by email' }).click();
+    await expect(page.getByTestId('logic-rule-count')).toHaveText('2 rules');
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await expect(page.getByTestId('logic-rule-count')).toHaveText('3 rules');
+    await expectAccessible(page);
+
+    await views.getByRole('tab', { name: 'Design' }).click();
+    await page.getByRole('button', { name: /^Licence number, Short text/ }).click();
+    await page.getByLabel('Allowed characters').selectOption('upper_alnum');
+    await expect(page.getByTestId('field-validation-summary')).toHaveText(
+      'Required · Capital letters and digits, 1–10 characters',
+    );
+    const cases = page.getByTestId('field-cases');
+    await expect(cases).toContainText('Enter licence number');
+    await expect(cases).toContainText('Accepted');
+    await expect(cases).toContainText('Check licence number');
+    await expect(cases).toContainText('Use 100 characters or fewer');
+    await expectAccessible(page);
+    await page.getByRole('button', { name: 'Duplicate section Address' }).click();
+    await expect(page.getByRole('region', { name: 'Address (copy)' })).toBeVisible();
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await expect(page.getByRole('region', { name: 'Address (copy)' })).toHaveCount(0);
+
+    await views.getByRole('tab', { name: 'Preview' }).click();
+    await page.getByRole('button', { name: 'Fill with sample answers' }).click();
+    await expect(page.getByLabel('Licence number')).toHaveValue('A');
+    await expect(page.getByRole('checkbox', { name: 'Send updates by email' })).toBeChecked();
+    await page.getByRole('button', { name: 'Check whole form' }).click();
+    await expect(page.getByText('Every answer passes the form checks')).toBeVisible();
+    await expectAccessible(page);
+
+    await views.getByRole('tab', { name: 'Publish' }).click();
+    const readiness = page.getByTestId('designer-readiness');
+    await expect(readiness).toContainText('Sample answers pass the citizen checks');
+    await expect(
+      readiness.getByRole('listitem').filter({ hasText: 'Sample answers' }),
+    ).toContainText('Ready');
+    await expectAccessible(page);
+  });
+
   test('freeze a form version, resolve its pin in CMP-009 and publish through maker-checker', async ({
     page,
   }) => {
