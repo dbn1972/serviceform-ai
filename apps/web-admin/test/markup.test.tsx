@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import BindingsPage from '../app/bindings/page';
 import HomePage from '../app/page';
+import UsersPage from '../app/users/page';
 import { AdminNav } from '../components/AdminNav';
 
 describe('web-admin markup (UX4G)', () => {
@@ -10,6 +11,7 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('data-surface="tenant_admin"');
     expect(html).toContain('>Administration</h1>');
     expect(html).toContain('sf-skip-link');
+    expect(html).toContain('Users manages tenant workforce');
   });
 
   it('exposes binding and review destinations', () => {
@@ -19,6 +21,14 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('href="/branding"');
     expect(html).toContain('href="/analytics"');
     expect(html).toContain('href="/discovery"');
+    expect(html).toContain('href="/users"');
+  });
+
+  it('users page is UX4G tenant workforce desk', () => {
+    const html = renderToStaticMarkup(<UsersPage />);
+    expect(html).toContain('>Tenant users</h1>');
+    expect(html).toContain('Workforce directory (Keycloak Admin REST or SIMULATED)');
+    expect(html).toContain('data-surface="tenant_admin"');
   });
 
   it('bindings page includes reusable jurisdiction scope desk for any offering', () => {

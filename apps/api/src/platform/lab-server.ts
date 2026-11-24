@@ -45,6 +45,7 @@ if (lab.registerPayment) await lab.registerPayment(app);
 await lab.registerTsbSeal(app);
 await lab.registerLicencePermitPinDemos(app);
 await lab.registerInteropHygiene(app);
+await lab.registerTenantUsers(app);
 await lab.start();
 
 closeWithGrace({ delay: 10_000 }, async ({ err, signal }) => {

@@ -3,30 +3,28 @@
 import { Alert, Button, TextInput } from '@serviceform/ui-ux4g';
 import { useState } from 'react';
 
-const SAMPLE_TENANT = '11111111-1111-4111-8111-111111111111';
-const SAMPLE_ADMIN = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+/** SAMPLE_LAB tenant admin subject from fixtures/lab/platform/officers.json */
+const ADMIN_SUBJECT = 'sample-lab-tenant-admin-1';
 
-export function SessionForm({ defaultRole }: { defaultRole: string }) {
-  const [tenantId, setTenantId] = useState(SAMPLE_TENANT);
-  const [actorId, setActorId] = useState(SAMPLE_ADMIN);
-  const [role, setRole] = useState(defaultRole);
+export function SessionForm({ defaultRole: _defaultRole }: { defaultRole: string }) {
+  const [subject, setSubject] = useState(ADMIN_SUBJECT);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  async function submit() {
+  async function submit(nextSubject = subject) {
     setError('');
     setMessage('');
     const res = await fetch('/api/session', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ tenant_id: tenantId, actor_id: actorId, roles: [role] }),
+      body: JSON.stringify({ subject: nextSubject }),
     });
-    const body = (await res.json()) as { error_code?: string; tenant_id?: string };
+    const body = (await res.json()) as { error_code?: string; display_name?: string };
     if (!res.ok) {
       setError(body.error_code ?? 'SF-SYS-001');
       return;
     }
-    setMessage(`Session bound to tenant ${body.tenant_id}`);
+    setMessage(`Signed in as ${body.display_name ?? nextSubject}`);
   }
 
   return (
@@ -37,27 +35,11 @@ export function SessionForm({ defaultRole }: { defaultRole: string }) {
       }}
     >
       <TextInput
-        id="tenant_id"
-        name="tenant_id"
-        label="Tenant id"
-        value={tenantId}
-        onChange={(e) => setTenantId(e.target.value)}
-        required
-      />
-      <TextInput
-        id="actor_id"
-        name="actor_id"
-        label="Principal id"
-        value={actorId}
-        onChange={(e) => setActorId(e.target.value)}
-        required
-      />
-      <TextInput
-        id="role"
-        name="role"
-        label="Role code"
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
+        id="subject"
+        name="subject"
+        label="Officer subject (from officers.json)"
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
         required
       />
       {error ? (
@@ -72,11 +54,21 @@ export function SessionForm({ defaultRole }: { defaultRole: string }) {
       ) : null}
       <Button type="submit">Start SIMULATED session</Button>
       <Button
+        variant="outline-primary"
+        onClick={() => {
+          setSubject(ADMIN_SUBJECT);
+          void submit(ADMIN_SUBJECT);
+        }}
+      >
+        Sign in as tenant admin
+      </Button>
+      <Button
         variant="text-neutral"
         onClick={() => {
-          void fetch('/api/session', { method: 'DELETE' });
-          setMessage('');
-          setError('');
+          void fetch('/api/session', { method: 'DELETE' }).then(() => {
+            setMessage('');
+            setError('');
+          });
         }}
       >
         End session

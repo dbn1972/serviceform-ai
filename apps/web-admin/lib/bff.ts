@@ -179,6 +179,8 @@ const ALLOWED_PREFIXES = [
   'discovery/',
   'search/',
   'lab/m08/',
+  // SF-71 M02 tenant workforce users (Keycloak Admin REST or SIMULATED)
+  'admin/tenant-users',
 ];
 
 export function assertPlatformPath(path: string): string {

@@ -632,6 +632,24 @@
     },
     "DISCOVERY_SERVICE_SELECT": {
       "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "WORKFORCE_USER_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "WORKFORCE_USER_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_UPDATE": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_ASSIGN_ROLES": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_ROLE_CATALOGUE_READ": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -685,18 +703,36 @@
     "DiscoverySelection",
     "PrivacyCentre",
     "PrivacyRequest",
-    "PrivacyFulfilmentTask"
+    "PrivacyFulfilmentTask",
+    "WorkforceUser",
+    "WorkforceRoleCatalogue"
   ],
-  "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
+  "jurisdiction_scope_modes": [
+    "ASSIGNED_ONLY",
+    "DESCENDANTS",
+    "TENANT_WIDE",
+    "EXPLICIT_LIST"
+  ],
   "global_writable_actions": [],
   "citizen_owner_grants": {
     "DiscoveryQuery": {
-      "actions": ["DISCOVERY_QUERY", "DISCOVERY_QUERY_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "DISCOVERY_QUERY",
+        "DISCOVERY_QUERY_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "DiscoverySelection": {
-      "actions": ["DISCOVERY_SERVICE_SELECT"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "DISCOVERY_SERVICE_SELECT"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "ApplicationCase": {
       "actions": [
@@ -713,31 +749,69 @@
         "APPLICATION_RECORD_CITIZEN_RESPONSE",
         "APPLICATION_REQUEST_WITHDRAWAL"
       ],
-      "assurance": ["OTP", "MFA"]
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "FeeQuote": {
-      "actions": ["FEE_QUOTE_CREATE", "FEE_QUOTE_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "FEE_QUOTE_CREATE",
+        "FEE_QUOTE_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "PaymentIntent": {
-      "actions": ["PAYMENT_INTENT_CREATE", "PAYMENT_INTENT_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "PAYMENT_INTENT_CREATE",
+        "PAYMENT_INTENT_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "DeficiencyNotice": {
-      "actions": ["DEFICIENCY_READ", "DEFICIENCY_RESPOND"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "DEFICIENCY_READ",
+        "DEFICIENCY_RESPOND"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "FormExecution": {
-      "actions": ["FORM_EXECUTION_EXECUTE"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "FORM_EXECUTION_EXECUTE"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "CitizenProfile": {
-      "actions": ["PROFILE_READ", "PROFILE_WRITE"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "PROFILE_READ",
+        "PROFILE_WRITE"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "Consent": {
-      "actions": ["CONSENT_GRANT", "CONSENT_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "CONSENT_GRANT",
+        "CONSENT_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "GrievanceFeedback": {
       "actions": [
@@ -749,7 +823,10 @@
         "GRIEVANCE_RECORD_RESPONSE",
         "GRIEVANCE_WITHDRAW"
       ],
-      "assurance": ["OTP", "MFA"]
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "Document": {
       "actions": [
@@ -758,11 +835,20 @@
         "DOCUMENT_READ",
         "DOCUMENT_ACCESS"
       ],
-      "assurance": ["OTP", "MFA"]
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "AssistedSession": {
-      "actions": ["ASSISTED_SESSION_READ", "ASSISTED_SESSION_RESUME"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "ASSISTED_SESSION_READ",
+        "ASSISTED_SESSION_RESUME"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "Appointment": {
       "actions": [
@@ -771,33 +857,68 @@
         "APPOINTMENT_RESCHEDULE",
         "APPOINTMENT_CANCEL"
       ],
-      "assurance": ["OTP", "MFA"]
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "AppointmentSlot": {
-      "actions": ["APPOINTMENT_SLOT_LIST"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "APPOINTMENT_SLOT_LIST"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "PrivacyCentre": {
-      "actions": ["PRIVACY_ME_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "PRIVACY_ME_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "PrivacyRequest": {
-      "actions": ["PRIVACY_REQUEST_SUBMIT", "PRIVACY_REQUEST_READ", "PRIVACY_REQUEST_WITHDRAW"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "PRIVACY_REQUEST_SUBMIT",
+        "PRIVACY_REQUEST_READ",
+        "PRIVACY_REQUEST_WITHDRAW"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     }
   },
   "citizen_published_grants": {
     "FormDefinition": {
-      "actions": ["FORM_INTERPRET"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "FORM_INTERPRET"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "Purpose": {
-      "actions": ["PURPOSE_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "PURPOSE_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     },
     "UploadPolicy": {
-      "actions": ["UPLOAD_POLICY_READ"],
-      "assurance": ["OTP", "MFA"]
+      "actions": [
+        "UPLOAD_POLICY_READ"
+      ],
+      "assurance": [
+        "OTP",
+        "MFA"
+      ]
     }
   }
 }
