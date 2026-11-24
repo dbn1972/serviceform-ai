@@ -44,4 +44,12 @@ describe('web-admin markup (UX4G)', () => {
     const html = renderToStaticMarkup(<BindingsPage />);
     expect(html).toContain('Prove lab eng seal');
   });
+
+  it('bindings page states maker-checker and TSB pin immutability (WS6 ops depth)', () => {
+    const html = renderToStaticMarkup(<BindingsPage />);
+    expect(html).toContain('Maker-checker required');
+    expect(html).toContain('CMP-051');
+    expect(html).toContain('Publish (requires checker approval)');
+    expect(html).toContain('silent repoint is forbidden');
+  });
 });

@@ -17,6 +17,7 @@ import {
   json,
   platform,
   relay,
+  tenantIdentifyingRefusal,
 } from '../../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -33,6 +34,8 @@ async function loadApp(token: string, id: string) {
 
 /** List deficiencies for this case + SAMPLE_LAB catalogue for the Raise Deficiency form. */
 export async function GET(request: Request, ctx: Ctx) {
+  const tenancy = tenantIdentifyingRefusal(request);
+  if (tenancy) return tenancy;
   const { id } = await ctx.params;
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
@@ -53,6 +56,8 @@ export async function GET(request: Request, ctx: Ctx) {
  * RAISE advances SUBMITTED/RECEIVED → UNDER_SCRUTINY then opens the notice.
  */
 export async function POST(request: Request, ctx: Ctx) {
+  const tenancy = tenantIdentifyingRefusal(request);
+  if (tenancy) return tenancy;
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const { id } = await ctx.params;

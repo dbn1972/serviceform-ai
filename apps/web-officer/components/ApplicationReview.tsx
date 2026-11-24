@@ -8,12 +8,22 @@ import {
   pauseReasonLabel,
   SAMPLE_LAB_SLA_CATALOGUE,
 } from '@serviceform/m10-sample-lab/sla-catalogue';
+import {
+  transitionCommandLabel,
+  transitionSummary,
+  type CaseTransitionView,
+} from '../lib/portal/audit-view';
+import { orderedCasePins, type CasePinGraph } from '../lib/portal/pin-view';
 import { slaStatusTag, type SlaClockView } from '../lib/portal/sla-view';
 
 type App = {
   id: string;
   status: string;
   platform_state: string;
+  catalogue_id?: string;
+  pins?: CasePinGraph;
+  pin_graph_hash?: string;
+  silent_repoint_forbidden?: boolean;
   applicant_name?: string;
   applicant_mobile?: string;
   residence_duration_months?: number;
@@ -99,6 +109,7 @@ export function ApplicationReview({ id }: { id: string }) {
   const [deficiencies, setDeficiencies] = useState<DeficiencyNotice[]>([]);
   const [slaClocks, setSlaClocks] = useState<SlaClockView[]>([]);
   const [slaMounted, setSlaMounted] = useState(false);
+  const [transitions, setTransitions] = useState<CaseTransitionView[]>([]);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
   const [raising, setRaising] = useState(false);
@@ -107,7 +118,7 @@ export function ApplicationReview({ id }: { id: string }) {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
-    // Sequential: app (with task) first; deficiencies/SLA only after success so an IDOR
+    // Sequential: app (with task) first; deficiencies/SLA/audit only after success so an IDOR
     // 404 never leaves an unread body holding Playwright networkidle open.
     const appRes = await fetch(`/api/portal/applications/${id}`);
     const appBody = (await appRes.json().catch(() => ({}))) as {
@@ -120,6 +131,7 @@ export function ApplicationReview({ id }: { id: string }) {
       setDeficiencies([]);
       setSlaClocks([]);
       setSlaMounted(false);
+      setTransitions([]);
       setTask(null);
       return;
     }
@@ -151,14 +163,23 @@ export function ApplicationReview({ id }: { id: string }) {
     if (!slaRes.ok) {
       setSlaClocks([]);
       setSlaMounted(false);
+    } else {
+      const slaBody = (await slaRes.json().catch(() => ({}))) as {
+        clocks?: SlaClockView[];
+        mounted?: boolean;
+      };
+      setSlaClocks(slaBody.clocks ?? []);
+      setSlaMounted(slaBody.mounted === true);
+    }
+    const auditRes = await fetch(`/api/portal/applications/${id}/transitions`);
+    if (!auditRes.ok) {
+      setTransitions([]);
       return;
     }
-    const slaBody = (await slaRes.json().catch(() => ({}))) as {
-      clocks?: SlaClockView[];
-      mounted?: boolean;
+    const auditBody = (await auditRes.json().catch(() => ({}))) as {
+      transitions?: CaseTransitionView[];
     };
-    setSlaClocks(slaBody.clocks ?? []);
-    setSlaMounted(slaBody.mounted === true);
+    setTransitions(auditBody.transitions ?? []);
   }, [id]);
 
   useEffect(() => {
@@ -396,6 +417,12 @@ export function ApplicationReview({ id }: { id: string }) {
         </div>
 
         <dl className="sf-dl">
+          {app.catalogue_id ? (
+            <>
+              <dt>Catalogue</dt>
+              <dd>{app.catalogue_id}</dd>
+            </>
+          ) : null}
           <dt>Applicant</dt>
           <dd>
             {app.applicant_name}
@@ -494,8 +521,47 @@ export function ApplicationReview({ id }: { id: string }) {
         </Card>
       ) : null}
 
+      {app.pins ? (
+        <Card
+          title="Pinned versions (TSB)"
+          subtitle="Constitution #9 · SF-CON-VERSION-PINNING · silent repoint forbidden"
+        >
+          <Alert variant="info" title="Immutable for this case">
+            This application executes only against the published pin graph below. A new binding
+            version never moves an in-flight case. CERTIFIED=false.
+          </Alert>
+          <dl className="sf-dl">
+            {orderedCasePins(app.pins).map((pin) => (
+              <div key={pin.key}>
+                <dt>{pin.label}</dt>
+                <dd>
+                  <code>{pin.version_id}</code>
+                </dd>
+              </div>
+            ))}
+            {app.pin_graph_hash ? (
+              <>
+                <dt>Pin graph hash</dt>
+                <dd>
+                  <code>{app.pin_graph_hash}</code>
+                </dd>
+              </>
+            ) : null}
+          </dl>
+        </Card>
+      ) : null}
+
       {openNotice || responseNotice || deficiencies.length > 0 ? (
-        <Card title="Deficiency notices" subtitle="CMP-019 status for this case">
+        <Card
+          title="Deficiency notices"
+          subtitle="CMP-019 loop · raise → citizen respond → close → resume scrutiny"
+        >
+          {responseNotice && app.platform_state === 'CITIZEN_RESPONSE' ? (
+            <Alert variant="warning" title="Citizen response received">
+              Close the open deficiency, then continue scrutiny or decide. SLA pause
+              (DEFICIENCY_OPEN) resumes when the clock is unbound or CMP-029 resumes.
+            </Alert>
+          ) : null}
           <ul className="sf-section">
             {deficiencies.map((d) => (
               <li key={d.deficiency_id} className="sf-section">
@@ -508,9 +574,23 @@ export function ApplicationReview({ id }: { id: string }) {
                 <p className="ux4g-body-s-default">
                   Requested: {d.items.map((i) => itemLabel(catalogue, i.item_code)).join(', ')}
                 </p>
+                <dl className="sf-dl">
+                  {d.responded_at ? (
+                    <>
+                      <dt>Citizen responded</dt>
+                      <dd>{d.responded_at}</dd>
+                    </>
+                  ) : null}
+                  {d.closed_at ? (
+                    <>
+                      <dt>Closed</dt>
+                      <dd>{d.closed_at}</dd>
+                    </>
+                  ) : null}
+                </dl>
                 {d.status === 'OPEN' ? (
                   <p className="ux4g-body-s-default">
-                    Waiting for the citizen to upload and resubmit.
+                    Waiting for the citizen to upload and resubmit. Decide is blocked while OPEN.
                   </p>
                 ) : null}
                 {d.status === 'RESPONSE_RECEIVED' ? (
@@ -532,7 +612,7 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <Card
         title="SLA clock"
-        subtitle="CMP-029 · SAMPLE_LAB published IND-SOC-002 overlay (10 working days) · CERTIFIED=false"
+        subtitle={`CMP-029 · policy pin ${app.pins?.sla_policy_version_id ?? '—'} · SAMPLE_LAB 10 working days · CERTIFIED=false`}
       >
         {!slaMounted ? (
           <Alert variant="info" title="SLA not mounted on this lab host">
@@ -593,6 +673,44 @@ export function ApplicationReview({ id }: { id: string }) {
               </li>
             ))}
           </ul>
+        )}
+      </Card>
+
+      <Card
+        title="Case audit trail"
+        subtitle="CMP-015 append-only transitions · actor ids withheld · CERTIFIED=false"
+      >
+        {transitions.length === 0 ? (
+          <p className="ux4g-body-m-default">No transitions loaded for this case yet.</p>
+        ) : (
+          <ol className="sf-section">
+            {transitions.map((t) => (
+              <li key={t.transition_id} className="sf-section">
+                <div className="sf-meta-row">
+                  <span className="ux4g-tag-tonal-neutral">v{t.aggregate_version}</span>
+                  <span className="ux4g-tag-tonal-primary">
+                    {transitionCommandLabel(t.command)}
+                  </span>
+                  <span className="ux4g-tag-tonal-info">{transitionSummary(t)}</span>
+                  <span className="ux4g-tag-outline-neutral">{t.actor_type}</span>
+                </div>
+                <dl className="sf-dl">
+                  <dt>Occurred</dt>
+                  <dd>{t.occurred_at}</dd>
+                  <dt>Authz policy revision</dt>
+                  <dd>
+                    <code>{t.authz_policy_revision}</code>
+                  </dd>
+                  {t.reason_code ? (
+                    <>
+                      <dt>Reason</dt>
+                      <dd>{t.reason_code}</dd>
+                    </>
+                  ) : null}
+                </dl>
+              </li>
+            ))}
+          </ol>
         )}
       </Card>
     </div>

@@ -153,6 +153,50 @@ export function relay(res: PlatformResponse): Response {
   return json(status, { error_code: code, message });
 }
 
+const FORBIDDEN_TENANT_HEADERS = new Set(['x-roles', 'x-org-id', 'x-actor-type', 'x-assurance']);
+
+function isForbiddenTenantHeaderName(name: string): boolean {
+  const n = name.toLowerCase();
+  return n.includes('tenant') || n.startsWith('x-sf-') || FORBIDDEN_TENANT_HEADERS.has(n);
+}
+
+function forwardedDeclaresTenant(value: string): boolean {
+  const lower = value.toLowerCase();
+  for (let i = 0; i < lower.length; i += 1) {
+    if (!lower.startsWith('tenant', i)) continue;
+    if (i > 0) {
+      const prev = lower.charCodeAt(i - 1);
+      if (prev !== 59 && prev !== 32 && prev !== 9 && prev !== 13 && prev !== 10) continue;
+    }
+    let j = i + 6;
+    while (j < lower.length && (lower.charCodeAt(j) === 32 || lower.charCodeAt(j) === 9)) j += 1;
+    if (j < lower.length && lower[j] === '=') return true;
+  }
+  return false;
+}
+
+/**
+ * SF-TEN-002 / INT-011: client must never name tenant, roles, or actor. Session identity comes
+ * only from the CMP-004 opaque cookie re-derived server-side. Fail closed before any platform call.
+ */
+export function tenantIdentifyingRefusal(request: Request): Response | null {
+  for (const [name, value] of request.headers.entries()) {
+    if (isForbiddenTenantHeaderName(name)) {
+      return json(403, {
+        error_code: 'SF-TEN-002',
+        message: 'Tenant context comes only from your session',
+      });
+    }
+    if (name.toLowerCase() === 'forwarded' && forwardedDeclaresTenant(value)) {
+      return json(403, {
+        error_code: 'SF-TEN-002',
+        message: 'Tenant context comes only from your session',
+      });
+    }
+  }
+  return null;
+}
+
 /**
  * CSRF guard for cookie-authenticated writes (SameSite=Lax alone admits same-site siblings and
  * cross-site simple requests). Browsers always send Sec-Fetch-Site and/or Origin on such requests;

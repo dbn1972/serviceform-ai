@@ -19,4 +19,9 @@ describe('SAMPLE_LAB SLA catalogue (officer)', () => {
     expect(slaStatusTag('BREACHED')).toBe('ux4g-tag-tonal-error');
     expect(slaStatusTag('COMPLETED')).toBe('ux4g-tag-tonal-success');
   });
+
+  it('ties SLA pause to deficiency loop (DEFICIENCY_OPEN only)', () => {
+    expect(SAMPLE_LAB_SLA_CATALOGUE.allowed_pause_reason_codes).toEqual(['DEFICIENCY_OPEN']);
+    expect(slaStatusTag('PAUSED')).toBe('ux4g-tag-tonal-warning');
+  });
 });
