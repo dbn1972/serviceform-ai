@@ -73,7 +73,7 @@ export function PaymentStep({ applicationId, onPaid }: Props) {
 
   if (!quote) {
     return (
-      <section className="ux4g-stack" aria-live="polite">
+      <section className="sf-stack" aria-live="polite">
         {error ? <FormAlert tone="error">{error}</FormAlert> : <p>Loading fee…</p>}
       </section>
     );
@@ -85,13 +85,13 @@ export function PaymentStep({ applicationId, onPaid }: Props) {
   });
 
   return (
-    <section className="ux4g-stack" aria-labelledby="lab-fee-heading">
+    <section className="sf-stack" aria-labelledby="lab-fee-heading">
       <h2 id="lab-fee-heading">Fee payment required</h2>
       <p>
         This SAMPLE_LAB offer uses a labeled <strong>SAMPLE_LAB DUMMY</strong> fee overlay (not
         Residence ₹0). Amount is server-authoritative — you cannot override it.
       </p>
-      <dl className="ux4g-dl">
+      <dl className="sf-dl">
         <div>
           <dt>Amount</dt>
           <dd>
@@ -107,7 +107,7 @@ export function PaymentStep({ applicationId, onPaid }: Props) {
       <Button type="button" onClick={() => void pay()} disabled={busy}>
         {busy ? 'Processing SIMULATED payment…' : 'Pay (SIMULATED)'}
       </Button>
-      <p className="ux4g-text-muted">
+      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
         CERTIFIED=false · G6=false · policy_kind={quote.policy_kind}
       </p>
     </section>

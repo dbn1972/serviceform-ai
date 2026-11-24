@@ -154,7 +154,7 @@ export function PrivacyCentre() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -235,7 +235,7 @@ export function PrivacyCentre() {
           Submit a rights request
         </h2>
         <form className="sf-stack" onSubmit={(e) => void submit(e)}>
-          <label className="ux4g-label">
+          <label className="ux4g-label-m-default">
             Request type
             <select
               className="ux4g-select"
@@ -250,7 +250,7 @@ export function PrivacyCentre() {
               ))}
             </select>
           </label>
-          <label className="ux4g-label">
+          <label className="ux4g-label-m-default">
             Scope (published template)
             <select
               className="ux4g-select"
@@ -268,7 +268,7 @@ export function PrivacyCentre() {
               ))}
             </select>
           </label>
-          <button type="submit" className="ux4g-btn-fill-primary" disabled={busy}>
+          <button type="submit" className="ux4g-btn-primary ux4g-btn-m" disabled={busy}>
             {busy ? 'Submitting…' : 'Submit request'}
           </button>
         </form>
@@ -286,7 +286,7 @@ export function PrivacyCentre() {
               <li key={r.request_id}>
                 <button
                   type="button"
-                  className="ux4g-btn-text-neutral"
+                  className="ux4g-btn-text-neutral ux4g-btn-s"
                   onClick={() => setSelected(r)}
                 >
                   {r.request_type_label} · {r.status_label} · scope {r.scope_count}
@@ -312,7 +312,7 @@ export function PrivacyCentre() {
           {selected.can_withdraw ? (
             <button
               type="button"
-              className="ux4g-btn-outline-neutral"
+              className="ux4g-btn-outline-neutral ux4g-btn-m"
               disabled={busy}
               onClick={() => void withdraw()}
             >

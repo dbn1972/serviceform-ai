@@ -166,7 +166,7 @@ export function AppointmentBookingDesk() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -249,7 +249,7 @@ export function AppointmentBookingDesk() {
                   </p>
                   <button
                     type="button"
-                    className="ux4g-btn-fill-primary"
+                    className="ux4g-btn-primary ux4g-btn-m"
                     disabled={busy || !slot.can_book}
                     onClick={() => void book(slot)}
                   >
@@ -274,7 +274,7 @@ export function AppointmentBookingDesk() {
               <li key={a.appointment_id}>
                 <button
                   type="button"
-                  className="ux4g-btn-outline-primary"
+                  className="ux4g-btn-outline-primary ux4g-btn-m"
                   disabled={busy}
                   onClick={() => setSelected(a)}
                 >
@@ -329,7 +329,7 @@ export function AppointmentBookingDesk() {
               </label>
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy || !rescheduleSlot}
                 onClick={() => void act('reschedule', { slot_ref: rescheduleSlot })}
               >
@@ -342,7 +342,7 @@ export function AppointmentBookingDesk() {
             <div className="sf-actions">
               <button
                 type="button"
-                className="ux4g-btn-outline-neutral"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('cancel')}
               >
