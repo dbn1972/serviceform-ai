@@ -1,0 +1,45 @@
+ ✓ services/cmp-056-scheduler/test/unit/domain.test.ts (5 tests) 4ms
+ ✓ packages/security/test/decision-log-redaction.test.ts (1 test) 6ms
+ ✓ services/cmp-038-event-bus/test/unit/snapshot.test.ts (1 test) 4ms
+ ✓ packages/connector-sdk/test/egress-imports.test.ts (1 test) 3ms
+ ✓ apps/web-citizen/test/issuance-projection.test.ts (4 tests) 4ms
+ ✓ apps/web-officer/test/grievances.test.ts (2 tests) 3ms
+ ✓ packages/outbox/test/claim.test.ts (1 test) 3ms
+ ✓ packages/outbox/test/backoff.test.ts (2 tests) 3ms
+ ✓ apps/web-citizen/test/catalogue-resolve.test.ts (3 tests) 4ms
+ ✓ apps/web-officer/test/safe-next.test.ts (3 tests) 3ms
+ ✓ packages/outbox/test/discovery.test.ts (1 test) 3ms
+ ✓ packages/connector-sdk/test/secrets.test.ts (1 test) 3ms
+ ✓ packages/ui-ux4g/test/app-shell.test.tsx (3 tests) 3ms
+ ✓ apps/web-citizen/test/deficiency.test.ts (4 tests) 4ms
+ ✓ apps/web-admin/test/maker-checker.test.ts (4 tests) 3ms
+ ✓ apps/web-citizen/test/grievances.test.ts (2 tests) 4ms
+ ✓ packages/outbox/test/partitioner.test.ts (1 test) 3ms
+ ✓ packages/storage/test/object-key.test.ts (1 test) 3ms
+ ✓ packages/m10-sample-lab/test/fee-catalogue.test.ts (2 tests) 3ms
+ ✓ packages/m10-sample-lab/test/m08-ops-catalogue.test.ts (2 tests) 3ms
+ ✓ services/cmp-048-security-platform/test/outbox-template.test.ts (1 test) 3ms
+ ✓ packages/security/test/circuit-breaker.test.ts (1 test) 3ms
+ ✓ apps/web-citizen/test/appointments.test.ts (3 tests) 4ms
+ ✓ packages/outbox/test/metrics.test.ts (1 test) 3ms
+ ✓ apps/web-citizen/test/payment.test.ts (3 tests) 3ms
+ ✓ services/cmp-019-deficiency/test/unit/domain.test.ts (1 test) 3ms
+
+ Test Files  411 passed (411)
+      Tests  4931 passed (4931)
+   Start at  18:59:36
+   Duration  36.73s (tests 48%, import 35%, transform 10%, worker 7%)
+
+    Isolate  411 workers spawned · ~72ms startup each (spawn + environment, per file)
+             at least ~9.79s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to test-results/unit/junit.xml
+ % Coverage report from v8
+
+=============================== Coverage summary ===============================
+Statements   : 81.74% ( 30204/36948 )
+Branches     : 73.22% ( 20476/27964 )
+Functions    : 83.67% ( 6281/7506 )
+Lines        : 85.23% ( 27193/31904 )
+================================================================================
+EXIT 0

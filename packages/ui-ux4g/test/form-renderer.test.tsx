@@ -373,6 +373,23 @@ describe('Ux4gFormStepper', () => {
     expect(html).toContain('max="1" value="1"');
   });
 
+  it('never shows a reached step whose answers fail their checks as completed', () => {
+    const html = renderToStaticMarkup(
+      <Ux4gFormStepper steps={steps} current={3} reachable={3} incomplete={[1, 3]} />,
+    );
+    expect(html).toContain(', step 1 of 4, Completed');
+    expect(html).toContain(', step 2 of 4, Not complete');
+    expect(html).not.toContain(', step 2 of 4, Completed');
+    expect(html).toContain(', step 4 of 4, Current step');
+    expect(html.match(/sf-stepper-item sf-stepper-todo/g)?.length).toBe(1);
+    expect(html).not.toContain('disabled=""');
+    const flagged = renderToStaticMarkup(
+      <Ux4gFormStepper steps={steps} current={3} reachable={3} incomplete={[1]} attention={[1]} />,
+    );
+    expect(flagged).toContain('sf-stepper-item sf-stepper-todo sf-stepper-attention');
+    expect(flagged).toContain('Needs attention');
+  });
+
   it('flags steps that need attention by text, icon and state, but never the current step', () => {
     const html = renderToStaticMarkup(
       <Ux4gFormStepper steps={steps} current={3} reachable={3} attention={[0, 3]} />,

@@ -156,6 +156,10 @@ test.describe('error recovery', () => {
     await stepButtons(page).nth(1).click();
     await page.getByLabel('PIN code').fill('');
     await stepButtons(page).nth(3).click();
+    // Emptied answers mean those steps are no longer complete, even before submit.
+    await expect(stepButtons(page).nth(0)).toContainText('Not complete');
+    await expect(stepButtons(page).nth(1)).toContainText('Not complete');
+    await expect(stepButtons(page).nth(2)).toContainText('Completed');
     await page.getByRole('checkbox').check();
     await page.getByRole('button', { name: /Submit application/i }).click();
 

@@ -52,6 +52,24 @@ New e2e (`tests/e2e/citizen-form-polish.spec.ts`, 8): honest progress (evidence 
 3. **Next.js 16.4.3:** `next build` still aborts once per app with the security notice; a retry succeeds (WS1 finding 2).
 4. **Studio preview chrome (P8-3):** the citizen action bar now groups save state + "Save and come back later" at the start and Back + primary at the end. `DesignerPreview` keeps its own grouping; form-control token parity and CDC parity are unchanged, and the `studio-preview` baselines did not move.
 
+## Follow-up: "Not complete" stepper state
+
+An independent walkthrough video review found a gap after #283 merged. A step the citizen reached and later emptied (for example by going back through the stepper) still showed a green "Completed" check until submit.
+
+`Ux4gFormStepper` now takes `incomplete`, and the apply wizard passes every reached answer step that fails its checks. Such a step shows its number and "Not complete" instead. After a refused submit it is also flagged "Needs attention". No new CSS was added; the step reuses the not-started styling.
+
+Executed on the follow-up commit (`code-sha.txt` stays the #283 code; this commit sits on `main` `18791320`):
+
+| Check | Result | File |
+|---|---|---|
+| `pnpm e2e` full suite (incl. #282 journey a11y) | **136/136 PASS** | `junit/follow-up-e2e-full.xml`, `logs/follow-up-e2e-full.log` |
+| citizen specs `--repeat-each=3` | **48/48 PASS** | `junit/follow-up-e2e-repeat.xml`, `logs/follow-up-e2e-repeat.log` |
+| `pnpm ux4g:forms` | **100/100 PASS** (no baseline change) | `junit/follow-up-ux4g-forms.xml`, `logs/follow-up-ux4g-forms.log` |
+| `pnpm test:coverage` | 411 files · **4931 PASS** (+1 stepper test) | `logs/follow-up-unit-summary.log` |
+| CDC · gates · deps · format · lint · typecheck | 480 PASS · 11/11 · 0 violations · PASS · PASS · PASS | `logs/follow-up-gates.log` |
+
+The e2e test now asserts that both emptied steps read "Not complete" before submit. The step left untouched still reads "Completed".
+
 ## Not claimed
 
 No REAL DigiLocker / SMS / Payment. Not UX4G READY (`SF_M10_UX4G_READY` unset; manual screen-reader, non-Chromium and Figma parity remain human/EVD work). Not G6, not production. Builder evidence only — the D1 score is for the independent reviewer; **do not** claim CERTIFIED.
