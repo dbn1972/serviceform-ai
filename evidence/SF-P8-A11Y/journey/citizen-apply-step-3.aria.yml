@@ -1,0 +1,84 @@
+- alert: Residence address (step 2 of 4) - Apply - Residence Certificate - ServiceForm AI - Citizen Portal
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - text: /
+        - link "Residence Certificate":
+          - /url: /services/IND-SOC-002
+      - listitem: /Apply
+  - heading "Apply — Residence Certificate" [level=1]
+  - paragraph: "4 short steps: applicant, residence, evidence and preview. Fee ₹0 · service time 10 working days."
+  - navigation "Application steps":
+    - list:
+      - listitem:
+        - button "Applicant Identity details , step 1 of 4, Completed"
+      - listitem:
+        - button "Residence Address & duration , step 2 of 4, Completed"
+      - listitem:
+        - button "Evidence Supporting document , step 3 of 4, Current step"
+      - listitem:
+        - button "Preview Review & submit , step 4 of 4, Not started" [disabled]
+  - form "Step 3 of 4 Supporting evidence":
+    - text: Eligibility 12+ months at your address Fee ₹0 Service time 10 working days DigiLocker SIMULATED SAMPLE_LAB · synthetic data
+    - region "Step 3 of 4 Supporting evidence":
+      - heading "Step 3 of 4 Supporting evidence" [level=2]
+      - paragraph: Supporting document
+      - group "Supporting document":
+        - heading "Supporting document" [level=3]
+        - text: Evidence type
+        - combobox "Evidence type":
+          - option "Select"
+          - option "Electricity bill" [selected]
+          - option "Copy of RoR"
+          - option "EPIC / Aadhaar card"
+          - option "Landline telephone bill"
+          - option "Water connection bill"
+          - option "Ration card"
+          - option "Holding tax receipt"
+          - option "Lease agreement with house owner"
+          - option "Certificate from the employer"
+          - option "First page of bank passbook"
+          - option "Extract of latest voter list"
+        - text: Upload supporting evidence
+        - paragraph: Required. PDF, PNG or JPEG up to 1 MB. CMP-013 technical acceptance only — not officer verification. You can also drop a file here.
+        - button "Upload supporting evidence"
+      - paragraph: Form ind-soc-002.application · v1.0.0 · pinned sha256:6b659df1… · checked by the CMP-009 form engine
+    - button "Back"
+    - status: Saved at 6:36 pm
+    - button "Save and come back later"
+    - button "Save & continue"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

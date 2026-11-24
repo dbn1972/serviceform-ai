@@ -1,0 +1,148 @@
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Service Design Studio
+  - text: SAMPLE_LAB
+  - navigation "Studio":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Forms":
+          - /url: /forms
+      - listitem:
+        - link "Forms KPIs":
+          - /url: /forms/metrics
+      - listitem:
+        - link "Workflows":
+          - /url: /workflows
+      - listitem:
+        - link "Rules":
+          - /url: /rules
+      - listitem:
+        - link "Fees":
+          - /url: /fees
+      - listitem:
+        - link "SLA":
+          - /url: /sla
+      - listitem:
+        - link "Evidence":
+          - /url: /evidence
+      - listitem:
+        - link "Credentials":
+          - /url: /credentials
+      - listitem:
+        - link "Templates":
+          - /url: /templates
+      - listitem:
+        - link "Session":
+          - /url: /session
+      - listitem:
+        - link "Metadata":
+          - /url: /metadata
+      - listitem:
+        - link "Publication":
+          - /url: /publication
+      - listitem:
+        - link "Interop":
+          - /url: /interop
+      - listitem:
+        - link "New service":
+          - /url: /services/new
+- main:
+  - paragraph: From Residence Certificate v1.1.0
+  - heading "Residence Certificate application" [level=1]
+  - code: ind-soc-002.application · v1.2.0
+  - text: NOT SAVED sha256:c9a9915d…5e5006 SAMPLE_LAB · not CERTIFIED
+  - button "Undo" [disabled]
+  - button "Redo" [disabled]
+  - button "No errors"
+  - button "Save & publish"
+  - tablist "Designer views":
+    - tab "Design"
+    - tab "Logic"
+    - tab "Preview" [selected]
+    - tab "Schema"
+    - tab "Publish"
+  - tabpanel "Preview":
+    - group "Preview width":
+      - button "Desktop"
+      - button "Phone (360 px)" [pressed]
+    - button "Clear answers"
+    - button "Fill with sample answers"
+    - text: Jump to step
+    - combobox "Jump to step":
+      - option "1. Applicant"
+      - option "2. Residence"
+      - option "3. Evidence"
+      - option "4. Preview" [selected]
+    - switch "Runtime details"
+    - text: Runtime details Preview only · nothing is submitted · same UX4G runtime as the citizen form
+    - navigation "Preview steps":
+      - list:
+        - listitem:
+          - button "Applicant Identity details , step 1 of 4, Completed"
+        - listitem:
+          - button "Residence Address & duration , step 2 of 4, Completed"
+        - listitem:
+          - button "Evidence Supporting document , step 3 of 4, Completed"
+        - listitem:
+          - button "Preview Review & submit , step 4 of 4, Current step"
+    - region "Step 4 of 4 Preview application":
+      - heading "Step 4 of 4 Preview application" [level=2]
+      - paragraph: Check every answer before you submit. Use Change to correct anything.
+      - heading "Applicant" [level=3]
+      - button "Change applicant details": Change
+      - term: Full name (as per official record)
+      - definition: —
+      - term: Father's / mother's / guardian's name
+      - definition: —
+      - term: Date of birth
+      - definition: —
+      - term: Mobile number
+      - definition: —
+      - term: Gender
+      - definition: —
+      - term: Last 4 digits of Aadhaar (verification only)
+      - definition: —
+      - term: Also send status updates by email
+      - definition: —
+      - heading "Residence" [level=3]
+      - button "Change residence details": Change
+      - term: House no / name
+      - definition: —
+      - term: Locality / village / ward
+      - definition: —
+      - term: Post office
+      - definition: —
+      - term: District
+      - definition: —
+      - term: State code
+      - definition: —
+      - term: PIN code
+      - definition: —
+      - term: Duration of residence at this address (months)
+      - definition: —
+      - term: Purpose for which certificate is required
+      - definition: —
+      - heading "Evidence" [level=3]
+      - button "Change evidence details": Change
+      - term: Evidence type
+      - definition: —
+      - term: File name
+      - definition: —
+      - term: MIME type
+      - definition: —
+      - heading "Declaration" [level=3]
+      - checkbox "I declare that the particulars above are true for this SAMPLE_LAB application and that no real personal data has been entered."
+      - text: I declare that the particulars above are true for this SAMPLE_LAB application and that no real personal data has been entered.
+      - paragraph: Form ind-soc-002.application · v1.2.0 · draft sha256:c9a9915d…5e5006 · checked by the CMP-009 form engine on submit
+    - button "Back"
+    - status
+    - button "Check whole form"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services
+- alert

@@ -1,0 +1,52 @@
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem: /My applications
+  - heading "My applications" [level=1]
+  - paragraph: Track each application and publish issued certificates to DigiLocker (SIMULATED).
+  - link "Start a new application":
+    - /url: /services
+  - list "Your applications":
+    - listitem:
+      - article "Residence Certificate":
+        - heading "Residence Certificate" [level=2]
+        - paragraph: Ref C6AC546B · Submitted 24 Nov 2026
+        - paragraph: Submitted · under review
+        - link "View application C6AC546B":
+          - /url: /certificates/c6ac546b-39bb-43a9-a261-b7abd61c588a
+          - text: View
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services
+- alert

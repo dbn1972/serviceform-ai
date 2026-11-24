@@ -1,0 +1,148 @@
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Service Design Studio
+  - text: SAMPLE_LAB
+  - navigation "Studio":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Forms":
+          - /url: /forms
+      - listitem:
+        - link "Forms KPIs":
+          - /url: /forms/metrics
+      - listitem:
+        - link "Workflows":
+          - /url: /workflows
+      - listitem:
+        - link "Rules":
+          - /url: /rules
+      - listitem:
+        - link "Fees":
+          - /url: /fees
+      - listitem:
+        - link "SLA":
+          - /url: /sla
+      - listitem:
+        - link "Evidence":
+          - /url: /evidence
+      - listitem:
+        - link "Credentials":
+          - /url: /credentials
+      - listitem:
+        - link "Templates":
+          - /url: /templates
+      - listitem:
+        - link "Session":
+          - /url: /session
+      - listitem:
+        - link "Metadata":
+          - /url: /metadata
+      - listitem:
+        - link "Publication":
+          - /url: /publication
+      - listitem:
+        - link "Interop":
+          - /url: /interop
+      - listitem:
+        - link "New service":
+          - /url: /services/new
+- main:
+  - paragraph: From Residence Certificate v1.1.0
+  - heading "Residence Certificate application" [level=1]
+  - code: ind-soc-002.application · v1.2.0
+  - text: NOT SAVED sha256:c9a9915d…5e5006 SAMPLE_LAB · not CERTIFIED
+  - button "Undo" [disabled]
+  - button "Redo" [disabled]
+  - button "No errors"
+  - button "Save & publish"
+  - tablist "Designer views":
+    - tab "Design"
+    - tab "Logic"
+    - tab "Preview" [selected]
+    - tab "Schema"
+    - tab "Publish"
+  - tabpanel "Preview":
+    - group "Preview width":
+      - button "Desktop" [pressed]
+      - button "Phone (360 px)"
+    - button "Clear answers"
+    - button "Fill with sample answers"
+    - text: Jump to step
+    - combobox "Jump to step":
+      - option "1. Applicant" [selected]
+      - option "2. Residence"
+      - option "3. Evidence"
+      - option "4. Preview"
+    - switch "Runtime details"
+    - text: Runtime details Preview only · nothing is submitted · same UX4G runtime as the citizen form
+    - navigation "Preview steps":
+      - list:
+        - listitem:
+          - button "Applicant Identity details , step 1 of 4, Current step"
+        - listitem:
+          - button "Residence Address & duration , step 2 of 4, Not started" [disabled]
+        - listitem:
+          - button "Evidence Supporting document , step 3 of 4, Not started" [disabled]
+        - listitem:
+          - button "Preview Review & submit , step 4 of 4, Not started" [disabled]
+    - alert "There are 3 problems":
+      - paragraph: There are 3 problems
+      - list:
+        - listitem:
+          - link "Enter the full name":
+            - /url: "#designer-preview-applicant_name"
+        - listitem:
+          - link "Enter the date of birth":
+            - /url: "#designer-preview-applicant_dob"
+        - listitem:
+          - link "Select gender":
+            - /url: "#designer-preview-applicant_gender"
+    - region "Step 1 of 4 Applicant details":
+      - heading "Step 1 of 4 Applicant details" [level=2]
+      - paragraph: Identity details
+      - group "Identity":
+        - heading "Identity" [level=3]
+        - text: Full name (as per official record)
+        - textbox "Full name (as per official record)" [invalid]
+        - paragraph: "Error: Enter the full name"
+        - text: Father's / mother's / guardian's name (optional)
+        - textbox "Father's / mother's / guardian's name (optional)"
+        - text: Date of birth
+        - textbox "Date of birth" [invalid]
+        - paragraph: "Error: Enter the date of birth"
+        - text: Mobile number (optional)
+        - textbox "Mobile number (optional)"
+        - paragraph: 10 digits · synthetic only
+        - group "Gender":
+          - text: Gender
+          - radio "Male"
+          - text: Male
+          - radio "Female"
+          - text: Female
+          - radio "Transgender"
+          - text: Transgender
+          - radio "Other"
+          - text: Other
+          - radio "Prefer not to say"
+          - text: Prefer not to say
+          - paragraph: "Error: Select gender"
+        - text: Last 4 digits of Aadhaar (verification only) (optional)
+        - textbox "Last 4 digits of Aadhaar (verification only) (optional)"
+        - paragraph: Masked · not full Aadhaar · SAMPLE_LAB
+      - group "Status updates":
+        - heading "Status updates" [level=3]
+        - checkbox "Also send status updates by email"
+        - text: Also send status updates by email
+      - paragraph: Form ind-soc-002.application · v1.2.0 · draft sha256:c9a9915d…5e5006 · checked by the CMP-009 form engine on submit
+    - status: 3 answer(s) need attention
+    - button "Check whole form"
+    - button "Check and continue"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services
+- alert

@@ -1,0 +1,69 @@
+- alert: Applications
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Officer Workbench
+  - text: SAMPLE_LAB
+  - navigation "Officer":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Applications":
+          - /url: /applications
+      - listitem:
+        - link "Assisted apply":
+          - /url: /assisted
+      - listitem:
+        - link "Helpdesk":
+          - /url: /helpdesk
+      - listitem:
+        - link "Inspection":
+          - /url: /inspection
+      - listitem:
+        - link "Scheduling":
+          - /url: /scheduling
+      - listitem:
+        - link "Search":
+          - /url: /search
+      - listitem:
+        - link "Ops":
+          - /url: /ops
+      - listitem:
+        - button "Sign out"
+- main:
+  - heading "Applications" [level=1]
+  - paragraph: Multi-desk queue from Studio HUMAN_TASK role_code assignments (CMP-017). Scrutiny and approving desks are separate roles — never named officers.
+  - status:
+    - paragraph: Platform path (SAMPLE_LAB)
+    - text: Cases come from Application/Case (CMP-015). Open HUMAN_TASK rows come from Temporal CMP-016 when the graph enters a role-assigned node. Connectors are SIMULATED. CERTIFIED=false · G6=false.
+  - heading "Desks by role_code" [level=2]
+  - paragraph: Studio HUMAN_TASK assignment · CMP-017
+  - text: Desk filter
+  - combobox "Desk filter":
+    - option "All applications" [selected]
+    - option "Open HUMAN_TASK desks"
+    - option "Case desk (0)"
+    - option "Scrutiny desk (0)"
+    - option "Approving desk (0)"
+  - text: "Case desk: 0 open Scrutiny desk: 0 open Approving desk: 0 open"
+  - heading "SAMPLE Lab Citizen" [level=2]
+  - text: SUBMITTED SUBMITTED
+  - paragraph: IND-SOC-002 · 18 months residence · Ref a8349834…
+  - link "Review":
+    - /url: /applications/a8349834-a0c3-4c54-a509-16342f808c2c
+  - heading "SAMPLE Keyboard Journey" [level=2]
+  - text: SUBMITTED SUBMITTED
+  - paragraph: IND-SOC-002 · 18 months residence · Ref 8753980d…
+  - link "Review":
+    - /url: /applications/8753980d-7e48-466b-bc86-0cb1ac108f80
+  - heading "SAMPLE Lab Citizen" [level=2]
+  - text: SUBMITTED SUBMITTED
+  - paragraph: IND-SOC-002 · 18 months residence · Ref c6ac546b…
+  - link "Review":
+    - /url: /applications/c6ac546b-39bb-43a9-a261-b7abd61c588a
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

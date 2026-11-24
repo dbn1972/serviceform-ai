@@ -1,0 +1,285 @@
+
+> serviceform-ai@ e2e /agent/repos/serviceform-ai
+> playwright test -c tests/e2e/playwright.config.ts ux4g-forms-journey --workers=2
+
+
+Running 11 tests using 2 workers
+
+(node:8487) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8488) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   1 tests/e2e/ux4g-forms-journey.spec.ts:176:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details (5.8s)
+  ✘   2 tests/e2e/ux4g-forms-journey.spec.ts:182:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired (6.0s)
+(node:8679) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8687) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   4 tests/e2e/ux4g-forms-journey.spec.ts:197:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload (6.4s)
+(node:8884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   3 tests/e2e/ux4g-forms-journey.spec.ts:192:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address (7.5s)
+(node:8960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   5 tests/e2e/ux4g-forms-journey.spec.ts:207:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring (7.4s)
+(node:9088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 tests/e2e/ux4g-forms-journey.spec.ts:216:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus (7.7s)
+(node:9159) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 tests/e2e/ux4g-forms-journey.spec.ts:233:3 › citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1) › sign in, answer, upload evidence, declare and submit without the mouse (3.5s)
+  ✓   7 tests/e2e/ux4g-forms-journey.spec.ts:223:3 › citizen apply journey: every screen passes the probe battery › status page after submit, and My applications (9.7s)
+  ✓  10 tests/e2e/ux4g-forms-journey.spec.ts:341:3 › Studio designer preview of the Residence form › keyboard only: open the template, switch to Preview and walk the preview steps (3.3s)
+  ✓  11 tests/e2e/ux4g-forms-journey.spec.ts:379:3 › officer queue and review of a submitted application › queue and review pass the probe battery; decision controls are keyboard reachable (11.3s)
+  ✘   9 tests/e2e/ux4g-forms-journey.spec.ts:326:3 › Studio designer preview of the Residence form › forms list and the preview at desktop, with errors, and at phone width (1.2m)
+
+
+  1) tests/e2e/ux4g-forms-journey.spec.ts:176:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 5
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"1ApplicantIdentity details, step 1 of 4,\"",
+    +   ],
+    + }
+
+      177 |     await applyAt(page, 0);
+      178 |     await expect(stepHeading(page)).toContainText('Applicant details');
+    > 179 |     expect(await audit(page, 'citizen-apply-step-1')).toEqual({});
+          |                                                       ^
+      180 |   });
+      181 |
+      182 |   test('step 1 with errors: summary focused, every invalid field wired', async ({ page }) => {
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:179:55
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-fbae3-ry-step-1-Applicant-details/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-fbae3-ry-step-1-Applicant-details/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-fbae3-ry-step-1-Applicant-details/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/e2e/ux4g-forms-journey.spec.ts:182:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 5
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"1ApplicantIdentity details, step 1 of 4,\"",
+    +   ],
+    + }
+
+      187 |     await expect(page.getByTestId('error-summary')).toBeFocused();
+      188 |     await expect(page).toHaveTitle(/^Error: /);
+    > 189 |     expect(await audit(page, 'citizen-apply-step-1-errors')).toEqual({});
+          |                                                              ^
+      190 |   });
+      191 |
+      192 |   test('step 2 Residence address', async ({ page }) => {
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:189:62
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-b8cd2-d-every-invalid-field-wired/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-b8cd2-d-every-invalid-field-wired/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-b8cd2-d-every-invalid-field-wired/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) tests/e2e/ux4g-forms-journey.spec.ts:192:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 6
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"ApplicantIdentity details, step 1 of 4, \"",
+    +     "button \"2ResidenceAddress & duration, step 2 of \"",
+    +   ],
+    + }
+
+      192 |   test('step 2 Residence address', async ({ page }) => {
+      193 |     await applyAt(page, 1);
+    > 194 |     expect(await audit(page, 'citizen-apply-step-2')).toEqual({});
+          |                                                       ^
+      195 |   });
+      196 |
+      197 |   test('step 3 Supporting evidence, before and after the upload', async ({ page }) => {
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:194:55
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-98fc2-ry-step-2-Residence-address/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-98fc2-ry-step-2-Residence-address/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-98fc2-ry-step-2-Residence-address/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) tests/e2e/ux4g-forms-journey.spec.ts:197:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"ApplicantIdentity details, step 1 of 4, \"",
+    +     "button \"ResidenceAddress & duration, step 2 of 4\"",
+    +     "button \"3EvidenceSupporting document, step 3 of \"",
+    +   ],
+    + }
+
+      197 |   test('step 3 Supporting evidence, before and after the upload', async ({ page }) => {
+      198 |     await applyAt(page, 2);
+    > 199 |     expect(await audit(page, 'citizen-apply-step-3')).toEqual({});
+          |                                                       ^
+      200 |     await saveAndContinue(page).click();
+      201 |     await expect(page.getByTestId('error-summary')).toBeFocused();
+      202 |     expect(await audit(page, 'citizen-apply-step-3-errors')).toEqual({});
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:199:55
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-94666-before-and-after-the-upload/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-94666-before-and-after-the-upload/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-94666-before-and-after-the-upload/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) tests/e2e/ux4g-forms-journey.spec.ts:207:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 8
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"ApplicantIdentity details, step 1 of 4, \"",
+    +     "button \"ResidenceAddress & duration, step 2 of 4\"",
+    +     "button \"EvidenceSupporting document, step 3 of 4\"",
+    +     "button \"4PreviewReview & submit, step 4 of 4, Cu\"",
+    +   ],
+    + }
+
+      208 |     await applyAt(page, 3);
+      209 |     await expect(stepHeading(page)).toContainText('Preview application');
+    > 210 |     expect(await audit(page, 'citizen-apply-preview')).toEqual({});
+          |                                                        ^
+      211 |     await page.getByRole('button', { name: /Submit application/i }).click();
+      212 |     await expect(page.getByTestId('error-summary')).toBeFocused();
+      213 |     expect(await audit(page, 'citizen-apply-preview-errors')).toEqual({});
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:210:56
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-9f42e-en-submit-without-declaring/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-9f42e-en-submit-without-declaring/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-9f42e-en-submit-without-declaring/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) tests/e2e/ux4g-forms-journey.spec.ts:216:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 6
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"ApplicantIdentity details, step 1 of 4, \"",
+    +     "button \"2ResidenceAddress & duration, step 2 of \"",
+    +   ],
+    + }
+
+      218 |     await page.getByRole('button', { name: 'Save and come back later' }).click();
+      219 |     await expect(page.getByTestId('apply-notice')).toBeFocused();
+    > 220 |     expect(await audit(page, 'citizen-apply-saved-notice')).toEqual({});
+          |                                                             ^
+      221 |   });
+      222 |
+      223 |   test('status page after submit, and My applications', async ({ page }) => {
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:220:61
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-citizen-ba507-ater-the-notice-takes-focus/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-citizen-ba507-ater-the-notice-takes-focus/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-citizen-ba507-ater-the-notice-takes-focus/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) tests/e2e/ux4g-forms-journey.spec.ts:326:3 › Studio designer preview of the Residence form › forms list and the preview at desktop, with errors, and at phone width 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 5
+
+    - Object {}
+    + Object {
+    +   "forced-colors-focus": Array [
+    +     "button \"1ApplicantIdentity details, step 1 of 4,\"",
+    +   ],
+    + }
+
+      330 |     expect(await audit(page, 'studio-forms-list')).toEqual({});
+      331 |     await openResidencePreview(page);
+    > 332 |     expect(await audit(page, 'studio-preview-desktop')).toEqual({});
+          |                                                         ^
+      333 |     await page.getByRole('button', { name: 'Clear answers' }).click();
+      334 |     await page.getByRole('button', { name: 'Check whole form' }).click();
+      335 |     await expect(page.getByTestId('preview-error-summary')).toBeFocused();
+        at /agent/repos/serviceform-ai/tests/e2e/ux4g-forms-journey.spec.ts:332:57
+
+    Error Context: test-results/e2e/artifacts/ux4g-forms-journey-Studio--3a644-h-errors-and-at-phone-width/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/e2e/artifacts/ux4g-forms-journey-Studio--3a644-h-errors-and-at-phone-width/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace test-results/e2e/artifacts/ux4g-forms-journey-Studio--3a644-h-errors-and-at-phone-width/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7 failed
+    tests/e2e/ux4g-forms-journey.spec.ts:176:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details 
+    tests/e2e/ux4g-forms-journey.spec.ts:182:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired 
+    tests/e2e/ux4g-forms-journey.spec.ts:192:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address 
+    tests/e2e/ux4g-forms-journey.spec.ts:197:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload 
+    tests/e2e/ux4g-forms-journey.spec.ts:207:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring 
+    tests/e2e/ux4g-forms-journey.spec.ts:216:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus 
+    tests/e2e/ux4g-forms-journey.spec.ts:326:3 › Studio designer preview of the Residence form › forms list and the preview at desktop, with errors, and at phone width 
+  4 passed (1.8m)
+ ELIFECYCLE  Command failed with exit code 1.
+RUN_DONE 1

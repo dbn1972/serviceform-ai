@@ -1,0 +1,145 @@
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Officer Workbench
+  - text: SAMPLE_LAB
+  - navigation "Officer":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Applications":
+          - /url: /applications
+      - listitem:
+        - link "Assisted apply":
+          - /url: /assisted
+      - listitem:
+        - link "Helpdesk":
+          - /url: /helpdesk
+      - listitem:
+        - link "Inspection":
+          - /url: /inspection
+      - listitem:
+        - link "Scheduling":
+          - /url: /scheduling
+      - listitem:
+        - link "Search":
+          - /url: /search
+      - listitem:
+        - link "Ops":
+          - /url: /ops
+      - listitem:
+        - button "Sign out"
+- main:
+  - heading "Application review" [level=1]
+  - paragraph: Record an approve or reject decision, or raise a deficiency when more evidence is needed.
+  - heading "Review application" [level=2]
+  - paragraph: Human decision on Application/Case (CMP-015) · queue from HUMAN_TASK graph (CMP-017) · deficiency via CMP-019 · SLA via CMP-029
+  - status:
+    - paragraph: Sample lab — SIMULATED issuance, G6 not issued
+    - text: Desks follow Studio workflow HUMAN_TASK role_code assignments (never named officers). Raise deficiency uses CMP-019 with published SAMPLE_LAB catalogue codes only. After final approval, the platform signs and issues the certificate and publishes it to DigiLocker using SIMULATED connectors. CERTIFIED=false.
+  - text: SUBMITTED SUBMITTED No open HUMAN_TASK DigiLocker · NOT_REQUESTED SIMULATED
+  - term: Catalogue
+  - definition: IND-SOC-002
+  - term: Applicant
+  - definition: SAMPLE Lab Citizen
+  - term: Address
+  - definition: SAMPLE Plot 1, SAMPLE Locality, SAMPLE District, OD 751001
+  - term: Residence
+  - definition: 18 months
+  - term: Evidence
+  - definition: ELECTRICITY_BILL · 695d9ca6-95a5-46dc-aa17-5dcec99a6be3
+  - term: Purpose
+  - definition: SAMPLE_LAB purpose — education admission (synthetic only)
+  - button "Approve"
+  - button "Reject"
+  - button "Raise deficiency"
+  - heading "Pinned versions (TSB)" [level=2]
+  - paragraph: "Constitution #9 · SF-CON-VERSION-PINNING · silent repoint forbidden"
+  - status:
+    - paragraph: Immutable for this case
+    - text: This application executes only against the published pin graph below. A new binding version never moves an in-flight case. CERTIFIED=false · G6=false · TSB seal unset.
+  - text: silent_repoint_forbidden required pins complete pin_graph_hash present tsb_immutability_sealed=false
+  - term: TenantServiceBinding
+  - definition:
+    - code: 0d15ba00-0002-4000-8000-0d15ba0000d2
+  - term: Form
+  - definition:
+    - code: 0d15ba00-0010-4000-8000-0d15ba000010
+  - term: Rules
+  - definition:
+    - code: 0d15ba00-0011-4000-8000-0d15ba000011
+  - term: Workflow
+  - definition:
+    - code: 0d15ba00-001d-4000-8000-0d15ba00001d
+  - term: Evidence policy
+  - definition:
+    - code: 0d15ba00-0013-4000-8000-0d15ba000013
+  - term: SLA policy
+  - definition:
+    - code: 0d15ba00-0014-4000-8000-0d15ba000014
+  - term: Fee policy
+  - definition:
+    - code: 0d15ba00-0015-4000-8000-0d15ba000015
+  - term: Credential template
+  - definition:
+    - code: 0d15ba00-0016-4000-8000-0d15ba000016
+  - term: Notification
+  - definition:
+    - code: 0d15ba00-0017-4000-8000-0d15ba000017
+  - term: Authz policy (TSB provenance)
+  - definition:
+    - code: 0d15ba00-0018-4000-8000-0d15ba000018
+  - term: Pin graph hash
+  - definition:
+    - code: sha256:be95d4752774de81eb4f8989c5a108e155a434006c9a398aa91f43245438303b
+  - heading "SLA clock" [level=2]
+  - paragraph: CMP-029 · policy pin 0d15ba00-0014-4000-8000-0d15ba000014 · SAMPLE_LAB 10 working days · CERTIFIED=false
+  - list:
+    - listitem:
+      - text: Clock running OVERALL
+      - term: Deadline
+      - definition: 2026-12-08T11:30:00.000Z
+      - term: Start anchor
+      - definition: APPLICATION_SUBMITTED (PUBLISHED_POLICY_ANCHOR)
+      - term: Completion anchor
+      - definition: DECISION_RECORDED
+  - heading "Case audit trail" [level=2]
+  - paragraph: CMP-015 append-only · 3 events · deficiency loop 0 · actor ids withheld · CERTIFIED=false
+  - list:
+    - listitem:
+      - text: v1 CREATE_DRAFT ∅ → DRAFT CITIZEN
+      - term: Occurred
+      - definition: 2026-11-24T18:36:59.442Z
+      - term: Correlation
+      - definition:
+        - code: 53a768c1…
+      - term: Authz policy revision
+      - definition:
+        - code: m10-c-pins
+    - listitem:
+      - text: v2 MARK_READY_TO_SUBMIT DRAFT → READY_TO_SUBMIT CITIZEN ALWAYS_LEGAL
+      - term: Occurred
+      - definition: 2026-11-24T18:36:59.865Z
+      - term: Correlation
+      - definition:
+        - code: d13b7c41…
+      - term: Authz policy revision
+      - definition:
+        - code: m10-c-pins
+    - listitem:
+      - text: v3 Citizen submitted READY_TO_SUBMIT → SUBMITTED CITIZEN ALWAYS_LEGAL
+      - term: Occurred
+      - definition: 2026-11-24T18:36:59.891Z
+      - term: Correlation
+      - definition:
+        - code: be56bbb0…
+      - term: Authz policy revision
+      - definition:
+        - code: m10-c-pins
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services
+- alert

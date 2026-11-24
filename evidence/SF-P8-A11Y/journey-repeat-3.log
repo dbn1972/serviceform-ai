@@ -1,0 +1,56 @@
+
+> serviceform-ai@ e2e /agent/repos/serviceform-ai
+> playwright test -c tests/e2e/playwright.config.ts a11y-ux4g-forms-journey --repeat-each=3 --workers=3
+
+
+Running 33 tests using 3 workers
+
+(node:43711) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43710) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43713) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 tests/e2e/a11y-ux4g-forms-journey.spec.ts:211:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details (6.0s)
+  ✓   1 tests/e2e/a11y-ux4g-forms-journey.spec.ts:217:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired (6.3s)
+  ✓   2 tests/e2e/a11y-ux4g-forms-journey.spec.ts:227:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address (7.9s)
+  ✓   6 tests/e2e/a11y-ux4g-forms-journey.spec.ts:251:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus (6.9s)
+  ✓   5 tests/e2e/a11y-ux4g-forms-journey.spec.ts:242:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring (13.0s)
+  ✓   4 tests/e2e/a11y-ux4g-forms-journey.spec.ts:232:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload (15.6s)
+  ✓   8 tests/e2e/a11y-ux4g-forms-journey.spec.ts:268:3 › citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1) › sign in, answer, upload evidence, declare and submit without the mouse (3.1s)
+  ✓   7 tests/e2e/a11y-ux4g-forms-journey.spec.ts:258:3 › citizen apply journey: every screen passes the probe battery › status page after submit, and My applications (8.6s)
+  ✓  10 tests/e2e/a11y-ux4g-forms-journey.spec.ts:387:3 › Studio designer preview of the Residence form › keyboard only: open the template, switch to Preview and walk the preview steps (3.7s)
+(node:44373) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 tests/e2e/a11y-ux4g-forms-journey.spec.ts:211:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details (5.1s)
+  ✓  11 tests/e2e/a11y-ux4g-forms-journey.spec.ts:437:3 › officer queue and review of a submitted application › queue and review pass the probe battery; decision controls are keyboard reachable (11.5s)
+(node:44529) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 tests/e2e/a11y-ux4g-forms-journey.spec.ts:217:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired (5.4s)
+  ✓  14 tests/e2e/a11y-ux4g-forms-journey.spec.ts:227:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address (7.1s)
+  ✓  15 tests/e2e/a11y-ux4g-forms-journey.spec.ts:232:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload (15.6s)
+  ✓  16 tests/e2e/a11y-ux4g-forms-journey.spec.ts:242:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring (12.8s)
+  ✓  17 tests/e2e/a11y-ux4g-forms-journey.spec.ts:251:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus (6.9s)
+  ✓  19 tests/e2e/a11y-ux4g-forms-journey.spec.ts:268:3 › citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1) › sign in, answer, upload evidence, declare and submit without the mouse (2.8s)
+  ✓  18 tests/e2e/a11y-ux4g-forms-journey.spec.ts:258:3 › citizen apply journey: every screen passes the probe battery › status page after submit, and My applications (8.5s)
+  ✓  21 tests/e2e/a11y-ux4g-forms-journey.spec.ts:387:3 › Studio designer preview of the Residence form › keyboard only: open the template, switch to Preview and walk the preview steps (3.5s)
+  ✓  22 tests/e2e/a11y-ux4g-forms-journey.spec.ts:437:3 › officer queue and review of a submitted application › queue and review pass the probe battery; decision controls are keyboard reachable (11.7s)
+(node:45128) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 tests/e2e/a11y-ux4g-forms-journey.spec.ts:211:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details (5.3s)
+  ✓  24 tests/e2e/a11y-ux4g-forms-journey.spec.ts:217:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired (5.5s)
+  ✓  25 tests/e2e/a11y-ux4g-forms-journey.spec.ts:227:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address (6.6s)
+  ✓   9 tests/e2e/a11y-ux4g-forms-journey.spec.ts:361:3 › Studio designer preview of the Residence form › forms list, designer, and the preview at desktop, with errors, on review and at phone width (1.4m)
+(node:45413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  26 tests/e2e/a11y-ux4g-forms-journey.spec.ts:232:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload (14.9s)
+  ✓  27 tests/e2e/a11y-ux4g-forms-journey.spec.ts:242:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring (12.6s)
+  ✓  28 tests/e2e/a11y-ux4g-forms-journey.spec.ts:251:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus (6.9s)
+  ✓  30 tests/e2e/a11y-ux4g-forms-journey.spec.ts:268:3 › citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1) › sign in, answer, upload evidence, declare and submit without the mouse (3.1s)
+  ✓  29 tests/e2e/a11y-ux4g-forms-journey.spec.ts:258:3 › citizen apply journey: every screen passes the probe battery › status page after submit, and My applications (8.8s)
+  ✓  32 tests/e2e/a11y-ux4g-forms-journey.spec.ts:387:3 › Studio designer preview of the Residence form › keyboard only: open the template, switch to Preview and walk the preview steps (3.8s)
+  ✓  33 tests/e2e/a11y-ux4g-forms-journey.spec.ts:437:3 › officer queue and review of a submitted application › queue and review pass the probe battery; decision controls are keyboard reachable (12.7s)
+  ✓  20 tests/e2e/a11y-ux4g-forms-journey.spec.ts:361:3 › Studio designer preview of the Residence form › forms list, designer, and the preview at desktop, with errors, on review and at phone width (1.4m)
+  ✓  31 tests/e2e/a11y-ux4g-forms-journey.spec.ts:361:3 › Studio designer preview of the Residence form › forms list, designer, and the preview at desktop, with errors, on review and at phone width (1.3m)
+
+  33 passed (3.4m)

@@ -13,7 +13,7 @@
 | OB-06 | G5 PERF | Authorize PERF/SIT cell + fill `tests/performance/m10/load-profile.yaml` numbers; set `SF_M10_G5_PERF_READY=1` only then | Hold suite + harness runner | **No** |
 | OB-07 | Resilience / backup / rollback | Ops runbook + restore cell + RTO/RPO; set `SF_M10_RESILIENCE_READY=1` only then | `tests/resilience/m10/*` scaffolds | **No** |
 | OB-08 | TSB immutability seal (G6 gate) | Seal after REAL DigiLocker/DLT; lab_eng_sealed ≠ G6 seal | `g6-connector-hold.test.ts` | **No** |
-| OB-09 | UX4G READY bind (SF-15) | Human UX4G journey evidence pack + `SF_M10_UX4G_READY` | Out of WS5 code scope; listed for SF-2 completeness | **No** |
+| OB-09 | UX4G READY bind (SF-15) | Human UX4G journey evidence pack + `SF_M10_UX4G_READY` | [`SF-15-UX4G-READY-BIND-PREP.md`](../SF-15-UX4G-READY-BIND-PREP.md) + [`UX4G-SCREEN-READER-SMOKE-CHECKLIST.md`](../UX4G-SCREEN-READER-SMOKE-CHECKLIST.md) (P8-4; flag unset) | **No** |
 | OB-10 | Human G6 issuance | Independent EVD re-bind then human `G6_RELEASE_CERTIFIED` | Agents recommend hold only | **No** |
 
 ## Related program holds (not invented here)
