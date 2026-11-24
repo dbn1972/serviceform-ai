@@ -56,13 +56,20 @@ async function settle(page: Page): Promise<void> {
   });
 }
 
-/** Full-page capture from the top with nothing focused, so sticky bars sit where users see them. */
+/**
+ * Full-page capture with nothing focused. The viewport grows to the document height first:
+ * Chromium's full-page capture otherwise draws sticky bars at their viewport position mid-page.
+ */
 async function capture(page: Page, file: string): Promise<void> {
-  await page.evaluate(() => {
+  const size = page.viewportSize() ?? DESKTOP;
+  const height = await page.evaluate(() => {
     (document.activeElement as HTMLElement | null)?.blur();
     window.scrollTo(0, 0);
+    return document.documentElement.scrollHeight;
   });
+  await page.setViewportSize({ width: size.width, height: Math.max(size.height, height) });
   await page.screenshot({ path: join(OUT, file), fullPage: true });
+  await page.setViewportSize(size);
 }
 
 /**
