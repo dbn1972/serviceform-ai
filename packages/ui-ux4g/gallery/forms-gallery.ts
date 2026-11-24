@@ -17,6 +17,7 @@ import { OtpInput, type OtpState } from '../src/components/OtpInput';
 import { Select } from '../src/components/Select';
 import { TextInput, type FieldState, type InputSize } from '../src/components/TextInput';
 import { Ux4gFormLayout, Ux4gFormReview, type FieldNote } from '../src/json-forms/Ux4gForm';
+import { Ux4gFormStepper } from '../src/json-forms/Ux4gFormStepper';
 import {
   isRequired,
   visibleScopes,
@@ -203,21 +204,103 @@ function step(index: number, opts: LayoutOptions = {}): ReactNode {
   });
 }
 
-/** Citizen runtime frame: one UX4G Card per wizard step (MetadataApplyForm). */
+/** One wizard step panel as the citizen apply form renders it (MetadataApplyForm, #277). */
+function stepPanel(
+  index: number,
+  total: number,
+  title: string,
+  lead: string,
+  body: ReactNode,
+): ReactNode {
+  const headingId = `sf-step-heading-${index}`;
+  return h(
+    'section',
+    { key: index, className: 'sf-step-panel', 'aria-labelledby': headingId },
+    h(
+      'header',
+      { className: 'sf-step-head' },
+      h(
+        'h2',
+        { id: headingId, className: 'sf-step-title' },
+        h(
+          'span',
+          { className: 'ux4g-label-l-strong sf-step-kicker' },
+          `Step ${index + 1} of ${total}`,
+        ),
+        h('span', { className: 'ux4g-heading-m-strong' }, title),
+      ),
+      h('p', { className: 'ux4g-body-m-default sf-step-lead' }, lead),
+    ),
+    body,
+    h(
+      'p',
+      { className: 'ux4g-body-s-default sf-form-provenance' },
+      'Form SAMPLE-FORM · v1 · checked by the CMP-009 form engine',
+    ),
+  );
+}
+
+function wizardActions(first: boolean, primary: string): ReactNode {
+  return h(
+    'div',
+    { className: 'sf-wizard-actions' },
+    h(
+      'div',
+      { className: 'sf-wizard-actions-start' },
+      first ? null : c(Button, { variant: 'outline-neutral' }, 'Back'),
+      h(
+        'p',
+        { className: 'ux4g-body-s-default sf-save-status', role: 'status' },
+        'All changes saved',
+      ),
+    ),
+    h(
+      'div',
+      { className: 'sf-wizard-actions-end' },
+      c(Button, { variant: 'text-primary' }, 'Save and come back later'),
+      c(Button, { type: 'submit' }, primary),
+    ),
+  );
+}
+
+/**
+ * Citizen runtime frame (MetadataApplyForm): shared stepper, step panels and wizard actions. The
+ * citizen sees one panel at a time; scenes stack the two data-entry panels so every renderer is
+ * covered on one page.
+ */
 function citizenSteps(opts: LayoutOptions = {}, title = 'Apply for a certificate'): ReactNode {
   const local = wizardSteps(opts.ui ?? ui);
   return h(
     'div',
     { className: 'sf-form-stack' },
     h('h1', { className: 'ux4g-heading-xl-strong' }, title),
-    ...[0, 1].map((i) =>
-      c(Card, { key: i, title: `${i + 1}. ${local[i]?.label ?? ''}` }, step(i, opts)),
+    h(
+      'div',
+      { className: 'sf-wizard' },
+      h(Ux4gFormStepper, {
+        steps: local.map((s) => ({ label: s.label, hint: s.hint })),
+        current: 0,
+        reachable: 1,
+      }),
+      h(
+        'div',
+        { className: 'sf-wizard-main' },
+        ...[0, 1].map((i) =>
+          stepPanel(i, local.length, local[i]?.title ?? '', local[i]?.hint ?? '', step(i, opts)),
+        ),
+        wizardActions(true, 'Save and continue'),
+      ),
     ),
   );
 }
 
-/** Studio designer preview frame (DesignerPreview): same renderer inside the device card. */
-function studioPreview(device: 'desktop' | 'mobile', opts: LayoutOptions = {}): ReactNode {
+/**
+ * Studio designer preview frame (apps/web-studio DesignerPreview): the citizen wizard (shared
+ * stepper, step panel, wizard actions) inside the device frame, so preview renders runtime.
+ */
+function studioPreview(device: 'desktop' | 'mobile', current: number): ReactNode {
+  const node = steps[current];
+  if (!node) throw new Error(`gallery: no wizard step ${current}`);
   return h(
     'div',
     { className: 'sf-designer-stack' },
@@ -228,20 +311,41 @@ function studioPreview(device: 'desktop' | 'mobile', opts: LayoutOptions = {}): 
       h(
         'div',
         { className: `sf-designer-device sf-designer-device-${device}` },
-        ...[0, 1].map((i) =>
+        h(
+          'div',
+          { className: 'sf-wizard' },
+          h(Ux4gFormStepper, {
+            label: 'Preview steps',
+            steps: steps.map((s) => ({ label: s.label, hint: s.hint })),
+            current,
+            reachable: current,
+          }),
           h(
-            'section',
-            {
-              key: i,
-              className: 'sf-designer-preview-card',
-              'aria-labelledby': `preview-step-${i}`,
-            },
-            h(
-              'h3',
-              { id: `preview-step-${i}`, className: 'ux4g-heading-s-strong' },
-              steps[i]?.title ?? '',
+            'div',
+            { className: 'sf-wizard-main' },
+            stepPanel(
+              current,
+              steps.length,
+              node.title,
+              node.hint,
+              step(current, { idPrefix: 'designer-preview-' }),
             ),
-            step(i, { ...opts, idPrefix: `designer-preview-${i}-` }),
+            h(
+              'div',
+              { className: 'sf-wizard-actions' },
+              h(
+                'div',
+                { className: 'sf-wizard-actions-start' },
+                c(Button, { variant: 'outline-neutral' }, 'Back'),
+                h('p', { className: 'ux4g-body-s-default sf-save-status', role: 'status' }),
+              ),
+              h(
+                'div',
+                { className: 'sf-wizard-actions-end' },
+                c(Button, { variant: 'outline-primary' }, 'Check whole form'),
+                c(Button, {}, 'Check and continue'),
+              ),
+            ),
           ),
         ),
       ),
@@ -255,30 +359,44 @@ function review(): ReactNode {
     'div',
     { className: 'sf-form-stack' },
     h('h1', { className: 'ux4g-heading-xl-strong' }, 'Check your answers'),
-    c(
-      Card,
-      { title: '3. Preview', subtitle: 'Review every answer before you submit' },
-      h(Ux4gFormReview, {
-        schema,
-        ui,
-        data,
-        visible: visibleScopes(ui, data),
-        onEdit: () => undefined,
+    h(
+      'div',
+      { className: 'sf-wizard' },
+      h(Ux4gFormStepper, {
+        steps: steps.map((s) => ({ label: s.label, hint: s.hint })),
+        current: 2,
+        reachable: 2,
       }),
       h(
         'div',
-        { className: 'sf-form-section' },
-        h('h3', { className: 'ux4g-heading-s-strong' }, 'Declaration'),
-        step(2, {
-          data: { ...data, declaration: false },
-          errors: { '/declaration': allErrors['/declaration'] ?? '' },
-        }),
-      ),
-      h(
-        'div',
-        { className: 'sf-actions' },
-        c(Button, { variant: 'outline-neutral' }, 'Back'),
-        c(Button, { variant: 'primary', type: 'submit' }, 'Submit application'),
+        { className: 'sf-wizard-main' },
+        stepPanel(
+          2,
+          steps.length,
+          steps[2]?.title ?? '',
+          'Check every answer before you submit. Use Change to correct anything.',
+          h(
+            'div',
+            { className: 'sf-form-stack' },
+            h(Ux4gFormReview, {
+              schema,
+              ui,
+              data,
+              visible: visibleScopes(ui, data),
+              onEdit: () => undefined,
+            }),
+            h(
+              'div',
+              { className: 'sf-form-section' },
+              h('h3', { className: 'ux4g-heading-xs-strong' }, 'Declaration'),
+              step(2, {
+                data: { ...data, declaration: false },
+                errors: { '/declaration': allErrors['/declaration'] ?? '' },
+              }),
+            ),
+          ),
+        ),
+        wizardActions(false, 'Submit application'),
       ),
     ),
   );
@@ -603,8 +721,7 @@ const BODIES: Record<string, () => ReactNode> = {
   'form-errors': () => citizenSteps({ errors: allErrors }),
   'form-readonly': () => citizenSteps({ data: filled, readOnly: true }, 'Application details'),
   'form-review': () => review(),
-  'studio-preview': () =>
-    studioPreview('desktop', { errors: { '/full_name': allErrors['/full_name'] ?? '' } }),
+  'studio-preview': () => studioPreview('desktop', 1),
   controls: () => controls(),
   multilingual: () => multilingual(),
 };

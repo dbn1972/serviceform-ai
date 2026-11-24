@@ -22,13 +22,7 @@ import {
 import { SCENES_DIR } from './scenes-dir';
 
 const HEIGHT: Record<number, number> = { 320: 640, 768: 1024, 1280: 800 };
-const ERROR_SCENES = new Set([
-  'form-errors',
-  'form-review',
-  'studio-preview',
-  'multilingual',
-  'controls',
-]);
+const ERROR_SCENES = new Set(['form-errors', 'form-review', 'multilingual', 'controls']);
 /** Viewports locked by visual regression per scene; 768 is where the form grid goes two-up. */
 const VISUAL: Record<string, readonly number[]> = {
   'form-empty': [320, 768, 1280],
@@ -341,18 +335,18 @@ test.describe('token lock and preview = runtime', () => {
     page,
   }) => {
     await load(page, 'form-empty', 1280);
-    const runtime = await styleSignature(page, '.ux4g-card-body');
+    const runtime = await styleSignature(page, '.sf-step-panel');
     await load(page, 'studio-preview', 1280);
-    const preview = await styleSignature(page, '.sf-designer-preview-card');
+    const preview = await styleSignature(page, '.sf-designer-device .sf-step-panel');
     expect(Object.keys(runtime).length).toBeGreaterThan(6);
     expect(preview).toEqual(runtime);
   });
 
   test('form control token values match the locked signature', async ({ page }) => {
     await load(page, 'form-empty', 1280);
-    const steady = await styleSignature(page, '.ux4g-card-body');
+    const steady = await styleSignature(page, '.sf-step-panel');
     await load(page, 'form-errors', 1280);
-    const error = await styleSignature(page, '.ux4g-card-body');
+    const error = await styleSignature(page, '.sf-step-panel');
     expect(JSON.stringify({ steady, error }, null, 2)).toMatchSnapshot('form-token-lock.txt');
   });
 });

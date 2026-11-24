@@ -45,7 +45,8 @@ export const GALLERY_SCENE_META: readonly GallerySceneMeta[] = [
     id: 'studio-preview',
     title: 'Studio designer preview (desktop)',
     surface: 'service_studio',
-    covers: 'Same renderer inside the Studio preview device frame (preview = runtime)',
+    covers:
+      'Same renderer inside the Studio preview frame: device frame around the citizen wizard (preview = runtime)',
   },
   {
     id: 'controls',
