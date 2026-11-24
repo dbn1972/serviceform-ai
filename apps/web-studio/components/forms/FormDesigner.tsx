@@ -5,7 +5,7 @@ import { shortHash } from '@serviceform/studio-designers';
 import {
   beginStudioAuthoring,
   type AuthoringSession,
-} from '@serviceform/observability/browser-product-metrics';
+} from '@serviceform/forms-product-metrics/browser-product-metrics';
 import {
   addField,
   addSection,

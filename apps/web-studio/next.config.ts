@@ -9,7 +9,7 @@ const config: NextConfig = {
     '@serviceform/service-templates',
     '@serviceform/studio-designers',
     '@serviceform/m10-sample-lab',
-    '@serviceform/observability',
+    '@serviceform/forms-product-metrics',
   ],
   async headers() {
     return [

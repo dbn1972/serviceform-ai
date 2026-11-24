@@ -6,7 +6,7 @@
 |---|---|
 | Tip | `356de377486856d10949c59f310ef5fe0c75acb4` (`cursor/world-class-forms-measure-ad53`) |
 | Workstream | 7 Measure (authoring time, completion/abandon, a11y, p95, zero cross-tenant KPI) |
-| Components | CMP-047 (observability), citizen BFF, Studio forms designer, CMP-009 path (hooks only) |
+| Components | `@serviceform/forms-product-metrics` (web-safe), citizen BFF, Studio forms designer, CMP-009 path (hooks only) |
 | Scope | Observability only — no authz/RLS/security weakening |
 | PII | Forbidden on product-metric dimensions; redacted / UNCLASSIFIED |
 
@@ -25,9 +25,9 @@
 ```bash
 node scripts/ci/forms-world-class-metrics-smoke.mjs
 # or
-pnpm exec vitest run packages/observability/test/product-metrics.test.ts \
-  packages/observability/test/forms-metrics-smoke.test.ts \
-  packages/observability/test/server-product-metrics.test.ts
+pnpm exec vitest run packages/forms-product-metrics/test/product-metrics.test.ts \
+  packages/forms-product-metrics/test/forms-metrics-smoke.test.ts \
+  packages/forms-product-metrics/test/server-product-metrics.test.ts
 ```
 
 Baseline artifact: `evidence/SF-WC-FORMS-07/smoke-baseline.json` (written by smoke test).

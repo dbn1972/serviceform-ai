@@ -1,7 +1,7 @@
 import {
   recordBffLatency,
   serverTimingHeader,
-} from '@serviceform/observability/server-product-metrics';
+} from '@serviceform/forms-product-metrics/server-product-metrics';
 import { buildSampleLabFormData } from '@serviceform/service-templates';
 import {
   interpret,

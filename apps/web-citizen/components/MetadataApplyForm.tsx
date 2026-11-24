@@ -4,9 +4,9 @@ import {
   attachCitizenAbandonHooks,
   beginCitizenFormJourney,
   getBrowserProductMetrics,
-} from '@serviceform/observability/browser-product-metrics';
-import { recordA11yScore } from '@serviceform/observability/forms-journey-metrics';
-import type { CitizenFormSession } from '@serviceform/observability/forms-journey-metrics';
+} from '@serviceform/forms-product-metrics/browser-product-metrics';
+import { recordA11yScore } from '@serviceform/forms-product-metrics/forms-journey-metrics';
+import type { CitizenFormSession } from '@serviceform/forms-product-metrics/forms-journey-metrics';
 import {
   Button,
   controlScopes,

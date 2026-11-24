@@ -1,0 +1,17 @@
+{
+  "name": "@serviceform/forms-product-metrics",
+  "version": "0.0.0",
+  "private": true,
+  "description": "World-class forms product metrics (authoring/completion/a11y/p95/cross-tenant KPI). Browser-safe; no PII. Not the CMP-047 Node logger/telemetry package.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./product-metrics": "./src/product-metrics.ts",
+    "./forms-journey-metrics": "./src/forms-journey-metrics.ts",
+    "./browser-product-metrics": "./src/browser-product-metrics.ts",
+    "./server-product-metrics": "./src/server-product-metrics.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}

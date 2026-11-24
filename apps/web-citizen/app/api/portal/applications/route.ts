@@ -1,7 +1,7 @@
 import {
   recordBffLatency,
   serverTimingHeader,
-} from '@serviceform/observability/server-product-metrics';
+} from '@serviceform/forms-product-metrics/server-product-metrics';
 import { issueMessage, schemaAt, type FormSchemaView } from '@serviceform/ui-ux4g';
 import { toPortalApplication, type PlatformApplication } from '../../../../lib/portal/applications';
 import { catalogueIdForCase } from '../../../../lib/portal/catalogue-resolve';

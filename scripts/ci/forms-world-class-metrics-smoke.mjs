@@ -17,8 +17,8 @@ const vitest = spawnSync(
     'exec',
     'vitest',
     'run',
-    'packages/observability/test/product-metrics.test.ts',
-    'packages/observability/test/forms-metrics-smoke.test.ts',
+    'packages/forms-product-metrics/test/product-metrics.test.ts',
+    'packages/forms-product-metrics/test/forms-metrics-smoke.test.ts',
   ],
   { cwd: root, encoding: 'utf8', env: process.env },
 );
