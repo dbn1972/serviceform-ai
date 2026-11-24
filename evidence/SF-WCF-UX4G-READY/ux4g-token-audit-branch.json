@@ -1,318 +1,18 @@
 {
   "gate": "ux4g-tokens",
   "stylesheet": "packages/ui-ux4g/src/styles.css",
-  "governed_classes": 1003,
-  "tsx_files": 143,
-  "errors": 12,
-  "known_findings": 25,
-  "by_rule": {
-    "button-size": 7,
-    "undefined-class": 30
-  },
-  "exemptions": 2,
-  "info_literals": 30,
+  "governed_classes": 1024,
+  "tsx_files": 145,
+  "errors": 0,
+  "known_findings": 0,
+  "by_rule": {},
+  "exemptions": 4,
+  "info_literals": 39,
   "info_by_rule": {
     "generic-font": 4,
-    "layout-literal": 26
+    "layout-literal": 35
   },
-  "findings": [
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/AppointmentBookingDesk.tsx",
-      "line": 169,
-      "subject": "ux4g-link",
-      "detail": "class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/AppointmentBookingDesk.tsx",
-      "line": 252,
-      "subject": "ux4g-btn-fill-primary",
-      "detail": "class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/AppointmentBookingDesk.tsx",
-      "line": 277,
-      "subject": "ux4g-btn-outline-primary",
-      "detail": "'ux4g-btn-outline-primary' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/AppointmentBookingDesk.tsx",
-      "line": 332,
-      "subject": "ux4g-btn-fill-primary",
-      "detail": "class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/AppointmentBookingDesk.tsx",
-      "line": 345,
-      "subject": "ux4g-btn-outline-neutral",
-      "detail": "'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 125,
-      "subject": "ux4g-link",
-      "detail": "class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 137,
-      "subject": "ux4g-label",
-      "detail": "class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 152,
-      "subject": "ux4g-label",
-      "detail": "class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 169,
-      "subject": "ux4g-btn-fill-primary",
-      "detail": "class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 187,
-      "subject": "ux4g-btn-text-neutral",
-      "detail": "'ux4g-btn-text-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 211,
-      "subject": "ux4g-link",
-      "detail": "class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 217,
-      "subject": "ux4g-label",
-      "detail": "class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 231,
-      "subject": "ux4g-btn-fill-primary",
-      "detail": "class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 241,
-      "subject": "ux4g-btn-outline-primary",
-      "detail": "'ux4g-btn-outline-primary' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/GrievanceDesk.tsx",
-      "line": 251,
-      "subject": "ux4g-btn-outline-neutral",
-      "detail": "'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PaymentStep.tsx",
-      "line": 76,
-      "subject": "ux4g-stack",
-      "detail": "class 'ux4g-stack' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PaymentStep.tsx",
-      "line": 88,
-      "subject": "ux4g-stack",
-      "detail": "class 'ux4g-stack' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PaymentStep.tsx",
-      "line": 94,
-      "subject": "ux4g-dl",
-      "detail": "class 'ux4g-dl' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PaymentStep.tsx",
-      "line": 110,
-      "subject": "ux4g-text-muted",
-      "detail": "class 'ux4g-text-muted' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 157,
-      "subject": "ux4g-link",
-      "detail": "class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 238,
-      "subject": "ux4g-label",
-      "detail": "class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 253,
-      "subject": "ux4g-label",
-      "detail": "class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 271,
-      "subject": "ux4g-btn-fill-primary",
-      "detail": "class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 289,
-      "subject": "ux4g-btn-text-neutral",
-      "detail": "'ux4g-btn-text-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "button-size",
-      "path": "apps/web-citizen/components/PrivacyCentre.tsx",
-      "line": 315,
-      "subject": "ux4g-btn-outline-neutral",
-      "detail": "'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height)",
-      "owner": "ws1-citizen"
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/credential/CredentialDesigner.tsx",
-      "line": 182,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/evidence/EvidenceDesigner.tsx",
-      "line": 176,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/evidence/EvidenceDesigner.tsx",
-      "line": 250,
-      "subject": "ux4g-btn-ghost",
-      "detail": "class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/fees/FeeDesigner.tsx",
-      "line": 199,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/fees/FeeDesigner.tsx",
-      "line": 292,
-      "subject": "ux4g-btn-ghost",
-      "detail": "class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/forms/FormDesigner.tsx",
-      "line": 361,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/meta/ChecksPanel.tsx",
-      "line": 27,
-      "subject": "sf-designer-check-error",
-      "detail": "class 'sf-designer-check-error' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/meta/ChecksPanel.tsx",
-      "line": 27,
-      "subject": "sf-designer-check-warning",
-      "detail": "class 'sf-designer-check-warning' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/rules/RulesDesigner.tsx",
-      "line": 314,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/sla/SlaDesigner.tsx",
-      "line": 183,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/sla/SlaDesigner.tsx",
-      "line": 264,
-      "subject": "ux4g-btn-ghost",
-      "detail": "class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    },
-    {
-      "rule": "undefined-class",
-      "path": "apps/web-studio/components/workflows/WorkflowDesigner.tsx",
-      "line": 361,
-      "subject": "sf-designer-panel",
-      "detail": "class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css",
-      "owner": null
-    }
-  ],
+  "findings": [],
   "info": [
     {
       "rule": "layout-literal",
@@ -357,15 +57,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 8711,
-      "subject": "17rem",
-      "detail": "grid-template-columns: minmax(var(--ux4g-size-224), 17rem) minmax(0, 1fr)",
-      "owner": null
-    },
-    {
-      "rule": "layout-literal",
-      "path": "packages/ui-ux4g/src/styles.css",
-      "line": 8721,
+      "line": 8736,
       "subject": "5.5rem",
       "detail": "top: 5.5rem",
       "owner": null
@@ -373,7 +65,23 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9208,
+      "line": 8756,
+      "subject": "1px",
+      "detail": "left: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px)",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 8759,
+      "subject": "2px",
+      "detail": "width: 2px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 9452,
       "subject": "68rem",
       "detail": "max-width: 68rem",
       "owner": null
@@ -381,7 +89,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9243,
+      "line": 9487,
       "subject": "40rem",
       "detail": "min-height: 40rem",
       "owner": null
@@ -389,7 +97,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9320,
+      "line": 9564,
       "subject": "0.2em",
       "detail": "text-underline-offset: 0.2em",
       "owner": null
@@ -397,7 +105,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9368,
+      "line": 9612,
       "subject": "0.2em",
       "detail": "text-underline-offset: 0.2em",
       "owner": null
@@ -405,7 +113,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9511,
+      "line": 9755,
       "subject": "0.2em",
       "detail": "text-underline-offset: 0.2em",
       "owner": null
@@ -413,7 +121,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 9982,
+      "line": 10226,
       "subject": "46rem",
       "detail": "max-width: 46rem",
       "owner": null
@@ -421,7 +129,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10017,
+      "line": 10261,
       "subject": "0.2em",
       "detail": "text-underline-offset: 0.2em",
       "owner": null
@@ -429,7 +137,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10049,
+      "line": 10293,
       "subject": "0.25em",
       "detail": "text-underline-offset: 0.25em",
       "owner": null
@@ -437,7 +145,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10170,
+      "line": 10414,
       "subject": "21rem",
       "detail": "grid-template-columns: minmax(0, 1fr) 21rem",
       "owner": null
@@ -445,7 +153,7 @@
     {
       "rule": "generic-font",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10557,
+      "line": 10801,
       "subject": "ui-monospace, monospace",
       "detail": "generic font stack; UX4G has no token for it",
       "owner": null
@@ -453,7 +161,39 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10634,
+      "line": 10864,
+      "subject": "1px",
+      "detail": "top: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px)",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 10867,
+      "subject": "2px",
+      "detail": "height: 2px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 10888,
+      "subject": "1px",
+      "detail": "width: 1px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 10889,
+      "subject": "1px",
+      "detail": "height: 1px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 10946,
       "subject": "100rem",
       "detail": "max-width: 100rem",
       "owner": null
@@ -461,7 +201,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10746,
+      "line": 11058,
       "subject": "17rem",
       "detail": "grid-template-columns: minmax(var(--ux4g-size-224), 17rem) minmax(0, 1fr) minmax(\n        var(--ux4g-size-288),\n        22rem\n      )",
       "owner": null
@@ -469,7 +209,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10746,
+      "line": 11058,
       "subject": "22rem",
       "detail": "grid-template-columns: minmax(var(--ux4g-size-224), 17rem) minmax(0, 1fr) minmax(\n        var(--ux4g-size-288),\n        22rem\n      )",
       "owner": null
@@ -477,7 +217,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10755,
+      "line": 11067,
       "subject": "5.5rem",
       "detail": "top: 5.5rem",
       "owner": null
@@ -485,7 +225,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 10756,
+      "line": 11068,
       "subject": "6.5rem",
       "detail": "max-height: calc(var(--ux4g-sz-screen-h) - 6.5rem)",
       "owner": null
@@ -493,15 +233,47 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11155,
+      "line": 11468,
       "subject": "22.5rem",
       "detail": "max-width: 22.5rem",
       "owner": null
     },
     {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 11498,
+      "subject": "1px",
+      "detail": "top: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px)",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 11501,
+      "subject": "2px",
+      "detail": "height: 2px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 11522,
+      "subject": "1px",
+      "detail": "width: 1px",
+      "owner": null
+    },
+    {
+      "rule": "layout-literal",
+      "path": "packages/ui-ux4g/src/styles.css",
+      "line": 11523,
+      "subject": "1px",
+      "detail": "height: 1px",
+      "owner": null
+    },
+    {
       "rule": "generic-font",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11213,
+      "line": 11622,
       "subject": "ui-monospace, monospace",
       "detail": "generic font stack; UX4G has no token for it",
       "owner": null
@@ -509,7 +281,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11302,
+      "line": 11711,
       "subject": "22rem",
       "detail": "grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr))",
       "owner": null
@@ -517,7 +289,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11342,
+      "line": 11751,
       "subject": "22rem",
       "detail": "grid-template-columns: minmax(var(--ux4g-size-208), var(--ux4g-size-256)) minmax(0, 1fr) minmax(\n        var(--ux4g-size-288),\n        22rem\n      )",
       "owner": null
@@ -525,7 +297,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11369,
+      "line": 11778,
       "subject": "70vh",
       "detail": "max-height: 70vh",
       "owner": null
@@ -533,7 +305,7 @@
     {
       "rule": "generic-font",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11434,
+      "line": 11843,
       "subject": "ui-monospace, monospace",
       "detail": "generic font stack; UX4G has no token for it",
       "owner": null
@@ -541,7 +313,7 @@
     {
       "rule": "generic-font",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11554,
+      "line": 11963,
       "subject": "ui-monospace, monospace",
       "detail": "generic font stack; UX4G has no token for it",
       "owner": null
@@ -549,7 +321,7 @@
     {
       "rule": "layout-literal",
       "path": "packages/ui-ux4g/src/styles.css",
-      "line": 11655,
+      "line": 12064,
       "subject": "0.2em",
       "detail": "text-underline-offset: 0.2em",
       "owner": null
