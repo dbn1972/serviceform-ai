@@ -50,9 +50,8 @@ describe('workbench status for deficiency path', () => {
 
 describe('deficiency loop helpers imported by ApplicationReview (P8-5)', () => {
   it('exports decide-block via deficiency-view', async () => {
-    const { decideBlockedByOpenDeficiency, deficiencyLoopPhase } = await import(
-      '../lib/portal/deficiency-view'
-    );
+    const { decideBlockedByOpenDeficiency, deficiencyLoopPhase } =
+      await import('../lib/portal/deficiency-view');
     expect(decideBlockedByOpenDeficiency([{ deficiency_id: 'x', status: 'OPEN' }]).blocked).toBe(
       true,
     );

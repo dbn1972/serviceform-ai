@@ -173,11 +173,7 @@ export function defaultFieldValues(kind: MetadataKind): Record<string, string> {
 }
 
 export type MakerCheckerBlockReason =
-  | 'SAME_PRINCIPAL'
-  | 'MISSING_CHECKER_ROLE'
-  | 'WRONG_STATUS'
-  | 'MISSING_MAKER_ROLE'
-  | null;
+  'SAME_PRINCIPAL' | 'MISSING_CHECKER_ROLE' | 'WRONG_STATUS' | 'MISSING_MAKER_ROLE' | null;
 
 export type MakerCheckerUx = {
   canSubmit: boolean;

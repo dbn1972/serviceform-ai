@@ -426,8 +426,8 @@ export function ApplicationReview({ id }: { id: string }) {
           </Alert>
         ) : hasSlaWarning(slaClocks) ? (
           <Alert variant="warning" title="SLA warning emitted">
-            A warning was emitted before the deadline on at least one clock. Review remaining working
-            time against the pinned sla_policy_version_id.
+            A warning was emitted before the deadline on at least one clock. Review remaining
+            working time against the pinned sla_policy_version_id.
           </Alert>
         ) : null}
 
@@ -629,7 +629,9 @@ export function ApplicationReview({ id }: { id: string }) {
                 <li key={d.deficiency_id} className="sf-section">
                   <div className="sf-meta-row">
                     <span className={statusTag(d.status)}>{d.status}</span>
-                    <span className="ux4g-tag-tonal-primary">{deficiencyLoopPhaseLabel(phase)}</span>
+                    <span className="ux4g-tag-tonal-primary">
+                      {deficiencyLoopPhaseLabel(phase)}
+                    </span>
                     <span className="ux4g-tag-tonal-neutral">
                       {reasonLabel(catalogue, d.reason_code)}
                     </span>

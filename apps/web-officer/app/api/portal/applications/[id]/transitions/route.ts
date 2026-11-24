@@ -32,7 +32,9 @@ export async function GET(request: Request, ctx: Ctx) {
   const raw = Array.isArray(res.body['transitions']) ? res.body['transitions'] : [];
   const transitions = raw.map((row) =>
     sanitizeAuditRow(
-      row && typeof row === 'object' ? (row as Record<string, unknown>) : ({} as Record<string, unknown>),
+      row && typeof row === 'object'
+        ? (row as Record<string, unknown>)
+        : ({} as Record<string, unknown>),
     ),
   );
   return json(200, {

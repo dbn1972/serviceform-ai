@@ -69,10 +69,7 @@ export function ReviewDesk() {
         <Alert variant="info" title="Status">
           {request.status}
           {request.maker_principal_id ? (
-            <>
-              {' '}
-              · maker principal loaded (identity compared session-side; not shown)
-            </>
+            <> · maker principal loaded (identity compared session-side; not shown)</>
           ) : null}
         </Alert>
       ) : null}

@@ -156,14 +156,17 @@ describe('ops depth — tenant isolation fail-closed (WS6)', () => {
     );
     expect(tasks?.status).toBe(403);
     const claim = tenantIdentifyingRefusal(
-      new Request('http://officer.local/api/portal/tasks/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/claim', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-roles': 'APPROVER',
+      new Request(
+        'http://officer.local/api/portal/tasks/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/claim',
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'x-roles': 'APPROVER',
+          },
+          body: '{}',
         },
-        body: '{}',
-      }),
+      ),
     );
     expect(claim?.status).toBe(403);
   });
@@ -235,9 +238,7 @@ describe('ops depth — SLA breach visibility (P8-5)', () => {
   });
 
   it('surfaces warning_emitted_at before breach', () => {
-    expect(hasSlaWarning([{ ...base, warning_emitted_at: '2026-11-28T00:00:00.000Z' }])).toBe(
-      true,
-    );
+    expect(hasSlaWarning([{ ...base, warning_emitted_at: '2026-11-28T00:00:00.000Z' }])).toBe(true);
     expect(hasSlaWarning([{ ...base, clock_status: 'COMPLETED', warning_emitted_at: 'x' }])).toBe(
       false,
     );

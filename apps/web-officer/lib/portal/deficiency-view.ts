@@ -4,10 +4,7 @@
  */
 
 export type DeficiencyLoopPhase =
-  | 'OPEN_AWAITING_CITIZEN'
-  | 'RESPONSE_AWAITING_CLOSE'
-  | 'CLOSED'
-  | 'UNKNOWN';
+  'OPEN_AWAITING_CITIZEN' | 'RESPONSE_AWAITING_CLOSE' | 'CLOSED' | 'UNKNOWN';
 
 export interface DeficiencyLoopNotice {
   deficiency_id: string;
@@ -39,9 +36,10 @@ export function deficiencyLoopPhaseLabel(phase: DeficiencyLoopPhase): string {
 }
 
 /** Officer decide (APPROVE/REJECT) must stay blocked while any deficiency is OPEN. */
-export function decideBlockedByOpenDeficiency(
-  notices: readonly DeficiencyLoopNotice[],
-): { blocked: boolean; open_count: number } {
+export function decideBlockedByOpenDeficiency(notices: readonly DeficiencyLoopNotice[]): {
+  blocked: boolean;
+  open_count: number;
+} {
   const open_count = notices.filter((n) => n.status === 'OPEN').length;
   return { blocked: open_count > 0, open_count };
 }
