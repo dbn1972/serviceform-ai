@@ -1,0 +1,70 @@
+
+> @serviceform/web-officer@0.0.0 build /agent/repos/serviceform-ai/apps/web-officer
+> next build
+
+▲ Next.js 16.4.3 (Turbopack)
+✓ Running next.config.ts took 20ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 150ms
+  Running TypeScript ...
+⚠ Your version of Next.js is affected by a known security vulnerability. This command is continuing after the upgrade reminder.
+Reference: https://registry.npmjs.org/-/npm/v1/security/advisories/bulk
+  Finished TypeScript in 1125ms ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/12) ...
+  Generating static pages using 3 workers (3/12) 
+  Generating static pages using 3 workers (6/12) 
+  Generating static pages using 3 workers (9/12) 
+✓ Generating static pages using 3 workers (12/12) in 232ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /api/health
+├ ƒ /api/portal/applications
+├ ƒ /api/portal/applications/[id]
+├ ƒ /api/portal/applications/[id]/deficiencies
+├ ƒ /api/portal/applications/[id]/sla
+├ ƒ /api/portal/applications/[id]/transitions
+├ ƒ /api/portal/appointments
+├ ƒ /api/portal/appointments/[id]
+├ ƒ /api/portal/appointments/catalogue
+├ ƒ /api/portal/appointments/slots
+├ ƒ /api/portal/assisted/catalogue
+├ ƒ /api/portal/assisted/sessions
+├ ƒ /api/portal/assisted/sessions/[id]
+├ ƒ /api/portal/assisted/sessions/[id]/apply
+├ ƒ /api/portal/assisted/sessions/[id]/bind
+├ ƒ /api/portal/assisted/sessions/[id]/close
+├ ƒ /api/portal/assisted/sessions/[id]/consent
+├ ƒ /api/portal/assisted/sessions/[id]/verify
+├ ƒ /api/portal/grievances
+├ ƒ /api/portal/grievances/[id]
+├ ƒ /api/portal/inspections
+├ ƒ /api/portal/inspections/[id]
+├ ƒ /api/portal/inspections/catalogue
+├ ƒ /api/portal/officers
+├ ƒ /api/portal/ops
+├ ƒ /api/portal/ops/[viewCode]/refresh
+├ ƒ /api/portal/ops/opensearch
+├ ƒ /api/portal/search
+├ ƒ /api/portal/session
+├ ƒ /api/portal/tasks
+├ ƒ /api/portal/tasks/[id]/claim
+├ ○ /applications
+├ ƒ /applications/[id]
+├ ○ /assisted
+├ ○ /helpdesk
+├ ○ /inspection
+├ ƒ /login
+├ ○ /ops
+├ ○ /scheduling
+└ ○ /search
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+exit=0

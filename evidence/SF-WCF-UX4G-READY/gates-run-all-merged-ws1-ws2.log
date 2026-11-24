@@ -1,0 +1,45 @@
+INFO  [validate-specs] 8 topology roles, 13 .claude/agents definitions
+PASS [validate-specs] 0 error(s), 0 warning(s)
+INFO  [migration-lint] 103 migration file(s) checked under db/migrations (or explicit paths)
+PASS [migration-lint] 0 error(s), 0 warning(s)
+INFO  [design-system] 69 package manifests checked
+PASS [design-system] 0 error(s), 0 warning(s)
+INFO  [no-hardcoded-jurisdictions] 1600 source file(s) scanned
+PASS [no-hardcoded-jurisdictions] 0 error(s), 0 warning(s)
+INFO  [contracts-lock] 44 contract(s) in lock, 44 FROZEN
+PASS [contracts-lock] 0 error(s), 0 warning(s)
+INFO  [agent-rules] 11 cursor rules, 13 Claude subagents
+PASS [agent-rules] 0 error(s), 0 warning(s)
+PASS [codeowners] 0 error(s), 0 warning(s)
+INFO  [openapi-asyncapi] 95 component OpenAPI/AsyncAPI file(s) checked; shared contracts untouched
+PASS [openapi-asyncapi] 0 error(s), 0 warning(s)
+INFO  [workflow-pin] 3 workflow file(s) checked for pins and plaintext secrets
+PASS [workflow-pin] 0 error(s), 0 warning(s)
+INFO  [cg01-path-uniqueness] serial pair SF-M02-003 ↔ SF-M03-008 shares apps/api/** (must_not_run_concurrent_with required)
+INFO  [cg01-path-uniqueness] checked 17 CG-01 implementation envelopes; Wave A eligible now: SF-M02-001, SF-M02-002, SF-M03-001, SF-M03-002, SF-M03-003, SF-M03-005, SF-M03-006
+PASS [cg01-path-uniqueness] 0 error(s), 0 warning(s)
+INFO  [ux4g-tokens] authored CSS layer audited from marker '@serviceform-authored'; 1004 governed classes
+INFO  [ux4g-tokens] 144 first-party TSX files checked for class vocabulary, button sizing and inline styles
+INFO  [ux4g-tokens] 2 declaration(s) exempted with a reason; 30 layout/generic literal(s) recorded as INFO
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx: [button-size] baseline entry 'ux4g-btn-outline-neutral' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx: [button-size] baseline entry 'ux4g-btn-outline-primary' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [button-size] baseline entry 'ux4g-btn-outline-neutral' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [button-size] baseline entry 'ux4g-btn-outline-primary' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [button-size] baseline entry 'ux4g-btn-text-neutral' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx: [button-size] baseline entry 'ux4g-btn-outline-neutral' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx: [button-size] baseline entry 'ux4g-btn-text-neutral' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx: [undefined-class] baseline entry 'ux4g-btn-fill-primary' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx: [undefined-class] baseline entry 'ux4g-link' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [undefined-class] baseline entry 'ux4g-btn-fill-primary' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [undefined-class] baseline entry 'ux4g-label' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx: [undefined-class] baseline entry 'ux4g-link' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx: [undefined-class] baseline entry 'ux4g-dl' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx: [undefined-class] baseline entry 'ux4g-stack' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx: [undefined-class] baseline entry 'ux4g-text-muted' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx: [undefined-class] baseline entry 'ux4g-btn-fill-primary' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx: [undefined-class] baseline entry 'ux4g-label' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx: [undefined-class] baseline entry 'ux4g-link' no longer occurs; remove it from scripts/gates/baselines/ux4g-known-findings.yaml
+PASS [ux4g-tokens] 0 error(s), 18 warning(s)
+
+11/11 gates passed
+exit=0

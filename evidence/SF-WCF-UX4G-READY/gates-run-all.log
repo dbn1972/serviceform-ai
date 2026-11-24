@@ -1,0 +1,64 @@
+INFO  [validate-specs] 8 topology roles, 13 .claude/agents definitions
+PASS [validate-specs] 0 error(s), 0 warning(s)
+INFO  [migration-lint] 103 migration file(s) checked under db/migrations (or explicit paths)
+PASS [migration-lint] 0 error(s), 0 warning(s)
+INFO  [design-system] 69 package manifests checked
+PASS [design-system] 0 error(s), 0 warning(s)
+INFO  [no-hardcoded-jurisdictions] 1599 source file(s) scanned
+PASS [no-hardcoded-jurisdictions] 0 error(s), 0 warning(s)
+INFO  [contracts-lock] 44 contract(s) in lock, 44 FROZEN
+PASS [contracts-lock] 0 error(s), 0 warning(s)
+INFO  [agent-rules] 11 cursor rules, 13 Claude subagents
+PASS [agent-rules] 0 error(s), 0 warning(s)
+PASS [codeowners] 0 error(s), 0 warning(s)
+INFO  [openapi-asyncapi] 95 component OpenAPI/AsyncAPI file(s) checked; shared contracts untouched
+PASS [openapi-asyncapi] 0 error(s), 0 warning(s)
+INFO  [workflow-pin] 3 workflow file(s) checked for pins and plaintext secrets
+PASS [workflow-pin] 0 error(s), 0 warning(s)
+INFO  [cg01-path-uniqueness] serial pair SF-M02-003 ↔ SF-M03-008 shares apps/api/** (must_not_run_concurrent_with required)
+INFO  [cg01-path-uniqueness] checked 17 CG-01 implementation envelopes; Wave A eligible now: SF-M02-001, SF-M02-002, SF-M03-001, SF-M03-002, SF-M03-003, SF-M03-005, SF-M03-006
+PASS [cg01-path-uniqueness] 0 error(s), 0 warning(s)
+INFO  [ux4g-tokens] authored CSS layer audited from marker '@serviceform-authored'; 1003 governed classes
+INFO  [ux4g-tokens] 143 first-party TSX files checked for class vocabulary, button sizing and inline styles
+INFO  [ux4g-tokens] 2 declaration(s) exempted with a reason; 30 layout/generic literal(s) recorded as INFO
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx:169: [undefined-class] class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx:252: [undefined-class] class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx:277: [button-size] 'ux4g-btn-outline-primary' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx:332: [undefined-class] class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/AppointmentBookingDesk.tsx:345: [button-size] 'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:125: [undefined-class] class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:137: [undefined-class] class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:152: [undefined-class] class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:169: [undefined-class] class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:187: [button-size] 'ux4g-btn-text-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:211: [undefined-class] class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:217: [undefined-class] class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:231: [undefined-class] class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:241: [button-size] 'ux4g-btn-outline-primary' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/GrievanceDesk.tsx:251: [button-size] 'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx:76: [undefined-class] class 'ux4g-stack' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx:88: [undefined-class] class 'ux4g-stack' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx:94: [undefined-class] class 'ux4g-dl' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PaymentStep.tsx:110: [undefined-class] class 'ux4g-text-muted' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:157: [undefined-class] class 'ux4g-link' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:238: [undefined-class] class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:253: [undefined-class] class 'ux4g-label' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:271: [undefined-class] class 'ux4g-btn-fill-primary' is not defined by @serviceform/ui-ux4g styles.css (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:289: [button-size] 'ux4g-btn-text-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+WARN  [ux4g-tokens] apps/web-citizen/components/PrivacyCentre.tsx:315: [button-size] 'ux4g-btn-outline-neutral' has no ux4g-btn-{xs,s,m,l,xl} size class (no padding/min-height) (known finding, owner ws1-citizen)
+ERROR [ux4g-tokens] apps/web-studio/components/credential/CredentialDesigner.tsx:182: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/evidence/EvidenceDesigner.tsx:176: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/evidence/EvidenceDesigner.tsx:250: [undefined-class] class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/fees/FeeDesigner.tsx:199: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/fees/FeeDesigner.tsx:292: [undefined-class] class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/forms/FormDesigner.tsx:361: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/meta/ChecksPanel.tsx:27: [undefined-class] class 'sf-designer-check-error' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/meta/ChecksPanel.tsx:27: [undefined-class] class 'sf-designer-check-warning' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/rules/RulesDesigner.tsx:314: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/sla/SlaDesigner.tsx:183: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/sla/SlaDesigner.tsx:264: [undefined-class] class 'ux4g-btn-ghost' is not defined by @serviceform/ui-ux4g styles.css
+ERROR [ux4g-tokens] apps/web-studio/components/workflows/WorkflowDesigner.tsx:361: [undefined-class] class 'sf-designer-panel' is not defined by @serviceform/ui-ux4g styles.css
+FAIL [ux4g-tokens] 12 error(s), 25 warning(s)
+
+10/11 gates passed; failed: ux4g-tokens
+exit=1
