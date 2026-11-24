@@ -354,12 +354,7 @@ export function WorkflowDesigner({ source }: { source: WorkflowSource }) {
         </Alert>
       ) : null}
 
-      <div
-        id={`wf-panel-${tab}`}
-        role="tabpanel"
-        aria-labelledby={`wf-tab-${tab}`}
-        className="sf-designer-panel"
-      >
+      <div id={`wf-panel-${tab}`} role="tabpanel" aria-labelledby={`wf-tab-${tab}`}>
         {tab === 'design' ? (
           <div className="sf-designer-grid sf-wf-grid-layout">
             <WorkflowPalette disabled={readOnly} onAdd={(k) => add(k)} />

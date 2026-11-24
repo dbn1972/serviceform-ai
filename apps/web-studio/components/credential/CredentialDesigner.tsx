@@ -179,7 +179,7 @@ export function CredentialDesigner({ source }: { source: WorkflowSourceRef }) {
         ))}
       </div>
 
-      <div className="sf-designer-panel" role="tabpanel">
+      <div role="tabpanel">
         {tab === 'design' ? (
           <div className="sf-designer-publish-grid">
             <section className="sf-designer-pane" aria-labelledby="cred-pack-title">

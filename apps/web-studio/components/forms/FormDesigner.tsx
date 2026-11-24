@@ -354,12 +354,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
         </Alert>
       ) : null}
 
-      <div
-        id={`designer-panel-${tab}`}
-        role="tabpanel"
-        aria-labelledby={`designer-tab-${tab}`}
-        className="sf-designer-panel"
-      >
+      <div id={`designer-panel-${tab}`} role="tabpanel" aria-labelledby={`designer-tab-${tab}`}>
         {tab === 'design' ? (
           <div className="sf-designer-grid">
             <DesignerPalette
