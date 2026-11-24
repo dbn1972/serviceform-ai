@@ -414,7 +414,9 @@ test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
     await expect(
       page.getByText(/Form ind-soc-002\.application · v1\.0\.0 · pinned sha256:/),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { name: '1. Applicant details' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Step 1 of 4 Applicant details', exact: true }),
+    ).toBeVisible();
     await expect(page.getByLabel('Full name (as per official record)')).toHaveValue(
       'SAMPLE Lab Citizen',
     );

@@ -2,12 +2,14 @@ import { issueMessage, schemaAt, type FormSchemaView } from '@serviceform/ui-ux4
 import { toPortalApplication, type PlatformApplication } from '../../../../lib/portal/applications';
 import { catalogueIdForCase } from '../../../../lib/portal/catalogue-resolve';
 import { command, readIssuance, readWorkingData } from '../../../../lib/portal/cases';
+import { ownDraft, writeDraftData } from '../../../../lib/portal/drafts';
 import {
   applyBody,
   liveOfferingFormPin,
   offeredForm,
   pinFor,
   sampleLab,
+  serviceName,
   syntheticNameRefusal,
   validateWithEngine,
 } from '../../../../lib/portal/forms';
@@ -38,14 +40,18 @@ export async function GET(request: Request) {
   if (res.status !== 200) return relay(res);
   const apps = (res.body['applications'] ?? []) as PlatformApplication[];
   const applications = await Promise.all(
-    apps.map(async (a) =>
-      toPortalApplication(
-        a,
-        await readWorkingData(citizen, a.application_id),
-        await readIssuance(citizen, a),
-        catalogueIdForCase(a),
-      ),
-    ),
+    apps.map(async (a) => {
+      const catalogueId = catalogueIdForCase(a);
+      return {
+        ...toPortalApplication(
+          a,
+          await readWorkingData(citizen, a.application_id),
+          await readIssuance(citizen, a),
+          catalogueId,
+        ),
+        service_name: serviceName(catalogueId),
+      };
+    }),
   );
   return json(200, { source: 'PLATFORM', g6_issued: false, applications });
 }
@@ -71,7 +77,7 @@ export async function POST(request: Request) {
   const keys = stepKeys(request.headers.get('idempotency-key'));
   const citizen = await currentCitizen(request);
   if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
-  const { catalogueId, data } = applyBody(await request.json().catch(() => null));
+  const { catalogueId, data, draftId } = applyBody(await request.json().catch(() => null));
   const offered = offeredForm(catalogueId);
   if (!offered) return json(404, { error_code: 'SF-SYS-002', message: 'Service not offered here' });
   const { version, offering } = offered;
@@ -131,35 +137,52 @@ export async function POST(request: Request) {
     }
   }
 
-  const draft = await platform('POST', '/v1/applications', {
-    token: citizen.token,
-    ...keys.key('draft'),
-    body: { tenant_service_binding_id: offering.tenant_service_binding_id },
-  });
-  let app = draft.body['application'] as PlatformApplication | undefined;
-  if (draft.status !== 201 || !app) return relay(draft);
-  if (app.pins.form_version_id !== formPin.version_id) {
-    return json(409, {
-      error_code: 'SF-FORM-001',
-      message: 'This service form changed. Reload the page and try again.',
+  let app: PlatformApplication;
+  if (draftId) {
+    // Saved application: submit that same CMP-015 draft so no orphan draft is left behind.
+    const owned = await ownDraft(citizen, draftId, offering, formPin.version_id);
+    if (!owned.ok) return owned.response;
+    const stored = await writeDraftData(citizen, owned.app, data, {
+      expectedRevision: null,
+      key: keys.base,
+      expectedHash: validated.execution.data_hash,
     });
+    if (!stored.ok) return stored.response;
+    app = stored.app;
+  } else {
+    const draft = await platform('POST', '/v1/applications', {
+      token: citizen.token,
+      ...keys.key('draft'),
+      body: { tenant_service_binding_id: offering.tenant_service_binding_id },
+    });
+    const created = draft.body['application'] as PlatformApplication | undefined;
+    if (draft.status !== 201 || !created) return relay(draft);
+    app = created;
+    if (app.pins.form_version_id !== formPin.version_id) {
+      return json(409, {
+        error_code: 'SF-FORM-001',
+        message: 'This service form changed. Reload the page and try again.',
+      });
+    }
+
+    const wd = await platform('PUT', `/v1/applications/${app.application_id}/working-data`, {
+      token: citizen.token,
+      ...keys.key('data'),
+      body: { form_version_id: app.pins.form_version_id, data, expected_revision: 0 },
+    });
+    if (wd.status !== 200) return relay(wd);
+    const stored = wd.body['working_data'] as { data_hash?: string } | undefined;
+    if (stored?.data_hash !== validated.execution.data_hash) {
+      return json(409, {
+        error_code: 'SF-FORM-001',
+        message: 'The stored answers do not match the validated answers',
+      });
+    }
   }
 
-  const wd = await platform('PUT', `/v1/applications/${app.application_id}/working-data`, {
-    token: citizen.token,
-    ...keys.key('data'),
-    body: { form_version_id: app.pins.form_version_id, data, expected_revision: 0 },
-  });
-  if (wd.status !== 200) return relay(wd);
-  const stored = wd.body['working_data'] as { data_hash?: string } | undefined;
-  if (stored?.data_hash !== validated.execution.data_hash) {
-    return json(409, {
-      error_code: 'SF-FORM-001',
-      message: 'The stored answers do not match the validated answers',
-    });
-  }
-
-  for (const step of ['MARK_READY_TO_SUBMIT', 'SUBMIT']) {
+  const transitions =
+    app.state === 'READY_TO_SUBMIT' ? ['SUBMIT'] : ['MARK_READY_TO_SUBMIT', 'SUBMIT'];
+  for (const step of transitions) {
     const next = await command(
       citizen,
       app,

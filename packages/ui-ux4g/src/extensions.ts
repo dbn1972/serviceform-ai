@@ -39,6 +39,12 @@ export const SF_UX4G_EXTENSIONS: readonly Ux4gExtension[] = [
     status: 'registered',
   },
   {
+    id: 'form-wizard-stepper',
+    title: 'Metadata form wizard progress (steps, state, resume)',
+    ux4gBase: 'ux4g-stepper',
+    status: 'registered',
+  },
+  {
     id: 'sla-indicator',
     title: 'SLA/escalation indicator',
     ux4gBase: 'ux4g-badge',

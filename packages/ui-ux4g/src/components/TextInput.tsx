@@ -62,7 +62,14 @@ export function TextInput({
       </div>
       {messageId ? (
         <p id={messageId} className="ux4g-input-helper ux4g-input-helper-text">
-          {error ?? hint}
+          {error ? (
+            <>
+              <span className="ux4g-sr-only">Error: </span>
+              {error}
+            </>
+          ) : (
+            hint
+          )}
         </p>
       ) : null}
     </div>

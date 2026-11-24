@@ -29,7 +29,11 @@ export type ApplicationSummary = {
   id: string;
   status: string;
   applicant_name: string;
+  catalogue_id?: string;
+  service_name?: string | null;
   created_at?: string;
+  updated_at?: string;
+  submitted_at?: string | null;
   credential_id?: string;
   digilocker: { status: string };
 };
@@ -62,7 +66,7 @@ export function applicationStatus(app: Pick<ApplicationSummary, 'status' | 'digi
     case 'CLOSED':
       return { label: 'Closed', tone: 'neutral' };
     default:
-      return { label: 'Draft', tone: 'neutral' };
+      return { label: 'Saved draft · not submitted yet', tone: 'neutral' };
   }
 }
 

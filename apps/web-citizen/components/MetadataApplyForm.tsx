@@ -2,10 +2,13 @@
 
 import {
   Button,
-  Card,
+  controlScopes,
+  fieldError,
   fieldId,
   getAt,
+  Icon,
   isRequired,
+  resumeStepIndex,
   ruleConditionScopes,
   scopeToPointer,
   setAt,
@@ -13,6 +16,7 @@ import {
   stepOfPointer,
   Ux4gFormLayout,
   Ux4gFormReview,
+  Ux4gFormStepper,
   visibleScopes,
   wizardSteps,
   withoutHidden,
@@ -22,11 +26,12 @@ import {
   type FormPackageView,
   type FormSchemaView,
   type InterpretedControl,
+  type WizardStep,
 } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { EvidenceUploadField, type EvidenceUploadValue } from './EvidenceUploadField';
-import { ErrorSummary, FormAlert } from './FormFeedback';
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import { EvidenceUploadField, fileKind, type EvidenceUploadValue } from './EvidenceUploadField';
+import { ErrorSummary, FormAlert, type FormAlertTone } from './FormFeedback';
 import { useCitizen } from './RequireCitizenSession';
 
 type Policy = { fee: string; service_time: string; eligibility: string };
@@ -45,9 +50,37 @@ interface FormResponse {
   interpretation: { controls: InterpretedControl[] };
 }
 
+interface SavedDraft {
+  application_id: string;
+  catalogue_id: string;
+  revision: number;
+  form_version_id: string;
+  saved_at: string;
+  data: FormData;
+}
+
 type Interpretation = { key: string; controls: InterpretedControl[] };
+type Draft = { id: string; revision: number; savedAt: string };
+type SaveState =
+  | { state: 'idle' }
+  | { state: 'saving' }
+  | { state: 'saved'; at: string }
+  | { state: 'error'; message: string };
+type SaveResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
+type Notice = {
+  tone: FormAlertTone;
+  title: string;
+  body: string;
+  action?: { href: string; label: string };
+};
+type Summary = { message: string; fields: boolean };
 
 const MOBILE = 'SF-SEM-PERSON-MOBILE';
+/** CMP-013 upload binds these published fields (SF-49); the schema itself stays immutable. */
+const EVIDENCE = '/evidence_file_name';
+const EVIDENCE_MIME = '/evidence_mime';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const SAVE_FAILED = 'Not saved just now. Your answers are still on this page.';
 const newKey = () => crypto.randomUUID().replace(/-/g, '');
 
 function mobilePointers(schema: FormSchemaView, base = ''): string[] {
@@ -62,10 +95,47 @@ function ruleKey(scopes: readonly string[], data: FormData): string {
   return JSON.stringify(scopes.map((s) => getAt(data, scopeToPointer(s)) ?? null));
 }
 
+function holdsEvidence(step: WizardStep | undefined): boolean {
+  return step ? controlScopes(step.node).some((s) => scopeToPointer(s) === EVIDENCE) : false;
+}
+
+function timeOf(iso: string): string {
+  const at = new Date(iso);
+  return Number.isNaN(at.getTime())
+    ? ''
+    : at.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+}
+
+function withoutKey(errors: FieldErrors, key: string): FieldErrors {
+  return Object.fromEntries(Object.entries(errors).filter(([k]) => k !== key));
+}
+
+/** Restores the technically accepted CMP-013 upload a saved draft points at, if it still exists. */
+async function savedUpload(data: FormData): Promise<EvidenceUploadValue | null> {
+  const id = getAt(data, EVIDENCE);
+  if (typeof id !== 'string' || !UUID.test(id)) return null;
+  const res = await fetch(`/api/portal/documents/${id}`, { cache: 'no-store' }).catch(() => null);
+  if (!res?.ok) return null;
+  const body = (await res.json().catch(() => ({}))) as {
+    document?: { status: string; content_type?: string };
+    technically_accepted?: boolean;
+  };
+  if (!body.technically_accepted || !body.document) return null;
+  const mime = getAt(data, EVIDENCE_MIME);
+  return {
+    document_id: id,
+    file_name: 'Saved document',
+    content_type: body.document.content_type ?? (typeof mime === 'string' ? mime : ''),
+    status: body.document.status,
+    technically_accepted: true,
+  };
+}
+
 /**
  * Citizen application wizard rendered from a pinned published FORM package. Steps, sections,
  * controls, labels and conditional visibility come from metadata and the CMP-009 interpretation;
- * CMP-009 validates the submission authoritatively before CMP-015 stores it.
+ * CMP-009 validates the submission authoritatively before CMP-015 stores it. Answers are saved
+ * as a CMP-015 DRAFT on every step, so the citizen can leave and resume from My applications.
  */
 export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const router = useRouter();
@@ -75,39 +145,127 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const [data, setData] = useState<FormData>({});
   const [interpretation, setInterpretation] = useState<Interpretation | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
+  const [furthest, setFurthest] = useState(0);
+  const [returnToReview, setReturnToReview] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [summary, setSummary] = useState('');
+  const [summary, setSummary] = useState<Summary | null>(null);
   const [attempt, setAttempt] = useState(0);
   const [busy, setBusy] = useState(false);
   const [evidenceUpload, setEvidenceUpload] = useState<EvidenceUploadValue | null>(null);
+  const [draft, setDraft] = useState<Draft | null>(null);
+  const [save, setSave] = useState<SaveState>({ state: 'idle' });
+  const [notice, setNotice] = useState<Notice | null>(null);
   // One submission key per form session; rotated only when nothing was created (refused input).
   const submissionKey = useRef(newKey());
+  const draftKey = useRef(newKey());
+  const draftRef = useRef<Draft | null>(null);
+  const saving = useRef<Promise<SaveResult> | null>(null);
+  const pending = useRef<FormData | null>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
+  const noticeRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const baseTitle = useRef<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
-      const res = await fetch(`/api/portal/forms/${catalogueId}`, { cache: 'no-store' });
+      const draftId = new URLSearchParams(window.location.search).get('draft');
+      const [res, savedRes] = await Promise.all([
+        fetch(`/api/portal/forms/${catalogueId}`, { cache: 'no-store' }),
+        draftId
+          ? fetch(`/api/portal/drafts/${encodeURIComponent(draftId)}`, { cache: 'no-store' })
+          : Promise.resolve(null),
+      ]);
       const body = (await res.json().catch(() => ({}))) as FormResponse & { message?: string };
       if (cancelled) return;
       if (!res.ok || !body.form) {
         setLoadError(body.message ?? 'We could not load this form. Try again shortly.');
         return;
       }
-      let initial: FormData = { ...body.prefill };
+      let resumed: SavedDraft | null = null;
+      let restoredNotice: Notice | null = null;
+      if (savedRes) {
+        const saved = (await savedRes.json().catch(() => ({}))) as {
+          draft?: SavedDraft;
+          message?: string;
+          application_id?: string;
+        };
+        if (
+          savedRes.ok &&
+          saved.draft?.catalogue_id === catalogueId &&
+          saved.draft.form_version_id === body.form.pin.version_id
+        ) {
+          resumed = saved.draft;
+        } else {
+          restoredNotice =
+            savedRes.status === 409 && saved.application_id
+              ? {
+                  tone: 'info',
+                  title: 'Already submitted',
+                  body: saved.message ?? 'This application has already been submitted.',
+                  action: {
+                    href: `/certificates/${saved.application_id}`,
+                    label: 'View its status',
+                  },
+                }
+              : savedRes.ok
+                ? {
+                    tone: 'warning',
+                    title: 'The form has changed',
+                    body: 'This service form was updated after you saved, so your saved answers cannot be reused. Start again below.',
+                  }
+                : {
+                    tone: 'warning',
+                    title: 'Saved application not found',
+                    body: 'We could not find that saved application. You can start a new one below.',
+                  };
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }
+      let initial: FormData = resumed ? { ...resumed.data } : { ...body.prefill };
       for (const pointer of mobilePointers(body.form.package.json_schema)) {
         if (getAt(initial, pointer) === undefined && citizen.mobile) {
           initial = setAt(initial, pointer, citizen.mobile);
         }
       }
-      const scopes = ruleConditionScopes(body.form.package.ui_schema);
+      const upload = resumed ? await savedUpload(initial) : null;
+      if (resumed && !upload) {
+        initial = setAt(setAt(initial, EVIDENCE, undefined), EVIDENCE_MIME, undefined);
+      }
+      if (cancelled) return;
+      const { json_schema: schema, ui_schema: ui } = body.form.package;
       setLoaded(body);
       setData(initial);
+      setEvidenceUpload(upload);
       setInterpretation({
-        key: ruleKey(scopes, body.prefill),
+        key: ruleKey(ruleConditionScopes(ui), body.prefill),
         controls: body.interpretation.controls,
       });
+      if (resumed) {
+        const saved = {
+          id: resumed.application_id,
+          revision: resumed.revision,
+          savedAt: resumed.saved_at,
+        };
+        draftRef.current = saved;
+        setDraft(saved);
+        setSave({ state: 'saved', at: resumed.saved_at });
+        const steps = wizardSteps(ui);
+        let start = resumeStepIndex(schema, steps, initial, visibleScopes(ui, initial));
+        const evidenceAt = steps.findIndex(holdsEvidence);
+        if (!upload && evidenceAt >= 0 && evidenceAt < start) start = evidenceAt;
+        setStepIndex(start);
+        setFurthest(start);
+        const when = timeOf(resumed.saved_at) ? ` at ${timeOf(resumed.saved_at)}` : '';
+        restoredNotice = {
+          tone: 'success',
+          title: 'Welcome back',
+          body: steps[start]?.review
+            ? `We restored the answers you saved${when}. Everything is answered: check them and submit.`
+            : `We restored the answers you saved${when}. You are on the first step that still needs an answer.`,
+        };
+      }
+      setNotice(restoredNotice);
     })();
     return () => {
       cancelled = true;
@@ -177,9 +335,24 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     return out;
   }, [schema, data, citizen.mobile]);
 
+  const errorEntries = Object.entries(errors).filter(([, m]) => m);
+  const step = steps[stepIndex] ?? steps[0];
+
   useEffect(() => {
     if (attempt > 0) summaryRef.current?.focus();
   }, [attempt]);
+
+  useEffect(() => {
+    if (notice?.tone === 'success' && notice.title === 'Saved') noticeRef.current?.focus();
+  }, [notice]);
+
+  // Page title names the step and flags errors, so tab lists and screen readers say where you are.
+  useEffect(() => {
+    if (!step) return;
+    baseTitle.current ??= document.title;
+    const flag = summary && errorEntries.length > 0 ? 'Error: ' : '';
+    document.title = `${flag}${step.title} (step ${stepIndex + 1} of ${steps.length}) - ${baseTitle.current}`;
+  }, [step, stepIndex, steps.length, summary, errorEntries.length]);
 
   if (loadError) {
     return (
@@ -188,189 +361,378 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       </FormAlert>
     );
   }
-  if (!loaded || !schema || !ui || steps.length === 0) {
+  if (!loaded || !schema || !ui || !step) {
     return (
-      <Card title="Loading the application form" subtitle="Published form · CMP-009">
-        <p className="ux4g-body-m-default" role="status">
-          Fetching the pinned form version…
-        </p>
-      </Card>
+      <div className="sf-gate" role="status">
+        <span className="sf-spinner" aria-hidden="true" />
+        <p className="ux4g-body-m-default">Loading the application form…</p>
+      </div>
     );
   }
 
-  const step = steps[stepIndex] ?? steps[0];
-  if (!step) return null;
   const isLast = stepIndex === steps.length - 1;
+  const reviewIndex = steps.findIndex((s) => s.review);
+  const hasEvidence = Boolean(schema.properties?.['evidence_file_name']);
   const checks = loaded.service.indicative_checks.map((c) => {
     const value = getAt(data, c.pointer);
     return { ...c, value, pass: typeof value === 'number' && value >= c.minimum };
   });
   const policy = loaded.service.policy;
 
-  function change(pointer: string, value: unknown) {
-    setData((prev) => setAt(prev, pointer, value));
-    if (errors[pointer]) {
-      setErrors((prev) => Object.fromEntries(Object.entries(prev).filter(([k]) => k !== pointer)));
+  function payloadOf(current: FormData): FormData {
+    let payload = ui ? withoutHidden(ui, current, visible) : current;
+    if (evidenceUpload?.document_id) {
+      payload = setAt(payload, EVIDENCE, evidenceUpload.document_id);
+      payload = setAt(payload, EVIDENCE_MIME, evidenceUpload.content_type);
     }
+    return payload;
+  }
+
+  async function persist(payload: FormData): Promise<SaveResult> {
+    const current = draftRef.current;
+    setSave({ state: 'saving' });
+    const res = await fetch(current ? `/api/portal/drafts/${current.id}` : '/api/portal/drafts', {
+      method: current ? 'PUT' : 'POST',
+      headers: { 'content-type': 'application/json', 'idempotency-key': draftKey.current },
+      body: JSON.stringify({
+        catalogue_id: catalogueId,
+        data: payload,
+        ...(current ? { expected_revision: current.revision } : {}),
+      }),
+    }).catch(() => null);
+    const body = (res ? await res.json().catch(() => ({})) : {}) as {
+      draft?: { application_id: string; revision: number; saved_at: string };
+      message?: string;
+      field?: string;
+    };
+    if (res?.ok && body.draft) {
+      const next = {
+        id: body.draft.application_id,
+        revision: body.draft.revision,
+        savedAt: body.draft.saved_at,
+      };
+      if (!current) {
+        window.history.replaceState(null, '', `${window.location.pathname}?draft=${next.id}`);
+      }
+      draftRef.current = next;
+      setDraft(next);
+      setSave({ state: 'saved', at: next.savedAt });
+      return { ok: true };
+    }
+    if (res?.status === 400 && body.field) {
+      setSave({ state: 'error', message: 'Not saved: check the highlighted answer.' });
+      return {
+        ok: false,
+        message: body.message ?? 'Check the highlighted answer',
+        fieldErrors: { [`/${body.field.replaceAll('.', '/')}`]: body.message ?? '' },
+      };
+    }
+    const message = body.message ?? SAVE_FAILED;
+    setSave({ state: 'error', message });
+    return { ok: false, message };
+  }
+
+  /** One save in flight at a time, always sending the latest answers. */
+  function queueSave(payload: FormData): Promise<SaveResult> {
+    pending.current = payload;
+    saving.current ??= (async () => {
+      let result: SaveResult = { ok: true };
+      while (pending.current) {
+        const next = pending.current;
+        pending.current = null;
+        result = await persist(next);
+        if (!result.ok) pending.current = null;
+      }
+      saving.current = null;
+      return result;
+    })();
+    return saving.current;
   }
 
   function showErrors(found: FieldErrors, message: string) {
     setErrors(found);
-    setSummary(message);
+    setSummary({ message, fields: Object.keys(found).length > 0 });
     setAttempt((n) => n + 1);
+  }
+
+  function autosave() {
+    void queueSave(payloadOf(data)).then((result) => {
+      if (result.ok || !result.fieldErrors) return;
+      const target = stepOfPointer(steps, Object.keys(result.fieldErrors));
+      if (target >= 0) setStepIndex(target);
+      showErrors(result.fieldErrors, result.message);
+    });
   }
 
   function goTo(index: number) {
     setErrors({});
-    setSummary('');
+    setSummary(null);
     setStepIndex(index);
+    setFurthest((f) => Math.max(f, index));
+    if (index === reviewIndex) setReturnToReview(false);
     window.requestAnimationFrame(() => headingRef.current?.focus());
   }
 
-  function evidenceStep(): boolean {
-    return (step?.label ?? '').toLowerCase() === 'evidence';
+  function change(pointer: string, value: unknown) {
+    const nextData = setAt(data, pointer, value);
+    setData(nextData);
+    if (!errors[pointer] || !schema) return;
+    // Once flagged, a field clears as soon as its answer is valid ("reward early").
+    const message = pointer === EVIDENCE ? undefined : fieldError(schema, pointer, nextData);
+    setErrors((prev) => (message ? { ...prev, [pointer]: message } : withoutKey(prev, pointer)));
+  }
+
+  function blur(pointer: string) {
+    if (!schema) return;
+    const value = getAt(data, pointer);
+    if (value === undefined || value === '') return;
+    // A given answer is checked when the citizen leaves it, never while they are typing.
+    const message = fieldError(schema, pointer, data);
+    setErrors((prev) =>
+      message ? { ...prev, [pointer]: message } : prev[pointer] ? withoutKey(prev, pointer) : prev,
+    );
   }
 
   function applyEvidenceUpload(nextUpload: EvidenceUploadValue | null) {
     setEvidenceUpload(nextUpload);
     if (nextUpload?.technically_accepted) {
       // Pin the CMP-013 document id into the published evidence_file_name field (immutable schema).
-      change('/evidence_file_name', nextUpload.document_id);
-      change('/evidence_mime', nextUpload.content_type);
+      setData((prev) =>
+        setAt(
+          setAt(prev, EVIDENCE, nextUpload.document_id),
+          EVIDENCE_MIME,
+          nextUpload.content_type,
+        ),
+      );
+      setErrors((prev) => withoutKey(prev, EVIDENCE));
     } else if (!nextUpload) {
-      change('/evidence_file_name', '');
-      change('/evidence_mime', undefined);
+      setData((prev) => setAt(setAt(prev, EVIDENCE, ''), EVIDENCE_MIME, undefined));
     }
   }
 
-  function requireEvidenceUpload(): boolean {
-    if (!evidenceStep() && !isLast) return true;
-    if (evidenceUpload?.technically_accepted && evidenceUpload.document_id) return true;
-    const fileName = getAt(data, '/evidence_file_name');
-    if (
-      typeof fileName === 'string' &&
-      /^[0-9a-f-]{36}$/i.test(fileName) &&
-      evidenceUpload?.technically_accepted
-    ) {
-      return true;
-    }
-    showErrors(
-      {
-        '/evidence_file_name':
-          'Upload a supporting document and wait until it is technically accepted',
-      },
-      'Upload required evidence before you continue',
-    );
-    return false;
+  function evidenceMissing(): FieldErrors {
+    if (!hasEvidence || !visible.has('#/properties/evidence_file_name')) return {};
+    if (evidenceUpload?.technically_accepted && evidenceUpload.document_id) return {};
+    return {
+      [EVIDENCE]: 'Upload a supporting document and wait until it is technically accepted',
+    };
+  }
+
+  function errorsFor(index: number): FieldErrors {
+    const target = steps[index];
+    if (!schema || !target) return {};
+    const found = stepErrors(schema, target.node, data, visible);
+    return holdsEvidence(target) ? { ...found, ...evidenceMissing() } : found;
   }
 
   function next() {
-    if (!schema || !step) return;
-    const found = stepErrors(schema, step.node, data, visible);
+    const found = errorsFor(stepIndex);
     if (Object.keys(found).length > 0) {
       showErrors(found, 'Check the highlighted answers before you continue');
       return;
     }
-    if (evidenceStep() && !requireEvidenceUpload()) return;
-    goTo(stepIndex + 1);
+    let target = stepIndex + 1;
+    if (returnToReview && reviewIndex > stepIndex) {
+      const gap = steps.findIndex(
+        (s, i) => i > stepIndex && i < reviewIndex && Object.keys(errorsFor(i)).length > 0,
+      );
+      target = gap >= 0 ? gap : reviewIndex;
+    }
+    goTo(target);
+    autosave();
+  }
+
+  function back() {
+    goTo(stepIndex - 1);
+    autosave();
+  }
+
+  async function saveForLater() {
+    setErrors({});
+    setSummary(null);
+    const result = await queueSave(payloadOf(data));
+    if (!result.ok) {
+      if (result.fieldErrors) {
+        const target = stepOfPointer(steps, Object.keys(result.fieldErrors));
+        if (target >= 0 && target !== stepIndex) setStepIndex(target);
+        showErrors(result.fieldErrors, result.message);
+      }
+      return;
+    }
+    const ref = draftRef.current?.id.slice(0, 8).toUpperCase() ?? '';
+    setNotice({
+      tone: 'success',
+      title: 'Saved',
+      body: `Your application is saved (Ref ${ref}). You can close this page and continue later from My applications. It is not submitted yet.`,
+      action: { href: '/certificates', label: 'Go to My applications' },
+    });
   }
 
   async function submit() {
-    if (!schema || !ui || !step) return;
-    const found = stepErrors(schema, step.node, data, visible);
-    if (Object.keys(found).length > 0) {
-      showErrors(found, 'Check the highlighted answers before you submit');
-      return;
+    if (!schema || !ui) return;
+    for (let i = 0; i < steps.length; i += 1) {
+      const found = errorsFor(i);
+      if (Object.keys(found).length > 0) {
+        if (i !== stepIndex) setStepIndex(i);
+        showErrors(
+          found,
+          i === stepIndex
+            ? 'Check the highlighted answers before you submit'
+            : `Some answers in ${steps[i]?.label ?? 'an earlier step'} need attention before you submit`,
+        );
+        return;
+      }
     }
-    if (!requireEvidenceUpload()) return;
     setBusy(true);
-    setSummary('');
-    const payload = withoutHidden(ui, data, visible);
-    if (evidenceUpload?.document_id) {
-      payload['evidence_file_name'] = evidenceUpload.document_id;
-      payload['evidence_mime'] = evidenceUpload.content_type;
-    }
+    setSummary(null);
+    await saving.current;
+    const payload = payloadOf(data);
     const res = await fetch('/api/portal/applications', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'idempotency-key': submissionKey.current },
-      body: JSON.stringify({ catalogue_id: catalogueId, data: payload }),
-    });
-    const body = (await res.json().catch(() => ({}))) as {
+      body: JSON.stringify({
+        catalogue_id: catalogueId,
+        data: payload,
+        ...(draftRef.current ? { application_id: draftRef.current.id } : {}),
+      }),
+    }).catch(() => null);
+    const body = (res ? await res.json().catch(() => ({})) : {}) as {
       message?: string;
       field?: string;
       field_errors?: { pointer: string; message: string }[];
       application?: { id: string };
+      application_id?: string;
     };
-    setBusy(false);
-    if (res.ok && body.application) {
+    if (res?.ok && body.application) {
       router.push(`/certificates/${body.application.id}`);
       return;
     }
+    if (res?.status === 409 && body.application_id) {
+      router.push(`/certificates/${body.application_id}`);
+      return;
+    }
+    setBusy(false);
     const fieldErrors: FieldErrors = {};
     for (const e of body.field_errors ?? []) fieldErrors[e.pointer] ??= e.message;
     if (body.field) fieldErrors[`/${body.field.replaceAll('.', '/')}`] = body.message ?? '';
-    if (res.status === 422 || res.status === 400) submissionKey.current = newKey();
+    if (res?.status === 422 || res?.status === 400) submissionKey.current = newKey();
     const target = stepOfPointer(steps, Object.keys(fieldErrors));
     if (target >= 0 && target !== stepIndex) setStepIndex(target);
     showErrors(fieldErrors, body.message ?? 'We could not submit your application. Try again.');
   }
 
-  const errorEntries = Object.entries(errors).filter(([, m]) => m);
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (busy) return;
+    if (isLast) void submit();
+    else next();
+  }
+
+  const saveText =
+    save.state === 'saving'
+      ? 'Saving…'
+      : save.state === 'saved'
+        ? `Saved${timeOf(save.at) ? ` at ${timeOf(save.at)}` : ''}`
+        : save.state === 'error'
+          ? save.message
+          : '';
+  const primary = isLast
+    ? busy
+      ? 'Submitting…'
+      : `Submit application (${policy.fee})`
+    : returnToReview
+      ? 'Save & return to preview'
+      : 'Save & continue';
+  const slots = hasEvidence
+    ? {
+        [EVIDENCE]: (
+          <EvidenceUploadField
+            inputId={fieldId(EVIDENCE)}
+            label="Upload supporting evidence"
+            hint="Required. PDF, PNG or JPEG up to 1 MB. CMP-013 technical acceptance only — not officer verification."
+            value={evidenceUpload}
+            onChange={applyEvidenceUpload}
+            disabled={busy}
+            error={errors[EVIDENCE]}
+          />
+        ),
+        [EVIDENCE_MIME]: null,
+      }
+    : undefined;
+  const display = hasEvidence
+    ? {
+        [EVIDENCE]: evidenceUpload?.technically_accepted
+          ? evidenceUpload.file_name
+          : 'Not uploaded yet',
+        [EVIDENCE_MIME]: evidenceUpload?.technically_accepted
+          ? fileKind(evidenceUpload.content_type)
+          : null,
+      }
+    : undefined;
+  const layoutProps = {
+    schema,
+    data,
+    visible,
+    isRequired: required,
+    errors,
+    notes,
+    labels,
+    onChange: change,
+    onBlur: blur,
+    slots,
+  };
 
   return (
     <div className="sf-wizard">
-      <nav className="sf-stepper" aria-label="Application steps">
-        <ol className="sf-stepper-list">
-          {steps.map((s, i) => {
-            const state = i < stepIndex ? 'done' : i === stepIndex ? 'current' : 'todo';
-            return (
-              <li key={s.label} className={`sf-stepper-item sf-stepper-${state}`}>
-                <button
-                  type="button"
-                  className="sf-stepper-btn"
-                  aria-current={state === 'current' ? 'step' : undefined}
-                  onClick={() => {
-                    if (i <= stepIndex) goTo(i);
-                  }}
-                >
-                  <span className="sf-stepper-index" aria-hidden="true">
-                    {i < stepIndex ? '✓' : i + 1}
-                  </span>
-                  <span className="sf-stepper-copy">
-                    <span className="ux4g-label-m-strong">{s.label}</span>
-                    <span className="ux4g-body-s-default">{s.hint}</span>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
+      <Ux4gFormStepper
+        steps={steps.map((s) => ({ label: s.label, hint: s.hint }))}
+        current={stepIndex}
+        reachable={furthest}
+        onSelect={(i) => {
+          goTo(i);
+          autosave();
+        }}
+      />
 
-      <div className="sf-wizard-main">
-        <FormAlert
-          tone="info"
-          title={
-            citizen.masked_mobile
-              ? `Signed in as ${citizen.masked_mobile}`
-              : 'Signed in with a verified mobile (OTP)'
-          }
-        >
-          {loaded?.prefill_source === 'CMP-005'
-            ? 'Your name and mobile are pre-filled from your citizen profile, with sample answers for the rest.'
-            : 'Sample answers are pre-filled. Create an account with your name to pre-fill it from your citizen profile.'}{' '}
-          Every field follows the published form; use synthetic values only — SAMPLE_LAB, G6 not
-          issued.
-        </FormAlert>
+      <form
+        className="sf-wizard-main"
+        noValidate
+        onSubmit={onSubmit}
+        aria-labelledby="sf-step-heading"
+      >
+        {notice ? (
+          <div ref={noticeRef} tabIndex={-1} data-testid="apply-notice">
+            <FormAlert tone={notice.tone} title={notice.title} action={notice.action}>
+              {notice.body}
+            </FormAlert>
+          </div>
+        ) : stepIndex === 0 && !draft ? (
+          <FormAlert
+            tone="info"
+            title={
+              citizen.masked_mobile
+                ? `Signed in as ${citizen.masked_mobile}`
+                : 'Signed in with a verified mobile (OTP)'
+            }
+          >
+            {loaded.prefill_source === 'CMP-005'
+              ? 'Your name and mobile are pre-filled from your citizen profile, with sample answers for the rest.'
+              : 'Sample answers are pre-filled. Create an account with your name to pre-fill it from your citizen profile.'}{' '}
+            Your answers are saved as you go. Use synthetic values only — SAMPLE_LAB, G6 not issued.
+          </FormAlert>
+        ) : null}
 
         <div className="sf-meta-row" aria-label="Service policy summary">
-          <span className="ux4g-tag-tonal-info">Eligibility {policy.eligibility}</span>
-          <span className="ux4g-tag-tonal-success">Fee {policy.fee}</span>
-          <span className="ux4g-tag-tonal-neutral">Service time {policy.service_time}</span>
-          <span className="ux4g-tag-outline-warning">DigiLocker SIMULATED</span>
+          <span className="ux4g-tag-tonal-info ux4g-tag-s">Eligibility {policy.eligibility}</span>
+          <span className="ux4g-tag-tonal-success ux4g-tag-s">Fee {policy.fee}</span>
+          <span className="ux4g-tag-tonal-neutral ux4g-tag-s">
+            Service time {policy.service_time}
+          </span>
+          <span className="ux4g-tag-outline-warning ux4g-tag-s">DigiLocker SIMULATED</span>
+          <span className="ux4g-tag-outline-neutral ux4g-tag-s">SAMPLE_LAB · synthetic data</span>
         </div>
 
-        {summary && errorEntries.length > 0 ? (
+        {summary && summary.fields && errorEntries.length > 0 ? (
           <ErrorSummary
             ref={summaryRef}
             items={errorEntries.map(([pointer, message]) => ({
@@ -378,21 +740,29 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
               message,
             }))}
           />
-        ) : summary ? (
+        ) : summary && !summary.fields ? (
           <div ref={summaryRef} tabIndex={-1}>
             <FormAlert tone="error" title="Cannot continue">
-              {summary}
+              {summary.message}
             </FormAlert>
           </div>
         ) : null}
 
-        <Card
-          title={`${stepIndex + 1}. ${step.title}`}
-          subtitle={step.review ? 'Review every answer before you submit' : step.hint}
-        >
-          <h3 ref={headingRef} tabIndex={-1} className="ux4g-sr-only">
-            Step {stepIndex + 1} of {steps.length}: {step.label}
-          </h3>
+        <section className="sf-step-panel" aria-labelledby="sf-step-heading">
+          <header className="sf-step-head">
+            <h2 id="sf-step-heading" ref={headingRef} tabIndex={-1} className="sf-step-title">
+              <span className="ux4g-label-l-strong sf-step-kicker">
+                Step {stepIndex + 1} of {steps.length}
+              </span>
+              <span className="ux4g-heading-m-strong">{step.title}</span>
+            </h2>
+            <p className="ux4g-body-m-default sf-step-lead">
+              {step.review
+                ? 'Check every answer before you submit. Use Change to correct anything.'
+                : step.hint}
+            </p>
+          </header>
+
           {step.review ? (
             <>
               {checks.map((c) => (
@@ -411,74 +781,53 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
                 data={data}
                 visible={visible}
                 labels={labels}
-                onEdit={goTo}
+                display={display}
+                onEdit={(i) => {
+                  setReturnToReview(true);
+                  goTo(i);
+                }}
               />
+              <div className="sf-form-section">
+                <h3 className="ux4g-heading-xs-strong">Declaration</h3>
+                <Ux4gFormLayout node={step.node} {...layoutProps} />
+              </div>
             </>
-          ) : null}
-          {step.review ? (
-            <div className="sf-form-section">
-              <h3 className="ux4g-heading-s-strong">Declaration</h3>
-              <Ux4gFormLayout
-                node={step.node}
-                schema={schema}
-                data={data}
-                visible={visible}
-                isRequired={required}
-                errors={errors}
-                notes={notes}
-                labels={labels}
-                onChange={change}
-              />
-            </div>
           ) : (
-            <>
-              <Ux4gFormLayout
-                node={step.node}
-                schema={schema}
-                data={data}
-                visible={visible}
-                isRequired={required}
-                errors={errors}
-                notes={notes}
-                labels={labels}
-                onChange={change}
-              />
-              {evidenceStep() ? (
-                <EvidenceUploadField
-                  label="Upload supporting evidence"
-                  value={evidenceUpload}
-                  onChange={applyEvidenceUpload}
-                  disabled={busy}
-                  hint="Required. PDF, PNG or JPEG up to 1 MB. CMP-013 technical acceptance only — not officer verification."
-                />
-              ) : null}
-            </>
+            <Ux4gFormLayout node={step.node} {...layoutProps} />
           )}
+
           <p className="ux4g-body-s-default sf-form-provenance">
             Form {loaded.form.pin.form_key} · v{loaded.form.version} · pinned{' '}
             {loaded.form.pin.content_hash.slice(0, 15)}… · checked by the CMP-009 form engine
           </p>
-        </Card>
+        </section>
 
         <div className="sf-wizard-actions">
-          {stepIndex > 0 ? (
-            <Button variant="outline-neutral" onClick={() => goTo(stepIndex - 1)}>
-              Back
-            </Button>
-          ) : (
-            <span />
-          )}
-          <div className="sf-actions">
-            {!isLast ? (
-              <Button onClick={next}>Save &amp; continue</Button>
-            ) : (
-              <Button disabled={busy} onClick={() => void submit()}>
-                {busy ? 'Submitting…' : `Submit application (${policy.fee})`}
+          <div className="sf-wizard-actions-start">
+            {stepIndex > 0 ? (
+              <Button variant="outline-neutral" onClick={back} disabled={busy}>
+                Back
               </Button>
-            )}
+            ) : null}
+            <p
+              className={`ux4g-body-s-default sf-save-status${save.state === 'saved' ? ' sf-save-status-saved' : save.state === 'error' ? ' sf-save-status-error' : ''}`}
+              role="status"
+              data-testid="save-status"
+            >
+              {save.state === 'saved' ? <Icon name="check-circle" size={16} /> : null}
+              {saveText}
+            </p>
+          </div>
+          <div className="sf-wizard-actions-end">
+            <Button variant="text-primary" onClick={() => void saveForLater()} disabled={busy}>
+              Save and come back later
+            </Button>
+            <Button type="submit" disabled={busy}>
+              {primary}
+            </Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
