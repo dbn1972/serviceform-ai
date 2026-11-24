@@ -514,7 +514,13 @@
           "ANALYTICS_PROJECTION_REBUILD",
           "DISCOVERY_QUERY",
           "DISCOVERY_QUERY_READ",
-          "DISCOVERY_SERVICE_SELECT"
+          "DISCOVERY_SERVICE_SELECT",
+          "WORKFORCE_USER_LIST",
+          "WORKFORCE_USER_READ",
+          "WORKFORCE_USER_CREATE",
+          "WORKFORCE_USER_UPDATE",
+          "WORKFORCE_USER_ASSIGN_ROLES",
+          "WORKFORCE_ROLE_CATALOGUE_READ"
         ],
         "resource_types": [
           "OfficerSession",
@@ -526,7 +532,9 @@
           "OpsDashboardView",
           "DiscoveryQuery",
           "DiscoverySelection",
-          "SearchDocument"
+          "SearchDocument",
+          "WorkforceUser",
+          "WorkforceRoleCatalogue"
         ],
         "jurisdiction_scope": "TENANT_WIDE",
         "all_services": true

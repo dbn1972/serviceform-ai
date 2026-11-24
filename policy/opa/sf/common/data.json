@@ -632,6 +632,24 @@
     },
     "DISCOVERY_SERVICE_SELECT": {
       "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_LIST": {
+      "action_class": "READ_ONLY"
+    },
+    "WORKFORCE_USER_READ": {
+      "action_class": "READ_ONLY"
+    },
+    "WORKFORCE_USER_CREATE": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_UPDATE": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_USER_ASSIGN_ROLES": {
+      "action_class": "PROTECTED"
+    },
+    "WORKFORCE_ROLE_CATALOGUE_READ": {
+      "action_class": "READ_ONLY"
     }
   },
   "resource_types": [
@@ -685,7 +703,9 @@
     "DiscoverySelection",
     "PrivacyCentre",
     "PrivacyRequest",
-    "PrivacyFulfilmentTask"
+    "PrivacyFulfilmentTask",
+    "WorkforceUser",
+    "WorkforceRoleCatalogue"
   ],
   "jurisdiction_scope_modes": ["ASSIGNED_ONLY", "DESCENDANTS", "TENANT_WIDE", "EXPLICIT_LIST"],
   "global_writable_actions": [],

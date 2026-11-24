@@ -65,6 +65,7 @@ import {
   type MintAssertion,
   type OtpAdapterLike,
 } from './simulators.js';
+import { createTenantUserDirectory, registerTenantUserAdminRoutes } from './tenant-users.js';
 import {
   assertTemporalAddress,
   assertTemporalNamespace,
@@ -259,11 +260,25 @@ export interface PlatformLabEnv {
   SF_PROFILE_RATE_LIMIT_MAX?: string;
   /** CMP-033/051/052 studio/admin per-IP limit; same trusted-hop caveat (ADR-0008). */
   SF_STUDIO_RATE_LIMIT_MAX?: string;
+  /** SF-71 tenant-users admin per-IP limit; same trusted-hop caveat (ADR-0008 / SEC F-08). */
+  SF_TENANT_USERS_RATE_LIMIT_MAX?: string;
   /**
    * Comma-separated BFF hop IPs/CIDRs for Fastify trustProxy (ADR-0008). Empty = no trust.
    * SAMPLE_LAB example: `127.0.0.1,::1`. Never `*` / `0.0.0.0/0`.
    */
   SF_TRUSTED_PROXY_HOPS?: string;
+  /**
+   * SF-71 optional Keycloak Admin REST (SAMPLE_LAB). When unset, tenant-user admin uses
+   * the labelled SIMULATED adapter. Does not claim production IdP or ADR-0007 acceptance.
+   */
+  SF_KEYCLOAK_BASE_URL?: string;
+  SF_KEYCLOAK_ADMIN_CLIENT_ID?: string;
+  SF_KEYCLOAK_ADMIN_CLIENT_SECRET?: string;
+  SF_KEYCLOAK_ADMIN_REALM?: string;
+  SF_KEYCLOAK_REALM?: string;
+  SF_KEYCLOAK_TENANT_ID?: string;
+  SF_KEYCLOAK_TENANT_REALM_MAP?: string;
+  SF_KEYCLOAK_TENANT_ATTRIBUTE?: string;
 }
 
 export interface PlatformLab {
@@ -307,6 +322,8 @@ export interface PlatformLab {
   registerLicencePermitPinDemos(app: FastifyInstance): Promise<void>;
   /** SAMPLE_LAB BPMN / .sfpackage / migration interop hygiene lab routes (no Camunda runtime). */
   registerInteropHygiene(app: FastifyInstance): Promise<void>;
+  /** SF-71: SAMPLE_LAB tenant workforce user admin (Keycloak Admin REST or SIMULATED). */
+  registerTenantUsers(app: FastifyInstance): Promise<void>;
   /** M08 mounts (CMP-035/045/046/006) when corresponding pools are set. */
   m08?: M08PluginMounts;
   /** M09 mounts (CMP-056/057/061) when corresponding pools are set. */
@@ -1793,6 +1810,21 @@ export async function buildPlatformLab(
       registerLabInteropHygieneRoutes(app, {
         environment,
         catalogue: interopHygieneCatalogue,
+      });
+    },
+    registerTenantUsers: async (app: FastifyInstance) => {
+      const directory = createTenantUserDirectory({
+        env: env as Record<string, string | undefined>,
+        officers: officersFixture.officers,
+      });
+      await registerTenantUserAdminRoutes(app, {
+        directory,
+        authorizer: opa as unknown as { decide: (input: unknown) => Promise<{ allow?: unknown }> },
+        resolveContext,
+        rateLimitMax: positiveInt(
+          env.SF_TENANT_USERS_RATE_LIMIT_MAX ?? '60',
+          'SF_TENANT_USERS_RATE_LIMIT_MAX',
+        ),
       });
     },
     async start() {
