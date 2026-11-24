@@ -2,7 +2,7 @@
 
 **Stamp:** `CERTIFIED=false` · `G6=false` · `self_certified=false` · DigiLocker **out of scope**  
 **Branch:** `cursor/path8-ops-depth-b38f`  
-**Tip (after restamp push):**  ()
+**Tip (after restamp push):** `358c38a1` (`358c38a17821473d3f77b63d0be91e89f2fa076b`) — pinned in `code-sha.txt`; branch tip may sit one chore above  
 **Scope:** Maker≠checker UX, deficiency loop decide-block, SLA breach visibility, TSB pin integrity cues, CMP-015 audit depth + sanitize, officer SF-TEN-002 on task queue.
 
 ## What landed
