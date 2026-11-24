@@ -1,6 +1,6 @@
 {
   "schema": "serviceform.p8.golden2.summary.v1",
-  "commit_sha": "4f7ff35488a929e2d0c8b24c0f874a9df91b053f",
+  "commit_sha": "a0bfdc76cb0a0f4ce0d160665eb97e21e7df3185",
   "started_at": "2026-11-24T18:51:52Z",
   "ended_at": "2026-11-24T18:52:33Z",
   "executed_at_ist": "2026-11-25 00:22 Asia/Calcutta",
@@ -32,8 +32,12 @@
     "junit": "junit/e2e.xml"
   },
   "unit": {
-    "service_templates": { "log": "logs/unit-templates.log" },
-    "web_citizen_income_gate": { "log": "logs/unit-citizen-income-gate.log" }
+    "service_templates": {
+      "log": "logs/unit-templates.log"
+    },
+    "web_citizen_income_gate": {
+      "log": "logs/unit-citizen-income-gate.log"
+    }
   },
   "fixtures": [
     "fixtures/SF33_PUBLISH_BLOCKER.md",
@@ -41,5 +45,7 @@
     "fixtures/PLATFORM_REUSE_GAP_LIST.md",
     "fixtures/POLICY_INPUT_REQUIRED.md"
   ],
-  "notes": "Residence golden held. Income second-service proven at DRAFT/DUMMY lab-offer ceiling via Studio metadata only. SF-33 is the only PUBLISH blocker. No statute invented. DigiLocker REAL out of scope."
+  "notes": "Residence golden held. Income second-service proven at DRAFT/DUMMY lab-offer ceiling via Studio metadata only. SF-33 is the only PUBLISH blocker. No statute invented. DigiLocker REAL out of scope.",
+  "suites_executed_on": "4f7ff35488a929e2d0c8b24c0f874a9df91b053f",
+  "evidence_tip_note": "Playwright/unit suites executed on main@4f7ff354 before this tip. This tip adds fixtures, tests, re-run script, and evidence only \u2014 no product runtime change."
 }
