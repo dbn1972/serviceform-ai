@@ -4,6 +4,7 @@
 
 | Field | Value |
 |---|---|
+| Tip | `356de377486856d10949c59f310ef5fe0c75acb4` (`cursor/world-class-forms-measure-ad53`) |
 | Workstream | 7 Measure (authoring time, completion/abandon, a11y, p95, zero cross-tenant KPI) |
 | Components | CMP-047 (observability), citizen BFF, Studio forms designer, CMP-009 path (hooks only) |
 | Scope | Observability only — no authz/RLS/security weakening |
