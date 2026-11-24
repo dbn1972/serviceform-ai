@@ -1,0 +1,94 @@
+# UX4G token gate known findings (scripts/gates/ux4g_token_gate.py).
+# Each entry is owned by the workstream that holds the file; it reports as WARN until fixed.
+# Matching is on rule + path + class_name. Remove an entry when its finding no longer occurs.
+findings:
+  - rule: button-size
+    path: apps/web-citizen/components/AppointmentBookingDesk.tsx
+    class_name: ux4g-btn-outline-neutral
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-outline-neutral ux4g-btn-m'
+  - rule: button-size
+    path: apps/web-citizen/components/AppointmentBookingDesk.tsx
+    class_name: ux4g-btn-outline-primary
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-outline-primary ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/AppointmentBookingDesk.tsx
+    class_name: ux4g-btn-fill-primary
+    owner: ws1-citizen
+    remedy: 'ux4g-btn-primary ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/AppointmentBookingDesk.tsx
+    class_name: ux4g-link
+    owner: ws1-citizen
+    remedy: 'ux4g-text-link-m'
+  - rule: button-size
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-btn-outline-neutral
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-outline-neutral ux4g-btn-m'
+  - rule: button-size
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-btn-outline-primary
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-outline-primary ux4g-btn-m'
+  - rule: button-size
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-btn-text-neutral
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-text-neutral ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-btn-fill-primary
+    owner: ws1-citizen
+    remedy: 'ux4g-btn-primary ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-label
+    owner: ws1-citizen
+    remedy: 'ux4g-label-m-default'
+  - rule: undefined-class
+    path: apps/web-citizen/components/GrievanceDesk.tsx
+    class_name: ux4g-link
+    owner: ws1-citizen
+    remedy: 'ux4g-text-link-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PaymentStep.tsx
+    class_name: ux4g-dl
+    owner: ws1-citizen
+    remedy: 'sf-dl'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PaymentStep.tsx
+    class_name: ux4g-stack
+    owner: ws1-citizen
+    remedy: 'sf-stack'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PaymentStep.tsx
+    class_name: ux4g-text-muted
+    owner: ws1-citizen
+    remedy: 'ux4g-body-s-default ux4g-text-neutral-secondary'
+  - rule: button-size
+    path: apps/web-citizen/components/PrivacyCentre.tsx
+    class_name: ux4g-btn-outline-neutral
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-outline-neutral ux4g-btn-m'
+  - rule: button-size
+    path: apps/web-citizen/components/PrivacyCentre.tsx
+    class_name: ux4g-btn-text-neutral
+    owner: ws1-citizen
+    remedy: 'add a size class, e.g. ux4g-btn-text-neutral ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PrivacyCentre.tsx
+    class_name: ux4g-btn-fill-primary
+    owner: ws1-citizen
+    remedy: 'ux4g-btn-primary ux4g-btn-m'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PrivacyCentre.tsx
+    class_name: ux4g-label
+    owner: ws1-citizen
+    remedy: 'ux4g-label-m-default'
+  - rule: undefined-class
+    path: apps/web-citizen/components/PrivacyCentre.tsx
+    class_name: ux4g-link
+    owner: ws1-citizen
+    remedy: 'ux4g-text-link-m'

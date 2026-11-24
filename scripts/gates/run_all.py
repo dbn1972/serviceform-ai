@@ -25,6 +25,7 @@ GATES = [
     ("openapi-asyncapi", "openapi_asyncapi_gate.py"),
     ("workflow-pin", "workflow_pin_gate.py"),
     ("cg01-path-uniqueness", "cg01_path_uniqueness_gate.py"),
+    ("ux4g-tokens", "ux4g_token_gate.py"),
 ]
 
 
