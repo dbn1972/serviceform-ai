@@ -1,0 +1,21 @@
+# M10 backup / restore / rollback drill checklist — SCHEMA ONLY.
+# Companion to resilience-checklist.yaml. Do not invent RTO/RPO or cell IDs.
+# Set SF_M10_RESILIENCE_READY=1 only after ops runbook + restore drill are authorized.
+schema_version: 1
+module: M10
+catalogue_id: IND-SOC-002
+status: OWNER_REQUIRED
+backup_rollback_pass_claimed: false
+drill:
+  backup_taken_at: null # OWNER_REQUIRED — ISO-8601 after real backup
+  restore_started_at: null # OWNER_REQUIRED
+  restore_verified_at: null # OWNER_REQUIRED
+  rollback_of_unpublished_change: null # OWNER_REQUIRED — boolean after drill
+  published_tsb_pin_preserved: null # OWNER_REQUIRED — must remain true (SF_PUBLISHED_IMMUTABLE)
+scopes:
+  aurora_postgresql: null # OWNER_REQUIRED — cell/snapshot id
+  temporal_namespace: null # OWNER_REQUIRED
+  object_store: null # OWNER_REQUIRED
+notes: >
+  Hold suite asserts every drill/scope field is null until SF_M10_RESILIENCE_READY=1.
+  Simulated-only restore does not clear G6 resilience. CERTIFIED=false. G6=false.
