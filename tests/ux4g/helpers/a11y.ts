@@ -5,7 +5,7 @@
  * automated_accessibility, responsive_reflow_200_percent, multilingual_truncation).
  */
 import AxeBuilder from '@axe-core/playwright';
-import type { Page } from '@playwright/test';
+import type { ElementHandle, Page } from '@playwright/test';
 
 export const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] as const;
 
@@ -34,9 +34,9 @@ export async function resizeText(page: Page, percent: number): Promise<void> {
   }, percent);
 }
 
-/** WCAG 1.4.12 text-spacing overrides (the W3C bookmarklet values). */
-export async function applyTextSpacing(page: Page): Promise<void> {
-  await page.addStyleTag({
+/** WCAG 1.4.12 text-spacing overrides (the W3C bookmarklet values); remove the returned tag to undo. */
+export async function applyTextSpacing(page: Page): Promise<ElementHandle> {
+  return page.addStyleTag({
     content:
       '* { line-height: 1.5 !important; letter-spacing: 0.12em !important; word-spacing: 0.16em !important; }' +
       ' p { margin-bottom: 2em !important; }',
@@ -78,18 +78,28 @@ type FocusStop = { label: string; visible: boolean; obscured: boolean };
  * Tabs through the page and, for each stop, compares the pixels around the focused control
  * with the same region after blur. No pixel change means no visible focus indicator
  * (WCAG 2.4.7); a control whose centre is covered by another element is obscured (2.4.11).
+ * Starts from the top of the document whatever had focus (live pages move focus to headings and
+ * notices), and stops when focus leaves the page or returns to a control it already visited.
  */
 export async function focusStops(page: Page, max = 200): Promise<FocusStop[]> {
   const stops: FocusStop[] = [];
-  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-  const seen = new Set<string>();
+  await page.evaluate(() => {
+    const start = document.createElement('span');
+    start.tabIndex = -1;
+    document.body.prepend(start);
+    start.focus();
+    start.remove();
+  });
   for (let i = 0; i < max; i++) {
     await page.keyboard.press('Tab');
     const info = await page.evaluate(() => {
       const el = document.activeElement as HTMLElement | null;
       if (!el || el === document.body) return null;
-      const box = (el.closest('label, .ux4g-input, .ux4g-otp-slot, .ux4g-switch') ??
-        el) as HTMLElement;
+      if (el.hasAttribute('data-sf-focus-seen')) return null;
+      el.setAttribute('data-sf-focus-seen', '');
+      const box = (el.closest(
+        'label, .ux4g-input, .ux4g-otp-slot, .ux4g-switch, .sf-upload-zone',
+      ) ?? el) as HTMLElement;
       const union = [el, box].map((n) => n.getBoundingClientRect());
       const left = Math.min(...union.map((r) => r.left)) - 6;
       const top = Math.min(...union.map((r) => r.top)) - 6;
@@ -105,7 +115,6 @@ export async function focusStops(page: Page, max = 200): Promise<FocusStop[]> {
           el.contains(hit) ||
           hit.contains(el) ||
           (hit.closest('label') !== null && hit.closest('label') === el.closest('label')));
-      const key = `${el.tagName}#${el.id}|${el.getAttribute('name') ?? ''}|${el.textContent?.trim().slice(0, 30) ?? ''}`;
       const name =
         el.getAttribute('aria-label') ??
         (el.id
@@ -114,7 +123,6 @@ export async function focusStops(page: Page, max = 200): Promise<FocusStop[]> {
         el.textContent?.trim() ??
         el.tagName;
       return {
-        key,
         label: `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''} "${(name ?? '').slice(0, 40)}"`,
         clip: {
           x: Math.max(0, left),
@@ -126,8 +134,6 @@ export async function focusStops(page: Page, max = 200): Promise<FocusStop[]> {
       };
     });
     if (!info) break;
-    if (seen.has(info.key)) break;
-    seen.add(info.key);
     const focused = await page.screenshot({
       clip: info.clip,
       animations: 'disabled',
@@ -150,6 +156,11 @@ export async function focusStops(page: Page, max = 200): Promise<FocusStop[]> {
     });
     stops.push({ label: info.label, visible: !focused.equals(blurred), obscured: info.obscured });
   }
+  await page.evaluate(() => {
+    for (const el of Array.from(document.querySelectorAll('[data-sf-focus-seen]'))) {
+      el.removeAttribute('data-sf-focus-seen');
+    }
+  });
   return stops;
 }
 
@@ -175,6 +186,72 @@ export async function invalidFieldWiring(page: Page): Promise<string[]> {
       if (!visibleText) problems.push(`${id}: error description is empty or hidden`);
     }
     return problems;
+  });
+}
+
+/** One h1 per page and no skipped heading levels among visible headings (1.3.1, 2.4.6). */
+export async function headingOutline(page: Page): Promise<string[]> {
+  return page.evaluate(() => {
+    const headings = Array.from(
+      document.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6, [role="heading"]'),
+    ).filter((h) => h.offsetParent !== null || getComputedStyle(h).position === 'fixed');
+    const levels = headings.map((h) =>
+      h.getAttribute('aria-level') ? Number(h.getAttribute('aria-level')) : Number(h.tagName[1]),
+    );
+    const problems: string[] = [];
+    const h1 = levels.filter((l) => l === 1).length;
+    if (h1 !== 1) problems.push(`expected one h1, found ${h1}`);
+    levels.forEach((level, i) => {
+      const prev = levels[i - 1];
+      if (prev !== undefined && level > prev + 1) {
+        const text = (headings[i]?.textContent ?? '').trim().slice(0, 40);
+        problems.push(`h${prev} -> h${level} skips a level at "${text}"`);
+      }
+    });
+    return problems;
+  });
+}
+
+/** Status and alert regions present on the page, for status-message evidence (4.1.3). */
+export async function liveRegions(page: Page): Promise<string[]> {
+  return page.evaluate(() =>
+    Array.from(
+      document.querySelectorAll<HTMLElement>('[role="status"], [role="alert"], [aria-live]'),
+    ).map((el) => {
+      const kind = el.getAttribute('role') ?? `aria-live=${el.getAttribute('aria-live')}`;
+      return `${kind}: "${(el.textContent ?? '').trim().slice(0, 60)}"`;
+    }),
+  );
+}
+
+/**
+ * Elements still animating or transitioning for longer than 10 ms under
+ * `prefers-reduced-motion: reduce`. Informational: 2.3.3 is AAA, so specs record, not block.
+ */
+export async function motionUnderReducedMotion(page: Page): Promise<string[]> {
+  return page.evaluate(() => {
+    const seconds = (v: string) =>
+      Math.max(
+        0,
+        ...v
+          .split(',')
+          .map((t) => (t.trim().endsWith('ms') ? parseFloat(t) / 1000 : parseFloat(t))),
+      );
+    const out = new Set<string>();
+    for (const el of Array.from(document.body.querySelectorAll<HTMLElement>('*'))) {
+      const cs = getComputedStyle(el);
+      if (cs.display === 'none') continue;
+      const animated = cs.animationName !== 'none' && seconds(cs.animationDuration) > 0.01;
+      const transitioned =
+        cs.transitionProperty !== 'none' && seconds(cs.transitionDuration) > 0.01;
+      if (animated || transitioned) {
+        const cls = typeof el.className === 'string' ? el.className.split(' ')[0] : '';
+        out.add(
+          `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ''} ${animated ? 'animation' : 'transition'}`,
+        );
+      }
+    }
+    return [...out];
   });
 }
 

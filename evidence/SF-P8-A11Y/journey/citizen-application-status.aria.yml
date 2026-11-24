@@ -1,0 +1,92 @@
+- alert
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem: /Ref C6AC546B
+  - heading "Residence Certificate" [level=1]
+  - paragraph: Application reference C6AC546B. Track progress, respond if more evidence is requested, and publish the issued certificate to DigiLocker (SIMULATED).
+  - region "Application status":
+    - heading "Application status" [level=2]
+    - paragraph: Submitted · under review
+    - list "Application progress":
+      - listitem:
+        - strong: Submitted (completed)
+        - text: 24 Nov 2026
+      - listitem:
+        - strong: Fee (completed)
+        - text: Paid or not required
+      - listitem:
+        - strong: Officer decision
+        - text: Under review
+      - listitem:
+        - strong: Certificate issued
+        - text: Pending
+      - listitem:
+        - strong: Saved to DigiLocker
+        - text: After issue
+    - status:
+      - paragraph: Awaiting officer decision
+      - paragraph: An officer will review your details and supporting document. In SAMPLE_LAB, approve it from Officer Workbench → Applications.
+  - region "Applicant":
+    - heading "Applicant" [level=2]
+    - term: Name
+    - definition: SAMPLE Lab Citizen
+    - term: Date of birth
+    - definition: 1990-01-15
+    - term: Gender
+    - definition: Prefer not to say
+    - term: Mobile
+    - definition: —
+    - term: Aadhaar (last 4)
+    - definition: •••• 4321
+  - region "Residence & policy":
+    - heading "Residence & policy" [level=2]
+    - term: Address
+    - definition: SAMPLE Plot 1, SAMPLE Locality, SAMPLE Post Office, SAMPLE District, OD 751001
+    - term: Duration
+    - definition: 18 months
+    - term: Eligibility
+    - definition: Not evaluated yet (rules engine not connected on this path)
+    - term: Purpose
+    - definition: SAMPLE_LAB purpose — education admission (synthetic only)
+  - region "Evidence & credential":
+    - heading "Evidence & credential" [level=2]
+    - text: SUBMITTED DigiLocker · NOT_REQUESTED SIMULATED
+    - term: Evidence
+    - definition: Electricity bill
+    - term: File / document
+    - definition: CMP-013 document dace413e-5cbd-4410-a726-f7fb8d2e6336 · application/pdf (technical accept only)
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

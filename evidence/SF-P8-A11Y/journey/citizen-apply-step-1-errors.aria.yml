@@ -1,0 +1,102 @@
+- alert: Apply - Residence Certificate - ServiceForm AI - Citizen Portal
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - text: /
+        - link "Residence Certificate":
+          - /url: /services/IND-SOC-002
+      - listitem: /Apply
+  - heading "Apply — Residence Certificate" [level=1]
+  - paragraph: "4 short steps: applicant, residence, evidence and preview. Fee ₹0 · service time 10 working days."
+  - navigation "Application steps":
+    - list:
+      - listitem:
+        - button "Applicant Identity details , step 1 of 4, Current step"
+      - listitem:
+        - button "Residence Address & duration , step 2 of 4, Not started" [disabled]
+      - listitem:
+        - button "Evidence Supporting document , step 3 of 4, Not started" [disabled]
+      - listitem:
+        - button "Preview Review & submit , step 4 of 4, Not started" [disabled]
+  - form "Step 1 of 4 Applicant details":
+    - status:
+      - paragraph: Signed in with a verified mobile (OTP)
+      - paragraph: Sample answers are pre-filled. Create an account with your name to pre-fill it from your citizen profile. Your answers are saved as you go. Use synthetic values only — SAMPLE_LAB, G6 not issued.
+    - text: Eligibility 12+ months at your address Fee ₹0 Service time 10 working days DigiLocker SIMULATED SAMPLE_LAB · synthetic data
+    - alert "There is a problem":
+      - paragraph: There is a problem
+      - list:
+        - listitem:
+          - link "Enter the full name":
+            - /url: "#applicant_name"
+    - region "Step 1 of 4 Applicant details":
+      - heading "Step 1 of 4 Applicant details" [level=2]
+      - paragraph: Identity details
+      - group "Identity":
+        - heading "Identity" [level=3]
+        - text: Full name (as per official record)
+        - textbox "Full name (as per official record)" [invalid]
+        - paragraph: "Error: Enter the full name"
+        - text: Date of birth
+        - textbox "Date of birth": 1990-01-15
+        - text: Mobile number (optional)
+        - textbox "Mobile number (optional)"
+        - paragraph: 10 digits · synthetic only
+        - group "Gender":
+          - text: Gender
+          - radio "Male"
+          - text: Male
+          - radio "Female"
+          - text: Female
+          - radio "Transgender"
+          - text: Transgender
+          - radio "Other"
+          - text: Other
+          - radio "Prefer not to say" [checked]
+          - text: Prefer not to say
+        - text: Last 4 digits of Aadhaar (verification only) (optional)
+        - textbox "Last 4 digits of Aadhaar (verification only) (optional)": "4321"
+        - paragraph: Masked · not full Aadhaar · SAMPLE_LAB
+      - group "Status updates":
+        - heading "Status updates" [level=3]
+        - checkbox "Also send status updates by email"
+        - text: Also send status updates by email
+      - paragraph: Form ind-soc-002.application · v1.0.0 · pinned sha256:6b659df1… · checked by the CMP-009 form engine
+    - status
+    - button "Save and come back later"
+    - button "Save & continue"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

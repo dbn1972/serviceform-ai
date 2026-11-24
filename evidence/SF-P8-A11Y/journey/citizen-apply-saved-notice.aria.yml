@@ -1,0 +1,96 @@
+- alert: Residence address (step 2 of 4) - Apply - Residence Certificate - ServiceForm AI - Citizen Portal
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - text: /
+        - link "Residence Certificate":
+          - /url: /services/IND-SOC-002
+      - listitem: /Apply
+  - heading "Apply — Residence Certificate" [level=1]
+  - paragraph: "4 short steps: applicant, residence, evidence and preview. Fee ₹0 · service time 10 working days."
+  - navigation "Application steps":
+    - list:
+      - listitem:
+        - button "Applicant Identity details , step 1 of 4, Completed"
+      - listitem:
+        - button "Residence Address & duration , step 2 of 4, Current step"
+      - listitem:
+        - button "Evidence Supporting document , step 3 of 4, Not started" [disabled]
+      - listitem:
+        - button "Preview Review & submit , step 4 of 4, Not started" [disabled]
+  - form "Step 2 of 4 Residence address":
+    - status:
+      - paragraph: Saved
+      - paragraph: Your application is saved (Ref CFAFC883). You can close this page and continue later from My applications. It is not submitted yet.
+      - paragraph:
+        - link "Go to My applications":
+          - /url: /certificates
+    - text: Eligibility 12+ months at your address Fee ₹0 Service time 10 working days DigiLocker SIMULATED SAMPLE_LAB · synthetic data
+    - region "Step 2 of 4 Residence address":
+      - heading "Step 2 of 4 Residence address" [level=2]
+      - paragraph: Address & duration
+      - group "Postal address":
+        - heading "Postal address" [level=3]
+        - text: House no / name
+        - textbox "House no / name": SAMPLE Plot 1
+        - text: Locality / village / ward
+        - textbox "Locality / village / ward": SAMPLE Locality
+        - text: Post office (optional)
+        - textbox "Post office (optional)": SAMPLE Post Office
+        - text: District
+        - textbox "District": SAMPLE District
+        - text: State code
+        - combobox "State code":
+          - option "Select"
+          - option "OD" [selected]
+          - option "XX"
+        - paragraph: Tenant-allowed state codes for this offering
+        - text: PIN code
+        - textbox "PIN code": "751001"
+      - group "Residence claim":
+        - heading "Residence claim" [level=3]
+        - text: Duration of residence at this address (months)
+        - textbox "Duration of residence at this address (months)": "18"
+        - text: Purpose for which certificate is required
+        - textbox "Purpose for which certificate is required": SAMPLE_LAB purpose — education admission (synthetic only)
+        - paragraph: 57 of 500 characters
+      - paragraph: Form ind-soc-002.application · v1.0.0 · pinned sha256:6b659df1… · checked by the CMP-009 form engine
+    - button "Back"
+    - status: Saved at 6:36 pm
+    - button "Save and come back later"
+    - button "Save & continue"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

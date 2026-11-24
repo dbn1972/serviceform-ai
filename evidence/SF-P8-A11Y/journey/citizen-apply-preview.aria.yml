@@ -1,0 +1,111 @@
+- alert: Residence address (step 2 of 4) - Apply - Residence Certificate - ServiceForm AI - Citizen Portal
+- link "Skip to main content":
+  - /url: "#main-content"
+- banner:
+  - paragraph: ServiceForm AI
+  - paragraph: Citizen Portal
+  - text: SAMPLE_LAB
+  - navigation "Citizen":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - link "My applications":
+          - /url: /certificates
+      - listitem:
+        - link "Appointments":
+          - /url: /appointments
+      - listitem:
+        - link "Grievances":
+          - /url: /grievances
+      - listitem:
+        - link "Privacy":
+          - /url: /privacy
+  - text: Citizen Signed in with OTP
+  - button "Sign out"
+- main:
+  - navigation "Breadcrumb":
+    - list:
+      - listitem:
+        - link "Services":
+          - /url: /services
+      - listitem:
+        - text: /
+        - link "Residence Certificate":
+          - /url: /services/IND-SOC-002
+      - listitem: /Apply
+  - heading "Apply — Residence Certificate" [level=1]
+  - paragraph: "4 short steps: applicant, residence, evidence and preview. Fee ₹0 · service time 10 working days."
+  - navigation "Application steps":
+    - list:
+      - listitem:
+        - button "Applicant Identity details , step 1 of 4, Completed"
+      - listitem:
+        - button "Residence Address & duration , step 2 of 4, Completed"
+      - listitem:
+        - button "Evidence Supporting document , step 3 of 4, Completed"
+      - listitem:
+        - button "Preview Review & submit , step 4 of 4, Current step"
+  - form "Step 4 of 4 Preview application":
+    - text: Eligibility 12+ months at your address Fee ₹0 Service time 10 working days DigiLocker SIMULATED SAMPLE_LAB · synthetic data
+    - region "Step 4 of 4 Preview application":
+      - heading "Step 4 of 4 Preview application" [level=2]
+      - paragraph: Check every answer before you submit. Use Change to correct anything.
+      - status:
+        - paragraph: "Indicative check: met"
+        - paragraph: "Residence of 12 months or more (public sample policy). You entered 18. This is not a decision: the officer decides after verification."
+      - heading "Applicant" [level=3]
+      - button "Change applicant details": Change
+      - term: Full name (as per official record)
+      - definition: SAMPLE Lab Citizen
+      - term: Date of birth
+      - definition: 1990-01-15
+      - term: Mobile number
+      - definition: —
+      - term: Gender
+      - definition: Prefer not to say
+      - term: Last 4 digits of Aadhaar (verification only)
+      - definition: "4321"
+      - term: Also send status updates by email
+      - definition: "No"
+      - heading "Residence" [level=3]
+      - button "Change residence details": Change
+      - term: House no / name
+      - definition: SAMPLE Plot 1
+      - term: Locality / village / ward
+      - definition: SAMPLE Locality
+      - term: Post office
+      - definition: SAMPLE Post Office
+      - term: District
+      - definition: SAMPLE District
+      - term: State code
+      - definition: OD
+      - term: PIN code
+      - definition: "751001"
+      - term: Duration of residence at this address (months)
+      - definition: "18"
+      - term: Purpose for which certificate is required
+      - definition: SAMPLE_LAB purpose — education admission (synthetic only)
+      - heading "Evidence" [level=3]
+      - button "Change evidence details": Change
+      - term: Evidence type
+      - definition: Electricity bill
+      - term: File name
+      - definition: sample-evidence.pdf
+      - term: MIME type
+      - definition: PDF
+      - heading "Declaration" [level=3]
+      - checkbox "I declare that the particulars above are true for this SAMPLE_LAB application and that no real personal data has been entered."
+      - text: I declare that the particulars above are true for this SAMPLE_LAB application and that no real personal data has been entered.
+      - paragraph: Form ind-soc-002.application · v1.0.0 · pinned sha256:6b659df1… · checked by the CMP-009 form engine
+    - button "Back"
+    - status: Saved at 6:36 pm
+    - button "Save and come back later"
+    - button "Submit application (₹0)"
+- contentinfo:
+  - paragraph: UX4G Design System 3.0
+  - paragraph: Metadata-driven · multi-tenant · government services

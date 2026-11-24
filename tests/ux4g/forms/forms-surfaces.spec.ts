@@ -92,6 +92,13 @@ for (const scene of GALLERY_SCENES) {
       expect(await boundarylessControls(page)).toEqual([]);
     });
 
+    test('forced colours keep a focus indicator on every tab stop (2.4.7)', async ({ page }) => {
+      await page.emulateMedia({ forcedColors: 'active' });
+      await load(page, scene.id, 1280);
+      const stops = await focusStops(page);
+      expect(stops.filter((s) => !s.visible).map((s) => s.label)).toEqual([]);
+    });
+
     if (ERROR_SCENES.has(scene.id)) {
       test('invalid fields are named and described by a visible error (3.3.1, 4.1.2)', async ({
         page,
@@ -119,13 +126,6 @@ test.describe('forced colours visual baseline', () => {
       await expect(page).toHaveScreenshot(`${id}-forced-colors-1280.png`, { fullPage: true });
     });
   }
-
-  test('focus stays visible under forced colours', async ({ page }) => {
-    await page.emulateMedia({ forcedColors: 'active' });
-    await load(page, 'controls', 1280);
-    const stops = await focusStops(page);
-    expect(stops.filter((s) => !s.visible).map((s) => s.label)).toEqual([]);
-  });
 });
 
 test.describe('keyboard operation of form controls (2.1.1, 2.4.3)', () => {
