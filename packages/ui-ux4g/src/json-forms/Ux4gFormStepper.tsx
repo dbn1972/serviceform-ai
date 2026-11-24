@@ -14,14 +14,17 @@ export type Ux4gFormStepperProps = {
   progress?: FormProgress | undefined;
   /** Steps holding an answer that still needs attention, e.g. after a refused submit. */
   attention?: readonly number[] | undefined;
+  /** Reached steps whose answers no longer pass their checks; never shown as completed. */
+  incomplete?: readonly number[] | undefined;
 };
 
-type StepState = 'done' | 'current' | 'todo';
+type StepState = 'done' | 'current' | 'todo' | 'open';
 
 const STATE_TEXT: Record<StepState, string> = {
   done: 'Completed',
   current: 'Current step',
   todo: 'Not started',
+  open: 'Not complete',
 };
 
 /**
@@ -36,6 +39,7 @@ export function Ux4gFormStepper({
   label = 'Application steps',
   progress,
   attention,
+  incomplete,
 }: Ux4gFormStepperProps) {
   return (
     <nav className="sf-stepper" aria-label={label}>
@@ -57,13 +61,20 @@ export function Ux4gFormStepper({
       ) : null}
       <ol className="sf-stepper-list">
         {steps.map((s, i) => {
+          const reached = i < reachable || i < current;
           const state: StepState =
-            i === current ? 'current' : i < reachable || i < current ? 'done' : 'todo';
+            i === current
+              ? 'current'
+              : !reached
+                ? 'todo'
+                : incomplete?.includes(i) === true
+                  ? 'open'
+                  : 'done';
           const flagged = state !== 'current' && attention?.includes(i) === true;
           return (
             <li
               key={`${s.label}-${i}`}
-              className={`sf-stepper-item sf-stepper-${state}${flagged ? ' sf-stepper-attention' : ''}`}
+              className={`sf-stepper-item sf-stepper-${state === 'open' ? 'todo' : state}${flagged ? ' sf-stepper-attention' : ''}`}
             >
               <button
                 type="button"

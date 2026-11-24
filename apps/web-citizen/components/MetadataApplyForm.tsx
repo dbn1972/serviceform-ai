@@ -775,12 +775,12 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     hasEvidence && !evidenceUpload?.technically_accepted ? setAt(data, EVIDENCE, undefined) : data,
     visible,
   );
-  // After a refused submit, earlier steps that still hold a problem are flagged until fixed.
-  const attention = checkedAll
-    ? steps.flatMap((s, i) =>
-        !s.review && i !== stepIndex && Object.keys(errorsFor(i)).length > 0 ? [i] : [],
-      )
-    : [];
+  // Reached answer steps that no longer pass their checks are never shown as completed; after a
+  // refused submit they are also flagged until fixed.
+  const incomplete = steps.flatMap((s, i) =>
+    !s.review && i !== stepIndex && Object.keys(errorsFor(i)).length > 0 ? [i] : [],
+  );
+  const attention = checkedAll ? incomplete : [];
 
   return (
     <div className="sf-wizard">
@@ -790,6 +790,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
         reachable={furthest}
         progress={progress}
         attention={attention}
+        incomplete={incomplete}
         onSelect={(i) => {
           goTo(i);
           autosave();
