@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.007090654">
+    <testsuite name="tests/performance/m10/g5-harness-scaffold.test.ts" timestamp="2026-11-24T14:37:03.432Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="1" time="0.003399323">
+        <testcase classname="tests/performance/m10/g5-harness-scaffold.test.ts" name="M10 G5 PERF harness scaffold (fail-closed) &gt; PERF planning handover remains PLANNING / not READY" time="0.001662167">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-harness-scaffold.test.ts" name="M10 G5 PERF harness scaffold (fail-closed) &gt; load-profile stays schema-only until owner fills targets" time="0.000295145">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-harness-scaffold.test.ts" name="M10 G5 PERF harness scaffold (fail-closed) &gt; documents soak prerequisites for performance_verifier (no invented numbers)" time="0.000246256">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-harness-scaffold.test.ts" name="M10 G5 PERF harness scaffold (fail-closed) &gt; G5 soak gate opens only when SF_M10_G5_PERF_READY=1" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/performance/m10/g5-hold.test.ts" timestamp="2026-11-24T14:37:03.434Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="1" time="0.003691331">
+        <testcase classname="tests/performance/m10/g5-hold.test.ts" name="M10 G5 performance hold (fail-closed) &gt; refuses to claim G5 PASS when SF_M10_G5_PERF_READY is unset" time="0.001474529">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-hold.test.ts" name="M10 G5 performance hold (fail-closed) &gt; load-profile.yaml exists as schema-only with OWNER_REQUIRED null targets" time="0.000711421">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-hold.test.ts" name="M10 G5 performance hold (fail-closed) &gt; documents required G5 artifacts before any soak may run" time="0.000197147">
+        </testcase>
+        <testcase classname="tests/performance/m10/g5-hold.test.ts" name="M10 G5 performance hold (fail-closed) &gt; G5 soak execution placeholder — only runs when SF_M10_G5_PERF_READY=1" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

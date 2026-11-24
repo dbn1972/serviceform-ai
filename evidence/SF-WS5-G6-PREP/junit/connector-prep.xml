@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="13" failures="0" errors="0" time="0.009553404">
+    <testsuite name="tests/integration/m10/g6-connector-hold.test.ts" timestamp="2026-11-24T14:37:19.433Z" hostname="cursor" tests="6" failures="0" errors="0" skipped="3" time="0.00302901">
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; Odisha sample credential template is SAMPLE_LAB-prefixed (not DigiLocker-registered)" time="0.001387808">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; SAMPLE_LAB DigiLocker doc type must be refused as a PRODUCTION critical binding" time="0.000260253">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; G6/production TSB immutability seal remains false until REAL DigiLocker/DLT bindings exist" time="0.000282237">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; REAL DigiLocker publish against registrar-issued doc type — blocked until DigiLocker credentials + doc-type registration supplied (not inventable from e-District portal)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; UX4G golden citizen journey a11y/keyboard/responsive/visual evidence — blocked until SF-M10-005 dispatched with Design System evidence pack" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-connector-hold.test.ts" name="M10 G6 REAL-connector and TSB seal holds &gt; Resilience backup/restore/rollback drill evidence — blocked until ops runbook + restore cell authorized" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/m10/g6-prep-stubs.test.ts" timestamp="2026-11-24T14:37:19.435Z" hostname="cursor" tests="7" failures="0" errors="0" skipped="0" time="0.006524394">
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; stub directory lists expected REAL switch stubs" time="0.001756865">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; digilocker.real.env.stub keeps OWNER_REQUIRED and no fake secret values" time="0.001942898">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; sms-otp.real.env.stub keeps OWNER_REQUIRED and no fake secret values" time="0.000425488">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; payment.real.env.stub keeps OWNER_REQUIRED and no fake secret values" time="0.000301628">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; trusted-proxy.adr0008.env.stub keeps OWNER_REQUIRED and no fake secret values" time="0.000209955">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; ADR readiness notes do not fake ACCEPTED status" time="0.000547242">
+        </testcase>
+        <testcase classname="tests/integration/m10/g6-prep-stubs.test.ts" name="M10 G6 prep config stubs (no invented credentials) &gt; owner blocker list keeps OB items uncleared" time="0.000278855">
+        </testcase>
+    </testsuite>
+</testsuites>

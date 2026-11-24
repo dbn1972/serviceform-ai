@@ -37,6 +37,15 @@ Planning envelopes `SF-M10-004` / `SF-M10-005` / `SF-M10-PERF` remain **PLANNING
 4. IND-SOC-002 journey UI (Studio/citizen/officer) + UX4G READY pack  
 5. TSB immutability seal after REAL DigiLocker/DLT  
 
+## Workstream 5 agent prep (does not clear holds)
+
+Agent-buildable readiness only — checklists, config **name** stubs, ADR accept notes, harness scaffolds:
+
+- [`g6-prep/REAL-CONNECTOR-SWITCH-CHECKLIST.md`](./g6-prep/REAL-CONNECTOR-SWITCH-CHECKLIST.md)
+- [`g6-prep/ADR-0007-0008-OWNER-ACCEPT-READINESS.md`](./g6-prep/ADR-0007-0008-OWNER-ACCEPT-READINESS.md)
+- [`g6-prep/OWNER-BLOCKERS.md`](./g6-prep/OWNER-BLOCKERS.md)
+- Lab hold evidence: `evidence/SF-WS5-G6-PREP/`
+
 ## Explicit non-claims
 
 CERTIFIED=false · G6=false · g6_issued=false · self_certified=false · production DigiLocker=false · G5 evidence=false · journey E2E=false · resilience evidence=false

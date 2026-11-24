@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="0.006092319">
+    <testsuite name="tests/resilience/m10/backup-rollback-scaffold.test.ts" timestamp="2026-11-24T14:37:06.512Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="2" time="0.003112933">
+        <testcase classname="tests/resilience/m10/backup-rollback-scaffold.test.ts" name="M10 backup/rollback harness scaffold (fail-closed) &gt; refuses to claim backup/rollback PASS when SF_M10_RESILIENCE_READY is unset" time="0.001461192">
+        </testcase>
+        <testcase classname="tests/resilience/m10/backup-rollback-scaffold.test.ts" name="M10 backup/rollback harness scaffold (fail-closed) &gt; backup-rollback-checklist.yaml is schema-only with OWNER_REQUIRED null fields" time="0.000524682">
+        </testcase>
+        <testcase classname="tests/resilience/m10/backup-rollback-scaffold.test.ts" name="M10 backup/rollback harness scaffold (fail-closed) &gt; documents required drill artifacts before G6 resilience may be considered" time="0.000132368">
+        </testcase>
+        <testcase classname="tests/resilience/m10/backup-rollback-scaffold.test.ts" name="M10 backup/rollback harness scaffold (fail-closed) &gt; Backup/restore/rollback drill placeholder — only runs when SF_M10_RESILIENCE_READY=1" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/resilience/m10/backup-rollback-scaffold.test.ts" name="M10 backup/rollback harness scaffold (fail-closed) &gt; Executed restore + rollback drill evidence — blocked until ops cell + runbook authorized" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/resilience/m10/resilience-hold.test.ts" timestamp="2026-11-24T14:37:06.514Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="2" time="0.002979386">
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; refuses to claim resilience PASS when SF_M10_RESILIENCE_READY is unset" time="0.001224208">
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; resilience-checklist.yaml exists as schema-only with OWNER_REQUIRED null targets" time="0.000609093">
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; documents required resilience artifacts before a restore drill may run" time="0.000159565">
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; Resilience drill placeholder — only runs when SF_M10_RESILIENCE_READY=1" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/resilience/m10/resilience-hold.test.ts" name="M10 resilience hold (fail-closed) &gt; Backup/restore/rollback drill evidence — blocked until ops runbook + restore cell authorized" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>
