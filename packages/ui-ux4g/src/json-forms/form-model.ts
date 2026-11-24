@@ -370,12 +370,42 @@ export function issueMessage(node: FormSchemaView | undefined, code: string, poi
   }
 }
 
+/** Citizen-facing message for one control under the current data, or undefined when valid. */
+export function fieldError(
+  root: FormSchemaView,
+  pointer: string,
+  data: FormData,
+): string | undefined {
+  const schema = schemaAt(root, pointer);
+  if (!schema) return undefined;
+  const code = fieldIssue(schema, getAt(data, pointer), isRequired(root, pointer, data));
+  return code ? issueMessage(schema, code, pointer) : undefined;
+}
+
+/**
+ * Where a returning applicant should land: the first answer step that still has an issue, else the
+ * review step (or the last step when the form has no review step).
+ */
+export function resumeStepIndex(
+  root: FormSchemaView,
+  steps: readonly WizardStep[],
+  data: FormData,
+  visible: ReadonlySet<string>,
+): number {
+  const incomplete = steps.findIndex(
+    (s) => !s.review && Object.keys(stepErrors(root, s.node, data, visible)).length > 0,
+  );
+  if (incomplete >= 0) return incomplete;
+  const review = steps.findIndex((s) => s.review);
+  return review >= 0 ? review : Math.max(steps.length - 1, 0);
+}
+
 /** Errors for the visible controls under `node` (one step). */
 export function stepErrors(
   root: FormSchemaView,
   node: FormUiView,
   data: FormData,
-  visible: Set<string>,
+  visible: ReadonlySet<string>,
 ): FieldErrors {
   const errors: FieldErrors = {};
   for (const scope of controlScopes(node)) {

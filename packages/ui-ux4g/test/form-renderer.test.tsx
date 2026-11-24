@@ -1,16 +1,19 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import {
+  fieldError,
   getAt,
   isRequired,
   issuesToErrors,
   matchesPattern,
+  resumeStepIndex,
   ruleConditionScopes,
   setAt,
   stepErrors,
   stepOfPointer,
   Ux4gFormLayout,
   Ux4gFormReview,
+  Ux4gFormStepper,
   visibleScopes,
   wizardSteps,
   withoutHidden,
@@ -181,7 +184,7 @@ describe('Ux4gFormLayout renders UX4G controls only', () => {
 
   it('renders groups, labelled UX4G inputs, radio enum labels and hides rule-hidden controls', () => {
     const html = render({ name: 'SAMPLE' });
-    expect(html).toContain('<h3 class="ux4g-heading-s-strong">Identity</h3>');
+    expect(html).toContain('<h3 class="ux4g-heading-xs-strong">Identity</h3>');
     expect(html).toContain('class="sf-form-grid"');
     expect(html).toMatch(/<label class="ux4g-label-m-default" for="name">Full name/);
     expect(html).toContain('Verified by OTP at sign-in');
@@ -195,13 +198,57 @@ describe('Ux4gFormLayout renders UX4G controls only', () => {
     expect(render({ email_updates: true })).toContain('for="email"');
   });
 
-  it('announces errors on the field', () => {
+  it('announces errors on the field, with a hidden "Error:" for screen readers', () => {
     const html = render({}, { '/name': 'Enter full name', '/kind': 'Select kind' });
     expect(html).toContain('aria-invalid="true"');
     expect(html).toContain('aria-describedby="name-error"');
-    expect(html).toContain('Enter full name');
+    expect(html).toContain('<span class="ux4g-sr-only">Error: </span>Enter full name');
     expect(html).toContain('aria-describedby="kind-message"');
+    expect(html).toContain('<span class="ux4g-sr-only">Error: </span>Select kind');
     expect(html).toContain('ux4g-radio-error');
+  });
+
+  it('lets the host own a control: a slot replaces it and null leaves it out', () => {
+    const [, address] = wizardSteps(ui);
+    const html = renderToStaticMarkup(
+      <Ux4gFormLayout
+        node={address?.node ?? ui}
+        schema={schema}
+        data={{}}
+        visible={visibleScopes(ui, {})}
+        isRequired={(p) => isRequired(schema, p, {})}
+        slots={{
+          '/address/pincode': <p data-slot="pin">Host PIN widget</p>,
+          '/address/post_office': null,
+        }}
+      />,
+    );
+    expect(html).toContain('<div class="sf-span-2"><p data-slot="pin">Host PIN widget</p></div>');
+    expect(html).not.toContain('for="address__pincode"');
+    expect(html).not.toContain('Post office');
+  });
+
+  it('counts characters against maxLength and wires blur for validate-after-answer', () => {
+    const notes: FormSchemaView = {
+      type: 'object',
+      properties: { note: { type: 'string', title: 'Note', maxLength: 50 } },
+    };
+    const noteUi: FormUiView = {
+      type: 'VerticalLayout',
+      elements: [{ type: 'Control', scope: '#/properties/note', options: { format: 'textarea' } }],
+    };
+    const html = renderToStaticMarkup(
+      <Ux4gFormLayout
+        node={noteUi}
+        schema={notes}
+        data={{ note: 'SAMPLE' }}
+        visible={visibleScopes(noteUi, {})}
+        isRequired={() => false}
+        onBlur={() => undefined}
+      />,
+    );
+    expect(html).toContain('6 of 50 characters');
+    expect(html).toContain('aria-describedby="note-count"');
   });
 
   it('renders a review of the non-review steps with display labels', () => {
@@ -220,5 +267,74 @@ describe('Ux4gFormLayout renders UX4G controls only', () => {
     expect(html).toContain('<dt>Post office</dt><dd>—</dd>');
     expect(html).toContain('aria-label="Change address details"');
     expect(html).not.toContain('I agree');
+  });
+
+  it('shows host display text for host-owned values and drops rows set to null', () => {
+    const data = { name: 'SAMPLE', address: { pincode: '751001', post_office: 'X' } };
+    const html = renderToStaticMarkup(
+      <Ux4gFormReview
+        schema={schema}
+        ui={ui}
+        data={data}
+        visible={visibleScopes(ui, data)}
+        display={{ '/address/pincode': 'Shown by host', '/address/post_office': null }}
+      />,
+    );
+    expect(html).toContain('<dt>PIN code</dt><dd>Shown by host</dd>');
+    expect(html).not.toContain('Post office');
+  });
+});
+
+describe('resume and per-field validation', () => {
+  const steps = wizardSteps(ui);
+
+  it('reports one field against the current data (required, pattern, conditional)', () => {
+    expect(fieldError(schema, '/name', {})).toBe('Enter full name');
+    expect(fieldError(schema, '/name', { name: 'SAMPLE' })).toBeUndefined();
+    expect(fieldError(schema, '/address/pincode', { address: { pincode: '12' } })).toBe(
+      'PIN code must be 6 digits',
+    );
+    expect(fieldError(schema, '/email', {})).toBeUndefined();
+    expect(fieldError(schema, '/email', { email_updates: true })).toBe('Enter email');
+    expect(fieldError(schema, '/not_a_field', {})).toBeUndefined();
+  });
+
+  it('resumes on the first step that still needs an answer, else on the review step', () => {
+    const data = { name: 'SAMPLE' };
+    expect(resumeStepIndex(schema, steps, data, visibleScopes(ui, data))).toBe(1);
+    const done = { name: 'SAMPLE', address: { pincode: '751001' } };
+    expect(resumeStepIndex(schema, steps, done, visibleScopes(ui, done))).toBe(2);
+    expect(resumeStepIndex(schema, steps, {}, visibleScopes(ui, {}))).toBe(0);
+    const noReview = steps.filter((s) => !s.review);
+    expect(resumeStepIndex(schema, noReview, done, visibleScopes(ui, done))).toBe(1);
+  });
+});
+
+describe('Ux4gFormStepper', () => {
+  const steps = [
+    { label: 'Applicant', hint: 'Identity' },
+    { label: 'Residence' },
+    { label: 'Evidence' },
+    { label: 'Preview' },
+  ];
+
+  it('marks done, current and not-started steps for sight and for assistive technology', () => {
+    const html = renderToStaticMarkup(
+      <Ux4gFormStepper steps={steps} current={1} reachable={2} onSelect={() => undefined} />,
+    );
+    expect(html).toContain('<nav class="sf-stepper" aria-label="Application steps">');
+    expect(html).toContain('sf-stepper-item sf-stepper-done');
+    expect(html).toContain('aria-current="step"');
+    expect(html).toContain(', step 1 of 4, Completed');
+    expect(html).toContain(', step 2 of 4, Current step');
+    expect(html).toContain(', step 4 of 4, Not started');
+    expect(html.match(/disabled=""/g)?.length).toBe(1);
+    expect(html).not.toMatch(/style=/);
+  });
+
+  it('lets a returning applicant reopen any step up to the furthest reached', () => {
+    const html = renderToStaticMarkup(<Ux4gFormStepper steps={steps} current={0} reachable={3} />);
+    expect(html).not.toContain('disabled=""');
+    expect(html).toContain(', step 3 of 4, Completed');
   });
 });

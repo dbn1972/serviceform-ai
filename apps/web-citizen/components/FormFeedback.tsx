@@ -55,6 +55,23 @@ export function FormAlert({ tone = 'error', title, children, action, testId }: F
 
 export type ErrorSummaryItem = { fieldId: string; message: string };
 
+/**
+ * Moves focus to the field behind an error, showing its question (label or legend) first so a
+ * sticky header cannot hide it. Radio groups are found by name.
+ */
+export function focusField(id: string): void {
+  const field =
+    document.getElementById(id) ??
+    document.querySelector<HTMLElement>(`[name="${CSS.escape(id)}"]`);
+  if (!field) return;
+  const question =
+    field.closest('fieldset')?.querySelector('legend') ??
+    document.querySelector(`label[for="${CSS.escape(field.id)}"]`) ??
+    field;
+  question.scrollIntoView({ block: 'start' });
+  field.focus({ preventScroll: true });
+}
+
 /** Error summary that receives focus on submit and links each message to its field. */
 export const ErrorSummary = forwardRef<HTMLDivElement, { items: readonly ErrorSummaryItem[] }>(
   function ErrorSummary({ items }, ref) {
@@ -72,7 +89,7 @@ export const ErrorSummary = forwardRef<HTMLDivElement, { items: readonly ErrorSu
         </span>
         <div className="ux4g-form-alert-body">
           <p id="error-summary-title" className="ux4g-label-s-strong ux4g-text-error">
-            There is a problem
+            {items.length > 1 ? `There are ${items.length} problems` : 'There is a problem'}
           </p>
           <ul className="sf-auth-error-list">
             {items.map((item) => (
@@ -81,7 +98,7 @@ export const ErrorSummary = forwardRef<HTMLDivElement, { items: readonly ErrorSu
                   href={`#${item.fieldId}`}
                   onClick={(event) => {
                     event.preventDefault();
-                    document.getElementById(item.fieldId)?.focus();
+                    focusField(item.fieldId);
                   }}
                 >
                   {item.message}

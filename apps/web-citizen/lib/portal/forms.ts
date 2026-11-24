@@ -85,13 +85,26 @@ export function syntheticNameRefusal(
   return null;
 }
 
-/** The apply body is `{ catalogue_id, data }`; a bare form object is read as IND-SOC-002 data. */
-export function applyBody(raw: unknown): { catalogueId: string; data: Record<string, unknown> } {
+/**
+ * The apply body is `{ catalogue_id, data, application_id? }` (`application_id` submits a saved
+ * draft); a bare form object is read as IND-SOC-002 data.
+ */
+export function applyBody(raw: unknown): {
+  catalogueId: string;
+  data: Record<string, unknown>;
+  draftId: string | null;
+} {
   if (isRecord(raw) && isRecord(raw['data'])) {
     const id = typeof raw['catalogue_id'] === 'string' ? raw['catalogue_id'] : 'IND-SOC-002';
-    return { catalogueId: id, data: raw['data'] };
+    const draft = typeof raw['application_id'] === 'string' ? raw['application_id'] : null;
+    return { catalogueId: id, data: raw['data'], draftId: draft };
   }
-  return { catalogueId: 'IND-SOC-002', data: isRecord(raw) ? raw : {} };
+  return { catalogueId: 'IND-SOC-002', data: isRecord(raw) ? raw : {}, draftId: null };
+}
+
+/** Citizen-facing service name for a catalogue id (server-side; keeps templates off the client). */
+export function serviceName(catalogueId: string): string | null {
+  return templateByCatalogueId(catalogueId)?.name ?? null;
 }
 
 export type FormPin = { form_key: string; version_id: string; content_hash: string };

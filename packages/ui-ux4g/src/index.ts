@@ -64,14 +64,21 @@ export {
   type Ux4gFormReviewProps,
 } from './json-forms/Ux4gForm';
 export {
+  Ux4gFormStepper,
+  type Ux4gFormStepperProps,
+  type Ux4gFormStepperStep,
+} from './json-forms/Ux4gFormStepper';
+export {
   controlScopes,
   displayValue,
+  fieldError,
   getAt,
   isRequired,
   issueMessage,
   issuesToErrors,
   labelOf,
   matchesPattern,
+  resumeStepIndex,
   ruleConditionScopes,
   schemaAt,
   scopeToPointer,

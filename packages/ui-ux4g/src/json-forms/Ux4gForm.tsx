@@ -32,12 +32,46 @@ export type Ux4gFormLayoutProps = {
   /** Labels from the CMP-009 interpretation, keyed by scope; schema titles otherwise. */
   labels?: Record<string, string>;
   onChange?: (pointer: string, value: unknown) => void;
+  /** Called when focus leaves a control, for "validate after the answer is given" feedback. */
+  onBlur?: (pointer: string) => void;
+  /**
+   * Host-owned controls keyed by pointer: the node renders in place of the schema control and
+   * `null` omits it. The host stays responsible for the value (e.g. an upload that pins an id).
+   */
+  slots?: Readonly<Record<string, ReactNode | null>> | undefined;
   readOnly?: boolean;
   idPrefix?: string;
 };
 
 export function fieldId(pointer: string, prefix = ''): string {
   return `${prefix}${pointer.slice(1).replaceAll('/', '__')}`;
+}
+
+/** Inline field message; errors carry a hidden "Error:" so screen readers announce the state. */
+function HelperText({
+  id,
+  error,
+  hint,
+}: {
+  id: string;
+  error: string | undefined;
+  hint: ReactNode | undefined;
+}) {
+  return (
+    <p
+      id={id}
+      className={`ux4g-input-helper ux4g-input-helper-text${error ? ' sf-form-error' : ''}`}
+    >
+      {error ? (
+        <>
+          <span className="ux4g-sr-only">Error: </span>
+          {error}
+        </>
+      ) : (
+        hint
+      )}
+    </p>
+  );
 }
 
 function numberFrom(raw: string): number | string | undefined {
@@ -76,6 +110,7 @@ function Field({
   const error = props.errors?.[pointer];
   const note = props.notes?.[pointer];
   const change = (next: unknown) => props.onChange?.(pointer, next);
+  const blur = () => props.onBlur?.(pointer);
   const disabled = props.readOnly === true;
   const enumLabel = (v: unknown) => hints.enum_labels?.[String(v)] ?? String(v);
   let control: ReactNode;
@@ -93,12 +128,9 @@ function Field({
           disabled={disabled}
           aria-describedby={messageId}
           onChange={(e) => change(e.target.checked)}
+          onBlur={blur}
         />
-        {error ? (
-          <p id={messageId} className="ux4g-input-helper ux4g-input-helper-text sf-form-error">
-            {error}
-          </p>
-        ) : null}
+        {messageId ? <HelperText id={messageId} error={error} hint={undefined} /> : null}
       </div>
     );
   } else if (renderer === 'Ux4gRadioGroup' && node.enum) {
@@ -110,7 +142,14 @@ function Field({
         value={value === undefined ? '' : String(value)}
         onChange={(next) => change(next)}
         error={Boolean(error)}
-        message={error}
+        message={
+          error ? (
+            <>
+              <span className="ux4g-sr-only">Error: </span>
+              {error}
+            </>
+          ) : undefined
+        }
         disabled={disabled}
       />
     );
@@ -135,6 +174,7 @@ function Field({
             aria-invalid={Boolean(error)}
             aria-describedby={messageId}
             onChange={(e) => change(e.target.value === '' ? undefined : e.target.value)}
+            onBlur={blur}
           >
             <option value="">Select</option>
             {node.enum.map((v) => (
@@ -144,15 +184,13 @@ function Field({
             ))}
           </select>
         </div>
-        {messageId ? (
-          <p id={messageId} className="ux4g-input-helper ux4g-input-helper-text">
-            {error ?? hints.hint}
-          </p>
-        ) : null}
+        {messageId ? <HelperText id={messageId} error={error} hint={hints.hint} /> : null}
       </div>
     );
   } else if (renderer === 'Ux4gTextarea') {
     const messageId = error ? `${id}-error` : hints.hint ? `${id}-hint` : undefined;
+    const length = typeof value === 'string' ? value.length : 0;
+    const countId = node.maxLength === undefined ? undefined : `${id}-count`;
     control = (
       <div
         className={`ux4g-input-container ux4g-input-m ${error ? 'ux4g-input-error' : 'ux4g-input-default'}`}
@@ -171,12 +209,14 @@ function Field({
           disabled={disabled}
           maxLength={node.maxLength}
           aria-invalid={Boolean(error)}
-          aria-describedby={messageId}
+          aria-describedby={[messageId, countId].filter(Boolean).join(' ') || undefined}
           onChange={(e) => change(e.target.value === '' ? undefined : e.target.value)}
+          onBlur={blur}
         />
-        {messageId ? (
-          <p id={messageId} className="ux4g-input-helper ux4g-input-helper-text">
-            {error ?? hints.hint}
+        {messageId ? <HelperText id={messageId} error={error} hint={hints.hint} /> : null}
+        {countId && node.maxLength !== undefined ? (
+          <p id={countId} className="ux4g-input-helper ux4g-input-helper-text sf-char-count">
+            {length} of {node.maxLength} characters
           </p>
         ) : null}
       </div>
@@ -214,6 +254,7 @@ function Field({
                 : e.target.value,
           )
         }
+        onBlur={blur}
       />
     );
   }
@@ -223,13 +264,13 @@ function Field({
 function Layout({ node, props }: { node: FormUiView; props: Ux4gFormLayoutProps }): ReactNode {
   if (node.type === 'Control') {
     if (!node.scope || !props.visible.has(node.scope)) return null;
+    const pointer = scopeToPointer(node.scope);
+    if (props.slots && Object.hasOwn(props.slots, pointer)) {
+      const slot = props.slots[pointer];
+      return slot === null || slot === undefined ? null : <div className="sf-span-2">{slot}</div>;
+    }
     return (
-      <Field
-        pointer={scopeToPointer(node.scope)}
-        scope={node.scope}
-        format={node.options?.format}
-        props={props}
-      />
+      <Field pointer={pointer} scope={node.scope} format={node.options?.format} props={props} />
     );
   }
   const children = node.elements ?? [];
@@ -237,7 +278,7 @@ function Layout({ node, props }: { node: FormUiView; props: Ux4gFormLayoutProps 
   if (node.type === 'Group') {
     return (
       <div className="sf-form-section" role="group" aria-label={node.label}>
-        {node.label ? <h3 className="ux4g-heading-s-strong">{node.label}</h3> : null}
+        {node.label ? <h3 className="ux4g-heading-xs-strong">{node.label}</h3> : null}
         <div className="sf-form-grid">
           {children.map((child, i) => (
             <Layout key={child.scope ?? `${child.type}-${i}`} node={child} props={props} />
@@ -269,21 +310,33 @@ export type Ux4gFormReviewProps = {
   visible: ReadonlySet<string>;
   labels?: Record<string, string>;
   onEdit?: (stepIndex: number) => void;
+  /** Display text keyed by pointer for host-owned values; `null` leaves the row out. */
+  display?: Readonly<Record<string, string | null>> | undefined;
 };
 
 /** Read-only summary of every non-review step, for the final "Preview" step. */
-export function Ux4gFormReview({ schema, ui, data, visible, labels, onEdit }: Ux4gFormReviewProps) {
+export function Ux4gFormReview({
+  schema,
+  ui,
+  data,
+  visible,
+  labels,
+  onEdit,
+  display,
+}: Ux4gFormReviewProps) {
   const steps = wizardSteps(ui);
   return (
     <div className="sf-preview-grid">
       {steps.map((step, index) => {
         if (step.review) return null;
-        const scopes = controlScopes(step.node).filter((s) => visible.has(s));
+        const scopes = controlScopes(step.node).filter(
+          (s) => visible.has(s) && display?.[scopeToPointer(s)] !== null,
+        );
         if (scopes.length === 0) return null;
         return (
           <section key={step.label} className="sf-preview-block sf-span-2">
             <div className="sf-preview-head">
-              <h3 className="ux4g-heading-s-strong">{step.label}</h3>
+              <h3 className="ux4g-heading-xs-strong">{step.label}</h3>
               {onEdit ? (
                 <Button
                   variant="text-primary"
@@ -302,7 +355,7 @@ export function Ux4gFormReview({ schema, ui, data, visible, labels, onEdit }: Ux
                 return (
                   <div key={scope} className="sf-dl-row">
                     <dt>{labels?.[scope] ?? labelOf(node, pointer)}</dt>
-                    <dd>{displayValue(node, getAt(data, pointer))}</dd>
+                    <dd>{display?.[pointer] ?? displayValue(node, getAt(data, pointer))}</dd>
                   </div>
                 );
               })}
