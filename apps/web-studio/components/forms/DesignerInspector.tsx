@@ -436,7 +436,7 @@ function benchCheck(field: DesignerField, raw: string, required: boolean): strin
   return errors[`/${field.key}`] ?? null;
 }
 
-const SHOWN_CHARACTERS = 24;
+const SHOWN_CHARACTERS = 12;
 
 function shownInput(input: string): ReactNode {
   if (input === '') return <span className="sf-designer-muted">(nothing)</span>;
@@ -463,7 +463,6 @@ function FieldCases({ field, required }: { field: DesignerField; required: boole
           </caption>
           <thead>
             <tr>
-              <th scope="col">Case</th>
               <th scope="col">Applicant types</th>
               <th scope="col">Applicant sees</th>
             </tr>
@@ -473,8 +472,10 @@ function FieldCases({ field, required }: { field: DesignerField; required: boole
               const message = benchCheck(field, c.input, required);
               return (
                 <tr key={c.id}>
-                  <th scope="row">{c.label}</th>
-                  <td>{shownInput(c.input)}</td>
+                  <th scope="row">
+                    <span className="ux4g-body-s-default sf-designer-muted">{c.label}:</span>{' '}
+                    {shownInput(c.input)}
+                  </th>
                   <td>
                     <span className={message ? 'ux4g-tag-tonal-error' : 'ux4g-tag-tonal-success'}>
                       {message ?? 'Accepted'}
