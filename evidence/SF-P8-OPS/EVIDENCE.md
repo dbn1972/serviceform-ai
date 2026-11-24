@@ -2,7 +2,7 @@
 
 **Stamp:** `CERTIFIED=false` · `G6=false` · `self_certified=false` · DigiLocker **out of scope**  
 **Branch:** `cursor/path8-ops-depth-b38f`  
-**Tip (restamp):** `ddc2ddcb` (`ddc2ddcb90aa055513a48dd564f1c96c6ea4c1a0`) — reachable tip named by residual; chore commit may sit above
+**Tip (after restamp push):**  ()
 **Scope:** Maker≠checker UX, deficiency loop decide-block, SLA breach visibility, TSB pin integrity cues, CMP-015 audit depth + sanitize, officer SF-TEN-002 on task queue.
 
 ## What landed
