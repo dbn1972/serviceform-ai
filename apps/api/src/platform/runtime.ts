@@ -260,6 +260,8 @@ export interface PlatformLabEnv {
   SF_PROFILE_RATE_LIMIT_MAX?: string;
   /** CMP-033/051/052 studio/admin per-IP limit; same trusted-hop caveat (ADR-0008). */
   SF_STUDIO_RATE_LIMIT_MAX?: string;
+  /** SF-71 tenant-users admin per-IP limit; same trusted-hop caveat (ADR-0008 / SEC F-08). */
+  SF_TENANT_USERS_RATE_LIMIT_MAX?: string;
   /**
    * Comma-separated BFF hop IPs/CIDRs for Fastify trustProxy (ADR-0008). Empty = no trust.
    * SAMPLE_LAB example: `127.0.0.1,::1`. Never `*` / `0.0.0.0/0`.
@@ -1815,10 +1817,14 @@ export async function buildPlatformLab(
         env: env as Record<string, string | undefined>,
         officers: officersFixture.officers,
       });
-      registerTenantUserAdminRoutes(app, {
+      await registerTenantUserAdminRoutes(app, {
         directory,
         authorizer: opa as unknown as { decide: (input: unknown) => Promise<{ allow?: unknown }> },
         resolveContext,
+        rateLimitMax: positiveInt(
+          env.SF_TENANT_USERS_RATE_LIMIT_MAX ?? '60',
+          'SF_TENANT_USERS_RATE_LIMIT_MAX',
+        ),
       });
     },
     async start() {

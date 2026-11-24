@@ -30,7 +30,7 @@ async function buildApp(opts: {
   resolveContext: (req: unknown) => Promise<TenantUserRequestContext | null>;
 }) {
   const app = Fastify({ logger: false });
-  registerTenantUserAdminRoutes(app, opts);
+  await registerTenantUserAdminRoutes(app, opts);
   await app.ready();
   return app;
 }

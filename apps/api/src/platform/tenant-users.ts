@@ -1,6 +1,12 @@
 import { randomUUID } from 'node:crypto';
+import rateLimit from '@fastify/rate-limit';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
+import fastifyRateLimit from 'fastify-rate-limit';
 import type { LabOfficer } from './simulators.js';
+
+/** Per-route + scoped limit for tenant-user admin authz handlers (CodeQL js/missing-rate-limiting; F-08). */
+const TENANT_USERS_RATE_LIMIT_MAX = 60;
+const TENANT_USERS_RATE_LIMIT_WINDOW_MS = 60_000;
 
 /**
  * SAMPLE_LAB M02 identity admin surface — tenant workforce user directory.
@@ -723,199 +729,235 @@ type OfficerTenantContext = TenantUserRequestContext & { tenant_id: string };
  * PUT    /v1/admin/tenant-users/:userId/roles
  * GET    /v1/admin/tenant-users/meta/roles
  * GET    /v1/admin/tenant-users/meta/adapter
+ *
+ * Rate-limited like Studio authz mounts (scoped @fastify/rate-limit + per-route config)
+ * for CodeQL js/missing-rate-limiting / SEC F-08.
  */
-export function registerTenantUserAdminRoutes(
+export async function registerTenantUserAdminRoutes(
   app: FastifyInstance,
   opts: {
     directory: TenantUserDirectory;
     authorizer: TenantUserAuthzPort;
     resolveContext: (request: FastifyRequest) => Promise<TenantUserRequestContext | null>;
+    rateLimitMax?: number;
   },
-): void {
-  const requireOfficer = async (request: FastifyRequest): Promise<OfficerTenantContext> => {
-    const ctx = await opts.resolveContext(request);
-    if (!ctx || ctx.actor.type !== 'OFFICER' || typeof ctx.tenant_id !== 'string') {
-      throw new TenantUserDirectoryError('SF-AUTH-001', 401, 'Officer session required');
-    }
-    return { ...ctx, tenant_id: ctx.tenant_id };
-  };
+): Promise<void> {
+  await app.register(async (scope) => {
+    // Dual-package + request.ip keying matches CMP-004 / Studio (SEC F-08; ADR-0008 trustProxy).
+    const limits = {
+      max: opts.rateLimitMax ?? TENANT_USERS_RATE_LIMIT_MAX,
+      timeWindow: TENANT_USERS_RATE_LIMIT_WINDOW_MS,
+      keyGenerator: (request: FastifyRequest) => request.ip,
+    };
+    await scope.register(rateLimit, limits);
+    await scope.register(fastifyRateLimit, limits);
+    const routeRateLimit = {
+      rateLimit: {
+        max: limits.max,
+        timeWindow: limits.timeWindow,
+      },
+    };
 
-  app.get('/v1/admin/tenant-users/meta/adapter', async (request, reply) => {
-    try {
-      const ctx = await requireOfficer(request);
-      await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_LIST', 'WorkforceUser');
-      return reply.header('cache-control', 'no-store').send(
-        envelope(opts.directory, {
-          tenant_bound: true,
-          keycloak_console_embedded: false,
-        }),
-      );
-    } catch (err) {
-      const mapped = errorReply(err);
-      return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-    }
-  });
+    const requireOfficer = async (request: FastifyRequest): Promise<OfficerTenantContext> => {
+      const ctx = await opts.resolveContext(request);
+      if (!ctx || ctx.actor.type !== 'OFFICER' || typeof ctx.tenant_id !== 'string') {
+        throw new TenantUserDirectoryError('SF-AUTH-001', 401, 'Officer session required');
+      }
+      return { ...ctx, tenant_id: ctx.tenant_id };
+    };
 
-  app.get('/v1/admin/tenant-users/meta/roles', async (request, reply) => {
-    try {
-      const ctx = await requireOfficer(request);
-      await authorizeWorkforce(
-        opts.authorizer,
-        ctx,
-        'WORKFORCE_ROLE_CATALOGUE_READ',
-        'WorkforceRoleCatalogue',
-      );
-      const roles = await opts.directory.roleCatalogue(ctx.tenant_id);
-      return reply
-        .header('cache-control', 'no-store')
-        .send(envelope(opts.directory, { roles, tenant_id: ctx.tenant_id }));
-    } catch (err) {
-      const mapped = errorReply(err);
-      return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-    }
-  });
+    scope.get(
+      '/v1/admin/tenant-users/meta/adapter',
+      { config: routeRateLimit },
+      async (request, reply) => {
+        try {
+          const ctx = await requireOfficer(request);
+          await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_LIST', 'WorkforceUser');
+          return reply.header('cache-control', 'no-store').send(
+            envelope(opts.directory, {
+              tenant_bound: true,
+              keycloak_console_embedded: false,
+            }),
+          );
+        } catch (err) {
+          const mapped = errorReply(err);
+          return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
+        }
+      },
+    );
 
-  app.get('/v1/admin/tenant-users', async (request, reply) => {
-    try {
-      const ctx = await requireOfficer(request);
-      await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_LIST', 'WorkforceUser');
-      const users = await opts.directory.list(ctx.tenant_id);
-      // Use server logger (not request.log) so Fastify does not attach req.body PII.
-      request.server.log.info(
-        safeTenantUserLogFields('tenant_users_list', {
-          tenant_bound: true,
-          count: users.length,
-        }),
-        'tenant users listed',
-      );
-      return reply
-        .header('cache-control', 'no-store')
-        .send(envelope(opts.directory, { users, tenant_id: ctx.tenant_id }));
-    } catch (err) {
-      const mapped = errorReply(err);
-      return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-    }
-  });
-
-  app.get<{ Params: { userId: string } }>(
-    '/v1/admin/tenant-users/:userId',
-    async (request, reply) => {
-      try {
-        const ctx = await requireOfficer(request);
-        await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_READ', 'WorkforceUser');
-        const user = await opts.directory.get(ctx.tenant_id, request.params.userId);
-        if (!user) {
+    scope.get(
+      '/v1/admin/tenant-users/meta/roles',
+      { config: routeRateLimit },
+      async (request, reply) => {
+        try {
+          const ctx = await requireOfficer(request);
+          await authorizeWorkforce(
+            opts.authorizer,
+            ctx,
+            'WORKFORCE_ROLE_CATALOGUE_READ',
+            'WorkforceRoleCatalogue',
+          );
+          const roles = await opts.directory.roleCatalogue(ctx.tenant_id);
           return reply
-            .code(404)
             .header('cache-control', 'no-store')
-            .send({ error_code: 'SF-SYS-002', message: 'Resource or route not found' });
+            .send(envelope(opts.directory, { roles, tenant_id: ctx.tenant_id }));
+        } catch (err) {
+          const mapped = errorReply(err);
+          return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
         }
+      },
+    );
+
+    scope.get('/v1/admin/tenant-users', { config: routeRateLimit }, async (request, reply) => {
+      try {
+        const ctx = await requireOfficer(request);
+        await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_LIST', 'WorkforceUser');
+        const users = await opts.directory.list(ctx.tenant_id);
+        // Use server logger (not request.log) so Fastify does not attach req.body PII.
+        request.server.log.info(
+          safeTenantUserLogFields('tenant_users_list', {
+            tenant_bound: true,
+            count: users.length,
+          }),
+          'tenant users listed',
+        );
         return reply
+          .header('cache-control', 'no-store')
+          .send(envelope(opts.directory, { users, tenant_id: ctx.tenant_id }));
+      } catch (err) {
+        const mapped = errorReply(err);
+        return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
+      }
+    });
+
+    scope.get<{ Params: { userId: string } }>(
+      '/v1/admin/tenant-users/:userId',
+      { config: routeRateLimit },
+      async (request, reply) => {
+        try {
+          const ctx = await requireOfficer(request);
+          await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_READ', 'WorkforceUser');
+          const user = await opts.directory.get(ctx.tenant_id, request.params.userId);
+          if (!user) {
+            return reply
+              .code(404)
+              .header('cache-control', 'no-store')
+              .send({ error_code: 'SF-SYS-002', message: 'Resource or route not found' });
+          }
+          return reply
+            .header('cache-control', 'no-store')
+            .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
+        } catch (err) {
+          const mapped = errorReply(err);
+          return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
+        }
+      },
+    );
+
+    scope.post('/v1/admin/tenant-users', { config: routeRateLimit }, async (request, reply) => {
+      try {
+        const ctx = await requireOfficer(request);
+        await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_CREATE', 'WorkforceUser');
+        const body = (request.body ?? {}) as Record<string, unknown>;
+        assertNoClientTenantOverride(body);
+        const user = await opts.directory.create(ctx.tenant_id, {
+          username: typeof body['username'] === 'string' ? body['username'] : '',
+          display_name: typeof body['display_name'] === 'string' ? body['display_name'] : '',
+          email: typeof body['email'] === 'string' ? body['email'] : null,
+          enabled: body['enabled'] !== false,
+          roles: Array.isArray(body['roles'])
+            ? body['roles'].filter((r): r is string => typeof r === 'string')
+            : [],
+        });
+        request.server.log.info(
+          safeTenantUserLogFields('tenant_user_create', {
+            user_id: user.user_id,
+            tenant_bound: true,
+          }),
+          'tenant user created',
+        );
+        return reply
+          .code(201)
           .header('cache-control', 'no-store')
           .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
       } catch (err) {
         const mapped = errorReply(err);
         return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
       }
-    },
-  );
+    });
 
-  app.post('/v1/admin/tenant-users', async (request, reply) => {
-    try {
-      const ctx = await requireOfficer(request);
-      await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_CREATE', 'WorkforceUser');
-      const body = (request.body ?? {}) as Record<string, unknown>;
-      assertNoClientTenantOverride(body);
-      const user = await opts.directory.create(ctx.tenant_id, {
-        username: typeof body['username'] === 'string' ? body['username'] : '',
-        display_name: typeof body['display_name'] === 'string' ? body['display_name'] : '',
-        email: typeof body['email'] === 'string' ? body['email'] : null,
-        enabled: body['enabled'] !== false,
-        roles: Array.isArray(body['roles'])
-          ? body['roles'].filter((r): r is string => typeof r === 'string')
-          : [],
-      });
-      request.server.log.info(
-        safeTenantUserLogFields('tenant_user_create', {
-          user_id: user.user_id,
-          tenant_bound: true,
-        }),
-        'tenant user created',
-      );
-      return reply
-        .code(201)
-        .header('cache-control', 'no-store')
-        .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
-    } catch (err) {
-      const mapped = errorReply(err);
-      return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-    }
+    scope.patch<{ Params: { userId: string } }>(
+      '/v1/admin/tenant-users/:userId',
+      { config: routeRateLimit },
+      async (request, reply) => {
+        try {
+          const ctx = await requireOfficer(request);
+          await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_UPDATE', 'WorkforceUser');
+          const body = (request.body ?? {}) as Record<string, unknown>;
+          assertNoClientTenantOverride(body);
+          const patch: UpdateTenantUserInput = {};
+          if (typeof body['display_name'] === 'string') patch.display_name = body['display_name'];
+          if (body['email'] === null || typeof body['email'] === 'string') {
+            patch.email = body['email'] as string | null;
+          }
+          if (typeof body['enabled'] === 'boolean') patch.enabled = body['enabled'];
+          const user = await opts.directory.update(ctx.tenant_id, request.params.userId, patch);
+          request.server.log.info(
+            safeTenantUserLogFields('tenant_user_update', {
+              user_id: user.user_id,
+              tenant_bound: true,
+            }),
+            'tenant user updated',
+          );
+          return reply
+            .header('cache-control', 'no-store')
+            .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
+        } catch (err) {
+          const mapped = errorReply(err);
+          return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
+        }
+      },
+    );
+
+    scope.put<{ Params: { userId: string } }>(
+      '/v1/admin/tenant-users/:userId/roles',
+      { config: routeRateLimit },
+      async (request, reply) => {
+        try {
+          const ctx = await requireOfficer(request);
+          await authorizeWorkforce(
+            opts.authorizer,
+            ctx,
+            'WORKFORCE_USER_ASSIGN_ROLES',
+            'WorkforceUser',
+          );
+          const body = (request.body ?? {}) as Record<string, unknown>;
+          assertNoClientTenantOverride(body);
+          const roles = Array.isArray(body['roles'])
+            ? body['roles'].filter((r): r is string => typeof r === 'string')
+            : [];
+          const user = await opts.directory.assignRoles(
+            ctx.tenant_id,
+            request.params.userId,
+            roles,
+          );
+          request.server.log.info(
+            safeTenantUserLogFields('tenant_user_roles', {
+              user_id: user.user_id,
+              role_count: user.roles.length,
+              tenant_bound: true,
+            }),
+            'tenant user roles assigned',
+          );
+          return reply
+            .header('cache-control', 'no-store')
+            .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
+        } catch (err) {
+          const mapped = errorReply(err);
+          return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
+        }
+      },
+    );
   });
-
-  app.patch<{ Params: { userId: string } }>(
-    '/v1/admin/tenant-users/:userId',
-    async (request, reply) => {
-      try {
-        const ctx = await requireOfficer(request);
-        await authorizeWorkforce(opts.authorizer, ctx, 'WORKFORCE_USER_UPDATE', 'WorkforceUser');
-        const body = (request.body ?? {}) as Record<string, unknown>;
-        assertNoClientTenantOverride(body);
-        const patch: UpdateTenantUserInput = {};
-        if (typeof body['display_name'] === 'string') patch.display_name = body['display_name'];
-        if (body['email'] === null || typeof body['email'] === 'string') {
-          patch.email = body['email'] as string | null;
-        }
-        if (typeof body['enabled'] === 'boolean') patch.enabled = body['enabled'];
-        const user = await opts.directory.update(ctx.tenant_id, request.params.userId, patch);
-        request.server.log.info(
-          safeTenantUserLogFields('tenant_user_update', {
-            user_id: user.user_id,
-            tenant_bound: true,
-          }),
-          'tenant user updated',
-        );
-        return reply
-          .header('cache-control', 'no-store')
-          .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
-      } catch (err) {
-        const mapped = errorReply(err);
-        return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-      }
-    },
-  );
-
-  app.put<{ Params: { userId: string } }>(
-    '/v1/admin/tenant-users/:userId/roles',
-    async (request, reply) => {
-      try {
-        const ctx = await requireOfficer(request);
-        await authorizeWorkforce(
-          opts.authorizer,
-          ctx,
-          'WORKFORCE_USER_ASSIGN_ROLES',
-          'WorkforceUser',
-        );
-        const body = (request.body ?? {}) as Record<string, unknown>;
-        assertNoClientTenantOverride(body);
-        const roles = Array.isArray(body['roles'])
-          ? body['roles'].filter((r): r is string => typeof r === 'string')
-          : [];
-        const user = await opts.directory.assignRoles(ctx.tenant_id, request.params.userId, roles);
-        request.server.log.info(
-          safeTenantUserLogFields('tenant_user_roles', {
-            user_id: user.user_id,
-            role_count: user.roles.length,
-            tenant_bound: true,
-          }),
-          'tenant user roles assigned',
-        );
-        return reply
-          .header('cache-control', 'no-store')
-          .send(envelope(opts.directory, { user, tenant_id: ctx.tenant_id }));
-      } catch (err) {
-        const mapped = errorReply(err);
-        return reply.code(mapped.status).header('cache-control', 'no-store').send(mapped.body);
-      }
-    },
-  );
 }
