@@ -80,7 +80,11 @@ describe('durable KPI aggregate + series + OTLP (P8-1)', () => {
     const otlp = exportDurableKpisToOtlp(series.snapshot, series);
     expect(otlp.CERTIFIED).toBe(false);
     expect(otlp.raw_pii_payload_forbidden).toBe(true);
-    const names = otlp.resourceMetrics[0]!.scopeMetrics[0]!.metrics.map((m) => m.name);
+    const resource = otlp.resourceMetrics[0];
+    expect(resource).toBeDefined();
+    const scope = resource?.scopeMetrics[0];
+    expect(scope).toBeDefined();
+    const names = (scope?.metrics ?? []).map((m) => m.name);
     expect(names).toContain('sf.forms.funnel.completes');
     expect(names).toContain('sf.forms.latency.load_p95_ms');
     expect(names).toContain('sf.forms.authoring.duration_p95_ms');
