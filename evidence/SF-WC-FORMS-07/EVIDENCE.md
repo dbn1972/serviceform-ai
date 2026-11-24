@@ -4,7 +4,7 @@
 
 | Field | Value |
 |---|---|
-| Tip | `0e7e3c0a5a0e8bd68fbe250d197b89ede7342adb` (`cursor/world-class-forms-measure-ad53`) |
+| Tip | `d9e2c9fd9625a47257c656378d18a66111bfdf41` (`cursor/world-class-forms-measure-ad53`) |
 | Workstream | 7 Measure (authoring time, completion/abandon, a11y, p95, zero cross-tenant KPI) |
 | Components | `@serviceform/forms-product-metrics` (web-safe), citizen BFF, Studio forms designer, CMP-009 path (hooks only) |
 | Scope | Observability only — no authz/RLS/security weakening |
