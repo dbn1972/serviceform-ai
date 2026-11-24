@@ -1,0 +1,45 @@
+{
+  "schema": "serviceform.p8.golden2.summary.v1",
+  "commit_sha": "4f7ff35488a929e2d0c8b24c0f874a9df91b053f",
+  "started_at": "2026-11-24T18:51:52Z",
+  "ended_at": "2026-11-24T18:52:33Z",
+  "executed_at_ist": "2026-11-25 00:22 Asia/Calcutta",
+  "environment_label": "SAMPLE_LAB",
+  "connectors": {
+    "digilocker": "SIMULATED",
+    "otp": "SIMULATED",
+    "idp": "SIMULATED",
+    "sms": "SIMULATED",
+    "payment": "SIMULATED"
+  },
+  "digilocker_real_out_of_scope": true,
+  "certified": false,
+  "g6": false,
+  "self_certified": false,
+  "tsb_seal_g6": false,
+  "residence_catalogue_id": "IND-SOC-002",
+  "income_catalogue_id": "IND-SOC-031",
+  "income_version_status": "DRAFT",
+  "income_maturity": "SAMPLE_LAB_STUB",
+  "sf33_income_statute": "BLOCKED",
+  "publish_blocker": "SF-33",
+  "statute_invented": false,
+  "income_marked_published": false,
+  "e2e": {
+    "passed": 42,
+    "failed": 0,
+    "log": "logs/e2e-golden2.log",
+    "junit": "junit/e2e.xml"
+  },
+  "unit": {
+    "service_templates": { "log": "logs/unit-templates.log" },
+    "web_citizen_income_gate": { "log": "logs/unit-citizen-income-gate.log" }
+  },
+  "fixtures": [
+    "fixtures/SF33_PUBLISH_BLOCKER.md",
+    "fixtures/sf33-publish-gate.json",
+    "fixtures/PLATFORM_REUSE_GAP_LIST.md",
+    "fixtures/POLICY_INPUT_REQUIRED.md"
+  ],
+  "notes": "Residence golden held. Income second-service proven at DRAFT/DUMMY lab-offer ceiling via Studio metadata only. SF-33 is the only PUBLISH blocker. No statute invented. DigiLocker REAL out of scope."
+}

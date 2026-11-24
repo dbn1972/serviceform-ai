@@ -1,0 +1,1985 @@
+{
+  "config": {
+    "argv": [
+      "/exec-daemon/node",
+      "/agent/repos/serviceform-ai/node_modules/@playwright/test/cli.js",
+      "test",
+      "-c",
+      "tests/e2e/playwright.config.ts",
+      "tests/e2e/golden/ind-soc-002-golden.spec.ts",
+      "tests/e2e/m11-second-service-reuse.spec.ts",
+      "tests/e2e/certificate-forms-representatives.spec.ts"
+    ],
+    "configFile": "/agent/repos/serviceform-ai/tests/e2e/playwright.config.ts",
+    "rootDir": "/agent/repos/serviceform-ai/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/agent/repos/serviceform-ai/test-results/e2e/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/agent/repos/serviceform-ai/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "../../test-results/e2e/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../test-results/e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "certificate-forms-representatives.spec.ts",
+      "file": "certificate-forms-representatives.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "SAMPLE_LAB certificate representatives — form load + submit API",
+          "file": "certificate-forms-representatives.spec.ts",
+          "line": 132,
+          "column": 6,
+          "specs": [
+            {
+              "title": "IND-SOC-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1807,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:51:59.433Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-15d9b243e53cbd6f8118",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-031: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1237,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:01.640Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-fca85cd5166a5cde1df0",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1139,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:02.887Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-19294afbd3c36d45f7ef",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-CIV-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1186,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:04.034Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-78c63184bcbfa88ce407",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1192,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:05.227Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-30d03a3c7fe50aabaeb3",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-004: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1175,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:06.426Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-d3ae8f992508a31a9ce7",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-003: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1080,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:07.608Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-4753bc8258b41b89df2d",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1296,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:08.694Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-0790d60b0472f40d877e",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-BTP-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1248,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:09.997Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-d1b9b98f39547f974600",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-010: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1131,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:11.255Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-969f7e9fd90b4a73cb9c",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-LAB-019: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1049,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:12.393Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-8057f105b7a4300088ae",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-ULB-007: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1051,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:13.449Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-684156158667083e91c2",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-ENV-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1212,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:14.505Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-3491f0f916cd7b23f1f2",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "SAMPLE_LAB certificate representatives — officer + DigiLocker SIM",
+          "file": "certificate-forms-representatives.spec.ts",
+          "line": 202,
+          "column": 6,
+          "specs": [
+            {
+              "title": "IND-SOC-002: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5177,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:51:59.434Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-8efa017987c1ce43767e",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-031: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3723,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:05.006Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-ab71b25bdab51620bee9",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4081,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:08.755Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-0c2dffed1e6a7a15962c",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-CIV-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:12.858Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-1ed336decede1eb5b15f",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-002: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4000,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:17.177Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-9ecbbf0b675f74c672f6",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-004: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4459,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:21.211Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-42e238408e8f875b1003",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-BTP-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3665,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:25.705Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-c1791dec215c2541baad",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-ULB-007: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:29.404Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-7d1c28648bb5b6eb4356",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "golden/ind-soc-002-golden.spec.ts",
+      "file": "golden/ind-soc-002-golden.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "M10 Golden E2E — owner-input gate",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 19,
+          "column": 6,
+          "specs": [
+            {
+              "title": "fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.739Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-520887d67646661ee5e8",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — harness health (IND-SOC-002 scaffold)",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 35,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.748Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-e540cfdd5e4121234cb2",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "officer workbench health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.768Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-fc4f80a04602fbb5572f",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "studio health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.783Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-66040cb20b079184c6bf",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "citizen portal is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 190,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.800Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-96af1f9351f592c17db0",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "officer workbench is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 245,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:15.997Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9167b10d70a7b4db1de7",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "studio is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 203,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.255Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-bd6394ae28b699046ee7",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 63,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — tenant isolation probes",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 70,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal does not serve cross-tenant data in page source",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 196,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.474Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-29da48d2196604403ecf",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "API health endpoint does not include tenant identifiers in response body",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.678Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-8d2edabe7e5cdfe86e79",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 78,
+              "column": 3
+            },
+            {
+              "title": "forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.690Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9a4ae22f5abf2ee351ea",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 92,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — UX4G accessibility scaffolding",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 105,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal has required ARIA landmarks",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 176,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.703Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-59340484bb9975ef2aa2",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "officer workbench has required ARIA landmarks",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 167,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:16.887Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-593bc0f53c21ed89fd10",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 118,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — SAMPLE_LAB journey routes",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 171,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Studio: author IND-SOC-002 service metadata without bespoke backend code",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 186,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:17.062Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-f40e4b7b0d7d75be0860",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 172,
+              "column": 3
+            },
+            {
+              "title": "Citizen: residence certificate apply page loads after SAMPLE_LAB login",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1797,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:17.255Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9680257b36e66e638531",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 181,
+              "column": 3
+            },
+            {
+              "title": "Officer: applications queue loads after SIMULATED IdP sign-in",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 869,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:19.060Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-fef8433c7a38c9df8f46",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 190,
+              "column": 3
+            },
+            {
+              "title": "SAMPLE_LAB platform end-to-end: apply → officer approves → DigiLocker SIMULATED publish",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:19.938Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-a5f4f6f8fdd6dc91d72d",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 195,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "m11-second-service-reuse.spec.ts",
+      "file": "m11-second-service-reuse.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "M11 second-service reuse — Income SAMPLE_LAB lab-offer",
+          "file": "m11-second-service-reuse.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen catalogue lists Income as offered in SAMPLE_LAB",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 646,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:23.435Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-b65236e347eb924cf30c",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 13,
+              "column": 3
+            },
+            {
+              "title": "citizen apply for IND-SOC-031 loads the metadata form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 634,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:24.092Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-5c5412c8aca7d8dfb0d8",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 29,
+              "column": 3
+            },
+            {
+              "title": "Studio template catalogue exposes Income stub and forms designer entry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 665,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:24.740Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-8161db5b81464c76756f",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "Studio Fee designer exposes Income SAMPLE_LAB DUMMY starter",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 504,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:25.417Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-5a85ac1d31801bc8939c",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "Studio SLA / Evidence / Credential DUMMY starters open for Income",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 755,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T18:52:25.940Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-6d1896d2fdf123afc216",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 76,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-24T18:51:55.462Z",
+    "duration": 37820.38,
+    "expected": 42,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

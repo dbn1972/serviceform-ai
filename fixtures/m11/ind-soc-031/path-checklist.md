@@ -11,7 +11,11 @@ Use this when walking the M11 second-service config-reuse path. Tick only what w
 - [ ] Confirm `fixtures/m11/ind-soc-031/tsb-dry-run-fixture.json` pin graph refs authoring shell
 - [ ] Confirm citizen catalogue lab-offers Income only under `environment_label=SAMPLE_LAB`
 - [ ] Confirm version status remains **DRAFT** (no PUBLISHED statutory offer)
-- [ ] Confirm SF-33 owner blockers still listed in `POLICY_INPUT_REQUIRED.md`
-- [ ] Record run tip SHA in evidence — do **not** claim CERTIFIED / G6
+- [ ] Confirm SF-33 owner blockers still listed in `POLICY_INPUT_REQUIRED.md` + `SF33_PUBLISH_BLOCKER.md`
+- [ ] Confirm `sf33-publish-gate.json` has `statutory_publish=BLOCKED` and `publish_blocker=SF-33`
+- [ ] Confirm `PLATFORM_REUSE_GAP_LIST.md` lists no new `services/**` Income backend
+- [ ] Record run tip SHA in `evidence/SF-P8-GOLDEN2/` — do **not** claim CERTIFIED / G6
 
 **Fail if:** any Act citation invented, REAL DigiLocker/SMS/Payment wired, or Income marked PUBLISHED without owner SF-33 inputs.
+
+**P8-6 re-run:** `scripts/dev/p8-golden2-evidence.sh` (requires `platform-lab.sh up`).
