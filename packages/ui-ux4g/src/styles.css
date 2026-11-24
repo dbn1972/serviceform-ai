@@ -11730,13 +11730,14 @@ fieldset.ux4g-radio > legend {
 }
 
 /* Forced colours drop the box-shadows UX4G uses for the switch boundary and for the checkbox,
- * radio and switch focus rings, so those become system-colour borders and outlines. */
+ * radio, switch and form-stepper focus rings, so those become system-colour borders and outlines. */
 @media (forced-colors: active) {
   .sf-app .ux4g-switch-track,
   .sf-app .ux4g-switch-thumb {
     border: var(--ux4g-border-width-sm) solid CanvasText;
   }
 
+  .sf-app .sf-stepper-btn:focus-visible,
   .sf-app .ux4g-switch-input:focus-visible ~ .ux4g-switch-control .ux4g-switch-track,
   .sf-app .ux4g-checkbox-input:focus-visible ~ .ux4g-checkbox-control .ux4g-checkmark,
   .sf-app .ux4g-radio-input:focus-visible ~ .ux4g-radio-control .ux4g-radiomark {
