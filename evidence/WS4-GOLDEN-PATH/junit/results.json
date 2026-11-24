@@ -1,0 +1,4386 @@
+{
+  "config": {
+    "argv": [
+      "/exec-daemon/node",
+      "/agent/repos/serviceform-ai/node_modules/@playwright/test/cli.js",
+      "test",
+      "-c",
+      "tests/e2e/playwright.config.ts",
+      "--",
+      "tests/e2e/golden/ind-soc-002-golden.spec.ts",
+      "tests/e2e/m11-second-service-reuse.spec.ts"
+    ],
+    "configFile": "/agent/repos/serviceform-ai/tests/e2e/playwright.config.ts",
+    "rootDir": "/agent/repos/serviceform-ai/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/agent/repos/serviceform-ai/test-results/e2e/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/agent/repos/serviceform-ai/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "../../test-results/e2e/junit.xml"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../../test-results/e2e/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "certificate-forms-representatives.spec.ts",
+      "file": "certificate-forms-representatives.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "SAMPLE_LAB certificate representatives — form load + submit API",
+          "file": "certificate-forms-representatives.spec.ts",
+          "line": 132,
+          "column": 6,
+          "specs": [
+            {
+              "title": "IND-SOC-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2006,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:25.749Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-15d9b243e53cbd6f8118",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-031: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1496,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:28.051Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-fca85cd5166a5cde1df0",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1142,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:29.567Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-19294afbd3c36d45f7ef",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-CIV-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1274,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:30.718Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-78c63184bcbfa88ce407",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1200,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:32.000Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-30d03a3c7fe50aabaeb3",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-004: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1180,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:33.206Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-d3ae8f992508a31a9ce7",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-003: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1057,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:34.393Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-4753bc8258b41b89df2d",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1297,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:35.456Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-0790d60b0472f40d877e",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-BTP-001: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1254,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:36.762Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-d1b9b98f39547f974600",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-010: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1074,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:38.023Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-969f7e9fd90b4a73cb9c",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-LAB-019: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1063,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:39.106Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-8057f105b7a4300088ae",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-ULB-007: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1165,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:40.175Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-684156158667083e91c2",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            },
+            {
+              "title": "IND-ENV-002: form interpret + validation + submit success",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 132,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:41.352Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 132,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-3491f0f916cd7b23f1f2",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 136,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "SAMPLE_LAB certificate representatives — officer + DigiLocker SIM",
+          "file": "certificate-forms-representatives.spec.ts",
+          "line": 202,
+          "column": 6,
+          "specs": [
+            {
+              "title": "IND-SOC-002: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5579,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:25.730Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-8efa017987c1ce43767e",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-031: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3859,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:31.622Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-ab71b25bdab51620bee9",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-SOC-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3890,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:35.502Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-0c2dffed1e6a7a15962c",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-CIV-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3792,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:39.416Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-1ed336decede1eb5b15f",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-AGR-002: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3801,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.231Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-9ecbbf0b675f74c672f6",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-EDU-004: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4103,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:47.060Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-42e238408e8f875b1003",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-BTP-001: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4364,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:51.187Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-c1791dec215c2541baad",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            },
+            {
+              "title": "IND-ULB-007: citizen → officer approve → DigiLocker SIMULATED",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                        "line": 202,
+                        "column": 6
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4388,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:55.592Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "/agent/repos/serviceform-ai/tests/e2e/certificate-forms-representatives.spec.ts",
+                            "line": 202,
+                            "column": 6
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9c2f1bcbf86328d20cc8-7d1c28648bb5b6eb4356",
+              "file": "certificate-forms-representatives.spec.ts",
+              "line": 206,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "golden/ind-soc-002-golden.spec.ts",
+      "file": "golden/ind-soc-002-golden.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "M10 Golden E2E — owner-input gate",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 19,
+          "column": 6,
+          "specs": [
+            {
+              "title": "fails closed when SF_M10_OWNER_INPUTS_READY is unset; Odisha sample when set",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.661Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-520887d67646661ee5e8",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 20,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — harness health (IND-SOC-002 scaffold)",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 35,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.668Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-e540cfdd5e4121234cb2",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "officer workbench health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.682Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-fc4f80a04602fbb5572f",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "studio health endpoint responds 200",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.696Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-66040cb20b079184c6bf",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "citizen portal is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 170,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.712Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-96af1f9351f592c17db0",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "officer workbench is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 191,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:42.889Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9167b10d70a7b4db1de7",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "studio is reachable and has correct page title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 178,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.089Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-bd6394ae28b699046ee7",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 63,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — tenant isolation probes",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 70,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal does not serve cross-tenant data in page source",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 165,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.281Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-29da48d2196604403ecf",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "API health endpoint does not include tenant identifiers in response body",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.456Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-8d2edabe7e5cdfe86e79",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 78,
+              "column": 3
+            },
+            {
+              "title": "forged x-tenant-id header on citizen portal health returns 403 or is ignored (SF-TEN-002)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.469Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9a4ae22f5abf2ee351ea",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 92,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — UX4G accessibility scaffolding",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 105,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen portal has required ARIA landmarks",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 162,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.485Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-59340484bb9975ef2aa2",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "officer workbench has required ARIA landmarks",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 155,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.654Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-593bc0f53c21ed89fd10",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 118,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "M10 Golden E2E — SAMPLE_LAB journey routes",
+          "file": "golden/ind-soc-002-golden.spec.ts",
+          "line": 171,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Studio: author IND-SOC-002 service metadata without bespoke backend code",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 183,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:43.817Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-f40e4b7b0d7d75be0860",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 172,
+              "column": 3
+            },
+            {
+              "title": "Citizen: residence certificate apply page loads after SAMPLE_LAB login",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1640,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:44.012Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-9680257b36e66e638531",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 181,
+              "column": 3
+            },
+            {
+              "title": "Officer: applications queue loads after SIMULATED IdP sign-in",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 803,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:45.659Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-fef8433c7a38c9df8f46",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 190,
+              "column": 3
+            },
+            {
+              "title": "SAMPLE_LAB platform end-to-end: apply → officer approves → DigiLocker SIMULATED publish",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3496,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:46.470Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "dcccbc4597e2f45b68e6-a5f4f6f8fdd6dc91d72d",
+              "file": "golden/ind-soc-002-golden.spec.ts",
+              "line": 195,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "m11-second-service-reuse.spec.ts",
+      "file": "m11-second-service-reuse.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "M11 second-service reuse — Income SAMPLE_LAB lab-offer",
+          "file": "m11-second-service-reuse.spec.ts",
+          "line": 11,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen catalogue lists Income as offered in SAMPLE_LAB",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 650,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:49.978Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-b65236e347eb924cf30c",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 12,
+              "column": 3
+            },
+            {
+              "title": "citizen apply for IND-SOC-031 loads the metadata form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 423,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:50.643Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-5c5412c8aca7d8dfb0d8",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 28,
+              "column": 3
+            },
+            {
+              "title": "Studio template catalogue exposes Income stub and forms designer entry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 549,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:51.079Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-8161db5b81464c76756f",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 43,
+              "column": 3
+            },
+            {
+              "title": "Studio Fee designer exposes Income SAMPLE_LAB DUMMY starter",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 434,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:51.637Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8eaac9d2035c949c1003-5a85ac1d31801bc8939c",
+              "file": "m11-second-service-reuse.spec.ts",
+              "line": 60,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "platform-journey.spec.ts",
+      "file": "platform-journey.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "citizen identity on CMP-004 (opaque session, ADR-0007 D-3)",
+          "file": "platform-journey.spec.ts",
+          "line": 116,
+          "column": 6,
+          "specs": [
+            {
+              "title": "anonymous gated page → OTP from SIMULATED SMS → back to the page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1064,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:52.153Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-bd2591c972b7e26e3cbd",
+              "file": "platform-journey.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "the session cookie is opaque, HttpOnly and carries no identity claims",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1105,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:53.234Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-0048e28f4f560cea1879",
+              "file": "platform-journey.spec.ts",
+              "line": 127,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: a forged or legacy lab cookie is anonymous (Phase A L-1 closed)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 33,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:54.355Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-51bdad9e35e39c73e053",
+              "file": "platform-journey.spec.ts",
+              "line": 141,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: five wrong codes lock the challenge; the correct code is then refused",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1296,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:54.400Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-002a3972e20dd7f4f40e",
+              "file": "platform-journey.spec.ts",
+              "line": 159,
+              "column": 3
+            },
+            {
+              "title": "ignores off-site next target /%09/evil.example (open-redirect guard)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 957,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:55.707Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-340a086ab6cfeb02ab7c",
+              "file": "platform-journey.spec.ts",
+              "line": 183,
+              "column": 5
+            },
+            {
+              "title": "ignores off-site next target /%0A/evil.example (open-redirect guard)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1023,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:56.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-3ed99a11013fdb72260f",
+              "file": "platform-journey.spec.ts",
+              "line": 183,
+              "column": 5
+            },
+            {
+              "title": "ignores off-site next target //evil.example (open-redirect guard)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1076,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:57.729Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-97e1949e5a6ecf0c0bce",
+              "file": "platform-journey.spec.ts",
+              "line": 183,
+              "column": 5
+            },
+            {
+              "title": "ignores off-site next target /.//evil.example (open-redirect guard)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 999,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:58.818Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-2ea9fcd5c6efd01ee599",
+              "file": "platform-journey.spec.ts",
+              "line": 183,
+              "column": 5
+            },
+            {
+              "title": "ignores off-site next target /..//evil.example (open-redirect guard)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1029,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:36:59.832Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-0c66ca1b4905830a8456",
+              "file": "platform-journey.spec.ts",
+              "line": 183,
+              "column": 5
+            },
+            {
+              "title": "register records CMP-030 consent and a CMP-005 profile used for the name and prefill",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2369,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:00.094Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-6e9ea65427dac0ec2d3e",
+              "file": "platform-journey.spec.ts",
+              "line": 192,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: register refuses a non-synthetic name or missing consent before any OTP",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 804,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:00.874Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-bf32ae4b32624ae52076",
+              "file": "platform-journey.spec.ts",
+              "line": 237,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: the session API refuses an invalid registration payload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 896,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:01.690Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-e298be619b2ebab793d1",
+              "file": "platform-journey.spec.ts",
+              "line": 249,
+              "column": 3
+            },
+            {
+              "title": "sign-out revokes the CMP-004 session, not just the cookie",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1171,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:02.500Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-1ff19f51a5bd76b94bbb",
+              "file": "platform-journey.spec.ts",
+              "line": 269,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "application journey on CMP-015 (RLS + OPA citizen-owner)",
+          "file": "platform-journey.spec.ts",
+          "line": 279,
+          "column": 6,
+          "specs": [
+            {
+              "title": "a submitted application is stored on the platform and listed for its owner",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3210,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:02.599Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-76ad5de872018b9c9b84",
+              "file": "platform-journey.spec.ts",
+              "line": 281,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: another citizen cannot list or open the application (IDOR)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4038,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:03.714Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-60725814e83b7fed9775",
+              "file": "platform-journey.spec.ts",
+              "line": 300,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: non-synthetic applicant names are refused server-side (Phase A L-2)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 880,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:05.826Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-7226957024bea4ba240c",
+              "file": "platform-journey.spec.ts",
+              "line": 326,
+              "column": 3
+            },
+            {
+              "title": "a retried submit with the same form-session key files one application (INT-F5)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1167,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:06.718Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-1a1be9198644964c9be5",
+              "file": "platform-journey.spec.ts",
+              "line": 338,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: cross-site writes are refused on both portals (SEC F-07)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1064,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:07.795Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-5271063aff436cb693a7",
+              "file": "platform-journey.spec.ts",
+              "line": 373,
+              "column": 3
+            },
+            {
+              "title": "anonymous submit and anonymous listing are refused",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:07.899Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-5e5c2a09a33d575ed0c5",
+              "file": "platform-journey.spec.ts",
+              "line": 398,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "metadata-driven apply on CMP-009 (CCR-M10-002)",
+          "file": "platform-journey.spec.ts",
+          "line": 406,
+          "column": 6,
+          "specs": [
+            {
+              "title": "the wizard is rendered from the pinned published form and its rules",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3730,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:07.919Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-6adf120a14fe2c0e85e8",
+              "file": "platform-journey.spec.ts",
+              "line": 409,
+              "column": 3
+            },
+            {
+              "title": "CMP-009 is authoritative: invalid answers are refused per field and nothing is filed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1060,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:08.908Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-d394e42cc0a18b460b0b",
+              "file": "platform-journey.spec.ts",
+              "line": 460,
+              "column": 3
+            },
+            {
+              "title": "only offered services expose a form; catalogue stubs are not offered",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1063,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:10.018Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-598894b20f692b3ad2e9",
+              "file": "platform-journey.spec.ts",
+              "line": 493,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "officer decision on CMP-015 (CMP-004 officer session, HUMAN decision)",
+          "file": "platform-journey.spec.ts",
+          "line": 532,
+          "column": 6,
+          "specs": [
+            {
+              "title": "the workbench requires sign-in",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 747,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:11.126Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-86a810a416c24cbc021d",
+              "file": "platform-journey.spec.ts",
+              "line": 534,
+              "column": 3
+            },
+            {
+              "title": "citizen applies → officer approves → credential issued and in DigiLocker (SIMULATED)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5980,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:11.661Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-b922bcafd67f044c58cd",
+              "file": "platform-journey.spec.ts",
+              "line": 540,
+              "column": 3
+            },
+            {
+              "title": "NEGATIVE: a citizen session cannot act on the workbench API",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2250,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:11.917Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-777ba4e5236af0ff8366",
+              "file": "platform-journey.spec.ts",
+              "line": 568,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "platform journey accessibility (WCAG 2.1 AA, UX4G rule 6)",
+          "file": "platform-journey.spec.ts",
+          "line": 580,
+          "column": 6,
+          "specs": [
+            {
+              "title": "citizen and officer journey pages have no axe violations and reflow at 320 px",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8849,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:14.205Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-9e197dad0bdb8960ffec",
+              "file": "platform-journey.spec.ts",
+              "line": 582,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "citizen auth pages (WCAG 2.1 AA, keyboard, UX4G rule 6)",
+          "file": "platform-journey.spec.ts",
+          "line": 613,
+          "column": 6,
+          "specs": [
+            {
+              "title": "validates the mobile number before sending an OTP",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 747,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:17.652Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-f99e6e3e239068a4169a",
+              "file": "platform-journey.spec.ts",
+              "line": 614,
+              "column": 3
+            },
+            {
+              "title": "OTP entry supports keyboard auto-advance and backspace",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 895,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:18.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-fde2bd296705e053c92b",
+              "file": "platform-journey.spec.ts",
+              "line": 625,
+              "column": 3
+            },
+            {
+              "title": "a wrong code marks the OTP invalid and returns focus to it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1422,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:19.335Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-b024683830b04ad2f306",
+              "file": "platform-journey.spec.ts",
+              "line": 638,
+              "column": 3
+            },
+            {
+              "title": "sign in: unique title, single h1, landmarks, no axe violations, 320 px reflow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1181,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:20.778Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-38e18381998a275ef3ba",
+              "file": "platform-journey.spec.ts",
+              "line": 652,
+              "column": 5
+            },
+            {
+              "title": "create account: unique title, single h1, landmarks, no axe violations, 320 px reflow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1245,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:21.977Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fe1b7c7694f573cecda0-25ca01d5f24a5887e040",
+              "file": "platform-journey.spec.ts",
+              "line": 652,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "shells.spec.ts",
+      "file": "shells.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "web-citizen shell",
+          "file": "shells.spec.ts",
+          "line": 9,
+          "column": 8,
+          "specs": [
+            {
+              "title": "serves the page with landmarks and a level-one heading",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 241,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.098Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-181a3a75336a90fed44b",
+              "file": "shells.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "has no automatically detectable WCAG 2.1 A/AA violations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 676,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.242Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-9580a182473981d1b5e5",
+              "file": "shells.spec.ts",
+              "line": 22,
+              "column": 5
+            },
+            {
+              "title": "skip link is the first tab stop and moves focus to main",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 233,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-dfea3dad0872f21f0738",
+              "file": "shells.spec.ts",
+              "line": 30,
+              "column": 5
+            },
+            {
+              "title": "reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 177,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.650Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-b1ad903e4a5031ece3c3",
+              "file": "shells.spec.ts",
+              "line": 39,
+              "column": 5
+            },
+            {
+              "title": "sends security headers and a health endpoint",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 21,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.873Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-54c2f364efc9e2270e3c",
+              "file": "shells.spec.ts",
+              "line": 48,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "web-officer shell",
+          "file": "shells.spec.ts",
+          "line": 9,
+          "column": 8,
+          "specs": [
+            {
+              "title": "serves the page with landmarks and a level-one heading",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 218,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.932Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-00c775c9b2cf1ff1082d",
+              "file": "shells.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "has no automatically detectable WCAG 2.1 A/AA violations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 636,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:23.933Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-d90118274b5624ff5ce9",
+              "file": "shells.spec.ts",
+              "line": 22,
+              "column": 5
+            },
+            {
+              "title": "skip link is the first tab stop and moves focus to main",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 214,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.185Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-45e34b2606c386454337",
+              "file": "shells.spec.ts",
+              "line": 30,
+              "column": 5
+            },
+            {
+              "title": "reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 150,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.438Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-8b1e62e830493d5f6ef3",
+              "file": "shells.spec.ts",
+              "line": 39,
+              "column": 5
+            },
+            {
+              "title": "sends security headers and a health endpoint",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 22,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.585Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-025c13ffdc54c5bc85bf",
+              "file": "shells.spec.ts",
+              "line": 48,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "web-studio shell",
+          "file": "shells.spec.ts",
+          "line": 9,
+          "column": 8,
+          "specs": [
+            {
+              "title": "serves the page with landmarks and a level-one heading",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 245,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.620Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-302ea90025124b11c520",
+              "file": "shells.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "has no automatically detectable WCAG 2.1 A/AA violations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 760,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.623Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-32cd5e05ce8243391691",
+              "file": "shells.spec.ts",
+              "line": 22,
+              "column": 5
+            },
+            {
+              "title": "skip link is the first tab stop and moves focus to main",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 220,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:24.878Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-4d4079b4c0e757f80e94",
+              "file": "shells.spec.ts",
+              "line": 30,
+              "column": 5
+            },
+            {
+              "title": "reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 173,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.113Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-e3c4443d6ab8bf9d10f8",
+              "file": "shells.spec.ts",
+              "line": 39,
+              "column": 5
+            },
+            {
+              "title": "sends security headers and a health endpoint",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.313Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-1e86350fb570d57109f8",
+              "file": "shells.spec.ts",
+              "line": 48,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "web-admin shell",
+          "file": "shells.spec.ts",
+          "line": 9,
+          "column": 8,
+          "specs": [
+            {
+              "title": "serves the page with landmarks and a level-one heading",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 247,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.338Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-2d0ebd9ad0377ce3d4b4",
+              "file": "shells.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "has no automatically detectable WCAG 2.1 A/AA violations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 635,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.418Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-cdc2886aacbf580990d6",
+              "file": "shells.spec.ts",
+              "line": 22,
+              "column": 5
+            },
+            {
+              "title": "skip link is the first tab stop and moves focus to main",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 242,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.598Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-d072749e62f10c116660",
+              "file": "shells.spec.ts",
+              "line": 30,
+              "column": 5
+            },
+            {
+              "title": "reflows at 320 CSS px without horizontal scrolling (WCAG 1.4.10)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 153,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:25.859Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-3b1b3beb7c58db87e9ef",
+              "file": "shells.spec.ts",
+              "line": 39,
+              "column": 5
+            },
+            {
+              "title": "sends security headers and a health endpoint",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:26.028Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6809645551b5e4d8a54-01e047ef158fbb84c05c",
+              "file": "shells.spec.ts",
+              "line": 48,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "studio-forms-designer.spec.ts",
+      "file": "studio-forms-designer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Studio forms designer",
+          "file": "studio-forms-designer.spec.ts",
+          "line": 98,
+          "column": 6,
+          "specs": [
+            {
+              "title": "author a form from the palette, add a conditional rule and preview it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6083,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:26.058Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "59b69e53764121011591-4bcfb3f2985f327ff1de",
+              "file": "studio-forms-designer.spec.ts",
+              "line": 99,
+              "column": 3
+            },
+            {
+              "title": "freeze a form version, resolve its pin in CMP-009 and publish through maker-checker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5186,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:26.107Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "59b69e53764121011591-b05cbe41bc1b0c490ddb",
+              "file": "studio-forms-designer.spec.ts",
+              "line": 174,
+              "column": 3
+            },
+            {
+              "title": "refuses unknown pins, tampered hashes, forged tenant headers and unsigned calls",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 958,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:31.335Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "59b69e53764121011591-5eca81d60a685aba72d0",
+              "file": "studio-forms-designer.spec.ts",
+              "line": 242,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "studio-meta-designers.spec.ts",
+      "file": "studio-meta-designers.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Studio meta-kind designers",
+          "file": "studio-meta-designers.spec.ts",
+          "line": 23,
+          "column": 6,
+          "specs": [
+            {
+              "title": "fee designer template edits amount and shows schema hash",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1625,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:32.158Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ae24536058252a043eb-fd4723a71ae94d6ccd30",
+              "file": "studio-meta-designers.spec.ts",
+              "line": 24,
+              "column": 3
+            },
+            {
+              "title": "sla / evidence / credential landings open templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2770,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:32.336Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2ae24536058252a043eb-00f303fc5ee2f076b987",
+              "file": "studio-meta-designers.spec.ts",
+              "line": 37,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "studio-rules-designer.spec.ts",
+      "file": "studio-rules-designer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Studio rules designer",
+          "file": "studio-rules-designer.spec.ts",
+          "line": 66,
+          "column": 6,
+          "specs": [
+            {
+              "title": "author a decision table, suggest boundary tests and run them on CMP-008",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3768,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:33.799Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "29e1bcc4787afac2cbd6-3451bb518f66b62746d2",
+              "file": "studio-rules-designer.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "freeze a tested pack and publish the binding change through maker-checker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4606,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:35.151Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "29e1bcc4787afac2cbd6-0338f838d23d91d68831",
+              "file": "studio-rules-designer.spec.ts",
+              "line": 128,
+              "column": 3
+            },
+            {
+              "title": "the test bench is OPA-authorised and refuses packs CMP-008 would refuse",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:37.582Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "29e1bcc4787afac2cbd6-ab39e8f96fb44de9edfb",
+              "file": "studio-rules-designer.spec.ts",
+              "line": 205,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "studio-workflow-designer.spec.ts",
+      "file": "studio-workflow-designer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Studio workflow designer",
+          "file": "studio-workflow-designer.spec.ts",
+          "line": 67,
+          "column": 6,
+          "specs": [
+            {
+              "title": "draw an officer-review flow on the canvas, check it with CMP-016 and export BPMN",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3557,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:38.652Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12773f93417deddd0c4a-019220bb5e67da8e420a",
+              "file": "studio-workflow-designer.spec.ts",
+              "line": 68,
+              "column": 3
+            },
+            {
+              "title": "freeze, emit a CMP-016 draft and publish the binding change through maker-checker",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3365,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:39.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12773f93417deddd0c4a-5fd7efb38ae2024e5e28",
+              "file": "studio-workflow-designer.spec.ts",
+              "line": 118,
+              "column": 3
+            },
+            {
+              "title": "BPMN import is screened by CMP-016: named performers refused, profile documents accepted",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1342,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:42.220Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "12773f93417deddd0c4a-ef4c6791f779b0e633e9",
+              "file": "studio-workflow-designer.spec.ts",
+              "line": 188,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "template-catalogue.spec.ts",
+      "file": "template-catalogue.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Studio template catalogue",
+          "file": "template-catalogue.spec.ts",
+          "line": 45,
+          "column": 6,
+          "specs": [
+            {
+              "title": "browse and filter versioned templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10490,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:43.222Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e63c0eca9200674953f-e0833a7f4f30a1b7995d",
+              "file": "template-catalogue.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "select a template: version history, diff, fields and live preview",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2429,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:43.587Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e63c0eca9200674953f-11100a2a2ac65cb0eafb",
+              "file": "template-catalogue.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "a stub shows SAMPLE_LAB sample parameter labels (configurable)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1797,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:46.041Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e63c0eca9200674953f-ab55e68d3ec59c58564f",
+              "file": "template-catalogue.spec.ts",
+              "line": 108,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "citizen service catalogue",
+          "file": "template-catalogue.spec.ts",
+          "line": 124,
+          "column": 6,
+          "specs": [
+            {
+              "title": "offered services can be applied for; stubs are listed but not offered",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6429,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-24T14:37:47.857Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "6e63c0eca9200674953f-be0d75c20c5a2c7e630c",
+              "file": "template-catalogue.spec.ts",
+              "line": 125,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-24T14:36:21.455Z",
+    "duration": 93032.029,
+    "expected": 107,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
