@@ -11425,9 +11425,9 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-designer-device-mobile .sf-stepper-item:not(:last-child)::after {
-  left: calc(50% + 1.5rem);
-  right: calc(-50% + 1.5rem);
-  top: calc(var(--ux4g-gap-4) + 0.875rem - 1px);
+  left: calc(50% + var(--ux4g-size-24));
+  right: calc(-50% + var(--ux4g-size-24));
+  top: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px);
   bottom: auto;
   width: auto;
   height: 2px;
@@ -11435,7 +11435,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-designer-device-mobile .sf-stepper-btn {
   width: auto;
-  min-width: 2.75rem;
+  min-width: var(--ux4g-size-44);
   justify-content: center;
   padding: var(--ux4g-gap-4);
 }
@@ -11446,14 +11446,14 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-designer-device-mobile .sf-stepper-current .sf-stepper-index {
-  box-shadow: 0 0 0 0.25rem var(--ux4g-color-primary-50);
+  box-shadow: 0 0 0 var(--ux4g-outline-width-lg) var(--ux4g-color-primary-50);
 }
 
 .sf-designer-device-mobile .sf-stepper-copy {
   position: absolute;
   width: 1px;
   height: 1px;
-  margin: -1px;
+  margin: -1px; /* ux4g-token-exempt: visually-hidden clip pattern */
   padding: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
