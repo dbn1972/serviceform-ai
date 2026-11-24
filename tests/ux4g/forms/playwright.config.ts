@@ -4,8 +4,10 @@
  * (packages/ui-ux4g/gallery), pre-rendered to static HTML by global-setup.ts. Needs no platform
  * host or app build.
  *
- * Baselines are owned by the reference environment: Ubuntu 24.04, fonts-noto-core and
- * Playwright's bundled Chromium. PW_CHROMIUM_PATH is deliberately not honoured here.
+ * Baselines are owned by the reference environment: Ubuntu 24.04, fonts-noto-core, Playwright's
+ * bundled Chromium and the fonts `playwright install --with-deps chromium` adds. With that font set
+ * Devanagari falls back to FreeSans (the UX4G base stack names no Indic family), so regenerate
+ * baselines only there. PW_CHROMIUM_PATH is deliberately not honoured here.
  * Not CERTIFIED; does not set SF_M10_UX4G_READY.
  */
 import { defineConfig, devices } from '@playwright/test';

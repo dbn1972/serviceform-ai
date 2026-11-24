@@ -9,7 +9,8 @@
 ## Environment
 
 Ubuntu 24.04 (noble) · Node 22.23.4 · pnpm 10.28.0 · Playwright 1.63.0 with bundled Chrome Headless
-Shell 153.0.8010.12 · `fonts-noto-core` 20201225-2 · Python 3.12.3. CI job `ux4g-forms` runs the same
+Shell 153.0.8010.12 · `fonts-noto-core` 20201225-2 plus the fonts `playwright install-deps chromium`
+adds (FreeFont, IPA, TLWG, Unifont, WQY Zen Hei) · Python 3.12.3. CI job `ux4g-forms` runs the same
 stack on `ubuntu-24.04`.
 
 ## What landed
@@ -51,6 +52,7 @@ stack on `ubuntu-24.04`.
 | — token-lock snapshot + 20 visual baselines (18 scenes×viewports, 2 forced colours) | 21/21 | `tests/ux4g/forms/snapshots/` |
 | — probe self-tests (each probe fails on a seeded violation) | 2/2 | |
 | Determinism: two further runs without updating snapshots | 94/94 both (pre-rewrite commit; UI and test tree identical) | |
+| CI run on `ed4e97f1`: 91/94; the 3 `multilingual` baselines differed (~1% px) because the runner's Playwright font deps make Devanagari fall back to FreeSans | Baselines regenerated in the CI-equivalent font set; all 3 byte-identical to the CI actuals; the other 17 PNGs and the token lock unchanged; 94/94 on two further runs. Thresholds and masks unchanged. | |
 | Lock bites: one border token changed (neutral-500 → 300) | 14 visual/token tests failed (~1% px), reverted (pre-rewrite commit) | |
 | `python3 -m pytest scripts/gates/tests` | 40 passed | `gate-selftests.log` |
 | `run_all.py` on this branch alone | 10/11; `ux4g-tokens` 12 errors = Studio items fixed by #276, not yet on main | `gates-run-all.log`, `ux4g-token-audit-branch.json` |
@@ -83,6 +85,7 @@ stack on `ubuntu-24.04`.
 - WS2: `--ux4g-border-color-warning-strong` (2.38:1) is still used for the workflow rule-gate diamond stroke and the rules-table warn accent.
 - D1–D4 change citizen apply visuals; SF-M10-005 journey baselines need a reviewed refresh on next run.
 - `next build` reports a Next.js security advisory for the pinned 16.4.3 (exit 1 on the first run, clean on retry, both times). Upgrading is an owner release change; not done here.
+- Design-system owner: `--ux4g-font-family-base` (`'Noto Sans', system-ui, sans-serif`) names no Indic family and webfonts are not embedded, so Devanagari falls back to whatever the OS prefers (FreeSans on the reference runner). Whether to add Noto Sans Devanagari and other Indic Noto families to the stack is a UX4G typography decision (ADR), not changed here.
 - `packages/service-templates/test/catalogue.test.ts` rewrites a committed lab fixture (`IND-AGR-010.json`) on every `pnpm test`; restored, not committed.
 
 ## Secret-scan history rewrite
