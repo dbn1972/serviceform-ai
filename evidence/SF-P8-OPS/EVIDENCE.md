@@ -2,6 +2,7 @@
 
 **Stamp:** `CERTIFIED=false` · `G6=false` · `self_certified=false` · DigiLocker **out of scope**  
 **Branch:** `cursor/path8-ops-depth-b38f`  
+**Tip (pre-push):** see `code-sha.txt` after push  
 **Scope:** Maker≠checker UX, deficiency loop decide-block, SLA breach visibility, TSB pin integrity cues, CMP-015 audit depth + sanitize, officer SF-TEN-002 on task queue.
 
 ## What landed
