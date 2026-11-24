@@ -1,0 +1,70 @@
+
+> serviceform-ai@ e2e /agent/repos/serviceform-ai
+> playwright test -c tests/e2e/playwright.config.ts citizen-form-polish citizen-form-ux --repeat-each=3 --workers=2
+
+
+Running 48 tests using 2 workers
+
+(node:62828) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62827) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/citizen-form-polish.spec.ts:88:3 › phone: first screen, thumb zone and focus (390 x 844) › the first question is on the first screen, above a sticky action bar in the thumb zone (1.9s)
+  ✓   2 tests/e2e/citizen-form-polish.spec.ts:58:3 › answer progress › counts required answers honestly: a prefilled evidence name is not an upload (2.2s)
+  ✓   3 tests/e2e/citizen-form-polish.spec.ts:107:3 › phone: first screen, thumb zone and focus (390 x 844) › keyboard focus is never hidden behind the sticky bar (WCAG 2.4.11) (1.3s)
+  ✓   5 tests/e2e/citizen-form-polish.spec.ts:178:3 › error recovery › a failed autosave says so, keeps the answers and recovers with "Try saving again" (1.6s)
+  ✓   4 tests/e2e/citizen-form-polish.spec.ts:143:3 › error recovery › a refused submit flags every step that still needs attention until it is fixed (2.8s)
+  ✓   7 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: no-preference (975ms)
+  ✓   8 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: reduce (744ms)
+  ✓   6 tests/e2e/citizen-form-polish.spec.ts:206:3 › submission confirmation › after submit the status page confirms once, with the reference, focused for screen readers (2.9s)
+  ✓  10 tests/e2e/citizen-form-ux.spec.ts:115:3 › save and resume on a CMP-015 draft › NEGATIVE: another citizen cannot read, save over or resume a draft (IDOR) (1.5s)
+  ✓  11 tests/e2e/citizen-form-ux.spec.ts:163:3 › save and resume on a CMP-015 draft › NEGATIVE: a draft for one service cannot be saved under another, and anonymous saves are refused (609ms)
+  ✓   9 tests/e2e/citizen-form-ux.spec.ts:63:3 › save and resume on a CMP-015 draft › save and come back later → My applications → continue → submit files that same application (3.6s)
+  ✓  12 tests/e2e/citizen-form-ux.spec.ts:201:3 › save and resume on a CMP-015 draft › NEGATIVE: SAMPLE_LAB refuses a non-synthetic name on save; nothing is stored (797ms)
+  ✓  13 tests/e2e/citizen-form-ux.spec.ts:224:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Enter continues; the error summary links to a field the sticky bar does not cover (961ms)
+  ✓  14 tests/e2e/citizen-form-ux.spec.ts:264:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › a format error shows when the citizen leaves the field and clears when fixed (810ms)
+  ✓  15 tests/e2e/citizen-form-ux.spec.ts:281:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Evidence asks for an upload with a linked error; Change returns to the preview (1.8s)
+(node:63382) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  17 tests/e2e/citizen-form-polish.spec.ts:58:3 › answer progress › counts required answers honestly: a prefilled evidence name is not an upload (1.6s)
+  ✓  16 tests/e2e/citizen-form-ux.spec.ts:310:3 › phone reflow and accessibility on every step › 320 px: no clipped controls, step names available to assistive tech, axe clean (4.0s)
+(node:63519) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  18 tests/e2e/citizen-form-polish.spec.ts:88:3 › phone: first screen, thumb zone and focus (390 x 844) › the first question is on the first screen, above a sticky action bar in the thumb zone (1.3s)
+  ✓  19 tests/e2e/citizen-form-polish.spec.ts:107:3 › phone: first screen, thumb zone and focus (390 x 844) › keyboard focus is never hidden behind the sticky bar (WCAG 2.4.11) (1.3s)
+  ✓  21 tests/e2e/citizen-form-polish.spec.ts:178:3 › error recovery › a failed autosave says so, keeps the answers and recovers with "Try saving again" (1.8s)
+  ✓  20 tests/e2e/citizen-form-polish.spec.ts:143:3 › error recovery › a refused submit flags every step that still needs attention until it is fixed (2.5s)
+  ✓  23 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: no-preference (937ms)
+  ✓  24 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: reduce (739ms)
+  ✓  22 tests/e2e/citizen-form-polish.spec.ts:206:3 › submission confirmation › after submit the status page confirms once, with the reference, focused for screen readers (2.7s)
+  ✓  26 tests/e2e/citizen-form-ux.spec.ts:115:3 › save and resume on a CMP-015 draft › NEGATIVE: another citizen cannot read, save over or resume a draft (IDOR) (1.4s)
+  ✓  27 tests/e2e/citizen-form-ux.spec.ts:163:3 › save and resume on a CMP-015 draft › NEGATIVE: a draft for one service cannot be saved under another, and anonymous saves are refused (559ms)
+  ✓  25 tests/e2e/citizen-form-ux.spec.ts:63:3 › save and resume on a CMP-015 draft › save and come back later → My applications → continue → submit files that same application (3.3s)
+  ✓  28 tests/e2e/citizen-form-ux.spec.ts:201:3 › save and resume on a CMP-015 draft › NEGATIVE: SAMPLE_LAB refuses a non-synthetic name on save; nothing is stored (773ms)
+  ✓  29 tests/e2e/citizen-form-ux.spec.ts:224:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Enter continues; the error summary links to a field the sticky bar does not cover (922ms)
+  ✓  30 tests/e2e/citizen-form-ux.spec.ts:264:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › a format error shows when the citizen leaves the field and clears when fixed (860ms)
+  ✓  31 tests/e2e/citizen-form-ux.spec.ts:281:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Evidence asks for an upload with a linked error; Change returns to the preview (1.9s)
+(node:63972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  33 tests/e2e/citizen-form-polish.spec.ts:58:3 › answer progress › counts required answers honestly: a prefilled evidence name is not an upload (1.8s)
+  ✓  32 tests/e2e/citizen-form-ux.spec.ts:310:3 › phone reflow and accessibility on every step › 320 px: no clipped controls, step names available to assistive tech, axe clean (3.9s)
+(node:64110) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  34 tests/e2e/citizen-form-polish.spec.ts:88:3 › phone: first screen, thumb zone and focus (390 x 844) › the first question is on the first screen, above a sticky action bar in the thumb zone (1.3s)
+  ✓  35 tests/e2e/citizen-form-polish.spec.ts:107:3 › phone: first screen, thumb zone and focus (390 x 844) › keyboard focus is never hidden behind the sticky bar (WCAG 2.4.11) (1.3s)
+  ✓  37 tests/e2e/citizen-form-polish.spec.ts:178:3 › error recovery › a failed autosave says so, keeps the answers and recovers with "Try saving again" (1.9s)
+  ✓  36 tests/e2e/citizen-form-polish.spec.ts:143:3 › error recovery › a refused submit flags every step that still needs attention until it is fixed (2.7s)
+  ✓  39 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: no-preference (1.0s)
+  ✓  40 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: reduce (781ms)
+  ✓  38 tests/e2e/citizen-form-polish.spec.ts:206:3 › submission confirmation › after submit the status page confirms once, with the reference, focused for screen readers (2.8s)
+  ✓  42 tests/e2e/citizen-form-ux.spec.ts:115:3 › save and resume on a CMP-015 draft › NEGATIVE: another citizen cannot read, save over or resume a draft (IDOR) (1.4s)
+  ✓  43 tests/e2e/citizen-form-ux.spec.ts:163:3 › save and resume on a CMP-015 draft › NEGATIVE: a draft for one service cannot be saved under another, and anonymous saves are refused (590ms)
+  ✓  41 tests/e2e/citizen-form-ux.spec.ts:63:3 › save and resume on a CMP-015 draft › save and come back later → My applications → continue → submit files that same application (3.1s)
+  ✓  44 tests/e2e/citizen-form-ux.spec.ts:201:3 › save and resume on a CMP-015 draft › NEGATIVE: SAMPLE_LAB refuses a non-synthetic name on save; nothing is stored (817ms)
+  ✓  45 tests/e2e/citizen-form-ux.spec.ts:224:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Enter continues; the error summary links to a field the sticky bar does not cover (974ms)
+  ✓  46 tests/e2e/citizen-form-ux.spec.ts:264:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › a format error shows when the citizen leaves the field and clears when fixed (945ms)
+  ✓  47 tests/e2e/citizen-form-ux.spec.ts:281:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Evidence asks for an upload with a linked error; Change returns to the preview (1.8s)
+  ✓  48 tests/e2e/citizen-form-ux.spec.ts:310:3 › phone reflow and accessibility on every step › 320 px: no clipped controls, step names available to assistive tech, axe clean (3.5s)
+
+  48 passed (47.8s)
+EXIT 0

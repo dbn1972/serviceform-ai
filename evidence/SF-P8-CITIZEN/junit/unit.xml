@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="28" failures="0" errors="0" time="0.041127234">
+    <testsuite name="apps/web-citizen/test/apply-polish.test.tsx" timestamp="2026-11-24T18:36:35.210Z" hostname="cursor" tests="5" failures="0" errors="0" skipped="0" time="0.012163467">
+        <testcase classname="apps/web-citizen/test/apply-polish.test.tsx" name="just-submitted hand-off &gt; greets only the application submitted in this tab, until it is forgotten" time="0.001274893">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/apply-polish.test.tsx" name="just-submitted hand-off &gt; holds nothing in browser storage (no client PII store)" time="0.000762769">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/apply-polish.test.tsx" name="SubmissionConfirmation &gt; states the reference and what happens next, and never claims a decision" time="0.00705195">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/apply-polish.test.tsx" name="SubmissionConfirmation &gt; asks for the fee first when the application waits for payment" time="0.000960803">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/apply-polish.test.tsx" name="CitizenPageHeader &gt; compact task header keeps one h1 and the breadcrumb, with a smaller title" time="0.000977145">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/form-renderer.test.tsx" timestamp="2026-11-24T18:36:35.212Z" hostname="cursor" tests="23" failures="0" errors="0" skipped="0" time="0.028963767">
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; derives wizard steps, rule scopes and visibility from metadata" time="0.002022415">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; reads and writes nested values immutably and refuses unsafe pointers" time="0.00043184">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; applies required along the schema path and the conditional branch" time="0.000318022">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; mirrors CMP-009 issue codes per step with metadata copy" time="0.000893883">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; maps authoritative issues back to fields and their step" time="0.000293915">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; drops hidden values before submit" time="0.000182754">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; matches the CMP-009 bounded pattern subset" time="0.000402362">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; renders groups, labelled UX4G inputs, radio enum labels and hides rule-hidden controls" time="0.009600589">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; announces errors on the field, with a hidden &quot;Error:&quot; for screen readers" time="0.00209423">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; lets the host own a control: a slot replaces it and null leaves it out" time="0.000577525">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; counts characters against maxLength and wires blur for validate-after-answer" time="0.000792082">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; renders a review of the non-review steps with display labels" time="0.001139769">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; shows host display text for host-owned values and drops rows set to null" time="0.000663088">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="resume and per-field validation &gt; reports one field against the current data (required, pattern, conditional)" time="0.000271564">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="resume and per-field validation &gt; resumes on the first step that still needs an answer, else on the review step" time="0.000383589">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; marks done, current and not-started steps for sight and for assistive technology" time="0.001122629">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; lets a returning applicant reopen any step up to the furthest reached" time="0.000979703">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; shows answer progress as text and a native progress element (no inline style)" time="0.001647774">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; a form with no required answer reads as complete, not as an empty bar" time="0.001892765">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; flags steps that need attention by text, icon and state, but never the current step" time="0.000862016">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="answer progress and error steps &gt; counts required, visible questions on answer steps that pass their checks" time="0.000470914">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="answer progress and error steps &gt; follows conditional requirement and visibility; optional and review answers do not count" time="0.000244701">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="answer progress and error steps &gt; lists every step that holds one of the error pointers" time="0.000161633">
+        </testcase>
+    </testsuite>
+</testsuites>

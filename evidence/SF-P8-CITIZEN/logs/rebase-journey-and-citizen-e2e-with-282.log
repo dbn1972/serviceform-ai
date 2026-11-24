@@ -1,0 +1,41 @@
+
+> serviceform-ai@ e2e /agent/repos/serviceform-ai
+> playwright test -c tests/e2e/playwright.config.ts a11y-ux4g-forms-journey citizen-form-polish citizen-form-ux
+
+
+Running 27 tests using 2 workers
+
+(node:74659) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74660) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/e2e/a11y-ux4g-forms-journey.spec.ts:211:3 › citizen apply journey: every screen passes the probe battery › step 1 Applicant details (5.3s)
+  ✓   2 tests/e2e/a11y-ux4g-forms-journey.spec.ts:217:3 › citizen apply journey: every screen passes the probe battery › step 1 with errors: summary focused, every invalid field wired (5.6s)
+  ✓   3 tests/e2e/a11y-ux4g-forms-journey.spec.ts:227:3 › citizen apply journey: every screen passes the probe battery › step 2 Residence address (6.8s)
+  ✓   4 tests/e2e/a11y-ux4g-forms-journey.spec.ts:232:3 › citizen apply journey: every screen passes the probe battery › step 3 Supporting evidence, before and after the upload (16.1s)
+  ✓   5 tests/e2e/a11y-ux4g-forms-journey.spec.ts:242:3 › citizen apply journey: every screen passes the probe battery › step 4 Preview and declaration, then submit without declaring (12.7s)
+  ✓   6 tests/e2e/a11y-ux4g-forms-journey.spec.ts:251:3 › citizen apply journey: every screen passes the probe battery › save and come back later: the notice takes focus (6.8s)
+  ✓   8 tests/e2e/a11y-ux4g-forms-journey.spec.ts:268:3 › citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1) › sign in, answer, upload evidence, declare and submit without the mouse (2.8s)
+  ✓   7 tests/e2e/a11y-ux4g-forms-journey.spec.ts:258:3 › citizen apply journey: every screen passes the probe battery › status page after submit, and My applications (8.9s)
+  ✓  10 tests/e2e/a11y-ux4g-forms-journey.spec.ts:387:3 › Studio designer preview of the Residence form › keyboard only: open the template, switch to Preview and walk the preview steps (3.2s)
+  ✓  11 tests/e2e/a11y-ux4g-forms-journey.spec.ts:437:3 › officer queue and review of a submitted application › queue and review pass the probe battery; decision controls are keyboard reachable (11.3s)
+  ✓  12 tests/e2e/citizen-form-polish.spec.ts:58:3 › answer progress › counts required answers honestly: a prefilled evidence name is not an upload (1.6s)
+  ✓  13 tests/e2e/citizen-form-polish.spec.ts:88:3 › phone: first screen, thumb zone and focus (390 x 844) › the first question is on the first screen, above a sticky action bar in the thumb zone (1.1s)
+  ✓  14 tests/e2e/citizen-form-polish.spec.ts:107:3 › phone: first screen, thumb zone and focus (390 x 844) › keyboard focus is never hidden behind the sticky bar (WCAG 2.4.11) (1.0s)
+  ✓  15 tests/e2e/citizen-form-polish.spec.ts:143:3 › error recovery › a refused submit flags every step that still needs attention until it is fixed (2.4s)
+  ✓  16 tests/e2e/citizen-form-polish.spec.ts:178:3 › error recovery › a failed autosave says so, keeps the answers and recovers with "Try saving again" (1.6s)
+  ✓  17 tests/e2e/citizen-form-polish.spec.ts:206:3 › submission confirmation › after submit the status page confirms once, with the reference, focused for screen readers (2.3s)
+  ✓  18 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: no-preference (764ms)
+  ✓  19 tests/e2e/citizen-form-polish.spec.ts:241:5 › motion respects the reduced-motion preference (WCAG 2.3.3) › step change with prefers-reduced-motion: reduce (717ms)
+  ✓  20 tests/e2e/citizen-form-ux.spec.ts:63:3 › save and resume on a CMP-015 draft › save and come back later → My applications → continue → submit files that same application (2.9s)
+  ✓  21 tests/e2e/citizen-form-ux.spec.ts:115:3 › save and resume on a CMP-015 draft › NEGATIVE: another citizen cannot read, save over or resume a draft (IDOR) (1.3s)
+  ✓  22 tests/e2e/citizen-form-ux.spec.ts:163:3 › save and resume on a CMP-015 draft › NEGATIVE: a draft for one service cannot be saved under another, and anonymous saves are refused (526ms)
+  ✓  23 tests/e2e/citizen-form-ux.spec.ts:201:3 › save and resume on a CMP-015 draft › NEGATIVE: SAMPLE_LAB refuses a non-synthetic name on save; nothing is stored (612ms)
+  ✓  24 tests/e2e/citizen-form-ux.spec.ts:224:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Enter continues; the error summary links to a field the sticky bar does not cover (827ms)
+  ✓  25 tests/e2e/citizen-form-ux.spec.ts:264:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › a format error shows when the citizen leaves the field and clears when fixed (614ms)
+  ✓  26 tests/e2e/citizen-form-ux.spec.ts:281:3 › errors, keyboard and focus (WCAG 2.1 AA, 2.4.11) › Evidence asks for an upload with a linked error; Change returns to the preview (1.6s)
+  ✓  27 tests/e2e/citizen-form-ux.spec.ts:310:3 › phone reflow and accessibility on every step › 320 px: no clipped controls, step names available to assistive tech, axe clean (3.4s)
+  ✓   9 tests/e2e/a11y-ux4g-forms-journey.spec.ts:361:3 › Studio designer preview of the Residence form › forms list, designer, and the preview at desktop, with errors, on review and at phone width (1.3m)
+
+  27 passed (1.9m)
+EXIT 0
