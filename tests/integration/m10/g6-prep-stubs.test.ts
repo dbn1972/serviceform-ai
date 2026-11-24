@@ -30,7 +30,7 @@ describe('M10 G6 prep config stubs (no invented credentials)', () => {
     expect(text).toContain('OWNER_REQUIRED');
     expect(text).toMatch(/G6=false|G6=false\./);
     // Refuse accidental committed secrets / sample keys.
-    expect(text).not.toMatch(/(sk_live|sk_test|Bearer |AIza|AKIA)[A-Za-z0-9_\-]/i);
+    expect(text).not.toMatch(/(sk_live|sk_test|Bearer |AIza|AKIA)[A-Za-z0-9_-]/i);
     expect(text).not.toMatch(/password\s*=\s*[^\s#]+/i);
     expect(text).not.toMatch(/api[_-]?key\s*=\s*[^\s#OWNER_REQUIRED]+/i);
   });
