@@ -122,7 +122,7 @@ export function GrievanceDesk() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -134,7 +134,7 @@ export function GrievanceDesk() {
           Raise a grievance
         </h2>
         <form className="sf-stack" onSubmit={(e) => void raise(e)}>
-          <label className="ux4g-label">
+          <label className="ux4g-label-m-default">
             Category
             <select
               className="ux4g-select"
@@ -149,7 +149,7 @@ export function GrievanceDesk() {
               ))}
             </select>
           </label>
-          <label className="ux4g-label">
+          <label className="ux4g-label-m-default">
             Application
             <select
               className="ux4g-select"
@@ -166,7 +166,11 @@ export function GrievanceDesk() {
               ))}
             </select>
           </label>
-          <button type="submit" className="ux4g-btn-fill-primary" disabled={busy || !applicationId}>
+          <button
+            type="submit"
+            className="ux4g-btn-primary ux4g-btn-m"
+            disabled={busy || !applicationId}
+          >
             {busy ? 'Filing…' : 'File grievance'}
           </button>
         </form>
@@ -184,7 +188,7 @@ export function GrievanceDesk() {
               <li key={g.grievance_id}>
                 <button
                   type="button"
-                  className="ux4g-btn-text-neutral"
+                  className="ux4g-btn-text-neutral ux4g-btn-s"
                   onClick={() => setSelected(g)}
                 >
                   {g.reference_code} · {g.status_label}
@@ -208,13 +212,13 @@ export function GrievanceDesk() {
           {selected.application_id ? (
             <p className="ux4g-body-s-default">
               Linked application:{' '}
-              <Link href={`/certificates/${selected.application_id}`} className="ux4g-link">
+              <Link href={`/certificates/${selected.application_id}`} className="ux4g-text-link-m">
                 view application
               </Link>
             </p>
           ) : null}
           {(selected.can_respond || selected.can_request_escalation) && (
-            <label className="ux4g-label">
+            <label className="ux4g-label-m-default">
               Note (stored as opaque SIMULATED ref — avoid personal data)
               <textarea
                 className="ux4g-textarea"
@@ -228,7 +232,7 @@ export function GrievanceDesk() {
             {selected.can_respond ? (
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('RESPOND')}
               >
@@ -238,7 +242,7 @@ export function GrievanceDesk() {
             {selected.can_request_escalation ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-primary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('REQUEST_ESCALATION')}
               >
@@ -248,7 +252,7 @@ export function GrievanceDesk() {
             {selected.can_withdraw ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-neutral"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('WITHDRAW')}
               >
