@@ -317,7 +317,10 @@ describe('ops depth — audit trail depth + sanitize (P8-5)', () => {
     expect(depth.total).toBe(3);
     expect(depth.deficiency_loop_events).toBe(2);
     expect(depth.has_human_decision).toBe(true);
-    expect(shortCorrelationId(rows[0]!.correlation_id)).toBe('cccccccc…');
+    const first = rows[0];
+    expect(first).toBeDefined();
+    if (!first) return;
+    expect(shortCorrelationId(first.correlation_id)).toBe('cccccccc…');
     expect(transitionCommandLabel('FORWARD_FOR_APPROVAL')).toBe('Forwarded for approval');
     const dirty = sanitizeAuditRow({
       transition_id: 't1',

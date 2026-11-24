@@ -98,9 +98,11 @@ export function auditTrailDepth(transitions: readonly CaseTransitionView[]): {
  * Fail-closed display hygiene — does not replace CMP-015 platform stripping.
  */
 export function sanitizeAuditRow<T extends Record<string, unknown>>(row: T): T {
-  const out = { ...row };
-  for (const key of FORBIDDEN_AUDIT_KEYS) {
-    if (key in out) delete out[key];
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(row)) {
+    if (!FORBIDDEN_AUDIT_KEYS.has(key)) {
+      out[key] = value;
+    }
   }
-  return out;
+  return out as T;
 }
