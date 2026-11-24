@@ -1,3 +1,7 @@
+import {
+  recordBffLatency,
+  serverTimingHeader,
+} from '@serviceform/observability/server-product-metrics';
 import { issueMessage, schemaAt, type FormSchemaView } from '@serviceform/ui-ux4g';
 import { toPortalApplication, type PlatformApplication } from '../../../../lib/portal/applications';
 import { catalogueIdForCase } from '../../../../lib/portal/catalogue-resolve';
@@ -72,24 +76,47 @@ function stepKeys(raw: string | null) {
 }
 
 export async function POST(request: Request) {
+  const started = performance.now();
+  const finish = (
+    response: Response,
+    outcome: 'OK' | 'ERROR' | 'VALIDATION' | 'UNAUTHORIZED' | 'NOT_FOUND',
+  ) => {
+    const elapsed = performance.now() - started;
+    recordBffLatency('CITIZEN_FORM_SUBMIT_MS', elapsed, outcome, {
+      catalogue_class: 'CERTIFICATE',
+    });
+    const headers = new Headers(response.headers);
+    headers.set('Server-Timing', serverTimingHeader('form_submit', elapsed));
+    return new Response(response.body, { status: response.status, headers });
+  };
+
   const refusal = crossSiteRefusal(request);
-  if (refusal) return refusal;
+  if (refusal) return finish(refusal, 'ERROR');
   const keys = stepKeys(request.headers.get('idempotency-key'));
   const citizen = await currentCitizen(request);
-  if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
+  if (!citizen) {
+    return finish(json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED }), 'UNAUTHORIZED');
+  }
   const { catalogueId, data, draftId } = applyBody(await request.json().catch(() => null));
   const offered = offeredForm(catalogueId);
-  if (!offered) return json(404, { error_code: 'SF-SYS-002', message: 'Service not offered here' });
+  if (!offered) {
+    return finish(
+      json(404, { error_code: 'SF-SYS-002', message: 'Service not offered here' }),
+      'NOT_FOUND',
+    );
+  }
   const { version, offering } = offered;
   if (sampleLab()) {
-    const refusal = syntheticNameRefusal(version.form.json_schema, data);
-    if (refusal) return json(400, { error_code: 'SF-SYS-003', ...refusal });
+    const nameRefusal = syntheticNameRefusal(version.form.json_schema, data);
+    if (nameRefusal) {
+      return finish(json(400, { error_code: 'SF-SYS-003', ...nameRefusal }), 'VALIDATION');
+    }
   }
 
   const scope = offeringJurisdictionScope(catalogueId);
   const outOfScope = jurisdictionRefusal(version.form.json_schema, data, scope);
   if (outOfScope) {
-    return json(400, { error_code: 'SF-SYS-003', ...outOfScope });
+    return finish(json(400, { error_code: 'SF-SYS-003', ...outOfScope }), 'VALIDATION');
   }
 
   const cataloguePin = pinFor(version);
@@ -102,16 +129,21 @@ export async function POST(request: Request) {
     keys.base ? { idempotencyKey: `${keys.base}-form` } : { idempotent: true },
   );
   if (!validated.ok) {
-    if ('res' in validated) return relay(validated.res, 'The form engine is unavailable');
+    if ('res' in validated) {
+      return finish(relay(validated.res, 'The form engine is unavailable'), 'ERROR');
+    }
     const schema = version.form.json_schema as FormSchemaView;
-    return json(422, {
-      error_code: 'SF-FORM-002',
-      message: 'Some answers need attention',
-      field_errors: validated.issues.map((i) => ({
-        ...i,
-        message: issueMessage(schemaAt(schema, i.pointer), i.code, i.pointer),
-      })),
-    });
+    return finish(
+      json(422, {
+        error_code: 'SF-FORM-002',
+        message: 'Some answers need attention',
+        field_errors: validated.issues.map((i) => ({
+          ...i,
+          message: issueMessage(schemaAt(schema, i.pointer), i.code, i.pointer),
+        })),
+      }),
+      'VALIDATION',
+    );
   }
 
   // SF-49: after CMP-009 validation, fail closed without a technically accepted CMP-013 document.
@@ -123,13 +155,16 @@ export async function POST(request: Request) {
         typeof data['evidence_file_name'] === 'string' ? data['evidence_file_name'] : undefined;
       const gate = await requireAvailableEvidenceDocument(citizen, evidenceId);
       if (!gate.ok) {
-        return json(422, {
-          error_code: 'SF-EVD-002',
-          message: gate.message,
-          field_errors: [{ pointer: '/evidence_file_name', message: gate.message }],
-          certified: false,
-          g6_issued: false,
-        });
+        return finish(
+          json(422, {
+            error_code: 'SF-EVD-002',
+            message: gate.message,
+            field_errors: [{ pointer: '/evidence_file_name', message: gate.message }],
+            certified: false,
+            g6_issued: false,
+          }),
+          'VALIDATION',
+        );
       }
       if (gate.document.content_type && typeof data['evidence_mime'] !== 'string') {
         data['evidence_mime'] = gate.document.content_type;
@@ -141,13 +176,13 @@ export async function POST(request: Request) {
   if (draftId) {
     // Saved application: submit that same CMP-015 draft so no orphan draft is left behind.
     const owned = await ownDraft(citizen, draftId, offering, formPin.version_id);
-    if (!owned.ok) return owned.response;
+    if (!owned.ok) return finish(owned.response, 'ERROR');
     const stored = await writeDraftData(citizen, owned.app, data, {
       expectedRevision: null,
       key: keys.base,
       expectedHash: validated.execution.data_hash,
     });
-    if (!stored.ok) return stored.response;
+    if (!stored.ok) return finish(stored.response, 'ERROR');
     app = stored.app;
   } else {
     const draft = await platform('POST', '/v1/applications', {
@@ -156,13 +191,16 @@ export async function POST(request: Request) {
       body: { tenant_service_binding_id: offering.tenant_service_binding_id },
     });
     const created = draft.body['application'] as PlatformApplication | undefined;
-    if (draft.status !== 201 || !created) return relay(draft);
+    if (draft.status !== 201 || !created) return finish(relay(draft), 'ERROR');
     app = created;
     if (app.pins.form_version_id !== formPin.version_id) {
-      return json(409, {
-        error_code: 'SF-FORM-001',
-        message: 'This service form changed. Reload the page and try again.',
-      });
+      return finish(
+        json(409, {
+          error_code: 'SF-FORM-001',
+          message: 'This service form changed. Reload the page and try again.',
+        }),
+        'ERROR',
+      );
     }
 
     const wd = await platform('PUT', `/v1/applications/${app.application_id}/working-data`, {
@@ -170,13 +208,16 @@ export async function POST(request: Request) {
       ...keys.key('data'),
       body: { form_version_id: app.pins.form_version_id, data, expected_revision: 0 },
     });
-    if (wd.status !== 200) return relay(wd);
+    if (wd.status !== 200) return finish(relay(wd), 'ERROR');
     const stored = wd.body['working_data'] as { data_hash?: string } | undefined;
     if (stored?.data_hash !== validated.execution.data_hash) {
-      return json(409, {
-        error_code: 'SF-FORM-001',
-        message: 'The stored answers do not match the validated answers',
-      });
+      return finish(
+        json(409, {
+          error_code: 'SF-FORM-001',
+          message: 'The stored answers do not match the validated answers',
+        }),
+        'ERROR',
+      );
     }
   }
 
@@ -189,7 +230,7 @@ export async function POST(request: Request) {
       step,
       keys.base ? `${keys.base}-${step.toLowerCase()}` : undefined,
     );
-    if (!next.ok) return relay(next.res);
+    if (!next.ok) return finish(relay(next.res), 'ERROR');
     app = next.app;
   }
 
@@ -202,15 +243,18 @@ export async function POST(request: Request) {
       'ENTER_PAYMENT_PENDING',
       keys.base ? `${keys.base}-enter-payment` : undefined,
     );
-    if (!pay.ok) return relay(pay.res);
+    if (!pay.ok) return finish(relay(pay.res), 'ERROR');
     app = pay.app;
   }
 
-  return json(201, {
-    application: toPortalApplication(app, data, null, catalogueId),
-    form_execution: validated.execution,
-    source: 'PLATFORM',
-    g6_issued: false,
-    certified: false,
-  });
+  return finish(
+    json(201, {
+      application: toPortalApplication(app, data, null, catalogueId),
+      form_execution: validated.execution,
+      source: 'PLATFORM',
+      g6_issued: false,
+      certified: false,
+    }),
+    'OK',
+  );
 }

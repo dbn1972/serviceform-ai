@@ -3,6 +3,10 @@
 import { Alert, Button, Icon, type FormData } from '@serviceform/ui-ux4g';
 import { shortHash } from '@serviceform/studio-designers';
 import {
+  beginStudioAuthoring,
+  type AuthoringSession,
+} from '@serviceform/observability/browser-product-metrics';
+import {
   addField,
   addSection,
   addStep,
@@ -83,12 +87,29 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
   const [previewData, setPreviewData] = useState<FormData>({});
   const [previewRun, setPreviewRun] = useState(0);
   const loaded = useRef(false);
+  const authoring = useRef<AuthoringSession | null>(null);
+  const firstEditMarked = useRef(false);
 
   const issues = useMemo(() => lintForm(form), [form]);
   const blocked = hasErrors(issues);
   const formPackage = useMemo(() => compileForm(form), [form]);
   const readOnly = doc?.status === 'PUBLISHED' && compiled?.contentHash === doc.savedHash;
   const sourceRef = source.kind === 'template' ? source.source : undefined;
+
+  useEffect(() => {
+    const session = beginStudioAuthoring({
+      surface_kind: 'FORMS_DESIGNER',
+      source_kind: source.kind === 'template' ? 'TEMPLATE' : source.kind === 'document' ? 'DOCUMENT' : 'BLANK',
+    });
+    authoring.current = session;
+    session.mark('OPEN');
+    return () => {
+      session.end('LEAVE');
+      authoring.current = null;
+    };
+    // One authoring session per designer mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional mount-only
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -151,6 +172,10 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
   const apply = useCallback(
     (next: DesignerForm, coalesce?: string) => {
       if (readOnly) return;
+      if (!firstEditMarked.current) {
+        firstEditMarked.current = true;
+        authoring.current?.mark('FIRST_EDIT');
+      }
       history.apply(next, coalesce);
     },
     [history, readOnly],
@@ -336,7 +361,13 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
             {errors > 0 ? `${errors} to fix` : 'No errors'}
             {warnings > 0 ? ` · ${warnings} advice` : ''}
           </Button>
-          <Button size="s" onClick={() => setTab('publish')}>
+          <Button
+            size="s"
+            onClick={() => {
+              authoring.current?.mark('TAB_PUBLISH');
+              setTab('publish');
+            }}
+          >
             Save &amp; publish
           </Button>
         </div>
@@ -506,6 +537,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
               doc={doc}
               onDoc={setDoc}
               session={session}
+              onMilestone={(m) => authoring.current?.mark(m)}
             />
             <aside className="sf-designer-pane" aria-label="Checks">
               <ChecksList issues={issues} select={select} />

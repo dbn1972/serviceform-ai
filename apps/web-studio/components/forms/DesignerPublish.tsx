@@ -73,6 +73,7 @@ export function DesignerPublish({
   doc,
   onDoc,
   session,
+  onMilestone,
 }: {
   title: string;
   compiled: CompiledForm | null;
@@ -80,6 +81,8 @@ export function DesignerPublish({
   doc: DocState | null;
   onDoc: (doc: DocState) => void;
   session: SessionState | null;
+  /** Product-metric authoring milestones (no PII). */
+  onMilestone?: (milestone: 'SAVE' | 'VALIDATE' | 'FREEZE' | 'PROPOSE') => void;
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -121,19 +124,28 @@ export function DesignerPublish({
         : await run('save', () =>
             metadataApi.create('FORM', compiled.documentKey, compiled.payload),
           );
-    if (body) track(body, compiled.contentHash);
+    if (body) {
+      track(body, compiled.contentHash);
+      onMilestone?.('SAVE');
+    }
   }
 
   async function validate() {
     if (!doc || !compiled) return;
     const body = await run('validate', () => metadataApi.validate(doc.id));
-    if (body) track(body, compiled.contentHash);
+    if (body) {
+      track(body, compiled.contentHash);
+      onMilestone?.('VALIDATE');
+    }
   }
 
   async function freeze() {
     if (!doc || !compiled) return;
     const body = await run('freeze', () => metadataApi.publish(doc.id));
-    if (body) track(body, compiled.contentHash);
+    if (body) {
+      track(body, compiled.contentHash);
+      onMilestone?.('FREEZE');
+    }
   }
 
   async function verify() {
@@ -177,7 +189,10 @@ export function DesignerPublish({
     const submitted = await run('propose', () =>
       publicationApi.submit(created.request_id, reason.trim()),
     );
-    if (submitted) setRequest(submitted);
+    if (submitted) {
+      setRequest(submitted);
+      onMilestone?.('PROPOSE');
+    }
   }
 
   const status = (s: string) => (

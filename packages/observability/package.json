@@ -5,7 +5,11 @@
   "description": "Logging with PII/secret redaction and OpenTelemetry bootstrap (Constitution #21, AWS v1.7 s5)",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./product-metrics": "./src/product-metrics.ts",
+    "./forms-journey-metrics": "./src/forms-journey-metrics.ts",
+    "./browser-product-metrics": "./src/browser-product-metrics.ts",
+    "./server-product-metrics": "./src/server-product-metrics.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",

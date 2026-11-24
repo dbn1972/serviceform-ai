@@ -1,6 +1,13 @@
 'use client';
 
 import {
+  attachCitizenAbandonHooks,
+  beginCitizenFormJourney,
+  getBrowserProductMetrics,
+} from '@serviceform/observability/browser-product-metrics';
+import { recordA11yScore } from '@serviceform/observability/forms-journey-metrics';
+import type { CitizenFormSession } from '@serviceform/observability/forms-journey-metrics';
+import {
   Button,
   controlScopes,
   fieldError,
@@ -165,6 +172,35 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const noticeRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const baseTitle = useRef<string | null>(null);
+  const journey = useRef<CitizenFormSession | null>(null);
+  const loadStarted = useRef(0);
+
+  useEffect(() => {
+    const session = beginCitizenFormJourney({ catalogue_class: 'CERTIFICATE' });
+    journey.current = session;
+    loadStarted.current = performance.now();
+    const detachAbandon = attachCitizenAbandonHooks(session);
+    // Optional lab hook: window.__SF_A11Y_SCORE__ = { violations, incomplete, passes }
+    const a11y = (window as unknown as { __SF_A11Y_SCORE__?: Record<string, number> })
+      .__SF_A11Y_SCORE__;
+    if (a11y && typeof a11y['violations'] === 'number') {
+      recordA11yScore(getBrowserProductMetrics(), {
+        surface: 'citizen',
+        tool: 'AXE',
+        violations: a11y['violations'] ?? 0,
+        incomplete: a11y['incomplete'] ?? 0,
+        passes: a11y['passes'] ?? 0,
+        route_class: 'CITIZEN_APPLY',
+      });
+    }
+    return () => {
+      detachAbandon();
+      if (journey.current && !journey.current.completed && !journey.current.abandoned) {
+        journey.current.markAbandon('NAVIGATE');
+      }
+      journey.current = null;
+    };
+  }, [catalogueId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -178,10 +214,13 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       ]);
       const body = (await res.json().catch(() => ({}))) as FormResponse & { message?: string };
       if (cancelled) return;
+      const loadMs = performance.now() - loadStarted.current;
       if (!res.ok || !body.form) {
+        journey.current?.markLoaded(loadMs, 'ERROR');
         setLoadError(body.message ?? 'We could not load this form. Try again shortly.');
         return;
       }
+      journey.current?.markLoaded(loadMs, 'OK');
       let resumed: SavedDraft | null = null;
       let restoredNotice: Notice | null = null;
       if (savedRes) {
@@ -470,6 +509,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     setStepIndex(index);
     setFurthest((f) => Math.max(f, index));
     if (index === reviewIndex) setReturnToReview(false);
+    journey.current?.markStep(index, steps.length);
     window.requestAnimationFrame(() => headingRef.current?.focus());
   }
 
@@ -587,6 +627,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     setSummary(null);
     await saving.current;
     const payload = payloadOf(data);
+    const submitStarted = performance.now();
     const res = await fetch('/api/portal/applications', {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'idempotency-key': submissionKey.current },
@@ -603,15 +644,21 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       application?: { id: string };
       application_id?: string;
     };
+    const submitMs = performance.now() - submitStarted;
     if (res?.ok && body.application) {
+      journey.current?.markSubmit(submitMs, 'OK');
+      journey.current?.markComplete();
       router.push(`/certificates/${body.application.id}`);
       return;
     }
     if (res?.status === 409 && body.application_id) {
+      journey.current?.markSubmit(submitMs, 'ERROR');
       router.push(`/certificates/${body.application_id}`);
       return;
     }
     setBusy(false);
+    const outcome = res?.status === 422 || res?.status === 400 ? 'VALIDATION' : 'ERROR';
+    journey.current?.markSubmit(submitMs, outcome);
     const fieldErrors: FieldErrors = {};
     for (const e of body.field_errors ?? []) fieldErrors[e.pointer] ??= e.message;
     if (body.field) fieldErrors[`/${body.field.replaceAll('.', '/')}`] = body.message ?? '';
