@@ -1,6 +1,7 @@
 # SF-WC2 Evidence — Studio forms designer depth (world-class forms, Workstream 2)
 
-**Branch:** `cursor/world-class-studio-form-designer-619d` (base `main` at `ca244c69`)
+**Branch:** `cursor/world-class-studio-form-designer-619d` (started on `ca244c69`; rebased onto
+`main` at `44031f5f` after WS1 #277 changed the shared UX4G form runtime — parity suite re-run green)
 **Model:** Claude Opus 5.5 (builder self-assessment is not evidence)
 **CERTIFIED:** false | **G6:** false | **self_certified:** false | **TSB seal:** false
 
@@ -35,11 +36,14 @@ and the pure designer package only; the citizen app, CMP-009 and CMP-033 are unc
    - `OBJECT_SECTION_HIDDEN` (error) / `OBJECT_FIELDS_HIDDEN` (advice): hideable grouped data with
      required answers. CMP-009 reports the absent object as `REQUIRED` even when every control in
      it is hidden, so applicants who never saw it could not submit.
-4. **Preview = citizen wizard chrome**: same stepper (`sf-stepper`), card title, review step
-   (summary then declaration), error summary with field links (focus moves to it), provenance
-   line, plus "Check whole form" and a *Runtime details* table (UX4G renderer id, shown, required,
-   current check per control). Preview answers survive tab switches. Phone frame reflows the
-   wizard like a real 360 px viewport (token-only designer CSS).
+4. **Preview = citizen wizard chrome** (aligned with WS1's #277 citizen apply): the shared
+   `Ux4gFormStepper` with "furthest reached" steps, the `sf-step-panel` header ("Step n of m"),
+   review step (summary then declaration), checks when a field is left and clearing as soon as the
+   answer is valid (`fieldError`), pluralised error summary whose links show the question then
+   focus the field, provenance line and split action rows; plus "Check whole form", an author-only
+   "Jump to step" control and a *Runtime details* table (UX4G renderer id, shown, required, current
+   check per control). Preview answers survive tab switches. The phone frame mirrors the citizen's
+   phone/tablet rules (token-only designer CSS).
 5. **Authoring**: palette drag-and-drop now actually drops (pre-existing #230 bug: palette drags
    were `copy` while every drop zone forced `move`, so browsers cancelled them); drop fields,
    sections or palette items onto a step tab; drag sections to reorder or move across steps;

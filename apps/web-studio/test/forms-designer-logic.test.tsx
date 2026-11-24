@@ -131,7 +131,10 @@ describe('forms designer preview matches the citizen wizard', () => {
     expect(html).toContain('class="sf-wizard"');
     expect(html).toContain('class="sf-stepper" aria-label="Preview steps"');
     expect(html).toContain('sf-stepper-item sf-stepper-current');
-    expect(html).toContain('class="ux4g-card-title">1. Applicant details</h2>');
+    expect(html).toContain('class="sf-step-panel" aria-labelledby="preview-step-heading"');
+    expect(html).toContain('Step 1 of 1');
+    expect(html).toContain('<span class="ux4g-heading-m-strong">Applicant details</span>');
+    expect(html).toContain('class="sf-wizard-actions-end"');
     expect(html).toContain('for="designer-preview-licence_number"');
     expect(html).toContain('Form lab.trade-licence.application · v1.0.0 · draft');
     expect(html).toContain('Check whole form');

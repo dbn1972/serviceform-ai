@@ -3,14 +3,15 @@
 import {
   Alert,
   Button,
-  Card,
   controlScopes,
+  fieldError,
   fieldId,
   getAt,
   isRequired,
   resolveUx4gRenderer,
   schemaAt,
   scopeToPointer,
+  Select,
   setAt,
   stepErrors,
   stepOfPointer,
@@ -18,6 +19,7 @@ import {
   Icon,
   Ux4gFormLayout,
   Ux4gFormReview,
+  Ux4gFormStepper,
   visibleScopes,
   wizardSteps,
   type FieldErrors,
@@ -37,6 +39,20 @@ function controlFormats(node: FormUiView): Map<string, string | undefined> {
     return new Map(node.scope ? [[node.scope, node.options?.format]] : []);
   }
   return new Map((node.elements ?? []).flatMap((child) => [...controlFormats(child)]));
+}
+
+/** As the citizen wizard: show the question (label or legend) first, then focus the field. */
+function focusField(id: string): void {
+  const field =
+    document.getElementById(id) ??
+    document.querySelector<HTMLElement>(`[name="${CSS.escape(id)}"]`);
+  if (!field) return;
+  const question =
+    field.closest('fieldset')?.querySelector('legend') ??
+    document.querySelector(`label[for="${CSS.escape(field.id)}"]`) ??
+    field;
+  question.scrollIntoView({ block: 'start' });
+  field.focus({ preventScroll: true });
 }
 
 /** Same markup and classes as the citizen wizard's error summary; links focus each field. */
@@ -61,7 +77,9 @@ function PreviewErrorSummary({
       </span>
       <div className="ux4g-form-alert-body">
         <p id="preview-error-summary-title" className="ux4g-label-s-strong ux4g-text-error">
-          There is a problem
+          {Object.keys(errors).length > 1
+            ? `There are ${Object.keys(errors).length} problems`
+            : 'There is a problem'}
         </p>
         <ul className="sf-auth-error-list">
           {Object.entries(errors).map(([pointer, message]) => {
@@ -72,7 +90,7 @@ function PreviewErrorSummary({
                   href={`#${id}`}
                   onClick={(event) => {
                     event.preventDefault();
-                    document.getElementById(id)?.focus();
+                    focusField(id);
                   }}
                 >
                   {message}
@@ -187,6 +205,7 @@ export function DesignerPreview({
 }) {
   const steps = useMemo(() => wizardSteps(form.ui_schema), [form]);
   const [index, setIndex] = useState(0);
+  const [furthest, setFurthest] = useState(0);
   const [device, setDevice] = useState<Device>('desktop');
   const [data, setDataState] = useState<FormData>(initialData ?? {});
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -220,7 +239,34 @@ export function DesignerPreview({
     setErrors({});
     setReady(false);
     setIndex(i);
+    setFurthest((f) => Math.max(f, i));
     window.requestAnimationFrame(() => headingRef.current?.focus());
+  };
+
+  const change = (pointer: string, value: unknown) => {
+    const next = setAt(data, pointer, value);
+    setData(next);
+    if (!errors[pointer]) return;
+    // As the citizen wizard: a flagged field clears as soon as its answer is valid.
+    const message = fieldError(form.json_schema, pointer, next);
+    setErrors((prev) =>
+      message
+        ? { ...prev, [pointer]: message }
+        : Object.fromEntries(Object.entries(prev).filter(([k]) => k !== pointer)),
+    );
+  };
+
+  const blur = (pointer: string) => {
+    const value = getAt(data, pointer);
+    if (value === undefined || value === '') return;
+    const message = fieldError(form.json_schema, pointer, data);
+    setErrors((prev) =>
+      message
+        ? { ...prev, [pointer]: message }
+        : prev[pointer]
+          ? Object.fromEntries(Object.entries(prev).filter(([k]) => k !== pointer))
+          : prev,
+    );
   };
 
   const fail = (found: FieldErrors) => {
@@ -245,7 +291,10 @@ export function DesignerPreview({
     }
     const target = stepOfPointer(steps, Object.keys(found));
     const own = target >= 0 ? steps[target] : step;
-    if (target >= 0 && target !== current) setIndex(target);
+    if (target >= 0 && target !== current) {
+      setIndex(target);
+      setFurthest((f) => Math.max(f, target));
+    }
     fail(own ? stepErrors(form.json_schema, own.node, data, visible) : found);
   };
 
@@ -258,14 +307,8 @@ export function DesignerPreview({
       visible={visible}
       isRequired={(p) => isRequired(form.json_schema, p, data)}
       errors={errors}
-      onChange={(pointer, value) => {
-        setData(setAt(data, pointer, value));
-        if (errors[pointer]) {
-          setErrors((prev) =>
-            Object.fromEntries(Object.entries(prev).filter(([k]) => k !== pointer)),
-          );
-        }
-      }}
+      onChange={change}
+      onBlur={blur}
       idPrefix={ID_PREFIX}
     />
   );
@@ -294,10 +337,21 @@ export function DesignerPreview({
             setErrors({});
             setReady(false);
             setIndex(0);
+            setFurthest(0);
           }}
         >
           Clear answers
         </Button>
+        {steps.length > 1 ? (
+          <Select
+            id="preview-jump"
+            label="Jump to step"
+            size="s"
+            value={String(current)}
+            options={steps.map((s, i) => ({ value: String(i), label: `${i + 1}. ${s.label}` }))}
+            onChange={(e) => goTo(Number(e.target.value))}
+          />
+        ) : null}
         <Switch
           id="preview-runtime-toggle"
           label="Runtime details"
@@ -310,31 +364,13 @@ export function DesignerPreview({
       </div>
       <div className={`sf-designer-device sf-designer-device-${device}`}>
         <div className="sf-wizard">
-          <nav className="sf-stepper" aria-label="Preview steps">
-            <ol className="sf-stepper-list">
-              {steps.map((s, i) => {
-                const state = i < current ? 'done' : i === current ? 'current' : 'todo';
-                return (
-                  <li key={`${s.label}-${i}`} className={`sf-stepper-item sf-stepper-${state}`}>
-                    <button
-                      type="button"
-                      className="sf-stepper-btn"
-                      aria-current={state === 'current' ? 'step' : undefined}
-                      onClick={() => goTo(i)}
-                    >
-                      <span className="sf-stepper-index" aria-hidden="true">
-                        {i < current ? '✓' : i + 1}
-                      </span>
-                      <span className="sf-stepper-copy">
-                        <span className="ux4g-label-m-strong">{s.label}</span>
-                        <span className="ux4g-body-s-default">{s.hint}</span>
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
+          <Ux4gFormStepper
+            label="Preview steps"
+            steps={steps.map((s) => ({ label: s.label, hint: s.hint }))}
+            current={current}
+            reachable={furthest}
+            onSelect={goTo}
+          />
 
           <div className="sf-wizard-main">
             {errorCount > 0 && attempt > 0 ? (
@@ -346,13 +382,25 @@ export function DesignerPreview({
                 same answers again on submit.
               </Alert>
             ) : null}
-            <Card
-              title={`${current + 1}. ${step.title}`}
-              subtitle={step.review ? 'Review every answer before you submit' : step.hint}
-            >
-              <h3 ref={headingRef} tabIndex={-1} className="ux4g-sr-only">
-                Step {current + 1} of {steps.length}: {step.label}
-              </h3>
+            <section className="sf-step-panel" aria-labelledby="preview-step-heading">
+              <header className="sf-step-head">
+                <h2
+                  id="preview-step-heading"
+                  ref={headingRef}
+                  tabIndex={-1}
+                  className="sf-step-title"
+                >
+                  <span className="ux4g-label-l-strong sf-step-kicker">
+                    Step {current + 1} of {steps.length}
+                  </span>
+                  <span className="ux4g-heading-m-strong">{step.title}</span>
+                </h2>
+                <p className="ux4g-body-m-default sf-step-lead">
+                  {step.review
+                    ? 'Check every answer before you submit. Use Change to correct anything.'
+                    : step.hint}
+                </p>
+              </header>
               {step.review ? (
                 <>
                   <Ux4gFormReview
@@ -363,7 +411,7 @@ export function DesignerPreview({
                     onEdit={goTo}
                   />
                   <div className="sf-form-section">
-                    <h3 className="ux4g-heading-s-strong">Declaration</h3>
+                    <h3 className="ux4g-heading-xs-strong">Declaration</h3>
                     {layout}
                   </div>
                 </>
@@ -376,7 +424,7 @@ export function DesignerPreview({
                 {contentHash ? ` · draft ${shortHash(contentHash)}` : ''} · checked by the CMP-009
                 form engine on submit
               </p>
-            </Card>
+            </section>
             {runtime ? (
               <RuntimeDetails
                 form={form}
@@ -387,26 +435,26 @@ export function DesignerPreview({
               />
             ) : null}
             <div className="sf-wizard-actions">
-              {current > 0 ? (
-                <Button variant="outline-neutral" onClick={() => goTo(current - 1)}>
-                  Back
-                </Button>
-              ) : (
-                <span />
-              )}
-              <div className="sf-actions">
-                <span className="ux4g-body-s-default" role="status">
-                  {errorCount > 0 ? `${errorCount} answer(s) need attention` : ''}
-                </span>
-                {current < steps.length - 1 ? (
-                  <Button onClick={next}>Check and continue</Button>
+              <div className="sf-wizard-actions-start">
+                {current > 0 ? (
+                  <Button variant="outline-neutral" onClick={() => goTo(current - 1)}>
+                    Back
+                  </Button>
                 ) : null}
+                <p className="ux4g-body-s-default sf-save-status" role="status">
+                  {errorCount > 0 ? `${errorCount} answer(s) need attention` : ''}
+                </p>
+              </div>
+              <div className="sf-wizard-actions-end">
                 <Button
                   variant={current < steps.length - 1 ? 'outline-primary' : 'primary'}
                   onClick={checkAll}
                 >
                   Check whole form
                 </Button>
+                {current < steps.length - 1 ? (
+                  <Button onClick={next}>Check and continue</Button>
+                ) : null}
               </div>
             </div>
           </div>
