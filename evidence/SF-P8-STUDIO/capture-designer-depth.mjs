@@ -3,7 +3,9 @@
  * catalogue section reused, rules built in Logic ("required when / unless", "has any answer"),
  * validation test cases, section duplication, sample answers in the preview and the publish
  * readiness checklist. Not a test: run against a running Studio (3002); no platform host needed.
- *   OUT_DIR=/path VIDEO_DIR=/path node evidence/SF-P8-STUDIO/capture-designer-depth.mjs
+ * Screenshots and video come from separate runs:
+ *   OUT_DIR=/path node evidence/SF-P8-STUDIO/capture-designer-depth.mjs
+ *   VIDEO_DIR=/path node evidence/SF-P8-STUDIO/capture-designer-depth.mjs
  */
 /* global window, document -- the init script runs in the page */
 import { mkdirSync } from 'node:fs';
@@ -46,7 +48,9 @@ await context.addInitScript(() => {
 const page = await context.newPage();
 const views = page.getByRole('tablist', { name: 'Designer views' });
 const pause = (ms = 500) => page.waitForTimeout(ms);
+// Full-page screenshots resize the page, which the video would record; take them in a separate run.
 const shot = async (name, opts = {}) => {
+  if (VIDEO) return pause();
   const unstick = opts.fullPage
     ? await page.addStyleTag({ content: '.sf-header { position: static; }' })
     : null;
