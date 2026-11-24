@@ -8711,7 +8711,7 @@
 /* Metadata form wizard (registered extension `form-wizard-stepper` + UX4G card/input/button).
  * Tokens only. Sticky header/action bar offsets keep a focused field in view (WCAG 2.4.11). */
 html:has(.sf-wizard) {
-  scroll-padding-top: 6rem;
+  scroll-padding-top: var(--ux4g-size-96);
   scroll-padding-bottom: 7rem;
 }
 
@@ -8753,8 +8753,8 @@ html:has(.sf-wizard) {
 .sf-stepper-item:not(:last-child)::after {
   content: '';
   position: absolute;
-  left: calc(var(--ux4g-gap-4) + 0.875rem - 1px);
-  top: calc(var(--ux4g-gap-4) + 1.75rem + var(--ux4g-gap-2));
+  left: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px);
+  top: calc(var(--ux4g-gap-4) + var(--ux4g-size-28) + var(--ux4g-gap-2));
   bottom: calc(-1 * var(--ux4g-gap-6) + var(--ux4g-gap-2));
   width: 2px;
   border-radius: var(--ux4g-radius-full);
@@ -8767,7 +8767,7 @@ html:has(.sf-wizard) {
 
 .sf-stepper-btn {
   width: 100%;
-  min-height: 2.75rem;
+  min-height: var(--ux4g-size-44);
   display: flex;
   gap: var(--ux4g-gap-5);
   align-items: flex-start;
@@ -9122,7 +9122,7 @@ fieldset.ux4g-radio > .ux4g-input-helper,
   box-shadow: var(--ux4g-shadow-l3);
   position: sticky;
   bottom: var(--ux4g-gap-4);
-  z-index: 2;
+  z-index: var(--ux4g-z-layout-overlay);
 }
 
 .sf-wizard-actions-start,
@@ -9143,7 +9143,7 @@ fieldset.ux4g-radio > .ux4g-input-helper,
   align-items: center;
   gap: var(--ux4g-gap-3);
   margin: 0;
-  min-height: 1.25rem;
+  min-height: var(--ux4g-size-20);
   color: var(--ux4g-text-neutral-secondary);
 }
 
@@ -9162,7 +9162,7 @@ fieldset.ux4g-radio > .ux4g-input-helper,
   align-items: start;
   padding: var(--ux4g-padding-l);
   border-radius: var(--ux4g-radius-lg);
-  border: 2px dashed var(--ux4g-color-primary-300);
+  border: var(--ux4g-border-width-md) dashed var(--ux4g-color-primary-300);
   background: var(--ux4g-color-primary-50);
 }
 
@@ -9186,8 +9186,8 @@ fieldset.ux4g-radio > .ux4g-input-helper,
 }
 
 .sf-upload-zone .sf-upload-icon {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: var(--ux4g-size-44);
+  height: var(--ux4g-size-44);
   border-radius: var(--ux4g-radius-full);
   background: var(--ux4g-bg-neutral-elevated);
   color: var(--ux4g-color-primary-600);
@@ -9218,7 +9218,7 @@ fieldset.ux4g-radio > .ux4g-input-helper,
 .sf-upload-input::file-selector-button {
   margin-right: var(--ux4g-gap-6);
   padding: var(--ux4g-gap-4) var(--ux4g-gap-7);
-  min-height: 2.5rem;
+  min-height: var(--ux4g-size-40);
   border-radius: var(--ux4g-radius-md);
   border: var(--ux4g-border-width-sm) solid var(--ux4g-color-primary-600);
   background: var(--ux4g-bg-neutral-elevated);
@@ -10859,9 +10859,9 @@ fieldset.ux4g-radio > legend {
   }
 
   .sf-stepper-item:not(:last-child)::after {
-    left: calc(50% + 1.5rem);
-    right: calc(-50% + 1.5rem);
-    top: calc(var(--ux4g-gap-4) + 0.875rem - 1px);
+    left: calc(50% + var(--ux4g-size-24));
+    right: calc(-50% + var(--ux4g-size-24));
+    top: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px);
     bottom: auto;
     width: auto;
     height: 2px;
@@ -10869,7 +10869,7 @@ fieldset.ux4g-radio > legend {
 
   .sf-stepper-btn {
     width: auto;
-    min-width: 2.75rem;
+    min-width: var(--ux4g-size-44);
     justify-content: center;
     padding: var(--ux4g-gap-4);
   }
@@ -10880,14 +10880,14 @@ fieldset.ux4g-radio > legend {
   }
 
   .sf-stepper-current .sf-stepper-index {
-    box-shadow: 0 0 0 0.25rem var(--ux4g-color-primary-50);
+    box-shadow: 0 0 0 var(--ux4g-outline-width-lg) var(--ux4g-color-primary-50);
   }
 
   .sf-stepper-copy {
     position: absolute;
     width: 1px;
     height: 1px;
-    margin: -1px;
+    margin: -1px; /* ux4g-token-exempt: visually-hidden clip pattern, mirrors vendored .ux4g-sr-only */
     padding: 0;
     overflow: hidden;
     clip: rect(0 0 0 0);

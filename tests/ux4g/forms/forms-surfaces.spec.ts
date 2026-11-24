@@ -239,10 +239,10 @@ test.describe('accessible names and descriptions (1.3.1, 4.1.2)', () => {
   test('hints and errors are announced with their field', async ({ page }) => {
     await load(page, 'form-errors', 1280);
     await expect(page.getByLabel('PIN code')).toHaveAccessibleDescription(
-      'PIN code must be 6 digits',
+      'Error: PIN code must be 6 digits',
     );
     await expect(page.getByRole('combobox', { name: 'District' })).toHaveAccessibleDescription(
-      'Select your district',
+      'Error: Select your district',
     );
     await load(page, 'form-empty', 1280);
     await expect(page.getByLabel('PIN code')).toHaveAccessibleDescription('6 digits');
