@@ -80,7 +80,9 @@ test.describe('M11 second-service reuse — Income SAMPLE_LAB lab-offer', () => 
 
     await page.goto(`${STUDIO}/evidence/designer?template=ind-soc-031-evidence`);
     await expect(page.getByText(/Income Certificate evidence \(SAMPLE_LAB DUMMY\)/i)).toBeVisible();
-    await expect(page.getByText(/SAMPLE_LAB_DUMMY_EVIDENCE_ANY|SAMPLE_LAB DUMMY/i).first()).toBeVisible();
+    await expect(
+      page.getByText(/SAMPLE_LAB_DUMMY_EVIDENCE_ANY|SAMPLE_LAB DUMMY/i).first(),
+    ).toBeVisible();
 
     await page.goto(`${STUDIO}/credentials/designer?template=ind-soc-031-credential`);
     await expect(
