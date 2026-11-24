@@ -132,6 +132,23 @@ export function matchesPattern(src: string, value: string): boolean {
   return positions.has(chars.length);
 }
 
+/**
+ * A value the pattern accepts, preferring one between `minLength` and `maxLength`: each token
+ * repeats its first allowed character as few (or, if that is too short, as many) times as it may.
+ */
+export function examplePattern(src: string, minLength = 0, maxLength = Infinity): string | null {
+  const tokens = compile(src);
+  if (!tokens) return null;
+  const build = (wide: boolean) =>
+    tokens
+      .map((t) => String.fromCodePoint(t.ranges[0]?.lo ?? 48).repeat(wide ? t.max : t.min))
+      .join('');
+  const short = build(false);
+  if (short.length >= minLength && short.length <= maxLength) return short;
+  const long = build(true);
+  return long.length >= minLength && long.length <= maxLength ? long : short;
+}
+
 export type PatternPresetId = 'digits' | 'upper_alnum' | 'letters_spaces';
 
 export interface PatternPreset {

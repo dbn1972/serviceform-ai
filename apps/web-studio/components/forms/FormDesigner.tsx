@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Icon } from '@serviceform/ui-ux4g';
+import { Alert, Button, Icon, type FormData } from '@serviceform/ui-ux4g';
 import { shortHash } from '@serviceform/studio-designers';
 import {
   addField,
@@ -19,12 +19,15 @@ import {
   lintForm,
   moveField,
   moveFieldBy,
+  moveFieldToStep,
   moveSection,
+  moveSectionTo,
   moveStep,
   removeField,
   removeSection,
   removeStep,
   SECTION_PALETTE,
+  stepDropSection,
   updateField,
   updateForm,
   updateSection,
@@ -40,15 +43,17 @@ import { nextMinor, type DesignerSource } from '../../lib/designer-source';
 import { metadataApi, readSession, explain, type SessionState } from '../../lib/studio-api';
 import { DesignerCanvas, type DropPayload, type Selection } from './DesignerCanvas';
 import { ChecksList, DesignerInspector } from './DesignerInspector';
+import { DesignerLogic } from './DesignerLogic';
 import { DesignerPalette } from './DesignerPalette';
 import { DesignerPreview } from './DesignerPreview';
 import { DesignerPublish, type DocState } from './DesignerPublish';
 import { DesignerSchema } from './DesignerSchema';
 
-type Tab = 'design' | 'preview' | 'schema' | 'publish';
+type Tab = 'design' | 'logic' | 'preview' | 'schema' | 'publish';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'design', label: 'Design' },
+  { id: 'logic', label: 'Logic' },
   { id: 'preview', label: 'Preview' },
   { id: 'schema', label: 'Schema' },
   { id: 'publish', label: 'Publish' },
@@ -75,6 +80,8 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
   const [session, setSession] = useState<SessionState | null>(null);
   const [loadError, setLoadError] = useState('');
   const [notice, setNotice] = useState('');
+  const [previewData, setPreviewData] = useState<FormData>({});
+  const [previewRun, setPreviewRun] = useState(0);
   const loaded = useRef(false);
 
   const issues = useMemo(() => lintForm(form), [form]);
@@ -181,7 +188,47 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
     setSelection({ kind: 'section', id: res.id });
   };
 
+  const dropOnStep = (payload: DropPayload, stepId: string) => {
+    if ('section' in payload) {
+      apply(moveSectionTo(form, payload.section, stepId));
+      setSelection({ kind: 'section', id: payload.section });
+      return;
+    }
+    if ('field' in payload) {
+      apply(moveFieldToStep(form, payload.field, stepId));
+      setSelection({ kind: 'field', id: payload.field });
+      return;
+    }
+    const field = FIELD_PALETTE.find((p) => p.id === payload.palette);
+    if (!field) {
+      const item = SECTION_PALETTE.find((p) => p.id === payload.palette);
+      if (!item) return;
+      const res = addSection(form, stepId, item.create());
+      apply(res.form);
+      setSelection({ kind: 'section', id: res.id });
+      return;
+    }
+    const target = stepDropSection(form, stepId);
+    if (!target) return;
+    const section = findSection(target.form, target.sectionId)?.section;
+    const res = addField(target.form, target.sectionId, field.create(), section?.fields.length);
+    apply(res.form);
+    setSelection({ kind: 'field', id: res.id });
+  };
+
+  const tryInPreview = (data: FormData) => {
+    setPreviewData(data);
+    setPreviewRun((n) => n + 1);
+    setTab('preview');
+  };
+
   const drop = (payload: DropPayload, sectionId: string, index: number) => {
+    if ('section' in payload) {
+      const found = findSection(form, sectionId);
+      if (found) apply(moveSectionTo(form, payload.section, found.step.id, sectionId));
+      setSelection({ kind: 'section', id: payload.section });
+      return;
+    }
     if ('palette' in payload) {
       const field = FIELD_PALETTE.find((p) => p.id === payload.palette);
       if (field) addFromPalette(field, sectionId, index);
@@ -321,11 +368,13 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
                 name={
                   t.id === 'design'
                     ? 'sliders'
-                    : t.id === 'preview'
-                      ? 'eye'
-                      : t.id === 'schema'
-                        ? 'code'
-                        : 'shield'
+                    : t.id === 'logic'
+                      ? 'link'
+                      : t.id === 'preview'
+                        ? 'eye'
+                        : t.id === 'schema'
+                          ? 'code'
+                          : 'shield'
                 }
                 size={16}
               />
@@ -354,12 +403,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
         </Alert>
       ) : null}
 
-      <div
-        id={`designer-panel-${tab}`}
-        role="tabpanel"
-        aria-labelledby={`designer-tab-${tab}`}
-        className="sf-designer-panel"
-      >
+      <div id={`designer-panel-${tab}`} role="tabpanel" aria-labelledby={`designer-tab-${tab}`}>
         {tab === 'design' ? (
           <div className="sf-designer-grid">
             <DesignerPalette
@@ -377,6 +421,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
               handlers={{
                 select,
                 drop,
+                dropOnStep,
                 moveField: (id, d) => apply(moveFieldBy(form, id, d)),
                 duplicateField: (id) => {
                   const res = duplicateField(form, id);
@@ -421,12 +466,36 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
                 patchSection: (id, patch, key) => apply(updateSection(form, id, patch), key),
                 patchField: (id, patch, key) => apply(updateField(form, id, patch), key),
                 changeKind: (id, kind) => apply(changeKind(form, id, kind)),
+                moveToSection: (id, sectionId) => {
+                  const dest = findSection(form, sectionId);
+                  if (!dest) return;
+                  apply(moveField(form, id, sectionId, dest.section.fields.length));
+                  setStepIndex(dest.stepIndex);
+                },
                 select,
               }}
             />
           </div>
         ) : null}
-        {tab === 'preview' ? <DesignerPreview form={formPackage} /> : null}
+        {tab === 'logic' ? (
+          <DesignerLogic
+            form={form}
+            formPackage={formPackage}
+            issues={issues}
+            onSelect={select}
+            onTry={tryInPreview}
+          />
+        ) : null}
+        {tab === 'preview' ? (
+          <DesignerPreview
+            key={previewRun}
+            form={formPackage}
+            contentHash={compiled?.contentHash}
+            version={form.version}
+            data={previewData}
+            onData={setPreviewData}
+          />
+        ) : null}
         {tab === 'schema' ? <DesignerSchema compiled={compiled} /> : null}
         {tab === 'publish' ? (
           <div className="sf-designer-publish-grid">

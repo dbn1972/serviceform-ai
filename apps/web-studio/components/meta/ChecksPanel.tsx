@@ -22,13 +22,14 @@ export function ChecksPanel({ issues }: { issues: readonly CheckIssue[] }) {
       ) : (
         <ul className="sf-designer-check-list">
           {issues.map((issue) => (
-            <li
-              key={`${issue.code}:${issue.targetId ?? 'pack'}:${issue.message}`}
-              className={
-                issue.severity === 'error' ? 'sf-designer-check-error' : 'sf-designer-check-warning'
-              }
-            >
-              <span className="ux4g-label-s-strong">{issue.code}</span>
+            <li key={`${issue.code}:${issue.targetId ?? 'pack'}:${issue.message}`}>
+              <span
+                className={
+                  issue.severity === 'error' ? 'ux4g-tag-tonal-error' : 'ux4g-tag-tonal-warning'
+                }
+              >
+                {issue.code}
+              </span>
               <span className="ux4g-body-s-default">{issue.message}</span>
             </li>
           ))}

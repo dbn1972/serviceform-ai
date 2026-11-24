@@ -11280,7 +11280,8 @@ fieldset.ux4g-radio > legend {
   text-align: center;
 }
 
-.sf-designer-dropzone-active {
+.sf-designer-dropzone-active,
+.sf-designer-drop-target {
   border-color: var(--ux4g-color-primary-600);
   background: var(--ux4g-color-primary-50);
   color: var(--ux4g-color-primary-800);
@@ -11399,8 +11400,46 @@ fieldset.ux4g-radio > legend {
   max-width: 22.5rem;
 }
 
-.sf-designer-device-mobile .sf-form-grid {
+.sf-designer-device-mobile .sf-form-grid,
+.sf-designer-device-mobile .sf-wizard {
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* The phone frame previews the citizen wizard's phone layout (see the max-width: 47.99rem block)
+ * while the Studio viewport itself stays wide. */
+.sf-designer-device-mobile .sf-stepper {
+  position: static;
+  padding: var(--ux4g-padding-s);
+}
+
+.sf-designer-device-mobile .sf-stepper-list {
+  flex-direction: row;
+  gap: var(--ux4g-gap-1, 0.25rem);
+}
+
+.sf-designer-device-mobile .sf-stepper-item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sf-designer-device-mobile .sf-stepper-btn {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ux4g-gap-2);
+  padding: var(--ux4g-gap-2);
+  text-align: center;
+}
+
+.sf-designer-device-mobile .sf-stepper-copy {
+  align-items: center;
+}
+
+.sf-designer-device-mobile .sf-stepper-copy .ux4g-body-s-default {
+  display: none;
+}
+
+.sf-designer-device .sf-stepper {
+  top: 0;
 }
 
 .sf-designer-preview-steps {

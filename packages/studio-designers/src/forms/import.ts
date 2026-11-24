@@ -135,7 +135,7 @@ function visibilityOf(rule: UiRule): VisibilityRule | null {
   return null;
 }
 
-/** Reads a root `if: {properties: {a: {properties: {b: {const}}}}}` condition. */
+/** Reads a root `if: {properties: {a: {properties: {b: {const | enum}}}}}` condition. */
 function conditionOf(node: FormSchemaNode | undefined): RequiredWhen | null {
   const path: string[] = [];
   let cur = node;
@@ -146,7 +146,11 @@ function conditionOf(node: FormSchemaNode | undefined): RequiredWhen | null {
     path.push(name);
     cur = child;
   }
-  if (!cur || cur.const === undefined || path.length === 0) return null;
+  if (!cur || path.length === 0) return null;
+  if (cur.enum !== undefined && cur.const === undefined) {
+    return { field: path.join('/'), oneOf: [...cur.enum] };
+  }
+  if (cur.const === undefined) return null;
   return { field: path.join('/'), equals: cur.const as Scalar };
 }
 
@@ -233,7 +237,10 @@ function sectionFromControls(
       required: rootRequired.has(key),
       ...(c.rule ? { rule: c.rule } : {}),
     });
-    if (ctx.conditional?.keys.has(key)) field.requiredWhen = { ...ctx.conditional.when };
+    if (ctx.conditional?.keys.has(key)) {
+      const when = ctx.conditional.when;
+      field.requiredWhen = when.oneOf ? { ...when, oneOf: [...when.oneOf] } : { ...when };
+    }
     section.fields.push(field);
   });
   return section;

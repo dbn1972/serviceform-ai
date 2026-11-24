@@ -2,6 +2,7 @@
 
 import { Button, Icon } from '@serviceform/ui-ux4g';
 import {
+  conditionText,
   KIND_LABEL,
   type DesignerField,
   type DesignerForm,
@@ -9,7 +10,7 @@ import {
   type DesignIssue,
   type VisibilityRule,
 } from '@serviceform/studio-designers/forms';
-import { useState, type DragEvent } from 'react';
+import { useState, type DragEvent, type KeyboardEvent } from 'react';
 import { PALETTE_MIME } from './DesignerPalette';
 
 export type Selection =
@@ -19,48 +20,47 @@ export type Selection =
   | { kind: 'field'; id: string };
 
 const FIELD_MIME = 'application/x-sf-field';
+const SECTION_MIME = 'application/x-sf-section';
 
-export type DropPayload = { palette: string } | { field: string };
+export type DropPayload = { palette: string } | { field: string } | { section: string };
 
 function readDrop(e: DragEvent): DropPayload | null {
   const palette = e.dataTransfer.getData(PALETTE_MIME);
   if (palette) return { palette };
+  const section = e.dataTransfer.getData(SECTION_MIME);
+  if (section) return { section };
   const field = e.dataTransfer.getData(FIELD_MIME);
   return field ? { field } : null;
 }
 
-function accepts(e: DragEvent): boolean {
+function accepts(e: DragEvent, sections = false): boolean {
   const types = Array.from(e.dataTransfer.types);
-  return types.includes(PALETTE_MIME) || types.includes(FIELD_MIME);
+  return (
+    types.includes(PALETTE_MIME) ||
+    types.includes(FIELD_MIME) ||
+    (sections && types.includes(SECTION_MIME))
+  );
+}
+
+/** Palette items are copied, canvas items moved; a mismatched effect makes the browser cancel the drop. */
+function dropEffectOf(e: DragEvent): 'copy' | 'move' {
+  return Array.from(e.dataTransfer.types).includes(PALETTE_MIME) ? 'copy' : 'move';
 }
 
 function describeRule(form: DesignerForm, rule: VisibilityRule): string {
-  for (const step of form.steps) {
-    for (const s of step.sections) {
-      for (const f of s.fields) {
-        const path = s.object ? `${s.object.key}/${f.key}` : f.key;
-        if (path !== rule.field) continue;
-        const values = rule.oneOf ?? (rule.equals === undefined ? [] : [rule.equals]);
-        const shown = values.map((v) => {
-          if (typeof v === 'boolean') return v ? 'Yes' : 'No';
-          return f.options?.find((o) => o.value === v)?.label ?? String(v);
-        });
-        return `${f.label || path} is ${shown.join(' or ') || '…'}`;
-      }
-    }
-  }
-  return rule.field;
+  return conditionText(form, rule);
 }
 
 function requirementTag(f: DesignerField) {
   if (f.required) return <span className="ux4g-tag-tonal-primary">Required</span>;
-  if (f.requiredWhen) return <span className="ux4g-tag-tonal-info">Required when…</span>;
+  if (f.requiredWhen) return null;
   return <span className="ux4g-tag-tonal-neutral">Optional</span>;
 }
 
 export interface CanvasHandlers {
   select: (s: Selection) => void;
   drop: (payload: DropPayload, sectionId: string, index: number) => void;
+  dropOnStep: (payload: DropPayload, stepId: string) => void;
   moveField: (id: string, delta: number) => void;
   duplicateField: (id: string) => void;
   removeField: (id: string) => void;
@@ -91,7 +91,27 @@ export function DesignerCanvas({
   handlers: CanvasHandlers;
 }) {
   const [dropAt, setDropAt] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState('');
   const step = form.steps[stepIndex];
+
+  /** Alt+Arrow moves, Ctrl/Cmd+D duplicates and Delete removes the focused field. */
+  const fieldKeys = (e: KeyboardEvent, f: DesignerField) => {
+    if (readOnly) return;
+    const name = f.label || f.key;
+    if (e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      handlers.moveField(f.id, e.key === 'ArrowUp' ? -1 : 1);
+      setAnnouncement(`Moved ${name} ${e.key === 'ArrowUp' ? 'up' : 'down'}`);
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+      e.preventDefault();
+      handlers.duplicateField(f.id);
+      setAnnouncement(`Duplicated ${name}`);
+    } else if (e.key === 'Delete') {
+      e.preventDefault();
+      handlers.removeField(f.id);
+      setAnnouncement(`Deleted ${name}. Undo with Ctrl+Z.`);
+    }
+  };
   const issueCount = (kind: 'field' | 'section' | 'step', id: string) =>
     issues.filter((i) => i.target.kind === kind && 'id' in i.target && i.target.id === id);
 
@@ -99,7 +119,7 @@ export function DesignerCanvas({
     onDragOver: (e: DragEvent) => {
       if (readOnly || !accepts(e)) return;
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
+      e.dataTransfer.dropEffect = dropEffectOf(e);
       setDropAt(key);
     },
     onDragLeave: () => setDropAt((k) => (k === key ? null : k)),
@@ -142,7 +162,9 @@ export function DesignerCanvas({
           className="sf-designer-field-main"
           aria-pressed={selected}
           aria-label={`${f.label || f.key}, ${KIND_LABEL[f.kind]}${hasError ? ', has errors' : ''}`}
+          aria-keyshortcuts={readOnly ? undefined : 'Alt+ArrowUp Alt+ArrowDown Control+D Delete'}
           onClick={() => handlers.select({ kind: 'field', id: f.id })}
+          onKeyDown={(e) => fieldKeys(e, f)}
         >
           <span className="sf-designer-field-head">
             <span className="ux4g-label-m-strong sf-designer-field-label">
@@ -159,6 +181,11 @@ export function DesignerCanvas({
               <span className="ux4g-tag-tonal-warning">
                 {f.visibleWhen.effect === 'SHOW' ? 'Shown when' : 'Hidden when'}{' '}
                 {describeRule(form, f.visibleWhen)}
+              </span>
+            ) : null}
+            {f.requiredWhen && !f.required ? (
+              <span className="ux4g-tag-tonal-info">
+                Required when {conditionText(form, f.requiredWhen)}
               </span>
             ) : null}
             {f.semanticElementId ? (
@@ -240,7 +267,29 @@ export function DesignerCanvas({
                 aria-selected={i === stepIndex}
                 aria-controls="designer-step-panel"
                 tabIndex={i === stepIndex ? 0 : -1}
-                className={`sf-designer-step${i === stepIndex ? ' sf-designer-step-current' : ''}`}
+                className={[
+                  'sf-designer-step',
+                  i === stepIndex ? 'sf-designer-step-current' : '',
+                  dropAt === `step:${s.id}` ? 'sf-designer-drop-target' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                onDragOver={(e) => {
+                  if (readOnly || !accepts(e, true)) return;
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = dropEffectOf(e);
+                  setDropAt(`step:${s.id}`);
+                }}
+                onDragLeave={() => setDropAt((k) => (k === `step:${s.id}` ? null : k))}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDropAt(null);
+                  const payload = readDrop(e);
+                  if (!payload || readOnly) return;
+                  handlers.dropOnStep(payload, s.id);
+                  onStepIndex(i);
+                  setAnnouncement(`Moved to step ${i + 1}, ${s.label}`);
+                }}
                 onClick={() => {
                   onStepIndex(i);
                   handlers.select({ kind: 'step', id: s.id });
@@ -292,10 +341,39 @@ export function DesignerCanvas({
             return (
               <section
                 key={section.id}
-                className={`sf-designer-section${selected ? ' sf-designer-selected' : ''}`}
+                className={[
+                  'sf-designer-section',
+                  selected ? 'sf-designer-selected' : '',
+                  dropAt === `section:${section.id}` ? 'sf-designer-drop-before' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
                 aria-label={section.label ?? section.object?.title ?? 'Fields'}
               >
-                <div className="sf-designer-section-head">
+                <div
+                  className="sf-designer-section-head"
+                  draggable={!readOnly}
+                  onDragStart={(e) => {
+                    e.dataTransfer.setData(SECTION_MIME, section.id);
+                    e.dataTransfer.effectAllowed = 'move';
+                  }}
+                  onDragOver={(e) => {
+                    if (readOnly || !Array.from(e.dataTransfer.types).includes(SECTION_MIME))
+                      return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    setDropAt(`section:${section.id}`);
+                  }}
+                  onDragLeave={() => setDropAt((k) => (k === `section:${section.id}` ? null : k))}
+                  onDrop={(e) => {
+                    const payload = readDrop(e);
+                    if (!payload || !('section' in payload) || readOnly) return;
+                    e.preventDefault();
+                    setDropAt(null);
+                    handlers.drop(payload, section.id, 0);
+                    setAnnouncement('Section moved');
+                  }}
+                >
                   <button
                     type="button"
                     className="sf-designer-section-title"
@@ -368,6 +446,15 @@ export function DesignerCanvas({
         </div>
       ) : (
         <p className="ux4g-body-m-default">Add a step to start.</p>
+      )}
+      <p className="ux4g-sr-only" role="status" aria-live="polite">
+        {announcement}
+      </p>
+      {readOnly ? null : (
+        <p className="ux4g-body-s-default sf-designer-muted">
+          Drag fields, sections or palette items onto a step name to move them there. Keyboard:
+          Alt+↑/↓ moves the focused field, Ctrl+D duplicates it, Delete removes it, Ctrl+Z undoes.
+        </p>
       )}
     </section>
   );

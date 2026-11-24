@@ -173,7 +173,7 @@ export function EvidenceDesigner({ source }: { source: WorkflowSourceRef }) {
         ))}
       </div>
 
-      <div className="sf-designer-panel" role="tabpanel">
+      <div role="tabpanel">
         {tab === 'design' ? (
           <div className="sf-designer-publish-grid">
             <section className="sf-designer-pane" aria-labelledby="evd-pack-title">
@@ -247,7 +247,7 @@ export function EvidenceDesigner({ source }: { source: WorkflowSourceRef }) {
                         <th scope="row">
                           <button
                             type="button"
-                            className="ux4g-btn-ghost ux4g-btn-s"
+                            className="ux4g-btn-text-neutral ux4g-btn-s"
                             aria-label={`Edit requirement ${req.label}`}
                             onClick={() => setSelected(req.id)}
                           >

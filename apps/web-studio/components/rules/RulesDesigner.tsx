@@ -307,12 +307,7 @@ export function RulesDesigner({ source }: { source: RulesSource }) {
         </Alert>
       ) : null}
 
-      <div
-        id={`rules-panel-${tab}`}
-        role="tabpanel"
-        aria-labelledby={`rules-tab-${tab}`}
-        className="sf-designer-panel"
-      >
+      <div id={`rules-panel-${tab}`} role="tabpanel" aria-labelledby={`rules-tab-${tab}`}>
         {tab === 'table' ? (
           <div className="sf-rules-grid">
             <DecisionTable

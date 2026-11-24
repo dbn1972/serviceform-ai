@@ -174,7 +174,12 @@ function objectNode(section: DesignerSection): FormSchemaNode {
 /** `if` schema for a root condition; nested paths nest `properties`. */
 export function conditionSchema(when: RequiredWhen): FormSchemaNode {
   const parts = when.field.split('/');
-  let node: FormSchemaNode = { const: when.equals };
+  let node: FormSchemaNode =
+    when.oneOf !== undefined
+      ? { enum: when.oneOf }
+      : when.equals !== undefined
+        ? { const: when.equals }
+        : {};
   for (let i = parts.length - 1; i >= 0; i -= 1) {
     node = { properties: { [parts[i] ?? '']: node } };
   }

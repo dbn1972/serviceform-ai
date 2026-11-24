@@ -171,6 +171,90 @@ test.describe('Studio forms designer', () => {
     );
   });
 
+  // REQ: World-class forms WS2 — drag-and-drop authoring, "is any of" logic, the validation
+  // bench, the Logic view and a preview with the citizen wizard's chrome (UX4G, axe).
+  test('drag from the palette, author "is any of" logic, read it in Logic and try it in the preview', async ({
+    page,
+  }) => {
+    test.setTimeout(90_000);
+    await open(page, `${STUDIO}/forms/designer`);
+    await page.getByLabel('Title', { exact: true }).fill('Trade licence application');
+    await page.getByLabel('Form key', { exact: true }).fill('lab.trade-licence.application');
+
+    await page.getByRole('button', { name: 'Add Radio buttons' }).click();
+    await page.getByLabel('Label', { exact: true }).fill('Business type');
+    await page.getByLabel('Data key').fill('business_type');
+    await page.getByText('Paste a list of options').click();
+    await page.getByLabel('Options, one per line').fill('Shop\nWorkshop\nFactory');
+    await page.getByRole('button', { name: 'Replace options with 3 lines' }).click();
+    await expect(page.getByLabel('Option 3 stored value')).toHaveValue('FACTORY');
+
+    const fields = page.getByRole('list', { name: 'Fields' }).first().getByRole('listitem');
+    await page
+      .getByRole('button', { name: 'Add Short text' })
+      .dragTo(page.getByText('Drop here to add at the end').first());
+    await expect(fields).toHaveCount(2);
+    await page.getByLabel('Label', { exact: true }).fill('Licence number');
+    await page.getByLabel('Data key').fill('licence_number');
+    await page.getByText('Required', { exact: true }).click();
+    await page.getByText('Show or hide based on another answer').click();
+    await page.getByLabel('Answer to').selectOption('business_type');
+    await page.getByLabel('Comparison').selectOption('any');
+    await page.locator('label.ux4g-checkbox', { hasText: /^Shop$/ }).click();
+    await page.locator('label.ux4g-checkbox', { hasText: /^Workshop$/ }).click();
+    await page.locator('label.ux4g-checkbox', { hasText: /^Factory$/ }).click();
+    await expect(fields.nth(1)).toContainText(
+      'Shown when “Business type” is any of Workshop or Factory',
+    );
+    await page.getByLabel('Allowed characters').selectOption('upper_alnum');
+    await page.getByLabel('Try a value').fill('ws-12');
+    await expect(page.getByTestId('field-bench-result')).toHaveText('Check licence number');
+    await page.getByLabel('Try a value').fill('WS12');
+    await expect(page.getByTestId('field-bench-result')).toHaveText('Accepted');
+
+    await page.getByRole('button', { name: /^Business type, Radio buttons/ }).focus();
+    await page.keyboard.press('Alt+ArrowDown');
+    await expect(fields.nth(1)).toContainText('Business type');
+    await expect(page.getByText('Moved Business type down')).toBeAttached();
+    await page.keyboard.press('Control+z');
+    await expect(fields.nth(0)).toContainText('Business type');
+
+    await page.getByRole('button', { name: /^Business type, Radio buttons/ }).click();
+    await page.getByText('Show or hide based on another answer').click();
+    await page.getByLabel('Answer to').selectOption('licence_number');
+    await page.getByLabel('Is', { exact: true }).fill('X');
+    await expect(page.getByRole('button', { name: /to fix/ })).toBeVisible();
+    await page
+      .getByRole('tablist', { name: 'Designer views' })
+      .getByRole('tab', { name: 'Logic' })
+      .click();
+    await expect(page.getByText(/each wait for the other to be answered/)).toBeVisible();
+    await page.getByRole('button', { name: 'Undo' }).click();
+    await expect(page.getByTestId('logic-rule-count')).toHaveText('1 rule');
+    await expect(
+      page.getByText(
+        'Show “Licence number” only when “Business type” is any of Workshop or Factory.',
+      ),
+    ).toBeVisible();
+    await expect(page.getByTestId('logic-matrix').locator('tbody tr')).toHaveCount(4);
+    await expectAccessible(page);
+
+    await page.getByRole('button', { name: 'Try Business type: Workshop in the preview' }).click();
+    await expect(page.getByRole('radio', { name: 'Workshop' })).toBeChecked();
+    await page.getByRole('button', { name: 'Check whole form' }).click();
+    const summary = page.getByTestId('preview-error-summary');
+    await expect(summary).toBeFocused();
+    await summary.getByRole('link', { name: 'Enter licence number' }).click();
+    await expect(page.getByRole('textbox', { name: 'Licence number' })).toBeFocused();
+    await page.getByText('Runtime details').click();
+    await expect(page.getByTestId('preview-runtime')).toContainText('Ux4gRadioGroup');
+    await expectAccessible(page);
+    await page.locator('label.ux4g-radio', { hasText: /^Shop$/ }).click();
+    await expect(page.getByRole('textbox', { name: 'Licence number' })).toHaveCount(0);
+    await page.getByRole('button', { name: 'Check whole form' }).click();
+    await expect(page.getByText('Every answer passes the form checks')).toBeVisible();
+  });
+
   test('freeze a form version, resolve its pin in CMP-009 and publish through maker-checker', async ({
     page,
   }) => {
