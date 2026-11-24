@@ -20,6 +20,9 @@ export interface CaseTransitionView {
   occurred_at: string;
 }
 
+/** Keys that must never appear on the officer audit surface (PII / tenancy). */
+const FORBIDDEN_AUDIT_KEYS = new Set(['actor_id', 'tenant_id', 'principal_id', 'subject_id']);
+
 export function transitionSummary(t: CaseTransitionView): string {
   const from = t.from_state ?? '∅';
   return `${from} → ${t.to_state}`;
@@ -45,7 +48,59 @@ export function transitionCommandLabel(command: string): string {
       return 'Citizen response recorded';
     case 'CLOSE_DEFICIENCY':
       return 'Deficiency closed';
+    case 'FORWARD_FOR_APPROVAL':
+      return 'Forwarded for approval';
+    case 'RESUME_SCRUTINY':
+      return 'Scrutiny resumed';
     default:
       return command;
   }
+}
+
+/** Compact correlation id for the trail UI (full UUID remains in code tooltip via title). */
+export function shortCorrelationId(correlationId: string): string {
+  if (correlationId.length <= 13) return correlationId;
+  return `${correlationId.slice(0, 8)}…`;
+}
+
+export function auditTrailDepth(transitions: readonly CaseTransitionView[]): {
+  total: number;
+  by_command: Record<string, number>;
+  deficiency_loop_events: number;
+  has_human_decision: boolean;
+} {
+  const by_command: Record<string, number> = {};
+  let deficiency_loop_events = 0;
+  let has_human_decision = false;
+  for (const t of transitions) {
+    by_command[t.command] = (by_command[t.command] ?? 0) + 1;
+    if (
+      t.command === 'RAISE_DEFICIENCY' ||
+      t.command === 'RECORD_CITIZEN_RESPONSE' ||
+      t.command === 'CLOSE_DEFICIENCY'
+    ) {
+      deficiency_loop_events += 1;
+    }
+    if (t.command === 'RECORD_APPROVED' || t.command === 'RECORD_REJECTED') {
+      has_human_decision = true;
+    }
+  }
+  return {
+    total: transitions.length,
+    by_command,
+    deficiency_loop_events,
+    has_human_decision,
+  };
+}
+
+/**
+ * Drop forbidden identity keys if a platform row ever leaks them into the BFF payload.
+ * Fail-closed display hygiene — does not replace CMP-015 platform stripping.
+ */
+export function sanitizeAuditRow<T extends Record<string, unknown>>(row: T): T {
+  const out = { ...row };
+  for (const key of FORBIDDEN_AUDIT_KEYS) {
+    if (key in out) delete out[key];
+  }
+  return out;
 }

@@ -9,12 +9,26 @@ import {
   SAMPLE_LAB_SLA_CATALOGUE,
 } from '@serviceform/m10-sample-lab/sla-catalogue';
 import {
+  auditTrailDepth,
+  shortCorrelationId,
   transitionCommandLabel,
   transitionSummary,
   type CaseTransitionView,
 } from '../lib/portal/audit-view';
-import { orderedCasePins, type CasePinGraph } from '../lib/portal/pin-view';
-import { slaStatusTag, type SlaClockView } from '../lib/portal/sla-view';
+import {
+  decideBlockedByOpenDeficiency,
+  deficiencyLoopPhase,
+  deficiencyLoopPhaseLabel,
+  deficiencyTimeline,
+} from '../lib/portal/deficiency-view';
+import { orderedCasePins, pinIntegrityCue, type CasePinGraph } from '../lib/portal/pin-view';
+import {
+  hasSlaBreach,
+  hasSlaWarning,
+  slaBreachSummary,
+  slaStatusTag,
+  type SlaClockView,
+} from '../lib/portal/sla-view';
 
 type App = {
   id: string;
@@ -69,6 +83,8 @@ type DeficiencyNotice = {
   reason_code: string;
   notice_code: string;
   items: { item_code: string; required: boolean; item_status: string }[];
+  opened_at?: string | null;
+  response_due_at?: string | null;
   responded_at: string | null;
   closed_at: string | null;
 };
@@ -332,13 +348,17 @@ export function ApplicationReview({ id }: { id: string }) {
   const actions: DeskAction[] = deskRole ? deskActionsForRole(deskRole) : ['APPROVE', 'REJECT'];
   const openNotice = deficiencies.find((d) => d.status === 'OPEN');
   const responseNotice = deficiencies.find((d) => d.status === 'RESPONSE_RECEIVED');
+  const decideBlock = decideBlockedByOpenDeficiency(deficiencies);
+  const pinCue = pinIntegrityCue(app);
+  const breachSummary = slaBreachSummary(slaClocks);
+  const auditDepth = auditTrailDepth(transitions);
   const canRaise = CAN_RAISE.includes(app.platform_state) && !openNotice && !raising && catalogue;
   const canDecide =
     (app.status === 'SUBMITTED' ||
       ['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY', 'DECISION_PENDING', 'CITIZEN_RESPONSE'].includes(
         app.platform_state,
       )) &&
-    !openNotice &&
+    !decideBlock.blocked &&
     !raising;
 
   return (
@@ -391,6 +411,25 @@ export function ApplicationReview({ id }: { id: string }) {
           approval, the platform signs and issues the certificate and publishes it to DigiLocker
           using SIMULATED connectors. CERTIFIED=false.
         </Alert>
+
+        {decideBlock.blocked ? (
+          <Alert variant="error" title="Decide blocked — open deficiency">
+            {decideBlock.open_count === 1
+              ? 'One deficiency notice is OPEN. Close it only after the citizen responds; APPROVE / REJECT stay disabled while OPEN.'
+              : `${decideBlock.open_count} deficiency notices are OPEN. APPROVE / REJECT stay disabled until each OPEN notice is closed after citizen response.`}
+          </Alert>
+        ) : null}
+
+        {hasSlaBreach(slaClocks) && breachSummary ? (
+          <Alert variant="error" title="SLA breach">
+            {breachSummary}. Escalation follows the pinned SLA policy (CMP-029). CERTIFIED=false.
+          </Alert>
+        ) : hasSlaWarning(slaClocks) ? (
+          <Alert variant="warning" title="SLA warning emitted">
+            A warning was emitted before the deadline on at least one clock. Review remaining working
+            time against the pinned sla_policy_version_id.
+          </Alert>
+        ) : null}
 
         <div className="sf-meta-row">
           <span className={statusTag(app.status)}>{app.status}</span>
@@ -528,8 +567,22 @@ export function ApplicationReview({ id }: { id: string }) {
         >
           <Alert variant="info" title="Immutable for this case">
             This application executes only against the published pin graph below. A new binding
-            version never moves an in-flight case. CERTIFIED=false.
+            version never moves an in-flight case. CERTIFIED=false · G6=false · TSB seal unset.
           </Alert>
+          <div className="sf-meta-row">
+            <span className="ux4g-tag-tonal-success">silent_repoint_forbidden</span>
+            {pinCue.required_pins_complete ? (
+              <span className="ux4g-tag-tonal-success">required pins complete</span>
+            ) : (
+              <span className="ux4g-tag-tonal-warning">required pins incomplete</span>
+            )}
+            {pinCue.pin_graph_hash_present ? (
+              <span className="ux4g-tag-tonal-info">pin_graph_hash present</span>
+            ) : (
+              <span className="ux4g-tag-tonal-warning">pin_graph_hash missing</span>
+            )}
+            <span className="ux4g-tag-outline-neutral">tsb_immutability_sealed=false</span>
+          </div>
           <dl className="sf-dl">
             {orderedCasePins(app.pins).map((pin) => (
               <div key={pin.key}>
@@ -556,6 +609,12 @@ export function ApplicationReview({ id }: { id: string }) {
           title="Deficiency notices"
           subtitle="CMP-019 loop · raise → citizen respond → close → resume scrutiny"
         >
+          {decideBlock.blocked ? (
+            <Alert variant="error" title="Loop open — decide blocked">
+              CMP-019 keeps APPROVE / REJECT disabled while status=OPEN. Citizen must respond before
+              close.
+            </Alert>
+          ) : null}
           {responseNotice && app.platform_state === 'CITIZEN_RESPONSE' ? (
             <Alert variant="warning" title="Citizen response received">
               Close the open deficiency, then continue scrutiny or decide. SLA pause
@@ -563,49 +622,56 @@ export function ApplicationReview({ id }: { id: string }) {
             </Alert>
           ) : null}
           <ul className="sf-section">
-            {deficiencies.map((d) => (
-              <li key={d.deficiency_id} className="sf-section">
-                <div className="sf-meta-row">
-                  <span className={statusTag(d.status)}>{d.status}</span>
-                  <span className="ux4g-tag-tonal-neutral">
-                    {reasonLabel(catalogue, d.reason_code)}
-                  </span>
-                </div>
-                <p className="ux4g-body-s-default">
-                  Requested: {d.items.map((i) => itemLabel(catalogue, i.item_code)).join(', ')}
-                </p>
-                <dl className="sf-dl">
-                  {d.responded_at ? (
-                    <>
-                      <dt>Citizen responded</dt>
-                      <dd>{d.responded_at}</dd>
-                    </>
-                  ) : null}
-                  {d.closed_at ? (
-                    <>
-                      <dt>Closed</dt>
-                      <dd>{d.closed_at}</dd>
-                    </>
-                  ) : null}
-                </dl>
-                {d.status === 'OPEN' ? (
-                  <p className="ux4g-body-s-default">
-                    Waiting for the citizen to upload and resubmit. Decide is blocked while OPEN.
-                  </p>
-                ) : null}
-                {d.status === 'RESPONSE_RECEIVED' ? (
-                  <div className="sf-actions">
-                    <Button
-                      variant="outline-primary"
-                      disabled={busy}
-                      onClick={() => void closeOpenDeficiency(d.deficiency_id)}
-                    >
-                      Close deficiency
-                    </Button>
+            {deficiencies.map((d) => {
+              const phase = deficiencyLoopPhase(d);
+              const steps = deficiencyTimeline(d);
+              return (
+                <li key={d.deficiency_id} className="sf-section">
+                  <div className="sf-meta-row">
+                    <span className={statusTag(d.status)}>{d.status}</span>
+                    <span className="ux4g-tag-tonal-primary">{deficiencyLoopPhaseLabel(phase)}</span>
+                    <span className="ux4g-tag-tonal-neutral">
+                      {reasonLabel(catalogue, d.reason_code)}
+                    </span>
                   </div>
-                ) : null}
-              </li>
-            ))}
+                  <p className="ux4g-body-s-default">
+                    Requested: {d.items.map((i) => itemLabel(catalogue, i.item_code)).join(', ')}
+                  </p>
+                  <dl className="sf-dl">
+                    {steps.map((step) =>
+                      step.at || step.key === 'opened' ? (
+                        <div key={step.key}>
+                          <dt>{step.label}</dt>
+                          <dd>{step.at ?? (step.done ? '—' : 'pending')}</dd>
+                        </div>
+                      ) : null,
+                    )}
+                    {d.response_due_at ? (
+                      <>
+                        <dt>Response due</dt>
+                        <dd>{d.response_due_at}</dd>
+                      </>
+                    ) : null}
+                  </dl>
+                  {d.status === 'OPEN' ? (
+                    <p className="ux4g-body-s-default">
+                      Waiting for the citizen to upload and resubmit. Decide is blocked while OPEN.
+                    </p>
+                  ) : null}
+                  {d.status === 'RESPONSE_RECEIVED' ? (
+                    <div className="sf-actions">
+                      <Button
+                        variant="outline-primary"
+                        disabled={busy}
+                        onClick={() => void closeOpenDeficiency(d.deficiency_id)}
+                      >
+                        Close deficiency
+                      </Button>
+                    </div>
+                  ) : null}
+                </li>
+              );
+            })}
           </ul>
         </Card>
       ) : null}
@@ -614,6 +680,11 @@ export function ApplicationReview({ id }: { id: string }) {
         title="SLA clock"
         subtitle={`CMP-029 · policy pin ${app.pins?.sla_policy_version_id ?? '—'} · SAMPLE_LAB 10 working days · CERTIFIED=false`}
       >
+        {hasSlaBreach(slaClocks) && breachSummary ? (
+          <Alert variant="error" title="Breach visibility">
+            {breachSummary}
+          </Alert>
+        ) : null}
         {!slaMounted ? (
           <Alert variant="info" title="SLA not mounted on this lab host">
             CMP-029 is optional (`DATABASE_URL_CMP029`). When unset, deficiency still works with an
@@ -639,8 +710,11 @@ export function ApplicationReview({ id }: { id: string }) {
                       {pauseReasonLabel(clock.pause_reason_code)}
                     </span>
                   ) : null}
-                  {clock.breach_at ? (
+                  {clock.breach_at || clock.clock_status === 'BREACHED' ? (
                     <span className="ux4g-tag-tonal-error">Breach recorded</span>
+                  ) : null}
+                  {clock.warning_emitted_at ? (
+                    <span className="ux4g-tag-tonal-warning">Warning emitted</span>
                   ) : null}
                   {clock.escalation_level > 0 ? (
                     <span className="ux4g-tag-tonal-error">
@@ -657,6 +731,12 @@ export function ApplicationReview({ id }: { id: string }) {
                   </dd>
                   <dt>Completion anchor</dt>
                   <dd>{clock.completion_anchor}</dd>
+                  {clock.warning_emitted_at ? (
+                    <>
+                      <dt>Warning at</dt>
+                      <dd>{clock.warning_emitted_at}</dd>
+                    </>
+                  ) : null}
                   {clock.breach_at ? (
                     <>
                       <dt>Breach at</dt>
@@ -678,7 +758,7 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <Card
         title="Case audit trail"
-        subtitle="CMP-015 append-only transitions · actor ids withheld · CERTIFIED=false"
+        subtitle={`CMP-015 append-only · ${auditDepth.total} events · deficiency loop ${auditDepth.deficiency_loop_events} · actor ids withheld · CERTIFIED=false`}
       >
         {transitions.length === 0 ? (
           <p className="ux4g-body-m-default">No transitions loaded for this case yet.</p>
@@ -693,10 +773,17 @@ export function ApplicationReview({ id }: { id: string }) {
                   </span>
                   <span className="ux4g-tag-tonal-info">{transitionSummary(t)}</span>
                   <span className="ux4g-tag-outline-neutral">{t.actor_type}</span>
+                  {t.transition_class ? (
+                    <span className="ux4g-tag-outline-neutral">{t.transition_class}</span>
+                  ) : null}
                 </div>
                 <dl className="sf-dl">
                   <dt>Occurred</dt>
                   <dd>{t.occurred_at}</dd>
+                  <dt>Correlation</dt>
+                  <dd title={t.correlation_id}>
+                    <code>{shortCorrelationId(t.correlation_id)}</code>
+                  </dd>
                   <dt>Authz policy revision</dt>
                   <dd>
                     <code>{t.authz_policy_revision}</code>

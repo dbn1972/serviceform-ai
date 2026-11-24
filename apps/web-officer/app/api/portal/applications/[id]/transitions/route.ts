@@ -1,3 +1,4 @@
+import { sanitizeAuditRow } from '../../../../../../lib/portal/audit-view';
 import {
   currentOfficer,
   isUuid,
@@ -14,7 +15,8 @@ type Ctx = { params: Promise<{ id: string }> };
 
 /**
  * CMP-015 append-only transition trail for the case (ops audit depth).
- * Platform strips tenant_id and actor_id from each row. Fail-closed OPA · CERTIFIED=false.
+ * Platform strips tenant_id and actor_id; BFF re-sanitizes as defence in depth (P8-5).
+ * Fail-closed OPA · CERTIFIED=false · G6=false.
  */
 export async function GET(request: Request, ctx: Ctx) {
   const tenancy = tenantIdentifyingRefusal(request);
@@ -27,11 +29,18 @@ export async function GET(request: Request, ctx: Ctx) {
     token: officer.token,
   });
   if (res.status !== 200) return relay(res);
+  const raw = Array.isArray(res.body['transitions']) ? res.body['transitions'] : [];
+  const transitions = raw.map((row) =>
+    sanitizeAuditRow(
+      row && typeof row === 'object' ? (row as Record<string, unknown>) : ({} as Record<string, unknown>),
+    ),
+  );
   return json(200, {
     application_id: id,
-    transitions: Array.isArray(res.body['transitions']) ? res.body['transitions'] : [],
+    transitions,
     source: 'PLATFORM',
     certified: false,
     g6_issued: false,
+    tsb_immutability_sealed: false,
   });
 }

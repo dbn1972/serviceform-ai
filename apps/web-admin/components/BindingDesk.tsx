@@ -132,6 +132,7 @@ export function BindingDesk() {
         Publish needs an APPROVED CMP-051 request from a different principal than the maker. Pins
         are authored in Studio and frozen at publish; empty pins here only create a draft shell.
         In-flight applications keep their pins — silent repoint is forbidden (Constitution #9).
+        Lab eng seal ≠ G6 tsb_immutability_sealed (remains false until owner SF-60).
       </Alert>
       <Button onClick={() => void create()}>Create draft binding</Button>
       <Button variant="outline-primary" onClick={() => void publish()}>

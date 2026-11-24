@@ -1,0 +1,43 @@
+
+ RUN  v5.0.3 /agent/repos/serviceform-ai
+
+ ✓ apps/web-officer/test/deficiency.test.ts > SAMPLE_LAB deficiency catalogue (officer) > exposes published reason and IND-SOC-002 evidence item codes 2ms
+ ✓ apps/web-officer/test/deficiency.test.ts > workbench status for deficiency path > surfaces DEFICIENCY_RAISED and CITIZEN_RESPONSE without inventing states 0ms
+ ✓ apps/web-officer/test/deficiency.test.ts > workbench status for deficiency path > keeps decide-blocking OPEN vs RESPONSE_RECEIVED distinguishable for the loop UI 0ms
+ ✓ apps/web-officer/test/deficiency.test.ts > deficiency loop helpers imported by ApplicationReview (P8-5) > exports decide-block via deficiency-view 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — TSB version pin clarity (WS6) > orders required pins with TenantServiceBinding first 2ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — TSB version pin clarity (WS6) > omits empty optional pins and returns [] when undefined 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — TSB version pin clarity (WS6) > passes full pin graph through toWorkbenchApplication with silent_repoint_forbidden 0ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — case audit trail labels (WS6) > summarises state transitions and labels deficiency / decision commands 0ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — tenant isolation fail-closed (WS6) > refuses x-tenant-id / x-roles / Forwarded tenant= with SF-TEN-002 18ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — tenant isolation fail-closed (WS6) > allows ordinary requests without tenant-identifying headers 0ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — tenant isolation fail-closed (WS6) > cross-site POST without JSON content-type is refused (SF-SYS-003 / SF-AUTH-002) 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — tenant isolation fail-closed (WS6) > refuses forged tenant headers on task queue paths (P8-5) 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — deficiency loop decide-block (P8-5) > blocks decide while OPEN and maps loop phases + timeline 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — SLA breach visibility (P8-5) > detects breach by status or breach_at and summarises 1ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — SLA breach visibility (P8-5) > surfaces warning_emitted_at before breach 0ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — pin integrity cue (P8-5) > reports complete required pins and never claims G6 seal 0ms
+ ✓ apps/web-officer/test/ops-depth.test.ts > ops depth — audit trail depth + sanitize (P8-5) > counts deficiency loop events and strips forbidden identity keys 1ms
+ ✓ apps/web-officer/test/sla.test.ts > SAMPLE_LAB SLA catalogue (officer) > exposes 10 working-day duration and DEFICIENCY_OPEN pause 2ms
+ ✓ apps/web-officer/test/sla.test.ts > SAMPLE_LAB SLA catalogue (officer) > maps clock status to UX4G tonal tags 0ms
+ ✓ apps/web-officer/test/sla.test.ts > SAMPLE_LAB SLA catalogue (officer) > ties SLA pause to deficiency loop (DEFICIENCY_OPEN only) 0ms
+ ✓ apps/web-officer/test/sla.test.ts > SAMPLE_LAB SLA catalogue (officer) > exposes breach helpers for officer breach banner (P8-5) 0ms
+ ✓ apps/web-admin/test/maker-checker.test.ts > maker-checker UX (P8-5 / CMP-051) > blocks same principal from approve/reject on SUBMITTED 1ms
+ ✓ apps/web-admin/test/maker-checker.test.ts > maker-checker UX (P8-5 / CMP-051) > allows a different checker principal 0ms
+ ✓ apps/web-admin/test/maker-checker.test.ts > maker-checker UX (P8-5 / CMP-051) > refuses checker action without checker role 0ms
+ ✓ apps/web-admin/test/maker-checker.test.ts > maker-checker UX (P8-5 / CMP-051) > allows maker to submit DRAFT when they hold maker role 0ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > keeps the shell heading and landmarks 11ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > exposes binding and review destinations 2ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > users page is UX4G tenant workforce desk 4ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > bindings page includes reusable jurisdiction scope desk for any offering 4ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > bindings page exposes SAMPLE_LAB eng seal prove control (SF-60) 3ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > bindings page states maker-checker and TSB pin immutability (WS6 ops depth) 3ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin markup (UX4G) > bindings page states lab eng seal ≠ G6 seal (P8-5) 3ms
+ ✓ apps/web-admin/test/markup.test.tsx > web-admin reviews markup (P8-5 maker≠checker) > checker reviews page stresses maker ≠ checker 12ms
+
+ Test Files  5 passed (5)
+      Tests  33 passed (33)
+   Start at  17:49:49
+   Duration  500ms (transform 60%, import 25%, tests 13%, worker 3%)
+
+JUNIT report written to /agent/repos/serviceform-ai/evidence/SF-P8-OPS/junit/unit.xml

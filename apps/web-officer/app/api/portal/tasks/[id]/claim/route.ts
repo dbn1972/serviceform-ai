@@ -5,6 +5,7 @@ import {
   json,
   relay,
   crossSiteRefusal,
+  tenantIdentifyingRefusal,
 } from '../../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -14,6 +15,8 @@ type Ctx = { params: Promise<{ id: string }> };
 
 /** CMP-017 claim — exclusive work on a HUMAN_TASK for the officer's matching role_code. */
 export async function POST(request: Request, ctx: Ctx) {
+  const tenancy = tenantIdentifyingRefusal(request);
+  if (tenancy) return tenancy;
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const { id } = await ctx.params;

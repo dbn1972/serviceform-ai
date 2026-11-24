@@ -35,3 +35,27 @@ export function slaStatusTag(status: string): string {
       return 'ux4g-tag-tonal-neutral';
   }
 }
+
+/** True when CMP-029 recorded a breach (status or breach_at). */
+export function hasSlaBreach(clocks: readonly SlaClockView[]): boolean {
+  return clocks.some((c) => c.clock_status === 'BREACHED' || Boolean(c.breach_at));
+}
+
+export function breachedSlaClocks(clocks: readonly SlaClockView[]): SlaClockView[] {
+  return clocks.filter((c) => c.clock_status === 'BREACHED' || Boolean(c.breach_at));
+}
+
+export function slaBreachSummary(clocks: readonly SlaClockView[]): string | null {
+  const breached = breachedSlaClocks(clocks);
+  if (breached.length === 0) return null;
+  const first = breached[0];
+  const when = first?.breach_at ?? 'recorded';
+  if (breached.length === 1) {
+    return `OVERALL / ${first?.stage_code ?? 'clock'} breached at ${when}`;
+  }
+  return `${breached.length} SLA clocks breached (first at ${when})`;
+}
+
+export function hasSlaWarning(clocks: readonly SlaClockView[]): boolean {
+  return clocks.some((c) => Boolean(c.warning_emitted_at) && c.clock_status !== 'COMPLETED');
+}
