@@ -10912,31 +10912,409 @@ fieldset.ux4g-radio > legend {
     padding: var(--ux4g-padding-m);
   }
 
-  /* Phones: actions sit after the form (a sticky bar would cover a third of the screen), with the
-   * primary action first and full width. */
+  /* Phones: a compact two-row bar in the thumb zone (save state + save for later, then Back and a
+   * wide primary). It stays under the 7rem html scroll-padding so a focused field is never
+   * hidden behind it (WCAG 2.4.11). */
+  html:has(.sf-wizard) {
+    scroll-padding-bottom: var(--ux4g-size-160);
+  }
+
   .sf-wizard-actions {
-    position: static;
-    flex-direction: column-reverse;
+    bottom: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
-    padding: var(--ux4g-padding-m);
-    box-shadow: none;
+    gap: var(--ux4g-gap-3);
+    padding: var(--ux4g-padding-s);
+    border-radius: var(--ux4g-radius-lg) var(--ux4g-radius-lg) 0 0;
   }
 
   .sf-wizard-actions-start,
   .sf-wizard-actions-end {
     width: 100%;
     margin-left: 0;
+    gap: var(--ux4g-gap-2) var(--ux4g-gap-4);
+  }
+
+  .sf-wizard-actions-start {
+    justify-content: space-between;
+    column-gap: var(--ux4g-gap-3);
+  }
+
+  .sf-wizard-actions-start .sf-save-status {
+    font-size: var(--ux4g-fs-12);
+  }
+
+  .sf-wizard-actions-start > .ux4g-btn-text-primary {
+    flex: 0 0 auto;
+    padding-inline: var(--ux4g-padding-none);
   }
 
   .sf-wizard-actions-end {
-    flex-direction: column-reverse;
-    align-items: stretch;
+    flex-wrap: nowrap;
   }
 
-  .sf-wizard-actions-end > .ux4g-btn-primary,
-  .sf-wizard-actions-end > .ux4g-btn-text-primary {
-    width: 100%;
+  .sf-wizard-actions-end > :is(.ux4g-btn-primary, .ux4g-btn-outline-neutral) {
+    min-height: var(--ux4g-size-48);
     justify-content: center;
+  }
+
+  .sf-wizard-actions-end > .ux4g-btn-outline-neutral {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .sf-wizard-actions-end > .ux4g-btn-primary {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Answer progress (registered extension `form-wizard-stepper`): native <progress> so the value is
+ * exposed to assistive technology without scripting; the text states the same numbers. */
+.sf-form-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-3);
+  padding: var(--ux4g-gap-2) var(--ux4g-gap-4) var(--ux4g-gap-6);
+  margin-bottom: var(--ux4g-gap-4);
+  border-bottom: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-default);
+}
+
+.sf-form-progress-text {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--ux4g-gap-2) var(--ux4g-gap-4);
+  margin: 0;
+}
+
+.sf-form-progress-text .ux4g-body-s-default {
+  color: var(--ux4g-text-neutral-secondary);
+}
+
+.sf-form-progress-bar {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--ux4g-size-8);
+  border: 0;
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-neutral-200);
+  overflow: hidden;
+}
+
+.sf-form-progress-bar::-webkit-progress-bar {
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-neutral-200);
+}
+
+.sf-form-progress-bar::-webkit-progress-value {
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-primary-600);
+}
+
+.sf-form-progress-bar::-moz-progress-bar {
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-primary-600);
+}
+
+.sf-stepper-attention .sf-stepper-index {
+  background: var(--ux4g-color-red-50);
+  border-color: var(--ux4g-border-color-error-strong);
+  color: var(--ux4g-text-status-error);
+}
+
+.sf-stepper-copy .sf-stepper-flag {
+  color: var(--ux4g-text-status-error);
+}
+
+@media (max-width: 63.99rem) {
+  .sf-form-progress {
+    gap: var(--ux4g-gap-2);
+    padding: var(--ux4g-gap-1) var(--ux4g-gap-2) var(--ux4g-gap-4);
+    margin-bottom: var(--ux4g-gap-2);
+  }
+}
+
+@media (forced-colors: active) {
+  .sf-form-progress-bar {
+    border: var(--ux4g-border-width-sm) solid CanvasText;
+  }
+
+  .sf-form-progress-bar::-webkit-progress-value {
+    background: Highlight;
+  }
+
+  .sf-form-progress-bar::-moz-progress-bar {
+    background: Highlight;
+  }
+}
+
+/* Step body: one stack per step so review alerts, summary and declaration keep the panel rhythm. */
+.sf-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-8);
+  min-width: 0;
+}
+
+/* Save state in the wizard bar: the live status and, after a failed save, a retry action. */
+.sf-save-state {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ux4g-gap-2) var(--ux4g-gap-4);
+  min-width: 0;
+}
+
+/* Apply page: compact hero so the first question sits higher, and a one-line trust note. */
+.sf-page-hero.sf-citizen-hero.sf-citizen-hero-compact {
+  gap: var(--ux4g-gap-3);
+  padding: var(--ux4g-padding-l) var(--ux4g-padding-xl);
+}
+
+.sf-citizen-hero-compact .sf-breadcrumb {
+  margin: 0;
+}
+
+.sf-apply-trust {
+  display: flex;
+  gap: var(--ux4g-gap-4);
+  align-items: flex-start;
+  margin: 0;
+  padding: var(--ux4g-padding-s) var(--ux4g-padding-m);
+  border-radius: var(--ux4g-radius-md);
+  background: var(--ux4g-color-blue-50);
+  border: var(--ux4g-border-width-sm) solid var(--ux4g-color-blue-100);
+  color: var(--ux4g-text-neutral-primary);
+}
+
+.sf-apply-trust .sf-icon {
+  margin-top: var(--ux4g-gap-1);
+  color: var(--ux4g-color-blue-800);
+}
+
+@media (max-width: 47.99rem) {
+  .sf-page-hero.sf-citizen-hero.sf-citizen-hero-compact {
+    padding: var(--ux4g-padding-m);
+  }
+
+  .sf-citizen-hero-compact .ux4g-heading-l-strong {
+    --ux4g-fs-current: var(--ux4g-fs-20);
+    --ux4g-lh-current: var(--ux4g-lh-26);
+  }
+
+  /* Phones keep the honesty tag; fee, service time and eligibility stay on the service page one
+   * step back (and the fee on the submit button), so the first question reaches the first screen. */
+  .sf-citizen-hero-compact .sf-hero-fact {
+    display: none;
+  }
+
+  .sf-citizen-hero-compact .ux4g-tag-tonal-neutral {
+    font-size: var(--ux4g-fs-12);
+  }
+
+  .sf-wizard {
+    gap: var(--ux4g-gap-6);
+  }
+
+  .sf-step-panel {
+    gap: var(--ux4g-gap-6);
+  }
+
+  .sf-form-progress {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--ux4g-gap-4);
+  }
+
+  .sf-form-progress-text {
+    flex: 0 0 auto;
+  }
+
+  .sf-form-progress-text .ux4g-body-s-default {
+    display: none;
+  }
+
+  .sf-form-progress-bar {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sf-step-head {
+    gap: var(--ux4g-gap-2);
+    padding-bottom: var(--ux4g-gap-4);
+  }
+
+  .sf-apply-trust {
+    padding: var(--ux4g-padding-xs) var(--ux4g-padding-s);
+  }
+
+  /* Review summary: question above answer, so answers get the full width instead of a narrow
+   * column that breaks words mid-way. */
+  .sf-preview-block .sf-dl {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ux4g-gap-1);
+  }
+
+  .sf-preview-block .sf-dl-row + .sf-dl-row dt {
+    margin-top: var(--ux4g-gap-4);
+  }
+}
+
+/* Submission confirmation (citizen status page, shown once after submit). */
+.sf-confirm {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--ux4g-gap-4) var(--ux4g-gap-6);
+  align-items: start;
+  padding: var(--ux4g-padding-xl);
+  border-radius: var(--ux4g-radius-xl);
+  background: var(--ux4g-color-green-50);
+  border: var(--ux4g-border-width-md) solid var(--ux4g-color-green-600);
+  color: var(--ux4g-text-neutral-primary);
+}
+
+.sf-confirm-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ux4g-size-48);
+  height: var(--ux4g-size-48);
+  border-radius: var(--ux4g-radius-full);
+  background: var(--ux4g-color-green-700);
+  color: var(--ux4g-color-neutral-0);
+}
+
+.sf-confirm-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-4);
+  min-width: 0;
+}
+
+.sf-confirm-body :is(h2, h3, p, ol) {
+  margin: 0;
+}
+
+.sf-confirm-body h2 {
+  color: var(--ux4g-color-green-800);
+}
+
+/* Programmatic focus target on arrival; it is not interactive. */
+.sf-confirm-body h2:focus {
+  outline: 0;
+}
+
+.sf-confirm-ref {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-1);
+}
+
+.sf-confirm-ref .ux4g-heading-l-strong {
+  letter-spacing: var(--ux4g-letter-spacing-wider);
+  overflow-wrap: anywhere;
+}
+
+.sf-confirm-next {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux4g-gap-3);
+  padding-left: var(--ux4g-padding-l);
+}
+
+@media (max-width: 47.99rem) {
+  .sf-confirm {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--ux4g-padding-l) var(--ux4g-padding-m);
+  }
+}
+
+/* Motion: only when reduced motion is not requested, timed with UX4G duration tokens. Text moves
+ * by transform alone (never opacity), so contrast checks never meet a half-faded state, and
+ * steps slide vertically so nothing overflows the viewport sideways mid-animation. */
+@media (prefers-reduced-motion: no-preference) {
+  .sf-form-progress-bar::-webkit-progress-value {
+    transition: width var(--ux4g-duration-normal) var(--ux4g-transition-timing-in-out);
+  }
+
+  .sf-stepper-index,
+  .sf-stepper-btn {
+    transition:
+      background-color var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out),
+      border-color var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out),
+      color var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out);
+  }
+
+  .sf-stepper-item:not(:last-child)::after {
+    transition: background-color var(--ux4g-duration-normal) var(--ux4g-transition-timing-in-out);
+  }
+
+  .sf-step-enter-forward {
+    animation: sf-step-in-forward var(--ux4g-duration-normal) var(--ux4g-transition-timing-ease);
+  }
+
+  .sf-step-enter-back {
+    animation: sf-step-in-back var(--ux4g-duration-normal) var(--ux4g-transition-timing-ease);
+  }
+
+  .sf-auth-error-summary,
+  .sf-step-panel .sf-form-error {
+    animation: sf-rise-in var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out);
+  }
+
+  .sf-save-status-saved .sf-icon,
+  .sf-confirm-mark {
+    animation: sf-pop-in var(--ux4g-duration-normal) var(--ux4g-transition-timing-in-out);
+  }
+
+  .sf-upload-zone {
+    transition:
+      background-color var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out),
+      border-color var(--ux4g-duration-fast) var(--ux4g-transition-timing-in-out);
+  }
+}
+
+@keyframes sf-step-in-forward {
+  from {
+    transform: translateY(var(--ux4g-size-24));
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sf-step-in-back {
+  from {
+    transform: translateY(calc(-1 * var(--ux4g-size-24)));
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sf-rise-in {
+  from {
+    transform: translateY(var(--ux4g-size-8));
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes sf-pop-in {
+  from {
+    transform: scale(0.5);
+  }
+
+  to {
+    transform: none;
   }
 }
 

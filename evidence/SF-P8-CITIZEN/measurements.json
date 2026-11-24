@@ -1,0 +1,32 @@
+{
+  "what": "First screen of the SAMPLE_LAB Residence apply wizard, step 1, after OTP sign-in. Positions in CSS px from the viewport top; the bar is the wizard action bar.",
+  "stamp": "SAMPLE_LAB · CERTIFIED=false · G6=false",
+  "before": {
+    "tip": "bdafbcde",
+    "method": "screenshots in the P8-2 media pack (before/)",
+    "1280x800": "Full name field 688-732, action bar from 718: name half covered; no other control on the first screen",
+    "390x844": "Header 0-191, hero to ~420, stepper, SAMPLE_LAB alert and five policy tags: no form field and no step heading on the first screen"
+  },
+  "after": {
+    "method": "Playwright getBoundingClientRect on the built citizen portal",
+    "1280x800": { "first_input_top": 481, "bar_top": 718, "bar_height": 74, "controls_fully_visible": 8 },
+    "390x844": {
+      "first_input_top": 686,
+      "bar_top": 732,
+      "bar_height": 112,
+      "controls_fully_visible": 1,
+      "budget": {
+        "app_shell_header": 191,
+        "apply_header": 141,
+        "stepper_with_progress": 101,
+        "step_heading_block": 87
+      }
+    },
+    "360x740": {
+      "first_input_top": 686,
+      "bar_top": 628,
+      "controls_fully_visible": 0,
+      "note": "shared app-shell header (191 px) keeps the first question below the bar on small phones"
+    }
+  }
+}

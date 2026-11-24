@@ -419,6 +419,48 @@ export function stepErrors(
   return errors;
 }
 
+export interface FormProgress {
+  answered: number;
+  total: number;
+  percent: number;
+}
+
+/**
+ * Share of required, visible questions on the answer steps that currently pass their checks.
+ * Optional questions and the review step do not count, so 100% means "ready to review".
+ */
+export function formProgress(
+  root: FormSchemaView,
+  steps: readonly WizardStep[],
+  data: FormData,
+  visible: ReadonlySet<string>,
+): FormProgress {
+  let answered = 0;
+  let total = 0;
+  for (const step of steps) {
+    if (step.review) continue;
+    for (const scope of controlScopes(step.node)) {
+      if (!visible.has(scope)) continue;
+      const pointer = scopeToPointer(scope);
+      const schema = schemaAt(root, pointer);
+      if (!schema || !isRequired(root, pointer, data)) continue;
+      total += 1;
+      if (fieldIssue(schema, getAt(data, pointer), true) === null) answered += 1;
+    }
+  }
+  return { answered, total, percent: total === 0 ? 100 : Math.floor((answered / total) * 100) };
+}
+
+/** Indexes of answer steps that hold one of the given error pointers. */
+export function stepsWithErrors(
+  steps: readonly WizardStep[],
+  pointers: readonly string[],
+): number[] {
+  return steps.flatMap((s, i) =>
+    controlScopes(s.node).some((scope) => pointers.includes(scopeToPointer(scope))) ? [i] : [],
+  );
+}
+
 /** Maps authoritative CMP-009 issues (`{code, pointer}`) onto field messages. */
 export function issuesToErrors(
   root: FormSchemaView,

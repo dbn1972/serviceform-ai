@@ -1,6 +1,6 @@
 import { AppShell } from '@serviceform/ui-ux4g';
-import { stepLabels } from '@serviceform/service-templates';
 import { notFound } from 'next/navigation';
+import { policyText } from '../lib/catalogue';
 import { offeredForm } from '../lib/portal/forms';
 import { CitizenNav } from './CitizenNav';
 import { CitizenPageHeader } from './CitizenPageHeader';
@@ -11,9 +11,8 @@ import { RequireCitizenSession } from './RequireCitizenSession';
 export function ApplyPage({ catalogueId }: { catalogueId: string }) {
   const offered = offeredForm(catalogueId);
   if (!offered) notFound();
-  const { template, version } = offered;
-  const steps = stepLabels(version).map((s) => s.toLowerCase());
-  const lead = `${steps.length} short steps: ${steps.slice(0, -1).join(', ')} and ${steps.at(-1) ?? ''}. Fee ${template.policy.fee} · service time ${template.policy.service_time}.`;
+  const { template } = offered;
+  const { fee, service_time, eligibility } = template.policy;
   return (
     <AppShell
       surface="citizen_web"
@@ -23,13 +22,25 @@ export function ApplyPage({ catalogueId }: { catalogueId: string }) {
     >
       <RequireCitizenSession>
         <CitizenPageHeader
+          compact
           crumbs={[
             { href: '/services', label: 'Services' },
             { href: `/services/${template.catalogue_id}`, label: template.name },
             { label: 'Apply' },
           ]}
           title={`Apply — ${template.name}`}
-          lead={lead}
+          meta={
+            <>
+              <span className="ux4g-tag-tonal-neutral sf-hero-fact">Fee {policyText(fee)}</span>
+              <span className="ux4g-tag-tonal-neutral sf-hero-fact">
+                Service time {policyText(service_time)}
+              </span>
+              <span className="ux4g-tag-tonal-neutral sf-hero-fact">
+                Eligibility {policyText(eligibility)}
+              </span>
+              <span className="ux4g-tag-tonal-neutral">SAMPLE_LAB · DigiLocker SIMULATED</span>
+            </>
+          }
         />
         <MetadataApplyForm catalogueId={template.catalogue_id} />
       </RequireCitizenSession>

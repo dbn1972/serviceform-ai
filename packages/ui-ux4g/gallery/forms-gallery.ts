@@ -19,6 +19,7 @@ import { TextInput, type FieldState, type InputSize } from '../src/components/Te
 import { Ux4gFormLayout, Ux4gFormReview, type FieldNote } from '../src/json-forms/Ux4gForm';
 import { Ux4gFormStepper } from '../src/json-forms/Ux4gFormStepper';
 import {
+  formProgress,
   isRequired,
   visibleScopes,
   wizardSteps,
@@ -183,6 +184,8 @@ type LayoutOptions = {
   readOnly?: boolean;
   idPrefix?: string;
   ui?: FormUiView;
+  /** Steps flagged after a refused submit (stepper attention state). */
+  attention?: readonly number[];
 };
 
 function step(index: number, opts: LayoutOptions = {}): ReactNode {
@@ -247,17 +250,21 @@ function wizardActions(first: boolean, primary: string): ReactNode {
     h(
       'div',
       { className: 'sf-wizard-actions-start' },
-      first ? null : c(Button, { variant: 'outline-neutral' }, 'Back'),
       h(
-        'p',
-        { className: 'ux4g-body-s-default sf-save-status', role: 'status' },
-        'All changes saved',
+        'div',
+        { className: 'sf-save-state' },
+        h(
+          'p',
+          { className: 'ux4g-body-s-default sf-save-status', role: 'status' },
+          'All changes saved',
+        ),
       ),
+      c(Button, { variant: 'text-primary', size: 's' }, 'Save and come back later'),
     ),
     h(
       'div',
       { className: 'sf-wizard-actions-end' },
-      c(Button, { variant: 'text-primary' }, 'Save and come back later'),
+      first ? null : c(Button, { variant: 'outline-neutral' }, 'Back'),
       c(Button, { type: 'submit' }, primary),
     ),
   );
@@ -270,6 +277,7 @@ function wizardActions(first: boolean, primary: string): ReactNode {
  */
 function citizenSteps(opts: LayoutOptions = {}, title = 'Apply for a certificate'): ReactNode {
   const local = wizardSteps(opts.ui ?? ui);
+  const data = opts.data ?? {};
   return h(
     'div',
     { className: 'sf-form-stack' },
@@ -281,6 +289,8 @@ function citizenSteps(opts: LayoutOptions = {}, title = 'Apply for a certificate
         steps: local.map((s) => ({ label: s.label, hint: s.hint })),
         current: 0,
         reachable: 1,
+        progress: formProgress(schema, local, data, visibleScopes(opts.ui ?? ui, data)),
+        attention: opts.attention,
       }),
       h(
         'div',
@@ -366,6 +376,7 @@ function review(): ReactNode {
         steps: steps.map((s) => ({ label: s.label, hint: s.hint })),
         current: 2,
         reachable: 2,
+        progress: formProgress(schema, steps, data, visibleScopes(ui, data)),
       }),
       h(
         'div',
@@ -718,7 +729,7 @@ function multilingual(): ReactNode {
 const BODIES: Record<string, () => ReactNode> = {
   'form-empty': () => citizenSteps(),
   'form-filled': () => citizenSteps({ data: filled, notes: verified }),
-  'form-errors': () => citizenSteps({ errors: allErrors }),
+  'form-errors': () => citizenSteps({ errors: allErrors, attention: [1] }),
   'form-readonly': () => citizenSteps({ data: filled, readOnly: true }, 'Application details'),
   'form-review': () => review(),
   'studio-preview': () => studioPreview('desktop', 1),
