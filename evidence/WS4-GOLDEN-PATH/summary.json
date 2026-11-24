@@ -1,0 +1,34 @@
+{
+  "schema": "serviceform.ws4.golden-path.summary.v1",
+  "commit_sha": "ca244c69ec622f243ded2bfd1b24441b831ac47d",
+  "started_at": "2026-11-24T14:36:00Z",
+  "ended_at": "2026-11-24T14:38:10Z",
+  "executed_at_ist": "2026-11-24 20:08 Asia/Calcutta",
+  "environment_label": "SAMPLE_LAB",
+  "connectors": {
+    "digilocker": "SIMULATED",
+    "otp": "SIMULATED",
+    "idp": "SIMULATED",
+    "sms": "SIMULATED",
+    "payment": "SIMULATED"
+  },
+  "certified": false,
+  "g6": false,
+  "self_certified": false,
+  "tsb_seal_g6": false,
+  "e2e": {
+    "passed": 107,
+    "failed": 0,
+    "duration": "1.6m",
+    "log": "logs/e2e-golden-m11.log",
+    "junit": "junit/e2e.xml"
+  },
+  "unit": {
+    "service_templates": { "passed": 657, "log": "logs/unit-templates.log" },
+    "web_citizen_income_gate": { "passed": 3, "log": "logs/unit-citizen-income-gate.log" }
+  },
+  "residence_catalogue_id": "IND-SOC-002",
+  "income_catalogue_id": "IND-SOC-031",
+  "sf33_income_statute": "BLOCKED",
+  "notes": "Residence golden E2E green on Studio metadata path. Income lab-offer DRAFT/DUMMY exercised; statutory PUBLISH blocked on SF-33."
+}
