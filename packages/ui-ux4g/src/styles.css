@@ -11151,6 +11151,17 @@ fieldset.ux4g-radio > legend {
   .sf-apply-trust {
     padding: var(--ux4g-padding-xs) var(--ux4g-padding-s);
   }
+
+  /* Review summary: question above answer, so answers get the full width instead of a narrow
+   * column that breaks words mid-way. */
+  .sf-preview-block .sf-dl {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ux4g-gap-1);
+  }
+
+  .sf-preview-block .sf-dl-row + .sf-dl-row dt {
+    margin-top: var(--ux4g-gap-4);
+  }
 }
 
 /* Submission confirmation (citizen status page, shown once after submit). */
@@ -11243,11 +11254,11 @@ fieldset.ux4g-radio > legend {
   }
 
   .sf-step-enter-forward {
-    animation: sf-step-in-forward var(--ux4g-duration-normal) var(--ux4g-transition-timing-in-out);
+    animation: sf-step-in-forward var(--ux4g-duration-normal) var(--ux4g-transition-timing-ease);
   }
 
   .sf-step-enter-back {
-    animation: sf-step-in-back var(--ux4g-duration-normal) var(--ux4g-transition-timing-in-out);
+    animation: sf-step-in-back var(--ux4g-duration-normal) var(--ux4g-transition-timing-ease);
   }
 
   .sf-auth-error-summary,
@@ -11269,7 +11280,7 @@ fieldset.ux4g-radio > legend {
 
 @keyframes sf-step-in-forward {
   from {
-    transform: translateY(var(--ux4g-size-16));
+    transform: translateY(var(--ux4g-size-24));
   }
 
   to {
@@ -11279,7 +11290,7 @@ fieldset.ux4g-radio > legend {
 
 @keyframes sf-step-in-back {
   from {
-    transform: translateY(calc(-1 * var(--ux4g-size-16)));
+    transform: translateY(calc(-1 * var(--ux4g-size-24)));
   }
 
   to {

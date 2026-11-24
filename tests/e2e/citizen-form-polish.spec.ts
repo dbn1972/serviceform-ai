@@ -108,6 +108,9 @@ test.describe('phone: first screen, thumb zone and focus (390 x 844)', () => {
     await signIn(page);
     await continueButton(page).click();
     await expect(stepHeading(page)).toBeFocused();
+    await page.waitForFunction(() =>
+      document.getAnimations().every((a) => a.playState !== 'running'),
+    );
     const seen: string[] = [];
     for (let i = 0; i < 14; i += 1) {
       await page.keyboard.press('Tab');
