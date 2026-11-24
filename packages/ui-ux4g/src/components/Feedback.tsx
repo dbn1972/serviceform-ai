@@ -143,7 +143,7 @@ export type TextLinkProps = {
 
 export function TextLink({ href, children }: TextLinkProps) {
   return (
-    <a className="ux4g-text-link-md" href={href}>
+    <a className="ux4g-text-link-m" href={href}>
       {children}
     </a>
   );

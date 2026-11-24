@@ -199,7 +199,7 @@ describe('UX4G primitives keyboard and names', () => {
     );
     expect(alert).toContain('role="alert"');
     const link = renderToStaticMarkup(<TextLink href="#main-content">Skip</TextLink>);
-    expect(link).toContain('ux4g-text-link-md');
+    expect(link).toContain('class="ux4g-text-link-m"');
   });
 
   it('keeps Figma inventory names aligned with coded components', () => {

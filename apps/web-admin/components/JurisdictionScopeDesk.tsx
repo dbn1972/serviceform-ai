@@ -131,7 +131,7 @@ export function JurisdictionScopeDesk() {
         onChange={(e) => setBindingId(e.target.value)}
         optional
       />
-      <label className="ux4g-label" htmlFor="jur_states">
+      <label className="ux4g-label-m-default" htmlFor="jur_states">
         Allowed states (LGD codes, one per line)
       </label>
       <textarea
@@ -142,7 +142,7 @@ export function JurisdictionScopeDesk() {
         value={states}
         onChange={(e) => setStates(e.target.value)}
       />
-      <label className="ux4g-label" htmlFor="jur_districts">
+      <label className="ux4g-label-m-default" htmlFor="jur_districts">
         Allowed districts (LGD codes, one per line)
       </label>
       <textarea
@@ -153,7 +153,7 @@ export function JurisdictionScopeDesk() {
         value={districts}
         onChange={(e) => setDistricts(e.target.value)}
       />
-      <label className="ux4g-label" htmlFor="jur_municipalities">
+      <label className="ux4g-label-m-default" htmlFor="jur_municipalities">
         Allowed municipalities / ULBs (LGD local-body codes, one per line)
       </label>
       <textarea

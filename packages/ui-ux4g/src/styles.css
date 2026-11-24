@@ -8431,12 +8431,14 @@
   z-index: var(--ux4g-z-layout-overlay);
 }
 
+/* @serviceform-authored: ServiceForm UX4G extension layer. Everything below composes UX4G 3.0
+ * tokens only; scripts/gates/ux4g_token_gate.py fails on raw design values and undefined tokens. */
 .sf-skip-link {
   position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: -1px; /* ux4g-token-exempt: visually-hidden clip pattern, mirrors vendored .ux4g-sr-only */
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -8455,7 +8457,7 @@
 }
 
 .sf-app {
-  min-height: 100vh;
+  min-height: var(--ux4g-sz-screen-h);
   max-width: 100%;
   min-width: 0;
   color: var(--ux4g-text-neutral-primary);
@@ -8472,7 +8474,7 @@
   padding: 0 var(--ux4g-padding-l);
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: var(--ux4g-z-20);
   background: var(--ux4g-bg-neutral-elevated);
   border-bottom: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-default);
 }
@@ -8493,8 +8495,8 @@
 
 .sf-brand-mark {
   flex: 0 0 auto;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: var(--ux4g-size-36);
+  height: var(--ux4g-size-36);
   border-radius: var(--ux4g-radius-md, 0.5rem);
   background: linear-gradient(145deg, var(--ux4g-color-primary-500), var(--ux4g-color-primary-700));
   box-shadow: var(--ux4g-shadow-l1);
@@ -8579,7 +8581,7 @@
 
 .sf-page-hero p {
   margin: 0;
-  max-width: 42rem;
+  max-width: var(--ux4g-size-672);
   color: var(--ux4g-text-neutral-secondary, var(--ux4g-color-neutral-700));
 }
 
@@ -8634,7 +8636,7 @@
 
 .sf-dl {
   display: grid;
-  grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr);
+  grid-template-columns: minmax(var(--ux4g-size-112), var(--ux4g-size-176)) minmax(0, 1fr);
   gap: var(--ux4g-gap-3) var(--ux4g-gap-6);
   margin: 0;
 }
@@ -8709,7 +8711,7 @@
 /* Metadata form wizard (registered extension `form-wizard-stepper` + UX4G card/input/button).
  * Tokens only. Sticky header/action bar offsets keep a focused field in view (WCAG 2.4.11). */
 html:has(.sf-wizard) {
-  scroll-padding-top: 6rem;
+  scroll-padding-top: var(--ux4g-size-96);
   scroll-padding-bottom: 7rem;
 }
 
@@ -8721,7 +8723,7 @@ html:has(.sf-wizard) {
 
 @media (min-width: 64rem) {
   .sf-wizard {
-    grid-template-columns: minmax(14rem, 16rem) minmax(0, 1fr);
+    grid-template-columns: minmax(var(--ux4g-size-224), var(--ux4g-size-256)) minmax(0, 1fr);
   }
 }
 
@@ -8751,8 +8753,8 @@ html:has(.sf-wizard) {
 .sf-stepper-item:not(:last-child)::after {
   content: '';
   position: absolute;
-  left: calc(var(--ux4g-gap-4) + 0.875rem - 1px);
-  top: calc(var(--ux4g-gap-4) + 1.75rem + var(--ux4g-gap-2));
+  left: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px);
+  top: calc(var(--ux4g-gap-4) + var(--ux4g-size-28) + var(--ux4g-gap-2));
   bottom: calc(-1 * var(--ux4g-gap-6) + var(--ux4g-gap-2));
   width: 2px;
   border-radius: var(--ux4g-radius-full);
@@ -8765,7 +8767,7 @@ html:has(.sf-wizard) {
 
 .sf-stepper-btn {
   width: 100%;
-  min-height: 2.75rem;
+  min-height: var(--ux4g-size-44);
   display: flex;
   gap: var(--ux4g-gap-5);
   align-items: flex-start;
@@ -8799,8 +8801,8 @@ html:has(.sf-wizard) {
 
 .sf-stepper-index {
   flex: 0 0 auto;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: var(--ux4g-size-28);
+  height: var(--ux4g-size-28);
   border-radius: var(--ux4g-radius-full);
   display: inline-flex;
   align-items: center;
@@ -8808,7 +8810,7 @@ html:has(.sf-wizard) {
   font-size: var(--ux4g-fs-12);
   font-weight: var(--ux4g-fw-bold);
   background: var(--ux4g-bg-neutral-elevated);
-  border: 2px solid var(--ux4g-color-neutral-400);
+  border: var(--ux4g-border-width-md) solid var(--ux4g-color-neutral-400);
   color: var(--ux4g-color-neutral-700);
 }
 
@@ -8944,11 +8946,11 @@ html:has(.sf-wizard) {
 .ux4g-textarea {
   width: 100%;
   resize: vertical;
-  min-height: 6rem;
+  min-height: var(--ux4g-size-96);
   font: inherit;
   color: inherit;
   background: var(--ux4g-bg-neutral-elevated);
-  border: 1px solid var(--ux4g-border-color-neutral-subtle);
+  border: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
   border-radius: var(--ux4g-radius-md);
   padding: var(--ux4g-padding-s);
 }
@@ -8959,7 +8961,7 @@ html:has(.sf-wizard) {
   align-items: center;
   padding: var(--ux4g-padding-m);
   border-radius: var(--ux4g-radius-md, 0.5rem);
-  border: 1px dashed var(--ux4g-color-primary-300);
+  border: var(--ux4g-border-width-sm) dashed var(--ux4g-color-primary-300);
   background: var(--ux4g-color-primary-50);
 }
 
@@ -8969,16 +8971,16 @@ html:has(.sf-wizard) {
 
 .sf-upload-icon {
   flex: 0 0 auto;
-  width: 3rem;
-  height: 3rem;
+  width: var(--ux4g-size-48);
+  height: var(--ux4g-size-48);
   border-radius: var(--ux4g-radius-md, 0.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #fff;
+  font-size: var(--ux4g-fs-12);
+  font-weight: var(--ux4g-font-weight-bold);
+  letter-spacing: var(--ux4g-letter-spacing-wider);
+  color: var(--ux4g-color-neutral-0);
   background: var(--ux4g-color-primary-600);
 }
 
@@ -9020,13 +9022,36 @@ html:has(.sf-wizard) {
 }
 
 .sf-declaration input {
-  margin-top: 0.25rem;
+  margin-top: var(--ux4g-margin-2xs);
 }
 
 .sf-form-stack {
   display: flex;
   flex-direction: column;
   gap: var(--ux4g-gap-5);
+}
+
+/* Desk pages: lists used as .sf-stack (defined above) and plain result lists drop browser indent. */
+:is(ul, ol).sf-stack,
+.sf-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sf-list {
+  display: flex;
+  flex-direction: column;
+  border-block-start: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
+}
+
+.sf-list > li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ux4g-gap-2);
+  padding-block: var(--ux4g-padding-s);
+  border-block-end: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
 }
 
 .sf-form-check {
@@ -9039,17 +9064,26 @@ html:has(.sf-wizard) {
   /* The native input stays the hit target (pointer, assistive tech, automation). */
   pointer-events: auto;
   cursor: pointer;
-  z-index: 1;
+  z-index: var(--ux4g-z-layout-raised);
 }
 
-.sf-form-error {
-  margin: 0;
-  color: var(--ux4g-text-error-default);
+/* Vendored UX4G shows .ux4g-input-helper only inside a .ux4g-input-{state} container; radio groups
+ * and checkboxes carry their own helper, which must stay visible (WCAG 3.3.1). */
+fieldset.ux4g-radio > .ux4g-input-helper,
+.sf-form-check > .ux4g-input-helper {
+  display: flex !important;
 }
 
-.ux4g-radio-error .ux4g-input-helper {
+/* .ux4g-card-body p recolours every paragraph; hints keep the UX4G helper colour so a form reads
+ * the same in a citizen Card and in the Studio preview. State colours still win (0,2,0). */
+:where(.ux4g-card-body) p.ux4g-input-helper {
+  color: var(--ux4g-text-neutral-tertiary);
+}
+
+.sf-app .sf-form-error,
+.sf-app .ux4g-radio-error .ux4g-input-helper {
   margin: 0;
-  color: var(--ux4g-text-error-default);
+  color: var(--ux4g-text-status-error);
 }
 
 .sf-preview-head {
@@ -9088,7 +9122,7 @@ html:has(.sf-wizard) {
   box-shadow: var(--ux4g-shadow-l3);
   position: sticky;
   bottom: var(--ux4g-gap-4);
-  z-index: 2;
+  z-index: var(--ux4g-z-layout-overlay);
 }
 
 .sf-wizard-actions-start,
@@ -9109,7 +9143,7 @@ html:has(.sf-wizard) {
   align-items: center;
   gap: var(--ux4g-gap-3);
   margin: 0;
-  min-height: 1.25rem;
+  min-height: var(--ux4g-size-20);
   color: var(--ux4g-text-neutral-secondary);
 }
 
@@ -9128,7 +9162,7 @@ html:has(.sf-wizard) {
   align-items: start;
   padding: var(--ux4g-padding-l);
   border-radius: var(--ux4g-radius-lg);
-  border: 2px dashed var(--ux4g-color-primary-300);
+  border: var(--ux4g-border-width-md) dashed var(--ux4g-color-primary-300);
   background: var(--ux4g-color-primary-50);
 }
 
@@ -9152,8 +9186,8 @@ html:has(.sf-wizard) {
 }
 
 .sf-upload-zone .sf-upload-icon {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: var(--ux4g-size-44);
+  height: var(--ux4g-size-44);
   border-radius: var(--ux4g-radius-full);
   background: var(--ux4g-bg-neutral-elevated);
   color: var(--ux4g-color-primary-600);
@@ -9184,7 +9218,7 @@ html:has(.sf-wizard) {
 .sf-upload-input::file-selector-button {
   margin-right: var(--ux4g-gap-6);
   padding: var(--ux4g-gap-4) var(--ux4g-gap-7);
-  min-height: 2.5rem;
+  min-height: var(--ux4g-size-40);
   border-radius: var(--ux4g-radius-md);
   border: var(--ux4g-border-width-sm) solid var(--ux4g-color-primary-600);
   background: var(--ux4g-bg-neutral-elevated);
@@ -9291,11 +9325,42 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-app .ux4g-input-warning .ux4g-input {
-  border-color: var(--ux4g-border-color-warning-strong);
+  border-color: var(--ux4g-color-orange-700);
 }
 
 .sf-app .ux4g-otp-locked .ux4g-otp-slot {
   border-color: var(--ux4g-border-color-neutral-subtle);
+}
+
+/* UX4G fixes the field box height; a minimum keeps the 100% layout while text resized to 200%
+ * (WCAG 1.4.4) or WCAG 1.4.12 spacing grows the box instead of clipping prefixes and selects. */
+.sf-app .ux4g-input-container .ux4g-input {
+  height: auto;
+}
+
+.sf-app .ux4g-input-s .ux4g-input {
+  min-height: var(--ux4g-size-32);
+}
+
+.sf-app .ux4g-input-m .ux4g-input {
+  min-height: var(--ux4g-size-40);
+}
+
+.sf-app .ux4g-input-l .ux4g-input {
+  min-height: var(--ux4g-size-48);
+}
+
+.sf-app .ux4g-input-xl .ux4g-input {
+  min-height: var(--ux4g-size-56);
+}
+
+/* WCAG 1.4.3: inverse text on --ux4g-bg-error-strong (red-600) is 4.38:1; red-700 gives 6.29:1. */
+.sf-app .ux4g-btn-danger {
+  background-color: var(--ux4g-color-red-700);
+}
+
+.sf-app .ux4g-btn-danger:hover {
+  background-color: var(--ux4g-color-red-800);
 }
 
 .sf-app .ux4g-checkbox-input:not(:checked) ~ .ux4g-checkbox-control .ux4g-checkmark {
@@ -9356,7 +9421,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-otp .ux4g-otp-meta {
   flex-wrap: wrap;
-  min-height: 2rem;
+  min-height: var(--ux4g-size-32);
   margin-top: var(--ux4g-gap-4);
   color: var(--ux4g-text-neutral-secondary);
   font-size: var(--ux4g-fs-14);
@@ -9412,7 +9477,7 @@ fieldset.ux4g-radio > legend {
   display: flex;
   flex-direction: column;
   gap: var(--ux4g-gap-8);
-  max-width: 28rem;
+  max-width: var(--ux4g-size-448);
   min-width: 0;
 }
 
@@ -9433,7 +9498,7 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-auth :is(input, button, a, [tabindex='-1']) {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: var(--ux4g-size-96);
 }
 
 .sf-auth .ux4g-input-container > .ux4g-label-m-default {
@@ -9502,7 +9567,7 @@ fieldset.ux4g-radio > legend {
 .sf-auth-back:focus-visible,
 .sf-auth-inline-link:focus-visible {
   outline: var(--ux4g-border-width-md) solid var(--ux4g-bg-primary-strong);
-  outline-offset: 2px;
+  outline-offset: var(--ux4g-outline-offset-md);
   border-radius: var(--ux4g-radius-sm);
 }
 
@@ -9564,7 +9629,7 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-auth-privacy .sf-icon {
-  margin-top: 0.05rem;
+  margin-top: var(--ux4g-margin-3xs);
   color: var(--ux4g-text-neutral-tertiary);
 }
 
@@ -9641,7 +9706,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-auth-progress li::before {
   content: '';
-  height: 0.25rem;
+  height: var(--ux4g-size-4);
   border-radius: var(--ux4g-radius-full);
   background: var(--ux4g-color-neutral-200);
 }
@@ -9665,7 +9730,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-auth-error-summary:focus {
   outline: var(--ux4g-border-width-md) solid var(--ux4g-border-color-error-strong);
-  outline-offset: 2px;
+  outline-offset: var(--ux4g-outline-offset-md);
 }
 
 .sf-auth-error-summary p,
@@ -9729,8 +9794,8 @@ fieldset.ux4g-radio > legend {
 
 .sf-auth-sms-icon {
   flex: 0 0 auto;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: var(--ux4g-size-36);
+  height: var(--ux4g-size-36);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9777,8 +9842,8 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-auth-success-mark {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: var(--ux4g-size-56);
+  height: var(--ux4g-size-56);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9841,7 +9906,7 @@ fieldset.ux4g-radio > legend {
   content: '';
   position: absolute;
   inset: 0 0 auto;
-  height: 0.25rem;
+  height: var(--ux4g-size-4);
   background: linear-gradient(
     90deg,
     var(--ux4g-color-orange-500) 0 33.33%,
@@ -9897,8 +9962,8 @@ fieldset.ux4g-radio > legend {
 
 .sf-auth-service-mark {
   flex: 0 0 auto;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--ux4g-size-40);
+  height: var(--ux4g-size-40);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9959,7 +10024,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-auth-howto li {
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
+  grid-template-columns: var(--ux4g-size-32) minmax(0, 1fr);
   gap: var(--ux4g-gap-5);
   align-items: start;
   font-size: var(--ux4g-fs-14);
@@ -9969,8 +10034,8 @@ fieldset.ux4g-radio > legend {
 .sf-auth-howto li::before {
   counter-increment: sf-step;
   content: counter(sf-step);
-  width: 2rem;
-  height: 2rem;
+  width: var(--ux4g-size-32);
+  height: var(--ux4g-size-32);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10062,8 +10127,8 @@ fieldset.ux4g-radio > legend {
 
 .sf-account-avatar {
   flex: 0 0 auto;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: var(--ux4g-size-36);
+  height: var(--ux4g-size-36);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10109,12 +10174,12 @@ fieldset.ux4g-radio > legend {
 
 .sf-spinner {
   flex: 0 0 auto;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: var(--ux4g-size-20);
+  height: var(--ux4g-size-20);
   border-radius: var(--ux4g-radius-full);
   border: var(--ux4g-border-width-md) solid var(--ux4g-color-blue-100);
   border-top-color: var(--ux4g-color-blue-800);
-  animation: sf-spin 0.8s linear infinite;
+  animation: sf-spin 0.8s linear infinite; /* ux4g-token-exempt: continuous spinner period; UX4G motion tokens cover transitions */
 }
 
 @keyframes sf-spin {
@@ -10144,7 +10209,7 @@ fieldset.ux4g-radio > legend {
   content: '';
   position: absolute;
   inset: 0 0 auto;
-  height: 0.25rem;
+  height: var(--ux4g-size-4);
   background: linear-gradient(
     90deg,
     var(--ux4g-color-orange-500) 0 33.33%,
@@ -10171,7 +10236,7 @@ fieldset.ux4g-radio > legend {
 .sf-citizen-hero a:focus-visible,
 .sf-citizen-hero .ux4g-btn-outline-neutral:focus-visible {
   outline: var(--ux4g-border-width-md) solid var(--ux4g-color-neutral-0);
-  outline-offset: 2px;
+  outline-offset: var(--ux4g-outline-offset-md);
 }
 
 .sf-breadcrumb {
@@ -10286,8 +10351,8 @@ fieldset.ux4g-radio > legend {
 
 .sf-service-mark {
   flex: 0 0 auto;
-  width: 3rem;
-  height: 3rem;
+  width: var(--ux4g-size-48);
+  height: var(--ux4g-size-48);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10305,7 +10370,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-facts-light {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--ux4g-size-144), 1fr));
   gap: var(--ux4g-gap-6);
   margin: 0;
   padding-top: var(--ux4g-gap-6);
@@ -10351,7 +10416,7 @@ fieldset.ux4g-radio > legend {
 
   .sf-split-aside {
     position: sticky;
-    top: 6rem;
+    top: var(--ux4g-size-96);
   }
 }
 
@@ -10360,7 +10425,7 @@ fieldset.ux4g-radio > legend {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--ux4g-size-224), 1fr));
   gap: var(--ux4g-gap-4) var(--ux4g-gap-8);
 }
 
@@ -10381,14 +10446,14 @@ fieldset.ux4g-radio > legend {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--ux4g-size-208), 1fr));
   gap: var(--ux4g-gap-6);
   counter-reset: sf-step-light;
 }
 
 .sf-steps-light li {
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
+  grid-template-columns: var(--ux4g-size-32) minmax(0, 1fr);
   gap: var(--ux4g-gap-5);
   font-size: var(--ux4g-fs-14);
   line-height: var(--ux4g-lh-20);
@@ -10398,8 +10463,8 @@ fieldset.ux4g-radio > legend {
 .sf-steps-light li::before {
   counter-increment: sf-step-light;
   content: counter(sf-step-light);
-  width: 2rem;
-  height: 2rem;
+  width: var(--ux4g-size-32);
+  height: var(--ux4g-size-32);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -10604,7 +10669,7 @@ fieldset.ux4g-radio > legend {
 .sf-catalogue-grid {
   display: grid;
   gap: var(--ux4g-gap-6);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--ux4g-size-320)), 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -10794,9 +10859,9 @@ fieldset.ux4g-radio > legend {
   }
 
   .sf-stepper-item:not(:last-child)::after {
-    left: calc(50% + 1.5rem);
-    right: calc(-50% + 1.5rem);
-    top: calc(var(--ux4g-gap-4) + 0.875rem - 1px);
+    left: calc(50% + var(--ux4g-size-24));
+    right: calc(-50% + var(--ux4g-size-24));
+    top: calc(var(--ux4g-gap-4) + var(--ux4g-size-14) - 1px);
     bottom: auto;
     width: auto;
     height: 2px;
@@ -10804,7 +10869,7 @@ fieldset.ux4g-radio > legend {
 
   .sf-stepper-btn {
     width: auto;
-    min-width: 2.75rem;
+    min-width: var(--ux4g-size-44);
     justify-content: center;
     padding: var(--ux4g-gap-4);
   }
@@ -10815,14 +10880,14 @@ fieldset.ux4g-radio > legend {
   }
 
   .sf-stepper-current .sf-stepper-index {
-    box-shadow: 0 0 0 0.25rem var(--ux4g-color-primary-50);
+    box-shadow: 0 0 0 var(--ux4g-outline-width-lg) var(--ux4g-color-primary-50);
   }
 
   .sf-stepper-copy {
     position: absolute;
     width: 1px;
     height: 1px;
-    margin: -1px;
+    margin: -1px; /* ux4g-token-exempt: visually-hidden clip pattern, mirrors vendored .ux4g-sr-only */
     padding: 0;
     overflow: hidden;
     clip: rect(0 0 0 0);
@@ -10950,7 +11015,7 @@ fieldset.ux4g-radio > legend {
   display: inline-flex;
   gap: var(--ux4g-gap-2);
   align-items: center;
-  min-height: 2.75rem;
+  min-height: var(--ux4g-size-44);
   padding: var(--ux4g-gap-3) var(--ux4g-gap-5);
   border: 0;
   border-bottom: var(--ux4g-border-width-lg) solid transparent;
@@ -10990,14 +11055,17 @@ fieldset.ux4g-radio > legend {
 
 @media (min-width: 64rem) {
   .sf-designer-grid {
-    grid-template-columns: minmax(14rem, 17rem) minmax(0, 1fr) minmax(18rem, 22rem);
+    grid-template-columns: minmax(var(--ux4g-size-224), 17rem) minmax(0, 1fr) minmax(
+        var(--ux4g-size-288),
+        22rem
+      );
   }
 
   .sf-designer-palette,
   .sf-designer-inspector {
     position: sticky;
     top: 5.5rem;
-    max-height: calc(100vh - 6.5rem);
+    max-height: calc(var(--ux4g-sz-screen-h) - 6.5rem);
     overflow: auto;
   }
 }
@@ -11070,7 +11138,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-designer-palette-item:disabled {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: var(--ux4g-opacity-60);
 }
 
 .sf-designer-palette-icon {
@@ -11078,8 +11146,8 @@ fieldset.ux4g-radio > legend {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: var(--ux4g-size-28);
+  height: var(--ux4g-size-28);
   border-radius: var(--ux4g-radius-sm);
   background: var(--ux4g-color-primary-50);
   color: var(--ux4g-color-primary-700);
@@ -11117,7 +11185,7 @@ fieldset.ux4g-radio > legend {
   display: inline-flex;
   gap: var(--ux4g-gap-2);
   align-items: center;
-  min-height: 2.5rem;
+  min-height: var(--ux4g-size-40);
   padding: var(--ux4g-gap-2) var(--ux4g-gap-4);
   border-radius: var(--ux4g-radius-full);
   border: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-default);
@@ -11138,8 +11206,8 @@ fieldset.ux4g-radio > legend {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--ux4g-size-24);
+  height: var(--ux4g-size-24);
   border-radius: var(--ux4g-radius-full);
   background: var(--ux4g-color-neutral-200);
   color: var(--ux4g-color-neutral-800);
@@ -11313,7 +11381,7 @@ fieldset.ux4g-radio > legend {
 .sf-designer-row {
   display: grid;
   gap: var(--ux4g-gap-3);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ux4g-size-128)), 1fr));
   align-items: start;
 }
 
@@ -11324,7 +11392,7 @@ fieldset.ux4g-radio > legend {
 .sf-designer-option {
   display: grid;
   gap: var(--ux4g-gap-2);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ux4g-size-112)), 1fr));
   align-items: end;
   padding: var(--ux4g-gap-3);
   border-radius: var(--ux4g-radius-md);
@@ -11393,7 +11461,7 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-designer-device-desktop {
-  max-width: 60rem;
+  max-width: var(--ux4g-container-lg);
 }
 
 .sf-designer-device-mobile {
@@ -11523,7 +11591,7 @@ fieldset.ux4g-radio > legend {
 .sf-designer-code-grid {
   display: grid;
   gap: var(--ux4g-gap-5);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ux4g-size-384)), 1fr));
 }
 
 .sf-designer-code {
@@ -11545,7 +11613,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-designer-code pre {
   margin: 0;
-  max-height: 32rem;
+  max-height: var(--ux4g-size-512);
   overflow: auto;
   padding: var(--ux4g-padding-m);
   border-radius: var(--ux4g-radius-md);
@@ -11553,7 +11621,7 @@ fieldset.ux4g-radio > legend {
   color: var(--ux4g-color-neutral-50);
   font-family: ui-monospace, monospace;
   font-size: var(--ux4g-fs-12);
-  line-height: 1.5;
+  line-height: var(--ux4g-lh-18);
 }
 
 .sf-designer-publish-grid {
@@ -11565,7 +11633,7 @@ fieldset.ux4g-radio > legend {
 
 @media (min-width: 64rem) {
   .sf-designer-publish-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+    grid-template-columns: minmax(0, 1fr) minmax(var(--ux4g-size-288), var(--ux4g-size-384));
   }
 }
 
@@ -11581,7 +11649,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-designer-publish-step {
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr);
+  grid-template-columns: var(--ux4g-size-32) minmax(0, 1fr);
   gap: var(--ux4g-gap-4);
   padding: var(--ux4g-padding-m);
   border-radius: var(--ux4g-radius-lg);
@@ -11598,8 +11666,8 @@ fieldset.ux4g-radio > legend {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: var(--ux4g-size-32);
+  height: var(--ux4g-size-32);
   border-radius: var(--ux4g-radius-full);
   background: var(--ux4g-color-neutral-200);
   color: var(--ux4g-color-neutral-800);
@@ -11657,14 +11725,33 @@ fieldset.ux4g-radio > legend {
 
 .sf-app .ux4g-switch-input:focus-visible ~ .ux4g-switch-control .ux4g-switch-track {
   box-shadow:
-    0 0 0 0.125rem var(--ux4g-bg-neutral),
-    0 0 0 0.25rem var(--ux4g-bg-primary-strong);
+    0 0 0 var(--ux4g-outline-width-md) var(--ux4g-bg-neutral),
+    0 0 0 var(--ux4g-outline-width-lg) var(--ux4g-bg-primary-strong);
+}
+
+/* Forced colours drop the box-shadows UX4G uses for the switch boundary and for the checkbox,
+ * radio and switch focus rings, so those become system-colour borders and outlines. */
+@media (forced-colors: active) {
+  .sf-app .ux4g-switch-track,
+  .sf-app .ux4g-switch-thumb {
+    border: var(--ux4g-border-width-sm) solid CanvasText;
+  }
+
+  .sf-app .ux4g-switch-input:focus-visible ~ .ux4g-switch-control .ux4g-switch-track,
+  .sf-app .ux4g-checkbox-input:focus-visible ~ .ux4g-checkbox-control .ux4g-checkmark,
+  .sf-app .ux4g-radio-input:focus-visible ~ .ux4g-radio-control .ux4g-radiomark {
+    outline: var(--ux4g-outline-width-md) solid Highlight;
+    outline-offset: var(--ux4g-outline-offset-md);
+  }
 }
 
 /* Studio workflow designer canvas (SVG): shapes, paths and handles drawn with UX4G tokens. */
 @media (min-width: 64rem) {
   .sf-wf-grid-layout {
-    grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr) minmax(18rem, 22rem);
+    grid-template-columns: minmax(var(--ux4g-size-208), var(--ux4g-size-256)) minmax(0, 1fr) minmax(
+        var(--ux4g-size-288),
+        22rem
+      );
   }
 }
 
@@ -11681,7 +11768,7 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-wf-zoom {
-  min-width: 3rem;
+  min-width: var(--ux4g-size-48);
   text-align: center;
   align-self: center;
 }
@@ -11828,7 +11915,7 @@ fieldset.ux4g-radio > legend {
   fill: var(--ux4g-text-neutral-secondary);
   font-size: var(--ux4g-fs-8);
   font-weight: var(--ux4g-font-weight-semibold);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ux4g-letter-spacing-wider);
 }
 
 .sf-wf-label {
@@ -11842,13 +11929,13 @@ fieldset.ux4g-radio > legend {
   stroke: var(--ux4g-color-primary-600);
   stroke-width: 2;
   cursor: crosshair;
-  opacity: 0;
+  opacity: var(--ux4g-opacity-0);
 }
 
 .sf-wf-node:hover .sf-wf-handle,
 .sf-wf-node.sf-wf-selected .sf-wf-handle,
 .sf-wf-node:focus-visible .sf-wf-handle {
-  opacity: 1;
+  opacity: var(--ux4g-opacity-100);
 }
 
 .sf-wf-swatch-circle {
@@ -11867,7 +11954,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-wf-xml {
   margin: 0;
-  max-height: 24rem;
+  max-height: var(--ux4g-size-384);
   overflow: auto;
   padding: var(--ux4g-padding-m);
   border-radius: var(--ux4g-radius-md);
@@ -11888,7 +11975,7 @@ fieldset.ux4g-radio > legend {
 
 @media (min-width: 64rem) {
   .sf-rules-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 24rem);
+    grid-template-columns: minmax(0, 1fr) minmax(var(--ux4g-size-288), var(--ux4g-size-384));
   }
 }
 
@@ -11967,7 +12054,7 @@ fieldset.ux4g-radio > legend {
 }
 
 .sf-rules-rowhead {
-  min-width: 2rem;
+  min-width: var(--ux4g-size-32);
   font-weight: var(--ux4g-font-weight-semibold);
   color: var(--ux4g-color-primary-700);
 }
@@ -11994,7 +12081,7 @@ fieldset.ux4g-radio > legend {
 
 .sf-rules-colkind {
   font-size: var(--ux4g-fs-12);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--ux4g-letter-spacing-wider);
   text-transform: uppercase;
   color: var(--ux4g-text-neutral-secondary);
 }

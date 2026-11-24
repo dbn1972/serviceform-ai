@@ -109,7 +109,7 @@ export function InspectionDesk() {
         </p>
         <p className="ux4g-body-m-default">
           For departmental capacity calendars, use the{' '}
-          <Link href="/scheduling" className="ux4g-link">
+          <Link href="/scheduling" className="ux4g-text-link-m">
             scheduling desk
           </Link>{' '}
           (CMP-056 · Constitution #37).
@@ -120,7 +120,7 @@ export function InspectionDesk() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -164,7 +164,7 @@ export function InspectionDesk() {
           </label>
           <button
             type="button"
-            className="ux4g-btn-fill-primary"
+            className="ux4g-btn-primary ux4g-btn-m"
             disabled={busy || !applicationId.trim() || !pinCode}
             onClick={() => void createInspection()}
           >
@@ -185,7 +185,7 @@ export function InspectionDesk() {
               <li key={item.inspection_id}>
                 <button
                   type="button"
-                  className="ux4g-btn-text-neutral"
+                  className="ux4g-btn-text-neutral ux4g-btn-s"
                   onClick={() => setSelected(item)}
                 >
                   {item.pin_label ?? item.workflow_node_id ?? 'Inspection'} · {item.state_label}
@@ -240,7 +240,7 @@ export function InspectionDesk() {
               </label>
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() =>
                   void act('schedule', {
@@ -259,7 +259,7 @@ export function InspectionDesk() {
             {selected.can_start ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-primary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('start')}
               >
@@ -269,7 +269,7 @@ export function InspectionDesk() {
             {selected.can_cancel ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-neutral"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('cancel')}
               >
@@ -297,7 +297,7 @@ export function InspectionDesk() {
               </label>
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('result', { verification_result: resultCode })}
               >
@@ -309,7 +309,7 @@ export function InspectionDesk() {
           {selected.can_complete ? (
             <button
               type="button"
-              className="ux4g-btn-fill-primary"
+              className="ux4g-btn-primary ux4g-btn-m"
               disabled={busy}
               onClick={() => void act('complete')}
             >

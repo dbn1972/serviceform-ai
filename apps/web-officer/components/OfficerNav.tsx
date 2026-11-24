@@ -85,7 +85,11 @@ export function OfficerNav() {
         ))}
         <li>
           {signedIn ? (
-            <button type="button" className="ux4g-btn-text-neutral" onClick={() => void signOut()}>
+            <button
+              type="button"
+              className="ux4g-btn-text-neutral ux4g-btn-s"
+              onClick={() => void signOut()}
+            >
               Sign out
             </button>
           ) : (

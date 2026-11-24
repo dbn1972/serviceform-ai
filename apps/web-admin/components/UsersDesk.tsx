@@ -237,7 +237,7 @@ export function UsersDesk() {
         ) : (
           users.map((user) => (
             <li key={user.user_id}>
-              <button type="button" className="ux4g-text-link-md" onClick={() => selectUser(user)}>
+              <button type="button" className="ux4g-text-link-m" onClick={() => selectUser(user)}>
                 {user.username} · {user.enabled ? 'enabled' : 'disabled'} · roles{' '}
                 {user.roles.length}
               </button>
@@ -329,7 +329,7 @@ export function UsersDesk() {
           assignedRoles.map((role) => (
             <li key={role}>
               {role}{' '}
-              <button type="button" className="ux4g-text-link-md" onClick={() => removeRole(role)}>
+              <button type="button" className="ux4g-text-link-m" onClick={() => removeRole(role)}>
                 Remove
               </button>
             </li>

@@ -144,7 +144,7 @@ export function OpsDesk() {
             <div className="sf-actions">
               <button
                 type="button"
-                className="ux4g-btn-secondary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy || !view.can_refresh}
                 onClick={() => void refresh(view.view_code)}
               >

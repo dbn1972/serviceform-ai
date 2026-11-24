@@ -9,7 +9,7 @@ export const UX4G_FIGMA_INVENTORY = [
   { figma: 'Switch', code: 'Switch', classes: ['ux4g-switch'] },
   { figma: 'Alert', code: 'Alert', classes: ['ux4g-alert'] },
   { figma: 'Card', code: 'Card', classes: ['ux4g-card'] },
-  { figma: 'Link', code: 'TextLink', classes: ['ux4g-text-link-md'] },
+  { figma: 'Link', code: 'TextLink', classes: ['ux4g-text-link-m'] },
   { figma: 'Navbar', code: 'AppShell', classes: ['ux4g-navbar'] },
   { figma: 'Footer', code: 'AppShell', classes: ['ux4g-footer-wrapper'] },
 ] as const;

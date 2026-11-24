@@ -145,7 +145,7 @@ export function SchedulingDesk() {
           G6=false.
         </p>
         <p className="ux4g-body-m-default">
-          <Link href="/inspection" className="ux4g-link">
+          <Link href="/inspection" className="ux4g-text-link-m">
             Open inspection desk
           </Link>{' '}
           for CMP-018 results after a site visit is booked. Citizens self-serve at the citizen
@@ -157,7 +157,7 @@ export function SchedulingDesk() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -217,7 +217,7 @@ export function SchedulingDesk() {
                   </p>
                   <button
                     type="button"
-                    className="ux4g-btn-fill-primary"
+                    className="ux4g-btn-primary ux4g-btn-m"
                     disabled={busy || !slot.can_book}
                     onClick={() => void book(slot)}
                   >
@@ -247,7 +247,7 @@ export function SchedulingDesk() {
         </label>
         <button
           type="button"
-          className="ux4g-btn-outline-primary"
+          className="ux4g-btn-outline-primary ux4g-btn-m"
           disabled={busy || !lookupId.trim()}
           onClick={() => void lookup()}
         >
@@ -293,7 +293,7 @@ export function SchedulingDesk() {
               </label>
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy || !rescheduleSlot}
                 onClick={() => void act('reschedule', { slot_ref: rescheduleSlot })}
               >
@@ -306,7 +306,7 @@ export function SchedulingDesk() {
             {selected.can_complete ? (
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('complete')}
               >
@@ -316,7 +316,7 @@ export function SchedulingDesk() {
             {selected.can_no_show ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-primary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('no_show')}
               >
@@ -326,7 +326,7 @@ export function SchedulingDesk() {
             {selected.can_cancel ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-neutral"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('cancel')}
               >

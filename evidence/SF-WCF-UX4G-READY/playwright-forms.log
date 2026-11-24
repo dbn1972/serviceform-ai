@@ -1,0 +1,123 @@
+
+> serviceform-ai@ ux4g:forms /agent/repos/serviceform-ai
+> playwright test -c tests/ux4g/forms/playwright.config.ts
+
+
+ RUN  v5.0.3 /agent/repos/serviceform-ai
+
+stderr | tests/ux4g/forms/render-scenes.test.ts > UX4G forms gallery render > renders controls with landmarks and UX4G classes only
+You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.
+You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.
+You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.
+
+ ✓ tests/ux4g/forms/render-scenes.test.ts (8 tests) 56ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  16:42:08
+   Duration  298ms (transform 56%, tests 25%, import 17%, worker 1%)
+
+JUNIT report written to /agent/repos/serviceform-ai/test-results/ux4g/forms/render-junit.xml
+
+Running 93 tests using 2 workers
+
+(node:68069) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-empty: Form steps: empty › axe WCAG 2.2 A/AA at 320px (735ms)
+  ✓   2 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-empty: Form steps: empty › axe WCAG 2.2 A/AA at 1280px (720ms)
+  ✓   3 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › form-empty: Form steps: empty › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (124ms)
+  ✓   4 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › form-empty: Form steps: empty › text resized to 200% keeps content without loss (1.4.4) (148ms)
+  ✓   5 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › form-empty: Form steps: empty › WCAG text-spacing overrides lose no content (1.4.12) (162ms)
+  ✓   7 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › form-empty: Form steps: empty › forced colours keep every control boundary (120ms)
+  ✓   8 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-empty: Form steps: empty › visual baseline at 320px (226ms)
+  ✓   6 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › form-empty: Form steps: empty › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (537ms)
+  ✓   9 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-empty: Form steps: empty › visual baseline at 768px (267ms)
+  ✓  10 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-empty: Form steps: empty › visual baseline at 1280px (312ms)
+  ✓  11 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-filled: Form steps: filled with a verified field › axe WCAG 2.2 A/AA at 320px (631ms)
+  ✓  12 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-filled: Form steps: filled with a verified field › axe WCAG 2.2 A/AA at 1280px (630ms)
+  ✓  13 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › form-filled: Form steps: filled with a verified field › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (141ms)
+  ✓  14 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › form-filled: Form steps: filled with a verified field › text resized to 200% keeps content without loss (1.4.4) (139ms)
+  ✓  15 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › form-filled: Form steps: filled with a verified field › WCAG text-spacing overrides lose no content (1.4.12) (156ms)
+  ✓  17 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › form-filled: Form steps: filled with a verified field › forced colours keep every control boundary (124ms)
+  ✓  18 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-filled: Form steps: filled with a verified field › visual baseline at 320px (197ms)
+  ✓  16 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › form-filled: Form steps: filled with a verified field › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (526ms)
+  ✓  19 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-filled: Form steps: filled with a verified field › visual baseline at 1280px (287ms)
+  ✓  20 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-errors: Form steps: every field in error › axe WCAG 2.2 A/AA at 320px (609ms)
+  ✓  22 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › form-errors: Form steps: every field in error › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (122ms)
+  ✓  21 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-errors: Form steps: every field in error › axe WCAG 2.2 A/AA at 1280px (621ms)
+  ✓  23 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › form-errors: Form steps: every field in error › text resized to 200% keeps content without loss (1.4.4) (139ms)
+  ✓  24 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › form-errors: Form steps: every field in error › WCAG text-spacing overrides lose no content (1.4.12) (165ms)
+  ✓  26 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › form-errors: Form steps: every field in error › forced colours keep every control boundary (138ms)
+  ✓  27 tests/ux4g/forms/forms-surfaces.spec.ts:96:7 › form-errors: Form steps: every field in error › invalid fields are named and described by a visible error (3.3.1, 4.1.2) (139ms)
+  ✓  25 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › form-errors: Form steps: every field in error › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (550ms)
+  ✓  28 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-errors: Form steps: every field in error › visual baseline at 320px (228ms)
+  ✓  29 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-errors: Form steps: every field in error › visual baseline at 768px (266ms)
+  ✓  30 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-errors: Form steps: every field in error › visual baseline at 1280px (301ms)
+  ✓  31 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-readonly: Form steps: read-only › axe WCAG 2.2 A/AA at 320px (561ms)
+  ✓  32 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-readonly: Form steps: read-only › axe WCAG 2.2 A/AA at 1280px (566ms)
+  ✓  33 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › form-readonly: Form steps: read-only › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (135ms)
+  ✓  34 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › form-readonly: Form steps: read-only › text resized to 200% keeps content without loss (1.4.4) (150ms)
+  ✓  35 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › form-readonly: Form steps: read-only › WCAG text-spacing overrides lose no content (1.4.12) (155ms)
+  ✓  37 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › form-readonly: Form steps: read-only › forced colours keep every control boundary (126ms)
+  ✓  38 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-readonly: Form steps: read-only › visual baseline at 1280px (279ms)
+  ✓  36 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › form-readonly: Form steps: read-only › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (532ms)
+  ✓  39 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-review: Preview and declaration › axe WCAG 2.2 A/AA at 320px (548ms)
+  ✓  40 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › form-review: Preview and declaration › axe WCAG 2.2 A/AA at 1280px (571ms)
+  ✓  41 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › form-review: Preview and declaration › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (129ms)
+  ✓  42 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › form-review: Preview and declaration › text resized to 200% keeps content without loss (1.4.4) (152ms)
+  ✓  43 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › form-review: Preview and declaration › WCAG text-spacing overrides lose no content (1.4.12) (156ms)
+  ✓  45 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › form-review: Preview and declaration › forced colours keep every control boundary (117ms)
+  ✓  46 tests/ux4g/forms/forms-surfaces.spec.ts:96:7 › form-review: Preview and declaration › invalid fields are named and described by a visible error (3.3.1, 4.1.2) (132ms)
+  ✓  44 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › form-review: Preview and declaration › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (484ms)
+  ✓  47 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-review: Preview and declaration › visual baseline at 320px (261ms)
+  ✓  48 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › form-review: Preview and declaration › visual baseline at 1280px (277ms)
+  ✓  49 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › studio-preview: Studio designer preview (desktop) › axe WCAG 2.2 A/AA at 320px (550ms)
+  ✓  51 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › studio-preview: Studio designer preview (desktop) › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (121ms)
+  ✓  50 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › studio-preview: Studio designer preview (desktop) › axe WCAG 2.2 A/AA at 1280px (589ms)
+  ✓  52 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › studio-preview: Studio designer preview (desktop) › text resized to 200% keeps content without loss (1.4.4) (139ms)
+  ✓  53 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › studio-preview: Studio designer preview (desktop) › WCAG text-spacing overrides lose no content (1.4.12) (151ms)
+  ✓  55 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › studio-preview: Studio designer preview (desktop) › forced colours keep every control boundary (113ms)
+  ✓  56 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › studio-preview: Studio designer preview (desktop) › visual baseline at 768px (218ms)
+  ✓  57 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › studio-preview: Studio designer preview (desktop) › visual baseline at 1280px (228ms)
+  ✓  54 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › studio-preview: Studio designer preview (desktop) › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (859ms)
+  ✓  58 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › controls: UX4G form controls › axe WCAG 2.2 A/AA at 320px (938ms)
+  ✓  60 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › controls: UX4G form controls › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (142ms)
+  ✓  59 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › controls: UX4G form controls › axe WCAG 2.2 A/AA at 1280px (1.0s)
+  ✓  61 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › controls: UX4G form controls › text resized to 200% keeps content without loss (1.4.4) (170ms)
+  ✓  62 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › controls: UX4G form controls › WCAG text-spacing overrides lose no content (1.4.12) (184ms)
+  ✓  64 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › controls: UX4G form controls › forced colours keep every control boundary (131ms)
+  ✓  65 tests/ux4g/forms/forms-surfaces.spec.ts:96:7 › controls: UX4G form controls › invalid fields are named and described by a visible error (3.3.1, 4.1.2) (140ms)
+  ✓  66 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › controls: UX4G form controls › visual baseline at 320px (336ms)
+  ✓  67 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › controls: UX4G form controls › visual baseline at 1280px (443ms)
+  ✓  68 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › multilingual: Multilingual and long content › axe WCAG 2.2 A/AA at 320px (630ms)
+  ✓  69 tests/ux4g/forms/forms-surfaces.spec.ts:51:7 › multilingual: Multilingual and long content › axe WCAG 2.2 A/AA at 1280px (607ms)
+  ✓  70 tests/ux4g/forms/forms-surfaces.spec.ts:57:5 › multilingual: Multilingual and long content › reflows at 320 CSS px without horizontal scroll or clipped text (1.4.10) (122ms)
+  ✓  71 tests/ux4g/forms/forms-surfaces.spec.ts:65:5 › multilingual: Multilingual and long content › text resized to 200% keeps content without loss (1.4.4) (145ms)
+  ✓  72 tests/ux4g/forms/forms-surfaces.spec.ts:72:5 › multilingual: Multilingual and long content › WCAG text-spacing overrides lose no content (1.4.12) (151ms)
+  ✓  73 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › multilingual: Multilingual and long content › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (462ms)
+  ✓  74 tests/ux4g/forms/forms-surfaces.spec.ts:89:5 › multilingual: Multilingual and long content › forced colours keep every control boundary (129ms)
+  ✓  75 tests/ux4g/forms/forms-surfaces.spec.ts:96:7 › multilingual: Multilingual and long content › invalid fields are named and described by a visible error (3.3.1, 4.1.2) (134ms)
+  ✓  76 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › multilingual: Multilingual and long content › visual baseline at 320px (256ms)
+  ✓  77 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › multilingual: Multilingual and long content › visual baseline at 768px (265ms)
+  ✓  78 tests/ux4g/forms/forms-surfaces.spec.ts:106:7 › multilingual: Multilingual and long content › visual baseline at 1280px (310ms)
+  ✓  79 tests/ux4g/forms/forms-surfaces.spec.ts:116:5 › forced colours visual baseline › form-errors at 1280px (283ms)
+  ✓  80 tests/ux4g/forms/forms-surfaces.spec.ts:116:5 › forced colours visual baseline › controls at 1280px (444ms)
+  ✓  63 tests/ux4g/forms/forms-surfaces.spec.ts:79:5 › controls: UX4G form controls › every tab stop shows a focus indicator and is not obscured (2.4.7, 2.4.11) (6.5s)
+  ✓  82 tests/ux4g/forms/forms-surfaces.spec.ts:132:3 › keyboard operation of form controls (2.1.1, 2.4.3) › tab order follows reading order (230ms)
+  ✓  83 tests/ux4g/forms/forms-surfaces.spec.ts:165:3 › keyboard operation of form controls (2.1.1, 2.4.3) › skip link is the first stop and moves focus to main (147ms)
+  ✓  84 tests/ux4g/forms/forms-surfaces.spec.ts:173:3 › keyboard operation of form controls (2.1.1, 2.4.3) › radio group: one tab stop, arrow keys move the selection (158ms)
+  ✓  85 tests/ux4g/forms/forms-surfaces.spec.ts:187:3 › keyboard operation of form controls (2.1.1, 2.4.3) › checkbox and switch toggle with Space; text inputs accept typing (186ms)
+  ✓  86 tests/ux4g/forms/forms-surfaces.spec.ts:199:3 › keyboard operation of form controls (2.1.1, 2.4.3) › disabled controls are skipped and read-only scene exposes disabled state (194ms)
+  ✓  87 tests/ux4g/forms/forms-surfaces.spec.ts:211:3 › accessible names and descriptions (1.3.1, 4.1.2) › every form control in every scene has an accessible name (588ms)
+  ✓  88 tests/ux4g/forms/forms-surfaces.spec.ts:233:3 › accessible names and descriptions (1.3.1, 4.1.2) › hints and errors are announced with their field (206ms)
+  ✓  89 tests/ux4g/forms/forms-surfaces.spec.ts:245:3 › accessible names and descriptions (1.3.1, 4.1.2) › optional fields say so in their name; required fields carry required (134ms)
+  ✓  90 tests/ux4g/forms/forms-surfaces.spec.ts:256:3 › probe self-tests: each probe fails on a seeded violation › focus probe reports stops without an indicator (473ms)
+  ✓  91 tests/ux4g/forms/forms-surfaces.spec.ts:267:3 › probe self-tests: each probe fails on a seeded violation › reflow, clipping, wiring and boundary probes report seeded defects (50ms)
+  ✓  92 tests/ux4g/forms/forms-surfaces.spec.ts:334:3 › token lock and preview = runtime › Studio preview renders form controls with the same UX4G tokens as the citizen runtime (180ms)
+  ✓  93 tests/ux4g/forms/forms-surfaces.spec.ts:345:3 › token lock and preview = runtime › form control token values match the locked signature (198ms)
+  ✓  81 tests/ux4g/forms/forms-surfaces.spec.ts:123:3 › forced colours visual baseline › focus stays visible under forced colours (6.3s)
+
+  93 passed (23.3s)
+exit=0
