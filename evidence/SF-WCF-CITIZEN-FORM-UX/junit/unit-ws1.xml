@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="34" failures="0" errors="0" time="0.075272377">
+    <testsuite name="apps/web-citizen/test/drafts.test.tsx" timestamp="2026-11-24T15:20:01.281Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.051638984">
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft request parsing &gt; accepts catalogue id, answers and an optional non-negative revision only" time="0.001741921">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft request parsing &gt; only derives platform keys from a well-formed form-session key" time="0.000343885">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft request parsing &gt; reads a draft id from the apply body without changing bare-object apply" time="0.000291457">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="ownDraft (CMP-015 owner, offering and version checks) &gt; NEGATIVE: another citizen’s case (403/404) reads as not found" time="0.015090788">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="ownDraft (CMP-015 owner, offering and version checks) &gt; NEGATIVE: a draft for another service is not found under this service" time="0.000593255">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="ownDraft (CMP-015 owner, offering and version checks) &gt; refuses a submitted case and a republished form with explanations" time="0.001680506">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="ownDraft (CMP-015 owner, offering and version checks) &gt; rejects malformed ids without calling the platform" time="0.000237918">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="writeDraftData &gt; pins the case form version, sends the revision and derives the idempotency key" time="0.000889535">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="writeDraftData &gt; FAILURE: a stale revision becomes a reload message, not a silent overwrite" time="0.001046955">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="writeDraftData &gt; skips the write when the stored answers already match, and reopens READY_TO_SUBMIT" time="0.000816594">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft routes (BFF) &gt; NEGATIVE: anonymous, cross-site and key-less requests store nothing" time="0.003083844">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft routes (BFF) &gt; NEGATIVE: SAMPLE_LAB refuses a non-synthetic name before any draft exists (Phase A L-2)" time="0.001070196">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft routes (BFF) &gt; creates one draft per form session on the placement binding and saves revision 1" time="0.001358246">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft routes (BFF) &gt; reads a draft back for its owner and reports a submitted one as such" time="0.001052208">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="draft routes (BFF) &gt; requires the last saved revision on update" time="0.000524891">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="My applications draft card &gt; labels a draft as not submitted and links to resume it on its own service" time="0.018475545">
+        </testcase>
+        <testcase classname="apps/web-citizen/test/drafts.test.tsx" name="My applications draft card &gt; keeps View for submitted applications" time="0.000921513">
+        </testcase>
+    </testsuite>
+    <testsuite name="packages/ui-ux4g/test/form-renderer.test.tsx" timestamp="2026-11-24T15:20:01.283Z" hostname="cursor" tests="17" failures="0" errors="0" skipped="0" time="0.023633393">
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; derives wizard steps, rule scopes and visibility from metadata" time="0.001936292">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; reads and writes nested values immutably and refuses unsafe pointers" time="0.000425898">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; applies required along the schema path and the conditional branch" time="0.000285069">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; mirrors CMP-009 issue codes per step with metadata copy" time="0.000920687">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; maps authoritative issues back to fields and their step" time="0.000395584">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; drops hidden values before submit" time="0.000209403">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="form model &gt; matches the CMP-009 bounded pattern subset" time="0.00039964">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; renders groups, labelled UX4G inputs, radio enum labels and hides rule-hidden controls" time="0.009855676">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; announces errors on the field, with a hidden &quot;Error:&quot; for screen readers" time="0.002044923">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; lets the host own a control: a slot replaces it and null leaves it out" time="0.00055396">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; counts characters against maxLength and wires blur for validate-after-answer" time="0.000742955">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; renders a review of the non-review steps with display labels" time="0.001070904">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormLayout renders UX4G controls only &gt; shows host display text for host-owned values and drops rows set to null" time="0.00066257">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="resume and per-field validation &gt; reports one field against the current data (required, pattern, conditional)" time="0.000252786">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="resume and per-field validation &gt; resumes on the first step that still needs an answer, else on the review step" time="0.000387495">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; marks done, current and not-started steps for sight and for assistive technology" time="0.001071285">
+        </testcase>
+        <testcase classname="packages/ui-ux4g/test/form-renderer.test.tsx" name="Ux4gFormStepper &gt; lets a returning applicant reopen any step up to the furthest reached" time="0.001007622">
+        </testcase>
+    </testsuite>
+</testsuites>
