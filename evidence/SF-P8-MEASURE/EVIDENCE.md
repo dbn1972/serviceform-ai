@@ -4,11 +4,13 @@
 
 | Field | Value |
 |---|---|
+| Tip | `e95d190e01b083ad4128a5a4ef1983d7121d4f17` (`cursor/path8-measure-3743`) |
 | Workstream | P8-1 Measure (raise D7 ~5→8) |
 | Package | `@serviceform/forms-product-metrics` (web-safe; no `@serviceform/observability`) |
 | Studio | `/forms/metrics` KPI panel |
 | Admin | `/forms-kpi` read-only desk |
 | Smoke | `node scripts/ci/forms-path8-measure-smoke.mjs` |
+| Executed | load_p95=72 · submit_p95=97 · completes=126 · abandons=18 · windows=6 · cross_tenant=0 · markers=12 |
 
 ## What lifted D7 beyond WS7 synthetic
 
