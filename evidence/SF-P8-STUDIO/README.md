@@ -1,6 +1,6 @@
 # SF-P8-STUDIO Evidence — Studio forms designer depth (path to 8, workstream P8-3, D2)
 
-**Branch:** `cursor/path8-studio-depth-1774` on `main` `23973939` (#279) · code at `1c0759af`
+**Branch:** `cursor/path8-studio-depth-1774` on `main` `ddc0108a` (#280) · code commit `1c0759af` before rebase
 **Model:** Claude Opus 5.5 (builder self-assessment is not evidence)
 **CERTIFIED:** false | **G6:** false | **self_certified:** false | **TSB seal:** false |
 **DigiLocker:** out of scope (not touched) | **SF_M10_UX4G_READY:** unset
@@ -69,14 +69,14 @@ runtime, no new CSS (existing UX4G and designer classes only), no frozen contrac
    keyboard-focusable (`scrollable-region-focusable`); the signed-out Publish alert's Session link
    is now a bordered UX4G button link (pre-existing `link-in-text-block` on `main`).
 
-## Executed evidence (local, on `23973939` + this branch)
+## Executed evidence (local, on `ddc0108a` + this branch)
 
 | Check | Result |
 |---|---|
 | `pnpm format:check` | pass |
 | `pnpm lint` (`--max-warnings=0`) | pass |
 | `pnpm typecheck` | pass |
-| `pnpm test:coverage` | 409 files, **4905 tests pass**; lines 85.22 %, statements 81.73 %, functions 83.67 %, branches 73.22 % |
+| `pnpm test:coverage` | 410 files, **4919 tests pass**; lines 85.22 % |
 | Studio + designer unit | 349 pass (34 new: `packages/studio-designers/test/forms-depth.test.ts`, `apps/web-studio/test/forms-designer-depth.test.tsx`) |
 | `pnpm test:cdc` | **480 pass**; Studio parity file 219 → **442** |
 | `pnpm gates` | 11/11 pass (incl. UX4G token gate: 152 TSX files, 0 errors) |
