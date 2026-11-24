@@ -204,7 +204,7 @@ function step(index: number, opts: LayoutOptions = {}): ReactNode {
   });
 }
 
-/** One wizard step panel as the citizen apply form renders it (MetadataApplyForm, #277). */
+/** One wizard step panel as the citizen apply form renders it (apps/web-citizen MetadataApplyForm). */
 function stepPanel(
   index: number,
   total: number,
