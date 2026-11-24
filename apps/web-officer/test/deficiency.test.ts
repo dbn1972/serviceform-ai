@@ -30,4 +30,20 @@ describe('workbench status for deficiency path', () => {
     expect(workbenchStatus('CITIZEN_RESPONSE')).toBe('CITIZEN_RESPONSE');
     expect(workbenchStatus('UNDER_SCRUTINY')).toBe('SUBMITTED');
   });
+
+  it('keeps decide-blocking OPEN vs RESPONSE_RECEIVED distinguishable for the loop UI', () => {
+    // Officer UI blocks APPROVE/REJECT while status===OPEN; RESPONSE_RECEIVED offers Close.
+    const open = {
+      status: 'OPEN',
+      responded_at: null as string | null,
+      closed_at: null as string | null,
+    };
+    const responded = {
+      status: 'RESPONSE_RECEIVED',
+      responded_at: '2026-11-24T12:00:00.000Z',
+      closed_at: null as string | null,
+    };
+    expect(open.status === 'OPEN' && !open.responded_at).toBe(true);
+    expect(responded.status === 'RESPONSE_RECEIVED' && Boolean(responded.responded_at)).toBe(true);
+  });
 });

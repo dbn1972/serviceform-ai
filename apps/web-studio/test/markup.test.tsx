@@ -18,4 +18,12 @@ describe('web-studio markup (UX4G)', () => {
     expect(html).toContain('href="/publication"');
     expect(html).toContain('href="/interop"');
   });
+
+  it('publication desk copy stresses maker-checker separation (WS6)', async () => {
+    const PublicationPage = (await import('../app/publication/page')).default;
+    const html = renderToStaticMarkup(await PublicationPage({ searchParams: Promise.resolve({}) }));
+    expect(html).toContain('Maker-checker');
+    expect(html).toContain('Maker-checker publication desk');
+    expect(html).toContain('CMP-051 records maker and checker separately');
+  });
 });

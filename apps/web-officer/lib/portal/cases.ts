@@ -1,4 +1,8 @@
 import { platform, type Officer, type PlatformResponse } from './platform';
+import type { CasePinGraph } from './pin-view';
+
+export type { CasePinGraph } from './pin-view';
+export { orderedCasePins, PIN_DISPLAY_ORDER, PIN_LABELS } from './pin-view';
 
 export interface PlatformApplication {
   application_id: string;
@@ -7,7 +11,8 @@ export interface PlatformApplication {
   created_at: string;
   updated_at: string;
   submitted_at: string | null;
-  pins?: { form_version_id: string; tenant_service_binding_id: string };
+  pins?: CasePinGraph;
+  pin_graph_hash?: string;
 }
 
 /**
@@ -76,6 +81,9 @@ export function toWorkbenchApplication(
     aggregate_version: app.aggregate_version,
     created_at: app.created_at,
     submitted_at: app.submitted_at,
+    // Constitution #9: case keeps exact published pins; UI must surface them (no silent repoint).
+    ...(app.pins ? { pins: { ...app.pins }, silent_repoint_forbidden: true as const } : {}),
+    ...(app.pin_graph_hash ? { pin_graph_hash: app.pin_graph_hash } : {}),
     source: 'PLATFORM',
     eligibility: 'NOT_EVALUATED',
     digilocker: issuance?.digilocker ?? { mode: 'SIMULATED', status: 'NOT_REQUESTED' },

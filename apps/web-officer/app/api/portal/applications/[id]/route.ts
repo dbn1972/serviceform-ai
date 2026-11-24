@@ -16,6 +16,7 @@ import {
   platform,
   relay,
   crossSiteRefusal,
+  tenantIdentifyingRefusal,
 } from '../../../../../lib/portal/platform';
 
 export const runtime = 'nodejs';
@@ -38,6 +39,8 @@ async function openTaskForApplication(
 }
 
 export async function GET(request: Request, ctx: Ctx) {
+  const tenancy = tenantIdentifyingRefusal(request);
+  if (tenancy) return tenancy;
   const { id } = await ctx.params;
   const officer = await currentOfficer(request);
   if (!officer) return json(401, { error_code: 'SF-AUTH-001', message: 'Sign in to continue' });
@@ -62,6 +65,8 @@ export async function GET(request: Request, ctx: Ctx) {
  * desk. After APPROVE the platform issues and publishes (SIMULATED); `ISSUE` retries that.
  */
 export async function POST(request: Request, ctx: Ctx) {
+  const tenancy = tenantIdentifyingRefusal(request);
+  if (tenancy) return tenancy;
   const refusal = crossSiteRefusal(request);
   if (refusal) return refusal;
   const { id } = await ctx.params;

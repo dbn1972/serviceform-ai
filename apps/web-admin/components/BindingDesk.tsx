@@ -110,8 +110,16 @@ export function BindingDesk() {
         </Alert>
       ) : null}
       {status ? (
-        <Alert variant="info" title="Binding">
-          {status}
+        <Alert variant="info" title="TenantServiceBinding">
+          Status: {status}
+          {bindingId ? (
+            <>
+              {' '}
+              · id <code>{bindingId}</code>
+            </>
+          ) : null}
+          . Applications pin this exact version at draft create; silent repoint is forbidden
+          (Constitution #9).
         </Alert>
       ) : null}
       {labEngSealed ? (
@@ -120,6 +128,11 @@ export function BindingDesk() {
             'SAMPLE_LAB eng seal proven. CERTIFIED=false. G6=false. Owner owns G6 seal claim.'}
         </Alert>
       ) : null}
+      <Alert variant="warning" title="Maker-checker required">
+        Publish needs an APPROVED CMP-051 request from a different principal than the maker. Pins
+        are authored in Studio and frozen at publish; empty pins here only create a draft shell.
+        In-flight applications keep their pins — silent repoint is forbidden (Constitution #9).
+      </Alert>
       <Button onClick={() => void create()}>Create draft binding</Button>
       <Button variant="outline-primary" onClick={() => void publish()}>
         Publish (requires checker approval)
