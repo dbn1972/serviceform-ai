@@ -216,8 +216,11 @@ export function DesignerPublish({
     <div className="sf-designer-publish">
       {session && !session.authenticated ? (
         <Alert variant="warning" title="Sign in to publish">
-          Saving and publishing call the platform as a SIMULATED Studio officer.{' '}
-          <Link href="/session">Open the Session page</Link> and sign in as the designer (maker).
+          Saving and publishing call the platform as a SIMULATED Studio officer. Sign in as the
+          designer (maker) first.{' '}
+          <Link className="ux4g-btn-outline-primary ux4g-btn-s" href="/session">
+            Open the Session page
+          </Link>
         </Alert>
       ) : null}
       {blocked ? (

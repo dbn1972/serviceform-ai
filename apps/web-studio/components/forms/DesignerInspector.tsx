@@ -454,7 +454,7 @@ function FieldCases({ field, required }: { field: DesignerField; required: boole
   return (
     <details className="sf-designer-details" open>
       <summary className="ux4g-label-m-strong">Test cases ({cases.length})</summary>
-      <div className="sf-table-wrap">
+      <div className="sf-table-wrap" tabIndex={0} role="region" aria-label="Test cases">
         <table className="sf-table" data-testid="field-cases">
           <caption>
             Inputs at the edges of this field&rsquo;s rules
