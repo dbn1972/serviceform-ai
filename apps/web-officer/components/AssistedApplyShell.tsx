@@ -179,7 +179,7 @@ export function AssistedApplyShell() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.toLowerCase().includes('sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -260,7 +260,7 @@ export function AssistedApplyShell() {
           </p>
           <button
             type="button"
-            className="ux4g-btn-filled-primary"
+            className="ux4g-btn-primary ux4g-btn-m"
             disabled={busy || !appliedFor.trim()}
             onClick={() => void start()}
           >
@@ -279,7 +279,7 @@ export function AssistedApplyShell() {
           </p>
           <button
             type="button"
-            className="ux4g-btn-filled-primary"
+            className="ux4g-btn-primary ux4g-btn-m"
             disabled={busy}
             onClick={() => void bind()}
           >
@@ -331,7 +331,7 @@ export function AssistedApplyShell() {
           </label>
           <button
             type="button"
-            className="ux4g-btn-filled-primary"
+            className="ux4g-btn-primary ux4g-btn-m"
             disabled={busy || !readBack}
             onClick={() => void captureAndVerify()}
           >
@@ -360,7 +360,7 @@ export function AssistedApplyShell() {
           </label>
           <button
             type="button"
-            className="ux4g-btn-filled-primary"
+            className="ux4g-btn-primary ux4g-btn-m"
             disabled={busy}
             onClick={() => void apply()}
           >
@@ -379,7 +379,7 @@ export function AssistedApplyShell() {
             citizen (<code>applied_for</code>). Operator proof remains on the assisted session.
           </p>
           {applicationId ? (
-            <Link href={`/applications/${applicationId}`} className="ux4g-link">
+            <Link href={`/applications/${applicationId}`} className="ux4g-text-link-m">
               Open application
             </Link>
           ) : null}

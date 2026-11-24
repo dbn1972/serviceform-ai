@@ -70,7 +70,7 @@ export function DiscoveryDesk() {
           {error}
         </div>
       ) : null}
-      <label className="ux4g-label" htmlFor="discovery-keywords">
+      <label className="ux4g-label-m-default" htmlFor="discovery-keywords">
         Keywords
         <input
           id="discovery-keywords"
@@ -83,7 +83,7 @@ export function DiscoveryDesk() {
       <div className="sf-actions">
         <button
           type="button"
-          className="ux4g-btn-primary"
+          className="ux4g-btn-primary ux4g-btn-m"
           disabled={busy}
           onClick={() => void runQuery()}
         >

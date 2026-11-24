@@ -17,7 +17,7 @@ export function AdminNav() {
       <ul>
         {links.map((link) => (
           <li key={link.href}>
-            <Link className="ux4g-text-link-md" href={link.href}>
+            <Link className="ux4g-text-link-m" href={link.href}>
               {link.label}
             </Link>
           </li>

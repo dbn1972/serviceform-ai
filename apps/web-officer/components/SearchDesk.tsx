@@ -82,7 +82,7 @@ export function SearchDesk() {
       ) : null}
 
       <div className="sf-form-grid" role="search" aria-label="Case search">
-        <label className="ux4g-label" htmlFor="search-catalogue">
+        <label className="ux4g-label-m-default" htmlFor="search-catalogue">
           Catalogue id
           <input
             id="search-catalogue"
@@ -92,7 +92,7 @@ export function SearchDesk() {
             placeholder="IND-SOC-002"
           />
         </label>
-        <label className="ux4g-label" htmlFor="search-state">
+        <label className="ux4g-label-m-default" htmlFor="search-state">
           Case state
           <input
             id="search-state"
@@ -102,7 +102,7 @@ export function SearchDesk() {
             placeholder="IN_SCRUTINY"
           />
         </label>
-        <label className="ux4g-label" htmlFor="search-ref">
+        <label className="ux4g-label-m-default" htmlFor="search-ref">
           Application ref
           <input
             id="search-ref"
@@ -117,7 +117,7 @@ export function SearchDesk() {
       <div className="sf-actions">
         <button
           type="button"
-          className="ux4g-btn-primary"
+          className="ux4g-btn-primary ux4g-btn-m"
           disabled={busy}
           onClick={() => void runSearch()}
         >

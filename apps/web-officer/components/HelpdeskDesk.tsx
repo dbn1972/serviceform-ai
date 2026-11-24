@@ -84,7 +84,7 @@ export function HelpdeskDesk() {
         <p className="ux4g-body-m-default" role="alert">
           {error}{' '}
           {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-link">
+            <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
@@ -103,7 +103,7 @@ export function HelpdeskDesk() {
               <li key={g.grievance_id}>
                 <button
                   type="button"
-                  className="ux4g-btn-text-neutral"
+                  className="ux4g-btn-text-neutral ux4g-btn-s"
                   onClick={() => setSelected(g)}
                 >
                   {g.reference_code} · {g.status_label}
@@ -128,13 +128,13 @@ export function HelpdeskDesk() {
           {selected.application_id ? (
             <p className="ux4g-body-s-default">
               Linked case:{' '}
-              <Link href={`/applications/${selected.application_id}`} className="ux4g-link">
+              <Link href={`/applications/${selected.application_id}`} className="ux4g-text-link-m">
                 open application
               </Link>
             </p>
           ) : null}
           {(selected.can_respond || selected.can_escalate) && (
-            <label className="ux4g-label">
+            <label className="ux4g-label-m-default">
               Response note (opaque SIMULATED ref)
               <textarea
                 className="ux4g-textarea"
@@ -148,7 +148,7 @@ export function HelpdeskDesk() {
             {selected.can_route ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-primary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('ROUTE')}
               >
@@ -158,7 +158,7 @@ export function HelpdeskDesk() {
             {selected.can_assign ? (
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('ASSIGN')}
               >
@@ -168,7 +168,7 @@ export function HelpdeskDesk() {
             {selected.can_respond ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-primary"
+                className="ux4g-btn-outline-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('RESPOND')}
               >
@@ -178,7 +178,7 @@ export function HelpdeskDesk() {
             {selected.can_escalate && selected.next_escalation_level ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-warning"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('ESCALATE', { level: selected.next_escalation_level })}
               >
@@ -188,7 +188,7 @@ export function HelpdeskDesk() {
             {selected.can_resolve ? (
               <button
                 type="button"
-                className="ux4g-btn-fill-primary"
+                className="ux4g-btn-primary ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('RESOLVE')}
               >
@@ -198,7 +198,7 @@ export function HelpdeskDesk() {
             {selected.can_close ? (
               <button
                 type="button"
-                className="ux4g-btn-outline-neutral"
+                className="ux4g-btn-outline-neutral ux4g-btn-m"
                 disabled={busy}
                 onClick={() => void act('CLOSE')}
               >

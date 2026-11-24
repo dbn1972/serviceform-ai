@@ -94,18 +94,20 @@ function QueueList() {
     <div className="sf-queue">
       {desks.length > 0 ? (
         <Card title="Desks by role_code" subtitle="Studio HUMAN_TASK assignment · CMP-017">
-          <Select
-            label="Desk filter"
-            value={deskFilter}
-            onChange={(e) => setDeskFilter(e.target.value)}
-            options={deskOptions}
-          />
-          <div className="sf-meta-row" style={{ marginTop: '0.75rem' }}>
-            {desks.map((d) => (
-              <span key={d.role_code} className="ux4g-tag-tonal-neutral">
-                {d.label}: {d.open_count} open
-              </span>
-            ))}
+          <div className="sf-form-stack">
+            <Select
+              label="Desk filter"
+              value={deskFilter}
+              onChange={(e) => setDeskFilter(e.target.value)}
+              options={deskOptions}
+            />
+            <div className="sf-meta-row">
+              {desks.map((d) => (
+                <span key={d.role_code} className="ux4g-tag-tonal-neutral">
+                  {d.label}: {d.open_count} open
+                </span>
+              ))}
+            </div>
           </div>
         </Card>
       ) : null}

@@ -65,7 +65,7 @@ export function AnalyticsDesk() {
       <div className="sf-actions">
         <button
           type="button"
-          className="ux4g-btn-secondary"
+          className="ux4g-btn-outline-primary ux4g-btn-m"
           disabled={busy}
           onClick={() => void refresh()}
         >
