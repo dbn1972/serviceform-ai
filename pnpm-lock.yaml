@@ -235,6 +235,9 @@ importers:
 
   apps/web-citizen:
     dependencies:
+      '@serviceform/forms-product-metrics':
+        specifier: workspace:*
+        version: link:../../packages/forms-product-metrics
       '@serviceform/m10-sample-lab':
         specifier: workspace:*
         version: link:../../packages/m10-sample-lab
@@ -288,6 +291,9 @@ importers:
 
   apps/web-studio:
     dependencies:
+      '@serviceform/forms-product-metrics':
+        specifier: workspace:*
+        version: link:../../packages/forms-product-metrics
       '@serviceform/m10-sample-lab':
         specifier: workspace:*
         version: link:../../packages/m10-sample-lab
@@ -354,6 +360,8 @@ importers:
       tsx:
         specifier: 4.23.15
         version: 4.23.15
+
+  packages/forms-product-metrics: {}
 
   packages/m10-sample-lab: {}
 

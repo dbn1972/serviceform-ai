@@ -1,3 +1,7 @@
+import {
+  recordBffLatency,
+  serverTimingHeader,
+} from '@serviceform/forms-product-metrics/server-product-metrics';
 import { buildSampleLabFormData } from '@serviceform/service-templates';
 import {
   interpret,
@@ -52,13 +56,23 @@ async function livePin(
  * sample answers overlaid with the citizen's consented CMP-005 profile claims.
  */
 export async function GET(request: Request, ctx: Ctx) {
+  const started = performance.now();
   const { catalogueId } = await ctx.params;
   const citizen = await currentCitizen(request);
-  if (!citizen) return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
+  if (!citizen) {
+    recordBffLatency('CITIZEN_FORM_LOAD_MS', performance.now() - started, 'UNAUTHORIZED');
+    return json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED });
+  }
   const offered = offeredForm(catalogueId);
-  if (!offered) return json(404, NOT_OFFERED);
+  if (!offered) {
+    recordBffLatency('CITIZEN_FORM_LOAD_MS', performance.now() - started, 'NOT_FOUND');
+    return json(404, NOT_OFFERED);
+  }
   const live = await livePin(citizen, catalogueId);
-  if (!live) return json(404, NOT_OFFERED);
+  if (!live) {
+    recordBffLatency('CITIZEN_FORM_LOAD_MS', performance.now() - started, 'NOT_FOUND');
+    return json(404, NOT_OFFERED);
+  }
   const { template, version } = offered;
   const scope = offeringJurisdictionScope(catalogueId);
   const scopedForm = formPackageWithJurisdictionScope(version.form, scope);
@@ -68,33 +82,45 @@ export async function GET(request: Request, ctx: Ctx) {
   const profile = await readProfile(citizen);
   const prefill = profilePrefill(scopedForm.json_schema, sample, profile);
   const res = await interpret(citizen, live.pin, prefill);
-  if (res.status !== 200) return relay(res, 'The form engine is unavailable');
-  return json(200, {
-    catalogue_id: template.catalogue_id,
-    service: {
-      name: template.name,
-      policy: template.policy,
-      indicative_checks: template.indicative_checks,
-    },
-    form: {
-      pin: live.pin,
-      version: version.version,
-      package: scopedForm,
-      pin_source: live.source,
-    },
-    jurisdiction_scope: {
-      allowed_states: scope.allowed_states,
-      allowed_districts: scope.allowed_districts,
-      allowed_municipalities: scope.allowed_municipalities,
-    },
-    prefill,
-    prefill_source: profile ? 'CMP-005' : sampleLab() ? 'SAMPLE_LAB' : null,
-    interpretation: interpretation(res.body),
-    engine: 'CMP-009',
-    publication: live.source === 'CMP-033' ? 'STUDIO' : 'SIMULATED',
-    g6_issued: false,
-    certified: false,
+  const elapsed = performance.now() - started;
+  if (res.status !== 200) {
+    recordBffLatency('CITIZEN_FORM_LOAD_MS', elapsed, 'ERROR', { pin_source: live.source });
+    return relay(res, 'The form engine is unavailable');
+  }
+  recordBffLatency('CITIZEN_FORM_LOAD_MS', elapsed, 'OK', {
+    pin_source: live.source,
+    catalogue_class: 'CERTIFICATE',
   });
+  return json(
+    200,
+    {
+      catalogue_id: template.catalogue_id,
+      service: {
+        name: template.name,
+        policy: template.policy,
+        indicative_checks: template.indicative_checks,
+      },
+      form: {
+        pin: live.pin,
+        version: version.version,
+        package: scopedForm,
+        pin_source: live.source,
+      },
+      jurisdiction_scope: {
+        allowed_states: scope.allowed_states,
+        allowed_districts: scope.allowed_districts,
+        allowed_municipalities: scope.allowed_municipalities,
+      },
+      prefill,
+      prefill_source: profile ? 'CMP-005' : sampleLab() ? 'SAMPLE_LAB' : null,
+      interpretation: interpretation(res.body),
+      engine: 'CMP-009',
+      publication: live.source === 'CMP-033' ? 'STUDIO' : 'SIMULATED',
+      g6_issued: false,
+      certified: false,
+    },
+    { 'Server-Timing': serverTimingHeader('form_load', elapsed) },
+  );
 }
 
 /** Re-interpret with the citizen's current data (only rule-condition changes need this). */

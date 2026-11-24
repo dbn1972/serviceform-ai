@@ -1,0 +1,31 @@
+{
+  "CERTIFIED": false,
+  "g6_issued": false,
+  "self_certified": false,
+  "kpi": {
+    "kpi_id": "SF-KPI-CROSS-TENANT-ZERO",
+    "metric_code": "CROSS_TENANT_INCIDENT",
+    "name": "Zero cross-tenant incidents",
+    "definition": "Count of confirmed cross-tenant data disclosure, forged-tenant acceptance, or IDOR leakage on forms/Studio/portal paths in the measurement window.",
+    "target": 0,
+    "unit": "incidents",
+    "smoke_invariant": "CROSS_TENANT_LEAKAGE=0",
+    "fail_closed_codes": [
+      "SF-TEN-002"
+    ],
+    "purpose_code": "PLATFORM_SECURITY_OPS",
+    "aggregate_only": true,
+    "raw_pii_payload_forbidden": true
+  },
+  "lab_synthetic": {
+    "note": "Synthetic unit/smoke samples; live lab host was not required for this smoke.",
+    "form_load_p95_ms": 38,
+    "form_submit_p95_ms": 60,
+    "sample_size": 40,
+    "a11y_score_lab": 100,
+    "cross_tenant_incidents": 0
+  },
+  "event_count": 125,
+  "smoke_invariant": "CROSS_TENANT_LEAKAGE=0",
+  "pass": true
+}
