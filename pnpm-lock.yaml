@@ -207,6 +207,9 @@ importers:
 
   apps/web-admin:
     dependencies:
+      '@serviceform/forms-product-metrics':
+        specifier: workspace:*
+        version: link:../../packages/forms-product-metrics
       '@serviceform/m10-sample-lab':
         specifier: workspace:*
         version: link:../../packages/m10-sample-lab

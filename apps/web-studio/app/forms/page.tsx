@@ -29,6 +29,7 @@ export default function FormsPage() {
         <div className="sf-tag-row">
           <span className="ux4g-tag-tonal-primary">CMP-009 · CMP-033 · CMP-051 · CMP-052</span>
           <span className="ux4g-tag-outline-warning">SAMPLE_LAB · not CERTIFIED</span>
+          <TextLink href="/forms/metrics">Forms product KPIs</TextLink>
         </div>
       </section>
 

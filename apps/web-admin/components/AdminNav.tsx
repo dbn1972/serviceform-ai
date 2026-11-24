@@ -8,6 +8,7 @@ const links = [
   { href: '/reviews', label: 'Reviews' },
   { href: '/branding', label: 'Branding' },
   { href: '/analytics', label: 'Analytics' },
+  { href: '/forms-kpi', label: 'Forms KPIs' },
   { href: '/discovery', label: 'Discovery' },
 ] as const;
 

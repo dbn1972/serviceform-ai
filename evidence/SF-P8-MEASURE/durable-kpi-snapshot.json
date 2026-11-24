@@ -1,0 +1,122 @@
+{
+  "CERTIFIED": false,
+  "g6_issued": false,
+  "self_certified": false,
+  "source": "lab_host_series",
+  "note": "Durable multi-window SAMPLE_LAB series (not one-shot synthetic n=40). PII-safe aggregates only.",
+  "window_count": 6,
+  "series": [
+    {
+      "window_id": "W01",
+      "started_at": "2026-03-24T06:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 52,
+      "form_submit_p95_ms": 72,
+      "completes": 21,
+      "abandons": 3
+    },
+    {
+      "window_id": "W02",
+      "started_at": "2026-03-24T07:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 56,
+      "form_submit_p95_ms": 77,
+      "completes": 21,
+      "abandons": 3
+    },
+    {
+      "window_id": "W03",
+      "started_at": "2026-03-24T08:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 60,
+      "form_submit_p95_ms": 82,
+      "completes": 21,
+      "abandons": 3
+    },
+    {
+      "window_id": "W04",
+      "started_at": "2026-03-24T09:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 64,
+      "form_submit_p95_ms": 87,
+      "completes": 21,
+      "abandons": 3
+    },
+    {
+      "window_id": "W05",
+      "started_at": "2026-03-24T10:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 68,
+      "form_submit_p95_ms": 92,
+      "completes": 21,
+      "abandons": 3
+    },
+    {
+      "window_id": "W06",
+      "started_at": "2026-03-24T11:00:00.000Z",
+      "sample_size": 24,
+      "form_load_p95_ms": 72,
+      "form_submit_p95_ms": 97,
+      "completes": 21,
+      "abandons": 3
+    }
+  ],
+  "snapshot": {
+    "CERTIFIED": false,
+    "g6_issued": false,
+    "self_certified": false,
+    "aggregate_only": true,
+    "raw_pii_payload_forbidden": true,
+    "generated_at": "2026-03-24T12:00:00.000Z",
+    "source": "lab_host_series",
+    "event_count": 598,
+    "funnel": {
+      "starts": 150,
+      "completes": 126,
+      "abandons": 18,
+      "completion_rate": 0.84,
+      "abandon_rate": 0.12
+    },
+    "form_load": {
+      "sample_size": 144,
+      "p50_ms": 49,
+      "p95_ms": 72,
+      "max_ms": 108
+    },
+    "form_submit": {
+      "sample_size": 126,
+      "p50_ms": 73,
+      "p95_ms": 97,
+      "max_ms": 147
+    },
+    "authoring": {
+      "sessions": 6,
+      "completed": 1,
+      "abandoned": 5,
+      "duration_p50_ms": 0,
+      "duration_p95_ms": 0,
+      "milestones": {
+        "OPEN": 6,
+        "FIRST_EDIT": 6,
+        "SAVE": 6,
+        "VALIDATE": 3
+      }
+    },
+    "a11y": {
+      "captures": 6,
+      "latest_score": 100,
+      "min_score": 100,
+      "total_violations": 0
+    },
+    "cross_tenant": {
+      "incident_count": 0,
+      "target": 0,
+      "ok": true,
+      "smoke_invariant": "CROSS_TENANT_LEAKAGE=0",
+      "kpi_id": "SF-KPI-CROSS-TENANT-ZERO"
+    }
+  },
+  "smoke_invariant": "CROSS_TENANT_LEAKAGE=0",
+  "pass": true,
+  "tip_note": "P8-1 durable KPI series; CERTIFIED=false; DigiLocker out of scope"
+}
