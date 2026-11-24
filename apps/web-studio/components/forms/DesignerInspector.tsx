@@ -3,7 +3,6 @@
 import {
   Alert,
   Button,
-  Checkbox,
   Icon,
   issueMessage,
   RadioGroup,
@@ -14,9 +13,13 @@ import {
   type FormSchemaView,
 } from '@serviceform/ui-ux4g';
 import {
+  allFields,
   buildPattern,
+  citizenValue,
   conditionCandidates,
+  conditionText,
   describePattern,
+  describeValidation,
   examplePattern,
   fieldSchema,
   optionsFromText,
@@ -29,9 +32,13 @@ import {
   isNumeric,
   isSupportedPattern,
   KIND_LABEL,
+  MESSAGE_CODES,
   PATTERN_PRESETS,
+  reachableCodes,
+  sameCondition,
+  sharedRequirement,
+  validationCases,
   type ChoiceOption,
-  type Condition,
   type DesignerField,
   type DesignerForm,
   type DesignerSection,
@@ -41,10 +48,11 @@ import {
   type FieldPatch,
   type InputMode,
   type PatternPresetId,
-  type Scalar,
+  type RequiredWhen,
   type VisibilityRule,
 } from '@serviceform/studio-designers/forms';
 import { useState, type ReactNode } from 'react';
+import { ConditionValueEditor, defaultValue } from './ConditionEditor';
 import type { Selection } from './DesignerCanvas';
 
 export interface InspectorHandlers {
@@ -74,19 +82,6 @@ export interface InspectorHandlers {
   select: (s: Selection) => void;
 }
 
-const ERROR_CODES: Record<FieldKind, string[]> = {
-  text: ['REQUIRED', 'MIN_LENGTH', 'MAX_LENGTH', 'PATTERN'],
-  textarea: ['REQUIRED', 'MIN_LENGTH', 'MAX_LENGTH', 'PATTERN'],
-  email: ['REQUIRED', 'FORMAT_EMAIL', 'MAX_LENGTH'],
-  date: ['REQUIRED', 'FORMAT_DATE'],
-  integer: ['REQUIRED', 'TYPE_NUMBER', 'MINIMUM', 'MAXIMUM'],
-  number: ['REQUIRED', 'TYPE_NUMBER', 'MINIMUM', 'MAXIMUM'],
-  select: ['REQUIRED'],
-  radio: ['REQUIRED'],
-  checkbox: [],
-  declaration: ['REQUIRED', 'CONST_MISMATCH'],
-};
-
 const CODE_LABEL: Record<string, string> = {
   REQUIRED: 'When left empty',
   MIN_LENGTH: 'When too short',
@@ -105,141 +100,6 @@ function numberOrNull(raw: string): number | null {
   if (t === '') return null;
   const n = Number(t);
   return Number.isFinite(n) ? n : null;
-}
-
-function encode(v: Scalar | undefined): string {
-  return v === undefined ? '' : typeof v === 'string' ? v : JSON.stringify(v);
-}
-
-function decodeFor(target: DesignerField | undefined, raw: string): Scalar {
-  if (target && isBoolean(target.kind)) return raw === 'true';
-  if (target && isNumeric(target.kind)) return Number(raw);
-  return raw;
-}
-
-function ValueInput({
-  id,
-  label,
-  target,
-  value,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  target: DesignerField | undefined;
-  value: Scalar | undefined;
-  onChange: (v: Scalar) => void;
-}) {
-  if (target && isBoolean(target.kind)) {
-    return (
-      <Select
-        id={id}
-        label={label}
-        value={encode(value)}
-        options={[
-          { value: 'true', label: 'Yes (ticked)' },
-          { value: 'false', label: 'No (not ticked)' },
-        ]}
-        onChange={(e) => onChange(e.target.value === 'true')}
-      />
-    );
-  }
-  if (target && isChoice(target.kind)) {
-    return (
-      <Select
-        id={id}
-        label={label}
-        value={encode(value)}
-        placeholder="Select"
-        options={(target.options ?? []).map((o) => ({ value: o.value, label: o.label }))}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    );
-  }
-  return (
-    <TextInput
-      id={id}
-      label={label}
-      type={target && isNumeric(target.kind) ? 'number' : 'text'}
-      value={encode(value)}
-      onChange={(e) => onChange(decodeFor(target, e.target.value))}
-    />
-  );
-}
-
-function defaultValue(target: DesignerField | undefined): Scalar {
-  if (!target) return '';
-  if (isBoolean(target.kind)) return true;
-  if (isChoice(target.kind)) return target.options?.[0]?.value ?? '';
-  if (isNumeric(target.kind)) return 0;
-  return '';
-}
-
-type ConditionValue = Pick<Condition, 'equals' | 'oneOf'>;
-
-/** "Is" one value, or — for dropdowns and radio buttons — "is any of" several. */
-function ConditionValueEditor({
-  idPrefix,
-  target,
-  condition,
-  onChange,
-}: {
-  idPrefix: string;
-  target: DesignerField | undefined;
-  condition: Condition;
-  onChange: (value: ConditionValue) => void;
-}) {
-  const options = target && isChoice(target.kind) ? (target.options ?? []) : [];
-  const many = condition.oneOf !== undefined;
-  return (
-    <>
-      {options.length > 1 ? (
-        <Select
-          id={`${idPrefix}-compare`}
-          label="Comparison"
-          value={many ? 'any' : 'is'}
-          options={[
-            { value: 'is', label: 'is' },
-            { value: 'any', label: 'is any of' },
-          ]}
-          onChange={(e) =>
-            onChange(
-              e.target.value === 'any'
-                ? { oneOf: condition.equals !== undefined ? [String(condition.equals)] : [] }
-                : { equals: condition.oneOf?.[0] ?? options[0]?.value ?? '' },
-            )
-          }
-        />
-      ) : null}
-      {many ? (
-        <fieldset className="sf-designer-fieldset">
-          <legend className="ux4g-label-m-default">Any of</legend>
-          {options.map((o) => (
-            <Checkbox
-              key={o.value}
-              id={`${idPrefix}-any-${o.value}`}
-              label={o.label || o.value}
-              checked={condition.oneOf?.includes(o.value) === true}
-              onChange={(e) => {
-                const chosen = new Set(condition.oneOf ?? []);
-                if (e.target.checked) chosen.add(o.value);
-                else chosen.delete(o.value);
-                onChange({ oneOf: options.map((x) => x.value).filter((v) => chosen.has(v)) });
-              }}
-            />
-          ))}
-        </fieldset>
-      ) : (
-        <ValueInput
-          id={`${idPrefix}-value`}
-          label="Is"
-          target={target}
-          value={condition.equals}
-          onChange={(v) => onChange({ equals: v })}
-        />
-      )}
-    </>
-  );
 }
 
 function VisibilityEditor({
@@ -298,13 +158,18 @@ function VisibilityEditor({
             options={candidates.map((c) => ({ value: c.path, label: c.label }))}
             onChange={(e) => {
               const next = candidates.find((c) => c.path === e.target.value)?.field;
-              onChange({ effect: rule.effect, field: e.target.value, equals: defaultValue(next) });
+              onChange({
+                effect: rule.effect,
+                field: e.target.value,
+                ...(rule.answered ? { answered: true } : { equals: defaultValue(next) }),
+              });
             }}
           />
           <ConditionValueEditor
             idPrefix={idPrefix}
             target={target}
             condition={rule}
+            allowAnswered
             onChange={(v) => onChange({ effect: rule.effect, field: rule.field, ...v })}
           />
         </div>
@@ -552,14 +417,6 @@ function PatternEditor({
   );
 }
 
-/** The citizen UX4G number renderer's conversion: whole numbers become numbers, the rest stays text. */
-function benchValue(field: DesignerField, raw: string): unknown {
-  if (!isNumeric(field.kind)) return raw === '' ? undefined : raw;
-  const trimmed = raw.trim();
-  if (trimmed === '') return undefined;
-  return /^-?[0-9]{1,15}$/.test(trimmed) ? Number(trimmed) : trimmed;
-}
-
 /** One-field form for the citizen runtime mirror: exactly the check and copy applicants get. */
 function benchCheck(field: DesignerField, raw: string, required: boolean): string | null {
   const node = fieldSchema(field) as FormSchemaView;
@@ -569,7 +426,7 @@ function benchCheck(field: DesignerField, raw: string, required: boolean): strin
     properties: { [field.key]: node },
     required: required ? [field.key] : [],
   };
-  const value = benchValue(field, raw);
+  const value = citizenValue(field.kind, raw);
   const errors = stepErrors(
     schema,
     { type: 'Control', scope },
@@ -577,6 +434,66 @@ function benchCheck(field: DesignerField, raw: string, required: boolean): strin
     new Set([scope]),
   );
   return errors[`/${field.key}`] ?? null;
+}
+
+const SHOWN_CHARACTERS = 24;
+
+function shownInput(input: string): ReactNode {
+  if (input === '') return <span className="sf-designer-muted">(nothing)</span>;
+  const text =
+    input.length > SHOWN_CHARACTERS
+      ? `${input.slice(0, SHOWN_CHARACTERS)}… (${input.length} characters)`
+      : input;
+  return <code className="sf-hash">{text}</code>;
+}
+
+/** Edge cases of the field's own rules, each with the verdict and copy an applicant gets. */
+function FieldCases({ field, required }: { field: DesignerField; required: boolean }) {
+  const cases = validationCases(field);
+  if (cases.length === 0) return null;
+  return (
+    <details className="sf-designer-details" open>
+      <summary className="ux4g-label-m-strong">Test cases ({cases.length})</summary>
+      <div className="sf-table-wrap">
+        <table className="sf-table" data-testid="field-cases">
+          <caption>
+            Inputs at the edges of this field&rsquo;s rules
+            {required ? ', checked as a required answer' : ''}, run through the citizen form
+            runtime. CMP-009 gives the same verdict on submit.
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Case</th>
+              <th scope="col">Applicant types</th>
+              <th scope="col">Applicant sees</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cases.map((c) => {
+              const message = benchCheck(field, c.input, required);
+              return (
+                <tr key={c.id}>
+                  <th scope="row">{c.label}</th>
+                  <td>{shownInput(c.input)}</td>
+                  <td>
+                    <span className={message ? 'ux4g-tag-tonal-error' : 'ux4g-tag-tonal-success'}>
+                      {message ?? 'Accepted'}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {field.kind === 'number' ? (
+        <p className="ux4g-body-s-default sf-designer-muted">
+          The citizen number box currently stores whole numbers only, so decimals are refused there
+          even though this field allows them.
+        </p>
+      ) : null}
+    </details>
+  );
 }
 
 function FieldBench({ field }: { field: DesignerField }) {
@@ -593,7 +510,7 @@ function FieldBench({ field }: { field: DesignerField }) {
         inputMode={isNumeric(field.kind) ? 'numeric' : undefined}
         hint={
           field.requiredWhen && !field.required
-            ? 'Checked as if its "required when" condition holds.'
+            ? `Checked as if it is required (its "required ${field.requiredWhen.unless ? 'unless' : 'when'}" rule applies).`
             : 'Shows exactly what an applicant would see.'
         }
         value={sample}
@@ -632,9 +549,39 @@ function FieldInspector({
 }) {
   const patch = (p: FieldPatch, key: string) => h.patchField(field.id, p, `${field.id}:${key}`);
   const topCandidates = conditionCandidates(form, field.id).filter((c) => !c.path.includes('/'));
-  const requirement = field.required ? 'always' : field.requiredWhen ? 'when' : 'optional';
-  const whenTarget = topCandidates.find((c) => c.path === field.requiredWhen?.field)?.field;
+  const when = field.requiredWhen;
+  const requirement = field.required
+    ? 'always'
+    : when
+      ? when.unless
+        ? 'unless'
+        : 'when'
+      : 'optional';
+  const whenTarget = topCandidates.find((c) => c.path === when?.field)?.field;
   const textual = field.kind === 'text' || field.kind === 'textarea' || field.kind === 'email';
+  const shared = sharedRequirement(form, field.id);
+  const sharing = when
+    ? allFields(form).filter(
+        (r) =>
+          r.field.id !== field.id &&
+          r.field.requiredWhen &&
+          sameCondition(r.field.requiredWhen, when),
+      ).length
+    : 0;
+  const setWhen = (next: RequiredWhen) => patch({ required: false, requiredWhen: next }, 'reqwhen');
+  const startCondition = (): RequiredWhen => {
+    if (when) return when;
+    if (shared) return { ...shared };
+    const first =
+      topCandidates.find((c) => isBoolean(c.field.kind) || isChoice(c.field.kind)) ??
+      topCandidates[0];
+    return { field: first?.path ?? '', equals: defaultValue(first?.field) };
+  };
+  const required = field.required || when !== undefined;
+  const reachable = reachableCodes(field);
+  const messageCodes = MESSAGE_CODES.filter(
+    (code) => reachable.has(code) || (field.errorMessages?.[code] ?? '') !== '',
+  );
   return (
     <div className="sf-designer-stack">
       <fieldset className="sf-designer-fieldset" disabled={readOnly}>
@@ -674,50 +621,73 @@ function FieldInspector({
           options={[
             { value: 'always', label: 'Required' },
             { value: 'optional', label: 'Optional' },
-            ...(nested ? [] : [{ value: 'when', label: 'Required when…' }]),
+            ...(nested
+              ? []
+              : [
+                  { value: 'when', label: 'Required when…' },
+                  { value: 'unless', label: 'Required unless…' },
+                ]),
           ]}
           onChange={(v) => {
             if (v === 'always') patch({ required: true, requiredWhen: null }, 'required');
             else if (v === 'optional') patch({ required: false, requiredWhen: null }, 'required');
             else {
-              const first =
-                topCandidates.find((c) => isBoolean(c.field.kind) || isChoice(c.field.kind)) ??
-                topCandidates[0];
+              const { unless: _unless, ...condition } = startCondition();
               patch(
                 {
                   required: false,
-                  requiredWhen: { field: first?.path ?? '', equals: defaultValue(first?.field) },
+                  requiredWhen: v === 'unless' ? { ...condition, unless: true } : condition,
                 },
                 'required',
               );
             }
           }}
         />
-        {field.requiredWhen ? (
+        {when ? (
           <div className="sf-designer-row">
             <Select
               id="insp-reqwhen-field"
-              label="When the answer to"
-              value={field.requiredWhen.field}
+              label={when.unless ? 'Unless the answer to' : 'When the answer to'}
+              value={when.field}
               placeholder="Select a field"
               options={topCandidates.map((c) => ({ value: c.path, label: c.label }))}
               onChange={(e) => {
                 const t = topCandidates.find((c) => c.path === e.target.value)?.field;
-                patch(
-                  { requiredWhen: { field: e.target.value, equals: defaultValue(t) } },
-                  'reqwhen',
-                );
+                setWhen({
+                  field: e.target.value,
+                  equals: defaultValue(t),
+                  ...(when.unless ? { unless: true } : {}),
+                });
               }}
             />
             <ConditionValueEditor
               idPrefix="insp-reqwhen"
               target={whenTarget}
-              condition={field.requiredWhen}
+              condition={when}
+              allowAnswered={false}
               onChange={(v) =>
-                patch({ requiredWhen: { field: field.requiredWhen?.field ?? '', ...v } }, 'reqwhen')
+                setWhen({ field: when.field, ...v, ...(when.unless ? { unless: true } : {}) })
               }
             />
           </div>
+        ) : null}
+        {when && shared && !sameCondition(shared, when) ? (
+          <p className="ux4g-body-s-default">
+            Other fields are required when {conditionText(form, shared)}. The form runtime checks
+            one condition for every &ldquo;required when / unless&rdquo; rule.{' '}
+            <Button
+              variant="text-primary"
+              size="xs"
+              onClick={() => setWhen({ ...shared, ...(when.unless ? { unless: true } : {}) })}
+            >
+              Use that condition
+            </Button>
+          </p>
+        ) : when && sharing > 0 ? (
+          <p className="ux4g-body-s-default sf-designer-muted">
+            Shares its condition with {sharing} other {sharing === 1 ? 'field' : 'fields'}; the form
+            runtime checks one condition for every &ldquo;required when / unless&rdquo; rule.
+          </p>
         ) : null}
       </fieldset>
 
@@ -732,6 +702,9 @@ function FieldInspector({
       {textual || isNumeric(field.kind) || field.kind === 'date' ? (
         <fieldset className="sf-designer-fieldset" disabled={readOnly}>
           <legend className="ux4g-label-m-strong">Validation</legend>
+          <p className="ux4g-body-s-default" data-testid="field-validation-summary">
+            {[required ? 'Required' : 'Optional', ...describeValidation(field)].join(' · ')}
+          </p>
           {textual ? (
             <div className="sf-designer-row">
               <TextInput
@@ -778,6 +751,7 @@ function FieldInspector({
             </div>
           ) : null}
           <FieldBench key={`${field.id}:${field.kind}`} field={field} />
+          <FieldCases field={field} required={required} />
         </fieldset>
       ) : null}
 
@@ -834,24 +808,32 @@ function FieldInspector({
         onChange={(rule) => patch({ visibleWhen: rule }, 'visible')}
       />
 
-      {ERROR_CODES[field.kind].length > 0 ? (
+      {messageCodes.length > 0 ? (
         <details className="sf-designer-details">
           <summary className="ux4g-label-m-strong">
             Error messages for applicants (optional)
           </summary>
           <fieldset className="sf-designer-fieldset" disabled={readOnly}>
             <legend className="ux4g-sr-only">Error messages</legend>
-            {ERROR_CODES[field.kind].map((code) => (
+            <p className="ux4g-body-s-default sf-designer-muted">
+              Only the problems this field&rsquo;s rules can produce are listed.
+            </p>
+            {messageCodes.map((code) => (
               <TextInput
                 key={code}
                 id={`insp-err-${code}`}
                 label={CODE_LABEL[code] ?? code}
                 optional
-                hint={`Default: “${issueMessage(
-                  fieldSchema({ ...field, errorMessages: {} }) as FormSchemaView,
-                  code,
-                  `/${field.key}`,
-                )}”`}
+                state={reachable.has(code) ? 'default' : 'warning'}
+                hint={
+                  reachable.has(code)
+                    ? `Default: “${issueMessage(
+                        fieldSchema({ ...field, errorMessages: {} }) as FormSchemaView,
+                        code,
+                        `/${field.key}`,
+                      )}”`
+                    : 'Applicants never see this message with the current rules.'
+                }
                 value={field.errorMessages?.[code] ?? ''}
                 onChange={(e) => {
                   const next = Object.fromEntries([

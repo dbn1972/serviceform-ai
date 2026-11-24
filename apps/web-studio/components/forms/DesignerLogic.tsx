@@ -4,14 +4,18 @@ import { Alert, Button, Icon, type FormData, type FormPackageView } from '@servi
 import {
   logicRules,
   logicScenarios,
+  removeLogicRule,
   type DesignerForm,
   type DesignIssue,
 } from '@serviceform/studio-designers/forms';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { logicMatrix, type LogicCell } from '../../lib/form-logic';
 import type { Selection } from './DesignerCanvas';
+import { RuleBuilder } from './RuleBuilder';
 
 const LOGIC_CODES = new Set([
+  'CONDITION_ANSWERED_REQUIREMENT',
+  'RULE_ANSWERED_BOOLEAN',
   'RULE_TARGET_MISSING',
   'RULE_SELF_REFERENCE',
   'RULE_VALUE_MISSING',
@@ -39,29 +43,39 @@ function Cell({ cell }: { cell: LogicCell }) {
 }
 
 /**
- * Every conditional rule of the form in plain language, its logic checks, and a matrix of the
- * answer combinations that drive the rules, evaluated by the citizen UX4G runtime mirror.
+ * Every conditional rule of the form in plain language with a builder to add, change or remove
+ * them, its logic checks, and a matrix of the answer combinations that drive the rules, evaluated
+ * by the citizen UX4G runtime mirror.
  */
 export function DesignerLogic({
   form,
   formPackage,
   issues,
+  readOnly = false,
   onSelect,
   onTry,
+  onChange,
 }: {
   form: DesignerForm;
   formPackage: FormPackageView;
   issues: readonly DesignIssue[];
+  readOnly?: boolean;
   onSelect: (s: Selection) => void;
   onTry: (data: FormData) => void;
+  onChange?: (next: DesignerForm) => void;
 }) {
   const rules = useMemo(() => logicRules(form), [form]);
   const set = useMemo(() => logicScenarios(form), [form]);
   const matrix = useMemo(() => logicMatrix(form, formPackage, set), [form, formPackage, set]);
   const logicIssues = issues.filter((i) => LOGIC_CODES.has(i.code));
+  const [announcement, setAnnouncement] = useState('');
+  const editable = !readOnly && onChange !== undefined;
 
   return (
     <div className="sf-designer-preview">
+      <p className="ux4g-sr-only" role="status" aria-live="polite">
+        {announcement}
+      </p>
       <div className="sf-designer-preview-bar">
         <span className="ux4g-tag-tonal-info" data-testid="logic-rule-count">
           {rules.length} {rules.length === 1 ? 'rule' : 'rules'}
@@ -77,10 +91,20 @@ export function DesignerLogic({
         </span>
       </div>
 
+      {editable ? (
+        <RuleBuilder
+          form={form}
+          onSave={(next, sentence) => {
+            onChange?.(next);
+            setAnnouncement(`Rule saved: ${sentence}`);
+          }}
+        />
+      ) : null}
+
       {rules.length === 0 ? (
         <Alert variant="info" title="No conditional rules yet">
-          Select a field or section and use Visibility or &ldquo;Required when…&rdquo; to make it
-          depend on another answer.
+          Add one above, or select a field or section on the Design tab and use Visibility or
+          &ldquo;Required when / unless…&rdquo; to make it depend on another answer.
         </Alert>
       ) : (
         <section className="sf-designer-checks" aria-labelledby="logic-rules-title">
@@ -108,18 +132,36 @@ export function DesignerLogic({
                 <span className="ux4g-body-s-default">
                   {rule.sentence}{' '}
                   <span className="sf-designer-muted">Step {rule.stepIndex + 1}.</span>
+                  {rule.sourceMissing ? (
+                    <>
+                      {' '}
+                      <span className="ux4g-tag-tonal-error">Answer removed</span>
+                    </>
+                  ) : null}
                 </span>
-                {rule.sourceMissing ? (
-                  <span className="ux4g-tag-tonal-error">Answer removed</span>
-                ) : null}
-                <Button
-                  variant="text-primary"
-                  size="xs"
-                  aria-label={`Edit the rule on ${rule.targetLabel}`}
-                  onClick={() => onSelect(rule.target)}
-                >
-                  Edit
-                </Button>
+                <span className="sf-designer-field-actions">
+                  <Button
+                    variant="text-primary"
+                    size="xs"
+                    aria-label={`Edit the rule on ${rule.targetLabel}`}
+                    onClick={() => onSelect(rule.target)}
+                  >
+                    Edit
+                  </Button>
+                  {editable ? (
+                    <Button
+                      variant="text-danger"
+                      size="xs"
+                      aria-label={`Remove the rule on ${rule.targetLabel}`}
+                      onClick={() => {
+                        onChange?.(removeLogicRule(form, rule.id));
+                        setAnnouncement(`Removed: ${rule.sentence} Undo with Ctrl+Z.`);
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  ) : null}
+                </span>
               </li>
             ))}
           </ol>

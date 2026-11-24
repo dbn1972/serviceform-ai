@@ -132,6 +132,9 @@ function visibilityOf(rule: UiRule): VisibilityRule | null {
   const { const: c, enum: e } = rule.condition.schema;
   if (e !== undefined) return { effect: rule.effect, field, oneOf: [...e] };
   if (c !== undefined) return { effect: rule.effect, field, equals: c };
+  if (Object.keys(rule.condition.schema).length === 0) {
+    return { effect: rule.effect, field, answered: true };
+  }
   return null;
 }
 
@@ -167,8 +170,16 @@ function controlsOf(node: UiElement, warnings: ImportWarning[]): UiControl[] {
 
 interface ImportContext {
   schema: FormSchemaNode;
-  conditional: { when: RequiredWhen; keys: Set<string> } | null;
+  conditional: { when: RequiredWhen; then: Set<string>; else: Set<string> } | null;
   warnings: ImportWarning[];
+}
+
+/** Only `required` in each branch: the designer authors nothing else under the root condition. */
+function requiredOnly(branch: FormSchemaNode | undefined): string[] | null {
+  if (branch === undefined) return [];
+  const keys = Object.keys(branch);
+  if (keys.length !== 1 || keys[0] !== 'required' || !branch.required) return null;
+  return [...branch.required];
 }
 
 function sectionFromControls(
@@ -237,9 +248,11 @@ function sectionFromControls(
       required: rootRequired.has(key),
       ...(c.rule ? { rule: c.rule } : {}),
     });
-    if (ctx.conditional?.keys.has(key)) {
+    const unless = ctx.conditional?.else.has(key) === true;
+    if (ctx.conditional && (ctx.conditional.then.has(key) || unless)) {
       const when = ctx.conditional.when;
       field.requiredWhen = when.oneOf ? { ...when, oneOf: [...when.oneOf] } : { ...when };
+      if (unless) field.requiredWhen.unless = true;
     }
     section.fields.push(field);
   });
@@ -289,13 +302,17 @@ export function importForm(pkg: FormPackage, version: string): ImportResult {
   let conditional: ImportContext['conditional'] = null;
   if (schema.if || schema.then || schema.else) {
     const when = conditionOf(schema.if);
-    if (!when || !schema.then?.required || schema.else) {
+    const then = requiredOnly(schema.then);
+    const otherwise = requiredOnly(schema.else);
+    const both = then && otherwise ? [...then, ...otherwise] : null;
+    if (!when || !both || both.length === 0 || new Set(both).size !== both.length) {
       warnings.push({
         code: 'CONDITION_UNSUPPORTED',
-        message: 'Only a single root "required when" condition is supported; it was dropped.',
+        message:
+          'Only a single root "required when / unless" condition is supported; it was dropped.',
       });
     } else {
-      conditional = { when, keys: new Set(schema.then.required) };
+      conditional = { when, then: new Set(then ?? []), else: new Set(otherwise ?? []) };
     }
   }
   const ctx: ImportContext = { schema, conditional, warnings };

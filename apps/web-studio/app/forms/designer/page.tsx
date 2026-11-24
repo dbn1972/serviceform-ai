@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { FormDesigner } from '../../../components/forms/FormDesigner';
 import { StudioNav } from '../../../components/StudioNav';
 import { designerSource } from '../../../lib/designer-source';
+import { catalogueSectionLibrary } from '../../../lib/form-library';
 
 export const metadata: Metadata = {
   title: 'Design a form - Forms designer - Service Design Studio',
@@ -22,7 +23,7 @@ export default async function DesignerPage({ searchParams }: Props) {
       nav={<StudioNav />}
       layout="wide"
     >
-      <FormDesigner key={key} source={source} />
+      <FormDesigner key={key} source={source} library={catalogueSectionLibrary()} />
     </AppShell>
   );
 }

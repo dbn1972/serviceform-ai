@@ -392,3 +392,208 @@ describe('Studio forms preview (UX4G runtime mirror) against the CMP-009 form ru
     },
   );
 });
+
+/**
+ * "Has any answer" visibility (SHOW and HIDE, on a field and a section) and a root condition with
+ * both branches: "required when" (`then`) and "required unless" (`else`).
+ */
+function depthForm(): Form {
+  let form = designer.emptyForm('lab.depth.application', 'Depth form');
+  const section = form.steps[0]?.sections[0]?.id ?? '';
+  const add = (f: Omit<designer.DesignerField, 'id'>) => {
+    form = designer.addField(form, section, f).form;
+  };
+  add({
+    key: 'holder',
+    kind: 'radio',
+    label: 'Holds a licence',
+    required: false,
+    options: [
+      { value: 'YES', label: 'Yes' },
+      { value: 'NO', label: 'No' },
+      { value: 'APPLIED', label: 'Applied' },
+    ],
+  });
+  add({
+    key: 'licence_no',
+    kind: 'text',
+    label: 'Licence number',
+    required: false,
+    pattern: '^[A-Z]{2}[0-9]{4}$',
+    requiredWhen: { field: 'holder', oneOf: ['YES', 'APPLIED'] },
+  });
+  add({
+    key: 'reason',
+    kind: 'textarea',
+    label: 'Why no licence',
+    required: false,
+    maxLength: 200,
+    requiredWhen: { field: 'holder', oneOf: ['YES', 'APPLIED'], unless: true },
+  });
+  add({ key: 'email', kind: 'email', label: 'Email', required: false, maxLength: 254 });
+  add({
+    key: 'updates',
+    kind: 'checkbox',
+    label: 'Updates by email',
+    required: false,
+    visibleWhen: { effect: 'SHOW', field: 'email', answered: true },
+  });
+  add({
+    key: 'phone',
+    kind: 'text',
+    label: 'Phone instead',
+    required: true,
+    pattern: '^[0-9]{10}$',
+    visibleWhen: { effect: 'HIDE', field: 'email', answered: true },
+  });
+  add({ key: 'staff', kind: 'integer', label: 'Staff', required: false, minimum: 1, maximum: 500 });
+  const extra = designer.addSection(form, form.steps[0]?.id ?? '', {
+    label: 'Staff details',
+    fields: [
+      { key: 'staff_note', kind: 'text', label: 'Staff note', required: true, maxLength: 40 },
+    ],
+  });
+  return designer.updateSection(extra.form, extra.id, {
+    visibleWhen: { effect: 'SHOW', field: 'staff', answered: true },
+  });
+}
+
+/** One-control FORM package for a field's own schema, as the Studio validation bench builds it. */
+function benchPackage(node: FormSchemaView, required: boolean): FormPackageView {
+  return {
+    form_id: 'lab.bench.form',
+    json_schema: {
+      type: 'object',
+      additionalProperties: false,
+      properties: { answer: node },
+      ...(required ? { required: ['answer'] } : {}),
+    } as FormSchemaView,
+    ui_schema: {
+      type: 'Categorization',
+      elements: [
+        {
+          type: 'Category',
+          label: 'Bench',
+          elements: [{ type: 'Control', scope: '#/properties/answer' }],
+        },
+      ],
+    },
+  };
+}
+
+/** Every distinct field of the palette, the depth form and every catalogue version. */
+function benchFields(): designer.DesignerField[] {
+  const seen = new Map<string, designer.DesignerField>();
+  for (const form of [paletteForm(), depthForm(), ...catalogue.map((c) => c.form)]) {
+    for (const ref of designer.allFields(form)) {
+      const { id: _id, visibleWhen: _v, ...shape } = ref.field;
+      const key = JSON.stringify({ ...shape, key: 'answer' });
+      if (!seen.has(key)) seen.set(key, ref.field);
+    }
+  }
+  return [...seen.values()];
+}
+
+// REQ: P8-3 Studio designer depth — every new authoring surface is checked against CMP-009:
+// "has any answer" and "required unless" conditions, the validation test cases, the preview's
+// sample answers and sections reused from the catalogue.
+describe('Studio forms designer depth against the CMP-009 form runtime', () => {
+  it('"has any answer" and "required unless" agree in every logic scenario, filled and refused', () => {
+    const form = depthForm();
+    expect(designer.lintForm(form).filter((i) => i.severity === 'error')).toEqual([]);
+    const pkg = designer.compileForm(form) as unknown as FormPackageView;
+    expect(pkg.json_schema.else).toEqual({ required: ['reason'] });
+    const set = designer.logicScenarios(form, ALL_COMBINATIONS);
+    expect(set.complete).toBe(true);
+    expect(set.drivers.map((d) => d.path)).toEqual(['holder', 'email', 'staff']);
+    expect(set.scenarios).toHaveLength(4 * 2 * 2);
+    const tally = check(form);
+    expect(tally.datasets).toBe(set.scenarios.length * 3);
+    expect(tally.accepted).toBeGreaterThan(0);
+    expect(tally.refusals).toBeGreaterThan(tally.datasets);
+  });
+
+  it('"required unless" on an answer that can be hidden is refused, because CMP-009 would block it', () => {
+    let form = depthForm();
+    const holder = designer.allFields(form).find((r) => r.path === 'holder')?.field.id ?? '';
+    form = designer.updateField(form, holder, {
+      visibleWhen: { effect: 'SHOW', field: 'staff', answered: true },
+    });
+    expect(designer.lintForm(form).map((i) => i.code)).toContain('RULE_HIDDEN_SOURCE_BLOCKS');
+    const pkg = designer.compileForm(form) as unknown as FormPackageView;
+    // Picked "Yes" (reason optional), then cleared Staff: the holder answer is hidden and dropped.
+    const answers = filled(pkg, { holder: 'YES', email: 'a@example.test' }, validSample);
+    delete answers['staff'];
+    delete answers['reason'];
+    const visible = visibleScopes(pkg.ui_schema, answers);
+    expect(clientIssues(pkg, answers, visible).size).toBe(0);
+    const provider = providerIssues(pkg, answers, visible);
+    expect(provider.valid).toBe(false);
+    expect([...provider.out.keys()]).toEqual(['/reason']);
+  });
+
+  it('every validation test case gets the same verdict from the bench and from CMP-009', () => {
+    const fields = benchFields();
+    let cases = 0;
+    let refused = 0;
+    for (const field of fields) {
+      const node = designer.fieldSchema(field) as FormSchemaView;
+      const required = field.required || field.requiredWhen !== undefined;
+      const pkg = benchPackage(node, required);
+      const parsed = parseFormPackage(pkg, pkg.form_id);
+      for (const c of designer.validationCases(field)) {
+        const value = designer.citizenValue(field.kind, c.input);
+        const data: FormData = value === undefined ? {} : { answer: value };
+        const client = fieldIssue(node, value, required);
+        const runtime = runFormRuntime(parsed.jsonSchema, parsed.uiSchema, data, {});
+        const provider = runtime.issues.filter((i) => i.pointer === '/answer').map((i) => i.code);
+        const label = `${field.key} ${c.label} ${JSON.stringify(c.input)}`;
+        expect(runtime.valid, label).toBe(client === null);
+        if (client) expect(provider, label).toContain(client);
+        cases += 1;
+        if (client) refused += 1;
+      }
+    }
+    expect(fields.length).toBeGreaterThan(30);
+    expect(cases).toBeGreaterThan(150);
+    expect(refused).toBeGreaterThan(cases / 3);
+    expect(refused).toBeLessThan(cases);
+  });
+
+  it.each([
+    ['palette', paletteForm()],
+    ['conditional', conditionalForm()],
+    ['depth', depthForm()],
+    ...catalogue.map((c) => [c.id, c.form] as const),
+  ])('sample answers for %s pass the citizen checks and CMP-009', (_id, form) => {
+    const pkg = designer.compileForm(form) as unknown as FormPackageView;
+    const data = designer.sampleAnswers(form) as FormData;
+    const visible = visibleScopes(pkg.ui_schema, data);
+    expect([...clientIssues(pkg, data, visible)]).toEqual([]);
+    const provider = providerIssues(pkg, data, visible);
+    expect([...provider.out], JSON.stringify(data)).toEqual([]);
+    expect(provider.valid).toBe(true);
+  });
+
+  it('every catalogue section reused in a blank form agrees in every logic scenario', () => {
+    const library = designer.sectionLibrary(catalogue.map((c) => ({ source: c.id, form: c.form })));
+    expect(library.length).toBeGreaterThan(3);
+    for (const item of library) {
+      const blank = designer.emptyForm('lab.reuse.application', 'Reuse');
+      const placed = designer.addSection(blank, blank.steps[0]?.id ?? '', item.template);
+      const tally = check(placed.form);
+      expect(tally.datasets, item.source).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('a duplicated section keeps its own rules working under its new keys', () => {
+    const form = depthForm();
+    const staff = form.steps[0]?.sections[1]?.id ?? '';
+    const first = form.steps[0]?.sections[0]?.id ?? '';
+    const copied = designer.duplicateSection(designer.duplicateSection(form, staff).form, first);
+    expect(designer.lintForm(copied.form).filter((i) => i.severity === 'error')).toEqual([]);
+    expect(copied.dropped).toBe(2);
+    const tally = check(copied.form);
+    expect(tally.accepted).toBeGreaterThan(0);
+  });
+});

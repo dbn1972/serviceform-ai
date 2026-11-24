@@ -32,6 +32,8 @@ export interface LogicRule {
   sourceLabel: string;
   sourceMissing: boolean;
   values: Scalar[];
+  /** "Required unless": the root condition's `else` branch. */
+  unless?: true;
   sentence: string;
 }
 
@@ -90,6 +92,7 @@ function quoted(label: string): string {
 export function conditionText(form: DesignerForm, condition: Condition): string {
   const ref = findFieldByPath(form, condition.field);
   const name = ref ? ref.field.label.trim() || ref.path : condition.field || 'a missing field';
+  if (condition.answered === true) return `${quoted(name)} has an answer`;
   const values = conditionValues(condition).map((v) => valueLabel(ref?.field, v));
   const shown =
     values.length > 1
@@ -143,6 +146,7 @@ export function logicRules(form: DesignerForm): LogicRule[] {
           });
         }
         if (f.requiredWhen && !f.required) {
+          const unless = f.requiredWhen.unless === true;
           out.push({
             id: `required:${f.id}`,
             kind: 'requirement',
@@ -151,7 +155,10 @@ export function logicRules(form: DesignerForm): LogicRule[] {
             targetLabel: label,
             stepIndex,
             ...sourceOf(form, f.requiredWhen),
-            sentence: `Require ${quoted(label)} when ${conditionText(form, f.requiredWhen)}; otherwise it is optional.`,
+            ...(unless ? { unless } : {}),
+            sentence: unless
+              ? `Require ${quoted(label)} unless ${conditionText(form, f.requiredWhen)}; then it is optional.`
+              : `Require ${quoted(label)} when ${conditionText(form, f.requiredWhen)}; otherwise it is optional.`,
           });
         }
       }
@@ -164,6 +171,15 @@ function otherValue(field: DesignerField, used: Scalar[]): Scalar {
   if (isNumeric(field.kind)) {
     const numbers = used.filter((v): v is number => typeof v === 'number');
     return numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
+  }
+  if (field.kind === 'date') {
+    for (let day = 10; day <= 28; day += 1) {
+      const candidate = `2000-01-${day}`;
+      if (!used.includes(candidate)) return candidate;
+    }
+  }
+  if (field.kind === 'email' && !used.includes('applicant@example.test')) {
+    return 'applicant@example.test';
   }
   let candidate = 'something else';
   while (used.includes(candidate)) candidate = `${candidate}!`;

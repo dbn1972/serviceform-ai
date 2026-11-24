@@ -26,13 +26,16 @@ export function pathOfScope(scope: string): string {
   return scope.replace('#/properties/', '').split('/properties/').join('/');
 }
 
+/** An empty condition schema holds while the answer has any value (CMP-009 and the UX4G mirror). */
 export function ruleOf(rule: VisibilityRule): UiRule {
   const schema =
-    rule.oneOf !== undefined
-      ? { enum: rule.oneOf }
-      : rule.equals !== undefined
-        ? { const: rule.equals }
-        : {};
+    rule.answered === true
+      ? {}
+      : rule.oneOf !== undefined
+        ? { enum: rule.oneOf }
+        : rule.equals !== undefined
+          ? { const: rule.equals }
+          : {};
   return { effect: rule.effect, condition: { scope: scopeOf(rule.field), schema } };
 }
 
@@ -193,9 +196,10 @@ export function conditionSchema(when: RequiredWhen): FormSchemaNode {
 export function compileForm(form: DesignerForm): FormPackage {
   const properties: Record<string, FormSchemaNode> = {};
   const required: string[] = [];
-  const conditional: { when: RequiredWhen; keys: string[] } = {
-    when: { field: '', equals: true },
-    keys: [],
+  const conditional: { when: RequiredWhen | null; then: string[]; else: string[] } = {
+    when: null,
+    then: [],
+    else: [],
   };
   for (const step of form.steps) {
     for (const section of step.sections) {
@@ -209,8 +213,8 @@ export function compileForm(form: DesignerForm): FormPackage {
         properties[f.key] = fieldSchema(f);
         if (f.required) required.push(f.key);
         if (f.requiredWhen) {
-          if (conditional.keys.length === 0) conditional.when = f.requiredWhen;
-          conditional.keys.push(f.key);
+          conditional.when ??= f.requiredWhen;
+          (f.requiredWhen.unless ? conditional.else : conditional.then).push(f.key);
         }
       }
     }
@@ -222,9 +226,10 @@ export function compileForm(form: DesignerForm): FormPackage {
     required: ordered(required, form.requiredOrder),
     properties,
   };
-  if (conditional.keys.length > 0) {
+  if (conditional.when) {
     jsonSchema.if = conditionSchema(conditional.when);
-    jsonSchema.then = { required: conditional.keys };
+    if (conditional.then.length > 0) jsonSchema.then = { required: conditional.then };
+    if (conditional.else.length > 0) jsonSchema.else = { required: conditional.else };
   }
   return {
     form_id: form.formId,

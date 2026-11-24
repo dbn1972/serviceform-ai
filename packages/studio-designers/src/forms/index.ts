@@ -13,10 +13,23 @@ export {
   lintForm,
   hasErrors,
   documentKey,
+  sameCondition,
   MAX_UI_NODES,
   type DesignIssue,
   type IssueTarget,
 } from './lint';
+export { sectionLibrary, type LibrarySection } from './library';
+export {
+  citizenValue,
+  describeValidation,
+  MESSAGE_CODES,
+  reachableCodes,
+  sampleAnswers,
+  sampleValue,
+  validationCases,
+  type MessageCode,
+  type ValidationCase,
+} from './validation';
 export * from './ops';
 export {
   FIELD_PALETTE,
@@ -31,6 +44,8 @@ export {
   buildPattern,
   describePattern,
   examplePattern,
+  outsidePattern,
+  patternLength,
   PATTERN_PRESETS,
   type PatternPresetId,
 } from './pattern';

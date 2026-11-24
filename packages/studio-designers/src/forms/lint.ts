@@ -1,4 +1,5 @@
-import { isSupportedPattern } from './pattern';
+import { isSupportedPattern, patternLength } from './pattern';
+import { MESSAGE_CODES, reachableCodes, type MessageCode } from './validation';
 import {
   allFields,
   conditionValues,
@@ -14,7 +15,6 @@ import {
   type DesignerField,
   type DesignerForm,
   type FieldRef,
-  type RequiredWhen,
   type Scalar,
   type VisibilityRule,
 } from './model';
@@ -66,10 +66,11 @@ function checkCondition(
   out: DesignIssue[],
   refs: FieldRef[],
   self: { id: string; label: string; order: number; target: IssueTarget },
-  field: string,
-  values: Scalar[],
+  condition: Condition,
   what: 'Visibility' | 'Requirement',
 ) {
+  const field = condition.field;
+  const values = conditionValues(condition);
   const targetRef = refs.find((r) => r.path === field);
   if (!targetRef) {
     out.push({
@@ -89,7 +90,23 @@ function checkCondition(
     });
     return;
   }
-  if (values.length === 0) {
+  if (condition.answered === true) {
+    if (what === 'Requirement') {
+      out.push({
+        code: 'CONDITION_ANSWERED_REQUIREMENT',
+        severity: 'error',
+        message: `"Required" rules on "${self.label}" must compare with a value; "has any answer" works for Visibility only.`,
+        target: self.target,
+      });
+    } else if (isBoolean(targetRef.field.kind)) {
+      out.push({
+        code: 'RULE_ANSWERED_BOOLEAN',
+        severity: 'warning',
+        message: `"${targetRef.field.label}" counts as answered once it is ticked or unticked; compare with Yes or No instead.`,
+        target: self.target,
+      });
+    }
+  } else if (values.length === 0) {
     out.push({
       code: 'RULE_VALUE_MISSING',
       severity: 'error',
@@ -114,11 +131,13 @@ function checkCondition(
   }
 }
 
-function sameCondition(a: RequiredWhen, b: RequiredWhen): boolean {
+/** Same comparison on the same answer; `unless` picks the branch, not the condition. */
+export function sameCondition(a: Condition, b: Condition): boolean {
   const av = conditionValues(a);
   const bv = conditionValues(b);
   return (
     a.field === b.field &&
+    (a.answered === true) === (b.answered === true) &&
     (a.oneOf === undefined) === (b.oneOf === undefined) &&
     av.length === bv.length &&
     av.every((v, i) => v === bv[i])
@@ -150,7 +169,7 @@ function checkHiddenSources(out: DesignIssue[], refs: FieldRef[]) {
     label: string,
     targetRules: VisibilityRule[],
     condition: Condition,
-    blocks: boolean,
+    blocks: false | 'reappears' | 'unless',
   ) => {
     const source = byPath.get(condition.field);
     if (!source) return;
@@ -158,12 +177,16 @@ function checkHiddenSources(out: DesignIssue[], refs: FieldRef[]) {
     if (missing.length === 0) return;
     const sourceLabel = source.field.label.trim() || source.field.key;
     const fix = `Put "${label}" in the same conditional section as "${sourceLabel}", or base the rule on an answer that is always shown.`;
+    const why =
+      blocks === 'unless'
+        ? `"${label}" is required unless "${sourceLabel}" has a certain answer, but "${sourceLabel}" is itself only shown sometimes. When it is hidden its answer is not submitted, so the form engine requires "${label}" on submit although the applicant saw it as optional, and the application is blocked.`
+        : `"${label}" is hidden by an answer to "${sourceLabel}", which is itself only shown sometimes. When "${sourceLabel}" is hidden its answer is not submitted, so "${label}" reappears on submit and its required answer blocks the application.`;
     out.push(
       blocks
         ? {
             code: 'RULE_HIDDEN_SOURCE_BLOCKS',
             severity: 'error',
-            message: `"${label}" is hidden by an answer to "${sourceLabel}", which is itself only shown sometimes. When "${sourceLabel}" is hidden its answer is not submitted, so "${label}" reappears on submit and its required answer blocks the application. ${fix}`,
+            message: `${why} ${fix}`,
             target,
           }
         : {
@@ -188,7 +211,7 @@ function checkHiddenSources(out: DesignIssue[], refs: FieldRef[]) {
       name,
       [rule],
       rule,
-      rule.effect === 'HIDE' && requires,
+      rule.effect === 'HIDE' && requires && 'reappears',
     );
   }
   for (const r of refs) {
@@ -198,10 +221,11 @@ function checkHiddenSources(out: DesignIssue[], refs: FieldRef[]) {
     const rule = r.field.visibleWhen;
     if (rule && rule.field !== r.path) {
       const requires = r.field.required || r.field.requiredWhen !== undefined;
-      check(target, label, own, rule, rule.effect === 'HIDE' && requires);
+      check(target, label, own, rule, rule.effect === 'HIDE' && requires && 'reappears');
     }
-    if (r.field.requiredWhen && r.field.requiredWhen.field !== r.path) {
-      check(target, label, own, r.field.requiredWhen, false);
+    const when = r.field.requiredWhen;
+    if (when && when.field !== r.path) {
+      check(target, label, own, when, when.unless === true && 'unless');
     }
   }
 }
@@ -393,8 +417,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             order: order < 0 ? refs.length : order,
             target: sectionTarget,
           },
-          section.visibleWhen.field,
-          conditionValues(section.visibleWhen),
+          section.visibleWhen,
           'Visibility',
         );
       }
@@ -425,8 +448,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             out,
             refs,
             { id: f.id, label, order, target: fieldTarget },
-            f.visibleWhen.field,
-            conditionValues(f.visibleWhen),
+            f.visibleWhen,
             'Visibility',
           );
         }
@@ -449,14 +471,13 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             out,
             refs,
             { id: f.id, label, order, target: fieldTarget },
-            f.requiredWhen.field,
-            conditionValues(f.requiredWhen),
+            f.requiredWhen,
             'Requirement',
           );
           if (f.required) {
             warn(
               'REQUIRED_CONFLICT',
-              `"${label}" is always required, so its "required when" condition has no effect.`,
+              `"${label}" is always required, so its "required ${f.requiredWhen.unless ? 'unless' : 'when'}" condition has no effect.`,
               fieldTarget,
             );
           }
@@ -470,7 +491,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
   if (first && conditions.some((c) => !sameCondition(c, first))) {
     err(
       'CONDITIONAL_MULTIPLE',
-      'All "required when" rules must share one condition (the form runtime evaluates a single root condition).',
+      'All "required when" and "required unless" rules must share one condition (the form runtime evaluates a single root condition).',
     );
   }
   checkVisibilityLoops(out, refs);
@@ -519,6 +540,41 @@ function lintField(
   }
   if (f.minimum !== undefined && f.maximum !== undefined && f.minimum > f.maximum) {
     err('NUMBER_RANGE', `"${label}" minimum is above its maximum.`, target);
+  } else if (
+    f.kind === 'integer' &&
+    f.minimum !== undefined &&
+    f.maximum !== undefined &&
+    Math.ceil(f.minimum) > Math.floor(f.maximum)
+  ) {
+    err(
+      'NUMBER_RANGE_EMPTY',
+      `No whole number lies between ${f.minimum} and ${f.maximum}, so no answer to "${label}" can pass.`,
+      target,
+    );
+  }
+  const lengths =
+    (f.kind === 'text' || f.kind === 'textarea') && f.pattern ? patternLength(f.pattern) : null;
+  if (lengths) {
+    const lo = Math.max(lengths.min, f.minLength ?? 0);
+    const hi = Math.min(lengths.max, f.maxLength ?? Infinity);
+    if (lo > hi) {
+      err(
+        'PATTERN_LENGTH_CONFLICT',
+        `No answer to "${label}" can pass: its pattern needs ${lengths.min === lengths.max ? lengths.min : `${lengths.min}–${lengths.max}`} characters, outside its length limits.`,
+        target,
+      );
+    }
+  }
+  const reachable = reachableCodes(f);
+  for (const [code, text] of Object.entries(f.errorMessages ?? {})) {
+    if (text.trim() === '') continue;
+    if (!(MESSAGE_CODES as readonly string[]).includes(code)) continue;
+    if (reachable.has(code as MessageCode)) continue;
+    warn(
+      'ERROR_MESSAGE_UNUSED',
+      `"${label}" has a custom message for ${code.toLowerCase().replaceAll('_', ' ')}, which applicants can never see with its current rules.`,
+      target,
+    );
   }
   if (f.kind === 'declaration' && !f.required) {
     warn('DECLARATION_OPTIONAL', `Declaration "${label}" is usually required.`, target);

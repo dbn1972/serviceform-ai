@@ -4,7 +4,9 @@ import {
   declaration,
   fullName,
   gender,
+  lgdPostalAddress,
   mobile,
+  personName,
   postalAddress,
   purpose,
 } from '@serviceform/service-templates/fields';
@@ -117,6 +119,19 @@ export const FIELD_PALETTE: readonly FieldPaletteItem[] = [
   preset('sem_full_name', 'applicant_name', 'Full name', 'SF-SEM-PERSON-FULL-NAME', () =>
     fullName(),
   ),
+  preset('sem_father_name', 'father_name', "Father's name", 'SF-SEM-PERSON-FATHER-NAME', () =>
+    personName("Father's name", 'SF-SEM-PERSON-FATHER-NAME'),
+  ),
+  preset('sem_mother_name', 'mother_name', "Mother's name", 'SF-SEM-PERSON-MOTHER-NAME', () =>
+    personName("Mother's name", 'SF-SEM-PERSON-MOTHER-NAME'),
+  ),
+  preset(
+    'sem_guardian_name',
+    'guardian_name',
+    "Parent or guardian's name",
+    'SF-SEM-PERSON-GUARDIAN-NAME',
+    () => personName("Father's / mother's / guardian's name", 'SF-SEM-PERSON-GUARDIAN-NAME'),
+  ),
   preset('sem_dob', 'applicant_dob', 'Date of birth', 'SF-SEM-PERSON-DOB', () => dateOfBirth()),
   preset(
     'sem_gender',
@@ -161,6 +176,20 @@ export const FIELD_PALETTE: readonly FieldPaletteItem[] = [
   ),
 ];
 
+function objectSection(key: string, label: string, node: FormSchemaNode): SectionTemplate {
+  const required = new Set(node.required ?? []);
+  return {
+    label,
+    object: { key, title: node.title ?? label },
+    fields: Object.entries(node.properties ?? {}).map(([name, child]) => {
+      const { id: _id, ...template } = fieldFromSchema(name, child, {
+        required: required.has(name),
+      });
+      return template;
+    }),
+  };
+}
+
 /** Section presets that bind a nested JSON Schema object. */
 export const SECTION_PALETTE: readonly SectionPaletteItem[] = [
   {
@@ -173,19 +202,13 @@ export const SECTION_PALETTE: readonly SectionPaletteItem[] = [
     id: 'postal_address',
     label: 'Postal address',
     description: 'Six address parts stored as one object (SF-SEM-ADDR-*).',
-    create: () => {
-      const node = postalAddress('Postal address');
-      const required = new Set(node.required ?? []);
-      return {
-        label: 'Postal address',
-        object: { key: 'postal_address', title: node.title ?? 'Postal address' },
-        fields: Object.entries(node.properties ?? {}).map(([key, child]) => {
-          const { id: _id, ...template } = fieldFromSchema(key, child, {
-            required: required.has(key),
-          });
-          return template;
-        }),
-      };
-    },
+    create: () =>
+      objectSection('postal_address', 'Postal address', postalAddress('Postal address')),
+  },
+  {
+    id: 'lgd_postal_address',
+    label: 'Address with LGD codes',
+    description: 'State, district and municipality as LGD codes the tenant allows (SF-SEM-ADDR-*).',
+    create: () => objectSection('address', 'Address', lgdPostalAddress('Address (LGD codes)')),
   },
 ];

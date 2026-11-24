@@ -1,15 +1,19 @@
 import { newId, slugKey, trimChar, uniqueKey } from './import';
 import {
   allFields,
+  fieldPath,
   findField,
   findSection,
   isChoice,
   type ChoiceOption,
+  type Condition,
   type DesignerField,
   type DesignerForm,
   type DesignerSection,
   type DesignerStep,
   type FieldKind,
+  type RequiredWhen,
+  type VisibilityRule,
 } from './model';
 
 /**
@@ -22,6 +26,7 @@ export type FieldTemplate = Omit<DesignerField, 'id'>;
 export interface SectionTemplate {
   label?: string;
   object?: DesignerSection['object'];
+  visibleWhen?: VisibilityRule;
   fields: FieldTemplate[];
 }
 
@@ -117,39 +122,116 @@ export function moveStep(form: DesignerForm, stepId: string, delta: number): Des
   return { ...form, steps: move(form.steps, i, i + delta) };
 }
 
+function remapCondition<C extends Condition>(rule: C | undefined, paths: Map<string, string>) {
+  if (!rule) return undefined;
+  const to = paths.get(rule.field);
+  return to === undefined ? rule : { ...rule, field: to };
+}
+
+/**
+ * Adds a section to a step (at `index`, else last). Keys are made unique in their scope, and
+ * rules inside the template that read its own answers follow any key that had to change.
+ */
 export function addSection(
   form: DesignerForm,
   stepId: string,
   template: SectionTemplate = { label: 'New section', fields: [] },
+  index?: number,
 ): { form: DesignerForm; id: string; fieldIds: string[] } {
   const id = newId('section');
   const fieldIds: string[] = [];
   const taken = new Set(topLevelKeys(form));
-  let objectKey = template.object?.key;
-  if (objectKey) {
-    objectKey = uniqueKey(objectKey, taken);
-  }
-  const fields = template.fields.map((t) => {
+  const oldObject = template.object?.key;
+  const objectKey = oldObject ? uniqueKey(oldObject, taken) : undefined;
+  const paths = new Map<string, string>();
+  const fields: DesignerField[] = template.fields.map((t) => {
     const fid = newId('field');
     fieldIds.push(fid);
-    return { ...t, id: fid };
-  });
-  if (!objectKey) {
-    for (const f of fields) {
-      f.key = uniqueKey(f.key, taken);
-      taken.add(f.key);
+    if (oldObject && objectKey) {
+      paths.set(`${oldObject}/${t.key}`, `${objectKey}/${t.key}`);
+      return { ...t, id: fid };
     }
+    const key = uniqueKey(t.key, taken);
+    taken.add(key);
+    paths.set(t.key, key);
+    return { ...t, id: fid, key };
+  });
+  for (const f of fields) {
+    const visibleWhen = remapCondition(f.visibleWhen, paths);
+    const requiredWhen = remapCondition(f.requiredWhen, paths);
+    if (visibleWhen) f.visibleWhen = visibleWhen;
+    if (requiredWhen) f.requiredWhen = requiredWhen;
   }
   const section: DesignerSection = { id, fields };
   if (template.label !== undefined) section.label = template.label;
   if (template.object && objectKey) section.object = { ...template.object, key: objectKey };
+  const visibleWhen = remapCondition(template.visibleWhen, paths);
+  if (visibleWhen) section.visibleWhen = visibleWhen;
   return {
-    form: mapSteps(form, (s) =>
-      s.id === stepId ? { ...s, sections: [...s.sections, section] } : s,
-    ),
+    form: mapSteps(form, (s) => {
+      if (s.id !== stepId) return s;
+      const sections = [...s.sections];
+      sections.splice(index ?? sections.length, 0, section);
+      return { ...s, sections };
+    }),
     id,
     fieldIds,
   };
+}
+
+/**
+ * A section as a reusable template. Visibility rules that read its own answers always travel;
+ * rules on outside answers only with `keepOuterRules` (same form). "Required when / unless" rules
+ * on its own answers are dropped: they would open a second root condition CMP-009 cannot evaluate.
+ */
+export function sectionTemplate(
+  form: DesignerForm,
+  sectionId: string,
+  opts: { keepOuterRules?: boolean } = {},
+): { template: SectionTemplate; dropped: number } | null {
+  const found = findSection(form, sectionId);
+  if (!found) return null;
+  const section = found.section;
+  const inner = new Set(section.fields.map((f) => fieldPath(section, f)));
+  const keep = opts.keepOuterRules === true;
+  let dropped = 0;
+  const fields = section.fields.map((f) => {
+    const { id: _id, ...t } = f;
+    const template: FieldTemplate = { ...t };
+    if (t.visibleWhen && !inner.has(t.visibleWhen.field) && !keep) {
+      delete template.visibleWhen;
+      dropped += 1;
+    }
+    if (t.requiredWhen && (inner.has(t.requiredWhen.field) || !keep)) {
+      delete template.requiredWhen;
+      dropped += 1;
+    }
+    return template;
+  });
+  const template: SectionTemplate = { fields };
+  if (section.label !== undefined) template.label = section.label;
+  if (section.object) template.object = { ...section.object };
+  if (section.visibleWhen) {
+    if (keep && !inner.has(section.visibleWhen.field)) template.visibleWhen = section.visibleWhen;
+    else dropped += 1;
+  }
+  return { template, dropped };
+}
+
+/** Copies a section (fields, rules, grouped data) right after itself, with unique keys. */
+export function duplicateSection(
+  form: DesignerForm,
+  sectionId: string,
+): { form: DesignerForm; id: string; dropped: number } {
+  const found = findSection(form, sectionId);
+  const copy = sectionTemplate(form, sectionId, { keepOuterRules: true });
+  if (!found || !copy) return { form, id: '', dropped: 0 };
+  const template = copy.template;
+  if (template.label !== undefined) template.label = `${template.label} (copy)`;
+  if (template.object)
+    template.object = { ...template.object, title: `${template.object.title} (copy)` };
+  const res = addSection(form, found.step.id, template, found.sectionIndex + 1);
+  return { form: res.form, id: res.id, dropped: copy.dropped };
 }
 
 export function updateSection(
@@ -471,6 +553,57 @@ export function optionsFromText(text: string): ChoiceOption[] {
     out.push({ value: unique, label: label || unique });
   }
   return out;
+}
+
+export type RuleTarget = { kind: 'field' | 'section'; id: string };
+
+/** Sets (or with `null` removes) the one visibility rule a field or section can carry. */
+export function setVisibilityRule(
+  form: DesignerForm,
+  target: RuleTarget,
+  rule: VisibilityRule | null,
+): DesignerForm {
+  return target.kind === 'section'
+    ? updateSection(form, target.id, { visibleWhen: rule })
+    : updateField(form, target.id, { visibleWhen: rule });
+}
+
+/** Makes a field required when (or unless) a condition holds; `null` makes it optional. */
+export function setRequirementRule(
+  form: DesignerForm,
+  fieldId: string,
+  when: RequiredWhen | null,
+): DesignerForm {
+  return updateField(
+    form,
+    fieldId,
+    when ? { required: false, requiredWhen: when } : { required: false, requiredWhen: null },
+  );
+}
+
+/** Removes a rule by its Logic view id (`visible:<target id>` or `required:<field id>`). */
+export function removeLogicRule(form: DesignerForm, ruleId: string): DesignerForm {
+  const at = ruleId.indexOf(':');
+  const kind = ruleId.slice(0, at);
+  const id = ruleId.slice(at + 1);
+  if (kind === 'required') return setRequirementRule(form, id, null);
+  if (kind !== 'visible') return form;
+  const target: RuleTarget = findSection(form, id)
+    ? { kind: 'section', id }
+    : { kind: 'field', id };
+  return setVisibilityRule(form, target, null);
+}
+
+/**
+ * The root condition every "required when / unless" rule shares (CMP-009 evaluates only one), so
+ * a new requirement rule can reuse it instead of being refused.
+ */
+export function sharedRequirement(form: DesignerForm, exceptFieldId?: string): Condition | null {
+  const ref = allFields(form).find((r) => r.field.requiredWhen && r.field.id !== exceptFieldId);
+  const when = ref?.field.requiredWhen;
+  if (!when) return null;
+  const { unless: _unless, ...condition } = when;
+  return condition;
 }
 
 /** Fields an author can use as a rule condition for `selfId` (everything except itself). */
