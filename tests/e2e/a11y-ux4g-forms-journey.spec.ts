@@ -49,10 +49,18 @@ const saveAndContinue = (page: Page) => page.getByRole('button', { name: /Save &
 
 type Findings = Record<string, string[]>;
 
+/**
+ * Network idle, fonts loaded and every finite CSS transition/animation finished: UX4G buttons
+ * transition colour for 150 ms when their variant changes, and axe must not sample mid-way.
+ */
 async function settle(page: Page): Promise<void> {
   await page.waitForLoadState('networkidle');
   await page.evaluate(async () => {
     await document.fonts.ready;
+    const finite = document
+      .getAnimations()
+      .filter((a) => a.effect?.getComputedTiming().endTime !== Infinity);
+    await Promise.all(finite.map((a) => a.finished.catch(() => undefined)));
   });
 }
 
