@@ -1,7 +1,7 @@
 # P8-6 Golden-2 — config-only second service (DRAFT/DUMMY ceiling)
 
 **Stamp:** SAMPLE_LAB · DigiLocker **SIMULATED** (REAL **out of scope**) · **CERTIFIED=false · G6=false · self_certified=false · TSB_seal(G6)=false**  
-**Tip:** `df9bd4c3cc064d5ce1bbd95fe940104ec8dcc22a` (`df9bd4c3`) — suites executed on `4f7ff354` (no product runtime delta in this tip)
+**Tip:** `07a60a8a19dc1937406cf2ab41ba7dc5dad7edf8` (`07a60a8a`) — suites executed on `4f7ff354` (prettier rematch; no product runtime delta)
 **Executed:** 2026-11-25 00:22 Asia/Calcutta (IST)  
 **Re-run:** `scripts/dev/p8-golden2-evidence.sh` (requires `platform-lab.sh up`)
 
