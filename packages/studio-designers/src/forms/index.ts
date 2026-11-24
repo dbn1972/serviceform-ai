@@ -30,9 +30,25 @@ export {
   matchesPattern,
   buildPattern,
   describePattern,
+  examplePattern,
   PATTERN_PRESETS,
   type PatternPresetId,
 } from './pattern';
+export {
+  conditionText,
+  logicDrivers,
+  logicRules,
+  logicScenarios,
+  valueLabel,
+  MAX_SCENARIOS,
+  type DriverValue,
+  type LogicDriver,
+  type LogicRule,
+  type LogicScenario,
+  type LogicScenarioSet,
+  type LogicTarget,
+  type ScenarioAnswer,
+} from './logic';
 export {
   buildFormDocument,
   formPackageOf,

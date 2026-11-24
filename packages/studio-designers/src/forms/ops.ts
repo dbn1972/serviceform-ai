@@ -1,9 +1,10 @@
-import { newId, slugKey, uniqueKey } from './import';
+import { newId, slugKey, trimChar, uniqueKey } from './import';
 import {
   allFields,
   findField,
   findSection,
   isChoice,
+  type ChoiceOption,
   type DesignerField,
   type DesignerForm,
   type DesignerSection,
@@ -380,6 +381,96 @@ export function moveField(
   const newPath = destAfter.section.object ? `${destAfter.section.object.key}/${key}` : key;
   next = renameReferences(next, oldPath, newPath);
   return next;
+}
+
+/**
+ * Moves a section before `beforeSectionId` (or to the end of `stepId`), across steps if needed.
+ * Grouped-data keys are form-wide, so no key or rule reference changes.
+ */
+export function moveSectionTo(
+  form: DesignerForm,
+  sectionId: string,
+  stepId: string,
+  beforeSectionId?: string,
+): DesignerForm {
+  const found = findSection(form, sectionId);
+  if (!found || beforeSectionId === sectionId) return form;
+  if (!form.steps.some((s) => s.id === stepId)) return form;
+  const removed = mapSteps(form, (s) => ({
+    ...s,
+    sections: s.sections.filter((x) => x.id !== sectionId),
+  }));
+  return mapSteps(removed, (s) => {
+    if (s.id !== stepId) return s;
+    const sections = [...s.sections];
+    const at = beforeSectionId ? sections.findIndex((x) => x.id === beforeSectionId) : -1;
+    sections.splice(at < 0 ? sections.length : at, 0, found.section);
+    return { ...s, sections };
+  });
+}
+
+/**
+ * The section that receives a field dropped on a step: its last section without grouped data,
+ * created when the step has none, so a dropped field never silently joins grouped data.
+ */
+export function stepDropSection(
+  form: DesignerForm,
+  stepId: string,
+): { form: DesignerForm; sectionId: string } | null {
+  const step = form.steps.find((s) => s.id === stepId);
+  if (!step) return null;
+  const plain = [...step.sections].reverse().find((s) => !s.object);
+  if (plain) return { form, sectionId: plain.id };
+  const created = addSection(form, stepId, { label: 'Details', fields: [] });
+  return { form: created.form, sectionId: created.id };
+}
+
+/** Moves a field to the end of the step's drop section (see `stepDropSection`). */
+export function moveFieldToStep(form: DesignerForm, fieldId: string, stepId: string): DesignerForm {
+  const ref = findField(form, fieldId);
+  if (!ref) return form;
+  if (ref.step.id === stepId && !ref.section.object) return form;
+  const target = stepDropSection(form, stepId);
+  if (!target) return form;
+  const dest = findSection(target.form, target.sectionId);
+  return moveField(target.form, fieldId, target.sectionId, dest?.section.fields.length ?? 0);
+}
+
+/** Sections a field can be moved to, labelled "Step › Section" in applicant order. */
+export function sectionTargets(form: DesignerForm): { id: string; label: string }[] {
+  return form.steps.flatMap((step, i) =>
+    step.sections.map((s, j) => ({
+      id: s.id,
+      label: `${i + 1}. ${step.label || 'Untitled step'} › ${s.label ?? s.object?.title ?? `Section ${j + 1}`}`,
+    })),
+  );
+}
+
+const MAX_PASTED_OPTIONS = 200;
+
+function storedValueOf(label: string): string {
+  return trimChar(label.toUpperCase().replace(/[^A-Z0-9]+/g, '_'), '_').slice(0, 64);
+}
+
+/**
+ * Options from pasted text, one per line: `Label`, or `STORED_VALUE | Label` to keep a value.
+ * Generated stored values are upper-case and unique; blank lines are skipped.
+ */
+export function optionsFromText(text: string): ChoiceOption[] {
+  const out: ChoiceOption[] = [];
+  const taken = new Set<string>();
+  for (const raw of text.split('\n').slice(0, MAX_PASTED_OPTIONS)) {
+    const line = raw.trim();
+    if (line.length === 0) continue;
+    const bar = line.indexOf('|');
+    const label = (bar >= 0 ? line.slice(bar + 1) : line).trim();
+    let value = bar >= 0 ? line.slice(0, bar).trim() : storedValueOf(label);
+    if (value.length === 0) value = `OPTION_${out.length + 1}`;
+    const unique = uniqueKey(value, taken);
+    taken.add(unique);
+    out.push({ value: unique, label: label || unique });
+  }
+  return out;
 }
 
 /** Fields an author can use as a rule condition for `selfId` (everything except itself). */

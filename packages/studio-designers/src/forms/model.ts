@@ -37,9 +37,8 @@ export interface ChoiceOption {
   label: string;
 }
 
-/** UI-schema rule: SHOW or HIDE a control/section while another field holds a value. */
-export interface VisibilityRule {
-  effect: 'SHOW' | 'HIDE';
+/** "Another answer holds a value": the shared shape of visibility and requirement conditions. */
+export interface Condition {
   /** Root-relative field path: `notify_by_email` or `residence_address/state_code`. */
   field: string;
   /** Exactly one of `equals` (JSON Schema `const`) or `oneOf` (`enum`). */
@@ -47,10 +46,18 @@ export interface VisibilityRule {
   oneOf?: string[];
 }
 
+/** UI-schema rule: SHOW or HIDE a control/section while another field holds a value. */
+export interface VisibilityRule extends Condition {
+  effect: 'SHOW' | 'HIDE';
+}
+
 /** Root `if/then` requirement. CMP-009 evaluates one root condition, so all must share it. */
-export interface RequiredWhen {
-  field: string;
-  equals: Scalar;
+export type RequiredWhen = Condition;
+
+/** Values a condition compares with, in declared order. */
+export function conditionValues(condition: Condition): Scalar[] {
+  if (condition.oneOf !== undefined) return condition.oneOf;
+  return condition.equals !== undefined ? [condition.equals] : [];
 }
 
 export interface DesignerField {

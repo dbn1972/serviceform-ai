@@ -1,6 +1,7 @@
 import { isSupportedPattern } from './pattern';
 import {
   allFields,
+  conditionValues,
   FIELD_KEY_RE,
   FORM_KEY_RE,
   isBoolean,
@@ -9,6 +10,7 @@ import {
   isSemanticId,
   SEMVER_RE,
   STEP_KEY_RE,
+  type Condition,
   type DesignerField,
   type DesignerForm,
   type FieldRef,
@@ -112,13 +114,175 @@ function checkCondition(
   }
 }
 
-function ruleValues(rule: VisibilityRule): Scalar[] {
-  if (rule.oneOf !== undefined) return rule.oneOf;
-  return rule.equals !== undefined ? [rule.equals] : [];
+function sameCondition(a: RequiredWhen, b: RequiredWhen): boolean {
+  const av = conditionValues(a);
+  const bv = conditionValues(b);
+  return (
+    a.field === b.field &&
+    (a.oneOf === undefined) === (b.oneOf === undefined) &&
+    av.length === bv.length &&
+    av.every((v, i) => v === bv[i])
+  );
 }
 
-function sameCondition(a: RequiredWhen, b: RequiredWhen): boolean {
-  return a.field === b.field && a.equals === b.equals;
+function sameRule(a: VisibilityRule, b: VisibilityRule): boolean {
+  return a.effect === b.effect && sameCondition(a, b);
+}
+
+/** Rules that can hide a field: its own and its section's. */
+function hidingRules(ref: FieldRef): VisibilityRule[] {
+  return [ref.field.visibleWhen, ref.section.visibleWhen].filter(
+    (r): r is VisibilityRule => r !== undefined,
+  );
+}
+
+/**
+ * The citizen form evaluates rules on every answer given, but submits only the answers that are
+ * shown, and CMP-009 evaluates the same rules again on that submission. A rule that reads an answer
+ * which can itself be hidden therefore needs its target hidden at least as often as that answer;
+ * otherwise the submitted form behaves differently. A HIDE rule can then make a required field
+ * reappear on submit and block it, so that case is an error; the others are advice.
+ */
+function checkHiddenSources(out: DesignIssue[], refs: FieldRef[]) {
+  const byPath = new Map(refs.map((r) => [r.path, r]));
+  const check = (
+    target: IssueTarget,
+    label: string,
+    targetRules: VisibilityRule[],
+    condition: Condition,
+    blocks: boolean,
+  ) => {
+    const source = byPath.get(condition.field);
+    if (!source) return;
+    const missing = hidingRules(source).filter((r) => !targetRules.some((t) => sameRule(r, t)));
+    if (missing.length === 0) return;
+    const sourceLabel = source.field.label.trim() || source.field.key;
+    const fix = `Put "${label}" in the same conditional section as "${sourceLabel}", or base the rule on an answer that is always shown.`;
+    out.push(
+      blocks
+        ? {
+            code: 'RULE_HIDDEN_SOURCE_BLOCKS',
+            severity: 'error',
+            message: `"${label}" is hidden by an answer to "${sourceLabel}", which is itself only shown sometimes. When "${sourceLabel}" is hidden its answer is not submitted, so "${label}" reappears on submit and its required answer blocks the application. ${fix}`,
+            target,
+          }
+        : {
+            code: 'RULE_HIDDEN_SOURCE',
+            severity: 'warning',
+            message: `"${label}" depends on "${sourceLabel}", which is only shown sometimes. When "${sourceLabel}" is hidden its answer is not submitted, so the form engine may treat "${label}" differently on submit. ${fix}`,
+            target,
+          },
+    );
+  };
+  const sections = new Map<string, FieldRef[]>();
+  for (const r of refs) sections.set(r.section.id, [...(sections.get(r.section.id) ?? []), r]);
+  for (const [, members] of sections) {
+    const section = members[0]?.section;
+    const rule = section?.visibleWhen;
+    if (!section || !rule) continue;
+    if (members.some((m) => m.path === rule.field)) continue;
+    const name = section.label ?? section.object?.title ?? 'section';
+    const requires = members.some((m) => m.field.required || m.field.requiredWhen !== undefined);
+    check(
+      { kind: 'section', id: section.id },
+      name,
+      [rule],
+      rule,
+      rule.effect === 'HIDE' && requires,
+    );
+  }
+  for (const r of refs) {
+    const label = r.field.label.trim() || r.field.key;
+    const target: IssueTarget = { kind: 'field', id: r.field.id };
+    const own = hidingRules(r);
+    const rule = r.field.visibleWhen;
+    if (rule && rule.field !== r.path) {
+      const requires = r.field.required || r.field.requiredWhen !== undefined;
+      check(target, label, own, rule, rule.effect === 'HIDE' && requires);
+    }
+    if (r.field.requiredWhen && r.field.requiredWhen.field !== r.path) {
+      check(target, label, own, r.field.requiredWhen, false);
+    }
+  }
+}
+
+interface VisibilityEdge {
+  to: string;
+  effect: VisibilityRule['effect'];
+}
+
+/**
+ * A field is shown only while its own rule and its section's rule hold, so it waits on the fields
+ * those rules read. A loop of SHOW waits can never open: every field in it stays hidden.
+ */
+function checkVisibilityLoops(out: DesignIssue[], refs: FieldRef[]) {
+  const byPath = new Map(refs.map((r) => [r.path, r]));
+  const edges = new Map<string, VisibilityEdge[]>();
+  for (const r of refs) {
+    const own: VisibilityEdge[] = [];
+    const rule = r.field.visibleWhen;
+    if (rule && rule.field !== r.path && byPath.has(rule.field)) {
+      own.push({ to: rule.field, effect: rule.effect });
+    }
+    const sectionRule = r.section.visibleWhen;
+    if (sectionRule && byPath.has(sectionRule.field)) {
+      own.push({ to: sectionRule.field, effect: sectionRule.effect });
+    }
+    edges.set(r.path, own);
+  }
+  const state = new Map<string, 'open' | 'done'>();
+  const stack: { path: string; effect: VisibilityEdge['effect'] | null }[] = [];
+  const reported = new Set<string>();
+  const visit = (path: string) => {
+    state.set(path, 'open');
+    for (const edge of edges.get(path) ?? []) {
+      if (state.get(edge.to) === 'open') {
+        const start = stack.findIndex((s) => s.path === edge.to);
+        const loop = [...stack.slice(start + 1).map((s) => s.effect), edge.effect];
+        const members = [...stack.slice(start).map((s) => s.path), path].filter(
+          (p, i, all) => all.indexOf(p) === i,
+        );
+        const key = [...members].sort().join('|');
+        if (reported.has(key)) continue;
+        reported.add(key);
+        const ordered = refs.filter((r) => members.includes(r.path));
+        const first = ordered[0];
+        if (!first) continue;
+        const names = ordered.map((r) => `"${r.field.label.trim() || r.field.key}"`);
+        const target: IssueTarget = { kind: 'field', id: first.field.id };
+        if (loop.every((e) => e === 'SHOW')) {
+          out.push({
+            code: 'RULE_UNREACHABLE',
+            severity: 'error',
+            message:
+              members.length === 1
+                ? `${names[0]} can never be shown: its section is shown only once ${names[0]} itself is answered.`
+                : `${names.join(' and ')} each wait for the other to be answered, so the applicant can never see them.`,
+            target,
+          });
+        } else {
+          out.push({
+            code: 'RULE_CYCLE',
+            severity: 'warning',
+            message: `${names.join(' and ')} hide or show each other; check in Logic that the applicant can still reach every answer.`,
+            target,
+          });
+        }
+        continue;
+      }
+      if (state.has(edge.to)) continue;
+      stack.push({ path: edge.to, effect: edge.effect });
+      visit(edge.to);
+      stack.pop();
+    }
+    state.set(path, 'done');
+  };
+  for (const r of refs) {
+    if (state.has(r.path)) continue;
+    stack.push({ path: r.path, effect: null });
+    visit(r.path);
+    stack.pop();
+  }
 }
 
 /**
@@ -203,6 +367,20 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
           );
         }
         topKeys.set(section.object.key, section.id);
+        const requiredFields = section.fields.filter((f) => f.required);
+        if (requiredFields.length > 0 && section.visibleWhen) {
+          err(
+            'OBJECT_SECTION_HIDDEN',
+            `Section "${name}" stores its answers together and can be hidden. The form engine still requires grouped data while it is hidden, so applicants who never see it could not submit. Switch off "Store these answers together", or remove the section's rule.`,
+            sectionTarget,
+          );
+        } else if (requiredFields.length > 0 && requiredFields.every((f) => f.visibleWhen)) {
+          warn(
+            'OBJECT_FIELDS_HIDDEN',
+            `Every required answer in "${name}" can be hidden. If they are all hidden at once, the form engine still requires the grouped data and blocks the application; check this in Logic, or switch off "Store these answers together".`,
+            sectionTarget,
+          );
+        }
       }
       if (section.visibleWhen) {
         const order = refs.findIndex((r) => r.section.id === section.id);
@@ -216,7 +394,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             target: sectionTarget,
           },
           section.visibleWhen.field,
-          ruleValues(section.visibleWhen),
+          conditionValues(section.visibleWhen),
           'Visibility',
         );
       }
@@ -248,7 +426,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             refs,
             { id: f.id, label, order, target: fieldTarget },
             f.visibleWhen.field,
-            ruleValues(f.visibleWhen),
+            conditionValues(f.visibleWhen),
             'Visibility',
           );
         }
@@ -272,7 +450,7 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
             refs,
             { id: f.id, label, order, target: fieldTarget },
             f.requiredWhen.field,
-            [f.requiredWhen.equals],
+            conditionValues(f.requiredWhen),
             'Requirement',
           );
           if (f.required) {
@@ -295,6 +473,8 @@ export function lintForm(form: DesignerForm): DesignIssue[] {
       'All "required when" rules must share one condition (the form runtime evaluates a single root condition).',
     );
   }
+  checkVisibilityLoops(out, refs);
+  checkHiddenSources(out, refs);
   return out;
 }
 
