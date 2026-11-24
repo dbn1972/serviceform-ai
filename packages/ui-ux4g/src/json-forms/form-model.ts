@@ -452,7 +452,10 @@ export function formProgress(
 }
 
 /** Indexes of answer steps that hold one of the given error pointers. */
-export function stepsWithErrors(steps: readonly WizardStep[], pointers: readonly string[]): number[] {
+export function stepsWithErrors(
+  steps: readonly WizardStep[],
+  pointers: readonly string[],
+): number[] {
   return steps.flatMap((s, i) =>
     controlScopes(s.node).some((scope) => pointers.includes(scopeToPointer(scope))) ? [i] : [],
   );

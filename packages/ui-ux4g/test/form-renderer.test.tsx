@@ -355,9 +355,9 @@ describe('Ux4gFormStepper', () => {
       '<progress class="sf-form-progress-bar" max="8" value="3" aria-label="Required answers given">',
     );
     expect(html).not.toMatch(/style=/);
-    expect(renderToStaticMarkup(<Ux4gFormStepper steps={steps} current={0} reachable={0} />)).not.toContain(
-      '<progress',
-    );
+    expect(
+      renderToStaticMarkup(<Ux4gFormStepper steps={steps} current={0} reachable={0} />),
+    ).not.toContain('<progress');
   });
 
   it('a form with no required answer reads as complete, not as an empty bar', () => {
@@ -378,7 +378,9 @@ describe('Ux4gFormStepper', () => {
       <Ux4gFormStepper steps={steps} current={3} reachable={3} attention={[0, 3]} />,
     );
     expect(html).toContain('sf-stepper-item sf-stepper-done sf-stepper-attention');
-    expect(html).toContain('<span class="ux4g-body-s-default sf-stepper-flag">Needs attention</span>');
+    expect(html).toContain(
+      '<span class="ux4g-body-s-default sf-stepper-flag">Needs attention</span>',
+    );
     expect(html).toContain(', step 1 of 4</span>');
     expect(html).not.toContain(', step 1 of 4, Completed');
     expect(html).toContain(', step 4 of 4, Current step');
@@ -414,7 +416,12 @@ describe('answer progress and error steps', () => {
     });
     const hidden = { ...withEmail, email_updates: false };
     expect(formProgress(schema, steps, hidden, visibleScopes(ui, hidden)).total).toBe(2);
-    const noForm = formProgress(schema, steps.filter((s) => s.review), {}, new Set());
+    const noForm = formProgress(
+      schema,
+      steps.filter((s) => s.review),
+      {},
+      new Set(),
+    );
     expect(noForm).toEqual({ answered: 0, total: 0, percent: 100 });
   });
 

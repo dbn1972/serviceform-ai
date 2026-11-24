@@ -474,7 +474,11 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       return { ok: true };
     }
     if (res?.status === 400 && body.field) {
-      setSave({ state: 'error', message: 'Not saved: check the highlighted answer.', retry: false });
+      setSave({
+        state: 'error',
+        message: 'Not saved: check the highlighted answer.',
+        retry: false,
+      });
       return {
         ok: false,
         message: body.message ?? 'Check the highlighted answer',

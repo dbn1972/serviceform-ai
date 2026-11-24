@@ -215,7 +215,9 @@ test.describe('submission confirmation', () => {
     const id = page.url().split('/').pop() ?? '';
     const confirmation = page.getByTestId('submission-confirmation');
     await expect(confirmation).toBeVisible();
-    await expect(confirmation.getByRole('heading', { name: 'Application submitted' })).toBeFocused();
+    await expect(
+      confirmation.getByRole('heading', { name: 'Application submitted' }),
+    ).toBeFocused();
     await expect(page.getByTestId('confirmation-reference')).toHaveText(
       id.slice(0, 8).toUpperCase(),
     );
