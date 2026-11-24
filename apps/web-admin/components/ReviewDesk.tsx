@@ -68,6 +68,25 @@ export function ReviewDesk() {
       {request.status ? (
         <Alert variant="info" title="Status">
           {request.status}
+          {request.maker_principal_id ? (
+            <> · maker principal loaded (identity compared session-side; not shown)</>
+          ) : null}
+        </Alert>
+      ) : null}
+      {ux.blockReason === 'SAME_PRINCIPAL' ? (
+        <Alert variant="error" title="Maker ≠ checker">
+          {ux.blockMessage}
+        </Alert>
+      ) : null}
+      {ux.blockReason && ux.blockReason !== 'SAME_PRINCIPAL' && ux.blockMessage ? (
+        <Alert variant="warning" title="Checker action unavailable">
+          {ux.blockMessage}
+        </Alert>
+      ) : null}
+      {!ux.blockReason && ux.canApprove ? (
+        <Alert variant="info" title="Checker separation OK">
+          Session principal differs from the maker. Approve / Reject call CMP-051 (platform still
+          enforces). CERTIFIED=false.
         </Alert>
       ) : null}
       <Button onClick={() => void load()}>Load request</Button>

@@ -24,4 +24,27 @@ describe('SAMPLE_LAB SLA catalogue (officer)', () => {
     expect(SAMPLE_LAB_SLA_CATALOGUE.allowed_pause_reason_codes).toEqual(['DEFICIENCY_OPEN']);
     expect(slaStatusTag('PAUSED')).toBe('ux4g-tag-tonal-warning');
   });
+
+  it('exposes breach helpers for officer breach banner (P8-5)', async () => {
+    const { hasSlaBreach, slaBreachSummary } = await import('../lib/portal/sla-view');
+    const clock = {
+      clock_id: 'c1',
+      application_id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      stage_code: 'OVERALL',
+      clock_status: 'BREACHED',
+      deadline_at: '2026-12-01T00:00:00.000Z',
+      pause_reason_code: null,
+      breach_at: '2026-11-30T00:00:00.000Z',
+      escalation_level: 1,
+      start_anchor: 'PUBLISHED_POLICY_ANCHOR',
+      completion_anchor: 'DECISION_RECORDED',
+      portal_clock_start_event: 'APPLICATION_SUBMITTED',
+      warning_emitted_at: null,
+      started_at: null,
+      paused_at: null,
+      completed_at: null,
+    };
+    expect(hasSlaBreach([clock])).toBe(true);
+    expect(slaBreachSummary([clock])).toContain('OVERALL');
+  });
 });

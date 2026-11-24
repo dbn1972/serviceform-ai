@@ -52,4 +52,21 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('Publish (requires checker approval)');
     expect(html).toContain('silent repoint is forbidden');
   });
+
+  it('bindings page states lab eng seal ≠ G6 seal (P8-5)', () => {
+    const html = renderToStaticMarkup(<BindingsPage />);
+    expect(html).toContain('tsb_immutability_sealed');
+    expect(html).toContain('SF-60');
+  });
+});
+
+describe('web-admin reviews markup (P8-5 maker≠checker)', () => {
+  it('checker reviews page stresses maker ≠ checker', async () => {
+    const { default: ReviewsPage } = await import('../app/reviews/page');
+    const html = renderToStaticMarkup(<ReviewsPage />);
+    expect(html).toContain('Maker ≠ checker');
+    expect(html).toContain('CMP-051');
+    expect(html).toContain('Constitution #9');
+    expect(html).toContain('CERTIFIED=false');
+  });
 });

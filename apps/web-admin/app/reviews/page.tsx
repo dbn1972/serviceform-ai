@@ -9,7 +9,9 @@ export default function ReviewsPage() {
       <h1>Checker reviews</h1>
       <Card title="Maker-checker queue">
         <p className="ux4g-body-m-default">
-          The checker cannot be the maker. CMP-051 remains the engine.
+          Maker ≠ checker is mandatory (CMP-051 · Constitution #9). The same principal cannot
+          approve their own publication request — buttons stay disabled and the platform refuses
+          same-principal approval. CERTIFIED=false · G6=false.
         </p>
         <ReviewDesk />
       </Card>

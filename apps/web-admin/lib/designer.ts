@@ -172,13 +172,30 @@ export function defaultFieldValues(kind: MetadataKind): Record<string, string> {
   }
 }
 
+export type MakerCheckerBlockReason =
+  'SAME_PRINCIPAL' | 'MISSING_CHECKER_ROLE' | 'WRONG_STATUS' | 'MISSING_MAKER_ROLE' | null;
+
+export type MakerCheckerUx = {
+  canSubmit: boolean;
+  canApprove: boolean;
+  canReject: boolean;
+  isMaker: boolean;
+  blockReason: MakerCheckerBlockReason;
+  /** Officer/admin-facing copy when approve/reject is disabled. */
+  blockMessage: string | null;
+};
+
+/**
+ * CMP-051 maker≠checker UX. Same principal can never approve their own publication request.
+ * Platform still enforces; this only drives button disable + honest messaging.
+ */
 export function makerCheckerUx(
   actorId: string,
   makerId: string,
   status: string,
   roles: readonly string[],
-) {
-  const isMaker = actorId === makerId;
+): MakerCheckerUx {
+  const isMaker = Boolean(actorId) && Boolean(makerId) && actorId === makerId;
   const hasChecker = roles.some(
     (r) => r === 'STUDIO_CHECKER' || r === 'TENANT_ADMIN' || r === 'PLATFORM_OPS',
   );
@@ -186,14 +203,59 @@ export function makerCheckerUx(
     (r) => r === 'STUDIO_DESIGNER' || r === 'TENANT_ADMIN' || r === 'PLATFORM_OPS',
   );
   if (status === 'DRAFT') {
-    return { canSubmit: isMaker && hasMaker, canApprove: false, canReject: false };
-  }
-  if (status === 'SUBMITTED') {
+    const canSubmit = isMaker && hasMaker;
     return {
-      canSubmit: false,
-      canApprove: !isMaker && hasChecker,
-      canReject: !isMaker && hasChecker,
+      canSubmit,
+      canApprove: false,
+      canReject: false,
+      isMaker,
+      blockReason: canSubmit ? null : hasMaker ? 'WRONG_STATUS' : 'MISSING_MAKER_ROLE',
+      blockMessage: canSubmit
+        ? null
+        : hasMaker
+          ? 'Submit the DRAFT request before a checker can review it.'
+          : 'Maker role required to submit a publication request.',
     };
   }
-  return { canSubmit: false, canApprove: false, canReject: false };
+  if (status === 'SUBMITTED') {
+    if (isMaker) {
+      return {
+        canSubmit: false,
+        canApprove: false,
+        canReject: false,
+        isMaker: true,
+        blockReason: 'SAME_PRINCIPAL',
+        blockMessage:
+          'Maker cannot approve or reject their own request (CMP-051 · Constitution #9). Sign in as a different checker principal.',
+      };
+    }
+    if (!hasChecker) {
+      return {
+        canSubmit: false,
+        canApprove: false,
+        canReject: false,
+        isMaker: false,
+        blockReason: 'MISSING_CHECKER_ROLE',
+        blockMessage: 'Checker role (STUDIO_CHECKER / TENANT_ADMIN / PLATFORM_OPS) required.',
+      };
+    }
+    return {
+      canSubmit: false,
+      canApprove: true,
+      canReject: true,
+      isMaker: false,
+      blockReason: null,
+      blockMessage: null,
+    };
+  }
+  return {
+    canSubmit: false,
+    canApprove: false,
+    canReject: false,
+    isMaker,
+    blockReason: 'WRONG_STATUS',
+    blockMessage: status
+      ? `Request status ${status} is not actionable for approve/reject.`
+      : 'Load a publication request to review.',
+  };
 }

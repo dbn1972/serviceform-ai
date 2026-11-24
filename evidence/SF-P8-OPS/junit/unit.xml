@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="33" failures="0" errors="0" time="0.085645821">
+    <testsuite name="apps/web-admin/test/maker-checker.test.ts" timestamp="2026-11-24T17:49:49.620Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.005787054">
+        <testcase classname="apps/web-admin/test/maker-checker.test.ts" name="maker-checker UX (P8-5 / CMP-051) &gt; blocks same principal from approve/reject on SUBMITTED" time="0.001464241">
+        </testcase>
+        <testcase classname="apps/web-admin/test/maker-checker.test.ts" name="maker-checker UX (P8-5 / CMP-051) &gt; allows a different checker principal" time="0.000328497">
+        </testcase>
+        <testcase classname="apps/web-admin/test/maker-checker.test.ts" name="maker-checker UX (P8-5 / CMP-051) &gt; refuses checker action without checker role" time="0.000141375">
+        </testcase>
+        <testcase classname="apps/web-admin/test/maker-checker.test.ts" name="maker-checker UX (P8-5 / CMP-051) &gt; allows maker to submit DRAFT when they hold maker role" time="0.000206528">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-admin/test/markup.test.tsx" timestamp="2026-11-24T17:49:49.622Z" hostname="cursor" tests="8" failures="0" errors="0" skipped="0" time="0.041806634">
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; keeps the shell heading and landmarks" time="0.011088007">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; exposes binding and review destinations" time="0.001615474">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; users page is UX4G tenant workforce desk" time="0.003695479">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page includes reusable jurisdiction scope desk for any offering" time="0.003514161">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page exposes SAMPLE_LAB eng seal prove control (SF-60)" time="0.002841978">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page states maker-checker and TSB pin immutability (WS6 ops depth)" time="0.002550231">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin markup (UX4G) &gt; bindings page states lab eng seal ≠ G6 seal (P8-5)" time="0.002728165">
+        </testcase>
+        <testcase classname="apps/web-admin/test/markup.test.tsx" name="web-admin reviews markup (P8-5 maker≠checker) &gt; checker reviews page stresses maker ≠ checker" time="0.01239866">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/deficiency.test.ts" timestamp="2026-11-24T17:49:49.624Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.005579899">
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="SAMPLE_LAB deficiency catalogue (officer) &gt; exposes published reason and IND-SOC-002 evidence item codes" time="0.002397255">
+        </testcase>
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="workbench status for deficiency path &gt; surfaces DEFICIENCY_RAISED and CITIZEN_RESPONSE without inventing states" time="0.000312165">
+        </testcase>
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="workbench status for deficiency path &gt; keeps decide-blocking OPEN vs RESPONSE_RECEIVED distinguishable for the loop UI" time="0.000224201">
+        </testcase>
+        <testcase classname="apps/web-officer/test/deficiency.test.ts" name="deficiency loop helpers imported by ApplicationReview (P8-5) &gt; exports decide-block via deficiency-view" time="0.001277845">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/ops-depth.test.ts" timestamp="2026-11-24T17:49:49.624Z" hostname="cursor" tests="13" failures="0" errors="0" skipped="0" time="0.028422566">
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — TSB version pin clarity (WS6) &gt; orders required pins with TenantServiceBinding first" time="0.0021911">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — TSB version pin clarity (WS6) &gt; omits empty optional pins and returns [] when undefined" time="0.000878413">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — TSB version pin clarity (WS6) &gt; passes full pin graph through toWorkbenchApplication with silent_repoint_forbidden" time="0.0004955">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — case audit trail labels (WS6) &gt; summarises state transitions and labels deficiency / decision commands" time="0.000388988">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — tenant isolation fail-closed (WS6) &gt; refuses x-tenant-id / x-roles / Forwarded tenant= with SF-TEN-002" time="0.018204017">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — tenant isolation fail-closed (WS6) &gt; allows ordinary requests without tenant-identifying headers" time="0.000329479">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — tenant isolation fail-closed (WS6) &gt; cross-site POST without JSON content-type is refused (SF-SYS-003 / SF-AUTH-002)" time="0.000633914">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — tenant isolation fail-closed (WS6) &gt; refuses forged tenant headers on task queue paths (P8-5)" time="0.000583111">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — deficiency loop decide-block (P8-5) &gt; blocks decide while OPEN and maps loop phases + timeline" time="0.000674627">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — SLA breach visibility (P8-5) &gt; detects breach by status or breach_at and summarises" time="0.000670714">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — SLA breach visibility (P8-5) &gt; surfaces warning_emitted_at before breach" time="0.00026187">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — pin integrity cue (P8-5) &gt; reports complete required pins and never claims G6 seal" time="0.000280354">
+        </testcase>
+        <testcase classname="apps/web-officer/test/ops-depth.test.ts" name="ops depth — audit trail depth + sanitize (P8-5) &gt; counts deficiency loop events and strips forbidden identity keys" time="0.000886807">
+        </testcase>
+    </testsuite>
+    <testsuite name="apps/web-officer/test/sla.test.ts" timestamp="2026-11-24T17:49:49.625Z" hostname="cursor" tests="4" failures="0" errors="0" skipped="0" time="0.004049668">
+        <testcase classname="apps/web-officer/test/sla.test.ts" name="SAMPLE_LAB SLA catalogue (officer) &gt; exposes 10 working-day duration and DEFICIENCY_OPEN pause" time="0.001947365">
+        </testcase>
+        <testcase classname="apps/web-officer/test/sla.test.ts" name="SAMPLE_LAB SLA catalogue (officer) &gt; maps clock status to UX4G tonal tags" time="0.000305175">
+        </testcase>
+        <testcase classname="apps/web-officer/test/sla.test.ts" name="SAMPLE_LAB SLA catalogue (officer) &gt; ties SLA pause to deficiency loop (DEFICIENCY_OPEN only)" time="0.000138919">
+        </testcase>
+        <testcase classname="apps/web-officer/test/sla.test.ts" name="SAMPLE_LAB SLA catalogue (officer) &gt; exposes breach helpers for officer breach banner (P8-5)" time="0.000370522">
+        </testcase>
+    </testsuite>
+</testsuites>
