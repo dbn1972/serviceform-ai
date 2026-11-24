@@ -60,19 +60,19 @@ export function FormsMetricsPanel() {
         <Card title="Citizen funnel" subtitle="Start → complete / abandon (no PII)">
           <dl className="sf-stack">
             <div>
-              <dt className="ux4g-label-s">Starts</dt>
+              <dt className="ux4g-label-s-default">Starts</dt>
               <dd className="ux4g-heading-xl-strong">{snapshot.funnel.starts}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Completes</dt>
+              <dt className="ux4g-label-s-default">Completes</dt>
               <dd className="ux4g-heading-xl-strong">{snapshot.funnel.completes}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Abandons</dt>
+              <dt className="ux4g-label-s-default">Abandons</dt>
               <dd className="ux4g-heading-xl-strong">{snapshot.funnel.abandons}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Completion rate</dt>
+              <dt className="ux4g-label-s-default">Completion rate</dt>
               <dd className="ux4g-body-m-default">{pct(snapshot.funnel.completion_rate)}</dd>
             </div>
           </dl>
@@ -81,12 +81,12 @@ export function FormsMetricsPanel() {
         <Card title="Latency p95" subtitle="Form load / submit">
           <dl className="sf-stack">
             <div>
-              <dt className="ux4g-label-s">Load p95</dt>
+              <dt className="ux4g-label-s-default">Load p95</dt>
               <dd className="ux4g-heading-xl-strong">{ms(snapshot.form_load.p95_ms)}</dd>
               <dd className="ux4g-body-s-default">n={snapshot.form_load.sample_size}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Submit p95</dt>
+              <dt className="ux4g-label-s-default">Submit p95</dt>
               <dd className="ux4g-heading-xl-strong">{ms(snapshot.form_submit.p95_ms)}</dd>
               <dd className="ux4g-body-s-default">n={snapshot.form_submit.sample_size}</dd>
             </div>
@@ -96,15 +96,15 @@ export function FormsMetricsPanel() {
         <Card title="Studio authoring" subtitle="Designer session duration">
           <dl className="sf-stack">
             <div>
-              <dt className="ux4g-label-s">Sessions</dt>
+              <dt className="ux4g-label-s-default">Sessions</dt>
               <dd className="ux4g-heading-xl-strong">{snapshot.authoring.sessions}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Duration p95</dt>
+              <dt className="ux4g-label-s-default">Duration p95</dt>
               <dd className="ux4g-heading-xl-strong">{ms(snapshot.authoring.duration_p95_ms)}</dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Completed / left</dt>
+              <dt className="ux4g-label-s-default">Completed / left</dt>
               <dd className="ux4g-body-m-default">
                 {snapshot.authoring.completed} / {snapshot.authoring.abandoned}
               </dd>
@@ -115,7 +115,7 @@ export function FormsMetricsPanel() {
         <Card title="A11y + tenancy" subtitle="Score capture · zero cross-tenant KPI">
           <dl className="sf-stack">
             <div>
-              <dt className="ux4g-label-s">Latest a11y score</dt>
+              <dt className="ux4g-label-s-default">Latest a11y score</dt>
               <dd className="ux4g-heading-xl-strong">
                 {snapshot.a11y.latest_score === null ? '—' : snapshot.a11y.latest_score}
               </dd>
@@ -124,7 +124,7 @@ export function FormsMetricsPanel() {
               </dd>
             </div>
             <div>
-              <dt className="ux4g-label-s">Cross-tenant incidents</dt>
+              <dt className="ux4g-label-s-default">Cross-tenant incidents</dt>
               <dd className="ux4g-heading-xl-strong">{snapshot.cross_tenant.incident_count}</dd>
               <dd className="ux4g-body-s-default">target 0 · {snapshot.cross_tenant.kpi_id}</dd>
             </div>
