@@ -1,22 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import {
-  ConsoleProductMetricSink,
   FORMS_PRODUCT_METRIC_CODES,
   MemoryProductMetricSink,
+  StdoutProductMetricSink,
   ZERO_CROSS_TENANT_KPI,
   createProductMetricEvent,
   createProductMetricsRecorder,
   isForbiddenProductMetricKey,
+  newMetricSessionId,
   p95,
   percentile,
   sanitizeProductMetricDimensions,
-} from '../src/product-metrics.js';
+} from '../src/product-metrics';
 import {
   recordA11yScore,
   recordCrossTenantIncidentCount,
   startAuthoringSession,
   startCitizenFormSession,
-} from '../src/forms-journey-metrics.js';
+} from '../src/forms-journey-metrics';
 
 describe('forms product metrics (world-class measure)', () => {
   it('defines a closed metric vocabulary including journey and a11y codes', () => {
@@ -127,8 +128,15 @@ describe('forms product metrics (world-class measure)', () => {
 
   it('computes p95 for form latency samples', () => {
     // Nearest-rank: ceil(0.95 * 20) = 19th ascending sample (index 18) → 28; 50 is the top 5%.
-    const samples = [10, 12, 11, 15, 14, 13, 20, 18, 17, 16, 50, 19, 21, 22, 23, 24, 25, 26, 27, 28];
-    expect(percentile([...samples].sort((a, b) => a - b), 95)).toBe(28);
+    const samples = [
+      10, 12, 11, 15, 14, 13, 20, 18, 17, 16, 50, 19, 21, 22, 23, 24, 25, 26, 27, 28,
+    ];
+    expect(
+      percentile(
+        [...samples].sort((a, b) => a - b),
+        95,
+      ),
+    ).toBe(28);
     expect(p95(samples)).toBe(28);
     expect(p95([1, 2, 3, 4, 100])).toBe(100);
     expect(p95([])).toBeNull();
@@ -160,8 +168,8 @@ describe('forms product metrics (world-class measure)', () => {
     ).toThrow(/PRODUCT_METRIC_VALUE_NOT_FINITE/);
   });
 
-  it('console sink emits structured lines without throwing', () => {
-    const sink = new ConsoleProductMetricSink();
+  it('stdout sink emits structured lines without throwing', () => {
+    const sink = new StdoutProductMetricSink();
     expect(() =>
       sink.emit(
         createProductMetricEvent({
@@ -172,5 +180,13 @@ describe('forms product metrics (world-class measure)', () => {
         }),
       ),
     ).not.toThrow();
+  });
+
+  it('session ids use cryptographically strong randomness', () => {
+    const a = newMetricSessionId();
+    const b = newMetricSessionId();
+    expect(a).toMatch(/^[0-9a-f]{16}$/i);
+    expect(b).toMatch(/^[0-9a-f]{16}$/i);
+    expect(a).not.toBe(b);
   });
 });

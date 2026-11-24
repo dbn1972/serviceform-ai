@@ -7,13 +7,13 @@ import {
   createProductMetricsRecorder,
   p95,
   sanitizeProductMetricDimensions,
-} from '../src/product-metrics.js';
+} from '../src/product-metrics';
 import {
   recordA11yScore,
   recordCrossTenantIncidentCount,
   startAuthoringSession,
   startCitizenFormSession,
-} from '../src/forms-journey-metrics.js';
+} from '../src/forms-journey-metrics';
 
 /**
  * Executable smoke that materialises lab-synthetic baselines for Workstream 7.

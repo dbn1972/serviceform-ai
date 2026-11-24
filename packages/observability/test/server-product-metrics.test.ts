@@ -4,7 +4,7 @@ import {
   recordBffLatency,
   resetServerProductMetricsForTests,
   serverTimingHeader,
-} from '../src/server-product-metrics.js';
+} from '../src/server-product-metrics';
 
 describe('server product metrics (BFF form load/submit)', () => {
   beforeEach(() => {
@@ -28,8 +28,6 @@ describe('server product metrics (BFF form load/submit)', () => {
   });
 
   it('builds Server-Timing without sensitive values', () => {
-    expect(serverTimingHeader('form_load', 12.2)).toBe(
-      'form_load;dur=12;desc="sf product metric"',
-    );
+    expect(serverTimingHeader('form_load', 12.2)).toBe('form_load;dur=12;desc="sf product metric"');
   });
 });

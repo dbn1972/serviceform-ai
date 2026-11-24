@@ -111,15 +111,20 @@ export class MemoryProductMetricSink implements ProductMetricSink {
 }
 
 /**
- * Structured console sink for lab. Emits a single JSON line; never includes bodies.
- * Uses console.info so browser and Node share the same path.
+ * Structured stdout sink for Node lab/CI. Never uses console.* (SAST).
+ * Browser environments no-op; pair with MemoryProductMetricSink there.
  */
-export class ConsoleProductMetricSink implements ProductMetricSink {
+export class StdoutProductMetricSink implements ProductMetricSink {
   emit(event: ProductMetricEvent): void {
-    // eslint-disable-next-line no-console -- intentional product-metric lab sink
-    console.info(JSON.stringify({ sf_product_metric: true, ...event }));
+    const line = `${JSON.stringify({ sf_product_metric: true, ...event })}\n`;
+    const proc = (globalThis as { process?: { stdout?: { write: (s: string) => unknown } } })
+      .process;
+    proc?.stdout?.write(line);
   }
 }
+
+/** @deprecated Prefer StdoutProductMetricSink — kept as alias for call-site clarity. */
+export class ConsoleProductMetricSink extends StdoutProductMetricSink {}
 
 export class MultiplexProductMetricSink implements ProductMetricSink {
   constructor(private readonly sinks: readonly ProductMetricSink[]) {}
@@ -235,8 +240,15 @@ export function nowMs(): number {
 
 /** Opaque session id for correlation of metric events — not a person id. */
 export function newMetricSessionId(): string {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID().replace(/-/g, '').slice(0, 16);
+  const c = globalThis.crypto as
+    { randomUUID?: () => string; getRandomValues?: (a: Uint8Array) => Uint8Array } | undefined;
+  if (c?.randomUUID) {
+    return c.randomUUID().replace(/-/g, '').slice(0, 16);
   }
-  return `s${Date.now().toString(36)}${Math.floor(Math.random() * 1e6).toString(36)}`;
+  if (c?.getRandomValues) {
+    const bytes = new Uint8Array(8);
+    c.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  throw new Error('SECURE_RANDOM_UNAVAILABLE');
 }

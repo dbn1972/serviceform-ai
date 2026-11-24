@@ -1,21 +1,19 @@
 /**
  * Browser-side product metrics bootstrap for Studio / citizen Next apps.
- * Lazy singleton with memory + console sinks. No network beacons (avoid PII leakage paths).
+ * Lazy singleton with in-memory sink only (no console / no network beacons).
  */
 
 import {
-  ConsoleProductMetricSink,
   MemoryProductMetricSink,
-  MultiplexProductMetricSink,
   createProductMetricsRecorder,
   type ProductMetricsRecorder,
-} from './product-metrics.js';
+} from './product-metrics';
 import {
   startAuthoringSession,
   startCitizenFormSession,
   type AuthoringSession,
   type CitizenFormSession,
-} from './forms-journey-metrics.js';
+} from './forms-journey-metrics';
 
 export type { AuthoringSession, CitizenFormSession };
 
@@ -44,8 +42,7 @@ let memorySink: MemoryProductMetricSink | null = null;
 export function getBrowserProductMetrics(): ProductMetricsRecorder {
   if (browserRecorder) return browserRecorder;
   memorySink = new MemoryProductMetricSink();
-  const sink = new MultiplexProductMetricSink([memorySink, new ConsoleProductMetricSink()]);
-  browserRecorder = createProductMetricsRecorder(sink);
+  browserRecorder = createProductMetricsRecorder(memorySink);
   return browserRecorder;
 }
 

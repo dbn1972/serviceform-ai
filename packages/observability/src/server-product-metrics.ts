@@ -1,16 +1,16 @@
 /**
- * Node BFF helpers: Server-Timing + redacted product-metric log lines for form load/submit.
+ * Node BFF helpers: Server-Timing + redacted product-metric lines for form load/submit.
  */
 
 import {
-  ConsoleProductMetricSink,
   MemoryProductMetricSink,
   MultiplexProductMetricSink,
+  StdoutProductMetricSink,
   createProductMetricsRecorder,
   type FormsProductMetricCode,
   type ProductMetricEvent,
   type ProductMetricsRecorder,
-} from './product-metrics.js';
+} from './product-metrics';
 
 const processMemory = new MemoryProductMetricSink();
 let processRecorder: ProductMetricsRecorder | null = null;
@@ -18,7 +18,7 @@ let processRecorder: ProductMetricsRecorder | null = null;
 export function getServerProductMetrics(): ProductMetricsRecorder {
   if (!processRecorder) {
     processRecorder = createProductMetricsRecorder(
-      new MultiplexProductMetricSink([processMemory, new ConsoleProductMetricSink()]),
+      new MultiplexProductMetricSink([processMemory, new StdoutProductMetricSink()]),
     );
   }
   return processRecorder;

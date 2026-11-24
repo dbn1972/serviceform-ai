@@ -10,16 +10,10 @@ import {
   type ProductMetricEvent,
   type ProductMetricsRecorder,
   type ProductMetricSink,
-} from './product-metrics.js';
+} from './product-metrics';
 
 export type AuthoringMilestone =
-  | 'OPEN'
-  | 'FIRST_EDIT'
-  | 'SAVE'
-  | 'VALIDATE'
-  | 'FREEZE'
-  | 'PROPOSE'
-  | 'TAB_PUBLISH';
+  'OPEN' | 'FIRST_EDIT' | 'SAVE' | 'VALIDATE' | 'FREEZE' | 'PROPOSE' | 'TAB_PUBLISH';
 
 export interface AuthoringSession {
   readonly session_id: string;

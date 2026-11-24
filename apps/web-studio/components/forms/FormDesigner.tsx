@@ -96,10 +96,13 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
   const readOnly = doc?.status === 'PUBLISHED' && compiled?.contentHash === doc.savedHash;
   const sourceRef = source.kind === 'template' ? source.source : undefined;
 
+  const sourceKind =
+    source.kind === 'template' ? 'TEMPLATE' : source.kind === 'document' ? 'DOCUMENT' : 'BLANK';
+
   useEffect(() => {
     const session = beginStudioAuthoring({
       surface_kind: 'FORMS_DESIGNER',
-      source_kind: source.kind === 'template' ? 'TEMPLATE' : source.kind === 'document' ? 'DOCUMENT' : 'BLANK',
+      source_kind: sourceKind,
     });
     authoring.current = session;
     session.mark('OPEN');
@@ -107,9 +110,7 @@ export function FormDesigner({ source }: { source: DesignerSource }) {
       session.end('LEAVE');
       authoring.current = null;
     };
-    // One authoring session per designer mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional mount-only
-  }, []);
+  }, [sourceKind]);
 
   useEffect(() => {
     let live = true;

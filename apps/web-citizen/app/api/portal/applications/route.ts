@@ -95,7 +95,10 @@ export async function POST(request: Request) {
   const keys = stepKeys(request.headers.get('idempotency-key'));
   const citizen = await currentCitizen(request);
   if (!citizen) {
-    return finish(json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED }), 'UNAUTHORIZED');
+    return finish(
+      json(401, { error_code: 'SF-AUTH-001', message: SIGN_IN_REQUIRED }),
+      'UNAUTHORIZED',
+    );
   }
   const { catalogueId, data, draftId } = applyBody(await request.json().catch(() => null));
   const offered = offeredForm(catalogueId);
