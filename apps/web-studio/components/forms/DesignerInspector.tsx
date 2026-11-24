@@ -1,10 +1,26 @@
 'use client';
 
-import { Alert, Button, Icon, RadioGroup, Select, Switch, TextInput } from '@serviceform/ui-ux4g';
+import {
+  Alert,
+  Button,
+  Checkbox,
+  Icon,
+  issueMessage,
+  RadioGroup,
+  Select,
+  stepErrors,
+  Switch,
+  TextInput,
+  type FormSchemaView,
+} from '@serviceform/ui-ux4g';
 import {
   buildPattern,
   conditionCandidates,
   describePattern,
+  examplePattern,
+  fieldSchema,
+  optionsFromText,
+  sectionTargets,
   findField,
   findSection,
   FIELD_KINDS,
@@ -13,9 +29,9 @@ import {
   isNumeric,
   isSupportedPattern,
   KIND_LABEL,
-  matchesPattern,
   PATTERN_PRESETS,
   type ChoiceOption,
+  type Condition,
   type DesignerField,
   type DesignerForm,
   type DesignerSection,
@@ -54,6 +70,7 @@ export interface InspectorHandlers {
   ) => void;
   patchField: (id: string, patch: FieldPatch, key: string) => void;
   changeKind: (id: string, kind: FieldKind) => void;
+  moveToSection: (fieldId: string, sectionId: string) => void;
   select: (s: Selection) => void;
 }
 
@@ -158,6 +175,73 @@ function defaultValue(target: DesignerField | undefined): Scalar {
   return '';
 }
 
+type ConditionValue = Pick<Condition, 'equals' | 'oneOf'>;
+
+/** "Is" one value, or — for dropdowns and radio buttons — "is any of" several. */
+function ConditionValueEditor({
+  idPrefix,
+  target,
+  condition,
+  onChange,
+}: {
+  idPrefix: string;
+  target: DesignerField | undefined;
+  condition: Condition;
+  onChange: (value: ConditionValue) => void;
+}) {
+  const options = target && isChoice(target.kind) ? (target.options ?? []) : [];
+  const many = condition.oneOf !== undefined;
+  return (
+    <>
+      {options.length > 1 ? (
+        <Select
+          id={`${idPrefix}-compare`}
+          label="Comparison"
+          value={many ? 'any' : 'is'}
+          options={[
+            { value: 'is', label: 'is' },
+            { value: 'any', label: 'is any of' },
+          ]}
+          onChange={(e) =>
+            onChange(
+              e.target.value === 'any'
+                ? { oneOf: condition.equals !== undefined ? [String(condition.equals)] : [] }
+                : { equals: condition.oneOf?.[0] ?? options[0]?.value ?? '' },
+            )
+          }
+        />
+      ) : null}
+      {many ? (
+        <fieldset className="sf-designer-fieldset">
+          <legend className="ux4g-label-m-default">Any of</legend>
+          {options.map((o) => (
+            <Checkbox
+              key={o.value}
+              id={`${idPrefix}-any-${o.value}`}
+              label={o.label || o.value}
+              checked={condition.oneOf?.includes(o.value) === true}
+              onChange={(e) => {
+                const chosen = new Set(condition.oneOf ?? []);
+                if (e.target.checked) chosen.add(o.value);
+                else chosen.delete(o.value);
+                onChange({ oneOf: options.map((x) => x.value).filter((v) => chosen.has(v)) });
+              }}
+            />
+          ))}
+        </fieldset>
+      ) : (
+        <ValueInput
+          id={`${idPrefix}-value`}
+          label="Is"
+          target={target}
+          value={condition.equals}
+          onChange={(v) => onChange({ equals: v })}
+        />
+      )}
+    </>
+  );
+}
+
 function VisibilityEditor({
   idPrefix,
   form,
@@ -217,12 +301,11 @@ function VisibilityEditor({
               onChange({ effect: rule.effect, field: e.target.value, equals: defaultValue(next) });
             }}
           />
-          <ValueInput
-            id={`${idPrefix}-value`}
-            label="Is"
+          <ConditionValueEditor
+            idPrefix={idPrefix}
             target={target}
-            value={rule.oneOf ? rule.oneOf[0] : rule.equals}
-            onChange={(v) => onChange({ effect: rule.effect, field: rule.field, equals: v })}
+            condition={rule}
+            onChange={(v) => onChange({ effect: rule.effect, field: rule.field, ...v })}
           />
         </div>
       ) : null}
@@ -316,7 +399,52 @@ function OptionsEditor({
       >
         <Icon name="plus" size={16} /> Add option
       </Button>
+      <PasteOptions fieldId={field.id} onChange={onChange} />
     </fieldset>
+  );
+}
+
+function PasteOptions({
+  fieldId,
+  onChange,
+}: {
+  fieldId: string;
+  onChange: (options: ChoiceOption[]) => void;
+}) {
+  const [text, setText] = useState('');
+  const parsed = optionsFromText(text);
+  const id = `opt-paste-${fieldId}`;
+  return (
+    <details className="sf-designer-details">
+      <summary className="ux4g-label-m-strong">Paste a list of options</summary>
+      <div className="ux4g-input-container ux4g-input-m ux4g-input-default">
+        <label className="ux4g-label-m-default" htmlFor={id}>
+          Options, one per line
+        </label>
+        <textarea
+          id={id}
+          className="ux4g-textarea"
+          rows={5}
+          value={text}
+          aria-describedby={`${id}-hint`}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <p id={`${id}-hint`} className="ux4g-input-helper ux4g-input-helper-text">
+          Write the label applicants see. To keep a stored value, write VALUE | Label.
+        </p>
+      </div>
+      <Button
+        variant="outline-primary"
+        size="s"
+        disabled={parsed.length === 0}
+        onClick={() => {
+          onChange(parsed);
+          setText('');
+        }}
+      >
+        Replace options with {parsed.length} {parsed.length === 1 ? 'line' : 'lines'}
+      </Button>
+    </details>
   );
 }
 
@@ -338,7 +466,6 @@ function PatternEditor({
     : described && !custom
       ? described.preset
       : 'custom';
-  const [sample, setSample] = useState('');
   const min = described?.min ?? 1;
   const max = described?.max ?? 10;
   const supported = field.pattern ? isSupportedPattern(field.pattern) : true;
@@ -413,28 +540,77 @@ function PatternEditor({
         />
       ) : null}
       {field.pattern && supported ? (
-        <div className="sf-designer-row sf-designer-row-end">
-          <TextInput
-            id={`pattern-try-${field.id}`}
-            label="Try a value"
-            value={sample}
-            onChange={(e) => setSample(e.target.value)}
-          />
-          {sample ? (
-            <span
-              role="status"
-              className={
-                matchesPattern(field.pattern, sample)
-                  ? 'ux4g-tag-tonal-success'
-                  : 'ux4g-tag-tonal-error'
-              }
-            >
-              {matchesPattern(field.pattern, sample) ? 'Accepted' : 'Refused'}
-            </span>
-          ) : null}
-        </div>
+        <p className="ux4g-body-s-default sf-designer-muted">
+          Example accepted value:{' '}
+          <code className="sf-hash">
+            {examplePattern(field.pattern, field.minLength, field.maxLength) ?? ''}
+          </code>
+        </p>
       ) : null}
       {field.pattern ? <code className="sf-hash">{field.pattern}</code> : null}
+    </div>
+  );
+}
+
+/** The citizen UX4G number renderer's conversion: whole numbers become numbers, the rest stays text. */
+function benchValue(field: DesignerField, raw: string): unknown {
+  if (!isNumeric(field.kind)) return raw === '' ? undefined : raw;
+  const trimmed = raw.trim();
+  if (trimmed === '') return undefined;
+  return /^-?[0-9]{1,15}$/.test(trimmed) ? Number(trimmed) : trimmed;
+}
+
+/** One-field form for the citizen runtime mirror: exactly the check and copy applicants get. */
+function benchCheck(field: DesignerField, raw: string, required: boolean): string | null {
+  const node = fieldSchema(field) as FormSchemaView;
+  const scope = `#/properties/${field.key}`;
+  const schema: FormSchemaView = {
+    type: 'object',
+    properties: { [field.key]: node },
+    required: required ? [field.key] : [],
+  };
+  const value = benchValue(field, raw);
+  const errors = stepErrors(
+    schema,
+    { type: 'Control', scope },
+    value === undefined ? {} : { [field.key]: value },
+    new Set([scope]),
+  );
+  return errors[`/${field.key}`] ?? null;
+}
+
+function FieldBench({ field }: { field: DesignerField }) {
+  const [sample, setSample] = useState('');
+  const [touched, setTouched] = useState(false);
+  const required = field.required || field.requiredWhen !== undefined;
+  const message = touched ? benchCheck(field, sample, required) : null;
+  return (
+    <div className="sf-designer-row sf-designer-row-end">
+      <TextInput
+        id={`bench-${field.id}`}
+        label="Try a value"
+        type={field.kind === 'date' ? 'date' : 'text'}
+        inputMode={isNumeric(field.kind) ? 'numeric' : undefined}
+        hint={
+          field.requiredWhen && !field.required
+            ? 'Checked as if its "required when" condition holds.'
+            : 'Shows exactly what an applicant would see.'
+        }
+        value={sample}
+        onChange={(e) => {
+          setSample(e.target.value);
+          setTouched(true);
+        }}
+      />
+      {touched ? (
+        <span
+          role="status"
+          data-testid="field-bench-result"
+          className={message ? 'ux4g-tag-tonal-error' : 'ux4g-tag-tonal-success'}
+        >
+          {message ?? (sample === '' ? 'Accepted (left empty)' : 'Accepted')}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -442,12 +618,14 @@ function PatternEditor({
 function FieldInspector({
   form,
   field,
+  sectionId,
   nested,
   readOnly,
   h,
 }: {
   form: DesignerForm;
   field: DesignerField;
+  sectionId: string;
   nested: boolean;
   readOnly: boolean;
   h: InspectorHandlers;
@@ -531,16 +709,12 @@ function FieldInspector({
                 );
               }}
             />
-            <ValueInput
-              id="insp-reqwhen-value"
-              label="Is"
+            <ConditionValueEditor
+              idPrefix="insp-reqwhen"
               target={whenTarget}
-              value={field.requiredWhen.equals}
+              condition={field.requiredWhen}
               onChange={(v) =>
-                patch(
-                  { requiredWhen: { field: field.requiredWhen?.field ?? '', equals: v } },
-                  'reqwhen',
-                )
+                patch({ requiredWhen: { field: field.requiredWhen?.field ?? '', ...v } }, 'reqwhen')
               }
             />
           </div>
@@ -555,7 +729,7 @@ function FieldInspector({
         />
       ) : null}
 
-      {textual || isNumeric(field.kind) ? (
+      {textual || isNumeric(field.kind) || field.kind === 'date' ? (
         <fieldset className="sf-designer-fieldset" disabled={readOnly}>
           <legend className="ux4g-label-m-strong">Validation</legend>
           {textual ? (
@@ -603,11 +777,24 @@ function FieldInspector({
               />
             </div>
           ) : null}
+          <FieldBench key={`${field.id}:${field.kind}`} field={field} />
         </fieldset>
       ) : null}
 
       <fieldset className="sf-designer-fieldset" disabled={readOnly}>
         <legend className="ux4g-label-m-strong">Layout</legend>
+        <Select
+          id="insp-move-to"
+          label="Move to"
+          value=""
+          placeholder="Choose a step and section"
+          options={sectionTargets(form)
+            .filter((t) => t.id !== sectionId)
+            .map((t) => ({ value: t.id, label: t.label }))}
+          onChange={(e) => {
+            if (e.target.value) h.moveToSection(field.id, e.target.value);
+          }}
+        />
         <Switch
           id="insp-wide"
           label="Use the full row"
@@ -660,7 +847,11 @@ function FieldInspector({
                 id={`insp-err-${code}`}
                 label={CODE_LABEL[code] ?? code}
                 optional
-                hint={code}
+                hint={`Default: “${issueMessage(
+                  fieldSchema({ ...field, errorMessages: {} }) as FormSchemaView,
+                  code,
+                  `/${field.key}`,
+                )}”`}
                 value={field.errorMessages?.[code] ?? ''}
                 onChange={(e) => {
                   const next = Object.fromEntries([
@@ -998,6 +1189,7 @@ export function DesignerInspector({
           key={ref.field.id}
           form={form}
           field={ref.field}
+          sectionId={ref.section.id}
           nested={ref.section.object !== undefined}
           readOnly={readOnly}
           h={handlers}

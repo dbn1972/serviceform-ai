@@ -91,7 +91,10 @@ export function conditionText(form: DesignerForm, condition: Condition): string 
   const ref = findFieldByPath(form, condition.field);
   const name = ref ? ref.field.label.trim() || ref.path : condition.field || 'a missing field';
   const values = conditionValues(condition).map((v) => valueLabel(ref?.field, v));
-  const shown = values.length > 0 ? values.join(' or ') : '…';
+  const shown =
+    values.length > 1
+      ? `${values.slice(0, -1).join(', ')} or ${values[values.length - 1]}`
+      : (values[0] ?? '…');
   return `${quoted(name)} is ${condition.oneOf && values.length > 1 ? `any of ${shown}` : shown}`;
 }
 
