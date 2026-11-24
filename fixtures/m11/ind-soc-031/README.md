@@ -24,6 +24,9 @@ Income Certificate can be authored as a **second service** through Studio metada
 | File | Role |
 |---|---|
 | `POLICY_INPUT_REQUIRED.md` | Owner SF-33 inventory (DUMMY filled for lab; real statute still required) |
+| `SF33_PUBLISH_BLOCKER.md` | P8-6 explicit “SF-33 blocks PUBLISH” (no statute invention) |
+| `sf33-publish-gate.json` | Machine-readable publish gate (DRAFT / BLOCKED / honesty stamps) |
+| `PLATFORM_REUSE_GAP_LIST.md` | Config-only reuse + closed CCR gaps; no `services/**` backend |
 | `tsb-dry-run-fixture.json` | Sample TSB pin graph for dry-run (DRAFT / DUMMY) |
 | `maker-checker-dry-run.yaml` | Maker ≠ checker dry-run record (stops short of statutory PUBLISH) |
 | `tenant-overlay.sample-lab-dummy.yaml` | SAMPLE_LAB DUMMY overlay (not Odisha/Act citation) |

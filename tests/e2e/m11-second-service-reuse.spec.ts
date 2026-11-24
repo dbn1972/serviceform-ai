@@ -1,7 +1,8 @@
 /**
- * M11 second-service reuse (SAMPLE_LAB) — Income remains SAMPLE_LAB_STUB (no invented statute).
- * SAMPLE_LAB placement may lab-offer the DRAFT form with SAMPLE_LAB DUMMY params.
- * CERTIFIED=false · G6=false · self_certified=false · DigiLocker SIMULATED.
+ * M11 / P8-6 second-service reuse (SAMPLE_LAB) — Income remains SAMPLE_LAB_STUB.
+ * Proves config-only Studio metadata at DRAFT/DUMMY lab-offer ceiling.
+ * SF-33 remains the only statutory PUBLISH blocker (no invented statute).
+ * CERTIFIED=false · G6=false · self_certified=false · DigiLocker SIMULATED (REAL out of scope).
  */
 import { expect, test } from '@playwright/test';
 
@@ -49,6 +50,11 @@ test.describe('M11 second-service reuse — Income SAMPLE_LAB lab-offer', () => 
       page.getByText(/SAMPLE_LAB sample|SAMPLE_LAB DUMMY|SAMPLE_LAB stub|stub/i).first(),
     ).toBeVisible();
     await expect(page.getByRole('link', { name: /Fee designer \(DUMMY ₹9\.99\)/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /SLA designer \(DUMMY P15D\)/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Evidence designer \(DUMMY\)/i })).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /Credential designer \(SIM DigiLocker label\)/i }),
+    ).toBeVisible();
     await page.goto(`${STUDIO}/forms`);
     const incomeRow = page.getByRole('row', { name: /IND-SOC-031/ });
     await expect(incomeRow).toBeVisible();
@@ -65,5 +71,25 @@ test.describe('M11 second-service reuse — Income SAMPLE_LAB lab-offer', () => 
     await page.goto(`${STUDIO}/fees/designer?template=ind-soc-031-dummy`);
     await expect(page.getByText(/SAMPLE_LAB DUMMY · Income Certificate fee/i)).toBeVisible();
     await expect(page.getByText(/Not statutory|SAMPLE_LAB DUMMY/i).first()).toBeVisible();
+  });
+
+  test('Studio SLA / Evidence / Credential DUMMY starters open for Income', async ({ page }) => {
+    await page.goto(`${STUDIO}/sla/designer?template=ind-soc-031-sla`);
+    await expect(page.getByText(/Income Certificate SLA \(SAMPLE_LAB DUMMY\)/i)).toBeVisible();
+    await expect(page.getByText(/P15D|SAMPLE_LAB DUMMY|Not statute/i).first()).toBeVisible();
+
+    await page.goto(`${STUDIO}/evidence/designer?template=ind-soc-031-evidence`);
+    await expect(page.getByText(/Income Certificate evidence \(SAMPLE_LAB DUMMY\)/i)).toBeVisible();
+    await expect(
+      page.getByText(/SAMPLE_LAB_DUMMY_EVIDENCE_ANY|SAMPLE_LAB DUMMY/i).first(),
+    ).toBeVisible();
+
+    await page.goto(`${STUDIO}/credentials/designer?template=ind-soc-031-credential`);
+    await expect(
+      page.getByText(/Income Certificate credential \(SAMPLE_LAB DUMMY\)/i),
+    ).toBeVisible();
+    await expect(page.getByLabel('DigiLocker / wallet label')).toHaveValue(
+      /SAMPLE_LAB_DUMMY_IND_SOC_031/,
+    );
   });
 });

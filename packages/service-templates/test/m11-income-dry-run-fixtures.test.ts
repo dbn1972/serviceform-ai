@@ -26,6 +26,9 @@ describe('M11 Income dry-run fixtures (SF-61)', () => {
       'tsb-dry-run-fixture.json',
       'maker-checker-dry-run.yaml',
       'tenant-overlay.sample-lab-dummy.yaml',
+      'SF33_PUBLISH_BLOCKER.md',
+      'sf33-publish-gate.json',
+      'PLATFORM_REUSE_GAP_LIST.md',
     ]) {
       expect(existsSync(join(M11, name)), name).toBe(true);
     }
@@ -52,5 +55,42 @@ describe('M11 Income dry-run fixtures (SF-61)', () => {
     expect(policy).toMatch(/SF-33/);
     expect(policy).toMatch(/SAMPLE_LAB DUMMY/);
     expect(policy).not.toMatch(/CERTIFIED=true|G6=true/);
+  });
+
+  // REQ: P8-6 / D4 Golden-2 — SF-33 is the only PUBLISH blocker; no statute invented.
+  it('declares SF-33 as the only statutory PUBLISH blocker (P8-6)', () => {
+    const gate = JSON.parse(readFileSync(join(M11, 'sf33-publish-gate.json'), 'utf8')) as {
+      catalogue_id: string;
+      version_status: string;
+      maturity: string;
+      statutory_publish: string;
+      publish_blocker: string;
+      statute_invented: boolean;
+      income_marked_published: boolean;
+      certified: boolean;
+      g6: boolean;
+      self_certified: boolean;
+      digilocker_real_out_of_scope: boolean;
+    };
+    expect(gate.catalogue_id).toBe('IND-SOC-031');
+    expect(gate.version_status).toBe('DRAFT');
+    expect(gate.maturity).toBe('SAMPLE_LAB_STUB');
+    expect(gate.statutory_publish).toBe('BLOCKED');
+    expect(gate.publish_blocker).toBe('SF-33');
+    expect(gate.statute_invented).toBe(false);
+    expect(gate.income_marked_published).toBe(false);
+    expect(gate.certified).toBe(false);
+    expect(gate.g6).toBe(false);
+    expect(gate.self_certified).toBe(false);
+    expect(gate.digilocker_real_out_of_scope).toBe(true);
+
+    const blocker = readFileSync(join(M11, 'SF33_PUBLISH_BLOCKER.md'), 'utf8');
+    expect(blocker).toMatch(/SF-33 blocks PUBLISH/);
+    expect(blocker).toMatch(/BLOCKED — owner SF-33/);
+    expect(blocker).not.toMatch(/CERTIFIED=true|G6=true|PUBLISHED statutory/);
+
+    const gaps = readFileSync(join(M11, 'PLATFORM_REUSE_GAP_LIST.md'), 'utf8');
+    expect(gaps).toMatch(/No new `services\/\*\*` Income Certificate backend/);
+    expect(gaps).toMatch(/sole blocker to statutory \*\*PUBLISH\*\* is owner \*\*SF-33\*\*/);
   });
 });
