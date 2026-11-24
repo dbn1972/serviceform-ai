@@ -15,7 +15,7 @@ export const GALLERY_SCENE_META: readonly GallerySceneMeta[] = [
     title: 'Form steps: empty',
     surface: 'citizen_web',
     covers:
-      'Required/optional labels, hints, every renderer (text, date, radio, number, email, select, textarea) in the citizen Card frame',
+      'Required/optional labels, hints, every renderer (text, date, radio, number, email, select, textarea) in the citizen Card frame; stepper answer progress at 0%',
   },
   {
     id: 'form-filled',
@@ -27,7 +27,8 @@ export const GALLERY_SCENE_META: readonly GallerySceneMeta[] = [
     id: 'form-errors',
     title: 'Form steps: every field in error',
     surface: 'citizen_web',
-    covers: 'Error state, aria-invalid and aria-describedby on every renderer',
+    covers:
+      'Error state, aria-invalid and aria-describedby on every renderer; a later step flagged "Needs attention" in the stepper',
   },
   {
     id: 'form-readonly',

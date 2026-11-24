@@ -12,6 +12,7 @@ import {
   controlScopes,
   fieldError,
   fieldId,
+  formProgress,
   getAt,
   Icon,
   isRequired,
@@ -36,7 +37,16 @@ import {
   type WizardStep,
 } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type FormEvent,
+} from 'react';
+import { markJustSubmitted } from '../lib/just-submitted';
 import { EvidenceUploadField, fileKind, type EvidenceUploadValue } from './EvidenceUploadField';
 import { ErrorSummary, FormAlert, type FormAlertTone } from './FormFeedback';
 import { useCitizen } from './RequireCitizenSession';
@@ -72,7 +82,7 @@ type SaveState =
   | { state: 'idle' }
   | { state: 'saving' }
   | { state: 'saved'; at: string }
-  | { state: 'error'; message: string };
+  | { state: 'error'; message: string; retry: boolean };
 type SaveResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 type Notice = {
   tone: FormAlertTone;
@@ -81,6 +91,7 @@ type Notice = {
   action?: { href: string; label: string };
 };
 type Summary = { message: string; fields: boolean };
+type Motion = 'forward' | 'back' | null;
 
 const MOBILE = 'SF-SEM-PERSON-MOBILE';
 /** CMP-013 upload binds these published fields (SF-49); the schema itself stays immutable. */
@@ -88,6 +99,8 @@ const EVIDENCE = '/evidence_file_name';
 const EVIDENCE_MIME = '/evidence_mime';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SAVE_FAILED = 'Not saved just now. Your answers are still on this page.';
+/** Space kept between a focused field and the sticky action bar, in CSS px. */
+const FOCUS_GAP = 8;
 const newKey = () => crypto.randomUUID().replace(/-/g, '');
 
 function mobilePointers(schema: FormSchemaView, base = ''): string[] {
@@ -152,7 +165,9 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const [data, setData] = useState<FormData>({});
   const [interpretation, setInterpretation] = useState<Interpretation | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
+  const [motion, setMotion] = useState<Motion>(null);
   const [furthest, setFurthest] = useState(0);
+  const [checkedAll, setCheckedAll] = useState(false);
   const [returnToReview, setReturnToReview] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -459,7 +474,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       return { ok: true };
     }
     if (res?.status === 400 && body.field) {
-      setSave({ state: 'error', message: 'Not saved: check the highlighted answer.' });
+      setSave({ state: 'error', message: 'Not saved: check the highlighted answer.', retry: false });
       return {
         ok: false,
         message: body.message ?? 'Check the highlighted answer',
@@ -467,7 +482,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
       };
     }
     const message = body.message ?? SAVE_FAILED;
-    setSave({ state: 'error', message });
+    setSave({ state: 'error', message, retry: true });
     return { ok: false, message };
   }
 
@@ -498,15 +513,21 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     void queueSave(payloadOf(data)).then((result) => {
       if (result.ok || !result.fieldErrors) return;
       const target = stepOfPointer(steps, Object.keys(result.fieldErrors));
-      if (target >= 0) setStepIndex(target);
+      if (target >= 0) moveTo(target);
       showErrors(result.fieldErrors, result.message);
     });
+  }
+
+  /** Changes step; the step body slides in from the direction of travel. */
+  function moveTo(index: number) {
+    setMotion(index > stepIndex ? 'forward' : index < stepIndex ? 'back' : null);
+    setStepIndex(index);
   }
 
   function goTo(index: number) {
     setErrors({});
     setSummary(null);
-    setStepIndex(index);
+    moveTo(index);
     setFurthest((f) => Math.max(f, index));
     if (index === reviewIndex) setReturnToReview(false);
     journey.current?.markStep(index, steps.length);
@@ -594,7 +615,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     if (!result.ok) {
       if (result.fieldErrors) {
         const target = stepOfPointer(steps, Object.keys(result.fieldErrors));
-        if (target >= 0 && target !== stepIndex) setStepIndex(target);
+        if (target >= 0 && target !== stepIndex) moveTo(target);
         showErrors(result.fieldErrors, result.message);
       }
       return;
@@ -613,7 +634,8 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     for (let i = 0; i < steps.length; i += 1) {
       const found = errorsFor(i);
       if (Object.keys(found).length > 0) {
-        if (i !== stepIndex) setStepIndex(i);
+        setCheckedAll(true);
+        if (i !== stepIndex) moveTo(i);
         showErrors(
           found,
           i === stepIndex
@@ -648,6 +670,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     if (res?.ok && body.application) {
       journey.current?.markSubmit(submitMs, 'OK');
       journey.current?.markComplete();
+      markJustSubmitted(body.application.id);
       router.push(`/certificates/${body.application.id}`);
       return;
     }
@@ -664,8 +687,21 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     if (body.field) fieldErrors[`/${body.field.replaceAll('.', '/')}`] = body.message ?? '';
     if (res?.status === 422 || res?.status === 400) submissionKey.current = newKey();
     const target = stepOfPointer(steps, Object.keys(fieldErrors));
-    if (target >= 0 && target !== stepIndex) setStepIndex(target);
+    if (target >= 0) setCheckedAll(true);
+    if (target >= 0 && target !== stepIndex) moveTo(target);
     showErrors(fieldErrors, body.message ?? 'We could not submit your application. Try again.');
+  }
+
+  /** Browsers only scroll a partly visible field on focus; lift it fully clear of the action bar. */
+  function keepFocusClear(event: FocusEvent<HTMLFormElement>) {
+    const bar = event.currentTarget.querySelector('.sf-wizard-actions');
+    const target = event.target;
+    if (!bar || !(target instanceof HTMLElement) || bar.contains(target)) return;
+    const field = target.getBoundingClientRect();
+    const hidden = field.bottom + FOCUS_GAP - bar.getBoundingClientRect().top;
+    if (hidden <= 0) return;
+    const top = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    window.scrollBy(0, Math.max(0, Math.min(hidden, field.top - top)));
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -728,6 +764,19 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
     onBlur: blur,
     slots,
   };
+  // A prefilled evidence reference is not an upload: it counts only once CMP-013 accepted a file.
+  const progress = formProgress(
+    schema,
+    steps,
+    hasEvidence && !evidenceUpload?.technically_accepted ? setAt(data, EVIDENCE, undefined) : data,
+    visible,
+  );
+  // After a refused submit, earlier steps that still hold a problem are flagged until fixed.
+  const attention = checkedAll
+    ? steps.flatMap((s, i) =>
+        !s.review && i !== stepIndex && Object.keys(errorsFor(i)).length > 0 ? [i] : [],
+      )
+    : [];
 
   return (
     <div className="sf-wizard">
@@ -735,6 +784,8 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
         steps={steps.map((s) => ({ label: s.label, hint: s.hint }))}
         current={stepIndex}
         reachable={furthest}
+        progress={progress}
+        attention={attention}
         onSelect={(i) => {
           goTo(i);
           autosave();
@@ -745,6 +796,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
         className="sf-wizard-main"
         noValidate
         onSubmit={onSubmit}
+        onFocus={keepFocusClear}
         aria-labelledby="sf-step-heading"
       >
         {notice ? (
@@ -753,31 +805,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
               {notice.body}
             </FormAlert>
           </div>
-        ) : stepIndex === 0 && !draft ? (
-          <FormAlert
-            tone="info"
-            title={
-              citizen.masked_mobile
-                ? `Signed in as ${citizen.masked_mobile}`
-                : 'Signed in with a verified mobile (OTP)'
-            }
-          >
-            {loaded.prefill_source === 'CMP-005'
-              ? 'Your name and mobile are pre-filled from your citizen profile, with sample answers for the rest.'
-              : 'Sample answers are pre-filled. Create an account with your name to pre-fill it from your citizen profile.'}{' '}
-            Your answers are saved as you go. Use synthetic values only — SAMPLE_LAB, G6 not issued.
-          </FormAlert>
         ) : null}
-
-        <div className="sf-meta-row" aria-label="Service policy summary">
-          <span className="ux4g-tag-tonal-info ux4g-tag-s">Eligibility {policy.eligibility}</span>
-          <span className="ux4g-tag-tonal-success ux4g-tag-s">Fee {policy.fee}</span>
-          <span className="ux4g-tag-tonal-neutral ux4g-tag-s">
-            Service time {policy.service_time}
-          </span>
-          <span className="ux4g-tag-outline-warning ux4g-tag-s">DigiLocker SIMULATED</span>
-          <span className="ux4g-tag-outline-neutral ux4g-tag-s">SAMPLE_LAB · synthetic data</span>
-        </div>
 
         {summary && summary.fields && errorEntries.length > 0 ? (
           <ErrorSummary
@@ -810,38 +838,61 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
             </p>
           </header>
 
-          {step.review ? (
-            <>
-              {checks.map((c) => (
-                <FormAlert
-                  key={c.pointer}
-                  tone={c.pass ? 'success' : 'warning'}
-                  title={c.pass ? 'Indicative check: met' : 'Indicative check: not met'}
-                >
-                  {c.label}. You entered {String(c.value ?? '—')}. This is not a decision: the
-                  officer decides after verification.
-                </FormAlert>
-              ))}
-              <Ux4gFormReview
-                schema={schema}
-                ui={ui}
-                data={data}
-                visible={visible}
-                labels={labels}
-                display={display}
-                onEdit={(i) => {
-                  setReturnToReview(true);
-                  goTo(i);
-                }}
-              />
-              <div className="sf-form-section">
-                <h3 className="ux4g-heading-xs-strong">Declaration</h3>
-                <Ux4gFormLayout node={step.node} {...layoutProps} />
-              </div>
-            </>
-          ) : (
-            <Ux4gFormLayout node={step.node} {...layoutProps} />
-          )}
+          <div
+            key={stepIndex}
+            className={`sf-step-body${motion ? ` sf-step-enter-${motion}` : ''}`}
+            data-testid="step-body"
+          >
+            {step.review ? (
+              <>
+                {checks.map((c) => (
+                  <FormAlert
+                    key={c.pointer}
+                    tone={c.pass ? 'success' : 'warning'}
+                    title={c.pass ? 'Indicative check: met' : 'Indicative check: not met'}
+                  >
+                    {c.label}. You entered {String(c.value ?? '—')}. This is not a decision: the
+                    officer decides after verification.
+                  </FormAlert>
+                ))}
+                <Ux4gFormReview
+                  schema={schema}
+                  ui={ui}
+                  data={data}
+                  visible={visible}
+                  labels={labels}
+                  display={display}
+                  onEdit={(i) => {
+                    setReturnToReview(true);
+                    goTo(i);
+                  }}
+                />
+                <div className="sf-form-section">
+                  <h3 className="ux4g-heading-xs-strong">Declaration</h3>
+                  <Ux4gFormLayout node={step.node} {...layoutProps} />
+                </div>
+              </>
+            ) : (
+              <Ux4gFormLayout node={step.node} {...layoutProps} />
+            )}
+          </div>
+
+          {stepIndex === 0 && !draft && !notice ? (
+            <p className="ux4g-body-s-default sf-apply-trust" data-testid="apply-trust">
+              <Icon name="shield" size={18} />
+              <span>
+                <strong>
+                  {citizen.masked_mobile
+                    ? `Signed in as ${citizen.masked_mobile} (OTP).`
+                    : 'Signed in with OTP.'}
+                </strong>{' '}
+                {loaded.prefill_source === 'CMP-005'
+                  ? 'Name and mobile are from your profile; the rest are samples.'
+                  : 'Sample answers are filled in.'}{' '}
+                Answers save as you go. Synthetic values only — SAMPLE_LAB, G6 not issued.
+              </span>
+            </p>
+          ) : null}
 
           <p className="ux4g-body-s-default sf-form-provenance">
             Form {loaded.form.pin.form_key} · v{loaded.form.version} · pinned{' '}
@@ -851,26 +902,42 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
 
         <div className="sf-wizard-actions">
           <div className="sf-wizard-actions-start">
+            <div className="sf-save-state">
+              <p
+                className={`ux4g-body-s-default sf-save-status${save.state === 'saved' ? ' sf-save-status-saved' : save.state === 'error' ? ' sf-save-status-error' : ''}`}
+                role="status"
+                data-testid="save-status"
+              >
+                {save.state === 'saved' ? <Icon name="check-circle" size={16} /> : null}
+                {save.state === 'error' ? <Icon name="alert" size={16} /> : null}
+                {saveText}
+              </p>
+              {save.state === 'error' && save.retry ? (
+                <Button variant="text-primary" size="s" onClick={autosave} disabled={busy}>
+                  <Icon name="refresh" size={16} />
+                  Try saving again
+                </Button>
+              ) : null}
+            </div>
+            <Button
+              variant="text-primary"
+              size="s"
+              onClick={() => void saveForLater()}
+              disabled={busy}
+            >
+              Save and come back later
+            </Button>
+          </div>
+          <div className="sf-wizard-actions-end">
             {stepIndex > 0 ? (
               <Button variant="outline-neutral" onClick={back} disabled={busy}>
+                <Icon name="arrow-left" size={18} />
                 Back
               </Button>
             ) : null}
-            <p
-              className={`ux4g-body-s-default sf-save-status${save.state === 'saved' ? ' sf-save-status-saved' : save.state === 'error' ? ' sf-save-status-error' : ''}`}
-              role="status"
-              data-testid="save-status"
-            >
-              {save.state === 'saved' ? <Icon name="check-circle" size={16} /> : null}
-              {saveText}
-            </p>
-          </div>
-          <div className="sf-wizard-actions-end">
-            <Button variant="text-primary" onClick={() => void saveForLater()} disabled={busy}>
-              Save and come back later
-            </Button>
             <Button type="submit" disabled={busy}>
               {primary}
+              {isLast ? null : <Icon name="arrow-right" size={18} />}
             </Button>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import {
   fieldError,
+  formProgress,
   getAt,
   isRequired,
   issuesToErrors,
@@ -11,6 +12,7 @@ import {
   setAt,
   stepErrors,
   stepOfPointer,
+  stepsWithErrors,
   Ux4gFormLayout,
   Ux4gFormReview,
   Ux4gFormStepper,
@@ -336,5 +338,89 @@ describe('Ux4gFormStepper', () => {
     const html = renderToStaticMarkup(<Ux4gFormStepper steps={steps} current={0} reachable={3} />);
     expect(html).not.toContain('disabled=""');
     expect(html).toContain(', step 3 of 4, Completed');
+  });
+
+  it('shows answer progress as text and a native progress element (no inline style)', () => {
+    const html = renderToStaticMarkup(
+      <Ux4gFormStepper
+        steps={steps}
+        current={1}
+        reachable={1}
+        progress={{ answered: 3, total: 8, percent: 37 }}
+      />,
+    );
+    expect(html).toContain('37% complete');
+    expect(html).toContain('3 of 8 required answers');
+    expect(html).toContain(
+      '<progress class="sf-form-progress-bar" max="8" value="3" aria-label="Required answers given">',
+    );
+    expect(html).not.toMatch(/style=/);
+    expect(renderToStaticMarkup(<Ux4gFormStepper steps={steps} current={0} reachable={0} />)).not.toContain(
+      '<progress',
+    );
+  });
+
+  it('a form with no required answer reads as complete, not as an empty bar', () => {
+    const html = renderToStaticMarkup(
+      <Ux4gFormStepper
+        steps={steps}
+        current={0}
+        reachable={0}
+        progress={{ answered: 0, total: 0, percent: 100 }}
+      />,
+    );
+    expect(html).toContain('100% complete');
+    expect(html).toContain('max="1" value="1"');
+  });
+
+  it('flags steps that need attention by text, icon and state, but never the current step', () => {
+    const html = renderToStaticMarkup(
+      <Ux4gFormStepper steps={steps} current={3} reachable={3} attention={[0, 3]} />,
+    );
+    expect(html).toContain('sf-stepper-item sf-stepper-done sf-stepper-attention');
+    expect(html).toContain('<span class="ux4g-body-s-default sf-stepper-flag">Needs attention</span>');
+    expect(html).toContain(', step 1 of 4</span>');
+    expect(html).not.toContain(', step 1 of 4, Completed');
+    expect(html).toContain(', step 4 of 4, Current step');
+    expect(html.match(/sf-stepper-attention/g)?.length).toBe(1);
+  });
+});
+
+describe('answer progress and error steps', () => {
+  const steps = wizardSteps(ui);
+
+  it('counts required, visible questions on answer steps that pass their checks', () => {
+    expect(formProgress(schema, steps, {}, visibleScopes(ui, {}))).toEqual({
+      answered: 0,
+      total: 2,
+      percent: 0,
+    });
+    const half = { name: 'SAMPLE', address: { pincode: '12' } };
+    expect(formProgress(schema, steps, half, visibleScopes(ui, half))).toEqual({
+      answered: 1,
+      total: 2,
+      percent: 50,
+    });
+    const done = { name: 'SAMPLE', address: { pincode: '751001' } };
+    expect(formProgress(schema, steps, done, visibleScopes(ui, done)).percent).toBe(100);
+  });
+
+  it('follows conditional requirement and visibility; optional and review answers do not count', () => {
+    const withEmail = { name: 'SAMPLE', email_updates: true, address: { pincode: '751001' } };
+    expect(formProgress(schema, steps, withEmail, visibleScopes(ui, withEmail))).toEqual({
+      answered: 2,
+      total: 3,
+      percent: 66,
+    });
+    const hidden = { ...withEmail, email_updates: false };
+    expect(formProgress(schema, steps, hidden, visibleScopes(ui, hidden)).total).toBe(2);
+    const noForm = formProgress(schema, steps.filter((s) => s.review), {}, new Set());
+    expect(noForm).toEqual({ answered: 0, total: 0, percent: 100 });
+  });
+
+  it('lists every step that holds one of the error pointers', () => {
+    expect(stepsWithErrors(steps, ['/name', '/address/pincode'])).toEqual([0, 1]);
+    expect(stepsWithErrors(steps, ['/consent'])).toEqual([2]);
+    expect(stepsWithErrors(steps, ['/unknown'])).toEqual([]);
   });
 });

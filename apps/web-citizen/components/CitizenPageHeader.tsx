@@ -10,6 +10,8 @@ export type CitizenPageHeaderProps = {
   crumbs?: readonly Crumb[];
   meta?: ReactNode;
   actions?: ReactNode;
+  /** Task pages (e.g. apply): a shorter band so the first question sits higher. */
+  compact?: boolean;
 };
 
 /** Citizen page header continuing the identity & access design (UX4G blue band). */
@@ -20,9 +22,10 @@ export function CitizenPageHeader({
   crumbs,
   meta,
   actions,
+  compact = false,
 }: CitizenPageHeaderProps) {
   return (
-    <section className="sf-page-hero sf-citizen-hero">
+    <section className={`sf-page-hero sf-citizen-hero${compact ? ' sf-citizen-hero-compact' : ''}`}>
       {crumbs?.length ? (
         <nav aria-label="Breadcrumb">
           <ol className="sf-breadcrumb">
@@ -39,7 +42,7 @@ export function CitizenPageHeader({
         </nav>
       ) : null}
       {eyebrow ? <p className="sf-citizen-hero-eyebrow ux4g-label-s-strong">{eyebrow}</p> : null}
-      <h1 className="ux4g-heading-2xl-strong">{title}</h1>
+      <h1 className={compact ? 'ux4g-heading-l-strong' : 'ux4g-heading-2xl-strong'}>{title}</h1>
       {lead ? <p className="ux4g-body-l-default">{lead}</p> : null}
       {meta ? <div className="sf-meta-row">{meta}</div> : null}
       {actions ? <div className="sf-citizen-hero-actions">{actions}</div> : null}

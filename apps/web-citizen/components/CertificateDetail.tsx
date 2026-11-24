@@ -5,9 +5,11 @@ import { itemLabel, reasonLabel } from '@serviceform/m10-sample-lab/deficiency-c
 import { maskMobile } from '@serviceform/m10-sample-lab/identity-rules';
 import { useCallback, useEffect, useState } from 'react';
 import { GENDER_LABEL, applicationStatus, evidenceLabel, formatDate } from '../lib/ind-soc-002';
+import { forgetJustSubmitted, wasJustSubmitted } from '../lib/just-submitted';
 import { EvidenceUploadField, type EvidenceUploadValue } from './EvidenceUploadField';
 import { FormAlert } from './FormFeedback';
 import { PaymentStep } from './PaymentStep';
+import { SubmissionConfirmation } from './SubmissionConfirmation';
 
 type App = {
   id: string;
@@ -110,6 +112,7 @@ function timeline(app: App): Step[] {
 }
 
 export function CertificateDetail({ id }: { id: string }) {
+  const [justSubmitted] = useState(() => wasJustSubmitted(id));
   const [app, setApp] = useState<App | null>(null);
   const [openDeficiency, setOpenDeficiency] = useState<DeficiencyNotice | null>(null);
   const [error, setError] = useState('');
@@ -148,6 +151,8 @@ export function CertificateDetail({ id }: { id: string }) {
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => () => forgetJustSubmitted(id), [id]);
 
   function toggleItem(code: string) {
     setProvided((prev) => (prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]));
@@ -223,6 +228,9 @@ export function CertificateDetail({ id }: { id: string }) {
 
   return (
     <div className="sf-section">
+      {justSubmitted ? (
+        <SubmissionConfirmation reference={id.slice(0, 8).toUpperCase()} status={app.status} />
+      ) : null}
       <section className="sf-panel" aria-labelledby="status-title">
         <div className="sf-section">
           <h2 id="status-title" className="ux4g-heading-s-strong">
