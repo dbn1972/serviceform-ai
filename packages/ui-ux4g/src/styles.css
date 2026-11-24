@@ -9031,14 +9031,7 @@ html:has(.sf-wizard) {
   gap: var(--ux4g-gap-5);
 }
 
-/* Desk pages (officer, citizen, admin, Studio lab desks): vertical rhythm and plain result lists. */
-.sf-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ux4g-gap-6);
-  min-width: 0;
-}
-
+/* Desk pages: lists used as .sf-stack (defined above) and plain result lists drop browser indent. */
 :is(ul, ol).sf-stack,
 .sf-list {
   margin: 0;
