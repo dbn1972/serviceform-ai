@@ -15,15 +15,16 @@ describe('web-studio markup (UX4G)', () => {
 
   it('groups overflow destinations under More (Wave 1 nav)', () => {
     const html = renderToStaticMarkup(<StudioNav />);
-    expect(html).toContain('>More</summary>');
-    expect(html).toContain('sf-studio-nav-more-menu');
+    expect(html).toContain('ux4g-dropdown-button');
+    expect(html).toContain('>More</span>');
+    expect(html).toContain('ux4g-dropdown-menu');
     expect(html).toContain('href="/metadata"');
     expect(html).toContain('href="/publication"');
     expect(html).toContain('href="/interop"');
     expect(html).toContain('href="/fees"');
     expect(html).toContain('href="/credentials"');
-    // Overflow destinations live under More, not as peer primary <li> links.
-    expect(html).toMatch(/sf-studio-nav-more-menu[\s\S]*href="\/fees"[\s\S]*href="\/credentials"/);
+    // Overflow destinations live under the More dropdown menu.
+    expect(html).toMatch(/ux4g-dropdown-menu[\s\S]*href="\/fees"[\s\S]*href="\/credentials"/);
   });
 
   it('uses button hierarchy on home instead of peer TextLink rows', () => {
@@ -41,6 +42,8 @@ describe('web-studio markup (UX4G)', () => {
     expect(html).toContain('ux4g-btn-primary ux4g-btn-m');
     expect(html).toContain('Open Metadata designer');
     expect(html).toContain('Open Publication desk');
+    expect(html).toContain('IND-SOC-002 sample on tip');
+    expect(html).toContain('G6 not issued');
   });
 
   it('publication desk copy stresses maker-checker separation (WS6)', async () => {

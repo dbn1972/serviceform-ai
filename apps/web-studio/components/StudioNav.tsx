@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useId, useRef, useState } from 'react';
 
 /** Always-visible destinations — keep to one header row. */
 const primaryLinks = [
@@ -12,7 +15,7 @@ const primaryLinks = [
   { href: '/session', label: 'Session' },
 ] as const;
 
-/** Overflow groups: Designers · Catalogue · Publish · Session (audit Wave 1). */
+/** Overflow groups: Designers · Catalogue · Publish (audit Wave 1). */
 const moreGroups = [
   {
     label: 'Designers',
@@ -34,6 +37,26 @@ const moreGroups = [
 ] as const;
 
 export function StudioNav() {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLLIElement>(null);
+  const menuId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
   return (
     <nav aria-label="Studio">
       <ul className="ux4g-navbar-links">
@@ -42,26 +65,54 @@ export function StudioNav() {
             <Link href={link.href}>{link.label}</Link>
           </li>
         ))}
-        <li>
-          <details className="sf-studio-nav-more">
-            <summary>More</summary>
+        <li ref={rootRef}>
+          <div
+            className={
+              open
+                ? 'ux4g-dropdown ux4g-dropdown-button ux4g-dropdown-m is-open'
+                : 'ux4g-dropdown ux4g-dropdown-button ux4g-dropdown-m'
+            }
+          >
+            <button
+              type="button"
+              className="ux4g-dropdown-control"
+              aria-expanded={open}
+              aria-haspopup="menu"
+              aria-controls={menuId}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className="ux4g-dropdown-button-content">More</span>
+              <span className="ux4g-dropdown-caret" aria-hidden="true" />
+            </button>
             <div
-              className="sf-studio-nav-more-menu"
-              role="group"
+              id={menuId}
+              className="ux4g-dropdown-menu"
+              role="menu"
               aria-label="More Studio destinations"
             >
-              {moreGroups.map((group) => (
-                <div key={group.label}>
-                  <p className="sf-studio-nav-group">{group.label}</p>
-                  {group.links.map((link) => (
-                    <Link key={link.href} href={link.href}>
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              ))}
+              <ul className="ux4g-list">
+                {moreGroups.map((group) => (
+                  <li key={group.label} className="ux4g-list-item" role="none">
+                    <p className="ux4g-label-s-default">{group.label}</p>
+                    <ul className="ux4g-list">
+                      {group.links.map((link) => (
+                        <li key={link.href} className="ux4g-list-item" role="none">
+                          <Link
+                            role="menuitem"
+                            className="ux4g-dropdown-option"
+                            href={link.href}
+                            onClick={() => setOpen(false)}
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </details>
+          </div>
         </li>
       </ul>
     </nav>

@@ -91,7 +91,7 @@ export function DesignerHub({
 
       <Card title={templatesTitle} subtitle={templatesSubtitle}>
         {templatesSlot ?? (
-          <ul className="sf-hub-template-list">
+          <ul className="sf-designer-recent">
             {templates.map((t) => (
               <li key={t.id}>
                 <Link className="ux4g-btn-outline-primary ux4g-btn-s" href={t.href}>
