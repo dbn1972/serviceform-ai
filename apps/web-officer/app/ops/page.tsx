@@ -12,9 +12,7 @@ export default function OpsPage() {
     >
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Ops dashboard</h1>
-        <p className="ux4g-body-m-default">
-          Workload and health aggregates beyond a single queue.
-        </p>
+        <p className="ux4g-body-m-default">Workload and health aggregates beyond a single queue.</p>
       </section>
       <OpsDesk />
     </AppShell>

@@ -29,7 +29,10 @@ interface OpenSearchMirrorCard {
 }
 
 function metricLabel(code: string): string {
-  return code.replaceAll('_', ' ').toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
+  return code
+    .replaceAll('_', ' ')
+    .toLowerCase()
+    .replace(/^\w/, (c) => c.toUpperCase());
 }
 
 export function OpsDesk() {
@@ -125,16 +128,16 @@ export function OpsDesk() {
 
       {mirror ? (
         <Card title={mirror.label} subtitle="Search mirror · simulated">
-          <ul className="sf-officer-metric-grid">
-            <li className="sf-officer-metric">
-              <span className="sf-officer-metric-value">{mirror.document_count}</span>
-              <span className="sf-officer-metric-label">Documents</span>
-            </li>
-            <li className="sf-officer-metric">
-              <span className="sf-officer-metric-value">{mirror.mode}</span>
-              <span className="sf-officer-metric-label">Mode</span>
-            </li>
-          </ul>
+          <dl className="sf-mini-stats">
+            <div>
+              <dt>Documents</dt>
+              <dd>{mirror.document_count}</dd>
+            </div>
+            <div>
+              <dt>Mode</dt>
+              <dd>{mirror.mode}</dd>
+            </div>
+          </dl>
           {mirror.last_sync_at ? (
             <p className="ux4g-body-s-default">Last sync {mirror.last_sync_at}</p>
           ) : null}
@@ -164,7 +167,9 @@ export function OpsDesk() {
             <Card
               key={view.view_code}
               title={view.label}
-              subtitle={view.as_of ? `As of ${view.as_of} · non-authoritative` : 'Non-authoritative'}
+              subtitle={
+                view.as_of ? `As of ${view.as_of} · non-authoritative` : 'Non-authoritative'
+              }
               footer={
                 <Button
                   variant="outline-primary"
@@ -182,17 +187,17 @@ export function OpsDesk() {
               {view.metrics.length === 0 ? (
                 <p className="ux4g-body-m-default">No metrics in this refresh yet.</p>
               ) : (
-                <ul className="sf-officer-metric-grid">
+                <dl className="sf-mini-stats">
                   {view.metrics.map((m, i) => (
-                    <li key={`${m.metric_code}-${i}`} className="sf-officer-metric">
-                      <span className="sf-officer-metric-value">{m.value}</span>
-                      <span className="sf-officer-metric-label">
+                    <div key={`${m.metric_code}-${i}`}>
+                      <dt>
                         {metricLabel(m.metric_code)}
                         {m.dimensions_summary ? ` · ${m.dimensions_summary}` : ''}
-                      </span>
-                    </li>
+                      </dt>
+                      <dd>{m.value}</dd>
+                    </div>
                   ))}
-                </ul>
+                </dl>
               )}
             </Card>
           ))}

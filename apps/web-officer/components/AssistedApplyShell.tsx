@@ -178,7 +178,9 @@ export function AssistedApplyShell() {
       {error ? (
         <Alert variant="error" title="Assisted session">
           {error}{' '}
-          {error.toLowerCase().includes('sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+          {error.toLowerCase().includes('sign in') ? (
+            <TextLink href="/login">Sign in</TextLink>
+          ) : null}
         </Alert>
       ) : null}
 

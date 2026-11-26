@@ -127,9 +127,14 @@ function QueueList() {
             <div className="sf-queue-item">
               <div className="sf-queue-item-main">
                 <div className="sf-meta-row">
-                  <span className={chrome.primary.tagClass}>{chrome.primary.label}</span>
+                  <span className={chrome.primary.tagClass} title={chrome.primary.title}>
+                    {chrome.primary.label}
+                  </span>
                   {chrome.platformDiff ? (
-                    <span className={chrome.platformDiff.tagClass} title={chrome.platformDiff.code}>
+                    <span
+                      className={chrome.platformDiff.tagClass}
+                      title={chrome.platformDiff.title}
+                    >
                       {chrome.platformDiff.label}
                     </span>
                   ) : null}
@@ -173,7 +178,7 @@ export default function ApplicationsPage() {
         </p>
       </section>
 
-      <details className="sf-officer-tech">
+      <details className="sf-stack">
         <summary className="ux4g-body-s-default">About this desk</summary>
         <Alert variant="info" title="Sample lab path">
           Cases and open desk tasks come from the platform case and workflow services. Connectors

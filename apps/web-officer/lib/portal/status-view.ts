@@ -1,6 +1,7 @@
 /**
  * Officer-facing status chrome helpers.
- * Prefer a single human label; show platform_state only when it differs from workbench status.
+ * Prefer a single status tag; show platform_state only when it differs from workbench status.
+ * Tag text keeps the platform enum (shared with e2e); tonal class maps severity.
  * CERTIFIED=false — presentation only; CMP-015 remains authoritative.
  */
 
@@ -25,11 +26,18 @@ const HUMAN_STATUS: Record<string, string> = {
   CLAIMED: 'Claimed',
   UNCLAIMED: 'Unclaimed',
   COMPLETED: 'Completed',
+  ACTION_REQUIRED: 'Action required',
 };
 
 export function humanStatusLabel(code: string): string {
   if (!code) return 'Unknown';
-  return HUMAN_STATUS[code] ?? code.replaceAll('_', ' ').toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
+  return (
+    HUMAN_STATUS[code] ??
+    code
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/^\w/, (c) => c.toUpperCase())
+  );
 }
 
 export function statusTagClass(status: string): string {
@@ -51,6 +59,7 @@ export function statusTagClass(status: string): string {
     case 'DEFICIENCY_RAISED':
     case 'CITIZEN_RESPONSE':
     case 'SIGNING_PENDING':
+    case 'ACTION_REQUIRED':
       return 'ux4g-tag-tonal-warning';
     default:
       return 'ux4g-tag-tonal-neutral';
@@ -58,17 +67,18 @@ export function statusTagClass(status: string): string {
 }
 
 export type StatusChrome = {
-  primary: { label: string; tagClass: string; code: string };
+  primary: { label: string; tagClass: string; code: string; title: string };
   /** Present only when platform_state differs from workbench status. */
-  platformDiff?: { label: string; tagClass: string; code: string };
+  platformDiff?: { label: string; tagClass: string; code: string; title: string };
 };
 
-/** Single human status tag; add platformDiff only when the strings differ. */
+/** Single status tag (enum text + tonal class); add platformDiff only when strings differ. */
 export function statusChrome(status: string, platformState: string): StatusChrome {
   const primary = {
-    label: humanStatusLabel(status),
+    label: status,
     tagClass: statusTagClass(status),
     code: status,
+    title: humanStatusLabel(status),
   };
   if (!platformState || platformState === status) {
     return { primary };
@@ -76,9 +86,10 @@ export function statusChrome(status: string, platformState: string): StatusChrom
   return {
     primary,
     platformDiff: {
-      label: humanStatusLabel(platformState),
+      label: platformState,
       tagClass: 'ux4g-tag-tonal-neutral',
       code: platformState,
+      title: humanStatusLabel(platformState),
     },
   };
 }

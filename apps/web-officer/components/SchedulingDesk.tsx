@@ -152,12 +152,14 @@ export function SchedulingDesk() {
 
       {error ? (
         <Alert variant="error" title="Scheduling desk">
-          {error}{' '}
-          {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+          {error} {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
         </Alert>
       ) : null}
 
-      <Card title="Appointment types" subtitle="Published sample lab metadata — not statute calendars">
+      <Card
+        title="Appointment types"
+        subtitle="Published sample lab metadata — not statute calendars"
+      >
         <ul className="sf-stack">
           {SAMPLE_LAB_APPOINTMENT_TYPES.map((t) => (
             <li key={t.appointment_type_ref}>
@@ -287,14 +289,12 @@ export function SchedulingDesk() {
             ) : null}
           </div>
 
-          <div className="sf-officer-tech">
-            <details>
-              <summary>Technical details</summary>
-              <p className="ux4g-body-s-default">
-                <code>{selected.appointment_id}</code> · slot <code>{selected.slot_ref}</code>
-              </p>
-            </details>
-          </div>
+          <details className="sf-stack">
+            <summary className="ux4g-body-s-default">Technical details</summary>
+            <p className="ux4g-body-s-default">
+              <code>{selected.appointment_id}</code> · slot <code>{selected.slot_ref}</code>
+            </p>
+          </details>
         </Card>
       ) : null}
     </div>

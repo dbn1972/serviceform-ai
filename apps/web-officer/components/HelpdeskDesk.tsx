@@ -85,8 +85,7 @@ export function HelpdeskDesk() {
 
       {error ? (
         <Alert variant="error" title="Helpdesk">
-          {error}{' '}
-          {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+          {error} {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
         </Alert>
       ) : null}
 
@@ -133,7 +132,10 @@ export function HelpdeskDesk() {
             </p>
           ) : null}
           {(selected.can_respond || selected.can_escalate) && (
-            <label className="ux4g-input-container ux4g-input-m ux4g-input-default" htmlFor="helpdesk-note">
+            <label
+              className="ux4g-input-container ux4g-input-m ux4g-input-default"
+              htmlFor="helpdesk-note"
+            >
               <span className="ux4g-label-m-default">Response note</span>
               <div className="ux4g-input">
                 <textarea

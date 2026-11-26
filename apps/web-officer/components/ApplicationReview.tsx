@@ -393,9 +393,9 @@ export function ApplicationReview({ id }: { id: string }) {
         }
       >
         <Alert variant="warning" title="Sample lab — simulated issuance">
-          Desks follow Studio workflow task assignments (never named officers). After final approval,
-          the platform signs and issues the certificate and publishes it to DigiLocker using
-          simulated connectors. This environment is not production-certified.
+          Desks follow Studio workflow task assignments (never named officers). After final
+          approval, the platform signs and issues the certificate and publishes it to DigiLocker
+          using simulated connectors. This environment is not production-certified.
         </Alert>
 
         {decideBlock.blocked ? (
@@ -422,9 +422,11 @@ export function ApplicationReview({ id }: { id: string }) {
             const chrome = statusChrome(app.status, app.platform_state);
             return (
               <>
-                <span className={chrome.primary.tagClass}>{chrome.primary.label}</span>
+                <span className={chrome.primary.tagClass} title={chrome.primary.title}>
+                  {chrome.primary.label}
+                </span>
                 {chrome.platformDiff ? (
-                  <span className={chrome.platformDiff.tagClass} title={chrome.platformDiff.code}>
+                  <span className={chrome.platformDiff.tagClass} title={chrome.platformDiff.title}>
                     {chrome.platformDiff.label}
                   </span>
                 ) : null}
@@ -439,26 +441,27 @@ export function ApplicationReview({ id }: { id: string }) {
             <span className="ux4g-tag-tonal-neutral">No open desk task</span>
           )}
           {app.digilocker ? (
-            <span className="ux4g-tag-outline-warning">
-              DigiLocker · {humanStatusLabel(app.digilocker.status)} · {app.digilocker.mode}
-            </span>
+            <>
+              <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>
+              <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
+            </>
           ) : null}
         </div>
 
-        <div className="sf-officer-tech">
-          <details>
-            <summary>Technical details</summary>
-            <div className="sf-meta-row">
-              {task?.task_state ? (
-                <span className="ux4g-tag-tonal-neutral">{humanStatusLabel(task.task_state)}</span>
-              ) : null}
-              {task?.workflow_node_id ? (
-                <span className="ux4g-tag-outline-neutral">{task.workflow_node_id}</span>
-              ) : null}
+        <details className="sf-stack">
+          <summary className="ux4g-body-s-default">Technical details</summary>
+          <div className="sf-meta-row">
+            {task?.task_state ? (
+              <span className="ux4g-tag-tonal-neutral">{task.task_state}</span>
+            ) : null}
+            {task?.workflow_node_id ? (
+              <span className="ux4g-tag-outline-neutral">{task.workflow_node_id}</span>
+            ) : null}
+            {app.platform_state !== app.status ? (
               <span className="ux4g-tag-outline-neutral">{app.platform_state}</span>
-            </div>
-          </details>
-        </div>
+            ) : null}
+          </div>
+        </details>
 
         <dl className="sf-dl">
           {app.catalogue_id ? (
@@ -622,8 +625,8 @@ export function ApplicationReview({ id }: { id: string }) {
           ) : null}
           {responseNotice && app.platform_state === 'CITIZEN_RESPONSE' ? (
             <Alert variant="warning" title="Citizen response received">
-              Close the open deficiency, then continue scrutiny or decide. The SLA pause resumes when
-              the clock is unbound or the SLA service resumes.
+              Close the open deficiency, then continue scrutiny or decide. The SLA pause resumes
+              when the clock is unbound or the SLA service resumes.
             </Alert>
           ) : null}
           <ul className="sf-section">

@@ -80,8 +80,8 @@ export default function HomePage() {
         }
       >
         <p className="ux4g-body-m-default">
-          Record non-statutory verification results for services that pin an inspection node —
-          never a statutory approve or reject.
+          Record non-statutory verification results for services that pin an inspection node — never
+          a statutory approve or reject.
         </p>
       </Card>
 

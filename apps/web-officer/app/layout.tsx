@@ -1,5 +1,4 @@
 import '@serviceform/ui-ux4g/styles.css';
-import './officer.css';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 

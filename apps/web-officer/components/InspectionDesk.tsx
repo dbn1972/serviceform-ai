@@ -116,8 +116,7 @@ export function InspectionDesk() {
 
       {error ? (
         <Alert variant="error" title="Inspection desk">
-          {error}{' '}
-          {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+          {error} {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
         </Alert>
       ) : null}
 
@@ -170,11 +169,7 @@ export function InspectionDesk() {
           <ul className="sf-stack">
             {items.map((item) => (
               <li key={item.inspection_id}>
-                <Button
-                  variant="text-neutral"
-                  size="s"
-                  onClick={() => setSelected(item)}
-                >
+                <Button variant="text-neutral" size="s" onClick={() => setSelected(item)}>
                   {item.pin_label ?? item.workflow_node_id ?? 'Inspection'} · {item.state_label}
                 </Button>
               </li>
@@ -266,14 +261,12 @@ export function InspectionDesk() {
           ) : null}
 
           {selected.workflow_node_id ? (
-            <div className="sf-officer-tech">
-              <details>
-                <summary>Technical details</summary>
-                <p className="ux4g-body-s-default">
-                  Workflow node <code>{selected.workflow_node_id}</code>
-                </p>
-              </details>
-            </div>
+            <details className="sf-stack">
+              <summary className="ux4g-body-s-default">Technical details</summary>
+              <p className="ux4g-body-s-default">
+                Workflow node <code>{selected.workflow_node_id}</code>
+              </p>
+            </details>
           ) : null}
         </Card>
       ) : null}
