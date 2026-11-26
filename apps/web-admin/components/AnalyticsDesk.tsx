@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert, Button, Card } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
 
 interface MetricDefinition {
@@ -15,13 +16,15 @@ export function AnalyticsDesk() {
   const [defs, setDefs] = useState<MetricDefinition[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const load = useCallback(async () => {
     setError(null);
     await fetch('/api/platform/lab/m08/ensure', { method: 'POST' }).catch(() => undefined);
     const res = await fetch('/api/platform/analytics/metric-definitions', { cache: 'no-store' });
     if (res.status === 401) {
-      setError('Sign in as TENANT_ADMIN_STUDIO or SAMPLE_LAB_OPS_ANALYST.');
+      setError('Sign in as a tenant admin or ops analyst session.');
+      setLoaded(true);
       return;
     }
     const body = (await res.json()) as {
@@ -32,9 +35,11 @@ export function AnalyticsDesk() {
     };
     if (!res.ok) {
       setError(body.message ?? body.error_code ?? 'Unable to load metric definitions');
+      setLoaded(true);
       return;
     }
     setDefs(body.definitions ?? body.items ?? []);
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -53,39 +58,49 @@ export function AnalyticsDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-045 Analytics &amp; MIS — published metric definitions only. Aggregates never carry
-        person-level fields. INT-010 OpenSearch path remains SIMULATED lab mirror (REAL deferred).
-        CERTIFIED=false · G6=false.
+        Published metric definitions only. Aggregates never carry person-level fields. Search
+        indexing remains a SIMULATED lab mirror until a REAL connector is bound.
       </p>
       {error ? (
-        <div className="ux4g-alert-error" role="alert">
+        <Alert variant="error" title="Analytics failed">
           {error}
-        </div>
+        </Alert>
       ) : null}
       <div className="sf-actions">
-        <button
-          type="button"
-          className="ux4g-btn-outline-primary ux4g-btn-m"
-          disabled={busy}
-          onClick={() => void refresh()}
-        >
+        <Button variant="outline-primary" disabled={busy} onClick={() => void refresh()}>
           {busy ? 'Refreshing…' : 'Refresh definitions'}
-        </button>
+        </Button>
       </div>
-      <ul className="sf-list" aria-label="Metric definitions">
-        {defs.length === 0 ? (
-          <li className="ux4g-body-m-default">
-            No definitions yet. Lab ensure seeds LAB_CASE_TRANSITIONS.
-          </li>
-        ) : (
-          defs.map((d) => (
+      {!loaded ? (
+        <p className="ux4g-body-m-default" aria-busy="true">
+          Loading definitions…
+        </p>
+      ) : defs.length === 0 ? (
+        <section className="sf-empty" aria-label="Analytics empty">
+          <h2 className="ux4g-heading-l-strong">No definitions yet</h2>
+          <p className="ux4g-body-m-default">
+            Lab ensure seeds LAB_CASE_TRANSITIONS when the analytics mirror is empty. Refresh after
+            ensure completes.
+          </p>
+          <div className="sf-actions">
+            <Button variant="outline-primary" disabled={busy} onClick={() => void refresh()}>
+              Refresh definitions
+            </Button>
+          </div>
+        </section>
+      ) : (
+        <ul className="sf-list" aria-label="Metric definitions">
+          {defs.map((d) => (
             <li key={d.definition_id}>
-              <strong>{d.metric_code}</strong> · {d.status} · {d.aggregation}/{d.period_granularity}{' '}
-              · purpose {d.purpose_code}
+              <Card title={d.metric_code} subtitle={`${d.status} · ${d.purpose_code}`}>
+                <p className="ux4g-body-m-default">
+                  Aggregation {d.aggregation} · period {d.period_granularity}
+                </p>
+              </Card>
             </li>
-          ))
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

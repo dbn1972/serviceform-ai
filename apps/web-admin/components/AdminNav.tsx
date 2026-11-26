@@ -12,15 +12,14 @@ const links = [
   { href: '/discovery', label: 'Discovery' },
 ] as const;
 
+/** Horizontal header nav for AppShell — never dump as a vertical body list. */
 export function AdminNav() {
   return (
-    <nav aria-label="Administration" className="ux4g-navbar">
-      <ul>
+    <nav aria-label="Administration">
+      <ul className="ux4g-navbar-links">
         {links.map((link) => (
           <li key={link.href}>
-            <Link className="ux4g-text-link-m" href={link.href}>
-              {link.label}
-            </Link>
+            <Link href={link.href}>{link.label}</Link>
           </li>
         ))}
       </ul>

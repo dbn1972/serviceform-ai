@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert, Button, Card, Select, TextInput } from '@serviceform/ui-ux4g';
 import { useState } from 'react';
 
 interface DiscoveryResult {
@@ -9,10 +10,17 @@ interface DiscoveryResult {
   available?: boolean;
 }
 
+const JURISDICTION_OPTIONS = [
+  { value: 'IN-OD-SAMPLE-LAB', label: 'Odisha sample lab (IN-OD-SAMPLE-LAB)' },
+  { value: 'IN-SAMPLE-LAB', label: 'India sample lab (IN-SAMPLE-LAB)' },
+] as const;
+
 export function DiscoveryDesk() {
   const [keywords, setKeywords] = useState('Residence');
+  const [jurisdiction, setJurisdiction] = useState<string>(JURISDICTION_OPTIONS[0].value);
   const [results, setResults] = useState<DiscoveryResult[]>([]);
   const [queryId, setQueryId] = useState<string | null>(null);
+  const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -30,14 +38,14 @@ export function DiscoveryDesk() {
         body: JSON.stringify({
           catalogue_version_id: '0d15ba00-0c08-4000-8000-0d15ba000c08',
           filters: {
-            jurisdiction_codes: ['IN-OD-SAMPLE-LAB'],
+            jurisdiction_codes: [jurisdiction],
             keywords: keywords.trim() ? [keywords.trim()] : [],
           },
           pagination: { limit: 20, offset: 0 },
         }),
       });
       if (res.status === 401) {
-        setError('Sign in as TENANT_ADMIN_STUDIO or SAMPLE_LAB_OPS_ANALYST.');
+        setError('Sign in as a tenant admin or ops analyst session.');
         return;
       }
       const body = (await res.json()) as {
@@ -54,6 +62,7 @@ export function DiscoveryDesk() {
       }
       setQueryId(body.query_id ?? body.query?.query_id ?? null);
       setResults(body.results ?? body.items ?? []);
+      setSearched(true);
     } finally {
       setBusy(false);
     }
@@ -62,52 +71,68 @@ export function DiscoveryDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-006 service discovery — jurisdiction-aware catalogue browse. Results are non-statutory
-        availability hints, never eligibility decisions. CERTIFIED=false · G6=false.
+        Browse published catalogue offers for a jurisdiction. Results are non-statutory availability
+        hints — never eligibility or approval decisions.
       </p>
       {error ? (
-        <div className="ux4g-alert-error" role="alert">
+        <Alert variant="error" title="Discovery failed">
           {error}
-        </div>
+        </Alert>
       ) : null}
-      <label className="ux4g-label-m-default" htmlFor="discovery-keywords">
-        Keywords
-        <input
-          id="discovery-keywords"
-          className="ux4g-input"
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
-          placeholder="Residence"
-        />
-      </label>
+      <TextInput
+        id="discovery-keywords"
+        label="Keywords"
+        value={keywords}
+        onChange={(e) => setKeywords(e.target.value)}
+        placeholder="Residence"
+        hint="Match against published offer labels in the sample catalogue."
+      />
+      <Select
+        id="discovery-jurisdiction"
+        label="Jurisdiction"
+        options={JURISDICTION_OPTIONS}
+        value={jurisdiction}
+        onChange={(e) => setJurisdiction(e.target.value)}
+      />
       <div className="sf-actions">
-        <button
-          type="button"
-          className="ux4g-btn-primary ux4g-btn-m"
-          disabled={busy}
-          onClick={() => void runQuery()}
-        >
+        <Button disabled={busy} onClick={() => void runQuery()}>
           {busy ? 'Searching…' : 'Discover services'}
-        </button>
+        </Button>
       </div>
       {queryId ? (
-        <p className="ux4g-body-s-default">Query {queryId} · result_is_non_statutory</p>
+        <p className="ux4g-body-s-default">Query {queryId} · result is non-statutory</p>
       ) : null}
-      <ul className="sf-list" aria-label="Discovery results">
-        {results.length === 0 ? (
-          <li className="ux4g-body-m-default">No discovery hits yet.</li>
-        ) : (
-          results.map((r) => (
+      {!searched ? (
+        <section className="sf-empty" aria-label="Discovery idle">
+          <h2 className="ux4g-heading-l-strong">Run a search</h2>
+          <p className="ux4g-body-m-default">
+            Enter keywords and choose a jurisdiction, then discover published offers.
+          </p>
+        </section>
+      ) : results.length === 0 ? (
+        <section className="sf-empty" aria-label="Discovery empty">
+          <h2 className="ux4g-heading-l-strong">No matching offers</h2>
+          <p className="ux4g-body-m-default">
+            No published services matched those keywords in the selected jurisdiction. Try a broader
+            term or another jurisdiction.
+          </p>
+        </section>
+      ) : (
+        <ul className="sf-list" aria-label="Discovery results">
+          {results.map((r) => (
             <li key={r.service_id}>
-              <strong>{r.service_code ?? r.service_id}</strong>
-              {r.service_binding_version_id
-                ? ` · binding ${r.service_binding_version_id.slice(0, 8)}…`
-                : ''}
-              {r.available === false ? ' · unavailable' : ''}
+              <Card title={r.service_code ?? r.service_id}>
+                <p className="ux4g-body-m-default">
+                  {r.service_binding_version_id
+                    ? `Binding ${r.service_binding_version_id.slice(0, 8)}…`
+                    : 'No binding pin on result'}
+                  {r.available === false ? ' · unavailable' : ''}
+                </p>
+              </Card>
             </li>
-          ))
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

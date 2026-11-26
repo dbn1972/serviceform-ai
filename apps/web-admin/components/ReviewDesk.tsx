@@ -85,8 +85,8 @@ export function ReviewDesk() {
       ) : null}
       {!ux.blockReason && ux.canApprove ? (
         <Alert variant="info" title="Checker separation OK">
-          Session principal differs from the maker. Approve / Reject call CMP-051 (platform still
-          enforces). CERTIFIED=false.
+          Session principal differs from the maker. Approve / Reject still go through platform
+          maker-checker enforcement.
         </Alert>
       ) : null}
       <Button onClick={() => void load()}>Load request</Button>
