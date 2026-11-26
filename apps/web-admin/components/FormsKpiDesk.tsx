@@ -15,8 +15,8 @@ export function FormsKpiDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        Read-only forms measure desk. Funnel, latency p95 series, authoring, a11y, and
-        cross-tenant leakage must stay at zero. No person-level fields. DigiLocker out of scope.
+        Read-only forms measure desk. Funnel, latency p95 series, authoring, a11y, and cross-tenant
+        leakage must stay at zero. No person-level fields. DigiLocker out of scope.
       </p>
       <div className="sf-tag-row">
         <span className="ux4g-tag-tonal-primary">source · {snap.source}</span>

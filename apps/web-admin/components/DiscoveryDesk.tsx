@@ -10,9 +10,10 @@ interface DiscoveryResult {
   available?: boolean;
 }
 
+/** Labels are jurisdiction codes only — never hard-coded place names (Constitution #3). */
 const JURISDICTION_OPTIONS = [
-  { value: 'IN-OD-SAMPLE-LAB', label: 'Odisha sample lab (IN-OD-SAMPLE-LAB)' },
-  { value: 'IN-SAMPLE-LAB', label: 'India sample lab (IN-SAMPLE-LAB)' },
+  { value: 'IN-OD-SAMPLE-LAB', label: 'IN-OD-SAMPLE-LAB' },
+  { value: 'IN-SAMPLE-LAB', label: 'IN-SAMPLE-LAB' },
 ] as const;
 
 export function DiscoveryDesk() {
