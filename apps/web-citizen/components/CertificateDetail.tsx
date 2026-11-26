@@ -197,9 +197,7 @@ export function CertificateDetail({ id }: { id: string }) {
       }
       if (body.application) setApp(body.application);
       setOpenDeficiency(null);
-      setInfo(
-        'Your response was submitted. The office will continue reviewing your application.',
-      );
+      setInfo('Your response was submitted. The office will continue reviewing your application.');
       await load();
     } finally {
       setBusy(false);

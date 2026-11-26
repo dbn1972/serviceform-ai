@@ -8847,8 +8847,13 @@ html:has(.sf-wizard) {
   flex-direction: column;
   gap: var(--ux4g-gap-6);
   min-width: 0;
-  /* Reserve space so the sticky Save & continue bar does not cover the last fields. */
-  padding-bottom: var(--ux4g-size-112);
+}
+
+/* Host-placed spacer before sticky .sf-wizard-actions so the last fields can scroll clear. */
+.sf-wizard-sticky-reserve {
+  height: var(--ux4g-size-112);
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .sf-step-panel {
@@ -10930,8 +10935,8 @@ fieldset.ux4g-radio > legend {
     scroll-padding-bottom: var(--ux4g-size-160);
   }
 
-  .sf-wizard-main {
-    padding-bottom: var(--ux4g-size-160);
+  .sf-wizard-sticky-reserve {
+    height: var(--ux4g-size-160);
   }
 
   .sf-wizard-actions {

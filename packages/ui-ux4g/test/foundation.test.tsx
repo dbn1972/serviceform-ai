@@ -243,7 +243,7 @@ describe('WCAG 1.4.10 reflow (320 CSS px)', () => {
     expect(css).toMatch(/\.sf-mini-stats dt\s*\{[^}]*white-space:\s*nowrap/s);
   });
 
-  it('reserves sticky wizard action space on sf-wizard-main', () => {
-    expect(css).toMatch(/\.sf-wizard-main\s*\{[^}]*padding-bottom:\s*var\(--ux4g-size-112\)/s);
+  it('exposes a host sticky-reserve spacer for wizard action bars', () => {
+    expect(css).toMatch(/\.sf-wizard-sticky-reserve\s*\{[^}]*height:\s*var\(--ux4g-size-112\)/s);
   });
 });

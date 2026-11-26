@@ -46,7 +46,7 @@ import {
   type FocusEvent,
   type FormEvent,
 } from 'react';
-import { citizenPolicyText } from '../lib/catalogue';
+import { citizenPolicyText } from '../lib/citizen-policy-text';
 import { markJustSubmitted } from '../lib/just-submitted';
 import { EvidenceUploadField, fileKind, type EvidenceUploadValue } from './EvidenceUploadField';
 import { ErrorSummary, FormAlert, type FormAlertTone } from './FormFeedback';
@@ -905,6 +905,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
           </p>
         </section>
 
+        <div className="sf-wizard-sticky-reserve" aria-hidden="true" />
         <div className="sf-wizard-actions">
           <div className="sf-wizard-actions-start">
             <div className="sf-save-state">

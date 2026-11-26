@@ -2,14 +2,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { templateByCatalogueId } from '@serviceform/service-templates';
 import { beforeAll, describe, expect, it } from 'vitest';
-import {
-  catalogueEntries,
-  citizenPolicyText,
-  formOutline,
-  isOffered,
-  isSampleLabPolicy,
-  policyText,
-} from '../lib/catalogue';
+import { catalogueEntries, formOutline, isOffered } from '../lib/catalogue';
+import { citizenPolicyText, isSampleLabPolicy, policyText } from '../lib/citizen-policy-text';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 

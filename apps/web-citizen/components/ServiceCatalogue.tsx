@@ -3,7 +3,7 @@
 import { Icon, Select, TextInput } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import type { CatalogueEntry } from '../lib/catalogue';
+import type { CatalogueEntry } from '../lib/catalogue-types';
 
 const ALL = 'ALL';
 

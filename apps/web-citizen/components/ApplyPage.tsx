@@ -1,6 +1,6 @@
 import { AppShell } from '@serviceform/ui-ux4g';
 import { notFound } from 'next/navigation';
-import { citizenPolicyText } from '../lib/catalogue';
+import { citizenPolicyText } from '../lib/citizen-policy-text';
 import { offeredForm } from '../lib/portal/forms';
 import { CitizenNav } from './CitizenNav';
 import { CitizenPageHeader } from './CitizenPageHeader';

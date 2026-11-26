@@ -7,12 +7,8 @@ import { CitizenNav } from '../../../components/CitizenNav';
 import { CitizenPageHeader } from '../../../components/CitizenPageHeader';
 import { FormAlert } from '../../../components/FormFeedback';
 import { RequireCitizenSession } from '../../../components/RequireCitizenSession';
-import {
-  citizenPolicyText,
-  formOutline,
-  isOffered,
-  isSampleLabPolicy,
-} from '../../../lib/catalogue';
+import { formOutline, isOffered } from '../../../lib/catalogue';
+import { citizenPolicyText, isSampleLabPolicy } from '../../../lib/citizen-policy-text';
 
 export const dynamic = 'force-dynamic';
 
