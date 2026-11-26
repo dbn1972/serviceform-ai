@@ -25,9 +25,30 @@ export interface CatalogueEntry {
 
 const PENDING = 'POLICY_INPUT_REQUIRED';
 
-/** Citizen-facing copy for a policy fact the department has not published yet. */
+/** True when catalogue policy facts are SAMPLE_LAB sample/DUMMY overlays (not locked statute). */
+export function isSampleLabPolicy(value: string): boolean {
+  return /SAMPLE_LAB\s+(?:DUMMY|sample)/i.test(value);
+}
+
+/**
+ * Citizen-facing copy for a policy fact the department has not published yet.
+ * Keeps raw catalogue strings for detail/Studio honesty tags; prefer `citizenPolicyText` on cards.
+ */
 export function policyText(value: string): string {
   return value === PENDING ? 'To be published by the department' : value;
+}
+
+/**
+ * Short human policy fact for citizen cards and primary chrome.
+ * Strips SAMPLE_LAB sample preambles and "(configurable per tenant)" so Fee never dumps lab jargon.
+ */
+export function citizenPolicyText(value: string): string {
+  if (value === PENDING) return 'To be published by the department';
+  if (!isSampleLabPolicy(value)) return value;
+  const withoutPrefix = value.replace(/^SAMPLE_LAB\s+(?:DUMMY|sample)\s*[·•\-–—]\s*/i, '');
+  const withoutConfigurable = withoutPrefix.replace(/\s*\(configurable[^)]*\)\s*$/i, '').trim();
+  if (withoutConfigurable && withoutConfigurable !== value) return withoutConfigurable;
+  return 'Sample lab parameters';
 }
 
 /**
@@ -55,9 +76,9 @@ export function catalogueEntries(): CatalogueEntry[] {
       category: t.category,
       output_type: t.output_type,
       offered: isOffered(t),
-      fee: policyText(t.policy.fee),
-      service_time: policyText(t.policy.service_time),
-      eligibility: policyText(t.policy.eligibility),
+      fee: citizenPolicyText(t.policy.fee),
+      service_time: citizenPolicyText(t.policy.service_time),
+      eligibility: citizenPolicyText(t.policy.eligibility),
       steps: stepLabels(publishedVersion(t) ?? latestVersion(t)).length,
     }))
     .sort((a, b) => Number(b.offered) - Number(a.offered) || a.name.localeCompare(b.name));

@@ -1,6 +1,6 @@
 import { AppShell } from '@serviceform/ui-ux4g';
 import { notFound } from 'next/navigation';
-import { policyText } from '../lib/catalogue';
+import { citizenPolicyText } from '../lib/catalogue';
 import { offeredForm } from '../lib/portal/forms';
 import { CitizenNav } from './CitizenNav';
 import { CitizenPageHeader } from './CitizenPageHeader';
@@ -31,12 +31,14 @@ export function ApplyPage({ catalogueId }: { catalogueId: string }) {
           title={`Apply — ${template.name}`}
           meta={
             <>
-              <span className="ux4g-tag-tonal-neutral sf-hero-fact">Fee {policyText(fee)}</span>
               <span className="ux4g-tag-tonal-neutral sf-hero-fact">
-                Service time {policyText(service_time)}
+                Fee {citizenPolicyText(fee)}
               </span>
               <span className="ux4g-tag-tonal-neutral sf-hero-fact">
-                Eligibility {policyText(eligibility)}
+                Service time {citizenPolicyText(service_time)}
+              </span>
+              <span className="ux4g-tag-tonal-neutral sf-hero-fact">
+                Eligibility {citizenPolicyText(eligibility)}
               </span>
               <span className="ux4g-tag-tonal-neutral">SAMPLE_LAB · DigiLocker SIMULATED</span>
             </>

@@ -2,7 +2,14 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { templateByCatalogueId } from '@serviceform/service-templates';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { catalogueEntries, formOutline, isOffered, policyText } from '../lib/catalogue';
+import {
+  catalogueEntries,
+  citizenPolicyText,
+  formOutline,
+  isOffered,
+  isSampleLabPolicy,
+  policyText,
+} from '../lib/catalogue';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
@@ -32,12 +39,18 @@ describe('citizen service catalogue', () => {
     expect(income && isOffered(income)).toBe(true);
   });
 
-  it('shows SAMPLE_LAB sample parameter labels for stubs (configurable, not locked statute)', () => {
+  it('shortens SAMPLE_LAB sample policy dumps for citizen cards (scannable fee/time)', () => {
     expect(policyText('POLICY_INPUT_REQUIRED')).toBe('To be published by the department');
+    expect(citizenPolicyText('SAMPLE_LAB sample · ₹9.99 (configurable per tenant)')).toBe('₹9.99');
+    expect(citizenPolicyText('SAMPLE_LAB sample · 15 working days (configurable per tenant)')).toBe(
+      '15 working days',
+    );
+    expect(isSampleLabPolicy('SAMPLE_LAB sample · ₹9.99 (configurable per tenant)')).toBe(true);
     const income = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
-    expect(income?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
-    expect(income?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
-    expect(income?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(income?.fee).toBe('₹9.99');
+    expect(income?.service_time).toBe('15 working days');
+    expect(income?.eligibility).toBe('Sample lab parameters');
+    expect(income?.fee).not.toMatch(/SAMPLE_LAB|configurable/i);
   });
 
   it('outlines the steps and fields a citizen will be asked for', () => {

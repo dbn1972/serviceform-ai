@@ -237,4 +237,13 @@ describe('WCAG 1.4.10 reflow (320 CSS px)', () => {
     expect(css).not.toContain('-10000px');
     expect(css).toContain('overflow-wrap: var(--ux4g-overflow-wrap-anywhere)');
   });
+
+  it('stacks sf-mini-stats labels above values and keeps Fee nowrap', () => {
+    expect(css).toMatch(/\.sf-mini-stats div\s*\{[^}]*flex-direction:\s*column/s);
+    expect(css).toMatch(/\.sf-mini-stats dt\s*\{[^}]*white-space:\s*nowrap/s);
+  });
+
+  it('reserves sticky wizard action space on sf-wizard-main', () => {
+    expect(css).toMatch(/\.sf-wizard-main\s*\{[^}]*padding-bottom:\s*var\(--ux4g-size-112\)/s);
+  });
 });

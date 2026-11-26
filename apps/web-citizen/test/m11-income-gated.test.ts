@@ -38,9 +38,11 @@ describe('M11 Income Certificate (IND-SOC-031) SAMPLE_LAB lab-offer', () => {
     expect(offered?.version.version_id).toBe('7e3a0031-0001-4000-8000-00000000031a');
     const entry = catalogueEntries().find((e) => e.catalogue_id === 'IND-SOC-031');
     expect(entry?.offered).toBe(true);
-    expect(entry?.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
-    expect(entry?.service_time).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
-    expect(entry?.eligibility).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    // Citizen cards show short human facts; underlying template still carries SAMPLE_LAB sample.
+    expect(t?.policy.fee).toMatch(/SAMPLE_LAB (DUMMY|sample)/);
+    expect(entry?.fee).toBe('₹9.99');
+    expect(entry?.service_time).toBe('15 working days');
+    expect(entry?.eligibility).toBe('Sample lab parameters');
   });
 
   it('keeps Income DUMMY-labeled among expanded lab offers; non-offers stay gated', () => {

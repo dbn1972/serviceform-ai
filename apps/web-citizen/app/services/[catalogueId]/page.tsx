@@ -7,7 +7,12 @@ import { CitizenNav } from '../../../components/CitizenNav';
 import { CitizenPageHeader } from '../../../components/CitizenPageHeader';
 import { FormAlert } from '../../../components/FormFeedback';
 import { RequireCitizenSession } from '../../../components/RequireCitizenSession';
-import { formOutline, isOffered, policyText } from '../../../lib/catalogue';
+import {
+  citizenPolicyText,
+  formOutline,
+  isOffered,
+  isSampleLabPolicy,
+} from '../../../lib/catalogue';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,10 +29,11 @@ export default async function ServiceDetailPage({ params }: Props) {
   if (!template) notFound();
   const offered = isOffered(template);
   const outline = formOutline(template);
+  const sampleLab = isSampleLabPolicy(template.policy.fee);
   const facts = [
-    ['Fee', policyText(template.policy.fee)],
-    ['Service time', policyText(template.policy.service_time)],
-    ['Eligibility', policyText(template.policy.eligibility)],
+    ['Fee', citizenPolicyText(template.policy.fee)],
+    ['Service time', citizenPolicyText(template.policy.service_time)],
+    ['Eligibility', citizenPolicyText(template.policy.eligibility)],
     ['Delivered to', `DigiLocker (SIMULATED) · ${template.digilocker_suitability} suitability`],
   ] as const;
 
@@ -50,9 +56,8 @@ export default async function ServiceDetailPage({ params }: Props) {
               {offered ? null : (
                 <span className="ux4g-tag-tonal-warning">Not yet offered here</span>
               )}
-              {template.policy.fee.includes('SAMPLE_LAB DUMMY') ||
-              template.policy.fee.includes('SAMPLE_LAB sample') ? (
-                <span className="ux4g-tag-tonal-warning">SAMPLE_LAB sample parameters</span>
+              {sampleLab ? (
+                <span className="ux4g-tag-tonal-warning">Sample lab parameters</span>
               ) : null}
             </>
           }
@@ -60,10 +65,8 @@ export default async function ServiceDetailPage({ params }: Props) {
 
         {offered ? null : (
           <FormAlert tone="warning" title="You cannot apply for this service in this portal yet">
-            The department has not published this certificate here. Where fees, documents or
-            eligibility show SAMPLE_LAB sample parameters, those are configurable lab starting
-            values (editable per tenant) — not locked statute — and must be replaced before any
-            non-lab use.
+            The department has not published this certificate here yet. Lab sample values are not
+            locked statute and must be replaced before any non-lab use.
           </FormAlert>
         )}
 

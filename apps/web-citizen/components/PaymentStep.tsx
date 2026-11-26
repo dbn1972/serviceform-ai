@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@serviceform/ui-ux4g';
+import { Alert, Button } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
 import { FormAlert } from './FormFeedback';
 
@@ -86,11 +86,16 @@ export function PaymentStep({ applicationId, onPaid }: Props) {
 
   return (
     <section className="sf-stack" aria-labelledby="lab-fee-heading">
-      <h2 id="lab-fee-heading">Fee payment required</h2>
-      <p>
-        This SAMPLE_LAB offer uses a labeled <strong>SAMPLE_LAB DUMMY</strong> fee overlay (not
-        Residence ₹0). Amount is server-authoritative — you cannot override it.
+      <h2 id="lab-fee-heading" className="ux4g-heading-l-strong">
+        Fee payment required
+      </h2>
+      <p className="ux4g-body-m-default">
+        Pay the fee shown below to continue. The amount comes from the service fee policy — you
+        cannot change it.
       </p>
+      <Alert variant="info" title="Sample lab — not production payment">
+        This is a simulated payment in SAMPLE_LAB. No real money is taken.
+      </Alert>
       <dl className="sf-dl">
         <div>
           <dt>Amount</dt>
@@ -99,17 +104,14 @@ export function PaymentStep({ applicationId, onPaid }: Props) {
           </dd>
         </div>
         <div>
-          <dt>Connector</dt>
-          <dd>SIMULATED PSP (lab only · REAL payment owner-held)</dd>
+          <dt>Payment method</dt>
+          <dd>Simulated payment (lab only)</dd>
         </div>
       </dl>
       {error ? <FormAlert tone="error">{error}</FormAlert> : null}
       <Button type="button" onClick={() => void pay()} disabled={busy}>
-        {busy ? 'Processing SIMULATED payment…' : 'Pay (SIMULATED)'}
+        {busy ? 'Processing…' : 'Pay (simulated)'}
       </Button>
-      <p className="ux4g-body-s-default ux4g-text-neutral-secondary">
-        CERTIFIED=false · G6=false · policy_kind={quote.policy_kind}
-      </p>
     </section>
   );
 }

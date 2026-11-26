@@ -198,7 +198,7 @@ export function CertificateDetail({ id }: { id: string }) {
       if (body.application) setApp(body.application);
       setOpenDeficiency(null);
       setInfo(
-        'Your response was submitted. The office will continue reviewing your application. CERTIFIED=false · G6=false.',
+        'Your response was submitted. The office will continue reviewing your application.',
       );
       await load();
     } finally {
@@ -269,7 +269,7 @@ export function CertificateDetail({ id }: { id: string }) {
         {app.status === 'ACTION_REQUIRED' && openDeficiency ? (
           <FormAlert tone="warning" title="Action needed — more information requested">
             {reasonLabel(openDeficiency.reason_code)}. Please provide the documents listed below and
-            submit your response. Upload uses CMP-013 (SIMULATED storage) — technical accept only.
+            submit your response. Uploads are stored in the sample lab (technical accept only).
           </FormAlert>
         ) : null}
         {app.status === 'ACTION_REQUIRED' && !openDeficiency ? (
@@ -416,7 +416,7 @@ export function CertificateDetail({ id }: { id: string }) {
             <dd>
               {app.evidence_file_name
                 ? /^[0-9a-f-]{36}$/i.test(app.evidence_file_name)
-                  ? `CMP-013 document ${app.evidence_file_name}${
+                  ? `Uploaded document ${app.evidence_file_name.slice(0, 8)}…${
                       app.evidence_mime ? ` · ${app.evidence_mime}` : ''
                     } (technical accept only)`
                   : `${app.evidence_file_name}${app.evidence_mime ? ` (${app.evidence_mime})` : ''}`

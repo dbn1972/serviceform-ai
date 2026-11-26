@@ -8847,6 +8847,8 @@ html:has(.sf-wizard) {
   flex-direction: column;
   gap: var(--ux4g-gap-6);
   min-width: 0;
+  /* Reserve space so the sticky Save & continue bar does not cover the last fields. */
+  padding-bottom: var(--ux4g-size-112);
 }
 
 .sf-step-panel {
@@ -10722,15 +10724,19 @@ fieldset.ux4g-radio > legend {
 .sf-mini-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--ux4g-gap-2) var(--ux4g-gap-5);
+  gap: var(--ux4g-gap-3) var(--ux4g-gap-5);
   margin: 0;
   color: var(--ux4g-text-neutral-secondary);
   font-size: var(--ux4g-fs-12);
 }
 
+/* Stack label above value so short labels (Fee) never wrap mid-word under long facts. */
 .sf-mini-stats div {
   display: flex;
-  gap: var(--ux4g-gap-2);
+  flex-direction: column;
+  gap: var(--ux4g-gap-1);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .sf-mini-stats dt,
@@ -10738,9 +10744,14 @@ fieldset.ux4g-radio > legend {
   margin: 0;
 }
 
+.sf-mini-stats dt {
+  white-space: nowrap;
+}
+
 .sf-mini-stats dd {
   color: var(--ux4g-text-neutral-primary);
   font-weight: var(--ux4g-font-weight-semibold);
+  overflow-wrap: break-word;
 }
 
 .sf-table-wrap {
@@ -10917,6 +10928,10 @@ fieldset.ux4g-radio > legend {
    * hidden behind it (WCAG 2.4.11). */
   html:has(.sf-wizard) {
     scroll-padding-bottom: var(--ux4g-size-160);
+  }
+
+  .sf-wizard-main {
+    padding-bottom: var(--ux4g-size-160);
   }
 
   .sf-wizard-actions {

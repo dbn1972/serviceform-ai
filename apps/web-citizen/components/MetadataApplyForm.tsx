@@ -46,6 +46,7 @@ import {
   type FocusEvent,
   type FormEvent,
 } from 'react';
+import { citizenPolicyText } from '../lib/catalogue';
 import { markJustSubmitted } from '../lib/just-submitted';
 import { EvidenceUploadField, fileKind, type EvidenceUploadValue } from './EvidenceUploadField';
 import { ErrorSummary, FormAlert, type FormAlertTone } from './FormFeedback';
@@ -726,7 +727,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
   const primary = isLast
     ? busy
       ? 'Submitting…'
-      : `Submit application (${policy.fee})`
+      : `Submit application (${citizenPolicyText(policy.fee)})`
     : returnToReview
       ? 'Save & return to preview'
       : 'Save & continue';
@@ -736,7 +737,7 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
           <EvidenceUploadField
             inputId={fieldId(EVIDENCE)}
             label="Upload supporting evidence"
-            hint="Required. PDF, PNG or JPEG up to 1 MB. CMP-013 technical acceptance only — not officer verification."
+            hint="Required. PDF, PNG or JPEG up to 1 MB. Upload is a technical accept only — an officer still reviews it."
             value={evidenceUpload}
             onChange={applyEvidenceUpload}
             disabled={busy}
@@ -894,14 +895,13 @@ export function MetadataApplyForm({ catalogueId }: { catalogueId: string }) {
                 {loaded.prefill_source === 'CMP-005'
                   ? 'Name and mobile are from your profile; the rest are samples.'
                   : 'Sample answers are filled in.'}{' '}
-                Answers save as you go. Synthetic values only — SAMPLE_LAB, G6 not issued.
+                Answers save as you go. Synthetic values only — sample lab.
               </span>
             </p>
           ) : null}
 
           <p className="ux4g-body-s-default sf-form-provenance">
-            Form {loaded.form.pin.form_key} · v{loaded.form.version} · pinned{' '}
-            {loaded.form.pin.content_hash.slice(0, 15)}… · checked by the CMP-009 form engine
+            Checked by platform form rules · sample lab · form v{loaded.form.version}
           </p>
         </section>
 
