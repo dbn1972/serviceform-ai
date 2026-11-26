@@ -412,7 +412,7 @@ test.describe('metadata-driven apply on CMP-009 (CCR-M10-002)', () => {
     const steps = page.getByRole('navigation', { name: 'Application steps' }).getByRole('button');
     await expect(steps).toHaveText([/Applicant/, /Residence/, /Evidence/, /Preview/]);
     await expect(
-      page.getByText(/Form ind-soc-002\.application · v1\.0\.0 · pinned sha256:/),
+      page.getByText(/Checked by platform form rules · sample lab · form v/i),
     ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Step 1 of 4 Applicant details', exact: true }),

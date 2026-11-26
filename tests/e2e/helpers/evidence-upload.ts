@@ -90,7 +90,7 @@ export async function uploadEvidenceOnWizard(page: Page): Promise<void> {
     mimeType: 'application/pdf',
     buffer: SAMPLE_EVIDENCE_PDF,
   });
-  await expect(page.getByText(/Technically accepted \(CMP-013\)/i)).toBeVisible({
+  await expect(page.getByText(/Upload accepted/i)).toBeVisible({
     timeout: 30_000,
   });
 }

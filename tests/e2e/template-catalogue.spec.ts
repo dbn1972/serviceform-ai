@@ -153,7 +153,8 @@ test.describe('citizen service catalogue', () => {
       .getByRole('link', { name: 'View details of Income Certificate (individual)' })
       .click();
     await expect(page).toHaveURL(`${CITIZEN}/services/IND-SOC-031`);
-    await expect(page.getByText(/SAMPLE_LAB (DUMMY|sample)/).first()).toBeVisible();
+    await expect(page.getByText(/Sample lab parameters/i).first()).toBeVisible();
+    await expect(page.getByText('₹9.99').first()).toBeVisible();
     await expect(page.getByRole('link', { name: /Start application/ })).toBeVisible();
     await expect(page.getByText('Annual income (₹)')).toBeVisible();
     await expectAccessible(page);
