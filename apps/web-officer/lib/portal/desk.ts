@@ -33,6 +33,11 @@ export function deskRoles(roles: readonly string[]): string[] {
   return roles.filter((r) => r in DESK_LABELS || r.startsWith('SAMPLE_LAB_'));
 }
 
+/** Human desk labels for SIM login UI — never dump raw ROLE_CODE strings. */
+export function deskLabelsForRoles(roles: readonly string[]): string[] {
+  return deskRoles(roles).map((r) => DESK_LABELS[r] ?? r.replace(/^SAMPLE_LAB_/, '').replaceAll('_', ' '));
+}
+
 /** Desk action implied by the HUMAN_TASK role_code (graph assignment). */
 export type DeskAction = 'FORWARD' | 'APPROVE' | 'REJECT';
 

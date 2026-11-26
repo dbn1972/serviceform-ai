@@ -29,6 +29,7 @@ import {
   slaStatusTag,
   type SlaClockView,
 } from '../lib/portal/sla-view';
+import { humanStatusLabel, statusChrome, statusTagClass } from '../lib/portal/status-view';
 
 type App = {
   id: string;
@@ -93,21 +94,7 @@ const AWAITING_ISSUE = ['APPROVED', 'SIGNING_PENDING'];
 const CAN_RAISE = ['SUBMITTED', 'RECEIVED', 'UNDER_SCRUTINY'];
 
 function statusTag(status: string): string {
-  switch (status) {
-    case 'ISSUED':
-      return 'ux4g-tag-tonal-success';
-    case 'REJECTED':
-      return 'ux4g-tag-tonal-error';
-    case 'SUBMITTED':
-      return 'ux4g-tag-tonal-info';
-    case 'DEFICIENCY_RAISED':
-    case 'ACTION_REQUIRED':
-      return 'ux4g-tag-tonal-warning';
-    case 'CITIZEN_RESPONSE':
-      return 'ux4g-tag-tonal-info';
-    default:
-      return 'ux4g-tag-tonal-neutral';
-  }
+  return statusTagClass(status);
 }
 
 function itemLabel(catalogue: Catalogue | null, code: string): string {
@@ -365,7 +352,7 @@ export function ApplicationReview({ id }: { id: string }) {
     <div className="sf-section">
       <Card
         title="Review application"
-        subtitle="Human decision on Application/Case (CMP-015) · queue from HUMAN_TASK graph (CMP-017) · deficiency via CMP-019 · SLA via CMP-029"
+        subtitle="Decide this case from your assigned desk"
         footer={
           canDecide ? (
             <div className="sf-actions">
@@ -405,11 +392,10 @@ export function ApplicationReview({ id }: { id: string }) {
           ) : null
         }
       >
-        <Alert variant="warning" title="Sample lab — SIMULATED issuance, G6 not issued">
-          Desks follow Studio workflow HUMAN_TASK role_code assignments (never named officers).
-          Raise deficiency uses CMP-019 with published SAMPLE_LAB catalogue codes only. After final
-          approval, the platform signs and issues the certificate and publishes it to DigiLocker
-          using SIMULATED connectors. CERTIFIED=false.
+        <Alert variant="warning" title="Sample lab — simulated issuance">
+          Desks follow Studio workflow task assignments (never named officers). After final approval,
+          the platform signs and issues the certificate and publishes it to DigiLocker using
+          simulated connectors. This environment is not production-certified.
         </Alert>
 
         {decideBlock.blocked ? (
@@ -422,37 +408,56 @@ export function ApplicationReview({ id }: { id: string }) {
 
         {hasSlaBreach(slaClocks) && breachSummary ? (
           <Alert variant="error" title="SLA breach">
-            {breachSummary}. Escalation follows the pinned SLA policy (CMP-029). CERTIFIED=false.
+            {breachSummary}. Escalation follows the pinned SLA policy.
           </Alert>
         ) : hasSlaWarning(slaClocks) ? (
           <Alert variant="warning" title="SLA warning emitted">
             A warning was emitted before the deadline on at least one clock. Review remaining
-            working time against the pinned sla_policy_version_id.
+            working time against the pinned SLA policy.
           </Alert>
         ) : null}
 
         <div className="sf-meta-row">
-          <span className={statusTag(app.status)}>{app.status}</span>
-          <span className="ux4g-tag-tonal-neutral">{app.platform_state}</span>
+          {(() => {
+            const chrome = statusChrome(app.status, app.platform_state);
+            return (
+              <>
+                <span className={chrome.primary.tagClass}>{chrome.primary.label}</span>
+                {chrome.platformDiff ? (
+                  <span className={chrome.platformDiff.tagClass} title={chrome.platformDiff.code}>
+                    {chrome.platformDiff.label}
+                  </span>
+                ) : null}
+              </>
+            );
+          })()}
           {task ? (
-            <>
-              <span className="ux4g-tag-tonal-primary">
-                {DESK_LABELS[task.assignment.role_code] ?? task.assignment.role_code}
-              </span>
-              <span className="ux4g-tag-tonal-neutral">{task.task_state}</span>
-              {task.workflow_node_id ? (
-                <span className="ux4g-tag-outline-neutral">{task.workflow_node_id}</span>
-              ) : null}
-            </>
+            <span className="ux4g-tag-tonal-primary">
+              {DESK_LABELS[task.assignment.role_code] ?? task.assignment.role_code}
+            </span>
           ) : (
-            <span className="ux4g-tag-tonal-neutral">No open HUMAN_TASK</span>
+            <span className="ux4g-tag-tonal-neutral">No open desk task</span>
           )}
           {app.digilocker ? (
-            <>
-              <span className="ux4g-tag-tonal-neutral">DigiLocker · {app.digilocker.status}</span>
-              <span className="ux4g-tag-outline-warning">{app.digilocker.mode}</span>
-            </>
+            <span className="ux4g-tag-outline-warning">
+              DigiLocker · {humanStatusLabel(app.digilocker.status)} · {app.digilocker.mode}
+            </span>
           ) : null}
+        </div>
+
+        <div className="sf-officer-tech">
+          <details>
+            <summary>Technical details</summary>
+            <div className="sf-meta-row">
+              {task?.task_state ? (
+                <span className="ux4g-tag-tonal-neutral">{humanStatusLabel(task.task_state)}</span>
+              ) : null}
+              {task?.workflow_node_id ? (
+                <span className="ux4g-tag-outline-neutral">{task.workflow_node_id}</span>
+              ) : null}
+              <span className="ux4g-tag-outline-neutral">{app.platform_state}</span>
+            </div>
+          </details>
         </div>
 
         <dl className="sf-dl">
@@ -516,7 +521,7 @@ export function ApplicationReview({ id }: { id: string }) {
       {raising && catalogue ? (
         <Card
           title="Raise deficiency"
-          subtitle="Request more evidence via CMP-019 (SAMPLE_LAB catalogue codes)"
+          subtitle="Request more evidence using sample lab catalogue codes"
           footer={
             <div className="sf-actions">
               <Button disabled={busy} onClick={() => void raiseDeficiency()}>
@@ -567,7 +572,7 @@ export function ApplicationReview({ id }: { id: string }) {
         >
           <Alert variant="info" title="Immutable for this case">
             This application executes only against the published pin graph below. A new binding
-            version never moves an in-flight case. CERTIFIED=false · G6=false · TSB seal unset.
+            version never moves an in-flight case. Sample lab — not production-certified.
           </Alert>
           <div className="sf-meta-row">
             <span className="ux4g-tag-tonal-success">silent_repoint_forbidden</span>
@@ -607,18 +612,18 @@ export function ApplicationReview({ id }: { id: string }) {
       {openNotice || responseNotice || deficiencies.length > 0 ? (
         <Card
           title="Deficiency notices"
-          subtitle="CMP-019 loop · raise → citizen respond → close → resume scrutiny"
+          subtitle="Raise → citizen responds → close → resume scrutiny"
         >
           {decideBlock.blocked ? (
             <Alert variant="error" title="Loop open — decide blocked">
-              CMP-019 keeps APPROVE / REJECT disabled while status=OPEN. Citizen must respond before
-              close.
+              Approve and reject stay disabled while a deficiency is open. The citizen must respond
+              before you can close.
             </Alert>
           ) : null}
           {responseNotice && app.platform_state === 'CITIZEN_RESPONSE' ? (
             <Alert variant="warning" title="Citizen response received">
-              Close the open deficiency, then continue scrutiny or decide. SLA pause
-              (DEFICIENCY_OPEN) resumes when the clock is unbound or CMP-029 resumes.
+              Close the open deficiency, then continue scrutiny or decide. The SLA pause resumes when
+              the clock is unbound or the SLA service resumes.
             </Alert>
           ) : null}
           <ul className="sf-section">
@@ -628,7 +633,7 @@ export function ApplicationReview({ id }: { id: string }) {
               return (
                 <li key={d.deficiency_id} className="sf-section">
                   <div className="sf-meta-row">
-                    <span className={statusTag(d.status)}>{d.status}</span>
+                    <span className={statusTag(d.status)}>{humanStatusLabel(d.status)}</span>
                     <span className="ux4g-tag-tonal-primary">
                       {deficiencyLoopPhaseLabel(phase)}
                     </span>
@@ -680,7 +685,7 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <Card
         title="SLA clock"
-        subtitle={`CMP-029 · policy pin ${app.pins?.sla_policy_version_id ?? '—'} · SAMPLE_LAB 10 working days · CERTIFIED=false`}
+        subtitle={`Policy pin ${app.pins?.sla_policy_version_id ?? '—'} · sample lab 10 working days`}
       >
         {hasSlaBreach(slaClocks) && breachSummary ? (
           <Alert variant="error" title="Breach visibility">
@@ -689,7 +694,7 @@ export function ApplicationReview({ id }: { id: string }) {
         ) : null}
         {!slaMounted ? (
           <Alert variant="info" title="SLA not mounted on this lab host">
-            CMP-029 is optional (`DATABASE_URL_CMP029`). When unset, deficiency still works with an
+            The SLA service is optional on this lab host. When unset, deficiency still works with an
             unbound SLA port.
           </Alert>
         ) : slaClocks.length === 0 ? (
@@ -760,7 +765,7 @@ export function ApplicationReview({ id }: { id: string }) {
 
       <Card
         title="Case audit trail"
-        subtitle={`CMP-015 append-only · ${auditDepth.total} events · deficiency loop ${auditDepth.deficiency_loop_events} · actor ids withheld · CERTIFIED=false`}
+        subtitle={`${auditDepth.total} events · deficiency loop ${auditDepth.deficiency_loop_events} · actor ids withheld · sample lab`}
       >
         {transitions.length === 0 ? (
           <p className="ux4g-body-m-default">No transitions loaded for this case yet.</p>

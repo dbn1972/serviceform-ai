@@ -1,6 +1,8 @@
 'use client';
 
+import { Alert, Button, Card, TextInput } from '@serviceform/ui-ux4g';
 import { useState } from 'react';
+import { EmptyState } from './EmptyState';
 
 interface SearchHitCard {
   document_id: string;
@@ -19,6 +21,7 @@ export function SearchDesk() {
   const [caseState, setCaseState] = useState('');
   const [applicationRef, setApplicationRef] = useState('');
   const [hits, setHits] = useState<SearchHitCard[]>([]);
+  const [searched, setSearched] = useState(false);
   const [mirrorCount, setMirrorCount] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -46,6 +49,7 @@ export function SearchDesk() {
         return;
       }
       setHits(body.hits ?? []);
+      setSearched(true);
       const mirrorRes = await fetch('/api/portal/ops/opensearch', { cache: 'no-store' });
       if (mirrorRes.ok) {
         const mirrorBody = (await mirrorRes.json()) as {
@@ -65,81 +69,86 @@ export function SearchDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-035 projections only — find cases by opaque facets. OpenSearch lab mirror is SIMULATED
-        (REAL deferred). Never authoritative; no PII in facets. CERTIFIED=false · G6=false.
+        Find cases by catalogue, state, or opaque application ref. Results are projections only —
+        never authoritative. No PII in facets.
       </p>
 
       {mirrorCount !== null ? (
         <p className="ux4g-body-s-default" aria-label="OpenSearch mirror count">
-          OpenSearch mirror (SIMULATED): {mirrorCount} docs · REAL deferred
+          Search mirror (simulated): {mirrorCount} docs
         </p>
       ) : null}
 
       {error ? (
-        <div className="ux4g-alert-error" role="alert">
+        <Alert variant="error" title="Search">
           {error}
-        </div>
+        </Alert>
       ) : null}
 
-      <div className="sf-form-grid" role="search" aria-label="Case search">
-        <label className="ux4g-label-m-default" htmlFor="search-catalogue">
-          Catalogue id
-          <input
+      <Card
+        title="Case search"
+        footer={
+          <Button disabled={busy} onClick={() => void runSearch()}>
+            {busy ? 'Searching…' : 'Search cases'}
+          </Button>
+        }
+      >
+        <div className="sf-form-stack" role="search" aria-label="Case search">
+          <TextInput
             id="search-catalogue"
-            className="ux4g-input"
+            label="Catalogue id"
             value={catalogueId}
             onChange={(e) => setCatalogueId(e.target.value)}
             placeholder="IND-SOC-002"
+            optional
           />
-        </label>
-        <label className="ux4g-label-m-default" htmlFor="search-state">
-          Case state
-          <input
+          <TextInput
             id="search-state"
-            className="ux4g-input"
+            label="Case state"
             value={caseState}
             onChange={(e) => setCaseState(e.target.value)}
             placeholder="IN_SCRUTINY"
+            optional
           />
-        </label>
-        <label className="ux4g-label-m-default" htmlFor="search-ref">
-          Application ref
-          <input
+          <TextInput
             id="search-ref"
-            className="ux4g-input"
+            label="Application ref"
             value={applicationRef}
             onChange={(e) => setApplicationRef(e.target.value)}
             placeholder="lab-app:residence-1"
+            optional
           />
-        </label>
-      </div>
-
-      <div className="sf-actions">
-        <button
-          type="button"
-          className="ux4g-btn-primary ux4g-btn-m"
-          disabled={busy}
-          onClick={() => void runSearch()}
-        >
-          {busy ? 'Searching…' : 'Search cases'}
-        </button>
-      </div>
+        </div>
+      </Card>
 
       <p className="ux4g-body-s-default" aria-live="polite">
-        {hits.length} projection hit{hits.length === 1 ? '' : 's'}
+        {searched
+          ? `${hits.length} projection hit${hits.length === 1 ? '' : 's'}`
+          : 'Run a search to see projection hits.'}
       </p>
 
-      <ul className="sf-list" aria-label="Search results">
-        {hits.length === 0 ? (
-          <li className="ux4g-body-m-default">
-            No projection hits yet. Run a search or seed lab ensure.
-          </li>
-        ) : (
-          hits.map((hit) => (
+      {!searched ? (
+        <EmptyState title="No search yet" icon="document" testId="search-empty-idle">
+          Enter facets above and search. Lab projections appear here when available.
+        </EmptyState>
+      ) : hits.length === 0 ? (
+        <EmptyState
+          title="No matching projections"
+          icon="document"
+          actionLabel="Search again"
+          onAction={() => void runSearch()}
+          actionBusy={busy}
+          testId="search-empty-zero"
+        >
+          No projection hits for these facets. Try another catalogue id or application ref.
+        </EmptyState>
+      ) : (
+        <ul className="sf-list" aria-label="Search results">
+          {hits.map((hit) => (
             <li key={hit.document_id}>
               <strong>{hit.label}</strong>
               <div className="ux4g-body-s-default">
-                {hit.source_cmp_id} · {hit.document_id.slice(0, 8)}… · non-authoritative
+                {hit.document_id.slice(0, 8)}… · non-authoritative
               </div>
               <div className="sf-meta-row">
                 {hit.catalogue_id ? (
@@ -150,9 +159,9 @@ export function SearchDesk() {
                 ) : null}
               </div>
             </li>
-          ))
-        )}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

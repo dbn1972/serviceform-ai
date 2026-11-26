@@ -3,7 +3,7 @@
 import { Alert, Button, Card, RadioGroup } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { deskHomeForRoles } from '../lib/portal/desk';
+import { deskHomeForRoles, deskLabelsForRoles } from '../lib/portal/desk';
 import { safeNext } from '../lib/safe-next';
 
 type LabOfficer = { subject: string; display_name: string; roles: string[] };
@@ -51,7 +51,7 @@ export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined })
   return (
     <Card
       title="Officer sign in"
-      subtitle="SAMPLE_LAB · SIMULATED identity provider · session issued by CMP-004"
+      subtitle="Sample lab · simulated identity provider"
       footer={
         <Button onClick={() => void signIn()} disabled={busy || !subject}>
           {busy ? 'Signing in…' : 'Sign in'}
@@ -59,18 +59,32 @@ export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined })
       }
     >
       {officers.length > 0 ? (
-        <RadioGroup
-          name="officer"
-          legend="Sign in as"
-          value={subject}
-          onChange={setSubject}
-          options={officers.map((o) => ({
-            value: o.subject,
-            label: `${o.display_name} (${o.roles.join(', ')})`,
-          }))}
-        />
+        <div className="sf-officer-role-radios">
+          <RadioGroup
+            name="officer"
+            legend="Sign in as"
+            value={subject}
+            onChange={setSubject}
+            options={officers.map((o) => {
+              const desks = deskLabelsForRoles(o.roles);
+              return {
+                value: o.subject,
+                label: (
+                  <span className="sf-officer-role-option">
+                    <span className="sf-officer-role-option-name ux4g-label-m-strong">
+                      {o.display_name}
+                    </span>
+                    {desks.length > 0 ? (
+                      <span className="sf-officer-role-option-desks">{desks.join(' · ')}</span>
+                    ) : null}
+                  </span>
+                ),
+              };
+            })}
+          />
+        </div>
       ) : (
-        <p className="ux4g-body-m-default">No SAMPLE_LAB officers are available.</p>
+        <p className="ux4g-body-m-default">No sample lab officers are available.</p>
       )}
       {error ? (
         <Alert variant="error" title="Sign in failed">

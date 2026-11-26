@@ -1,8 +1,11 @@
 'use client';
 
+import { Alert, Button, Card, TextLink } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { SAMPLE_LAB_GRIEVANCE_ESCALATION } from '@serviceform/m10-sample-lab/grievance-catalogue';
+import { DESK_LABELS } from '../lib/portal/desk';
+import { EmptyState } from './EmptyState';
 
 interface Ticket {
   grievance_id: string;
@@ -75,55 +78,51 @@ export function HelpdeskDesk() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Helpdesk</h1>
         <p className="ux4g-body-m-default">
-          Queue, assign by role (L1–L3 metadata), respond, resolve, or escalate. Fail-closed OPA ·
-          no named officers · no LLM statutory decisions. SAMPLE_LAB · CERTIFIED=false · G6=false.
+          Queue, assign by desk role (L1–L3), respond, resolve, or escalate. Not a statutory appeal
+          court.
         </p>
       </section>
 
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
+        <Alert variant="error" title="Helpdesk">
           {error}{' '}
-          {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-text-link-m">
-              Sign in
-            </Link>
-          ) : null}
-        </p>
+          {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+        </Alert>
       ) : null}
 
-      <section aria-labelledby="queue-heading">
-        <h2 id="queue-heading" className="ux4g-heading-l-strong">
-          Queue
-        </h2>
+      <Card title="Queue">
         {items.length === 0 ? (
-          <p className="ux4g-body-m-default">No open grievances.</p>
+          <EmptyState
+            title="No open grievances"
+            icon="message"
+            actionLabel="Refresh"
+            onAction={() => void load()}
+            testId="helpdesk-empty"
+          >
+            Citizen-raised tickets linked to applications appear here when they are open.
+          </EmptyState>
         ) : (
           <ul className="sf-stack">
             {items.map((g) => (
               <li key={g.grievance_id}>
-                <button
-                  type="button"
-                  className="ux4g-btn-text-neutral ux4g-btn-s"
-                  onClick={() => setSelected(g)}
-                >
+                <Button variant="text-neutral" size="s" onClick={() => setSelected(g)}>
                   {g.reference_code} · {g.status_label}
                   {g.category_code ? ` · ${g.category_code}` : ''}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
       {selected ? (
-        <section aria-labelledby="ticket-heading">
-          <h2 id="ticket-heading" className="ux4g-heading-l-strong">
-            {selected.reference_code}
-          </h2>
+        <Card title={selected.reference_code}>
           <p className="ux4g-body-m-default">
             {selected.status_label}
             {selected.category_code ? ` · ${selected.category_code}` : ''}
-            {selected.assignment_role_code ? ` · desk ${selected.assignment_role_code}` : ''}
+            {selected.assignment_role_code
+              ? ` · ${DESK_LABELS[selected.assignment_role_code] ?? selected.assignment_role_code}`
+              : ''}
           </p>
           {selected.application_id ? (
             <p className="ux4g-body-s-default">
@@ -134,82 +133,63 @@ export function HelpdeskDesk() {
             </p>
           ) : null}
           {(selected.can_respond || selected.can_escalate) && (
-            <label className="ux4g-label-m-default">
-              Response note (opaque SIMULATED ref)
-              <textarea
-                className="ux4g-textarea"
-                rows={3}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
+            <label className="ux4g-input-container ux4g-input-m ux4g-input-default" htmlFor="helpdesk-note">
+              <span className="ux4g-label-m-default">Response note</span>
+              <div className="ux4g-input">
+                <textarea
+                  id="helpdesk-note"
+                  className="ux4g-input-input"
+                  rows={3}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  placeholder="Opaque simulated reference"
+                />
+              </div>
             </label>
           )}
           <div className="sf-actions">
             {selected.can_route ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('ROUTE')}
-              >
+              <Button variant="outline-primary" disabled={busy} onClick={() => void act('ROUTE')}>
                 Route
-              </button>
+              </Button>
             ) : null}
             {selected.can_assign ? (
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('ASSIGN')}
-              >
+              <Button disabled={busy} onClick={() => void act('ASSIGN')}>
                 Assign L1 helpdesk
-              </button>
+              </Button>
             ) : null}
             {selected.can_respond ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('RESPOND')}
-              >
+              <Button variant="outline-primary" disabled={busy} onClick={() => void act('RESPOND')}>
                 Record response
-              </button>
+              </Button>
             ) : null}
             {selected.can_escalate && selected.next_escalation_level ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-neutral ux4g-btn-m"
+              <Button
+                variant="outline-neutral"
                 disabled={busy}
                 onClick={() => void act('ESCALATE', { level: selected.next_escalation_level })}
               >
                 Escalate to L{selected.next_escalation_level}
-              </button>
+              </Button>
             ) : null}
             {selected.can_resolve ? (
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('RESOLVE')}
-              >
+              <Button disabled={busy} onClick={() => void act('RESOLVE')}>
                 Resolve
-              </button>
+              </Button>
             ) : null}
             {selected.can_close ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-neutral ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('CLOSE')}
-              >
+              <Button variant="outline-neutral" disabled={busy} onClick={() => void act('CLOSE')}>
                 Close
-              </button>
+              </Button>
             ) : null}
           </div>
           <p className="ux4g-body-s-default">
-            Desk ladder: {SAMPLE_LAB_GRIEVANCE_ESCALATION.map((e) => e.role_code).join(' → ')}
+            Desk ladder:{' '}
+            {SAMPLE_LAB_GRIEVANCE_ESCALATION.map(
+              (e) => DESK_LABELS[e.role_code] ?? e.role_code,
+            ).join(' → ')}
           </p>
-        </section>
+        </Card>
       ) : null}
     </div>
   );

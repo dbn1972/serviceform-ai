@@ -1,11 +1,13 @@
 'use client';
 
+import { Alert, Button, Card, Select, TextInput, TextLink } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import {
   SAMPLE_LAB_INSPECTION_PINS,
   SAMPLE_LAB_VERIFICATION_RESULTS,
 } from '@serviceform/m10-sample-lab/inspection-catalogue';
+import { EmptyState } from './EmptyState';
 
 interface InspectionCard {
   inspection_id: string;
@@ -103,112 +105,88 @@ export function InspectionDesk() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Inspection desk</h1>
         <p className="ux4g-body-m-default">
-          Schedule, start, and record non-statutory verification results (including deficiency
-          noted) for services that pin inspection nodes. Metadata-driven · no service forks · fail-
-          closed OPA · CERTIFIED=false · G6=false.
-        </p>
-        <p className="ux4g-body-m-default">
-          For departmental capacity calendars, use the{' '}
+          Schedule, start, and record non-statutory verification results for services that need a
+          site check. For calendars, use the{' '}
           <Link href="/scheduling" className="ux4g-text-link-m">
             scheduling desk
-          </Link>{' '}
-          (CMP-056 · Constitution #37).
+          </Link>
+          .
         </p>
       </section>
 
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
+        <Alert variant="error" title="Inspection desk">
           {error}{' '}
-          {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-text-link-m">
-              Sign in
-            </Link>
-          ) : null}
-        </p>
+          {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+        </Alert>
       ) : null}
 
-      <section aria-labelledby="request-heading">
-        <h2 id="request-heading" className="ux4g-heading-l-strong">
-          Request inspection
-        </h2>
-        <p className="ux4g-body-m-default">
-          Pick a published pin and an application id. Assignment uses role_code metadata only.
-        </p>
-        <div className="sf-stack">
-          <label className="ux4g-body-m-default" htmlFor="pin-code">
-            Inspection pin
-            <select
-              id="pin-code"
-              className="ux4g-select"
-              value={pinCode}
-              onChange={(e) => setPinCode(e.target.value)}
-            >
-              {SAMPLE_LAB_INSPECTION_PINS.map((p) => (
-                <option key={p.pin_code} value={p.pin_code}>
-                  {p.label}
-                  {p.catalogue_id ? ` · ${p.catalogue_id}` : ' · generic'}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="ux4g-body-m-default" htmlFor="application-id">
-            Application id
-            <input
-              id="application-id"
-              className="ux4g-input"
-              value={applicationId}
-              onChange={(e) => setApplicationId(e.target.value)}
-              placeholder="UUID"
-              autoComplete="off"
-            />
-          </label>
-          <button
-            type="button"
-            className="ux4g-btn-primary ux4g-btn-m"
+      <Card
+        title="Request inspection"
+        subtitle="Pick a published pin and an application id"
+        footer={
+          <Button
             disabled={busy || !applicationId.trim() || !pinCode}
             onClick={() => void createInspection()}
           >
-            Create request
-          </button>
+            {busy ? 'Creating…' : 'Create request'}
+          </Button>
+        }
+      >
+        <div className="sf-form-stack">
+          <Select
+            id="pin-code"
+            label="Inspection pin"
+            value={pinCode}
+            onChange={(e) => setPinCode(e.target.value)}
+            options={SAMPLE_LAB_INSPECTION_PINS.map((p) => ({
+              value: p.pin_code,
+              label: `${p.label}${p.catalogue_id ? ` · ${p.catalogue_id}` : ' · generic'}`,
+            }))}
+          />
+          <TextInput
+            id="application-id"
+            label="Application id"
+            value={applicationId}
+            onChange={(e) => setApplicationId(e.target.value)}
+            placeholder="UUID"
+            autoComplete="off"
+          />
         </div>
-      </section>
+      </Card>
 
-      <section aria-labelledby="queue-heading">
-        <h2 id="queue-heading" className="ux4g-heading-l-strong">
-          Available queue
-        </h2>
+      <Card title="Available queue">
         {items.length === 0 ? (
-          <p className="ux4g-body-m-default">No REQUESTED/SCHEDULED inspections in scope.</p>
+          <EmptyState
+            title="No inspections in queue"
+            icon="layers"
+            actionLabel="Refresh"
+            onAction={() => void load()}
+            testId="inspection-empty"
+          >
+            No requested or scheduled inspections are in scope for your desks yet.
+          </EmptyState>
         ) : (
           <ul className="sf-stack">
             {items.map((item) => (
               <li key={item.inspection_id}>
-                <button
-                  type="button"
-                  className="ux4g-btn-text-neutral ux4g-btn-s"
+                <Button
+                  variant="text-neutral"
+                  size="s"
                   onClick={() => setSelected(item)}
                 >
                   {item.pin_label ?? item.workflow_node_id ?? 'Inspection'} · {item.state_label}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
         )}
-      </section>
+      </Card>
 
       {selected ? (
-        <section aria-labelledby="detail-heading">
-          <h2 id="detail-heading" className="ux4g-heading-l-strong">
-            {selected.pin_label ?? 'Inspection'} · {selected.state_label}
-          </h2>
+        <Card title={`${selected.pin_label ?? 'Inspection'} · ${selected.state_label}`}>
           <p className="ux4g-body-m-default">
             Application <code>{selected.application_id}</code>
-            {selected.workflow_node_id ? (
-              <>
-                {' '}
-                · node <code>{selected.workflow_node_id}</code>
-              </>
-            ) : null}
             {selected.schedule_summary ? <> · {selected.schedule_summary}</> : null}
             {selected.verification_label ? (
               <>
@@ -219,28 +197,20 @@ export function InspectionDesk() {
           </p>
 
           {selected.can_schedule ? (
-            <div className="sf-stack">
-              <label className="ux4g-body-m-default" htmlFor="slot-ref">
-                Slot ref
-                <input
-                  id="slot-ref"
-                  className="ux4g-input"
-                  value={slotRef}
-                  onChange={(e) => setSlotRef(e.target.value)}
-                />
-              </label>
-              <label className="ux4g-body-m-default" htmlFor="location-ref">
-                Location ref
-                <input
-                  id="location-ref"
-                  className="ux4g-input"
-                  value={locationRef}
-                  onChange={(e) => setLocationRef(e.target.value)}
-                />
-              </label>
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
+            <div className="sf-form-stack">
+              <TextInput
+                id="slot-ref"
+                label="Slot ref"
+                value={slotRef}
+                onChange={(e) => setSlotRef(e.target.value)}
+              />
+              <TextInput
+                id="location-ref"
+                label="Location ref"
+                value={locationRef}
+                onChange={(e) => setLocationRef(e.target.value)}
+              />
+              <Button
                 disabled={busy}
                 onClick={() =>
                   void act('schedule', {
@@ -251,72 +221,61 @@ export function InspectionDesk() {
                 }
               >
                 Schedule
-              </button>
+              </Button>
             </div>
           ) : null}
 
           <div className="sf-actions">
             {selected.can_start ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('start')}
-              >
+              <Button variant="outline-primary" disabled={busy} onClick={() => void act('start')}>
                 Start
-              </button>
+              </Button>
             ) : null}
             {selected.can_cancel ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-neutral ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('cancel')}
-              >
+              <Button variant="outline-neutral" disabled={busy} onClick={() => void act('cancel')}>
                 Cancel
-              </button>
+              </Button>
             ) : null}
           </div>
 
           {selected.can_record_result ? (
-            <div className="sf-stack">
-              <label className="ux4g-body-m-default" htmlFor="result-code">
-                Verification result (non-statutory)
-                <select
-                  id="result-code"
-                  className="ux4g-select"
-                  value={resultCode}
-                  onChange={(e) => setResultCode(e.target.value)}
-                >
-                  {SAMPLE_LAB_VERIFICATION_RESULTS.map((r) => (
-                    <option key={r.code} value={r.code}>
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
+            <div className="sf-form-stack">
+              <Select
+                id="result-code"
+                label="Verification result (non-statutory)"
+                value={resultCode}
+                onChange={(e) => setResultCode(e.target.value)}
+                options={SAMPLE_LAB_VERIFICATION_RESULTS.map((r) => ({
+                  value: r.code,
+                  label: r.label,
+                }))}
+              />
+              <Button
                 disabled={busy}
                 onClick={() => void act('result', { verification_result: resultCode })}
               >
                 Record result
-              </button>
+              </Button>
             </div>
           ) : null}
 
           {selected.can_complete ? (
-            <button
-              type="button"
-              className="ux4g-btn-primary ux4g-btn-m"
-              disabled={busy}
-              onClick={() => void act('complete')}
-            >
+            <Button disabled={busy} onClick={() => void act('complete')}>
               Complete
-            </button>
+            </Button>
           ) : null}
-        </section>
+
+          {selected.workflow_node_id ? (
+            <div className="sf-officer-tech">
+              <details>
+                <summary>Technical details</summary>
+                <p className="ux4g-body-s-default">
+                  Workflow node <code>{selected.workflow_node_id}</code>
+                </p>
+              </details>
+            </div>
+          ) : null}
+        </Card>
       ) : null}
     </div>
   );
