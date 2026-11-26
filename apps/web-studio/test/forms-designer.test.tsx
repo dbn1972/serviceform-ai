@@ -23,7 +23,7 @@ describe('Studio forms designer pages', () => {
     expect(html).toContain(
       'href="/forms/designer?template=ind-soc-002.residence-certificate&amp;v=1.1.0"',
     );
-    expect(html).toContain('CMP-033 document id');
+    expect(html).toContain('Saved draft id');
     expect(renderToStaticMarkup(<StudioNav />)).toContain('href="/forms"');
   });
 

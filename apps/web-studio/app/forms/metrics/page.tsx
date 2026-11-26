@@ -23,8 +23,8 @@ export default function FormsMetricsPage() {
           @serviceform/forms-product-metrics (web-safe; no observability backend import).
         </p>
         <div className="sf-tag-row">
-          <span className="ux4g-tag-tonal-primary">P8-1 · D7 Measure</span>
-          <span className="ux4g-tag-outline-warning">SAMPLE_LAB · CERTIFIED=false</span>
+          <span className="ux4g-tag-tonal-primary">Forms product measure</span>
+          <span className="ux4g-tag-outline-warning">Sample lab</span>
           <span className="ux4g-tag-outline-neutral">DigiLocker out of scope</span>
         </div>
       </section>

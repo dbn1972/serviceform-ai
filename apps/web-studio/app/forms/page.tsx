@@ -1,9 +1,7 @@
-import { AppShell, Card, TextLink } from '@serviceform/ui-ux4g';
+import { TextLink } from '@serviceform/ui-ux4g';
 import { latestVersion, listTemplates } from '@serviceform/service-templates';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { OpenDraft } from '../../components/forms/OpenDraft';
-import { StudioNav } from '../../components/StudioNav';
+import { DesignerHub } from '../../components/DesignerHub';
 import { MATURITY_LABEL, STATUS_TAG } from '../../lib/templates';
 
 export const metadata: Metadata = {
@@ -13,49 +11,21 @@ export const metadata: Metadata = {
 export default function FormsPage() {
   const templates = listTemplates();
   return (
-    <AppShell
-      surface="service_studio"
-      title="Service Design Studio"
-      environmentLabel="SAMPLE_LAB"
-      nav={<StudioNav />}
-    >
-      <section className="sf-page-hero">
-        <h1 className="ux4g-heading-2xl-strong">Forms designer</h1>
-        <p className="ux4g-body-m-default">
-          Design application forms visually. Each version compiles to a CMP-009 FORM package (JSON
-          Schema + UX4G layout), is frozen in CMP-033 and pinned by its content hash. A form goes
-          live only when a different officer approves the service binding that pins it.
-        </p>
-        <div className="sf-tag-row">
-          <span className="ux4g-tag-tonal-primary">CMP-009 · CMP-033 · CMP-051 · CMP-052</span>
-          <span className="ux4g-tag-outline-warning">SAMPLE_LAB · not CERTIFIED</span>
-          <TextLink href="/forms/metrics">Forms product KPIs</TextLink>
-        </div>
-      </section>
-
-      <div className="sf-designer-start">
-        <Card
-          title="Start a blank form"
-          subtitle="One step and an empty section"
-          footer={
-            <div className="sf-actions">
-              <Link className="ux4g-btn-primary ux4g-btn-m" href="/forms/designer">
-                New blank form
-              </Link>
-            </div>
-          }
-        >
-          <p className="ux4g-body-m-default">
-            Add fields from the palette, including common government fields bound to canonical
-            semantic elements.
-          </p>
-        </Card>
-        <Card title="Open a saved draft" subtitle="CMP-033 FORM documents">
-          <OpenDraft />
-        </Card>
-      </div>
-
-      <Card title="Start from a catalogue template" subtitle="The designer opens a new version">
+    <DesignerHub
+      title="Forms designer"
+      description="Design application forms visually. Each version compiles to a form package (JSON Schema + UX4G layout), is frozen when published, and is pinned by its content hash. A form goes live only when a different officer approves the service binding that pins it."
+      blankTitle="Start a blank form"
+      blankSubtitle="One step and an empty section"
+      blankHref="/forms/designer"
+      blankCta="New blank form"
+      blankBody="Add fields from the palette, including common government fields bound to canonical semantic elements."
+      draftAction="/forms/designer"
+      draftKind="FORM"
+      draftSubtitle="Saved form drafts in this browser"
+      templatesTitle="Start from a catalogue template"
+      templatesSubtitle="The designer opens a new version"
+      heroSecondary={{ href: '/forms/metrics', label: 'Forms product KPIs' }}
+      templatesSlot={
         <div className="sf-table-wrap">
           <table className="sf-table">
             <caption>Versioned certificate templates</caption>
@@ -95,7 +65,7 @@ export default function FormsPage() {
             </tbody>
           </table>
         </div>
-      </Card>
-    </AppShell>
+      }
+    />
   );
 }

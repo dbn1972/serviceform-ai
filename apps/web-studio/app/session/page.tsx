@@ -11,12 +11,15 @@ export default function SessionPage() {
       nav={<StudioNav />}
     >
       <section className="sf-page-hero">
-        <h1 className="ux4g-heading-2xl-strong">Studio session</h1>
+        <h1 className="ux4g-heading-2xl-strong">Sample lab sign-in</h1>
         <p className="ux4g-body-m-default">
           Tenant id comes from this session cookie, never from a client tenant header.
         </p>
+        <div className="sf-tag-row">
+          <span className="ux4g-tag-outline-warning">Sample lab · simulated IdP</span>
+        </div>
       </section>
-      <Card title="SIMULATED workforce session">
+      <Card title="Simulated workforce session">
         <SessionForm defaultRole="STUDIO_DESIGNER" />
       </Card>
     </AppShell>

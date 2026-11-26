@@ -87,7 +87,8 @@ export function InteropHygieneDesk() {
         Temporal remains the durable runtime. BPMN is an import/export profile (
         <code className="sf-hash">isExecutable=&quot;false&quot;</code>). Signed{' '}
         <code className="sf-hash">.sfpackage</code> manifests forbid embedded secrets. In-flight
-        migration is dry-run + maker-checker only — never silent. CERTIFIED=false · G6=false.
+        migration is dry-run + maker-checker only — never silent. Sample lab — not production
+        certified.
       </Alert>
 
       <Card

@@ -1,5 +1,6 @@
-import { AppShell, Card, TextLink } from '@serviceform/ui-ux4g';
+import { AppShell, Card } from '@serviceform/ui-ux4g';
 import { listTemplates } from '@serviceform/service-templates';
+import Link from 'next/link';
 import { StudioNav } from '../components/StudioNav';
 
 export default function HomePage() {
@@ -23,7 +24,9 @@ export default function HomePage() {
         subtitle={`${listTemplates().length} versioned templates · docs/catalogue registry`}
         footer={
           <div className="sf-actions">
-            <TextLink href="/templates">Browse templates</TextLink>
+            <Link className="ux4g-btn-primary ux4g-btn-m" href="/templates">
+              Browse templates
+            </Link>
           </div>
         }
       >
@@ -39,21 +42,24 @@ export default function HomePage() {
         subtitle="Forms · Workflow · Rules · Fee · SLA · Evidence · Credential"
         footer={
           <div className="sf-actions">
-            <TextLink href="/forms">Forms</TextLink>
-            <TextLink href="/workflows">Workflows</TextLink>
-            <TextLink href="/rules">Rules</TextLink>
-            <TextLink href="/fees">Fees</TextLink>
-            <TextLink href="/sla">SLA</TextLink>
-            <TextLink href="/evidence">Evidence</TextLink>
-            <TextLink href="/credentials">Credentials</TextLink>
-            <TextLink href="/publication">Publication desk</TextLink>
-            <TextLink href="/interop">Interop hygiene</TextLink>
+            <Link className="ux4g-btn-primary ux4g-btn-m" href="/forms">
+              Open forms designer
+            </Link>
+            <Link className="ux4g-btn-outline-primary ux4g-btn-m" href="/workflows">
+              Workflows
+            </Link>
+            <Link className="ux4g-btn-outline-primary ux4g-btn-m" href="/rules">
+              Rules
+            </Link>
+            <Link className="ux4g-btn-outline-neutral ux4g-btn-m" href="/publication">
+              Publication desk
+            </Link>
           </div>
         }
       >
         <p className="ux4g-body-m-default">
           Metadata-driven authoring with UX4G. SAMPLE_LAB_DUMMY overlays are labeled; nothing here
-          invents statute. CERTIFIED=false · G6=false.
+          invents statute. Fees, SLA, evidence and credentials are under More in the header.
         </p>
       </Card>
 
@@ -62,16 +68,23 @@ export default function HomePage() {
         subtitle="IND-SOC-002 · public e-District sample"
         footer={
           <div className="sf-actions">
-            <TextLink href="/templates/ind-soc-002.residence-certificate">Open template</TextLink>
-            <TextLink href="/services/new">Author service metadata</TextLink>
-            <TextLink href="/metadata">Metadata designer</TextLink>
-            <TextLink href="/publication">Publication desk</TextLink>
+            <Link
+              className="ux4g-btn-primary ux4g-btn-m"
+              href="/templates/ind-soc-002.residence-certificate"
+            >
+              Open template
+            </Link>
+            <Link className="ux4g-btn-outline-primary ux4g-btn-m" href="/services/new">
+              Author service metadata
+            </Link>
+            <Link className="ux4g-btn-outline-neutral ux4g-btn-m" href="/metadata">
+              Metadata designer
+            </Link>
           </div>
         }
       >
         <p className="ux4g-body-m-default">
-          No bespoke backend for this normal service. DigiLocker remains SAMPLE_LAB / SIMULATED. G6
-          not issued.
+          No bespoke backend for this normal service. DigiLocker remains SAMPLE_LAB / SIMULATED.
         </p>
       </Card>
 
@@ -80,22 +93,30 @@ export default function HomePage() {
         subtitle="IND-SOC-031 · SAMPLE_LAB DUMMY · DRAFT · SF-33 gated for PUBLISH"
         footer={
           <div className="sf-actions">
-            <TextLink href="/templates/ind-soc-031.income-certificate">Open template</TextLink>
-            <TextLink href="/forms/designer?template=ind-soc-031.income-certificate">
+            <Link
+              className="ux4g-btn-primary ux4g-btn-m"
+              href="/templates/ind-soc-031.income-certificate"
+            >
+              Open template
+            </Link>
+            <Link
+              className="ux4g-btn-outline-primary ux4g-btn-m"
+              href="/forms/designer?template=ind-soc-031.income-certificate"
+            >
               Forms designer
-            </TextLink>
-            <TextLink href="/fees/designer?template=ind-soc-031-dummy">Fee (DUMMY)</TextLink>
-            <TextLink href="/sla/designer?template=ind-soc-031-sla">SLA (DUMMY)</TextLink>
-            <TextLink href="/evidence/designer?template=ind-soc-031-evidence">Evidence</TextLink>
-            <TextLink href="/credentials/designer?template=ind-soc-031-credential">
-              Credential
-            </TextLink>
+            </Link>
+            <Link
+              className="ux4g-btn-outline-neutral ux4g-btn-m"
+              href="/fees/designer?template=ind-soc-031-dummy"
+            >
+              Fee (DUMMY)
+            </Link>
           </div>
         }
       >
         <p className="ux4g-body-m-default">
           Second-service config-reuse path. No bespoke Income backend. Lab-offer of DRAFT under
-          SAMPLE_LAB only — not a statutory PUBLISHED offering. CERTIFIED=false · G6=false.
+          SAMPLE_LAB only — not a statutory PUBLISHED offering.
         </p>
       </Card>
     </AppShell>

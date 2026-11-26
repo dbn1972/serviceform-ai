@@ -32,14 +32,14 @@ export function OpenDraft({
         onSubmit={(e) => {
           if (!UUID_RE.test(id.trim())) {
             e.preventDefault();
-            setError('Enter a CMP-033 document id (UUID).');
+            setError('Enter a saved draft id (UUID).');
           }
         }}
       >
         <TextInput
           id="open-draft-id"
           name="document"
-          label="CMP-033 document id"
+          label="Saved draft id"
           value={id}
           error={error || undefined}
           onChange={(e) => {
