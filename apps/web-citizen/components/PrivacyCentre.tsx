@@ -1,11 +1,13 @@
 'use client';
 
+import { Button, Icon, Select } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   SAMPLE_LAB_PRIVACY_REQUEST_TYPES,
   SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES,
 } from '@serviceform/m10-sample-lab/privacy-catalogue';
+import { FormAlert } from './FormFeedback';
 
 interface PortalConsent {
   consent_id: string;
@@ -50,6 +52,11 @@ interface PurposeView {
   requires_consent: boolean;
 }
 
+function retentionPeriodLabel(status: string): string {
+  if (status === 'UNBOUND' || status === 'unbound') return 'Not yet set by the department';
+  return status.replaceAll('_', ' ').toLowerCase();
+}
+
 export function PrivacyCentre() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -62,6 +69,19 @@ export function PrivacyCentre() {
     `${SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES[0].owner_component}|${SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES[0].scope_ref}`,
   );
   const [selected, setSelected] = useState<PortalRequest | null>(null);
+
+  const requestTypeOptions = useMemo(
+    () => SAMPLE_LAB_PRIVACY_REQUEST_TYPES.map((t) => ({ value: t.code, label: t.label })),
+    [],
+  );
+  const scopeOptions = useMemo(
+    () =>
+      SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES.map((s) => ({
+        value: `${s.owner_component}|${s.scope_ref}`,
+        label: s.label,
+      })),
+    [],
+  );
 
   const load = useCallback(async () => {
     setError(null);
@@ -144,21 +164,24 @@ export function PrivacyCentre() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Privacy centre</h1>
         <p className="ux4g-body-m-default">
-          View consent and purpose use, retention posture, and submit data-rights requests. Owning
-          services fulfil changes — this centre does not invent statute, purge foreign tables, or
-          decide eligibility. SAMPLE_LAB · CERTIFIED=false · G6=false.
+          Review how your data is used, see retention posture, and submit a rights request. Officers
+          fulfil changes — this centre does not decide eligibility.
         </p>
       </section>
 
+      <FormAlert tone="info" title="Sample lab environment">
+        This portal runs in SAMPLE_LAB. It is not a production privacy desk.
+      </FormAlert>
+
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
+        <FormAlert tone="error">
           {error}{' '}
           {error.includes('Sign in') ? (
             <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
-        </p>
+        </FormAlert>
       ) : null}
 
       <section aria-labelledby="purposes-heading">
@@ -166,12 +189,19 @@ export function PrivacyCentre() {
           Published purposes
         </h2>
         {purposes.length === 0 ? (
-          <p className="ux4g-body-m-default">No published purposes visible yet.</p>
+          <section className="sf-empty" aria-labelledby="purposes-empty">
+            <h3 id="purposes-empty" className="ux4g-heading-s-strong">
+              No published purposes yet
+            </h3>
+            <p className="ux4g-body-m-default">
+              Purposes appear here when the department publishes them.
+            </p>
+          </section>
         ) : (
           <ul className="sf-stack">
             {purposes.map((p) => (
               <li key={p.purpose_id} className="ux4g-body-m-default">
-                <strong>{p.code}</strong> — {p.label}
+                <strong>{p.label}</strong>
                 {p.requires_consent ? ' · requires consent' : ''} · {p.status}
               </li>
             ))}
@@ -184,11 +214,15 @@ export function PrivacyCentre() {
           Your consents
         </h2>
         <p className="ux4g-body-s-default">
-          Consent history is owned by CMP-030. Withdrawal is requested through a privacy rights
-          request (CONSENT_WITHDRAWAL) — direct withdraw is not citizen-granted.
+          To withdraw consent, submit a rights request below and choose consent withdrawal.
         </p>
         {consents.length === 0 ? (
-          <p className="ux4g-body-m-default">No consents on record for this account.</p>
+          <section className="sf-empty" aria-labelledby="consents-empty">
+            <h3 id="consents-empty" className="ux4g-heading-s-strong">
+              No consents on record
+            </h3>
+            <p className="ux4g-body-m-default">Consents for this account will show here.</p>
+          </section>
         ) : (
           <ul className="sf-stack">
             {consents.map((c) => (
@@ -207,26 +241,22 @@ export function PrivacyCentre() {
         {retention ? (
           <>
             <p className="ux4g-body-m-default">{retention.note}</p>
-            <p className="ux4g-body-s-default">
-              Visibility: {retention.visibility}
-              {retention.invented_statutory_period_forbidden
-                ? ' · invented statutory period forbidden'
-                : ''}
-              {retention.citizen_archive_delete_forbidden
-                ? ' · citizen archive/delete forbidden'
-                : ''}
-            </p>
             <ul className="sf-stack">
               {retention.entries.map((e) => (
                 <li key={`${e.owner_component}:${e.resource_kind}`} className="ux4g-body-m-default">
-                  {e.owner_component} / {e.resource_kind} · period {e.period_ref_status} ·{' '}
-                  {e.eligibility}
+                  {e.resource_kind.replaceAll('_', ' ')} · period{' '}
+                  {retentionPeriodLabel(e.period_ref_status)} · {e.eligibility}
                 </li>
               ))}
             </ul>
           </>
         ) : (
-          <p className="ux4g-body-m-default">Retention catalogue unavailable.</p>
+          <section className="sf-empty" aria-labelledby="retention-empty">
+            <h3 id="retention-empty" className="ux4g-heading-s-strong">
+              Retention details unavailable
+            </h3>
+            <p className="ux4g-body-m-default">Try again later, or contact the helpdesk.</p>
+          </section>
         )}
       </section>
 
@@ -235,42 +265,25 @@ export function PrivacyCentre() {
           Submit a rights request
         </h2>
         <form className="sf-stack" onSubmit={(e) => void submit(e)}>
-          <label className="ux4g-label-m-default">
-            Request type
-            <select
-              className="ux4g-select"
-              value={requestType}
-              onChange={(e) => setRequestType(e.target.value)}
-              required
-            >
-              {SAMPLE_LAB_PRIVACY_REQUEST_TYPES.map((t) => (
-                <option key={t.code} value={t.code}>
-                  {t.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="ux4g-label-m-default">
-            Scope (published template)
-            <select
-              className="ux4g-select"
-              value={scopeKey}
-              onChange={(e) => setScopeKey(e.target.value)}
-              required
-            >
-              {SAMPLE_LAB_PRIVACY_SCOPE_TEMPLATES.map((s) => (
-                <option
-                  key={`${s.owner_component}|${s.scope_ref}`}
-                  value={`${s.owner_component}|${s.scope_ref}`}
-                >
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="submit" className="ux4g-btn-primary ux4g-btn-m" disabled={busy}>
+          <Select
+            id="privacy-request-type"
+            label="Request type"
+            value={requestType}
+            options={requestTypeOptions}
+            onChange={(e) => setRequestType(e.target.value)}
+            required
+          />
+          <Select
+            id="privacy-scope"
+            label="What this request covers"
+            value={scopeKey}
+            options={scopeOptions}
+            onChange={(e) => setScopeKey(e.target.value)}
+            required
+          />
+          <Button type="submit" disabled={busy}>
             {busy ? 'Submitting…' : 'Submit request'}
-          </button>
+          </Button>
         </form>
       </section>
 
@@ -279,18 +292,27 @@ export function PrivacyCentre() {
           My privacy requests
         </h2>
         {requests.length === 0 ? (
-          <p className="ux4g-body-m-default">No privacy requests yet.</p>
+          <section className="sf-empty" aria-labelledby="privacy-requests-empty">
+            <span className="sf-service-mark">
+              <Icon name="document" size={24} />
+            </span>
+            <h3 id="privacy-requests-empty" className="ux4g-heading-s-strong">
+              No privacy requests yet
+            </h3>
+            <p className="ux4g-body-m-default">Submit a rights request above to get started.</p>
+          </section>
         ) : (
           <ul className="sf-stack">
             {requests.map((r) => (
               <li key={r.request_id}>
-                <button
+                <Button
                   type="button"
-                  className="ux4g-btn-text-neutral ux4g-btn-s"
+                  variant="text-neutral"
+                  size="s"
                   onClick={() => setSelected(r)}
                 >
                   {r.request_type_label} · {r.status_label} · scope {r.scope_count}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -307,17 +329,17 @@ export function PrivacyCentre() {
             {selected.request_type_label}
           </h2>
           <p className="ux4g-body-m-default">
-            Status: {selected.status_label} · id {selected.request_id.slice(0, 8)}…
+            Status: {selected.status_label} · reference {selected.request_id.slice(0, 8)}…
           </p>
           {selected.can_withdraw ? (
-            <button
+            <Button
               type="button"
-              className="ux4g-btn-outline-neutral ux4g-btn-m"
+              variant="outline-neutral"
               disabled={busy}
               onClick={() => void withdraw()}
             >
               Withdraw request
-            </button>
+            </Button>
           ) : null}
         </section>
       ) : null}

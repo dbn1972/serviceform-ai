@@ -1,9 +1,9 @@
 'use client';
 
-import { Icon, TextInput } from '@serviceform/ui-ux4g';
+import { Icon, Select, TextInput } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import type { CatalogueEntry } from '../lib/catalogue';
+import type { CatalogueEntry } from '../lib/catalogue-types';
 
 const ALL = 'ALL';
 
@@ -20,6 +20,13 @@ export function ServiceCatalogue({ entries }: { entries: readonly CatalogueEntry
   );
   const offered = shown.filter((e) => e.offered);
   const upcoming = shown.filter((e) => !e.offered);
+  const categoryOptions = useMemo(
+    () => [
+      { value: ALL, label: 'All categories' },
+      ...categories.map((c) => ({ value: c, label: c })),
+    ],
+    [categories],
+  );
 
   return (
     <div className="sf-section">
@@ -32,26 +39,13 @@ export function ServiceCatalogue({ entries }: { entries: readonly CatalogueEntry
           hint="For example: income, birth, residence"
           onChange={(e) => setQuery(e.target.value)}
         />
-        <div className="ux4g-input-container ux4g-input-m ux4g-input-default">
-          <label className="ux4g-label-m-default" htmlFor="service-category">
-            Category
-          </label>
-          <div className="ux4g-input">
-            <select
-              id="service-category"
-              className="ux4g-input-input"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value={ALL}>All categories</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <Select
+          id="service-category"
+          label="Category"
+          value={category}
+          options={categoryOptions}
+          onChange={(e) => setCategory(e.target.value)}
+        />
         <p className="sf-result-count" role="status" aria-live="polite">
           {shown.length} of {entries.length} services
         </p>
@@ -62,7 +56,12 @@ export function ServiceCatalogue({ entries }: { entries: readonly CatalogueEntry
           Apply online
         </h2>
         {offered.length === 0 ? (
-          <p className="ux4g-body-m-default">No online service matches your search.</p>
+          <section className="sf-empty" aria-labelledby="services-online-empty">
+            <h3 id="services-online-empty" className="ux4g-heading-s-strong">
+              No online service matches your search
+            </h3>
+            <p className="ux4g-body-m-default">Try another keyword or clear the category filter.</p>
+          </section>
         ) : (
           <ul className="sf-catalogue-grid" aria-label="Services you can apply for">
             {offered.map((e) => (
@@ -127,7 +126,12 @@ export function ServiceCatalogue({ entries }: { entries: readonly CatalogueEntry
           here yet, so you cannot apply online for them in this portal.
         </p>
         {upcoming.length === 0 ? (
-          <p className="ux4g-body-m-default">No upcoming service matches your search.</p>
+          <section className="sf-empty" aria-labelledby="services-upcoming-empty">
+            <h3 id="services-upcoming-empty" className="ux4g-heading-s-strong">
+              No upcoming service matches your search
+            </h3>
+            <p className="ux4g-body-m-default">Try another keyword or clear the category filter.</p>
+          </section>
         ) : (
           <ul className="sf-catalogue-grid" aria-label="Services not yet available">
             {upcoming.map((e) => (

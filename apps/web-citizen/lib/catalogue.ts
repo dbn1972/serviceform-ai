@@ -8,27 +8,12 @@ import {
   stepLabels,
   type CertificateTemplate,
 } from '@serviceform/service-templates';
+import { citizenPolicyText } from './citizen-policy-text';
 import { portalPlacement } from './portal/platform';
 
-export interface CatalogueEntry {
-  catalogue_id: string;
-  name: string;
-  summary: string;
-  category: string;
-  output_type: string;
-  offered: boolean;
-  fee: string;
-  service_time: string;
-  eligibility: string;
-  steps: number;
-}
-
-const PENDING = 'POLICY_INPUT_REQUIRED';
-
-/** Citizen-facing copy for a policy fact the department has not published yet. */
-export function policyText(value: string): string {
-  return value === PENDING ? 'To be published by the department' : value;
-}
+export type { CatalogueEntry } from './catalogue-types';
+export { citizenPolicyText, isSampleLabPolicy, policyText } from './citizen-policy-text';
+import type { CatalogueEntry } from './catalogue-types';
 
 /**
  * A service is offered when this portal's placement binds it and policy facts are resolved.
@@ -55,9 +40,9 @@ export function catalogueEntries(): CatalogueEntry[] {
       category: t.category,
       output_type: t.output_type,
       offered: isOffered(t),
-      fee: policyText(t.policy.fee),
-      service_time: policyText(t.policy.service_time),
-      eligibility: policyText(t.policy.eligibility),
+      fee: citizenPolicyText(t.policy.fee),
+      service_time: citizenPolicyText(t.policy.service_time),
+      eligibility: citizenPolicyText(t.policy.eligibility),
       steps: stepLabels(publishedVersion(t) ?? latestVersion(t)).length,
     }))
     .sort((a, b) => Number(b.offered) - Number(a.offered) || a.name.localeCompare(b.name));

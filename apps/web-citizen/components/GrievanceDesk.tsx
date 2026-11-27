@@ -1,8 +1,10 @@
 'use client';
 
+import { Button, Icon, Select } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SAMPLE_LAB_GRIEVANCE_CATEGORIES } from '@serviceform/m10-sample-lab/grievance-catalogue';
+import { FormAlert } from './FormFeedback';
 
 interface PortalGrievance {
   grievance_id: string;
@@ -32,6 +34,23 @@ export function GrievanceDesk() {
   const [applicationId, setApplicationId] = useState('');
   const [selected, setSelected] = useState<PortalGrievance | null>(null);
   const [note, setNote] = useState('');
+
+  const categoryOptions = useMemo(
+    () => SAMPLE_LAB_GRIEVANCE_CATEGORIES.map((c) => ({ value: c.code, label: c.label })),
+    [],
+  );
+  const applicationOptions = useMemo(
+    () =>
+      apps.map((a) => ({
+        value: a.application_id,
+        label:
+          (a.catalogue_id ?? 'Application') +
+          ' · ' +
+          a.application_id.slice(0, 8) +
+          (a.status ? ` · ${a.status}` : ''),
+      })),
+    [apps],
+  );
 
   const load = useCallback(async () => {
     setError(null);
@@ -112,21 +131,25 @@ export function GrievanceDesk() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Grievances & helpdesk</h1>
         <p className="ux4g-body-m-default">
-          Raise an issue against one of your applications and track helpdesk status. Categories
-          follow SAMPLE_LAB metadata (case, document, payment, fulfillment, other). Officers decide
-          outcomes — not an AI. SAMPLE_LAB · CERTIFIED=false · G6=false.
+          Raise an issue about one of your applications and track its status. An officer decides the
+          outcome — not an automated system.
         </p>
       </section>
 
+      <FormAlert tone="info" title="Sample lab environment">
+        This desk runs in SAMPLE_LAB. Categories are lab metadata (case, document, payment,
+        fulfillment, other).
+      </FormAlert>
+
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
+        <FormAlert tone="error">
           {error}{' '}
           {error.includes('Sign in') ? (
             <Link href="/login" className="ux4g-text-link-m">
               Sign in
             </Link>
           ) : null}
-        </p>
+        </FormAlert>
       ) : null}
 
       <section aria-labelledby="raise-heading">
@@ -134,45 +157,26 @@ export function GrievanceDesk() {
           Raise a grievance
         </h2>
         <form className="sf-stack" onSubmit={(e) => void raise(e)}>
-          <label className="ux4g-label-m-default">
-            Category
-            <select
-              className="ux4g-select"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              {SAMPLE_LAB_GRIEVANCE_CATEGORIES.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="ux4g-label-m-default">
-            Application
-            <select
-              className="ux4g-select"
-              value={applicationId}
-              onChange={(e) => setApplicationId(e.target.value)}
-              required
-            >
-              <option value="">Select application</option>
-              {apps.map((a) => (
-                <option key={a.application_id} value={a.application_id}>
-                  {(a.catalogue_id ?? 'Application') + ' · ' + a.application_id.slice(0, 8)}
-                  {a.status ? ` · ${a.status}` : ''}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="submit"
-            className="ux4g-btn-primary ux4g-btn-m"
-            disabled={busy || !applicationId}
-          >
+          <Select
+            id="grievance-category"
+            label="Category"
+            value={category}
+            options={categoryOptions}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          />
+          <Select
+            id="grievance-application"
+            label="Application"
+            value={applicationId}
+            options={applicationOptions}
+            placeholder="Select application"
+            onChange={(e) => setApplicationId(e.target.value)}
+            required
+          />
+          <Button type="submit" disabled={busy || !applicationId}>
             {busy ? 'Filing…' : 'File grievance'}
-          </button>
+          </Button>
         </form>
       </section>
 
@@ -181,19 +185,30 @@ export function GrievanceDesk() {
           My grievances
         </h2>
         {items.length === 0 ? (
-          <p className="ux4g-body-m-default">No grievances filed yet.</p>
+          <section className="sf-empty" aria-labelledby="grievances-empty">
+            <span className="sf-service-mark">
+              <Icon name="document" size={24} />
+            </span>
+            <h3 id="grievances-empty" className="ux4g-heading-s-strong">
+              No grievances filed yet
+            </h3>
+            <p className="ux4g-body-m-default">
+              When you file a grievance, it appears here with its helpdesk status.
+            </p>
+          </section>
         ) : (
           <ul className="sf-stack">
             {items.map((g) => (
               <li key={g.grievance_id}>
-                <button
+                <Button
                   type="button"
-                  className="ux4g-btn-text-neutral ux4g-btn-s"
+                  variant="text-neutral"
+                  size="s"
                   onClick={() => setSelected(g)}
                 >
                   {g.reference_code} · {g.status_label}
                   {g.category_label ? ` · ${g.category_label}` : ''}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -218,9 +233,10 @@ export function GrievanceDesk() {
             </p>
           ) : null}
           {(selected.can_respond || selected.can_request_escalation) && (
-            <label className="ux4g-label-m-default">
-              Note (stored as opaque SIMULATED ref — avoid personal data)
+            <label className="ux4g-label-m-default" htmlFor="grievance-note">
+              Note (do not include personal data you do not want stored)
               <textarea
+                id="grievance-note"
                 className="ux4g-textarea"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
@@ -230,34 +246,29 @@ export function GrievanceDesk() {
           )}
           <div className="sf-actions">
             {selected.can_respond ? (
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('RESPOND')}
-              >
+              <Button type="button" disabled={busy} onClick={() => void act('RESPOND')}>
                 Send reply
-              </button>
+              </Button>
             ) : null}
             {selected.can_request_escalation ? (
-              <button
+              <Button
                 type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
+                variant="outline-primary"
                 disabled={busy}
                 onClick={() => void act('REQUEST_ESCALATION')}
               >
                 Request escalation
-              </button>
+              </Button>
             ) : null}
             {selected.can_withdraw ? (
-              <button
+              <Button
                 type="button"
-                className="ux4g-btn-outline-neutral ux4g-btn-m"
+                variant="outline-neutral"
                 disabled={busy}
                 onClick={() => void act('WITHDRAW')}
               >
                 Withdraw
-              </button>
+              </Button>
             ) : null}
           </div>
         </section>

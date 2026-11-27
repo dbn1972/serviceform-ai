@@ -190,8 +190,8 @@ export function EvidenceUploadField({
         </FormAlert>
       ) : null}
       {accepted && value ? (
-        <FormAlert tone="success" title="Technically accepted (CMP-013)">
-          This is not business verification — the officer still decides. CERTIFIED=false · G6=false.
+        <FormAlert tone="success" title="Upload accepted">
+          This is a technical accept only — an officer still reviews your evidence.
         </FormAlert>
       ) : null}
       {value && !accepted ? (

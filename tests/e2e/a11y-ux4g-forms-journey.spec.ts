@@ -326,7 +326,7 @@ test.describe('citizen apply journey: keyboard only (2.1.1, 2.4.3, 3.3.1)', () =
       mimeType: 'application/pdf',
       buffer: SAMPLE_EVIDENCE_PDF,
     });
-    await expect(page.getByText(/Technically accepted \(CMP-013\)/i)).toBeVisible({
+    await expect(page.getByText(/Upload accepted/i)).toBeVisible({
       timeout: 30_000,
     });
     await tabTo(page, saveAndContinue(page));
