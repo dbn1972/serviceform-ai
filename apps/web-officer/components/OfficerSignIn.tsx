@@ -1,12 +1,17 @@
 'use client';
 
-import { Alert, Button, Card, RadioGroup } from '@serviceform/ui-ux4g';
+import { Alert, Button, Card, Select } from '@serviceform/ui-ux4g';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { deskHomeForRoles } from '../lib/portal/desk';
+import { deskHomeForRoles, deskLabelsForRoles } from '../lib/portal/desk';
 import { safeNext } from '../lib/safe-next';
 
 type LabOfficer = { subject: string; display_name: string; roles: string[] };
+
+function officerOptionLabel(o: LabOfficer): string {
+  const desks = deskLabelsForRoles(o.roles);
+  return desks.length > 0 ? `${o.display_name} — ${desks.join(' · ')}` : o.display_name;
+}
 
 /** SAMPLE_LAB sign-in through the SIMULATED IdP; the session itself is issued by CMP-004. */
 export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined }) {
@@ -51,7 +56,7 @@ export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined })
   return (
     <Card
       title="Officer sign in"
-      subtitle="SAMPLE_LAB · SIMULATED identity provider · session issued by CMP-004"
+      subtitle="Sample lab · simulated identity provider"
       footer={
         <Button onClick={() => void signIn()} disabled={busy || !subject}>
           {busy ? 'Signing in…' : 'Sign in'}
@@ -59,18 +64,22 @@ export function OfficerSignIn({ nextParam }: { nextParam?: string | undefined })
       }
     >
       {officers.length > 0 ? (
-        <RadioGroup
-          name="officer"
-          legend="Sign in as"
-          value={subject}
-          onChange={setSubject}
-          options={officers.map((o) => ({
-            value: o.subject,
-            label: `${o.display_name} (${o.roles.join(', ')})`,
-          }))}
-        />
+        <div className="sf-form-stack">
+          <Select
+            id="officer"
+            name="officer"
+            label="Sign in as"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            options={officers.map((o) => ({
+              value: o.subject,
+              label: officerOptionLabel(o),
+            }))}
+            hint="Display name and desk labels only — role codes stay off the label."
+          />
+        </div>
       ) : (
-        <p className="ux4g-body-m-default">No SAMPLE_LAB officers are available.</p>
+        <p className="ux4g-body-m-default">No sample lab officers are available.</p>
       )}
       {error ? (
         <Alert variant="error" title="Sign in failed">

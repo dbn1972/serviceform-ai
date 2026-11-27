@@ -1,8 +1,10 @@
 'use client';
 
+import { Alert, Button, Card, Select, TextInput, TextLink } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { SAMPLE_LAB_APPOINTMENT_TYPES } from '@serviceform/m10-sample-lab/appointment-catalogue';
+import { EmptyState } from './EmptyState';
 
 interface SlotCard {
   slot_id: string;
@@ -139,202 +141,161 @@ export function SchedulingDesk() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Scheduling desk</h1>
         <p className="ux4g-body-m-default">
-          Book, reschedule, and close appointments from reusable CMP-056 calendar metadata — beside
-          inspection verification. Opaque refs only · atomic capacity · notify failure does not
-          cancel · COMPLETED can release WAIT_VERIFICATION without polling · CERTIFIED=false ·
-          G6=false.
-        </p>
-        <p className="ux4g-body-m-default">
+          Book, reschedule, and close appointments from reusable calendar metadata — beside
+          inspection verification.{' '}
           <Link href="/inspection" className="ux4g-text-link-m">
             Open inspection desk
           </Link>{' '}
-          for CMP-018 results after a site visit is booked. Citizens self-serve at the citizen
-          portal Appointments desk.
+          for site-visit results.
         </p>
       </section>
 
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
-          {error}{' '}
-          {error.includes('Sign in') ? (
-            <Link href="/login" className="ux4g-text-link-m">
-              Sign in
-            </Link>
-          ) : null}
-        </p>
+        <Alert variant="error" title="Scheduling desk">
+          {error} {error.includes('Sign in') ? <TextLink href="/login">Sign in</TextLink> : null}
+        </Alert>
       ) : null}
 
-      <section aria-labelledby="types-heading">
-        <h2 id="types-heading" className="ux4g-heading-l-strong">
-          Appointment types
-        </h2>
-        <p className="ux4g-body-m-default">
-          Published SAMPLE_LAB metadata pins — not statute calendars.
-        </p>
+      <Card
+        title="Appointment types"
+        subtitle="Published sample lab metadata — not statute calendars"
+      >
         <ul className="sf-stack">
           {SAMPLE_LAB_APPOINTMENT_TYPES.map((t) => (
             <li key={t.appointment_type_ref}>
               <span className="ux4g-body-m-default">
-                <strong>{t.label}</strong> · <code>{t.appointment_type_ref}</code>
+                <strong>{t.label}</strong>
                 {t.related_inspection_pin ? (
-                  <>
-                    {' '}
-                    · beside pin <code>{t.related_inspection_pin}</code>
-                  </>
+                  <> · beside inspection pin {t.related_inspection_pin}</>
                 ) : null}
               </span>
             </li>
           ))}
         </ul>
-      </section>
+      </Card>
 
-      <section aria-labelledby="slots-heading">
-        <h2 id="slots-heading" className="ux4g-heading-l-strong">
-          Available slots
-        </h2>
-        <label className="ux4g-body-m-default" htmlFor="participant-ref">
-          Participant ref (opaque)
-          <input
+      <Card title="Available slots">
+        <div className="sf-form-stack">
+          <TextInput
             id="participant-ref"
-            className="ux4g-input"
+            label="Participant ref"
             value={participantRef}
             onChange={(e) => setParticipantRef(e.target.value)}
             autoComplete="off"
+            hint="Opaque reference only — no PII."
           />
-        </label>
-        {slots.length === 0 ? (
-          <p className="ux4g-body-m-default">No open slots with remaining capacity.</p>
-        ) : (
-          <ul className="sf-stack">
-            {slots.map((slot) => (
-              <li key={slot.slot_id}>
-                <div className="sf-stack">
-                  <p className="ux4g-body-m-default">
-                    {slot.label} · {slot.type_label ?? 'Appointment'} · remaining {slot.remaining}/
-                    {slot.capacity}
-                    <br />
-                    <code>{slot.slot_ref}</code> · opens {slot.opens_at}
-                  </p>
-                  <button
-                    type="button"
-                    className="ux4g-btn-primary ux4g-btn-m"
-                    disabled={busy || !slot.can_book}
-                    onClick={() => void book(slot)}
+          {slots.length === 0 ? (
+            <EmptyState
+              title="No open slots"
+              icon="clock"
+              actionLabel="Refresh slots"
+              onAction={() => void loadSlots()}
+              testId="scheduling-empty"
+            >
+              No open slots with remaining capacity. Refresh after seeding the lab calendar.
+            </EmptyState>
+          ) : (
+            <ul className="sf-stack">
+              {slots.map((slot) => (
+                <li key={slot.slot_id}>
+                  <Card
+                    title={slot.label}
+                    subtitle={`${slot.type_label ?? 'Appointment'} · remaining ${slot.remaining}/${slot.capacity}`}
+                    footer={
+                      <Button disabled={busy || !slot.can_book} onClick={() => void book(slot)}>
+                        Book slot
+                      </Button>
+                    }
                   >
-                    Book slot
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+                    <p className="ux4g-body-s-default">Opens {slot.opens_at}</p>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </Card>
 
-      <section aria-labelledby="lookup-heading">
-        <h2 id="lookup-heading" className="ux4g-heading-l-strong">
-          Look up appointment
-        </h2>
-        <label className="ux4g-body-m-default" htmlFor="appointment-id">
-          Appointment id
-          <input
-            id="appointment-id"
-            className="ux4g-input"
-            value={lookupId}
-            onChange={(e) => setLookupId(e.target.value)}
-            placeholder="UUID"
-            autoComplete="off"
-          />
-        </label>
-        <button
-          type="button"
-          className="ux4g-btn-outline-primary ux4g-btn-m"
-          disabled={busy || !lookupId.trim()}
-          onClick={() => void lookup()}
-        >
-          Load
-        </button>
-      </section>
+      <Card
+        title="Look up appointment"
+        footer={
+          <Button
+            variant="outline-primary"
+            disabled={busy || !lookupId.trim()}
+            onClick={() => void lookup()}
+          >
+            Load
+          </Button>
+        }
+      >
+        <TextInput
+          id="appointment-id"
+          label="Appointment id"
+          value={lookupId}
+          onChange={(e) => setLookupId(e.target.value)}
+          placeholder="UUID"
+          autoComplete="off"
+        />
+      </Card>
 
       {selected ? (
-        <section aria-labelledby="detail-heading">
-          <h2 id="detail-heading" className="ux4g-heading-l-strong">
-            {selected.type_label} · {selected.state_label}
-          </h2>
+        <Card title={`${selected.type_label} · ${selected.state_label}`}>
           <p className="ux4g-body-m-default">
-            <code>{selected.appointment_id}</code> · slot <code>{selected.slot_ref}</code> · notify{' '}
-            {selected.notification_status}
+            Notify {selected.notification_status}
             {selected.related_inspection_pin ? (
-              <>
-                {' '}
-                · inspection pin <code>{selected.related_inspection_pin}</code>
-              </>
+              <> · inspection pin {selected.related_inspection_pin}</>
             ) : null}
           </p>
 
           {selected.can_reschedule ? (
-            <div className="sf-stack">
-              <label className="ux4g-body-m-default" htmlFor="reschedule-slot">
-                Reschedule to slot ref
-                <select
-                  id="reschedule-slot"
-                  className="ux4g-select"
-                  value={rescheduleSlot}
-                  onChange={(e) => setRescheduleSlot(e.target.value)}
-                >
-                  <option value="">Select open slot</option>
-                  {slots
-                    .filter((s) => s.can_book && s.slot_ref !== selected.slot_ref)
-                    .map((s) => (
-                      <option key={s.slot_id} value={s.slot_ref}>
-                        {s.label} · {s.slot_ref}
-                      </option>
-                    ))}
-                </select>
-              </label>
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
+            <div className="sf-form-stack">
+              <Select
+                id="reschedule-slot"
+                label="Reschedule to slot"
+                value={rescheduleSlot}
+                onChange={(e) => setRescheduleSlot(e.target.value)}
+                placeholder="Select open slot"
+                options={slots
+                  .filter((s) => s.can_book && s.slot_ref !== selected.slot_ref)
+                  .map((s) => ({
+                    value: s.slot_ref,
+                    label: `${s.label} · ${s.slot_ref}`,
+                  }))}
+              />
+              <Button
                 disabled={busy || !rescheduleSlot}
                 onClick={() => void act('reschedule', { slot_ref: rescheduleSlot })}
               >
                 Reschedule
-              </button>
+              </Button>
             </div>
           ) : null}
 
           <div className="sf-actions">
             {selected.can_complete ? (
-              <button
-                type="button"
-                className="ux4g-btn-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('complete')}
-              >
+              <Button disabled={busy} onClick={() => void act('complete')}>
                 Complete
-              </button>
+              </Button>
             ) : null}
             {selected.can_no_show ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('no_show')}
-              >
+              <Button variant="outline-primary" disabled={busy} onClick={() => void act('no_show')}>
                 Mark no-show
-              </button>
+              </Button>
             ) : null}
             {selected.can_cancel ? (
-              <button
-                type="button"
-                className="ux4g-btn-outline-neutral ux4g-btn-m"
-                disabled={busy}
-                onClick={() => void act('cancel')}
-              >
+              <Button variant="outline-neutral" disabled={busy} onClick={() => void act('cancel')}>
                 Cancel
-              </button>
+              </Button>
             ) : null}
           </div>
-        </section>
+
+          <details className="sf-stack">
+            <summary className="ux4g-body-s-default">Technical details</summary>
+            <p className="ux4g-body-s-default">
+              <code>{selected.appointment_id}</code> · slot <code>{selected.slot_ref}</code>
+            </p>
+          </details>
+        </Card>
       ) : null}
     </div>
   );

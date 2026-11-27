@@ -1,6 +1,8 @@
 'use client';
 
+import { Alert, Button, Card } from '@serviceform/ui-ux4g';
 import { useCallback, useEffect, useState } from 'react';
+import { EmptyState } from './EmptyState';
 
 interface OpsViewCard {
   view_code: string;
@@ -26,8 +28,15 @@ interface OpenSearchMirrorCard {
   real_deferred: true;
 }
 
+function metricLabel(code: string): string {
+  return code
+    .replaceAll('_', ' ')
+    .toLowerCase()
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
+
 export function OpsDesk() {
-  const [views, setViews] = useState<OpsViewCard[]>([]);
+  const [views, setViews] = useState<OpsViewCard[] | null>(null);
   const [overall, setOverall] = useState<string | null>(null);
   const [mirror, setMirror] = useState<OpenSearchMirrorCard | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +57,7 @@ export function OpsDesk() {
     const res = await fetch('/api/portal/ops', { cache: 'no-store' });
     if (res.status === 401) {
       setError('Sign in as a SAMPLE_LAB case or ops officer to open ops.');
+      setViews([]);
       return;
     }
     const body = (await res.json()) as {
@@ -57,6 +67,7 @@ export function OpsDesk() {
     };
     if (!res.ok) {
       setError(body.message ?? 'Unable to load ops views');
+      setViews([]);
       return;
     }
     setViews(body.views ?? []);
@@ -84,7 +95,7 @@ export function OpsDesk() {
       }
       const refreshed = body.view;
       if (refreshed) {
-        setViews((prev) => prev.map((v) => (v.view_code === viewCode ? refreshed : v)));
+        setViews((prev) => (prev ?? []).map((v) => (v.view_code === viewCode ? refreshed : v)));
       } else {
         await load();
       }
@@ -94,66 +105,104 @@ export function OpsDesk() {
     }
   }
 
+  if (views === null) {
+    return (
+      <p className="ux4g-body-m-default" aria-busy="true">
+        Loading ops views…
+      </p>
+    );
+  }
+
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        CMP-046 operational views — richer owner-shaped aggregates plus SIMULATED OpenSearch mirror
-        (REAL deferred). Never owns case decisions. CERTIFIED=false · G6=false.
+        Workload and health aggregates beyond a single queue. Views are non-authoritative and never
+        own case decisions.
       </p>
 
       {overall ? (
-        <p className="ux4g-body-s-default">
-          Overall status: <strong>{overall}</strong>
-        </p>
+        <div className="sf-meta-row" aria-label="Overall ops status">
+          <span className="ux4g-tag-tonal-primary">Overall · {overall}</span>
+        </div>
       ) : null}
 
       {mirror ? (
-        <div className="sf-meta-row" aria-label="OpenSearch mirror">
-          <strong>{mirror.label}</strong>
-          <span className="ux4g-tag-outline-warning">{mirror.mode}</span>
-          <span className="ux4g-tag-outline-neutral">REAL deferred</span>
-        </div>
+        <Card title={mirror.label} subtitle="Search mirror · simulated">
+          <dl className="sf-mini-stats">
+            <div>
+              <dt>Documents</dt>
+              <dd>{mirror.document_count}</dd>
+            </div>
+            <div>
+              <dt>Mode</dt>
+              <dd>{mirror.mode}</dd>
+            </div>
+          </dl>
+          {mirror.last_sync_at ? (
+            <p className="ux4g-body-s-default">Last sync {mirror.last_sync_at}</p>
+          ) : null}
+        </Card>
       ) : null}
 
       {error ? (
-        <div className="ux4g-alert-error" role="alert">
+        <Alert variant="error" title="Ops dashboard">
           {error}
-        </div>
+        </Alert>
       ) : null}
 
-      <ul className="sf-list" aria-label="Ops views">
-        {views.map((view) => (
-          <li key={view.view_code}>
-            <div className="sf-meta-row">
-              <strong>{view.label}</strong>
-              <span className="ux4g-tag-outline-neutral">{view.status}</span>
-              {view.stale ? <span className="ux4g-tag-outline-warning">stale</span> : null}
-            </div>
-            <div className="ux4g-body-s-default">
-              Source {view.source_component}
-              {view.as_of ? ` · as of ${view.as_of}` : ''} · non-authoritative
-            </div>
-            <ul>
-              {view.metrics.map((m, i) => (
-                <li key={`${m.metric_code}-${i}`}>
-                  {m.metric_code}: {m.value}
-                  {m.dimensions_summary ? ` (${m.dimensions_summary})` : ''}
-                </li>
-              ))}
-            </ul>
-            <div className="sf-actions">
-              <button
-                type="button"
-                className="ux4g-btn-outline-primary ux4g-btn-m"
-                disabled={busy || !view.can_refresh}
-                onClick={() => void refresh(view.view_code)}
-              >
-                Refresh
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {views.length === 0 ? (
+        <EmptyState
+          title="No ops views yet"
+          icon="layers"
+          actionLabel="Refresh"
+          onAction={() => void load()}
+          actionBusy={busy}
+          testId="ops-empty"
+        >
+          Operational aggregates appear here after the lab ops catalogue is seeded.
+        </EmptyState>
+      ) : (
+        <div className="sf-stack" aria-label="Ops views">
+          {views.map((view) => (
+            <Card
+              key={view.view_code}
+              title={view.label}
+              subtitle={
+                view.as_of ? `As of ${view.as_of} · non-authoritative` : 'Non-authoritative'
+              }
+              footer={
+                <Button
+                  variant="outline-primary"
+                  disabled={busy || !view.can_refresh}
+                  onClick={() => void refresh(view.view_code)}
+                >
+                  Refresh
+                </Button>
+              }
+            >
+              <div className="sf-meta-row">
+                <span className="ux4g-tag-outline-neutral">{view.status}</span>
+                {view.stale ? <span className="ux4g-tag-outline-warning">Stale</span> : null}
+              </div>
+              {view.metrics.length === 0 ? (
+                <p className="ux4g-body-m-default">No metrics in this refresh yet.</p>
+              ) : (
+                <dl className="sf-mini-stats">
+                  {view.metrics.map((m, i) => (
+                    <div key={`${m.metric_code}-${i}`}>
+                      <dt>
+                        {metricLabel(m.metric_code)}
+                        {m.dimensions_summary ? ` · ${m.dimensions_summary}` : ''}
+                      </dt>
+                      <dd>{m.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert, Button, Card, Checkbox, Select, TextInput, TextLink } from '@serviceform/ui-ux4g';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -169,221 +170,170 @@ export function AssistedApplyShell() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Assisted apply</h1>
         <p className="ux4g-body-m-default">
-          CSC / counter shell: operator stays <code>applied_by</code>, citizen stays{' '}
-          <code>applied_for</code>, with representation basis and fail-closed consent. Operators
-          never impersonate citizens (Constitution #36). SAMPLE_LAB · CERTIFIED=false · G6=false.
+          Help a citizen file an application at a CSC or counter. You stay the operator; the citizen
+          remains the applicant. Never impersonate.
         </p>
       </section>
 
       {error ? (
-        <p className="ux4g-body-m-default" role="alert">
+        <Alert variant="error" title="Assisted session">
           {error}{' '}
           {error.toLowerCase().includes('sign in') ? (
-            <Link href="/login" className="ux4g-text-link-m">
-              Sign in
-            </Link>
+            <TextLink href="/login">Sign in</TextLink>
           ) : null}
-        </p>
+        </Alert>
       ) : null}
 
       {session ? (
-        <section aria-labelledby="proof-heading" className="sf-stack">
-          <h2 id="proof-heading" className="ux4g-heading-l-strong">
-            Session proof
-          </h2>
-          <dl className="ux4g-body-m-default">
-            <div>
-              <dt>Channel</dt>
-              <dd>{session.channel}</dd>
-            </div>
-            <div>
-              <dt>applied_by (operator)</dt>
-              <dd>
-                <code>{session.applied_by_actor_id}</code>
-              </dd>
-            </div>
-            <div>
-              <dt>applied_for (citizen)</dt>
-              <dd>
-                <code>{session.applied_for_citizen_id}</code>
-              </dd>
-            </div>
-            <div>
-              <dt>Distinct</dt>
-              <dd>{session.applied_by_distinct_from_applied_for ? 'yes' : 'no'}</dd>
-            </div>
-            <div>
-              <dt>Lifecycle</dt>
-              <dd>{session.lifecycle_status}</dd>
-            </div>
-            <div>
-              <dt>Impersonation</dt>
-              <dd>forbidden</dd>
-            </div>
+        <Card title="Session proof" subtitle="Operator and citizen stay distinct">
+          <dl className="sf-dl">
+            <dt>Channel</dt>
+            <dd>{session.channel}</dd>
+            <dt>Operator</dt>
+            <dd>
+              <code>{session.applied_by_actor_id}</code>
+            </dd>
+            <dt>Citizen account</dt>
+            <dd>
+              <code>{session.applied_for_citizen_id}</code>
+            </dd>
+            <dt>Distinct parties</dt>
+            <dd>{session.applied_by_distinct_from_applied_for ? 'Yes' : 'No'}</dd>
+            <dt>Lifecycle</dt>
+            <dd>{session.lifecycle_status}</dd>
           </dl>
-        </section>
+        </Card>
       ) : null}
 
       {step === 'start' ? (
-        <section aria-labelledby="start-heading" className="sf-stack">
-          <h2 id="start-heading" className="ux4g-heading-l-strong">
-            1. Start CSC / assisted session
-          </h2>
-          <label className="ux4g-body-m-default" htmlFor="channel">
-            Channel
-            <select
+        <Card
+          title="1. Start assisted session"
+          footer={
+            <Button disabled={busy || !appliedFor.trim()} onClick={() => void start()}>
+              {busy ? 'Starting…' : 'Start session'}
+            </Button>
+          }
+        >
+          <div className="sf-form-stack">
+            <Select
               id="channel"
-              className="ux4g-select"
+              label="Channel"
               value={channel}
               onChange={(e) => setChannel(e.target.value)}
-            >
-              {SAMPLE_LAB_ASSISTED_CHANNELS.map((c) => (
-                <option key={c.code} value={c.code}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="ux4g-body-m-default" htmlFor="applied-for">
-            Citizen applied_for (UUID)
-            <input
+              options={SAMPLE_LAB_ASSISTED_CHANNELS.map((c) => ({
+                value: c.code,
+                label: c.label,
+              }))}
+            />
+            <TextInput
               id="applied-for"
-              className="ux4g-input"
+              label="Citizen account id"
               value={appliedFor}
               onChange={(e) => setAppliedFor(e.target.value)}
-              placeholder="Citizen subject UUID from CMP-004"
+              placeholder="Citizen subject UUID"
               autoComplete="off"
+              hint="You remain signed in as the operator. Do not paste a citizen session token."
             />
-          </label>
-          <p className="ux4g-body-s-default">
-            You remain signed in as the operator. Do not paste a citizen session token.
-          </p>
-          <button
-            type="button"
-            className="ux4g-btn-primary ux4g-btn-m"
-            disabled={busy || !appliedFor.trim()}
-            onClick={() => void start()}
-          >
-            Start session
-          </button>
-        </section>
+          </div>
+        </Card>
       ) : null}
 
       {step === 'bind' && session ? (
-        <section aria-labelledby="bind-heading" className="sf-stack">
-          <h2 id="bind-heading" className="ux4g-heading-l-strong">
-            2. Bind applicant assurance
-          </h2>
+        <Card
+          title="2. Bind applicant assurance"
+          footer={
+            <Button disabled={busy} onClick={() => void bind()}>
+              {busy ? 'Binding…' : 'Bind applicant'}
+            </Button>
+          }
+        >
           <p className="ux4g-body-m-default">
             Opaque assurance ref: <code>{SAMPLE_LAB_ASSISTED_ASSURANCE.default_ref}</code>
           </p>
-          <button
-            type="button"
-            className="ux4g-btn-primary ux4g-btn-m"
-            disabled={busy}
-            onClick={() => void bind()}
-          >
-            Bind applicant
-          </button>
-        </section>
+        </Card>
       ) : null}
 
       {(step === 'consent' || step === 'verify') && session ? (
-        <section aria-labelledby="consent-heading" className="sf-stack">
-          <h2 id="consent-heading" className="ux4g-heading-l-strong">
-            3. Consent + representation (fail-closed)
-          </h2>
-          <p className="ux4g-body-m-default">{SAMPLE_LAB_ASSISTED_CONSENT.label}</p>
-          <label className="ux4g-body-m-default" htmlFor="consent-ref">
-            Consent ref
-            <input
+        <Card
+          title="3. Consent and representation"
+          footer={
+            <Button disabled={busy || !readBack} onClick={() => void captureAndVerify()}>
+              {busy ? 'Verifying…' : 'Capture consent & verify'}
+            </Button>
+          }
+        >
+          <div className="sf-form-stack">
+            <p className="ux4g-body-m-default">{SAMPLE_LAB_ASSISTED_CONSENT.label}</p>
+            <TextInput
               id="consent-ref"
-              className="ux4g-input"
+              label="Consent ref"
               value={consentRef}
               onChange={(e) => setConsentRef(e.target.value)}
             />
-          </label>
-          {channelRequiresAuthority(session.channel) ? (
-            <label className="ux4g-body-m-default" htmlFor="authority-ref">
-              Representation authority ref (opaque)
-              <input
+            {channelRequiresAuthority(session.channel) ? (
+              <TextInput
                 id="authority-ref"
-                className="ux4g-input"
+                label="Representation authority ref"
                 value={authorityRef}
                 onChange={(e) => setAuthorityRef(e.target.value)}
                 placeholder="authority:… (owner-supplied; no statute)"
+                hint="Opaque reference only."
               />
-            </label>
-          ) : (
-            <p className="ux4g-body-s-default">
-              Channel {session.channel} uses the assisted channel itself as basis; no separate
-              authority ref required.
-            </p>
-          )}
-          <label className="ux4g-body-m-default" htmlFor="read-back">
-            <input
+            ) : (
+              <p className="ux4g-body-s-default">
+                Channel {session.channel} uses the assisted channel itself as basis; no separate
+                authority ref required.
+              </p>
+            )}
+            <Checkbox
               id="read-back"
-              type="checkbox"
+              label="Citizen read-back acknowledged"
+              description="Required — fail-closed without it"
               checked={readBack}
               onChange={(e) => setReadBack(e.target.checked)}
-            />{' '}
-            Citizen read-back acknowledged (required — fail-closed without it)
-          </label>
-          <button
-            type="button"
-            className="ux4g-btn-primary ux4g-btn-m"
-            disabled={busy || !readBack}
-            onClick={() => void captureAndVerify()}
-          >
-            Capture consent &amp; verify
-          </button>
-        </section>
+            />
+          </div>
+        </Card>
       ) : null}
 
       {step === 'apply' && session ? (
-        <section aria-labelledby="apply-heading" className="sf-stack">
-          <h2 id="apply-heading" className="ux4g-heading-l-strong">
-            4. File assisted application
-          </h2>
-          <p className="ux4g-body-m-default">
-            Creates a draft owned by <code>applied_for</code> via server-mediated filing, then links
-            it on the assisted session. Your officer session is never swapped to the citizen.
-          </p>
-          <label className="ux4g-body-m-default" htmlFor="catalogue">
-            Offering catalogue id
-            <input
+        <Card
+          title="4. File assisted application"
+          footer={
+            <Button disabled={busy} onClick={() => void apply()}>
+              {busy ? 'Filing…' : 'File application'}
+            </Button>
+          }
+        >
+          <div className="sf-form-stack">
+            <p className="ux4g-body-m-default">
+              Creates a draft owned by the citizen via server-mediated filing. Your officer session
+              is never swapped to the citizen.
+            </p>
+            <TextInput
               id="catalogue"
-              className="ux4g-input"
+              label="Offering catalogue id"
               value={catalogueId}
               onChange={(e) => setCatalogueId(e.target.value)}
             />
-          </label>
-          <button
-            type="button"
-            className="ux4g-btn-primary ux4g-btn-m"
-            disabled={busy}
-            onClick={() => void apply()}
-          >
-            File application
-          </button>
-        </section>
+          </div>
+        </Card>
       ) : null}
 
       {step === 'done' ? (
-        <section aria-labelledby="done-heading" className="sf-stack">
-          <h2 id="done-heading" className="ux4g-heading-l-strong">
-            Assisted apply linked
-          </h2>
+        <Card title="Assisted apply linked">
           <p className="ux4g-body-m-default">
             Application <code>{applicationId ?? session?.application_id}</code> is owned by the
-            citizen (<code>applied_for</code>). Operator proof remains on the assisted session.
+            citizen. Operator proof remains on the assisted session.
           </p>
           {applicationId ? (
-            <Link href={`/applications/${applicationId}`} className="ux4g-text-link-m">
-              Open application
-            </Link>
+            <p className="ux4g-body-m-default">
+              <Link href={`/applications/${applicationId}`} className="ux4g-text-link-m">
+                Open application
+              </Link>
+            </p>
           ) : null}
-        </section>
+        </Card>
       ) : null}
     </div>
   );

@@ -6,6 +6,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react';
 import { OfficerNav } from '../../components/OfficerNav';
 import { RequireOfficerSession } from '../../components/RequireOfficerSession';
 import { DESK_LABELS } from '../../lib/portal/desk';
+import { statusChrome } from '../../lib/portal/status-view';
 
 type App = {
   id: string;
@@ -72,7 +73,13 @@ function QueueList() {
     return apps.filter((a) => taskByApp.get(a.id)?.assignment.role_code === deskFilter);
   }, [apps, deskFilter, taskByApp]);
 
-  if (apps === null) return <p className="ux4g-body-m-default">Loading queue…</p>;
+  if (apps === null) {
+    return (
+      <p className="ux4g-body-m-default" aria-busy="true">
+        Loading queue…
+      </p>
+    );
+  }
   if (apps.length === 0) {
     return (
       <Card title="Queue empty">
@@ -83,7 +90,7 @@ function QueueList() {
 
   const deskOptions = [
     { value: 'ALL', label: 'All applications' },
-    { value: 'TASKS', label: 'Open HUMAN_TASK desks' },
+    { value: 'TASKS', label: 'Open desk tasks' },
     ...desks.map((d) => ({
       value: d.role_code,
       label: `${d.label} (${d.open_count})`,
@@ -93,7 +100,7 @@ function QueueList() {
   return (
     <div className="sf-queue">
       {desks.length > 0 ? (
-        <Card title="Desks by role_code" subtitle="Studio HUMAN_TASK assignment · CMP-017">
+        <Card title="Filter by desk" subtitle="Open tasks assigned by desk role">
           <div className="sf-form-stack">
             <Select
               label="Desk filter"
@@ -114,13 +121,23 @@ function QueueList() {
 
       {(filtered ?? []).map((a) => {
         const task = taskByApp.get(a.id);
+        const chrome = statusChrome(a.status, a.platform_state);
         return (
           <Card key={a.id} title={a.applicant_name ?? 'Applicant'}>
             <div className="sf-queue-item">
               <div className="sf-queue-item-main">
                 <div className="sf-meta-row">
-                  <span className={statusTag(a.status)}>{a.status}</span>
-                  <span className="ux4g-tag-tonal-neutral">{a.platform_state}</span>
+                  <span className={chrome.primary.tagClass} title={chrome.primary.title}>
+                    {chrome.primary.label}
+                  </span>
+                  {chrome.platformDiff ? (
+                    <span
+                      className={chrome.platformDiff.tagClass}
+                      title={chrome.platformDiff.title}
+                    >
+                      {chrome.platformDiff.label}
+                    </span>
+                  ) : null}
                   {task ? (
                     <span className="ux4g-tag-tonal-primary">
                       {DESK_LABELS[task.assignment.role_code] ?? task.assignment.role_code}
@@ -129,7 +146,6 @@ function QueueList() {
                 </div>
                 <p className="ux4g-body-s-default">
                   {a.catalogue_id ? `${a.catalogue_id} · ` : ''}
-                  {task?.workflow_node_id ? `${task.workflow_node_id} · ` : ''}
                   {typeof a.residence_duration_months === 'number'
                     ? `${a.residence_duration_months} months residence · `
                     : a.purpose_of_certificate
@@ -147,19 +163,6 @@ function QueueList() {
   );
 }
 
-function statusTag(status: string): string {
-  switch (status) {
-    case 'ISSUED':
-      return 'ux4g-tag-tonal-success';
-    case 'REJECTED':
-      return 'ux4g-tag-tonal-error';
-    case 'SUBMITTED':
-      return 'ux4g-tag-tonal-info';
-    default:
-      return 'ux4g-tag-tonal-neutral';
-  }
-}
-
 export default function ApplicationsPage() {
   return (
     <AppShell
@@ -171,19 +174,26 @@ export default function ApplicationsPage() {
       <section className="sf-page-hero">
         <h1 className="ux4g-heading-2xl-strong">Applications</h1>
         <p className="ux4g-body-m-default">
-          Multi-desk queue from Studio HUMAN_TASK role_code assignments (CMP-017). Scrutiny and
-          approving desks are separate roles — never named officers.
+          Review cases assigned to your desks. Scrutiny and approving desks stay separate roles.
         </p>
       </section>
 
-      <Alert variant="info" title="Platform path (SAMPLE_LAB)">
-        Cases come from Application/Case (CMP-015). Open HUMAN_TASK rows come from Temporal CMP-016
-        when the graph enters a role-assigned node. Connectors are SIMULATED. CERTIFIED=false ·
-        G6=false.
-      </Alert>
+      <details className="sf-stack">
+        <summary className="ux4g-body-s-default">About this desk</summary>
+        <Alert variant="info" title="Sample lab path">
+          Cases and open desk tasks come from the platform case and workflow services. Connectors
+          are simulated. This environment is not production-certified.
+        </Alert>
+      </details>
 
       <RequireOfficerSession>
-        <Suspense fallback={<p className="ux4g-body-m-default">Loading queue…</p>}>
+        <Suspense
+          fallback={
+            <p className="ux4g-body-m-default" aria-busy="true">
+              Loading queue…
+            </p>
+          }
+        >
           <QueueList />
         </Suspense>
       </RequireOfficerSession>
