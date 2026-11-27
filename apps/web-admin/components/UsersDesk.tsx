@@ -195,9 +195,9 @@ export function UsersDesk() {
   return (
     <div className="sf-stack">
       <p className="ux4g-body-m-default">
-        M02 identity admin surface for this tenant only. Ops are scoped by the CMP-004 session
-        tenant binding (never a client-supplied tenant). Fail-closed OPA · CERTIFIED=false ·
-        G6=false · ADR-0007 not claimed accepted.
+        Identity admin for this tenant only. Ops are scoped by the signed-in session tenant binding
+        (never a client-supplied tenant). Fail-closed authorization; ADR-0007 is not claimed
+        accepted.
       </p>
       {adapter ? (
         <Alert variant="info" title="Directory adapter">

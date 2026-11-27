@@ -125,7 +125,7 @@ export function BindingDesk() {
       {labEngSealed ? (
         <Alert variant="info" title="Lab eng sealed">
           {sealNote ||
-            'SAMPLE_LAB eng seal proven. CERTIFIED=false. G6=false. Owner owns G6 seal claim.'}
+            'SAMPLE_LAB eng seal proven. Not a production G6 seal — owner owns any G6 claim.'}
         </Alert>
       ) : null}
       <Alert variant="warning" title="Maker-checker required">

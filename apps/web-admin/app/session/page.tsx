@@ -1,15 +1,14 @@
-import { AppShell, Card } from '@serviceform/ui-ux4g';
-import { AdminNav } from '../../components/AdminNav';
+import { Card } from '@serviceform/ui-ux4g';
+import { AdminShell } from '../../components/AdminShell';
 import { SessionForm } from '../../components/SessionForm';
 
 export default function SessionPage() {
   return (
-    <AppShell surface="tenant_admin" title="Administration">
-      <AdminNav />
-      <h1>Admin session</h1>
+    <AdminShell title="Administration">
+      <h1 className="ux4g-heading-2xl-strong">Admin session</h1>
       <Card title="SIMULATED workforce session">
         <SessionForm defaultRole="TENANT_ADMIN" />
       </Card>
-    </AppShell>
+    </AdminShell>
   );
 }

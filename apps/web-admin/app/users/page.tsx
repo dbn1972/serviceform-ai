@@ -1,15 +1,14 @@
-import { AppShell, Card } from '@serviceform/ui-ux4g';
-import { AdminNav } from '../../components/AdminNav';
+import { Card } from '@serviceform/ui-ux4g';
+import { AdminShell } from '../../components/AdminShell';
 import { UsersDesk } from '../../components/UsersDesk';
 
 export default function UsersPage() {
   return (
-    <AppShell surface="tenant_admin" title="Administration">
-      <AdminNav />
-      <h1>Tenant users</h1>
+    <AdminShell title="Administration">
+      <h1 className="ux4g-heading-2xl-strong">Tenant users</h1>
       <Card title="Workforce directory (Keycloak Admin REST or SIMULATED)">
         <UsersDesk />
       </Card>
-    </AppShell>
+    </AdminShell>
   );
 }

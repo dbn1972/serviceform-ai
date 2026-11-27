@@ -6,16 +6,23 @@ import UsersPage from '../app/users/page';
 import { AdminNav } from '../components/AdminNav';
 
 describe('web-admin markup (UX4G)', () => {
-  it('keeps the shell heading and landmarks', () => {
+  it('mounts AdminNav in AppShell header with SAMPLE_LAB env tag', () => {
     const html = renderToStaticMarkup(<HomePage />);
     expect(html).toContain('data-surface="tenant_admin"');
     expect(html).toContain('>Administration</h1>');
     expect(html).toContain('sf-skip-link');
-    expect(html).toContain('Users manages tenant workforce');
+    expect(html).toContain('sf-env-tag');
+    expect(html).toContain('SAMPLE_LAB');
+    expect(html).toContain('sf-header-nav');
+    expect(html).toContain('ux4g-navbar-links');
+    expect(html).toContain('Open bindings');
+    expect(html).toContain('Sample lab — not production certified');
   });
 
-  it('exposes binding and review destinations', () => {
+  it('exposes binding and review destinations in horizontal nav', () => {
     const html = renderToStaticMarkup(<AdminNav />);
+    expect(html).toContain('ux4g-navbar-links');
+    expect(html).not.toContain('ux4g-text-link-m');
     expect(html).toContain('href="/bindings"');
     expect(html).toContain('href="/reviews"');
     expect(html).toContain('href="/branding"');
@@ -29,6 +36,8 @@ describe('web-admin markup (UX4G)', () => {
     expect(html).toContain('>Tenant users</h1>');
     expect(html).toContain('Workforce directory (Keycloak Admin REST or SIMULATED)');
     expect(html).toContain('data-surface="tenant_admin"');
+    expect(html).toContain('sf-header-nav');
+    expect(html).toContain('SAMPLE_LAB');
   });
 
   it('bindings page includes reusable jurisdiction scope desk for any offering', () => {
@@ -61,12 +70,37 @@ describe('web-admin markup (UX4G)', () => {
 });
 
 describe('web-admin reviews markup (P8-5 maker≠checker)', () => {
-  it('checker reviews page stresses maker ≠ checker', async () => {
+  it('checker reviews page stresses maker ≠ checker without CERTIFIED chrome dump', async () => {
     const { default: ReviewsPage } = await import('../app/reviews/page');
     const html = renderToStaticMarkup(<ReviewsPage />);
     expect(html).toContain('Maker ≠ checker');
     expect(html).toContain('CMP-051');
     expect(html).toContain('Constitution #9');
-    expect(html).toContain('CERTIFIED=false');
+    expect(html).toContain('sf-header-nav');
+    expect(html).toContain('SAMPLE_LAB');
+    expect(html).not.toContain('CERTIFIED=false');
+  });
+});
+
+describe('web-admin discovery / analytics UX4G controls', () => {
+  it('discovery desk uses TextInput, Select, and Button composites', async () => {
+    const { DiscoveryDesk } = await import('../components/DiscoveryDesk');
+    const html = renderToStaticMarkup(<DiscoveryDesk />);
+    expect(html).toContain('ux4g-input-container');
+    expect(html).toContain('discovery-keywords');
+    expect(html).toContain('discovery-jurisdiction');
+    expect(html).toContain('ux4g-btn-primary');
+    expect(html).toContain('Run a search');
+    expect(html).not.toContain('CERTIFIED=false');
+    expect(html).not.toContain('CMP-006');
+  });
+
+  it('analytics desk uses Button and empty-state pattern', async () => {
+    const { AnalyticsDesk } = await import('../components/AnalyticsDesk');
+    const html = renderToStaticMarkup(<AnalyticsDesk />);
+    expect(html).toContain('ux4g-btn-outline-primary');
+    expect(html).toContain('Refresh definitions');
+    expect(html).not.toContain('CERTIFIED=false');
+    expect(html).not.toContain('CMP-045');
   });
 });

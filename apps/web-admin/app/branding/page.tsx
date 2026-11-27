@@ -1,13 +1,11 @@
-import { AppShell } from '@serviceform/ui-ux4g';
-import { AdminNav } from '../../components/AdminNav';
+import { AdminShell } from '../../components/AdminShell';
 import { OverlayForm } from '../../components/OverlayForm';
 
 export default function BrandingPage() {
   return (
-    <AppShell surface="tenant_admin" title="Administration">
-      <AdminNav />
-      <h1>Tenant branding</h1>
+    <AdminShell title="Administration">
+      <h1 className="ux4g-heading-2xl-strong">Tenant branding</h1>
       <OverlayForm />
-    </AppShell>
+    </AdminShell>
   );
 }
