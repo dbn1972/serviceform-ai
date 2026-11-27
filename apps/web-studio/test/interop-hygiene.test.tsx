@@ -17,8 +17,8 @@ describe('Studio interop hygiene desk', () => {
     const html = renderToStaticMarkup(<InteropHygieneDesk />);
     expect(html).toContain('Prove interop hygiene');
     expect(html).toContain('Lab interop hygiene only');
-    expect(html).toContain('CERTIFIED=false');
-    expect(html).toContain('G6=false');
+    expect(html).toContain('Sample lab — not production');
+    expect(html).toContain('certified');
     expect(html).toContain('.sfpackage');
     expect(html).toContain('Loading SAMPLE_LAB catalogue');
   });

@@ -18,7 +18,9 @@ describe('Studio workflow designer', () => {
     expect(html).toContain('href="/workflows/designer"');
     expect(html).toContain('href="/workflows/designer?template=case-sequencing"');
     expect(html).toContain('action="/workflows/designer"');
-    expect(html).toContain('Temporal runtime · BPMN interop only');
+    expect(html).toContain('Sample lab');
+    expect(html).toContain('BPMN 2.0 is import and export only');
+    expect(html).not.toContain('CERTIFIED=false');
     expect(renderToStaticMarkup(<StudioNav />)).toContain('href="/workflows"');
   });
 

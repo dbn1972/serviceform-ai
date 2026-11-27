@@ -21,8 +21,9 @@ describe('Studio rules designer', () => {
     expect(html).toContain('href="/rules/designer"');
     expect(html).toContain('href="/rules/designer?template=residence-period"');
     expect(html).toContain('action="/rules/designer"');
-    expect(html).toContain('GoRules JDM · ZEN engine · advisory only');
+    expect(html).toContain('Sample lab');
     expect(html).toContain('Rules never approve or reject an application');
+    expect(html).not.toContain('CERTIFIED=false');
     expect(renderToStaticMarkup(<StudioNav />)).toContain('href="/rules"');
   });
 
